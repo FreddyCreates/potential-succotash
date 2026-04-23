@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "canisters": {
+    "organism": {
+      "type": "motoko",
+      "main": "src/Organism.mo"
+    }
+  },
+  "defaults": {
+    "build": {
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env"
+}
