@@ -1,0 +1,22 @@
+{
+  "name": "@medina/sovereign-memory-sdk",
+  "version": "1.0.0",
+  "description": "Enterprise memory that never forgets — spatial memory storage, dual-layer search, lineage tracking, and φ-encoded coordinate generation.",
+  "license": "MIT",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "keywords": [
+    "memory",
+    "spatial",
+    "phi",
+    "resonance",
+    "lineage",
+    "living-document"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
