@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "Spread Scanner",
+  "version": "1.0.0",
+  "description": "AI User Experience — JARVIS-style spread and arbitrage scanner. Reads financial data from any page, runs phi-weighted pattern recognition, and highlights free-lunch mispricing opportunities in real-time",
+  "permissions": ["activeTab", "storage", "alarms"],
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [{ "matches": ["<all_urls>"], "js": ["content.js"] }],
+  "minimum_chrome_version": "110"
+}

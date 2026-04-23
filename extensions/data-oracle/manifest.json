@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "Data Oracle",
+  "version": "1.0.0",
+  "description": "AI User Experience — JARVIS-style data ingestion engine. Reads all metadata and data from any page, structures it, runs X-ray depth analysis through the noise to find fundamental signals",
+  "permissions": ["activeTab", "storage", "alarms"],
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [{ "matches": ["<all_urls>"], "js": ["content.js"] }],
+  "minimum_chrome_version": "110"
+}

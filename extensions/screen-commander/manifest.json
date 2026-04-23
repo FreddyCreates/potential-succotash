@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "Screen Commander",
+  "version": "1.0.0",
+  "description": "AI User Experience — JARVIS-style autonomous screen agent. Reads, writes, moves elements, opens panels, navigates pages. AI that operates your screen for you with voice-command intent",
+  "permissions": ["activeTab", "storage", "alarms", "tabs", "scripting"],
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [{ "matches": ["<all_urls>"], "js": ["content.js"] }],
+  "minimum_chrome_version": "110"
+}

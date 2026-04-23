@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "Pattern Forge",
+  "version": "1.0.0",
+  "description": "AI User Experience — X-ray mathematics engine. Underlying math that sees through noise to fundamentals. Square-root normalization, spectral decomposition, cross-system correlation, z-depth analysis for pattern recognition across spreads and data",
+  "permissions": ["activeTab", "storage", "alarms"],
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [{ "matches": ["<all_urls>"], "js": ["content.js"] }],
+  "minimum_chrome_version": "110"
+}
