@@ -3,15 +3,28 @@
   "name": "Cipher Shield",
   "version": "1.0.0",
   "description": "Encrypted Intelligence Guard — Security + GPT + Claude",
-  "permissions": ["activeTab", "storage", "webRequest"],
+  "permissions": [
+    "activeTab",
+    "storage",
+    "webRequest"
+  ],
   "background": {
     "service_worker": "background.js"
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ]
     }
   ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
   "minimum_chrome_version": "110"
 }
