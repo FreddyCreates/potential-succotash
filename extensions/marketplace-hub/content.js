@@ -292,10 +292,13 @@
     resultBox.style.borderColor = FAMILY_COLORS[tool.family] || '#30363d';
     resultBox.textContent = '\u23F3 Invoking ' + tool.name + '.' + action + '...';
 
+    var invokeStartTime = Date.now();
+
     /* Simulate invocation (in real extension, message to background) */
     setTimeout(function () {
       var now = Date.now();
       var beat = Math.floor(now / 873);
+      var latencyMs = now - invokeStartTime;
       var result;
 
       if (tool.family === 'Context') {
@@ -314,7 +317,7 @@
         JSON.stringify(result, null, 2);
 
       statusBar.textContent = '\u2713 ' + tool.name + '.' + action + ' completed \u2022 ' +
-        (Date.now() - now) + 'ms';
+        latencyMs + 'ms';
     }, 150 + Math.random() * 300);
   }
 

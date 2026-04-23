@@ -92,11 +92,12 @@ export async function topologyCrawlerHandler(input) {
     nodeId++;
   }
 
-  // Tools
+  // Tools — wired to the marketplace SDK (last SDK registered)
+  const marketplaceSdkId = `sdk-${rings.length + sdks.length - 1}`;
   for (let t = 1; t <= 24; t++) {
     const toolId = `TOOL-${String(t).padStart(3, '0')}`;
     nodes.push({ id: toolId, type: 'tool', name: toolId, depth: 2 });
-    edges.push({ from: `sdk-${8 + rings.length}`, to: toolId, type: 'exposes' });
+    edges.push({ from: marketplaceSdkId, to: toolId, type: 'exposes' });
   }
 
   // Extensions
