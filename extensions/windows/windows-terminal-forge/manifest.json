@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Windows Terminal Forge",
+  "version": "1.0.0",
+  "description": "Terminal & PowerShell AI — Codex + DeepSeek + Phi intelligent terminal assistance for Windows Terminal",
+  "platform": "windows",
+  "permissions": ["terminal", "powershell", "clipboard", "process-management"],
+  "engine": {
+    "service": "engine.js"
+  },
+  "interface": {
+    "entry": "interface.js"
+  },
+  "minimum_windows_version": "10.0.19041"
+}
