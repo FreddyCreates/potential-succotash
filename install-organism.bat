@@ -64,13 +64,13 @@ REM ── Find Edge FIRST (native on Windows), then Chrome, then Brave ──
 set "BROWSER="
 
 REM Try Edge first — native Windows browser, best integration
-if exist "%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe" (
-    set "BROWSER=%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe"
+if exist "%ProgramFiles%\Microsoft\Edge\Application\msedge.exe" (
+    set "BROWSER=%ProgramFiles%\Microsoft\Edge\Application\msedge.exe"
     set "BROWSER_NAME=Edge"
 )
 if not defined BROWSER (
-    if exist "%ProgramFiles%\Microsoft\Edge\Application\msedge.exe" (
-        set "BROWSER=%ProgramFiles%\Microsoft\Edge\Application\msedge.exe"
+    if exist "%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe" (
+        set "BROWSER=%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe"
         set "BROWSER_NAME=Edge"
     )
 )
