@@ -1,0 +1,21 @@
+{
+  "name": "organism-cli",
+  "version": "1.0.0",
+  "description": "Sovereign Organism Terminal AI — Build, install, and manage all AI extensions with one command",
+  "main": "organism.js",
+  "bin": {
+    "organism": "./organism.js"
+  },
+  "scripts": {
+    "start": "node organism.js",
+    "install-extensions": "node organism.js install",
+    "build": "node organism.js build",
+    "status": "node organism.js status",
+    "validate": "node organism.js validate"
+  },
+  "keywords": ["ai", "extensions", "chrome", "organism", "terminal"],
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
