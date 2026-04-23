@@ -1,7 +1,7 @@
 {
   "name": "@medina/organism-marketplace",
   "version": "1.0.0",
-  "description": "Callable tool marketplace for the sovereign organism — registry, routing, invocation, and settlement for 20 always-running VOIS tools and all organism surfaces.",
+  "description": "Callable tool marketplace for the sovereign organism — 24 VOIS tools across 4 families (Crawling, Context, Commander, Sentry), registry, routing, invocation, settlement, and family template generator.",
   "license": "MIT",
   "type": "module",
   "main": "src/index.js",
@@ -12,6 +12,8 @@
     "./tool-invoker": "./src/tool-invoker.js",
     "./marketplace-settlement": "./src/marketplace-settlement.js",
     "./marketplace-router": "./src/marketplace-router.js",
+    "./family-profiles": "./src/family-profiles.js",
+    "./family-template": "./src/family-template.js",
     "./tools": "./src/tools/index.js"
   },
   "keywords": [
@@ -22,7 +24,12 @@
     "settlement",
     "organism",
     "VOIS",
-    "sovereign"
+    "sovereign",
+    "family-profiles",
+    "crawling",
+    "context",
+    "commander",
+    "sentry"
   ],
   "engines": {
     "node": ">=18.0.0"

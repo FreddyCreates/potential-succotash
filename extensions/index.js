@@ -1,9 +1,12 @@
 /**
  * AI Intelligence Extensions — Organism Wire Index
  *
- * 20 multi-modal, multi-AI Edge extensions wired into the sovereign organism.
+ * 21 multi-modal, multi-AI Edge extensions wired into the sovereign organism.
  * Each extension is a self-contained Manifest V3 directory with
  * background.js (engine), content.js (DOM UI), and manifest.json.
+ *
+ * Extensions are AI for user experiences — each one provides an intelligent,
+ * interactive interface that users engage with directly.
  *
  * This index maps every extension ID to its directory and metadata
  * for programmatic discovery and organism-level orchestration.
@@ -31,7 +34,8 @@ const EXTENSIONS = [
   { id: 'EXT-017', slug: 'knowledge-cartographer', name: 'Knowledge Cartographer', engines: ['Embeddings', 'Command R', 'Florence'], ring: 'Memory Ring', wire: 'intelligence-wire/graph' },
   { id: 'EXT-018', slug: 'protocol-bridge', name: 'Protocol Bridge', engines: ['All Foundation Models'], ring: 'Transport Ring', wire: 'intelligence-wire/bridge' },
   { id: 'EXT-019', slug: 'creative-muse', name: 'Creative Muse', engines: ['SD', 'DALL-E', 'MusicGen', 'Suno'], ring: 'Geometry Ring', wire: 'intelligence-wire/muse' },
-  { id: 'EXT-020', slug: 'sovereign-nexus', name: 'Sovereign Nexus', engines: ['All 40 Foundation Models', 'Kuramoto'], ring: 'Sovereign Ring', wire: 'intelligence-wire/nexus' }
+  { id: 'EXT-020', slug: 'sovereign-nexus', name: 'Sovereign Nexus', engines: ['All 40 Foundation Models', 'Kuramoto'], ring: 'Sovereign Ring', wire: 'intelligence-wire/nexus' },
+  { id: 'EXT-021', slug: 'marketplace-hub', name: 'Marketplace Hub', engines: ['ToolRegistry', 'FamilyProfiles', 'MarketplaceRouter'], ring: 'Interface Ring', wire: 'intelligence-wire/marketplace' }
 ];
 
 /**

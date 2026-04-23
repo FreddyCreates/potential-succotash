@@ -13,6 +13,10 @@ import crypto from 'node:crypto';
  */
 
 /**
+ * @typedef {'Crawling'|'Context'|'Commander'|'Sentry'} ToolFamily
+ */
+
+/**
  * @typedef {Object} FieldSchema
  * @property {string} name - Field name
  * @property {string} type - JSON Schema type: string | number | boolean | object | array
@@ -42,6 +46,7 @@ import crypto from 'node:crypto';
  * @property {TrustTier} trustTier - Required trust level
  * @property {string[]} sdkDependencies - SDK modules this tool depends on
  * @property {string[]} lawsEnforced - Architectural laws this tool enforces
+ * @property {ToolFamily} [family] - Core family classification: Crawling | Context | Commander | Sentry
  */
 
 const PHI = 1.618033988749895;
@@ -51,6 +56,7 @@ const VALID_TYPES = ['string', 'number', 'boolean', 'object', 'array'];
 const VALID_EXPOSURES = ['INTERNAL', 'INTERNAL_SOVEREIGN', 'PARTNER', 'ENTERPRISE', 'PUBLIC'];
 const VALID_BILLING = ['free', 'metered', 'per-call', 'per-seat', 'enterprise-license'];
 const VALID_TRUST = ['low', 'medium', 'high', 'critical'];
+const VALID_FAMILIES = ['Crawling', 'Context', 'Commander', 'Sentry'];
 
 /**
  * ToolSchema — Defines the canonical schema for every callable tool in the organism marketplace.
@@ -96,6 +102,7 @@ export class ToolSchemaBuilder {
       trustTier: definition.trustTier || 'medium',
       sdkDependencies: Object.freeze(definition.sdkDependencies || []),
       lawsEnforced: Object.freeze(definition.lawsEnforced || []),
+      family: definition.family || null,
     });
   }
 
@@ -239,6 +246,9 @@ export class ToolSchemaBuilder {
     if (def.trustTier && !VALID_TRUST.includes(def.trustTier)) {
       throw new Error(`Invalid trust tier: "${def.trustTier}". Valid: ${VALID_TRUST.join(', ')}`);
     }
+    if (def.family && !VALID_FAMILIES.includes(def.family)) {
+      throw new Error(`Invalid family: "${def.family}". Valid: ${VALID_FAMILIES.join(', ')}`);
+    }
 
     for (const field of def.inputSchema || []) {
       if (!field.name || !field.type) {
@@ -260,4 +270,4 @@ export class ToolSchemaBuilder {
   }
 }
 
-export { ToolSchemaBuilder as default, PHI, HEARTBEAT, VALID_EXPOSURES, VALID_BILLING, VALID_TRUST };
+export { ToolSchemaBuilder as default, PHI, HEARTBEAT, VALID_EXPOSURES, VALID_BILLING, VALID_TRUST, VALID_FAMILIES };

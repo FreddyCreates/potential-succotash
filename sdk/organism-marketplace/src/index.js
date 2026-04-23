@@ -13,38 +13,60 @@
  * - the AI is routed to it by policy/orchestration (MarketplaceRouter)
  * - the result comes back in a usable schema (ToolInvoker)
  *
- * This SDK provides all four layers plus 20 always-running VOIS tools.
+ * 24 hand-crafted tools organized into 4 core families:
+ *   🕷 Crawling — discovery, monitoring, mapping, streaming
+ *   🧠 Context  — state reading, context assembly, lineage tracing
+ *   ⚡ Commander — routing, orchestration, synchronization, dispatch
+ *   🛡 Sentry   — guarding, verification, enforcement, auditing
+ *
+ * Plus a FamilyTemplate generator for creating additional tools from family blueprints.
  *
  * @module @medina/organism-marketplace
  */
 
 // Core marketplace layers
-export { ToolSchemaBuilder, PHI, HEARTBEAT, VALID_EXPOSURES, VALID_BILLING, VALID_TRUST } from './tool-schema.js';
+export { ToolSchemaBuilder, PHI, HEARTBEAT, VALID_EXPOSURES, VALID_BILLING, VALID_TRUST, VALID_FAMILIES } from './tool-schema.js';
 export { ToolRegistry } from './tool-registry.js';
 export { ToolInvoker } from './tool-invoker.js';
 export { MarketplaceSettlement } from './marketplace-settlement.js';
 export { MarketplaceRouter } from './marketplace-router.js';
 
-// Re-export individual tool schemas and handlers
+// Family system
 export {
+  FAMILY_PROFILES, ALL_FAMILIES,
+  CRAWLING_FAMILY, CONTEXT_FAMILY, COMMANDER_FAMILY, SENTRY_FAMILY,
+  getFamilyByToolId, getFamilyMembers, getResonanceGraph, getCrossFamilyResonance,
+} from './family-profiles.js';
+export { FamilyTemplate, getFamilyBlueprint, ALL_BLUEPRINTS } from './family-template.js';
+
+// Re-export all 24 tool schemas and handlers
+export {
+  // Context family
   PulseKeeperSchema, pulseKeeperHandler,
-  SyncWeaverSchema, syncWeaverHandler,
-  FlowMonitorSchema, flowMonitorHandler,
   StateGuardianSchema, stateGuardianHandler,
   CycleCounterSchema, cycleCounterHandler,
-  InferEngineSchema, inferEngineHandler,
-  PatternSeekerSchema, patternSeekerHandler,
   ContextBuilderSchema, contextBuilderHandler,
-  AttentionRouterSchema, attentionRouterHandler,
   MemoryConsolidatorSchema, memoryConsolidatorHandler,
+  LineageTracerSchema, lineageTracerHandler,
+  // Commander family
+  SyncWeaverSchema, syncWeaverHandler,
+  InferEngineSchema, inferEngineHandler,
+  AttentionRouterSchema, attentionRouterHandler,
+  ResourceBalancerSchema, resourceBalancerHandler,
+  ConnectionPoolSchema, connectionPoolHandler,
+  TaskCommanderSchema, taskCommanderHandler,
+  // Crawling family
+  FlowMonitorSchema, flowMonitorHandler,
+  PatternSeekerSchema, patternSeekerHandler,
+  AnomalyDetectorSchema, anomalyDetectorHandler,
+  CacheOptimizerSchema, cacheOptimizerHandler,
+  LogStreamerSchema, logStreamerHandler,
+  TopologyCrawlerSchema, topologyCrawlerHandler,
+  // Sentry family
   SentinelWatchSchema, sentinelWatchHandler,
   IntegrityCheckerSchema, integrityCheckerHandler,
   BoundaryEnforcerSchema, boundaryEnforcerHandler,
-  AnomalyDetectorSchema, anomalyDetectorHandler,
   SealVerifierSchema, sealVerifierHandler,
-  ResourceBalancerSchema, resourceBalancerHandler,
-  ConnectionPoolSchema, connectionPoolHandler,
-  CacheOptimizerSchema, cacheOptimizerHandler,
   QueueProcessorSchema, queueProcessorHandler,
-  LogStreamerSchema, logStreamerHandler,
+  DoctrineAuditorSchema, doctrineAuditorHandler,
 } from './tools/index.js';
