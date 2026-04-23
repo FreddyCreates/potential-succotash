@@ -22,4 +22,4 @@ Provides Windows Runtime primitives for wiring sovereign intelligence into UWP a
 
 ## Laws Enforced
 
-AL-019, AL-020, AL-034, AL-036, AL-018
+AL-014, AL-018, AL-019, AL-020, AL-025, AL-028, AL-030, AL-034, AL-036
