@@ -1,0 +1,60 @@
+name: Build & Release Extensions
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'extensions/**'
+      - 'build-extensions.sh'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-extensions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Package extensions
+        run: |
+          chmod +x build-extensions.sh
+          bash build-extensions.sh
+
+      - name: Upload individual extension zips
+        uses: actions/upload-artifact@v4
+        with:
+          name: organism-extensions
+          path: dist/extensions/*.zip
+          retention-days: 90
+
+      - name: Create Release (on tag or main push)
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: extensions-v${{ github.run_number }}
+          name: "Organism Extensions Build #${{ github.run_number }}"
+          body: |
+            ## 🧬 Sovereign Organism Extensions
+
+            25 production-ready Chrome/Edge/Brave extensions.
+
+            ### Quick Install
+            1. Download any `.zip` below
+            2. Unzip to a folder
+            3. Go to `chrome://extensions`
+            4. Enable **Developer mode**
+            5. Click **Load unpacked** → select the folder
+            6. Extension is live and running 24/7
+
+            ### JARVIS Intelligence Suite (New)
+            - **Spread Scanner** — Arbitrage and mispricing pattern detection
+            - **Data Oracle** — X-ray depth analysis through data noise
+            - **Screen Commander** — Autonomous screen agent with NL commands
+            - **Pattern Forge** — Spectral decomposition and cross-system correlation
+          files: |
+            dist/extensions/*.zip
+          draft: false
+          prerelease: false

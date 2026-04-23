@@ -1,1 +1,9 @@
 __pycache__/
+node_modules/
+*.pyc
+.DS_Store
+
+# Built extension zips are created by build-extensions.sh
+# They are also auto-built by GitHub Actions and attached as release artifacts
+# Keep dist/ tracked so download.html works with GitHub Pages
+# To rebuild: bash build-extensions.sh

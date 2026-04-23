@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sovereign Organism — Download Extensions</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      line-height: 1.6;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 60px 20px 40px;
+      background: linear-gradient(135deg, #161b22 0%, #0d1117 50%, #1a1040 100%);
+      border-bottom: 1px solid #30363d;
+    }
+
+    .hero h1 {
+      font-size: 2.4em;
+      background: linear-gradient(135deg, #6c63ff, #e94560, #00e676);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      color: #8b949e;
+      font-size: 1.1em;
+      max-width: 700px;
+      margin: 0 auto 24px;
+    }
+
+    .hero .download-all {
+      display: inline-block;
+      padding: 14px 36px;
+      background: linear-gradient(135deg, #6c63ff, #4f46e5);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1.1em;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .hero .download-all:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(108, 99, 255, 0.4);
+    }
+
+    .install-steps {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .install-steps h2 {
+      color: #58a6ff;
+      font-size: 1.4em;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .step {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .step .number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: #6c63ff;
+      color: #fff;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 0.9em;
+      margin-bottom: 10px;
+    }
+
+    .step h3 { margin-bottom: 6px; font-size: 1em; }
+    .step p { color: #8b949e; font-size: 0.9em; }
+    .step code {
+      background: #0d1117;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.85em;
+      color: #79c0ff;
+    }
+
+    .extensions-section {
+      max-width: 1200px;
+      margin: 0 auto 60px;
+      padding: 0 20px;
+    }
+
+    .extensions-section h2 {
+      color: #e94560;
+      font-size: 1.6em;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .category-label {
+      color: #8b949e;
+      font-size: 0.85em;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 32px 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #21262d;
+    }
+
+    .ext-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 16px;
+    }
+
+    .ext-card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.2s, transform 0.15s;
+    }
+
+    .ext-card:hover {
+      border-color: #6c63ff;
+      transform: translateY(-2px);
+    }
+
+    .ext-card .ext-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .ext-card .ext-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4em;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .ext-card h3 { font-size: 1em; margin: 0; }
+    .ext-card .ext-id { color: #8b949e; font-size: 0.75em; }
+    .ext-card .ext-desc {
+      color: #8b949e;
+      font-size: 0.85em;
+      flex: 1;
+      margin-bottom: 14px;
+    }
+
+    .ext-card .ext-engines {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 12px;
+    }
+
+    .ext-card .engine-tag {
+      background: #21262d;
+      color: #79c0ff;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.7em;
+      font-weight: 600;
+    }
+
+    .ext-card .download-btn {
+      display: block;
+      text-align: center;
+      padding: 10px;
+      background: linear-gradient(135deg, #238636, #2ea043);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.9em;
+      transition: opacity 0.15s;
+    }
+
+    .ext-card .download-btn:hover { opacity: 0.9; }
+
+    .jarvis-section {
+      background: linear-gradient(135deg, #1a1040, #0d1117);
+      border-top: 1px solid #30363d;
+      border-bottom: 1px solid #30363d;
+      padding: 40px 20px;
+      margin-bottom: 40px;
+    }
+
+    .jarvis-section h2 {
+      text-align: center;
+      color: #f0883e;
+      font-size: 1.6em;
+      margin-bottom: 8px;
+    }
+
+    .jarvis-section .subtitle {
+      text-align: center;
+      color: #8b949e;
+      margin-bottom: 24px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: #484f58;
+      font-size: 0.85em;
+      border-top: 1px solid #21262d;
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 1.6em; }
+      .ext-grid { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── Hero ─────────────────────────────────────────────── -->
+<section class="hero">
+  <h1>🧬 Sovereign Organism Extensions</h1>
+  <p>25 production-ready Chrome extensions. Each one is a user-facing AI experience powered by multi-model fusion, phi-weighted reasoning, and 873ms heartbeat intelligence. Download and attach straight to Chrome, Edge, or Brave.</p>
+  <a href="dist/extensions/all-extensions.zip" class="download-all">⬇ Download All 25 Extensions</a>
+</section>
+
+<!-- ─── Install Instructions ─────────────────────────────── -->
+<section class="install-steps">
+  <h2>🔧 How to Install</h2>
+  <div class="steps-grid">
+    <div class="step">
+      <div class="number">1</div>
+      <h3>Download</h3>
+      <p>Download individual extension <code>.zip</code> files or the full bundle above.</p>
+    </div>
+    <div class="step">
+      <div class="number">2</div>
+      <h3>Unzip</h3>
+      <p>Extract each <code>.zip</code> to its own folder. Each folder contains <code>manifest.json</code>, <code>background.js</code>, <code>content.js</code>, and icons.</p>
+    </div>
+    <div class="step">
+      <div class="number">3</div>
+      <h3>Open Chrome Extensions</h3>
+      <p>Navigate to <code>chrome://extensions</code> in Chrome, Edge, or Brave. Enable <strong>Developer mode</strong> (toggle in top-right).</p>
+    </div>
+    <div class="step">
+      <div class="number">4</div>
+      <h3>Load Extension</h3>
+      <p>Click <strong>"Load unpacked"</strong> and select the unzipped extension folder. The extension is now live and running 24/7.</p>
+    </div>
+  </div>
+
+  <h2>⚡ Quick Install (Windows)</h2>
+  <div class="steps-grid">
+    <div class="step">
+      <div class="number">1</div>
+      <h3>Download Bundle</h3>
+      <p>Download <code>all-extensions.zip</code> and extract to <code>C:\organism-extensions\</code></p>
+    </div>
+    <div class="step">
+      <div class="number">2</div>
+      <h3>Run Installer</h3>
+      <p>Open PowerShell as Admin and run: <code>.\install-extensions.ps1</code> — it opens Chrome with all extensions loaded.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── JARVIS Extensions (4 new) ────────────────────────── -->
+<section class="jarvis-section">
+  <h2>🤖 JARVIS Intelligence Suite</h2>
+  <p class="subtitle">4 autonomous AI agents with X-ray mathematics — pattern recognition, spread scanning, screen control, and deep data analysis</p>
+  <div class="ext-grid" style="max-width: 1200px; margin: 0 auto;">
+
+    <div class="ext-card">
+      <div class="ext-header">
+        <div class="ext-icon" style="background: linear-gradient(135deg, #00e676, #00c853);">SS</div>
+        <div><h3>Spread Scanner</h3><span class="ext-id">EXT-022</span></div>
+      </div>
+      <p class="ext-desc">JARVIS-style spread and arbitrage scanner. Reads financial data from any page, runs phi-weighted pattern recognition, highlights free-lunch mispricing opportunities in real-time.</p>
+      <div class="ext-engines">
+        <span class="engine-tag">Pattern Recognition</span>
+        <span class="engine-tag">Z-Score Analysis</span>
+        <span class="engine-tag">Phi-Weighted</span>
+        <span class="engine-tag">Correlation Matrix</span>
+      </div>
+      <a href="dist/extensions/spread-scanner.zip" class="download-btn">⬇ Download Spread Scanner</a>
+    </div>
+
+    <div class="ext-card">
+      <div class="ext-header">
+        <div class="ext-icon" style="background: linear-gradient(135deg, #f0883e, #da3633);">DO</div>
+        <div><h3>Data Oracle</h3><span class="ext-id">EXT-023</span></div>
+      </div>
+      <p class="ext-desc">JARVIS-style data ingestion engine. Reads all metadata and data from any page, structures it, runs X-ray depth analysis through noise to find fundamental signals.</p>
+      <div class="ext-engines">
+        <span class="engine-tag">X-Ray Depth</span>
+        <span class="engine-tag">√N Normalization</span>
+        <span class="engine-tag">Sentiment</span>
+        <span class="engine-tag">Entity Extraction</span>
+      </div>
+      <a href="dist/extensions/data-oracle.zip" class="download-btn">⬇ Download Data Oracle</a>
+    </div>
+
+    <div class="ext-card">
+      <div class="ext-header">
+        <div class="ext-icon" style="background: linear-gradient(135deg, #58a6ff, #1f6feb);">RC</div>
+        <div><h3>Screen Commander</h3><span class="ext-id">EXT-024</span></div>
+      </div>
+      <p class="ext-desc">JARVIS autonomous screen agent. Reads, writes, moves elements, opens panels, navigates pages — AI that operates your screen with natural language commands.</p>
+      <div class="ext-engines">
+        <span class="engine-tag">Screen Control</span>
+        <span class="engine-tag">DOM Manipulation</span>
+        <span class="engine-tag">NL Commands</span>
+        <span class="engine-tag">Auto-Navigate</span>
+      </div>
+      <a href="dist/extensions/screen-commander.zip" class="download-btn">⬇ Download Screen Commander</a>
+    </div>
+
+    <div class="ext-card">
+      <div class="ext-header">
+        <div class="ext-icon" style="background: linear-gradient(135deg, #f778ba, #a371f7);">PF</div>
+        <div><h3>Pattern Forge</h3><span class="ext-id">EXT-025</span></div>
+      </div>
+      <p class="ext-desc">X-ray mathematics engine. Square-root normalization, spectral decomposition, cross-system correlation, z-depth analysis — sees through noise to fundamentals.</p>
+      <div class="ext-engines">
+        <span class="engine-tag">DFT Spectral</span>
+        <span class="engine-tag">Cross-Correlation</span>
+        <span class="engine-tag">Mean Reversion</span>
+        <span class="engine-tag">IQR×φ Anomaly</span>
+      </div>
+      <a href="dist/extensions/pattern-forge.zip" class="download-btn">⬇ Download Pattern Forge</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── All Extensions Grid ──────────────────────────────── -->
+<section class="extensions-section">
+  <h2>All 25 Extensions</h2>
+
+  <p class="category-label">🧠 Intelligence & Reasoning</p>
+  <div class="ext-grid">
+
+    <div class="ext-card">
+      <div class="ext-header">
+        <div class="ext-icon" style="background: linear-gradient(135deg, #6c63ff, #4f46e5);">SM</div>
+        <div><h3>Sovereign Mind</h3><span class="ext-id">EXT-001</span></div>
+      </div>
+      <p class="ext-desc">Fused reasoning from GPT + Claude + Gemini in one sovereign answer with phi-weighted confidence scoring.</p>
+      <a href="dist/extensions/sovereign-mind.zip" class="download-btn">⬇ Download</a>
+    </div>
+
+    <div class="ext-card">
+      <div class="ext-header">
+        <div class="ext-icon" style="background: linear-gradient(135deg, #e94560, #c23152);">CS</div>
+        <div><h3>Cipher Shield</h3><span class="ext-id">EXT-002</span></div>
+      </div>
+      <p class="ext-desc">Real-time content encryption and prompt injection detection. AI guards your browsing before threats reach your eyes.</p>
+      <a href="dist/extensions/cipher-shield.zip" class="download-btn">⬇ Download</a>
+    </div>
+
+    <div class="ext-card">
+      <div class="ext-header">
+        <div class="ext-icon" style="background: linear-gradient(135deg, #00e676, #00c853);">PO</div>
+        <div><h3>Polyglot Oracle</h3><span class="ext-id">EXT-003</span></div>
+      </div>
+      <p class="ext-desc">Browse any page in any language. Live context-aware translation via Qwen, Gemini, and Llama.</p>
+      <a href="dist/extensions/polyglot-oracle.zip" class="download-btn">⬇ Download</a>
+    </div>
+
+    <div class="ext-card">
+      <div class="ext-header">
+        <div class="ext-icon" style="background: linear-gradient(135deg, #f0883e, #d47c2e);">VW</div>
+        <div><h3>Vision Weaver</h3><span class="ext-id">EXT-004</span></div>
+      </div>
+      <p class="ext-desc">Multi-model image generation. DALL-E, Stable Diffusion, Midjourney side-by-side in your browser.</p>
+      <a href="dist/extensions/vision-weaver.zip" class="download-btn">⬇ Download</a>
+    </div>
+
+    <div class="ext-card">
+      <div class="ext-header">
+        <div class="ext-icon" style="background: linear-gradient(135deg, #79c0ff, #58a6ff);">CD</div>
+        <div><h3>Code Sovereign</h3><span class="ext-id">EXT-005</span></div>
+      </div>
+      <p class="ext-desc">AI code improvements with contract-verified output. Codex, CodeLlama, DeepSeek generate and prove.</p>
+      <a href="dist/extensions/code-sovereign.zip" class="download-btn">⬇ Download</a>
+    </div>
+
+    <div class="ext-card">
+      <div class="ext-header">
+        <div class="ext-icon" style="background: linear-gradient(135deg, #a371f7, #8957e5);">MP</div>
+        <div><h3>Memory Palace</h3><span class="ext-id">EXT-006</span></div>
+      </div>
+      <p class="ext-desc">Sovereign bookmarking with phi-encoded spatial coordinates. Searchable by meaning and resonance.</p>
+      <a href="dist/extensions/memory-palace.zip" class="download-btn">⬇ Download</a>
+    </div>
+
+  </div>
+
+  <p class="category-label">🛡 Security & Protection</p>
+  <div class="ext-grid">
+
+    <div class="ext-card">
+      <div class="ext-header">
+        <div class="ext-icon" style="background: linear-gradient(135deg, #e94560, #c23152);">SW</div>
+        <div><h3>Sentinel Watch</h3><span class="ext-id">EXT-007</span></div>
+      </div>
+      <p class="ext-desc">Real-time phishing, malware, and social engineering detection on every page.</p>
+      <a href="dist/extensions/sentinel-watch.zip" class="download-btn">⬇ Download</a>
+    </div>
+
+    <div class="ext-card">
+      <div class="ext-header">
+        <div class="ext-icon" style="background: linear-gradient(135deg, #f0883e, #d47c2e);">CF</div>
+        <div><h3>Contract Forge</h3><span class="ext-id">EXT-015</span></div>
+      </div>
+      <p class="ext-desc">Draft and verify intelligence contracts with cryptographic compliance proof.</p>
+      <a href="dist/extensions/contract-forge.zip" class="download-btn">⬇ Download</a>
+    </div>
+
+  </div>
+
+  <p class="category-label">🔬 Research & Knowledge</p>
+  <div class="ext-grid">
+
+    <div class="ext-card">
+      <div class="ext-header">
+        <div class="ext-icon" style="background: linear-gradient(135deg, #58a6ff, #1f6feb);">RN</div>
+        <div><h3>Research Nexus</h3><span class="ext-id">EXT-008</span></div>
+      </div>
+      <p class="ext-desc">Multi-source research synthesis. Cited, sourced, reasoned answers from multiple engines.</p>
+      <a href="dist/extensions/research-nexus.zip" class="download-btn">⬇ Download</a>
+    </div>
+
+    <div class="ext-card">
+      <div class="ext-header">
+        <div class="ext-icon" style="background: linear-gradient(135deg, #00e676, #00c853);">DA</div>
+        <div><h3>Data Alchemist</h3><span class="ext-id">EXT-010</span></div>
+      </div>
+      <p class="ext-desc">Auto-absorb any webpage into your sovereign knowledge graph. Extract entities and relationships.</p>
+      <a href="dist/extensions/data-alchemist.zip" class="download-btn">⬇ Download</a>
+    </div>
+
+    <div class="ext-card">
+      <div class="ext-header">
+        <div class="ext-icon" style="background: linear-gradient(135deg, #a371f7, #8957e5);">KC</div>
+        <div><h3>Knowledge Cartographer</h3><span class="ext-id">EXT-017</span></div>
+      </div>
+      <p class="ext-desc">Browse and watch your knowledge graph grow. Visual map of everything you know.</p>
+      <a href="dist/extensions/knowledge-cartographer.zip" class="download-btn">⬇ Download</a>
+    </div>
+
+    <div class="ext-card">
+      <div class="ext-header">
+        <div class="ext-icon" style="background: linear-gradient(135deg, #f778ba, #e94560);">LP</div>
+        <div><h3>Logic Prover</h3><span class="ext-id">EXT-012</span></div>
+      </div>
+      <p class="ext-desc">Step-by-step formal mathematical proofs with verification. The AI proves, not just solves.</p>
+      <a href="dist/extensions/logic-prover.zip" class="download-btn">⬇ Download</a>
+    </div>
+
+  </div>
+
+  <p class="category-label">🎨 Creative & Media</p>
+  <div class="ext-grid">
+
+    <div class="ext-card">
+      <div class="ext-header">
+        <div class="ext-icon" style="background: linear-gradient(135deg, #f778ba, #e94560);">VF</div>
+        <div><h3>Voice Forge</h3><span class="ext-id">EXT-009</span></div>
+      </div>
+      <p class="ext-desc">Speak and the organism listens. Voice to text, text to voice, and music composition.</p>
+      <a href="dist/extensions/voice-forge.zip" class="download-btn">⬇ Download</a>
+    </div>
+
+    <div class="ext-card">
+      <div class="ext-header">
+        <div class="ext-icon" style="background: linear-gradient(135deg, #79c0ff, #58a6ff);">VA</div>
+        <div><h3>Video Architect</h3><span class="ext-id">EXT-011</span></div>
+      </div>
+      <p class="ext-desc">Multi-model video generation. Sora, Runway, Pika, Kling competing for best output.</p>
+      <a href="dist/extensions/video-architect.zip" class="download-btn">⬇ Download</a>
+    </div>
+
+    <div class="ext-card">
+      <div class="ext-header">
+        <div class="ext-icon" style="background: linear-gradient(135deg, #f0883e, #d47c2e);">CM</div>
+        <div><h3>Creative Muse</h3><span class="ext-id">EXT-019</span></div>
+      </div>
+      <p class="ext-desc">Multi-modal creative studio. Images, music, and text fused by multiple AI engines.</p>
+      <a href="dist/extensions/creative-muse.zip" class="download-btn">⬇ Download</a>
+    </div>
+
+  </div>
+
+  <p class="category-label">🌐 System & Infrastructure</p>
+  <div class="ext-grid">
+
+    <div class="ext-card">
+      <div class="ext-header">
+        <div class="ext-icon" style="background: linear-gradient(135deg, #6c63ff, #4f46e5);">SC</div>
+        <div><h3>Social Cortex</h3><span class="ext-id">EXT-013</span></div>
+      </div>
+      <p class="ext-desc">AI social intelligence. Sentiment analysis, empathy detection, and response generation.</p>
+      <a href="dist/extensions/social-cortex.zip" class="download-btn">⬇ Download</a>
+    </div>
+
+    <div class="ext-card">
+      <div class="ext-header">
+        <div class="ext-icon" style="background: linear-gradient(135deg, #00e676, #00c853);">ER</div>
+        <div><h3>Edge Runner</h3><span class="ext-id">EXT-014</span></div>
+      </div>
+      <p class="ext-desc">Offline AI. Local inference with Phi, Gemma, DBRX. Zero cloud, zero latency.</p>
+      <a href="dist/extensions/edge-runner.zip" class="download-btn">⬇ Download</a>
+    </div>
+
+    <div class="ext-card">
+      <div class="ext-header">
+        <div class="ext-icon" style="background: linear-gradient(135deg, #e94560, #c23152);">OD</div>
+        <div><h3>Organism Dashboard</h3><span class="ext-id">EXT-016</span></div>
+      </div>
+      <p class="ext-desc">See the organism alive. 873ms heartbeat pulsing. 4 state registers. Real-time vitals.</p>
+      <a href="dist/extensions/organism-dashboard.zip" class="download-btn">⬇ Download</a>
+    </div>
+
+    <div class="ext-card">
+      <div class="ext-header">
+        <div class="ext-icon" style="background: linear-gradient(135deg, #79c0ff, #58a6ff);">PB</div>
+        <div><h3>Protocol Bridge</h3><span class="ext-id">EXT-018</span></div>
+      </div>
+      <p class="ext-desc">Bridge between AI protocols. Encrypted relay through one unified protocol surface.</p>
+      <a href="dist/extensions/protocol-bridge.zip" class="download-btn">⬇ Download</a>
+    </div>
+
+    <div class="ext-card">
+      <div class="ext-header">
+        <div class="ext-icon" style="background: linear-gradient(135deg, #a371f7, #8957e5);">SN</div>
+        <div><h3>Sovereign Nexus</h3><span class="ext-id">EXT-020</span></div>
+      </div>
+      <p class="ext-desc">The master hub. All extensions unified in one sovereign intelligence interface.</p>
+      <a href="dist/extensions/sovereign-nexus.zip" class="download-btn">⬇ Download</a>
+    </div>
+
+    <div class="ext-card">
+      <div class="ext-header">
+        <div class="ext-icon" style="background: linear-gradient(135deg, #f0883e, #d47c2e);">MH</div>
+        <div><h3>Marketplace Hub</h3><span class="ext-id">EXT-021</span></div>
+      </div>
+      <p class="ext-desc">Browse and invoke 24 callable tools with natural language. Family-tabbed browsing.</p>
+      <a href="dist/extensions/marketplace-hub.zip" class="download-btn">⬇ Download</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── Footer ───────────────────────────────────────────── -->
+<footer>
+  <p>Sovereign Organism — All extensions run 24/7 with 873ms heartbeat keepalive.</p>
+  <p>Compatible with Chrome 110+, Microsoft Edge, Brave, and any Chromium-based browser.</p>
+  <p style="margin-top: 12px;">As above, so below.</p>
+</footer>
+
+</body>
+</html>

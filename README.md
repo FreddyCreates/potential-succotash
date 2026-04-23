@@ -88,10 +88,69 @@ Exposure starts internal, then partner, then enterprise, then public. You don't 
 
 ---
 
+## The Organism Runs In 6 Languages
+
+The organism isn't conceptual. It's compiled. It's running. The 873ms heartbeat beats in Motoko on the Internet Computer, in C++17 threads, in TypeScript strict mode, in Java 17 executors, in browser Web Workers, and in Python threading. Same organism. Same 4-register architecture. Same phi-math. Six languages. All alive.
+
+- **Motoko** (`organism/motoko/`) — ICP canister with `Timer.recurringTimer`, stable state, system heartbeat
+- **C++** (`organism/cpp/`) — `std::thread` heartbeat, mutex-protected registers, CMake build
+- **TypeScript** (`organism/typescript/`) — Strict-typed runtime, heartbeat, state, kernels, sensors, resonance
+- **Java** (`organism/java/`) — `ScheduledExecutorService` heartbeat, `CompletableFuture` kernels, Maven build
+- **HTML + Web Workers** (`organism/web/`) — Open `index.html` in any browser. The organism is alive. No server needed.
+- **Python** (`organism/python/`) — `python -m organism` — stdlib-only, threading, graceful SIGINT shutdown
+
+---
+
+## Download & Install Extensions
+
+Every extension is a production-ready Chrome Manifest V3 app. Download, unzip, load into Chrome/Edge/Brave. They run 24/7 — `chrome.alarms` keepalive beats Chrome's 30-second service worker kill timer.
+
+**[⬇ Download All 25 Extensions](download.html)** — or download individually from the [download page](download.html).
+
+### Quick Install
+
+1. Download any extension `.zip` (or `all-extensions.zip` for all 25)
+2. Unzip to its own folder
+3. Open `chrome://extensions` in Chrome, Edge, or Brave
+4. Enable **Developer mode** (toggle top-right)
+5. Click **Load unpacked** → select the unzipped folder
+6. Extension is live. Running 24/7. It doesn't wait.
+
+### Windows Quick Install
+
+```powershell
+# Extract all-extensions.zip, then:
+.\install-extensions.ps1
+```
+
+### Build From Source
+
+```bash
+bash build-extensions.sh
+# Output: dist/extensions/<name>.zip (one per extension)
+# Output: dist/extensions/all-extensions.zip (all 25 bundled)
+```
+
+---
+
+## JARVIS Intelligence Suite (4 Autonomous Agents)
+
+Four new extensions that act as autonomous AI agents. They read, write, move on screen, and see through data noise to find what's real. Pre-loaded with X-ray mathematics — square-root normalization, spectral decomposition, cross-system correlation, z-depth analysis. Pattern recognition for spreads where there is free lunch.
+
+**Spread Scanner** (EXT-022) — Scans any page for financial data. Computes pairwise spreads, phi-weighted z-scores, correlation matrices. Grades arbitrage opportunities A through F. Finds the free lunch.
+
+**Data Oracle** (EXT-023) — Ingests everything — text, tables, meta tags, structured data. Runs X-ray depth analysis with √N normalization. Separates fundamental signals from noise using φ as the threshold.
+
+**Screen Commander** (EXT-024) — JARVIS for your browser. Type natural language: "scroll down", "read #main", "find 'revenue'", "summarize this page". The AI operates the screen for you.
+
+**Pattern Forge** (EXT-025) — The math brain underneath. DFT spectral decomposition with φ-harmonic detection. Pearson cross-correlation with free-lunch divergence detection (correlation drift → mean reversion). Rolling mean reversion scanner. IQR×φ anomaly detection. Sees through noise to fundamentals.
+
+---
+
 ## The Numbers
 
-8 SDKs. 21 extensions. 11 protocols. 24 tools. 40 model families. 10 multimodal families. 30 frontend intelligence models. 100 frontier model species. 40 architectural laws. 9 organism rings. 1 heartbeat at 873ms.
+8 SDKs. 25 extensions. 11 protocols. 24 tools. 40 model families. 10 multimodal families. 30 frontend intelligence models. 100 frontier model species. 40 architectural laws. 9 organism rings. 6 implementation languages. 1 heartbeat at 873ms.
 
-All of it is AI. All of it is intelligence. All of it is wired together. And all of it is inside this repo.
+All of it is AI. All of it is intelligence. All of it is wired together. All of it is downloadable. And all of it is inside this repo.
 
 As above, so below.
