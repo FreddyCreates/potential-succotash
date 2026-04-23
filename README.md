@@ -103,33 +103,59 @@ The organism isn't conceptual. It's compiled. It's running. The 873ms heartbeat 
 
 ## Download & Install Extensions
 
-Every extension is a production-ready Chrome Manifest V3 app. Download, unzip, load into Chrome/Edge/Brave. They run 24/7 — `chrome.alarms` keepalive beats Chrome's 30-second service worker kill timer.
+**One click. Zero manual steps.** Download the installer, double-click, extensions are live.
 
-**[⬇ Download All 25 Extensions](download.html)** — or download individually from the [download page](download.html).
+### ⚡ One-Click Install (Windows)
 
-### Quick Install
+**[⚡ Download One-Click Installer](install-organism.bat)** — double-click → extensions are attached to Chrome/Edge/Brave automatically.
 
-1. Download any extension `.zip` (or `all-extensions.zip` for all 25)
-2. Unzip to its own folder
-3. Open `chrome://extensions` in Chrome, Edge, or Brave
-4. Enable **Developer mode** (toggle top-right)
-5. Click **Load unpacked** → select the unzipped folder
-6. Extension is live. Running 24/7. It doesn't wait.
+The `.bat` installer extracts all 26 extensions to `%LOCALAPPDATA%\OrganismExtensions` and launches your browser with `--load-extension` — every extension is pre-loaded. No developer mode. No "load unpacked". No manual steps.
 
-### Windows Quick Install
+```
+# That's it. Double-click install-organism.bat. Done.
+```
+
+### Alternative: PowerShell
 
 ```powershell
-# Extract all-extensions.zip, then:
-.\install-extensions.ps1
+powershell -ExecutionPolicy Bypass -File install-extensions.ps1
 ```
+
+### Alternative: Download individual .zips
+
+**[📦 Download All 26 Extensions](download.html)** — or download individually from the [download page](download.html).
 
 ### Build From Source
 
 ```bash
 bash build-extensions.sh
 # Output: dist/extensions/<name>.zip (one per extension)
-# Output: dist/extensions/all-extensions.zip (all 25 bundled)
+# Output: dist/extensions/all-extensions.zip (all 26 bundled)
 ```
+
+---
+
+## Register AI — The Builder (EXT-026)
+
+The Register AI is the organism's native builder. It's the 5th tool family (Builder) alongside Crawling, Context, Commander, and Sentry. It does steps 1–7 automatically:
+
+1. **Scan** — discovers all 26 extensions
+2. **Validate** — checks Manifest V3 compliance
+3. **Generate Icons** — creates PNG icons via Canvas
+4. **Package** — builds downloadable .zip archives
+5. **Create Download Links** — with proper MIME types
+6. **Install Instructions** — Chrome/Edge/Brave sideload prep
+7. **Monitor** — 873ms heartbeat health monitoring
+
+Architecture:
+- **Web Worker** (`register-worker.js`) — all build operations run off-main-thread
+- **Observer Family** (`register-observer.js`) — 4 browser Observers as AGI sensors:
+  - `MutationObserver` — watches DOM for extension state changes
+  - `IntersectionObserver` — tracks which extensions are visible
+  - `PerformanceObserver` — monitors build performance
+  - `ResizeObserver` — adapts layout intelligence
+
+Builder Family Tools: Register (TOOL-025), Packager (TOOL-026), Validator (TOOL-027), Icon Forge (TOOL-028), Deployer (TOOL-029), Monitor (TOOL-030).
 
 ---
 
@@ -149,7 +175,7 @@ Four new extensions that act as autonomous AI agents. They read, write, move on 
 
 ## The Numbers
 
-8 SDKs. 25 extensions. 11 protocols. 24 tools. 40 model families. 10 multimodal families. 30 frontend intelligence models. 100 frontier model species. 40 architectural laws. 9 organism rings. 6 implementation languages. 1 heartbeat at 873ms.
+8 SDKs. 26 extensions. 11 protocols. 30 tools. 5 tool families. 40 model families. 10 multimodal families. 30 frontend intelligence models. 100 frontier model species. 40 architectural laws. 9 organism rings. 6 implementation languages. 4 browser observers. 1 heartbeat at 873ms.
 
 All of it is AI. All of it is intelligence. All of it is wired together. All of it is downloadable. And all of it is inside this repo.
 
