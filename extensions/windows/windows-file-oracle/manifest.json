@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Windows File Oracle",
+  "version": "1.0.0",
+  "description": "File System Intelligence — Embeddings + Florence + CLIP visual and semantic file understanding for Windows",
+  "platform": "windows",
+  "permissions": ["file-system", "indexing", "thumbnails", "storage"],
+  "engine": {
+    "service": "engine.js"
+  },
+  "interface": {
+    "entry": "interface.js"
+  },
+  "minimum_windows_version": "10.0.19041"
+}
