@@ -2,15 +2,24 @@
   "manifest_version": 3,
   "name": "Logic Prover",
   "version": "1.0.0",
-  "description": "AI User Experience — Paste any math problem and get step-by-step formal proofs with verification",
-  "permissions": ["activeTab", "storage", "clipboardWrite"],
+  "description": "AI User Experience \u2014 Paste any math problem and get step-by-step formal proofs with verification",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "clipboardWrite",
+    "alarms"
+  ],
   "background": {
     "service_worker": "background.js"
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ]
     }
   ],
   "minimum_chrome_version": "110"

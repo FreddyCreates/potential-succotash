@@ -2,15 +2,25 @@
   "manifest_version": 3,
   "name": "Memory Palace",
   "version": "1.0.0",
-  "description": "AI User Experience — Sovereign bookmarking with phi-encoded spatial coordinates, searchable by meaning and resonance",
-  "permissions": ["activeTab", "storage", "bookmarks", "history"],
+  "description": "AI User Experience \u2014 Sovereign bookmarking with phi-encoded spatial coordinates, searchable by meaning and resonance",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "bookmarks",
+    "history",
+    "alarms"
+  ],
   "background": {
     "service_worker": "background.js"
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ]
     }
   ],
   "minimum_chrome_version": "110"

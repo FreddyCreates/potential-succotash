@@ -203,3 +203,44 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 
   return true;
 });
+
+/* -- Production 24/7 Keep-Alive ---------------------------------------- */
+(function () {
+  var ALARM_NAME = 'sovereign-mind-heartbeat';
+  var ALARM_PERIOD = 0.4; /* minutes -- fires every ~24 seconds to beat Chrome's 30s kill timer */
+
+  chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
+
+  chrome.alarms.onAlarm.addListener(function (alarm) {
+    if (alarm.name !== ALARM_NAME) return;
+    /* Re-initialize engine if it was garbage collected */
+    if (!globalThis.sovereignMind) {
+      globalThis.sovereignMind = new SovereignMindEngine();
+      console.log('[Sovereign Mind] Engine re-initialized by keepalive alarm');
+    }
+    /* Persist state snapshot */
+    try {
+      chrome.storage.local.set({
+        'sovereign-mind_state': {
+          heartbeatCount: globalThis.sovereignMind.heartbeatCount || globalThis.sovereignMind.state?.heartbeatCount || 0,
+          lastAlive: Date.now(),
+          uptime: Date.now() - (globalThis.sovereignMind.state?.startTime || globalThis.sovereignMind.startTime || Date.now())
+        }
+      });
+    } catch (e) { /* storage not available in some contexts */ }
+  });
+
+  /* Restore state on startup */
+  chrome.storage.local.get('sovereign-mind_state', function (data) {
+    if (data && data['sovereign-mind_state']) {
+      console.log('[Sovereign Mind] Restored from previous session \u2014 last alive: ' +
+        new Date(data['sovereign-mind_state'].lastAlive).toISOString());
+    }
+  });
+
+  /* Also re-init on install/update */
+  chrome.runtime.onInstalled.addListener(function () {
+    chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
+    console.log('[Sovereign Mind] Installed/updated \u2014 24/7 keepalive active');
+  });
+})();

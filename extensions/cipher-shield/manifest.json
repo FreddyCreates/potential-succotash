@@ -2,15 +2,24 @@
   "manifest_version": 3,
   "name": "Cipher Shield",
   "version": "1.0.0",
-  "description": "AI User Experience — Your content is encrypted in real-time and prompt injection attacks are blocked before you ever see them",
-  "permissions": ["activeTab", "storage", "webRequest"],
+  "description": "AI User Experience \u2014 Your content is encrypted in real-time and prompt injection attacks are blocked before you ever see them",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "webRequest",
+    "alarms"
+  ],
   "background": {
     "service_worker": "background.js"
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ]
     }
   ],
   "minimum_chrome_version": "110"

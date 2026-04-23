@@ -2,15 +2,24 @@
   "manifest_version": 3,
   "name": "Sovereign Mind",
   "version": "1.0.0",
-  "description": "AI User Experience — Ask anything, get fused reasoning from GPT + Claude + Gemini in one sovereign answer with phi-weighted confidence scoring",
-  "permissions": ["activeTab", "storage", "identity"],
+  "description": "AI User Experience \u2014 Ask anything, get fused reasoning from GPT + Claude + Gemini in one sovereign answer with phi-weighted confidence scoring",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "identity",
+    "alarms"
+  ],
   "background": {
     "service_worker": "background.js"
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ]
     }
   ],
   "icons": {

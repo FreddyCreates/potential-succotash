@@ -2,15 +2,24 @@
   "manifest_version": 3,
   "name": "Protocol Bridge",
   "version": "1.0.0",
-  "description": "AI User Experience — Bridge between any AI protocol with encrypted relay through one unified intelligence surface",
-  "permissions": ["activeTab", "webRequest", "storage"],
+  "description": "AI User Experience \u2014 Bridge between any AI protocol with encrypted relay through one unified intelligence surface",
+  "permissions": [
+    "activeTab",
+    "webRequest",
+    "storage",
+    "alarms"
+  ],
   "background": {
     "service_worker": "background.js"
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ]
     }
   ],
   "minimum_chrome_version": "110"

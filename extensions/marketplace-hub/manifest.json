@@ -2,15 +2,24 @@
   "manifest_version": 3,
   "name": "Marketplace Hub",
   "version": "1.0.0",
-  "description": "AI User Experience — Browse, search, and invoke 24 callable organism tools with natural language across 4 families (Crawling, Context, Commander, Sentry)",
-  "permissions": ["activeTab", "storage", "tabs"],
+  "description": "AI User Experience \u2014 Browse, search, and invoke 24 callable organism tools with natural language across 4 families (Crawling, Context, Commander, Sentry)",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "tabs",
+    "alarms"
+  ],
   "background": {
     "service_worker": "background.js"
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ]
     }
   ],
   "icons": {

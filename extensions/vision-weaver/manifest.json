@@ -2,19 +2,24 @@
   "manifest_version": 3,
   "name": "Vision Weaver",
   "version": "1.0.0",
-  "description": "AI User Experience — Describe what you want to see and watch DALL-E, Stable Diffusion, Midjourney, and SAM generate it side-by-side",
+  "description": "AI User Experience \u2014 Describe what you want to see and watch DALL-E, Stable Diffusion, Midjourney, and SAM generate it side-by-side",
   "permissions": [
     "activeTab",
     "storage",
-    "downloads"
+    "downloads",
+    "alarms"
   ],
   "background": {
     "service_worker": "background.js"
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ]
     }
   ],
   "minimum_chrome_version": "110"

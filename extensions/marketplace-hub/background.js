@@ -321,3 +321,44 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   }
   return true;
 });
+
+/* -- Production 24/7 Keep-Alive ---------------------------------------- */
+(function () {
+  var ALARM_NAME = 'marketplace-hub-heartbeat';
+  var ALARM_PERIOD = 0.4; /* minutes -- fires every ~24 seconds to beat Chrome's 30s kill timer */
+
+  chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
+
+  chrome.alarms.onAlarm.addListener(function (alarm) {
+    if (alarm.name !== ALARM_NAME) return;
+    /* Re-initialize engine if it was garbage collected */
+    if (!globalThis.marketplaceHub) {
+      globalThis.marketplaceHub = new MarketplaceHubEngine();
+      console.log('[Marketplace Hub] Engine re-initialized by keepalive alarm');
+    }
+    /* Persist state snapshot */
+    try {
+      chrome.storage.local.set({
+        'marketplace-hub_state': {
+          heartbeatCount: globalThis.marketplaceHub.heartbeatCount || globalThis.marketplaceHub.state?.heartbeatCount || 0,
+          lastAlive: Date.now(),
+          uptime: Date.now() - (globalThis.marketplaceHub.state?.startTime || globalThis.marketplaceHub.startTime || Date.now())
+        }
+      });
+    } catch (e) { /* storage not available in some contexts */ }
+  });
+
+  /* Restore state on startup */
+  chrome.storage.local.get('marketplace-hub_state', function (data) {
+    if (data && data['marketplace-hub_state']) {
+      console.log('[Marketplace Hub] Restored from previous session \u2014 last alive: ' +
+        new Date(data['marketplace-hub_state'].lastAlive).toISOString());
+    }
+  });
+
+  /* Also re-init on install/update */
+  chrome.runtime.onInstalled.addListener(function () {
+    chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
+    console.log('[Marketplace Hub] Installed/updated \u2014 24/7 keepalive active');
+  });
+})();
