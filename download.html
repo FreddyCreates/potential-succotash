@@ -115,33 +115,37 @@
 
 <section class="hero">
   <h1>🧬 Sovereign Organism Extensions</h1>
-  <p>26 AI extensions for Chrome, Edge, and Brave. Click the button below — the installer extracts everything and launches your browser with all extensions already attached. One click.</p>
+  <p>26 AI extensions for Chrome, Edge, and Brave. Every link on this page is a real download. Click → get the file. That's it.</p>
 </section>
 
 <!-- ─── One-Click Install ────────────────────────────────── -->
 <section class="one-click">
   <h2>⚡ One-Click Install</h2>
-  <p class="subtitle">Download the installer. Double-click it. Extensions are live. No developer mode, no manual loading.</p>
+  <p class="subtitle">Clone the repo, run one command. Extensions load directly into Chrome — no zip, no extract, no manual steps.</p>
+
+  <div style="background:#161b22; border:1px solid #30363d; border-radius:10px; padding:20px; margin-bottom:16px; text-align:left;">
+    <code style="color:#79c0ff; font-size:1.1em;">git clone https://github.com/FreddyCreates/potential-succotash.git</code><br>
+    <code style="color:#79c0ff; font-size:1.1em;">node potential-succotash/organism-cli</code>
+  </div>
+  <p class="subtitle">Register AI detects Chrome/Edge/Brave → loads all 26 extensions directly from source. Done.</p>
 
   <div>
-    <a href="install-organism.bat" download="install-organism.bat" class="install-btn">⚡ Install All 26 Extensions</a>
+    <a href="https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip" class="install-btn">📦 Download All 26 Extensions (.zip)</a>
   </div>
   <div style="margin-top: 12px;">
-    <a href="dist/extensions/all-extensions.zip" download class="install-btn secondary">📦 Download All .zips</a>
-    <a href="install-extensions.ps1" download class="install-btn secondary">🪟 PowerShell Installer</a>
+    <a href="https://github.com/FreddyCreates/potential-succotash/raw/main/install-organism.bat" class="install-btn secondary">🪟 Windows Installer (.bat)</a>
+    <a href="https://github.com/FreddyCreates/potential-succotash/raw/main/install-extensions.ps1" class="install-btn secondary">🪟 PowerShell Installer</a>
   </div>
 </section>
 
 <section class="how-it-works">
   <h3 style="color: #e6edf3; margin-bottom: 12px;">How it works</h3>
   <div class="step-row">
-    <span class="step-pill">📥 Click install</span>
+    <span class="step-pill">📥 <code style="color:#79c0ff;">node organism-cli</code></span>
     <span class="arrow">→</span>
-    <span class="step-pill">📂 Run the .bat</span>
-    <span class="arrow">→</span>
-    <span class="step-pill">✅ Extensions are live</span>
+    <span class="step-pill">✅ Extensions are live in Chrome</span>
   </div>
-  <p style="margin-top: 12px;">The installer extracts extensions to <code style="color:#79c0ff; background:#161b22; padding:2px 6px; border-radius:4px;">%LOCALAPPDATA%\OrganismExtensions</code> and launches Chrome with <code style="color:#79c0ff; background:#161b22; padding:2px 6px; border-radius:4px;">--load-extension</code> — every extension is attached automatically.</p>
+  <p style="margin-top: 12px;">Register AI scans all 26 extensions, validates Manifest V3, detects your browser, and launches it with <code style="color:#79c0ff; background:#161b22; padding:2px 6px; border-radius:4px;">--load-extension</code> — every extension attached directly from source. No zip. No extract.</p>
 </section>
 
 <!-- ─── All 26 Extensions ────────────────────────────────── -->
@@ -187,6 +191,8 @@ const EXTENSIONS = [
   { id:'EXT-026', slug:'register', name:'Register', initials:'RG', color:'#ffb300', desc:'Builder AI — scans, validates, packages, deploys all extensions' },
 ];
 
+const GHRAW = 'https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/';
+
 const grid = document.getElementById('ext-grid');
 EXTENSIONS.forEach(function(ext) {
   const card = document.createElement('div');
@@ -197,7 +203,7 @@ EXTENSIONS.forEach(function(ext) {
       '<div><h3>' + ext.name + '</h3><span class="eid">' + ext.id + '</span></div>' +
     '</div>' +
     '<div class="desc">' + ext.desc + '</div>' +
-    '<a class="dl" href="dist/extensions/' + ext.slug + '.zip" download="' + ext.slug + '.zip">⬇ Download ' + ext.name + '</a>';
+    '<a class="dl" href="' + GHRAW + ext.slug + '.zip">⬇ Download ' + ext.name + '</a>';
   grid.appendChild(card);
 });
 </script>

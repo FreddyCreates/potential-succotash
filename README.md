@@ -103,27 +103,54 @@ The organism isn't conceptual. It's compiled. It's running. The 873ms heartbeat 
 
 ## Download & Install Extensions
 
-**One click. Zero manual steps.** Download the installer, double-click, extensions are live.
+### ⚡ 1-Click Install (All Platforms)
 
-### ⚡ One-Click Install (Windows)
-
-**[⚡ Download One-Click Installer](install-organism.bat)** — double-click → extensions are attached to Chrome/Edge/Brave automatically.
-
-The `.bat` installer extracts all 26 extensions to `%LOCALAPPDATA%\OrganismExtensions` and launches your browser with `--load-extension` — every extension is pre-loaded. No developer mode. No "load unpacked". No manual steps.
-
-```
-# That's it. Double-click install-organism.bat. Done.
+```bash
+git clone https://github.com/FreddyCreates/potential-succotash.git
+node potential-succotash/organism-cli
 ```
 
-### Alternative: PowerShell
+That's it. Register AI scans all 26 extensions, validates Manifest V3 compliance, detects Chrome/Edge/Brave, and launches your browser with every extension already attached. No zip. No extract. No developer mode. No manual steps.
 
-```powershell
-powershell -ExecutionPolicy Bypass -File install-extensions.ps1
-```
+### 📦 Direct Downloads
 
-### Alternative: Download individual .zips
+Every link below downloads the real `.zip` file. Click → get the extension.
 
-**[📦 Download All 26 Extensions](download.html)** — or download individually from the [download page](download.html).
+| | Extension | Download |
+|---|---|---|
+| 🧠 | Sovereign Mind | **[sovereign-mind.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-mind.zip)** |
+| 🛡 | Cipher Shield | **[cipher-shield.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/cipher-shield.zip)** |
+| 🌐 | Polyglot Oracle | **[polyglot-oracle.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/polyglot-oracle.zip)** |
+| 🎨 | Vision Weaver | **[vision-weaver.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/vision-weaver.zip)** |
+| 💻 | Code Sovereign | **[code-sovereign.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/code-sovereign.zip)** |
+| 📚 | Memory Palace | **[memory-palace.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/memory-palace.zip)** |
+| 🔒 | Sentinel Watch | **[sentinel-watch.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sentinel-watch.zip)** |
+| 🔬 | Research Nexus | **[research-nexus.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/research-nexus.zip)** |
+| 🎤 | Voice Forge | **[voice-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/voice-forge.zip)** |
+| ⚗️ | Data Alchemist | **[data-alchemist.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/data-alchemist.zip)** |
+| 🎬 | Video Architect | **[video-architect.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/video-architect.zip)** |
+| 📐 | Logic Prover | **[logic-prover.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/logic-prover.zip)** |
+| 💬 | Social Cortex | **[social-cortex.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/social-cortex.zip)** |
+| ⚡ | Edge Runner | **[edge-runner.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-runner.zip)** |
+| 📝 | Contract Forge | **[contract-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/contract-forge.zip)** |
+| 📊 | Organism Dashboard | **[organism-dashboard.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/organism-dashboard.zip)** |
+| 🗺 | Knowledge Cartographer | **[knowledge-cartographer.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/knowledge-cartographer.zip)** |
+| 🔗 | Protocol Bridge | **[protocol-bridge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/protocol-bridge.zip)** |
+| 🎭 | Creative Muse | **[creative-muse.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/creative-muse.zip)** |
+| 🌀 | Sovereign Nexus | **[sovereign-nexus.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-nexus.zip)** |
+| 🏪 | Marketplace Hub | **[marketplace-hub.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/marketplace-hub.zip)** |
+| 📈 | Spread Scanner | **[spread-scanner.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/spread-scanner.zip)** |
+| 🔮 | Data Oracle | **[data-oracle.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/data-oracle.zip)** |
+| 🖥 | Screen Commander | **[screen-commander.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/screen-commander.zip)** |
+| 🔷 | Pattern Forge | **[pattern-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/pattern-forge.zip)** |
+| 🏗 | Register | **[register.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/register.zip)** |
+
+**[📦 Download ALL 26 Extensions (single zip)](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip)**
+
+### Windows Installers
+
+- **[install-organism.bat](https://github.com/FreddyCreates/potential-succotash/raw/main/install-organism.bat)** — double-click → extracts + launches Chrome with all extensions
+- **[install-extensions.ps1](https://github.com/FreddyCreates/potential-succotash/raw/main/install-extensions.ps1)** — PowerShell equivalent
 
 ### Build From Source
 
@@ -137,17 +164,26 @@ bash build-extensions.sh
 
 ## Register AI — The Builder (EXT-026)
 
-The Register AI is the organism's native builder. It's the 5th tool family (Builder) alongside Crawling, Context, Commander, and Sentry. It does steps 1–7 automatically:
+The Register AI is the organism's native builder. It's the 5th tool family (Builder) alongside Crawling, Context, Commander, and Sentry. It runs as both a **terminal CLI** (`organism-cli`) and a **browser extension** (EXT-026). Steps 1–7 run automatically:
 
-1. **Scan** — discovers all 26 extensions
-2. **Validate** — checks Manifest V3 compliance
-3. **Generate Icons** — creates PNG icons via Canvas
-4. **Package** — builds downloadable .zip archives
-5. **Create Download Links** — with proper MIME types
-6. **Install Instructions** — Chrome/Edge/Brave sideload prep
+1. **Scan** — discovers all 26 extensions in `extensions/`
+2. **Validate** — checks every manifest for Manifest V3 compliance
+3. **Detect Browser** — finds Chrome, Edge, or Brave on any OS
+4. **Load Extensions** — launches browser with `--load-extension` (direct from source, no zip)
+5. **Verify** — confirms all extensions loaded
+6. **Report** — shows status + health in the terminal
 7. **Monitor** — 873ms heartbeat health monitoring
 
-Architecture:
+### Terminal AI (organism-cli)
+
+```bash
+node organism-cli               # 1-click install — all 26 extensions live in Chrome
+node organism-cli validate      # check all manifests
+node organism-cli list          # show all extensions with status
+node organism-cli status        # Register AI health report
+```
+
+### Browser Architecture
 - **Web Worker** (`register-worker.js`) — all build operations run off-main-thread
 - **Observer Family** (`register-observer.js`) — 4 browser Observers as AGI sensors:
   - `MutationObserver` — watches DOM for extension state changes
