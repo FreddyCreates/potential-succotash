@@ -1,6 +1,7 @@
 # ─────────────────────────────────────────────────────────────
 # install-extensions.ps1
-# One-click installer. Run this. Extensions attach to Chrome.
+# One-click installer. Run this. Extensions attach to Edge/Chrome.
+# Edge-first on Windows — native integration, one click.
 # Zero manual steps. No developer mode. No "load unpacked".
 #
 # Usage: Just run it.
@@ -13,7 +14,7 @@ $ErrorActionPreference = "Stop"
 Write-Host ""
 Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
 Write-Host "  🧬 Sovereign Organism Installer" -ForegroundColor Yellow
-Write-Host "  One click. Zero steps." -ForegroundColor Yellow
+Write-Host "  One click. Zero steps. Edge-first." -ForegroundColor Yellow
 Write-Host "═══════════════════════════════════════════" -ForegroundColor Yellow
 Write-Host ""
 
@@ -58,13 +59,14 @@ Write-Host ""
 Write-Host "  $count extensions extracted" -ForegroundColor Green
 Write-Host ""
 
-# ── Find browser ───────────────────────────────────────────
+# ── Find browser — Edge FIRST (native Windows), then Chrome, then Brave ──
 $browserPaths = @(
+    "$env:ProgramFiles\Microsoft\Edge\Application\msedge.exe",
+    "${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe",
+    "$env:LOCALAPPDATA\Microsoft\Edge\Application\msedge.exe",
     "$env:ProgramFiles\Google\Chrome\Application\chrome.exe",
     "${env:ProgramFiles(x86)}\Google\Chrome\Application\chrome.exe",
     "$env:LOCALAPPDATA\Google\Chrome\Application\chrome.exe",
-    "$env:ProgramFiles\Microsoft\Edge\Application\msedge.exe",
-    "${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe",
     "$env:ProgramFiles\BraveSoftware\Brave-Browser\Application\brave.exe"
 )
 
@@ -73,8 +75,8 @@ $browserName = "Browser"
 foreach ($path in $browserPaths) {
     if (Test-Path $path) {
         $browser = $path
-        if ($path -match "chrome") { $browserName = "Chrome" }
-        elseif ($path -match "msedge") { $browserName = "Edge" }
+        if ($path -match "msedge") { $browserName = "Edge" }
+        elseif ($path -match "chrome") { $browserName = "Chrome" }
         elseif ($path -match "brave") { $browserName = "Brave" }
         break
     }
@@ -93,7 +95,7 @@ if ($browser) {
 } else {
     Write-Host "  No Chromium browser found." -ForegroundColor Yellow
     Write-Host "  Extensions are at: $installDir" -ForegroundColor Yellow
-    Write-Host "  Open chrome://extensions → Load unpacked → select folder" -ForegroundColor Yellow
+    Write-Host "  Open edge://extensions → Load unpacked → select folder" -ForegroundColor Yellow
 }
 
 Write-Host ""

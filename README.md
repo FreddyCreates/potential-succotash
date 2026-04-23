@@ -110,7 +110,7 @@ git clone https://github.com/FreddyCreates/potential-succotash.git
 node potential-succotash/organism-cli
 ```
 
-That's it. Register AI scans all 26 extensions, validates Manifest V3 compliance, detects Chrome/Edge/Brave, and launches your browser with every extension already attached. No zip. No extract. No developer mode. No manual steps.
+That's it. Register AI scans all 31 extensions, validates Manifest V3 compliance, detects Edge/Chrome/Brave (Edge-first on Windows), and launches your browser with every extension already attached. No zip. No extract. No developer mode. No manual steps. One click native.
 
 ### 📦 Direct Downloads
 
@@ -144,20 +144,25 @@ Every link below downloads the real `.zip` file. Click → get the extension.
 | 🖥 | Screen Commander | **[screen-commander.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/screen-commander.zip)** |
 | 🔷 | Pattern Forge | **[pattern-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/pattern-forge.zip)** |
 | 🏗 | Register | **[register.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/register.zip)** |
+| 🤖 | Windows Copilot Hub | **[windows-copilot-hub.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/windows-copilot-hub.zip)** |
+| 📂 | Windows File Oracle | **[windows-file-oracle.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/windows-file-oracle.zip)** |
+| 🔔 | Windows Notification Cortex | **[windows-notification-cortex.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/windows-notification-cortex.zip)** |
+| 🐚 | Windows Shell Intelligence | **[windows-shell-intelligence.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/windows-shell-intelligence.zip)** |
+| ⌨️ | Windows Terminal Forge | **[windows-terminal-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/windows-terminal-forge.zip)** |
 
-**[📦 Download ALL 26 Extensions (single zip)](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip)**
+**[📦 Download ALL 31 Extensions (single zip)](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip)**
 
-### Windows Installers
+### Windows Installers (Edge-First, One Click Native)
 
-- **[install-organism.bat](https://github.com/FreddyCreates/potential-succotash/raw/main/install-organism.bat)** — double-click → extracts + launches Chrome with all extensions
-- **[install-extensions.ps1](https://github.com/FreddyCreates/potential-succotash/raw/main/install-extensions.ps1)** — PowerShell equivalent
+- **[install-organism.bat](https://github.com/FreddyCreates/potential-succotash/raw/main/install-organism.bat)** — double-click → extracts + launches Edge with all extensions (falls back to Chrome/Brave)
+- **[install-extensions.ps1](https://github.com/FreddyCreates/potential-succotash/raw/main/install-extensions.ps1)** — PowerShell equivalent, Edge-first
 
 ### Build From Source
 
 ```bash
 bash build-extensions.sh
 # Output: dist/extensions/<name>.zip (one per extension)
-# Output: dist/extensions/all-extensions.zip (all 26 bundled)
+# Output: dist/extensions/all-extensions.zip (all 31 bundled)
 ```
 
 ---
@@ -166,7 +171,7 @@ bash build-extensions.sh
 
 The Register AI is the organism's native builder. It's the 5th tool family (Builder) alongside Crawling, Context, Commander, and Sentry. It runs as both a **terminal CLI** (`organism-cli`) and a **browser extension** (EXT-026). Steps 1–7 run automatically:
 
-1. **Scan** — discovers all 26 extensions in `extensions/`
+1. **Scan** — discovers all 31 extensions in `extensions/`
 2. **Validate** — checks every manifest for Manifest V3 compliance
 3. **Detect Browser** — finds Chrome, Edge, or Brave on any OS
 4. **Load Extensions** — launches browser with `--load-extension` (direct from source, no zip)
@@ -177,7 +182,7 @@ The Register AI is the organism's native builder. It's the 5th tool family (Buil
 ### Terminal AI (organism-cli)
 
 ```bash
-node organism-cli               # 1-click install — all 26 extensions live in Chrome
+node organism-cli               # 1-click install — all 31 extensions live in Edge/Chrome
 node organism-cli validate      # check all manifests
 node organism-cli list          # show all extensions with status
 node organism-cli status        # Register AI health report
@@ -209,9 +214,25 @@ Four new extensions that act as autonomous AI agents. They read, write, move on 
 
 ---
 
+## Windows + Microsoft Edge Native Extensions (5 New)
+
+Five extensions built for Windows and Microsoft Edge. One-click native install — Edge-first on Windows. Each is a Manifest V3 extension with a background service worker (AI engine) and content script (interactive UI) that runs directly in Edge.
+
+**Windows Copilot Hub** (EXT-027) — Unified Copilot Intelligence. GPT + Claude + Gemini + Llama multi-model fusion with phi-weighted reasoning. Alpha routing picks the best model for any task. Side-panel copilot experience native to Edge on Windows.
+
+**Windows File Oracle** (EXT-028) — File System Intelligence. Embeddings + Florence + CLIP power semantic file indexing, visual search, and duplicate detection. Understands your files by content, not just name.
+
+**Windows Notification Cortex** (EXT-029) — Smart Notification Intelligence. GPT drafts, Claude refines, Inflection adds empathy. Urgency scoring and notification composing with phi-weighted analysis.
+
+**Windows Shell Intelligence** (EXT-030) — Shell & Explorer AI. Codex + CodeLlama + DeepSeek power context-menu intelligence for batch file operations, script generation, code analysis, and shell commands.
+
+**Windows Terminal Forge** (EXT-031) — Terminal & PowerShell AI. Codex + DeepSeek + Phi generate, explain, and autocomplete commands for PowerShell, CMD, and WSL. Intelligent terminal assistance in your browser.
+
+---
+
 ## The Numbers
 
-8 SDKs. 26 extensions. 11 protocols. 30 tools. 5 tool families. 40 model families. 10 multimodal families. 30 frontend intelligence models. 100 frontier model species. 40 architectural laws. 9 organism rings. 6 implementation languages. 4 browser observers. 1 heartbeat at 873ms.
+8 SDKs. 31 extensions. 11 protocols. 30 tools. 5 tool families. 40 model families. 10 multimodal families. 30 frontend intelligence models. 100 frontier model species. 40 architectural laws. 9 organism rings. 6 implementation languages. 4 browser observers. 1 heartbeat at 873ms.
 
 All of it is AI. All of it is intelligence. All of it is wired together. All of it is downloadable. And all of it is inside this repo.
 

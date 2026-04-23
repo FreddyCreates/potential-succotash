@@ -2,7 +2,7 @@
  * Register AI Engine — Terminal Intelligence
  *
  * The AI brain of organism-cli. Scans, validates, builds, installs,
- * and monitors all 26 browser extensions. Runs steps 1–7 automatically.
+ * and monitors all 31 browser extensions. Runs steps 1–7 automatically.
  *
  * This IS the Register AI (TOOL-025) from the Builder family,
  * running natively in your terminal instead of in the browser.
@@ -183,11 +183,13 @@ class RegisterAIEngine {
       const pf86 = process.env['ProgramFiles(x86)'] || 'C:\\Program Files (x86)';
       const localApp = process.env.LOCALAPPDATA || path.join(os.homedir(), 'AppData', 'Local');
       candidates.push(
+        // Edge FIRST — native Windows browser, best integration
+        { name: 'Edge', path: path.join(pf, 'Microsoft', 'Edge', 'Application', 'msedge.exe') },
+        { name: 'Edge', path: path.join(pf86, 'Microsoft', 'Edge', 'Application', 'msedge.exe') },
+        { name: 'Edge', path: path.join(localApp, 'Microsoft', 'Edge', 'Application', 'msedge.exe') },
         { name: 'Chrome', path: path.join(pf, 'Google', 'Chrome', 'Application', 'chrome.exe') },
         { name: 'Chrome', path: path.join(pf86, 'Google', 'Chrome', 'Application', 'chrome.exe') },
         { name: 'Chrome', path: path.join(localApp, 'Google', 'Chrome', 'Application', 'chrome.exe') },
-        { name: 'Edge', path: path.join(pf, 'Microsoft', 'Edge', 'Application', 'msedge.exe') },
-        { name: 'Edge', path: path.join(pf86, 'Microsoft', 'Edge', 'Application', 'msedge.exe') },
         { name: 'Brave', path: path.join(pf, 'BraveSoftware', 'Brave-Browser', 'Application', 'brave.exe') },
         { name: 'Brave', path: path.join(localApp, 'BraveSoftware', 'Brave-Browser', 'Application', 'brave.exe') },
       );
@@ -281,7 +283,7 @@ class RegisterAIEngine {
 
     console.log('');
     console.log(`${c.bold}${c.cyan}  ╔══════════════════════════════════════════════╗${c.reset}`);
-    console.log(`${c.bold}${c.cyan}  ║   🧬 Sovereign Organism — 26 AI Extensions  ║${c.reset}`);
+    console.log(`${c.bold}${c.cyan}  ║   🧬 Sovereign Organism — 31 AI Extensions  ║${c.reset}`);
     console.log(`${c.bold}${c.cyan}  ╚══════════════════════════════════════════════╝${c.reset}`);
     console.log('');
 

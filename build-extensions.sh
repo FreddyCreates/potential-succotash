@@ -3,6 +3,7 @@
 # build-extensions.sh
 # Packages every extension under extensions/ into a downloadable
 # .zip file that can be sideloaded into Chrome / Edge / Brave.
+# Includes 5 Windows + Edge native extensions.
 #
 # Output: dist/extensions/<name>.zip  (one per extension)
 #         dist/extensions/all-extensions.zip (bundle of everything)
@@ -18,7 +19,8 @@ mkdir -p "$DIST"
 
 echo "═══════════════════════════════════════════"
 echo "  Organism Extension Builder"
-echo "  Building downloadable Chrome extensions"
+echo "  Building downloadable Edge/Chrome extensions"
+echo "  Includes Windows + Edge native extensions"
 echo "═══════════════════════════════════════════"
 echo ""
 

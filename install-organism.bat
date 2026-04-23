@@ -3,8 +3,9 @@ REM ═════════════════════════�
 REM  Sovereign Organism — One-Click Extension Installer
 REM  
 REM  Double-click this file. That's it.
-REM  It extracts all extensions and launches Chrome with them
-REM  already attached. Zero manual steps.
+REM  It extracts all extensions and launches Edge (or Chrome)
+REM  with them already attached. Zero manual steps.
+REM  Edge-first on Windows. One click native.
 REM ═══════════════════════════════════════════════════════════
 
 setlocal enabledelayedexpansion
@@ -13,6 +14,7 @@ echo.
 echo  ======================================
 echo   Sovereign Organism Installer
 echo   One-click. Zero manual steps.
+echo   Edge-first on Windows.
 echo  ======================================
 echo.
 
@@ -43,7 +45,7 @@ for %%f in ("%SCRIPT_DIR%*.zip") do (
         echo   [OK] !ZIPNAME!
         set /a EXT_COUNT+=1
         
-        REM Build Chrome --load-extension path list
+        REM Build --load-extension path list
         if defined LOAD_PATHS (
             set "LOAD_PATHS=!LOAD_PATHS!,!EXT_DIR!"
         ) else (
@@ -58,28 +60,32 @@ echo   %EXT_COUNT% extensions installed
 echo  ======================================
 echo.
 
-REM ── Find Chrome / Edge / Brave ───────────────────────────
+REM ── Find Edge FIRST (native on Windows), then Chrome, then Brave ──
 set "BROWSER="
 
-REM Try Chrome
-if exist "%ProgramFiles%\Google\Chrome\Application\chrome.exe" (
-    set "BROWSER=%ProgramFiles%\Google\Chrome\Application\chrome.exe"
-    set "BROWSER_NAME=Chrome"
+REM Try Edge first — native Windows browser, best integration
+if exist "%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe" (
+    set "BROWSER=%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe"
+    set "BROWSER_NAME=Edge"
 )
-if exist "%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe" (
-    set "BROWSER=%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe"
-    set "BROWSER_NAME=Chrome"
-)
-
-REM Try Edge if no Chrome
 if not defined BROWSER (
-    if exist "%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe" (
-        set "BROWSER=%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe"
-        set "BROWSER_NAME=Edge"
-    )
     if exist "%ProgramFiles%\Microsoft\Edge\Application\msedge.exe" (
         set "BROWSER=%ProgramFiles%\Microsoft\Edge\Application\msedge.exe"
         set "BROWSER_NAME=Edge"
+    )
+)
+
+REM Try Chrome if no Edge
+if not defined BROWSER (
+    if exist "%ProgramFiles%\Google\Chrome\Application\chrome.exe" (
+        set "BROWSER=%ProgramFiles%\Google\Chrome\Application\chrome.exe"
+        set "BROWSER_NAME=Chrome"
+    )
+)
+if not defined BROWSER (
+    if exist "%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe" (
+        set "BROWSER=%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe"
+        set "BROWSER_NAME=Chrome"
     )
 )
 
@@ -101,7 +107,7 @@ if defined BROWSER (
 ) else (
     echo  No Chromium browser found.
     echo  Extensions extracted to: %INSTALL_DIR%
-    echo  Open chrome://extensions and load them manually.
+    echo  Open edge://extensions and load them manually.
 )
 
 echo.
