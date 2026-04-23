@@ -2,9 +2,11 @@
 
 > 20 AI Chrome extensions + 5 Windows extensions + Terminal AI — all installable in **1 click**.
 
-### 📥 [**→ Open the Download Page ←**](download.html)
+### 📥 [**→ Open the Download Page ←**](https://freddycreates.github.io/potential-succotash/download.html)
 
 > Download individual extensions or all 25 at once. Zips are built natively in your browser — no server needed.
+>
+> _If hosting locally, open `download.html` directly from the repo root._
 
 ---
 
@@ -14,7 +16,7 @@ No unzipping. No manual steps. No GitHub Actions. Just **1 click**.
 
 ### Windows — Double-Click
 
-1. [**Download the repo**](../../archive/refs/heads/main.zip) and unzip it
+1. [**Download the repo**](https://github.com/FreddyCreates/potential-succotash/archive/refs/heads/main.zip) and unzip it
 2. Double-click **`install-organism.bat`**
 3. ✅ Chrome launches with all 20 AI extensions loaded
 

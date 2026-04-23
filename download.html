@@ -161,7 +161,7 @@
 
 <div class="header">
   <h1>🧬 <span>Organism AI</span> — Download Extensions</h1>
-  <p>25 sovereign AI extensions built natively in your browser. No server needed. Click to download.</p>
+  <p>AI extensions built natively in your browser. No server needed. Click to download.</p>
 </div>
 
 <div class="status-bar">
@@ -358,6 +358,11 @@ node organism-cli/organism.js install</code></pre>
     Promise.all(promises).then(function (extensionData) {
       // Filter out extensions where we couldn't load the manifest
       var valid = extensionData.filter(function (e) { return e.manifest; });
+      var skipped = extensionData.filter(function (e) { return !e.manifest; });
+      if (skipped.length > 0) {
+        console.warn('Could not load ' + skipped.length + ' extension(s):',
+          skipped.map(function (e) { return e.slug; }));
+      }
       document.getElementById('total-count').textContent = valid.length;
       worker.postMessage({ type: 'build', extensions: valid });
     }).catch(function (err) {
