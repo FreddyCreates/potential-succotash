@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Marketplace Hub",
   "version": "1.0.0",
-  "description": "AI Tool Marketplace Intelligence — Discover, invoke, and explore 24 callable organism tools across 4 families with natural language",
+  "description": "AI User Experience — Browse, search, and invoke 24 callable organism tools with natural language across 4 families (Crawling, Context, Commander, Sentry)",
   "permissions": ["activeTab", "storage", "tabs"],
   "background": {
     "service_worker": "background.js"

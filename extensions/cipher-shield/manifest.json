@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Cipher Shield",
   "version": "1.0.0",
-  "description": "Encrypted Intelligence Guard — Security + GPT + Claude",
+  "description": "AI User Experience — Your content is encrypted in real-time and prompt injection attacks are blocked before you ever see them",
   "permissions": ["activeTab", "storage", "webRequest"],
   "background": {
     "service_worker": "background.js"

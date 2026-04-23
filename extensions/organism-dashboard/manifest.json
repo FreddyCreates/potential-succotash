@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Organism Dashboard",
   "version": "1.0.0",
-  "description": "Organism Runtime Intelligence — Heartbeat + OrganismState + EdgeSensor",
+  "description": "AI User Experience — See your organism live with heartbeat pulse, state registers, vitality scores, and edge sensor readings in real-time",
   "permissions": ["activeTab", "storage", "alarms"],
   "background": {
     "service_worker": "background.js"
