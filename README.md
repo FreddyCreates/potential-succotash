@@ -2,6 +2,10 @@
 
 > 20 AI Chrome extensions + 5 Windows extensions + Terminal AI — all installable in **1 click**.
 
+### 📥 [**→ Open the Download Page ←**](download.html)
+
+> Download individual extensions or all 25 at once. Zips are built natively in your browser — no server needed.
+
 ---
 
 ## ⚡ 1-Click Install — Load All AI Extensions Into Chrome
@@ -107,10 +111,14 @@ Each extension is an **AI for user experiences** — Manifest V3 with a backgrou
 ## 📁 Project Structure
 
 ```
+├── download.html                     # 📥 Self-hosted download page (builds zips in-browser)
 ├── install-organism.bat              # ⚡ Windows 1-click installer (double-click)
 ├── install-organism.sh               # ⚡ macOS/Linux 1-click installer
 ├── organism-cli/
 │   └── organism.js                   # 🖥️ Terminal AI (install/build/validate/status)
+├── organism/
+│   └── web/
+│       └── download-worker.js        # 🔧 Web Worker — builds zip blobs natively
 ├── build-extensions.sh               # 📦 Package extensions to .zip files
 ├── extensions/
 │   ├── sovereign-mind/               # 20 browser AI extensions
