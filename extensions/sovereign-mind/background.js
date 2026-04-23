@@ -6,7 +6,7 @@ const HEARTBEAT = 873;
 
 class SovereignMindEngine {
   constructor() {
-    this.models = ['gpt', 'claude', 'gemini'];
+    this.models = ['fusion-core', 'alpha-router', 'phi-scorer'];
     this.state = {
       initialized: true,
       heartbeatCount: 0,
@@ -101,12 +101,12 @@ class SovereignMindEngine {
     var lower = (task || '').toLowerCase();
 
     var routing = [
-      { model: 'gpt', keywords: ['code', 'math', 'debug', 'algorithm', 'function', 'program', 'logic', 'compute'] },
-      { model: 'claude', keywords: ['creative', 'write', 'story', 'essay', 'poem', 'explain', 'summarize', 'draft'] },
-      { model: 'gemini', keywords: ['research', 'data', 'search', 'analyze', 'fact', 'compare', 'review', 'source'] }
+      { model: 'fusion-core', keywords: ['code', 'math', 'debug', 'algorithm', 'function', 'program', 'logic', 'compute'] },
+      { model: 'alpha-router', keywords: ['creative', 'write', 'story', 'essay', 'poem', 'explain', 'summarize', 'draft'] },
+      { model: 'phi-scorer', keywords: ['research', 'data', 'search', 'analyze', 'fact', 'compare', 'review', 'source'] }
     ];
 
-    var bestMatch = { model: 'gpt', score: 0, matched: [] };
+    var bestMatch = { model: 'fusion-core', score: 0, matched: [] };
 
     for (var i = 0; i < routing.length; i++) {
       var entry = routing[i];
@@ -131,7 +131,7 @@ class SovereignMindEngine {
 
     var reasoning = bestMatch.score > 0
       ? 'Routed to ' + bestMatch.model + ' based on keyword matches: [' + bestMatch.matched.join(', ') + ']'
-      : 'No strong keyword signal detected; defaulting to GPT as general-purpose model';
+      : 'No strong keyword signal detected; defaulting to FusionCore as sovereign general-purpose engine';
 
     return {
       model: bestMatch.model,
@@ -162,12 +162,12 @@ class SovereignMindEngine {
 
   _simulateModelResponse(model, prompt) {
     var characteristics = {
-      gpt: { style: 'analytical', baseConfidence: 0.85, prefix: 'Based on logical analysis' },
-      claude: { style: 'thoughtful', baseConfidence: 0.82, prefix: 'Considering multiple perspectives' },
-      gemini: { style: 'comprehensive', baseConfidence: 0.80, prefix: 'After reviewing available information' }
+      'fusion-core': { style: 'analytical', baseConfidence: 0.85, prefix: 'Sovereign analysis from your data' },
+      'alpha-router': { style: 'creative', baseConfidence: 0.82, prefix: 'Sovereign routing through your knowledge' },
+      'phi-scorer': { style: 'evaluative', baseConfidence: 0.80, prefix: 'Phi-weighted scoring from your data' }
     };
 
-    var config = characteristics[model] || characteristics.gpt;
+    var config = characteristics[model] || characteristics['fusion-core'];
     var promptLen = (prompt || '').length;
     var variance = ((promptLen * 7 + 13) % 20 - 10) / 100;
     var confidence = Math.min(1, Math.max(0.1, config.baseConfidence + variance));

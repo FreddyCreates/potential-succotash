@@ -16,7 +16,7 @@
  */
 
 const EXTENSIONS = [
-  { id: 'EXT-001', slug: 'sovereign-mind', name: 'Sovereign Mind', engines: ['GPT', 'Claude', 'Gemini'], ring: 'Interface Ring', wire: 'intelligence-wire/fusion', userExperience: 'Ask anything — GPT, Claude, and Gemini answer simultaneously, fused into one sovereign answer with phi-weighted confidence scoring' },
+  { id: 'EXT-001', slug: 'sovereign-mind', name: 'Sovereign Mind', engines: ['FusionCore', 'AlphaRouter', 'PhiScorer'], ring: 'Interface Ring', wire: 'intelligence-wire/fusion', userExperience: 'Ask anything — three sovereign engines (FusionCore, AlphaRouter, PhiScorer) reason from your own data, fused into one answer with phi-weighted confidence. No GPT. No Claude. No Gemini. Your mind, your data.' },
   { id: 'EXT-002', slug: 'cipher-shield', name: 'Cipher Shield', engines: ['Guards', 'GPT', 'Claude'], ring: 'Counsel Ring', wire: 'intelligence-wire/cipher', userExperience: 'Real-time content encryption and prompt injection defense — threats blocked before they reach your eyes' },
   { id: 'EXT-003', slug: 'polyglot-oracle', name: 'Polyglot Oracle', engines: ['Qwen', 'Gemini', 'Llama'], ring: 'Interface Ring', wire: 'intelligence-wire/polyglot', userExperience: 'Browse any page in any language — live context-aware translation that rebuilds the page in your language' },
   { id: 'EXT-004', slug: 'vision-weaver', name: 'Vision Weaver', engines: ['DALL-E', 'SD', 'Midjourney', 'SAM'], ring: 'Geometry Ring', wire: 'intelligence-wire/vision', userExperience: 'Describe what you want to see — multiple AI models generate images side-by-side for you to compare and edit' },

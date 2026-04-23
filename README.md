@@ -32,7 +32,7 @@ This is the part that matters for people who actually use the thing.
 
 Every extension is a Chrome Manifest V3 app with a background service worker running an AI engine and a content script rendering an interactive UI. They are not internal plumbing. They are the user's interface to the intelligence. 21 of them.
 
-**Sovereign Mind** — you ask a question, GPT + Claude + Gemini answer it simultaneously, the organism fuses their outputs with phi-weighted confidence scoring, and you get one sovereign answer. That's the user experience. Three foundation models, one fused result, one panel floating on your page.
+**Sovereign Mind** — you ask a question, three sovereign engines (FusionCore, AlphaRouter, PhiScorer) reason from your own data, the organism fuses their outputs with phi-weighted confidence scoring, and you get one sovereign answer. That's the user experience. No GPT. No Claude. No Gemini. Your mind, your data, one panel floating on your page.
 
 **Cipher Shield** — every page you visit gets real-time content encryption and prompt injection detection. The AI is watching your browsing and protecting you before threats reach your eyes. Guards + GPT + Claude working in concert behind one quiet shield icon.
 
