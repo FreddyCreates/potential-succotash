@@ -1,0 +1,30 @@
+{
+  "name": "@medina/organism-marketplace",
+  "version": "1.0.0",
+  "description": "Callable tool marketplace for the sovereign organism — registry, routing, invocation, and settlement for 20 always-running VOIS tools and all organism surfaces.",
+  "license": "MIT",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./tool-schema": "./src/tool-schema.js",
+    "./tool-registry": "./src/tool-registry.js",
+    "./tool-invoker": "./src/tool-invoker.js",
+    "./marketplace-settlement": "./src/marketplace-settlement.js",
+    "./marketplace-router": "./src/marketplace-router.js",
+    "./tools": "./src/tools/index.js"
+  },
+  "keywords": [
+    "marketplace",
+    "callable-tools",
+    "registry",
+    "routing",
+    "settlement",
+    "organism",
+    "VOIS",
+    "sovereign"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
