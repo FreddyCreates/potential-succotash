@@ -120,7 +120,11 @@ Each extension is an **AI for user experiences** — Manifest V3 with a backgrou
 │   └── organism.js                   # 🖥️ Terminal AI (install/build/validate/status)
 ├── organism/
 │   └── web/
-│       └── download-worker.js        # 🔧 Web Worker — builds zip blobs natively
+│       ├── download-worker.js        # 🔧 Web Worker — builds zip blobs natively
+│       └── autonomy.js               # 🟢 Self-healing production runtime — auto-restart, health monitoring
+├── .github/workflows/
+│   ├── build-extensions.yml          # 🏗️ CI — auto-builds all 25 zips on every push
+│   └── deploy-pages.yml             # 🌐 CD — deploys download page to GitHub Pages 24/7
 ├── build-extensions.sh               # 📦 Package extensions to .zip files
 ├── extensions/
 │   ├── sovereign-mind/               # 20 browser AI extensions

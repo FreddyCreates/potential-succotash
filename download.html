@@ -190,6 +190,7 @@ node organism-cli/organism.js install</code></pre>
   <p>Or on <strong>macOS/Linux</strong>: <code>bash install-organism.sh</code></p>
 </div>
 
+<script src="organism/web/autonomy.js"></script>
 <script>
 (function () {
   'use strict';
@@ -227,10 +228,9 @@ node organism-cli/organism.js install</code></pre>
   ];
 
   var ALL_EXTENSIONS = BROWSER_EXTENSIONS.concat(WINDOWS_EXTENSIONS);
-  var blobUrls = {};   // slug → blobUrl
-  var blobSizes = {};  // slug → size in bytes
+  var blobUrls = {};
+  var blobSizes = {};
   var builtCount = 0;
-  var workerReady = false;
 
   /* ── Resolve file path for fetching extension sources ──────── */
   function extBasePath(ext) {
@@ -310,8 +310,14 @@ node organism-cli/organism.js install</code></pre>
     }
   }
 
-  /* ── Fetch all extension sources and send to worker ──────────── */
-  function loadAndBuild(worker) {
+  /* ── Format bytes to human-readable ──────────────────────────── */
+  function formatBytes(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    return (bytes / 1024).toFixed(1) + ' KB';
+  }
+
+  /* ── Fetch all extension sources ─────────────────────────────── */
+  function fetchAllExtensionSources() {
     var promises = [];
 
     for (var i = 0; i < ALL_EXTENSIONS.length; i++) {
@@ -355,103 +361,7 @@ node organism-cli/organism.js install</code></pre>
       })(ALL_EXTENSIONS[i]);
     }
 
-    Promise.all(promises).then(function (extensionData) {
-      // Filter out extensions where we couldn't load the manifest
-      var valid = extensionData.filter(function (e) { return e.manifest; });
-      var skipped = extensionData.filter(function (e) { return !e.manifest; });
-      if (skipped.length > 0) {
-        console.warn('Could not load ' + skipped.length + ' extension(s):',
-          skipped.map(function (e) { return e.slug; }));
-      }
-      document.getElementById('total-count').textContent = valid.length;
-      worker.postMessage({ type: 'build', extensions: valid });
-    }).catch(function (err) {
-      document.getElementById('worker-status').textContent = 'fetch error';
-      document.getElementById('worker-status').classList.add('error');
-      console.error('Failed to fetch extension sources:', err);
-    });
-  }
-
-  /* ── Format bytes to human-readable ──────────────────────────── */
-  function formatBytes(bytes) {
-    if (bytes < 1024) return bytes + ' B';
-    return (bytes / 1024).toFixed(1) + ' KB';
-  }
-
-  /* ── Initialize ──────────────────────────────────────────────── */
-  function init() {
-    renderGrid();
-
-    // Start Web Worker
-    var worker;
-    try {
-      worker = new Worker('organism/web/download-worker.js');
-    } catch (e) {
-      // Fallback: try relative path variations
-      try {
-        worker = new Worker('./organism/web/download-worker.js');
-      } catch (e2) {
-        document.getElementById('worker-status').textContent = 'error — worker failed to load';
-        document.getElementById('worker-status').classList.add('error');
-        console.error('Worker failed:', e2);
-        enableGitHubFallback();
-        return;
-      }
-    }
-
-    document.getElementById('worker-status').textContent = 'loading sources…';
-    document.getElementById('worker-status').classList.add('building');
-
-    worker.onmessage = function (e) {
-      var msg = e.data;
-
-      switch (msg.type) {
-        case 'zip-ready':
-          var blobUrl = URL.createObjectURL(msg.blob);
-          blobUrls[msg.slug] = blobUrl;
-          blobSizes[msg.slug] = msg.blob.size;
-
-          if (msg.slug === 'all-extensions') {
-            // Update bundle bar
-            var bundleBar = document.getElementById('bundle-bar');
-            bundleBar.innerHTML = '<a href="' + blobUrl + '" download="' + msg.filename + '">⬇ Download All Extensions (' + formatBytes(msg.blob.size) + ')</a>';
-          } else {
-            activateDownload(msg.slug, blobUrl, msg.filename, msg.blob.size);
-            builtCount++;
-            document.getElementById('built-count').textContent = builtCount;
-          }
-          break;
-
-        case 'all-ready':
-          document.getElementById('worker-status').textContent = 'ready';
-          document.getElementById('worker-status').classList.remove('building');
-          workerReady = true;
-          break;
-
-        case 'zip-error':
-          console.error('Zip build error for ' + msg.slug + ':', msg.error);
-          var errLink = document.getElementById('dl-' + msg.slug);
-          if (errLink) {
-            errLink.textContent = '✗ Error';
-            errLink.classList.add('error');
-          }
-          break;
-
-        case 'heartbeat':
-          document.getElementById('heartbeat-count').textContent = msg.beat;
-          break;
-      }
-    };
-
-    worker.onerror = function (err) {
-      console.error('Worker error:', err);
-      document.getElementById('worker-status').textContent = 'error';
-      document.getElementById('worker-status').classList.add('error');
-      enableGitHubFallback();
-    };
-
-    // Load extension sources and send to worker
-    loadAndBuild(worker);
+    return Promise.all(promises);
   }
 
   /* ── Fallback: use GitHub raw URLs if worker fails ──────────── */
@@ -473,6 +383,103 @@ node organism-cli/organism.js install</code></pre>
     bundleBar.innerHTML = '<a href="' + GITHUB_BASE + 'all-extensions.zip">⬇ Download All (GitHub)</a>';
 
     document.getElementById('worker-status').textContent = 'fallback (GitHub)';
+  }
+
+  /* ── Initialize with Autonomy Runtime ───────────────────────── */
+  function init() {
+    renderGrid();
+
+    document.getElementById('worker-status').textContent = 'loading sources…';
+    document.getElementById('worker-status').classList.add('building');
+
+    // Create autonomy runtime — self-healing, auto-restart, production-grade
+    var autonomy = new OrganismAutonomy({
+      workerPath: 'organism/web/download-worker.js',
+
+      onZipReady: function (slug, blob, filename) {
+        var blobUrl = URL.createObjectURL(blob);
+        blobUrls[slug] = blobUrl;
+        blobSizes[slug] = blob.size;
+
+        if (slug === 'all-extensions') {
+          var bundleBar = document.getElementById('bundle-bar');
+          bundleBar.innerHTML = '<a href="' + blobUrl + '" download="' + filename + '">⬇ Download All Extensions (' + formatBytes(blob.size) + ')</a>';
+        } else {
+          activateDownload(slug, blobUrl, filename, blob.size);
+          builtCount++;
+          document.getElementById('built-count').textContent = builtCount;
+        }
+      },
+
+      onAllReady: function (count) {
+        document.getElementById('worker-status').textContent = '🟢 alive';
+        document.getElementById('worker-status').classList.remove('building');
+      },
+
+      onHeartbeat: function (beat) {
+        document.getElementById('heartbeat-count').textContent = beat;
+      },
+
+      onStatusChange: function (status) {
+        var el = document.getElementById('worker-status');
+        el.classList.remove('building', 'error');
+        switch (status) {
+          case 'booting':
+          case 'building':
+            el.textContent = status + '…';
+            el.classList.add('building');
+            break;
+          case 'alive':
+            el.textContent = '🟢 alive';
+            break;
+          case 'crashed':
+            el.textContent = '🔴 crashed';
+            el.classList.add('error');
+            break;
+          case 'restarting':
+            el.textContent = '↻ restarting…';
+            el.classList.add('building');
+            break;
+          case 'idle':
+            el.textContent = 'idle';
+            break;
+        }
+      },
+
+      onError: function (slug, error) {
+        var errLink = document.getElementById('dl-' + slug);
+        if (errLink) {
+          errLink.textContent = '✗ Error';
+          errLink.classList.add('error');
+        }
+      },
+
+      onMaxRestarts: function () {
+        enableGitHubFallback();
+      }
+    });
+
+    // Expose autonomy runtime globally for console inspection
+    window.organism = autonomy;
+
+    // Fetch all extension sources, then boot the autonomy runtime
+    fetchAllExtensionSources().then(function (extensionData) {
+      var valid = extensionData.filter(function (e) { return e.manifest; });
+      var skipped = extensionData.filter(function (e) { return !e.manifest; });
+      if (skipped.length > 0) {
+        console.warn('Could not load ' + skipped.length + ' extension(s):',
+          skipped.map(function (e) { return e.slug; }));
+      }
+      document.getElementById('total-count').textContent = valid.length;
+
+      // Boot — the autonomy runtime handles all worker lifecycle from here
+      autonomy.boot(valid);
+    }).catch(function (err) {
+      document.getElementById('worker-status').textContent = 'fetch error';
+      document.getElementById('worker-status').classList.add('error');
+      console.error('Failed to fetch extension sources:', err);
+      enableGitHubFallback();
+    });
   }
 
   /* ── Boot ────────────────────────────────────────────────────── */

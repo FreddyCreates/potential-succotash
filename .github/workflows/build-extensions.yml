@@ -1,0 +1,122 @@
+# ============================================================================
+# Build Extensions — Autonomous Production Pipeline
+#
+# Runs on every push to main. Packages all 25 extensions into .zip files
+# and commits them to dist/extensions/. Fully autonomous — no manual steps.
+#
+# This is the organism's build heartbeat. It runs 24/7 on every commit.
+# ============================================================================
+
+name: Build Extensions
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'extensions/**'
+      - 'build-extensions.sh'
+      - '.github/workflows/build-extensions.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Package All Extensions
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build all extension zips
+        run: |
+          set -euo pipefail
+
+          EXT_DIR="extensions"
+          DIST_DIR="dist/extensions"
+          rm -rf "${DIST_DIR}"
+          mkdir -p "${DIST_DIR}"
+
+          BROWSER_COUNT=0
+          WINDOWS_COUNT=0
+
+          echo "══════════════════════════════════════════════════════════"
+          echo "  Building Browser Extensions"
+          echo "══════════════════════════════════════════════════════════"
+
+          for ext_path in "${EXT_DIR}"/*/; do
+            ext_name="$(basename "${ext_path}")"
+            [ "${ext_name}" = "windows" ] && continue
+            [ "${ext_name}" = "index.js" ] && continue
+            [ ! -f "${ext_path}/manifest.json" ] && continue
+
+            echo "  📦 Packaging: ${ext_name}"
+            (cd "${ext_path}" && zip -r -q "../../${DIST_DIR}/${ext_name}.zip" \
+              manifest.json background.js content.js icons/ 2>/dev/null || true)
+
+            if [ -f "${DIST_DIR}/${ext_name}.zip" ]; then
+              size=$(du -h "${DIST_DIR}/${ext_name}.zip" | cut -f1)
+              echo "     ✓ ${ext_name}.zip (${size})"
+              BROWSER_COUNT=$((BROWSER_COUNT + 1))
+            else
+              echo "     ✗ FAILED: ${ext_name}"
+            fi
+          done
+
+          echo ""
+          echo "══════════════════════════════════════════════════════════"
+          echo "  Building Windows Extensions"
+          echo "══════════════════════════════════════════════════════════"
+
+          WINDOWS_DIR="${EXT_DIR}/windows"
+          if [ -d "${WINDOWS_DIR}" ]; then
+            for ext_path in "${WINDOWS_DIR}"/*/; do
+              ext_name="$(basename "${ext_path}")"
+              [ ! -f "${ext_path}/manifest.json" ] && continue
+
+              echo "  📦 Packaging: ${ext_name}"
+              (cd "${ext_path}" && zip -r -q "../../../${DIST_DIR}/${ext_name}.zip" \
+                manifest.json engine.js interface.js icons/ 2>/dev/null || true)
+
+              if [ -f "${DIST_DIR}/${ext_name}.zip" ]; then
+                size=$(du -h "${DIST_DIR}/${ext_name}.zip" | cut -f1)
+                echo "     ✓ ${ext_name}.zip (${size})"
+                WINDOWS_COUNT=$((WINDOWS_COUNT + 1))
+              else
+                echo "     ✗ FAILED: ${ext_name}"
+              fi
+            done
+          fi
+
+          TOTAL=$((BROWSER_COUNT + WINDOWS_COUNT))
+          echo ""
+          echo "══════════════════════════════════════════════════════════"
+          echo "  Build Complete: ${TOTAL} extensions packaged"
+          echo "  Output: ${DIST_DIR}"
+          echo "══════════════════════════════════════════════════════════"
+
+          # Build all-in-one bundle
+          if [ ${TOTAL} -gt 0 ]; then
+            cd "${DIST_DIR}"
+            zip -q all-extensions.zip *.zip
+            echo "  📦 all-extensions.zip ($(du -h all-extensions.zip | cut -f1))"
+          fi
+
+      - name: Commit built zips
+        run: |
+          git config user.name "organism-build-bot"
+          git config user.email "organism-bot@users.noreply.github.com"
+          git add dist/extensions/
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "🧬 Auto-build: package all extensions to dist/"
+            git push
+          fi
