@@ -1,8 +1,142 @@
-# front-end-is-all-intelligence-
+# 🧬 Organism AI — Sovereign Intelligence Platform
 
-> The frontend is not a thin shell over the backend; it is a compressed intelligence field with at least 115 distinguishable model species, and those species can be traced to primitives, flipped into sovereign versions, and reinserted into the organism exactly the way backend and substrate tools were.
+> 20 AI Chrome extensions + 5 Windows extensions + Terminal AI — all installable in **1 click**.
 
-## Architecture
+---
+
+## ⚡ 1-Click Install — Load All AI Extensions Into Chrome
+
+No unzipping. No manual steps. No GitHub Actions. Just **1 click**.
+
+### Windows — Double-Click
+
+1. [**Download the repo**](../../archive/refs/heads/main.zip) and unzip it
+2. Double-click **`install-organism.bat`**
+3. ✅ Chrome launches with all 20 AI extensions loaded
+
+### macOS / Linux — One Command
+
+```bash
+git clone https://github.com/FreddyCreates/potential-succotash.git
+cd potential-succotash
+bash install-organism.sh
+```
+
+✅ Chrome launches with all 20 AI extensions loaded.
+
+### Any Platform — Node.js Terminal AI
+
+```bash
+git clone https://github.com/FreddyCreates/potential-succotash.git
+cd potential-succotash
+node organism-cli/organism.js install
+```
+
+✅ Auto-detects Chrome, validates all extensions, loads them unpacked, launches Chrome.
+
+---
+
+## 🖥️ Terminal AI — Interactive Intelligence
+
+The Organism CLI is a **built-in terminal AI** that manages everything. No external tools needed.
+
+```bash
+# Start the interactive AI terminal
+node organism-cli/organism.js
+
+# Or run commands directly:
+node organism-cli/organism.js install    # 1-click: load all extensions into Chrome
+node organism-cli/organism.js build      # package extensions into .zip files
+node organism-cli/organism.js validate   # check all manifests and scripts
+node organism-cli/organism.js status     # show extension health & system info
+```
+
+The terminal AI has a **built-in routing engine** (Codex / DeepSeek / Phi) — ask it anything:
+
+```
+🧬 organism › install          → loads all extensions into Chrome
+🧬 organism › how many extensions?  → "20 browser + 5 Windows = 25 total"
+🧬 organism › validate         → checks all 25 manifests
+🧬 organism › list             → shows every extension
+🧬 organism › help             → shows all commands
+```
+
+---
+
+## 🧩 AI Extensions (25 Total)
+
+Each extension is an **AI for user experiences** — Manifest V3 with a background.js AI engine and content.js interactive DOM panel.
+
+### Browser Extensions (20)
+
+| # | Extension | AI Engines | What It Does |
+|---|---|---|---|
+| 1 | **Sovereign Mind** | GPT + Claude + Gemini | Multi-model reasoning fusion |
+| 2 | **Cipher Shield** | Guards + GPT + Claude | Encrypted intelligence & security |
+| 3 | **Polyglot Oracle** | Qwen + Gemini + Llama | Multilingual translation AI |
+| 4 | **Vision Weaver** | DALL-E + SD + Midjourney + SAM | Visual intelligence & image AI |
+| 5 | **Code Sovereign** | Codex + CodeLlama + DeepSeek | Autonomous code intelligence |
+| 6 | **Memory Palace** | Embeddings + Command R + Rerankers | Spatial memory AI |
+| 7 | **Sentinel Watch** | Guards + GPT + Claude | Security monitoring AI |
+| 8 | **Research Nexus** | Perplexity + Claude + Embeddings | Search-augmented research |
+| 9 | **Voice Forge** | Whisper + ElevenLabs + Suno | Audio intelligence studio |
+| 10 | **Data Alchemist** | GPT + Claude + Embeddings + Rerankers | Document absorption AI |
+| 11 | **Video Architect** | Sora + Runway + Pika + Kling | Video generation AI |
+| 12 | **Logic Prover** | Minerva-Llemma + GPT + AlphaCode | Mathematical proof AI |
+| 13 | **Social Cortex** | Grok + Inflection + GPT | Social intelligence AI |
+| 14 | **Edge Runner** | Phi + Gemma + DBRX | Edge inference AI |
+| 15 | **Contract Forge** | GPT + Claude + Guards | Smart contract AI |
+| 16 | **Organism Dashboard** | Heartbeat + OrganismState + EdgeSensor | Runtime monitoring |
+| 17 | **Knowledge Cartographer** | Embeddings + Command R + Florence | Knowledge graph AI |
+| 18 | **Protocol Bridge** | All Foundation Models | Cross-protocol intelligence |
+| 19 | **Creative Muse** | SD + DALL-E + MusicGen + Suno | Generative art & music AI |
+| 20 | **Sovereign Nexus** | All 40 Foundation Models + Kuramoto | Unified intelligence hub |
+
+### Windows Extensions (5)
+
+| # | Extension | What It Does |
+|---|---|---|
+| 1 | **Windows Copilot Hub** | Windows desktop AI copilot |
+| 2 | **Windows File Oracle** | File system intelligence |
+| 3 | **Windows Notification Cortex** | Smart notification AI |
+| 4 | **Windows Shell Intelligence** | Shell command AI |
+| 5 | **Windows Terminal Forge** | Terminal & PowerShell AI |
+
+---
+
+## 📁 Project Structure
+
+```
+├── install-organism.bat              # ⚡ Windows 1-click installer (double-click)
+├── install-organism.sh               # ⚡ macOS/Linux 1-click installer
+├── organism-cli/
+│   └── organism.js                   # 🖥️ Terminal AI (install/build/validate/status)
+├── build-extensions.sh               # 📦 Package extensions to .zip files
+├── extensions/
+│   ├── sovereign-mind/               # 20 browser AI extensions
+│   ├── cipher-shield/                #   (each has manifest.json + background.js
+│   ├── code-sovereign/               #    + content.js + icons/)
+│   ├── ... (17 more)
+│   └── windows/                      # 5 Windows AI extensions
+│       ├── windows-copilot-hub/
+│       ├── windows-terminal-forge/
+│       └── ... (3 more)
+├── sdk/
+│   ├── sovereign-memory-sdk/         # Spatial memory, phi-coordinates, lineage
+│   ├── enterprise-integration-sdk/   # Onboarding, connectors, campaigns
+│   ├── intelligence-routing-sdk/     # Model routing, wires, workforce
+│   ├── organism-runtime-sdk/         # Heartbeat, state, kernels, edge sensing
+│   └── document-absorption-engine/   # Intake, extraction, knowledge graphs
+├── Frontend_Frontier_100_Register.csv
+├── AI_Extensions_Register.csv
+├── AI_Model_Families_Register.csv
+├── Architectural_Laws_Register.csv
+└── SDK_Model_Manifest.json
+```
+
+---
+
+## 🏗️ Architecture
 
 ```
 Fracture → Primitive → Sovereign SDK → Organism → Doctrine
@@ -10,115 +144,18 @@ Fracture → Primitive → Sovereign SDK → Organism → Doctrine
 
 Every external frontend technology is a **fracture**. Each fracture is reduced to a **primitive function** (relation / visibility / flow / state / synchronization / projection / transformation / verification), rebuilt as a **sovereign SDK module**, wired into the **organism runtime**, and governed by **architectural laws**.
 
-## Registry Artifacts
+> The frontend is not a thin shell over the backend; it is a compressed intelligence field with at least 115 distinguishable model species.
 
-| Artifact | Description |
-|---|---|
-| `Frontend_Frontier_100_Register.csv` | 100 frontend model species with intelligence type, ring affinity, and sovereign replacement candidates |
-| `Phantom_Blockchain_Model_Register.csv` | Phantom/substrate model families for parallel blockchain intelligence mapping |
-| `Architectural_Laws_Register.csv` | 40 architectural laws governing the organism across all layers |
-| `SDK_Model_Manifest.json` | Unified manifest wiring all 5 SDKs to the frontier register and laws |
+### Sovereign SDKs
 
-## Sovereign SDKs
+| SDK | Ring | Description |
+|---|---|---|
+| `@medina/sovereign-memory-sdk` | Memory Ring | Spatial memory, phi-coordinates, lineage, living documents |
+| `@medina/enterprise-integration-sdk` | Interface Ring | Onboarding, 8 connectors (Salesforce/SAP/Google/Slack/etc), campaigns |
+| `@medina/intelligence-routing-sdk` | Interface Ring | Model routing, command parsing, terminal dispatch, workforce routing |
+| `@medina/organism-runtime-sdk` | Sovereign Ring | Heartbeat (873ms), 4-register state, kernel execution, edge sensing |
+| `@medina/document-absorption-engine` | Memory Ring | Document intake, extraction, knowledge graphs, absorption pipeline |
 
-### 1. `@medina/sovereign-memory-sdk` — v1.0.0
+### Architectural Laws (40)
 
-**License:** MIT (open-core) · **Ring:** Memory Ring · **Marketplace:** "Enterprise memory that never forgets"
-
-| Module | Primitive Function |
-|---|---|
-| `SpatialMemoryStore` | Store/retrieve memories by 5-axis spatial coordinates (θ/φ/ρ/ring/beat) |
-| `DualLayerSearch` | Search by semantic meaning and phi-resonance proximity simultaneously |
-| `MemoryLineage` | Track ancestor chains and fork/consolidate memory branches |
-| `LivingDocument` | Manage documents as evolving organisms with mutation history |
-| `PhiCoordinateGenerator` | Generate and manipulate phi-encoded spatial coordinates |
-
-### 2. `@medina/enterprise-integration-sdk` — v1.0.0
-
-**License:** Proprietary · **Ring:** Interface Ring · **Marketplace:** "Plug any enterprise into a sovereign intelligence substrate"
-
-| Module | Primitive Function |
-|---|---|
-| `CompanyOnboarding` | Onboard companies in express/standard/sovereign modes |
-| `Connectors (8)` | Salesforce, SAP, Google, Slack, HubSpot, Stripe, Twilio, Shopify |
-| `CampaignManager` | Create, launch, and measure multi-channel campaigns |
-| `MultiChannelMessenger` | Send messages across email/sms/slack/webhook channels |
-| `ExportPipeline` | Define and execute data export pipelines with scheduling |
-
-### 3. `@medina/intelligence-routing-sdk` — v1.0.0
-
-**License:** MIT (open-core) · **Ring:** Interface Ring · **Marketplace:** "Intelligent task routing for AI workforces"
-
-| Module | Primitive Function |
-|---|---|
-| `ModelRouter` | Route tasks to best matching model by capability/priority/cost |
-| `CommandParser` | Parse natural language and structured commands into actions |
-| `TerminalDispatch` | Dispatch commands to local/remote/edge terminals |
-| `IntelligenceWire` | Create encrypted wires between intelligence endpoints |
-| `WorkforceRouter` | Assign tasks to agents and rebalance workload |
-
-### 4. `@medina/organism-runtime-sdk` — v1.0.0
-
-**License:** MIT (open-core) · **Ring:** Sovereign Ring · **Marketplace:** "A living runtime for autonomous AI systems"
-
-| Module | Primitive Function |
-|---|---|
-| `OrganismState` | 4-register architecture (Cognitive/Affective/Somatic/Sovereign) |
-| `Heartbeat` | 873ms organism pulse — the fundamental clock |
-| `KernelExecutor` | Load and execute computation kernels with sandboxed isolation |
-| `EdgeSensor` | Sense edge environment (temperature/network/resource/signal/custom) |
-| `CrossOrganismResonance` | Exchange resonance signals with peer organisms |
-
-### 5. `@medina/document-absorption-engine` — v1.0.0
-
-**License:** Proprietary · **Ring:** Memory Ring · **Marketplace:** "Turn raw documents into living organism knowledge"
-
-| Module | Primitive Function |
-|---|---|
-| `DocumentIntake` | Ingest multi-format documents (text/markdown/html/json/csv) |
-| `ContentExtractor` | Extract entities, keywords, and summaries from content |
-| `KnowledgeGraph` | Build and query typed knowledge graphs from absorbed content |
-| `AbsorptionPipeline` | Orchestrate intake→extract→classify→index→absorb pipeline |
-| `DigestGenerator` | Generate brief/detailed/executive digests from document sets |
-
-## Architectural Laws (40)
-
-The organism is governed by 40 architectural laws across these domains:
-
-- **Structural** (AL-001): Every element must be semantically contained
-- **Visual** (AL-002–003): Visual priority by specificity cascade; atomic composability
-- **Projection** (AL-004): Components project their own state — never inherit mutable parent state
-- **State** (AL-005–007): Unidirectional flow, state locality, immutable transitions
-- **Build** (AL-008–009): Deterministic output, transform transparency
-- **Verification** (AL-010–011): Completeness of proofs, visual truth consistency
-- **Scene** (AL-012–013): Scene sovereignty, animation continuity
-- **Communication** (AL-014–015): Channel isolation, request idempotency
-- **Storage** (AL-016–017): Cache coherence, token ephemerality
-- **Native** (AL-018): Capability gating
-- **Runtime** (AL-019–020): Heartbeat sovereignty (873ms), register integrity
-- **Governance** (AL-021): Doctrine alignment
-- **Memory** (AL-022–024): Lineage preservation, phi-encoded coordinates, dual-layer search
-- **Routing** (AL-025–027): Intelligent routing, wire encryption, workforce balance
-- **Integration** (AL-028–029): Connector neutrality, onboarding sovereignty
-- **Absorption** (AL-030–032): Pipeline discipline, graph integrity, digest fidelity
-- **Resilience** (AL-033): Anti-collapse
-- **Edge** (AL-034): Continuous edge sensing
-- **Resonance** (AL-035): Cross-organism resonance
-- **Execution** (AL-036): Kernel isolation
-- **Architecture** (AL-037–040): Fracture recognition → primitive reduction → sovereign rebuild → organism reintegration
-
-## Project Structure
-
-```
-├── Frontend_Frontier_100_Register.csv    # 100 frontend intelligence models
-├── Phantom_Blockchain_Model_Register.csv # Phantom blockchain model families
-├── Architectural_Laws_Register.csv       # 40 architectural laws
-├── SDK_Model_Manifest.json               # Unified SDK-to-frontier wiring manifest
-├── README.md
-└── sdk/
-    ├── sovereign-memory-sdk/             # Spatial memory, phi-coordinates, lineage
-    ├── enterprise-integration-sdk/       # Onboarding, connectors, campaigns
-    ├── intelligence-routing-sdk/         # Model routing, wires, workforce
-    ├── organism-runtime-sdk/             # Heartbeat, state, kernels, edge sensing
-    └── document-absorption-engine/       # Intake, extraction, knowledge graphs
-```
+The organism is governed by 40 laws across: Structural, Visual, Projection, State, Build, Verification, Scene, Communication, Storage, Native, Runtime, Governance, Memory, Routing, Integration, Absorption, Resilience, Edge, Resonance, Execution, and Architecture domains. See `Architectural_Laws_Register.csv` for the full register.
