@@ -58,7 +58,7 @@ class MarketplaceHubEngine {
       { callId: 'TOOL-013', name: 'BOUNDARY-ENFORCER', family: 'Sentry', role: 'Ring Warden', ring: 'Counsel Ring', purpose: 'Enforce ring boundaries and prevent state leakage', icon: '🚧', actions: ['enforce', 'validate', 'status'] },
       { callId: 'TOOL-015', name: 'SEAL-VERIFIER', family: 'Sentry', role: 'Seal Master', ring: 'Counsel Ring', purpose: 'Verify cryptographic seals on contracts and data', icon: '🔏', actions: ['verify', 'seal', 'status'] },
       { callId: 'TOOL-019', name: 'QUEUE-PROCESSOR', family: 'Sentry', role: 'Security Queue Handler', ring: 'Transport Ring', purpose: 'Process organism security and settlement queues', icon: '📋', actions: ['status', 'enqueue', 'process', 'drain'] },
-      { callId: 'TOOL-023', name: 'DOCTRINE-AUDITOR', family: 'Sentry', role: 'Doctrine Judge', ring: 'Counsel Ring', purpose: 'Audit organism behavior against 40 architectural laws', icon: '⚖', actions: ['audit', 'check-law', 'drift-report', 'compliance-score'] },
+      { callId: 'TOOL-023', name: 'DOCTRINE-AUDITOR', family: 'Sentry', role: 'Doctrine Judge', ring: 'Counsel Ring', purpose: 'Audit organism behavior against 40 architectural laws', icon: '📜', actions: ['audit', 'check-law', 'drift-report', 'compliance-score'] },
     ];
 
     /* ── Family metadata ──────────────────────────────────────── */
