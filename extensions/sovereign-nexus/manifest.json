@@ -2,16 +2,38 @@
   "manifest_version": 3,
   "name": "Sovereign Nexus",
   "version": "1.0.0",
-  "description": "Unified Intelligence Hub — All 40 Foundation Models",
-  "permissions": ["activeTab", "storage", "tabs", "identity", "management"],
+  "description": "AI User Experience \u2014 The master hub unifying all 20 extensions into one sovereign intelligence interface with all 40 foundation models",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "tabs",
+    "identity",
+    "management",
+    "alarms"
+  ],
   "background": {
     "service_worker": "background.js"
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ]
     }
   ],
-  "minimum_chrome_version": "110"
+  "minimum_chrome_version": "110",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+    }
+  }
 }

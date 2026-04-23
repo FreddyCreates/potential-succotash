@@ -227,3 +227,44 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 
   return true;
 });
+
+/* -- Production 24/7 Keep-Alive ---------------------------------------- */
+(function () {
+  var ALARM_NAME = 'organism-dashboard-heartbeat';
+  var ALARM_PERIOD = 0.4; /* minutes -- fires every ~24 seconds to beat Chrome's 30s kill timer */
+
+  chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
+
+  chrome.alarms.onAlarm.addListener(function (alarm) {
+    if (alarm.name !== ALARM_NAME) return;
+    /* Re-initialize engine if it was garbage collected */
+    if (!globalThis.organismDashboard) {
+      globalThis.organismDashboard = new OrganismDashboardEngine();
+      console.log('[Organism Dashboard] Engine re-initialized by keepalive alarm');
+    }
+    /* Persist state snapshot */
+    try {
+      chrome.storage.local.set({
+        'organism-dashboard_state': {
+          heartbeatCount: globalThis.organismDashboard.heartbeatCount || globalThis.organismDashboard.state?.heartbeatCount || 0,
+          lastAlive: Date.now(),
+          uptime: Date.now() - (globalThis.organismDashboard.state?.startTime || globalThis.organismDashboard.startTime || Date.now())
+        }
+      });
+    } catch (e) { /* storage not available in some contexts */ }
+  });
+
+  /* Restore state on startup */
+  chrome.storage.local.get('organism-dashboard_state', function (data) {
+    if (data && data['organism-dashboard_state']) {
+      console.log('[Organism Dashboard] Restored from previous session \u2014 last alive: ' +
+        new Date(data['organism-dashboard_state'].lastAlive).toISOString());
+    }
+  });
+
+  /* Also re-init on install/update */
+  chrome.runtime.onInstalled.addListener(function () {
+    chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
+    console.log('[Organism Dashboard] Installed/updated \u2014 24/7 keepalive active');
+  });
+})();

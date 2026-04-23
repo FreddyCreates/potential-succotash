@@ -17,3 +17,4 @@ export { EdgeMeshIntelligenceProtocol } from './edge-mesh-intelligence-protocol.
 export { VisualSceneIntelligenceProtocol } from './visual-scene-intelligence-protocol.js';
 export { MemoryLineageProtocol } from './memory-lineage-protocol.js';
 export { OrganismLifecycleProtocol } from './organism-lifecycle-protocol.js';
+export { OrganismMarketplaceProtocol } from './organism-marketplace-protocol.js';

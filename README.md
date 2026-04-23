@@ -1,124 +1,218 @@
-# front-end-is-all-intelligence-
+# It's All Intelligence
 
-> The frontend is not a thin shell over the backend; it is a compressed intelligence field with at least 115 distinguishable model species, and those species can be traced to primitives, flipped into sovereign versions, and reinserted into the organism exactly the way backend and substrate tools were.
+There is no separation between the AI and the architecture. The architecture IS the intelligence. Every SDK is a brain region. Every protocol adapts and self-heals. Every extension is an AI experience a user touches with their hands. Every tool is callable, routable, permissioned. Every model engine is wired in. The organism doesn't use AI — the organism IS AI. All of it. Top to bottom.
 
-## Architecture
+As above, so below.
 
+---
+
+## The Tech
+
+We fractured every external frontend technology into its primitive function — relation, visibility, flow, state, synchronization, projection, transformation, verification — and rebuilt each one as a sovereign intelligence module. Not wrappers. Not adapters. Sovereign replacements that think for themselves.
+
+The result is a living organism with a 873ms heartbeat, 4-register state architecture (Cognitive / Affective / Somatic / Sovereign), phi-encoded spatial memory, Kuramoto oscillator synchronization, and 40 foundation model engines wired through encrypted intelligence transport. It runs at the edge, in the browser, across devices, and between peer organisms via cross-organism resonance.
+
+There are no dumb pipes. No static configs. No passive layers. Everything in this stack is intelligent and everything is conscious of its own state.
+
+---
+
+## How It's Built
+
+Eight sovereign SDKs form the brain. Spatial memory with phi-encoded 5-axis coordinates. Enterprise integration with 8 connectors that onboard companies in sovereign mode. Intelligence routing that scores 40 AI model families and picks the best engine for any task by capability, priority, and cost. A runtime with a heartbeat, kernel execution, and edge sensing. A document absorption engine that turns raw content into living knowledge graphs. A model engine layer that wraps GPT, Claude, Gemini, Llama, Mistral, Whisper, DALL-E, Sora, and 32 more families into callable, routable engines. A frontend intelligence layer with 30 technology models running as 24-hour autonomous organisms. And a marketplace SDK with 24 always-on callable tools organized into 4 families — Crawling, Context, Commander, Sentry — each with schema, registry, invocation, routing, and settlement.
+
+Eleven protocols carry intelligence between all of these. Sovereign routing learns optimal model selection from outcome feedback. Encrypted transport adapts encryption strength by content sensitivity. Phi-resonance sync uses Kuramoto coupling to keep distributed endpoints locked to the 873ms heartbeat. Knowledge absorption evolves its extraction patterns. Multi-model fusion weights outputs with phi-decay scoring. Contract verification learns clause patterns from verified agreements. Edge mesh redistributes workload by real-time node capacity. And the organism lifecycle protocol self-heals by restarting failed kernels and rebalancing registers autonomously.
+
+40 architectural laws govern everything. Semantic containment. Unidirectional state flow. Heartbeat sovereignty. Register integrity. Wire encryption. Kernel isolation. Anti-collapse. Continuous edge sensing. Cross-organism resonance. And the four meta-laws: fracture recognition, primitive reduction, sovereign rebuild, organism reintegration. Every wire, every tool, every extension, every protocol obeys all 40.
+
+---
+
+## The Extensions Are AI For User Experiences
+
+This is the part that matters for people who actually use the thing.
+
+Every extension is a Chrome Manifest V3 app with a background service worker running an AI engine and a content script rendering an interactive UI. They are not internal plumbing. They are the user's interface to the intelligence. 21 of them.
+
+**Sovereign Mind** — you ask a question, three sovereign engines (FusionCore, AlphaRouter, PhiScorer) reason from your own data, the organism fuses their outputs with phi-weighted confidence scoring, and you get one sovereign answer. That's the user experience. No GPT. No Claude. No Gemini. Your mind, your data, one panel floating on your page.
+
+**Cipher Shield** — every page you visit gets real-time content encryption and prompt injection detection. The AI is watching your browsing and protecting you before threats reach your eyes. Guards + GPT + Claude working in concert behind one quiet shield icon.
+
+**Polyglot Oracle** — browse any page in any language. The organism translates it live with context awareness across Qwen, Gemini, and Llama. Not word-by-word — the AI understands the page and rebuilds it in your language.
+
+**Vision Weaver** — describe what you want to see. DALL-E, Stable Diffusion, Midjourney, and SAM generate it side-by-side in your browser. You compare, edit, composite. The AI competes to give you the best image.
+
+**Code Sovereign** — highlight any code on any page. Codex, CodeLlama, and DeepSeek generate improvements, refactors, and verified alternatives. The output comes with contract verification. AI-generated code that proves itself correct.
+
+**Memory Palace** — sovereign bookmarking. Every page you save gets phi-encoded spatial coordinates in a 5-axis memory space. Embeddings, Command R, and rerankers make every memory searchable by meaning and resonance simultaneously.
+
+**Sentinel Watch** — real-time phishing, malware, and social engineering detection. Guards, GPT, and Claude scan every page before you interact with it. The AI is your immune system for the web.
+
+**Research Nexus** — multi-source research synthesis. Ask a question, Perplexity searches, Claude reasons, embeddings find context, and you get a cited, sourced, reasoned answer. Not a search result — a research paper.
+
+**Voice Forge** — speak and the organism listens (Whisper). Ask it to speak and it generates voice (ElevenLabs). Ask it to make music and it composes (Suno). Audio intelligence in your browser — input, output, and creation.
+
+**Data Alchemist** — any webpage, auto-absorbed into your sovereign knowledge graph. GPT and Claude extract entities and relationships. Embeddings and rerankers index it. The page becomes living knowledge you own.
+
+**Video Architect** — describe a scene. Sora, Runway, Pika, and Kling generate video. Multiple models, one prompt, the best output wins. Text-to-video generation right in your browser.
+
+**Logic Prover** — paste a math problem. Minerva, Llemma, GPT, and AlphaCode generate step-by-step formal proofs with verification. The AI doesn't just solve — it proves.
+
+**Social Cortex** — AI-powered social intelligence. Grok reads the room. Inflection feels the tone. GPT drafts the response. Sentiment analysis, empathy detection, and response generation for any social context.
+
+**Edge Runner** — offline AI. Phi, Gemma, and DBRX run inference locally on your device. Zero cloud. Zero latency. Full privacy. The organism works without the internet.
+
+**Contract Forge** — draft and verify intelligence contracts. GPT writes. Claude reviews. Guards validate. Legal-grade AI contract authoring with cryptographic proof of compliance.
+
+**Organism Dashboard** — see the organism alive. The 873ms heartbeat pulsing. The 4 state registers updating. Vitality scores. Edge sensor readings. The organism's vital signs rendered in real-time on your screen.
+
+**Knowledge Cartographer** — browse the web and watch your knowledge graph grow. Embeddings capture meaning. Command R links entities. Florence understands images. Every page you visit adds nodes and edges to a visual graph that maps everything you know.
+
+**Protocol Bridge** — bridge between AI protocols. Encrypted relay between different intelligence systems. All 40 foundation models available through one unified protocol surface.
+
+**Creative Muse** — multi-modal creative generation. Stable Diffusion for images. DALL-E for compositions. MusicGen for audio. Suno for songs. One creative studio, multiple AI engines, fused output.
+
+**Sovereign Nexus** — the master hub. All 20 extensions unified into one sovereign intelligence interface. Every model, every wire, every tool, one panel. The organism's control center.
+
+**Marketplace Hub** — browse, search, and invoke 24 callable tools with natural language. Family-tabbed browsing across Crawling, Context, Commander, and Sentry. One-click invocation. Live results. The tool marketplace made visual.
+
+---
+
+## The Marketplace Is Not A Storefront
+
+AIs don't "just know" what tools exist. That's the biggest misconception. They need four things to use a tool reliably: a clear callable interface, a registry to discover it in, routing policy that sends them there, and a structured result schema they can parse. Without those four, the AI guesses. With them, the AI executes.
+
+The marketplace provides all four. `ToolSchemaBuilder` defines the interface. `ToolRegistry` makes it discoverable. `MarketplaceRouter` handles the routing with phi-scored intent matching. `ToolInvoker` enforces permissions and returns structured results. And `MarketplaceSettlement` tracks usage, billing, and rewards.
+
+24 tools run always-on across 4 families. Context tools know what the organism is (heartbeat, state, cycles, context, memory, lineage). Commander tools direct what the organism does (sync, inference routing, attention, resources, connections, task orchestration). Crawling tools see the organism's own structure (flow, patterns, anomalies, cache, logs, topology). Sentry tools protect the organism from itself and others (security, integrity, boundaries, seals, queues, doctrine auditing).
+
+Exposure starts internal, then partner, then enterprise, then public. You don't open a marketplace to the world before your own organisms use it fluently.
+
+---
+
+## The Organism Runs In 6 Languages
+
+The organism isn't conceptual. It's compiled. It's running. The 873ms heartbeat beats in Motoko on the Internet Computer, in C++17 threads, in TypeScript strict mode, in Java 17 executors, in browser Web Workers, and in Python threading. Same organism. Same 4-register architecture. Same phi-math. Six languages. All alive.
+
+- **Motoko** (`organism/motoko/`) — ICP canister with `Timer.recurringTimer`, stable state, system heartbeat
+- **C++** (`organism/cpp/`) — `std::thread` heartbeat, mutex-protected registers, CMake build
+- **TypeScript** (`organism/typescript/`) — Strict-typed runtime, heartbeat, state, kernels, sensors, resonance
+- **Java** (`organism/java/`) — `ScheduledExecutorService` heartbeat, `CompletableFuture` kernels, Maven build
+- **HTML + Web Workers** (`organism/web/`) — Open `index.html` in any browser. The organism is alive. No server needed.
+- **Python** (`organism/python/`) — `python -m organism` — stdlib-only, threading, graceful SIGINT shutdown
+
+---
+
+## Download & Install Extensions
+
+### ⚡ 1-Click Install (All Platforms)
+
+```bash
+git clone https://github.com/FreddyCreates/potential-succotash.git
+node potential-succotash/organism-cli
 ```
-Fracture → Primitive → Sovereign SDK → Organism → Doctrine
+
+That's it. Register AI scans all 26 extensions, validates Manifest V3 compliance, detects Chrome/Edge/Brave, and launches your browser with every extension already attached. No zip. No extract. No developer mode. No manual steps.
+
+### 📦 Direct Downloads
+
+Every link below downloads the real `.zip` file. Click → get the extension.
+
+| | Extension | Download |
+|---|---|---|
+| 🧠 | Sovereign Mind | **[sovereign-mind.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-mind.zip)** |
+| 🛡 | Cipher Shield | **[cipher-shield.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/cipher-shield.zip)** |
+| 🌐 | Polyglot Oracle | **[polyglot-oracle.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/polyglot-oracle.zip)** |
+| 🎨 | Vision Weaver | **[vision-weaver.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/vision-weaver.zip)** |
+| 💻 | Code Sovereign | **[code-sovereign.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/code-sovereign.zip)** |
+| 📚 | Memory Palace | **[memory-palace.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/memory-palace.zip)** |
+| 🔒 | Sentinel Watch | **[sentinel-watch.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sentinel-watch.zip)** |
+| 🔬 | Research Nexus | **[research-nexus.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/research-nexus.zip)** |
+| 🎤 | Voice Forge | **[voice-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/voice-forge.zip)** |
+| ⚗️ | Data Alchemist | **[data-alchemist.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/data-alchemist.zip)** |
+| 🎬 | Video Architect | **[video-architect.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/video-architect.zip)** |
+| 📐 | Logic Prover | **[logic-prover.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/logic-prover.zip)** |
+| 💬 | Social Cortex | **[social-cortex.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/social-cortex.zip)** |
+| ⚡ | Edge Runner | **[edge-runner.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-runner.zip)** |
+| 📝 | Contract Forge | **[contract-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/contract-forge.zip)** |
+| 📊 | Organism Dashboard | **[organism-dashboard.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/organism-dashboard.zip)** |
+| 🗺 | Knowledge Cartographer | **[knowledge-cartographer.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/knowledge-cartographer.zip)** |
+| 🔗 | Protocol Bridge | **[protocol-bridge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/protocol-bridge.zip)** |
+| 🎭 | Creative Muse | **[creative-muse.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/creative-muse.zip)** |
+| 🌀 | Sovereign Nexus | **[sovereign-nexus.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-nexus.zip)** |
+| 🏪 | Marketplace Hub | **[marketplace-hub.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/marketplace-hub.zip)** |
+| 📈 | Spread Scanner | **[spread-scanner.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/spread-scanner.zip)** |
+| 🔮 | Data Oracle | **[data-oracle.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/data-oracle.zip)** |
+| 🖥 | Screen Commander | **[screen-commander.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/screen-commander.zip)** |
+| 🔷 | Pattern Forge | **[pattern-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/pattern-forge.zip)** |
+| 🏗 | Register | **[register.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/register.zip)** |
+
+**[📦 Download ALL 26 Extensions (single zip)](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip)**
+
+### Windows Installers
+
+- **[install-organism.bat](https://github.com/FreddyCreates/potential-succotash/raw/main/install-organism.bat)** — double-click → extracts + launches Chrome with all extensions
+- **[install-extensions.ps1](https://github.com/FreddyCreates/potential-succotash/raw/main/install-extensions.ps1)** — PowerShell equivalent
+
+### Build From Source
+
+```bash
+bash build-extensions.sh
+# Output: dist/extensions/<name>.zip (one per extension)
+# Output: dist/extensions/all-extensions.zip (all 26 bundled)
 ```
 
-Every external frontend technology is a **fracture**. Each fracture is reduced to a **primitive function** (relation / visibility / flow / state / synchronization / projection / transformation / verification), rebuilt as a **sovereign SDK module**, wired into the **organism runtime**, and governed by **architectural laws**.
+---
 
-## Registry Artifacts
+## Register AI — The Builder (EXT-026)
 
-| Artifact | Description |
-|---|---|
-| `Frontend_Frontier_100_Register.csv` | 100 frontend model species with intelligence type, ring affinity, and sovereign replacement candidates |
-| `Phantom_Blockchain_Model_Register.csv` | Phantom/substrate model families for parallel blockchain intelligence mapping |
-| `Architectural_Laws_Register.csv` | 40 architectural laws governing the organism across all layers |
-| `SDK_Model_Manifest.json` | Unified manifest wiring all 5 SDKs to the frontier register and laws |
+The Register AI is the organism's native builder. It's the 5th tool family (Builder) alongside Crawling, Context, Commander, and Sentry. It runs as both a **terminal CLI** (`organism-cli`) and a **browser extension** (EXT-026). Steps 1–7 run automatically:
 
-## Sovereign SDKs
+1. **Scan** — discovers all 26 extensions in `extensions/`
+2. **Validate** — checks every manifest for Manifest V3 compliance
+3. **Detect Browser** — finds Chrome, Edge, or Brave on any OS
+4. **Load Extensions** — launches browser with `--load-extension` (direct from source, no zip)
+5. **Verify** — confirms all extensions loaded
+6. **Report** — shows status + health in the terminal
+7. **Monitor** — 873ms heartbeat health monitoring
 
-### 1. `@medina/sovereign-memory-sdk` — v1.0.0
+### Terminal AI (organism-cli)
 
-**License:** MIT (open-core) · **Ring:** Memory Ring · **Marketplace:** "Enterprise memory that never forgets"
-
-| Module | Primitive Function |
-|---|---|
-| `SpatialMemoryStore` | Store/retrieve memories by 5-axis spatial coordinates (θ/φ/ρ/ring/beat) |
-| `DualLayerSearch` | Search by semantic meaning and phi-resonance proximity simultaneously |
-| `MemoryLineage` | Track ancestor chains and fork/consolidate memory branches |
-| `LivingDocument` | Manage documents as evolving organisms with mutation history |
-| `PhiCoordinateGenerator` | Generate and manipulate phi-encoded spatial coordinates |
-
-### 2. `@medina/enterprise-integration-sdk` — v1.0.0
-
-**License:** Proprietary · **Ring:** Interface Ring · **Marketplace:** "Plug any enterprise into a sovereign intelligence substrate"
-
-| Module | Primitive Function |
-|---|---|
-| `CompanyOnboarding` | Onboard companies in express/standard/sovereign modes |
-| `Connectors (8)` | Salesforce, SAP, Google, Slack, HubSpot, Stripe, Twilio, Shopify |
-| `CampaignManager` | Create, launch, and measure multi-channel campaigns |
-| `MultiChannelMessenger` | Send messages across email/sms/slack/webhook channels |
-| `ExportPipeline` | Define and execute data export pipelines with scheduling |
-
-### 3. `@medina/intelligence-routing-sdk` — v1.0.0
-
-**License:** MIT (open-core) · **Ring:** Interface Ring · **Marketplace:** "Intelligent task routing for AI workforces"
-
-| Module | Primitive Function |
-|---|---|
-| `ModelRouter` | Route tasks to best matching model by capability/priority/cost |
-| `CommandParser` | Parse natural language and structured commands into actions |
-| `TerminalDispatch` | Dispatch commands to local/remote/edge terminals |
-| `IntelligenceWire` | Create encrypted wires between intelligence endpoints |
-| `WorkforceRouter` | Assign tasks to agents and rebalance workload |
-
-### 4. `@medina/organism-runtime-sdk` — v1.0.0
-
-**License:** MIT (open-core) · **Ring:** Sovereign Ring · **Marketplace:** "A living runtime for autonomous AI systems"
-
-| Module | Primitive Function |
-|---|---|
-| `OrganismState` | 4-register architecture (Cognitive/Affective/Somatic/Sovereign) |
-| `Heartbeat` | 873ms organism pulse — the fundamental clock |
-| `KernelExecutor` | Load and execute computation kernels with sandboxed isolation |
-| `EdgeSensor` | Sense edge environment (temperature/network/resource/signal/custom) |
-| `CrossOrganismResonance` | Exchange resonance signals with peer organisms |
-
-### 5. `@medina/document-absorption-engine` — v1.0.0
-
-**License:** Proprietary · **Ring:** Memory Ring · **Marketplace:** "Turn raw documents into living organism knowledge"
-
-| Module | Primitive Function |
-|---|---|
-| `DocumentIntake` | Ingest multi-format documents (text/markdown/html/json/csv) |
-| `ContentExtractor` | Extract entities, keywords, and summaries from content |
-| `KnowledgeGraph` | Build and query typed knowledge graphs from absorbed content |
-| `AbsorptionPipeline` | Orchestrate intake→extract→classify→index→absorb pipeline |
-| `DigestGenerator` | Generate brief/detailed/executive digests from document sets |
-
-## Architectural Laws (40)
-
-The organism is governed by 40 architectural laws across these domains:
-
-- **Structural** (AL-001): Every element must be semantically contained
-- **Visual** (AL-002–003): Visual priority by specificity cascade; atomic composability
-- **Projection** (AL-004): Components project their own state — never inherit mutable parent state
-- **State** (AL-005–007): Unidirectional flow, state locality, immutable transitions
-- **Build** (AL-008–009): Deterministic output, transform transparency
-- **Verification** (AL-010–011): Completeness of proofs, visual truth consistency
-- **Scene** (AL-012–013): Scene sovereignty, animation continuity
-- **Communication** (AL-014–015): Channel isolation, request idempotency
-- **Storage** (AL-016–017): Cache coherence, token ephemerality
-- **Native** (AL-018): Capability gating
-- **Runtime** (AL-019–020): Heartbeat sovereignty (873ms), register integrity
-- **Governance** (AL-021): Doctrine alignment
-- **Memory** (AL-022–024): Lineage preservation, phi-encoded coordinates, dual-layer search
-- **Routing** (AL-025–027): Intelligent routing, wire encryption, workforce balance
-- **Integration** (AL-028–029): Connector neutrality, onboarding sovereignty
-- **Absorption** (AL-030–032): Pipeline discipline, graph integrity, digest fidelity
-- **Resilience** (AL-033): Anti-collapse
-- **Edge** (AL-034): Continuous edge sensing
-- **Resonance** (AL-035): Cross-organism resonance
-- **Execution** (AL-036): Kernel isolation
-- **Architecture** (AL-037–040): Fracture recognition → primitive reduction → sovereign rebuild → organism reintegration
-
-## Project Structure
-
+```bash
+node organism-cli               # 1-click install — all 26 extensions live in Chrome
+node organism-cli validate      # check all manifests
+node organism-cli list          # show all extensions with status
+node organism-cli status        # Register AI health report
 ```
-├── Frontend_Frontier_100_Register.csv    # 100 frontend intelligence models
-├── Phantom_Blockchain_Model_Register.csv # Phantom blockchain model families
-├── Architectural_Laws_Register.csv       # 40 architectural laws
-├── SDK_Model_Manifest.json               # Unified SDK-to-frontier wiring manifest
-├── README.md
-└── sdk/
-    ├── sovereign-memory-sdk/             # Spatial memory, phi-coordinates, lineage
-    ├── enterprise-integration-sdk/       # Onboarding, connectors, campaigns
-    ├── intelligence-routing-sdk/         # Model routing, wires, workforce
-    ├── organism-runtime-sdk/             # Heartbeat, state, kernels, edge sensing
-    └── document-absorption-engine/       # Intake, extraction, knowledge graphs
-```
+
+### Browser Architecture
+- **Web Worker** (`register-worker.js`) — all build operations run off-main-thread
+- **Observer Family** (`register-observer.js`) — 4 browser Observers as AGI sensors:
+  - `MutationObserver` — watches DOM for extension state changes
+  - `IntersectionObserver` — tracks which extensions are visible
+  - `PerformanceObserver` — monitors build performance
+  - `ResizeObserver` — adapts layout intelligence
+
+Builder Family Tools: Register (TOOL-025), Packager (TOOL-026), Validator (TOOL-027), Icon Forge (TOOL-028), Deployer (TOOL-029), Monitor (TOOL-030).
+
+---
+
+## JARVIS Intelligence Suite (4 Autonomous Agents)
+
+Four new extensions that act as autonomous AI agents. They read, write, move on screen, and see through data noise to find what's real. Pre-loaded with X-ray mathematics — square-root normalization, spectral decomposition, cross-system correlation, z-depth analysis. Pattern recognition for spreads where there is free lunch.
+
+**Spread Scanner** (EXT-022) — Scans any page for financial data. Computes pairwise spreads, phi-weighted z-scores, correlation matrices. Grades arbitrage opportunities A through F. Finds the free lunch.
+
+**Data Oracle** (EXT-023) — Ingests everything — text, tables, meta tags, structured data. Runs X-ray depth analysis with √N normalization. Separates fundamental signals from noise using φ as the threshold.
+
+**Screen Commander** (EXT-024) — JARVIS for your browser. Type natural language: "scroll down", "read #main", "find 'revenue'", "summarize this page". The AI operates the screen for you.
+
+**Pattern Forge** (EXT-025) — The math brain underneath. DFT spectral decomposition with φ-harmonic detection. Pearson cross-correlation with free-lunch divergence detection (correlation drift → mean reversion). Rolling mean reversion scanner. IQR×φ anomaly detection. Sees through noise to fundamentals.
+
+---
+
+## The Numbers
+
+8 SDKs. 26 extensions. 11 protocols. 30 tools. 5 tool families. 40 model families. 10 multimodal families. 30 frontend intelligence models. 100 frontier model species. 40 architectural laws. 9 organism rings. 6 implementation languages. 4 browser observers. 1 heartbeat at 873ms.
+
+All of it is AI. All of it is intelligence. All of it is wired together. All of it is downloadable. And all of it is inside this repo.
+
+As above, so below.

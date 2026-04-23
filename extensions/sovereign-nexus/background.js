@@ -343,3 +343,44 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 
   return true;
 });
+
+/* -- Production 24/7 Keep-Alive ---------------------------------------- */
+(function () {
+  var ALARM_NAME = 'sovereign-nexus-heartbeat';
+  var ALARM_PERIOD = 0.4; /* minutes -- fires every ~24 seconds to beat Chrome's 30s kill timer */
+
+  chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
+
+  chrome.alarms.onAlarm.addListener(function (alarm) {
+    if (alarm.name !== ALARM_NAME) return;
+    /* Re-initialize engine if it was garbage collected */
+    if (!globalThis.sovereignNexus) {
+      globalThis.sovereignNexus = new SovereignNexusEngine();
+      console.log('[Sovereign Nexus] Engine re-initialized by keepalive alarm');
+    }
+    /* Persist state snapshot */
+    try {
+      chrome.storage.local.set({
+        'sovereign-nexus_state': {
+          heartbeatCount: globalThis.sovereignNexus.heartbeatCount || globalThis.sovereignNexus.state?.heartbeatCount || 0,
+          lastAlive: Date.now(),
+          uptime: Date.now() - (globalThis.sovereignNexus.state?.startTime || globalThis.sovereignNexus.startTime || Date.now())
+        }
+      });
+    } catch (e) { /* storage not available in some contexts */ }
+  });
+
+  /* Restore state on startup */
+  chrome.storage.local.get('sovereign-nexus_state', function (data) {
+    if (data && data['sovereign-nexus_state']) {
+      console.log('[Sovereign Nexus] Restored from previous session \u2014 last alive: ' +
+        new Date(data['sovereign-nexus_state'].lastAlive).toISOString());
+    }
+  });
+
+  /* Also re-init on install/update */
+  chrome.runtime.onInstalled.addListener(function () {
+    chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
+    console.log('[Sovereign Nexus] Installed/updated \u2014 24/7 keepalive active');
+  });
+})();

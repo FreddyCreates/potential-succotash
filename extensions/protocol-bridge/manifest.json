@@ -2,16 +2,36 @@
   "manifest_version": 3,
   "name": "Protocol Bridge",
   "version": "1.0.0",
-  "description": "Cross-Protocol Intelligence — All Foundation Models",
-  "permissions": ["activeTab", "webRequest", "storage"],
+  "description": "AI User Experience \u2014 Bridge between any AI protocol with encrypted relay through one unified intelligence surface",
+  "permissions": [
+    "activeTab",
+    "webRequest",
+    "storage",
+    "alarms"
+  ],
   "background": {
     "service_worker": "background.js"
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ]
     }
   ],
-  "minimum_chrome_version": "110"
+  "minimum_chrome_version": "110",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+    }
+  }
 }
