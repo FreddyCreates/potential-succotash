@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Vision Weaver",
   "version": "1.0.0",
-  "description": "Visual Intelligence Compositor — DALL-E + Stable Diffusion + Midjourney + SAM",
+  "description": "AI User Experience — Describe what you want to see and watch DALL-E, Stable Diffusion, Midjourney, and SAM generate it side-by-side",
   "permissions": [
     "activeTab",
     "storage",

@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Polyglot Oracle",
   "version": "1.0.0",
-  "description": "Multilingual Translation Intelligence — Qwen + Gemini + Llama",
+  "description": "AI User Experience — Browse any page in any language with live context-aware translation powered by Qwen + Gemini + Llama",
   "permissions": ["activeTab", "storage"],
   "background": {
     "service_worker": "background.js"

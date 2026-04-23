@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Logic Prover",
   "version": "1.0.0",
-  "description": "Mathematical Proof Intelligence — Minerva-Llemma + GPT + AlphaCode",
+  "description": "AI User Experience — Paste any math problem and get step-by-step formal proofs with verification",
   "permissions": ["activeTab", "storage", "clipboardWrite"],
   "background": {
     "service_worker": "background.js"

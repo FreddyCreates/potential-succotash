@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Video Architect",
   "version": "1.0.0",
-  "description": "Video Intelligence Generator — Sora + Runway + Pika + Kling",
+  "description": "AI User Experience — Describe a scene and watch Sora, Runway, Pika, and Kling generate competing videos in your browser",
   "permissions": ["activeTab", "storage", "downloads"],
   "background": {
     "service_worker": "background.js"

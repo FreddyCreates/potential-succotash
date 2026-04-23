@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Contract Forge",
   "version": "1.0.0",
-  "description": "Intelligence Contract Studio — GPT + Claude + Guards",
+  "description": "AI User Experience — Draft and verify intelligence contracts with AI-powered legal-grade review and cryptographic compliance",
   "permissions": ["activeTab", "storage", "downloads"],
   "background": {
     "service_worker": "background.js"

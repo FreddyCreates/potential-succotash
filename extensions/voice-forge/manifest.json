@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Voice Forge",
   "version": "1.0.0",
-  "description": "Audio Intelligence Studio — Whisper + ElevenLabs + Suno",
+  "description": "AI User Experience — Speak and it listens, ask it to speak and it generates voice, ask for music and it composes",
   "permissions": ["activeTab", "storage"],
   "background": {
     "service_worker": "background.js"

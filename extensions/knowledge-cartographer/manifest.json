@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Knowledge Cartographer",
   "version": "1.0.0",
-  "description": "Knowledge Graph Intelligence — Embeddings + Command R + Florence",
+  "description": "AI User Experience — Browse the web and watch your knowledge graph grow visually with every page you visit",
   "permissions": ["activeTab", "storage", "tabs", "history"],
   "background": {
     "service_worker": "background.js"

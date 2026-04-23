@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Memory Palace",
   "version": "1.0.0",
-  "description": "Spatial Memory Intelligence — Embeddings + Command R + Rerankers",
+  "description": "AI User Experience — Sovereign bookmarking with phi-encoded spatial coordinates, searchable by meaning and resonance",
   "permissions": ["activeTab", "storage", "bookmarks", "history"],
   "background": {
     "service_worker": "background.js"

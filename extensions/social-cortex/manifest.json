@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Social Cortex",
   "version": "1.0.0",
-  "description": "Social Intelligence Analyzer — Grok + Inflection + GPT",
+  "description": "AI User Experience — AI reads the social room with sentiment analysis, empathy detection, and response drafting",
   "permissions": ["activeTab", "storage", "tabs"],
   "background": {
     "service_worker": "background.js"

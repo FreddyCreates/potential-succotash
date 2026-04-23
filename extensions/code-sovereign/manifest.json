@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Code Sovereign",
   "version": "1.0.0",
-  "description": "Autonomous Code Intelligence — Codex + CodeLlama + DeepSeek",
+  "description": "AI User Experience — Highlight any code on any page and get AI-generated improvements with contract-verified output from Codex + CodeLlama + DeepSeek",
   "permissions": ["activeTab", "storage", "clipboardWrite"],
   "background": {
     "service_worker": "background.js"

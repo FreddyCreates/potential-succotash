@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Edge Runner",
   "version": "1.0.0",
-  "description": "Edge Inference Intelligence — Phi + Gemma + DBRX",
+  "description": "AI User Experience — Offline local AI inference with zero cloud, zero latency, full privacy on your device",
   "permissions": ["activeTab", "storage"],
   "background": {
     "service_worker": "background.js"

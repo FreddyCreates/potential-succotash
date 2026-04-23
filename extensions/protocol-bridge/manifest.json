@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Protocol Bridge",
   "version": "1.0.0",
-  "description": "Cross-Protocol Intelligence — All Foundation Models",
+  "description": "AI User Experience — Bridge between any AI protocol with encrypted relay through one unified intelligence surface",
   "permissions": ["activeTab", "webRequest", "storage"],
   "background": {
     "service_worker": "background.js"

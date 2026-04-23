@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Research Nexus",
   "version": "1.0.0",
-  "description": "Search-Augmented Research Intelligence — Perplexity + Claude + Embeddings",
+  "description": "AI User Experience — Ask a question, get cited multi-source research synthesis from Perplexity + Claude + Embeddings",
   "permissions": ["activeTab", "storage", "tabs"],
   "background": {
     "service_worker": "background.js"

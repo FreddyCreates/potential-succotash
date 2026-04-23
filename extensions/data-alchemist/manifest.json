@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Data Alchemist",
   "version": "1.0.0",
-  "description": "Document Absorption Intelligence — GPT + Claude + Embeddings + Rerankers",
+  "description": "AI User Experience — Any webpage auto-absorbed into your sovereign knowledge graph with entity extraction and indexing",
   "permissions": ["activeTab", "storage", "downloads"],
   "background": {
     "service_worker": "background.js"

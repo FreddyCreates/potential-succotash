@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Creative Muse",
   "version": "1.0.0",
-  "description": "Generative Art Intelligence — SD + DALL-E + MusicGen + Suno",
+  "description": "AI User Experience — Multi-modal creative studio generating images, music, and text fused from multiple AI engines",
   "permissions": ["activeTab", "storage", "downloads"],
   "background": {
     "service_worker": "background.js"

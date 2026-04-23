@@ -6,7 +6,8 @@
  * background.js (engine), content.js (DOM UI), and manifest.json.
  *
  * Extensions are AI for user experiences — each one provides an intelligent,
- * interactive interface that users engage with directly.
+ * interactive interface that users engage with directly. They are not internal
+ * wiring. They are what users see, touch, hear, and talk to.
  *
  * This index maps every extension ID to its directory and metadata
  * for programmatic discovery and organism-level orchestration.
@@ -15,27 +16,27 @@
  */
 
 const EXTENSIONS = [
-  { id: 'EXT-001', slug: 'sovereign-mind', name: 'Sovereign Mind', engines: ['GPT', 'Claude', 'Gemini'], ring: 'Interface Ring', wire: 'intelligence-wire/fusion' },
-  { id: 'EXT-002', slug: 'cipher-shield', name: 'Cipher Shield', engines: ['Guards', 'GPT', 'Claude'], ring: 'Counsel Ring', wire: 'intelligence-wire/cipher' },
-  { id: 'EXT-003', slug: 'polyglot-oracle', name: 'Polyglot Oracle', engines: ['Qwen', 'Gemini', 'Llama'], ring: 'Interface Ring', wire: 'intelligence-wire/polyglot' },
-  { id: 'EXT-004', slug: 'vision-weaver', name: 'Vision Weaver', engines: ['DALL-E', 'SD', 'Midjourney', 'SAM'], ring: 'Geometry Ring', wire: 'intelligence-wire/vision' },
-  { id: 'EXT-005', slug: 'code-sovereign', name: 'Code Sovereign', engines: ['Codex', 'CodeLlama', 'DeepSeek'], ring: 'Build Ring', wire: 'intelligence-wire/code' },
-  { id: 'EXT-006', slug: 'memory-palace', name: 'Memory Palace', engines: ['Embeddings', 'Command R', 'Rerankers'], ring: 'Memory Ring', wire: 'intelligence-wire/memory' },
-  { id: 'EXT-007', slug: 'sentinel-watch', name: 'Sentinel Watch', engines: ['Guards', 'GPT', 'Claude'], ring: 'Counsel Ring', wire: 'intelligence-wire/sentinel' },
-  { id: 'EXT-008', slug: 'research-nexus', name: 'Research Nexus', engines: ['Perplexity', 'Claude', 'Embeddings'], ring: 'Transport Ring', wire: 'intelligence-wire/research' },
-  { id: 'EXT-009', slug: 'voice-forge', name: 'Voice Forge', engines: ['Whisper', 'ElevenLabs', 'Suno'], ring: 'Native Capability Ring', wire: 'intelligence-wire/voice' },
-  { id: 'EXT-010', slug: 'data-alchemist', name: 'Data Alchemist', engines: ['GPT', 'Claude', 'Embeddings', 'Rerankers'], ring: 'Memory Ring', wire: 'intelligence-wire/absorb' },
-  { id: 'EXT-011', slug: 'video-architect', name: 'Video Architect', engines: ['Sora', 'Runway', 'Pika', 'Kling'], ring: 'Geometry Ring', wire: 'intelligence-wire/video' },
-  { id: 'EXT-012', slug: 'logic-prover', name: 'Logic Prover', engines: ['Minerva-Llemma', 'GPT', 'AlphaCode'], ring: 'Proof Ring', wire: 'intelligence-wire/proof' },
-  { id: 'EXT-013', slug: 'social-cortex', name: 'Social Cortex', engines: ['Grok', 'Inflection', 'GPT'], ring: 'Interface Ring', wire: 'intelligence-wire/social' },
-  { id: 'EXT-014', slug: 'edge-runner', name: 'Edge Runner', engines: ['Phi', 'Gemma', 'DBRX'], ring: 'Sovereign Ring', wire: 'intelligence-wire/edge' },
-  { id: 'EXT-015', slug: 'contract-forge', name: 'Contract Forge', engines: ['GPT', 'Claude', 'Guards'], ring: 'Counsel Ring', wire: 'intelligence-wire/contract' },
-  { id: 'EXT-016', slug: 'organism-dashboard', name: 'Organism Dashboard', engines: ['Heartbeat', 'OrganismState', 'EdgeSensor'], ring: 'Sovereign Ring', wire: 'intelligence-wire/organism' },
-  { id: 'EXT-017', slug: 'knowledge-cartographer', name: 'Knowledge Cartographer', engines: ['Embeddings', 'Command R', 'Florence'], ring: 'Memory Ring', wire: 'intelligence-wire/graph' },
-  { id: 'EXT-018', slug: 'protocol-bridge', name: 'Protocol Bridge', engines: ['All Foundation Models'], ring: 'Transport Ring', wire: 'intelligence-wire/bridge' },
-  { id: 'EXT-019', slug: 'creative-muse', name: 'Creative Muse', engines: ['SD', 'DALL-E', 'MusicGen', 'Suno'], ring: 'Geometry Ring', wire: 'intelligence-wire/muse' },
-  { id: 'EXT-020', slug: 'sovereign-nexus', name: 'Sovereign Nexus', engines: ['All 40 Foundation Models', 'Kuramoto'], ring: 'Sovereign Ring', wire: 'intelligence-wire/nexus' },
-  { id: 'EXT-021', slug: 'marketplace-hub', name: 'Marketplace Hub', engines: ['ToolRegistry', 'FamilyProfiles', 'MarketplaceRouter'], ring: 'Interface Ring', wire: 'intelligence-wire/marketplace' }
+  { id: 'EXT-001', slug: 'sovereign-mind', name: 'Sovereign Mind', engines: ['GPT', 'Claude', 'Gemini'], ring: 'Interface Ring', wire: 'intelligence-wire/fusion', userExperience: 'Ask anything — GPT, Claude, and Gemini answer simultaneously, fused into one sovereign answer with phi-weighted confidence scoring' },
+  { id: 'EXT-002', slug: 'cipher-shield', name: 'Cipher Shield', engines: ['Guards', 'GPT', 'Claude'], ring: 'Counsel Ring', wire: 'intelligence-wire/cipher', userExperience: 'Real-time content encryption and prompt injection defense — threats blocked before they reach your eyes' },
+  { id: 'EXT-003', slug: 'polyglot-oracle', name: 'Polyglot Oracle', engines: ['Qwen', 'Gemini', 'Llama'], ring: 'Interface Ring', wire: 'intelligence-wire/polyglot', userExperience: 'Browse any page in any language — live context-aware translation that rebuilds the page in your language' },
+  { id: 'EXT-004', slug: 'vision-weaver', name: 'Vision Weaver', engines: ['DALL-E', 'SD', 'Midjourney', 'SAM'], ring: 'Geometry Ring', wire: 'intelligence-wire/vision', userExperience: 'Describe what you want to see — multiple AI models generate images side-by-side for you to compare and edit' },
+  { id: 'EXT-005', slug: 'code-sovereign', name: 'Code Sovereign', engines: ['Codex', 'CodeLlama', 'DeepSeek'], ring: 'Build Ring', wire: 'intelligence-wire/code', userExperience: 'Highlight any code on any page — get AI-generated improvements and refactors with contract-verified output' },
+  { id: 'EXT-006', slug: 'memory-palace', name: 'Memory Palace', engines: ['Embeddings', 'Command R', 'Rerankers'], ring: 'Memory Ring', wire: 'intelligence-wire/memory', userExperience: 'Sovereign bookmarking — every save gets phi-encoded spatial coordinates, searchable by meaning and resonance' },
+  { id: 'EXT-007', slug: 'sentinel-watch', name: 'Sentinel Watch', engines: ['Guards', 'GPT', 'Claude'], ring: 'Counsel Ring', wire: 'intelligence-wire/sentinel', userExperience: 'Real-time phishing, malware, and social engineering detection on every page you visit' },
+  { id: 'EXT-008', slug: 'research-nexus', name: 'Research Nexus', engines: ['Perplexity', 'Claude', 'Embeddings'], ring: 'Transport Ring', wire: 'intelligence-wire/research', userExperience: 'Ask a question — get a cited, sourced, reasoned research synthesis from multiple search and reasoning engines' },
+  { id: 'EXT-009', slug: 'voice-forge', name: 'Voice Forge', engines: ['Whisper', 'ElevenLabs', 'Suno'], ring: 'Native Capability Ring', wire: 'intelligence-wire/voice', userExperience: 'Speak and the organism listens. Ask it to speak and it generates voice. Ask it to make music and it composes.' },
+  { id: 'EXT-010', slug: 'data-alchemist', name: 'Data Alchemist', engines: ['GPT', 'Claude', 'Embeddings', 'Rerankers'], ring: 'Memory Ring', wire: 'intelligence-wire/absorb', userExperience: 'Any webpage auto-absorbed into your sovereign knowledge graph — entities, relationships, and meaning extracted and indexed' },
+  { id: 'EXT-011', slug: 'video-architect', name: 'Video Architect', engines: ['Sora', 'Runway', 'Pika', 'Kling'], ring: 'Geometry Ring', wire: 'intelligence-wire/video', userExperience: 'Describe a scene — multiple video AI models generate it, the best output wins, text-to-video in your browser' },
+  { id: 'EXT-012', slug: 'logic-prover', name: 'Logic Prover', engines: ['Minerva-Llemma', 'GPT', 'AlphaCode'], ring: 'Proof Ring', wire: 'intelligence-wire/proof', userExperience: 'Paste any math problem — get step-by-step formal proofs with verification, the AI proves not just solves' },
+  { id: 'EXT-013', slug: 'social-cortex', name: 'Social Cortex', engines: ['Grok', 'Inflection', 'GPT'], ring: 'Interface Ring', wire: 'intelligence-wire/social', userExperience: 'AI reads the room — sentiment analysis, empathy detection, and response drafting for any social context' },
+  { id: 'EXT-014', slug: 'edge-runner', name: 'Edge Runner', engines: ['Phi', 'Gemma', 'DBRX'], ring: 'Sovereign Ring', wire: 'intelligence-wire/edge', userExperience: 'Offline AI — run inference locally on your device with zero cloud, zero latency, full privacy' },
+  { id: 'EXT-015', slug: 'contract-forge', name: 'Contract Forge', engines: ['GPT', 'Claude', 'Guards'], ring: 'Counsel Ring', wire: 'intelligence-wire/contract', userExperience: 'Draft and verify intelligence contracts — AI writes, reviews, and validates with cryptographic compliance proof' },
+  { id: 'EXT-016', slug: 'organism-dashboard', name: 'Organism Dashboard', engines: ['Heartbeat', 'OrganismState', 'EdgeSensor'], ring: 'Sovereign Ring', wire: 'intelligence-wire/organism', userExperience: 'See the organism alive — 873ms heartbeat pulsing, 4 state registers updating, vitality scores and edge sensors in real-time' },
+  { id: 'EXT-017', slug: 'knowledge-cartographer', name: 'Knowledge Cartographer', engines: ['Embeddings', 'Command R', 'Florence'], ring: 'Memory Ring', wire: 'intelligence-wire/graph', userExperience: 'Browse the web and watch your knowledge graph grow — every page adds nodes and edges to a visual map of everything you know' },
+  { id: 'EXT-018', slug: 'protocol-bridge', name: 'Protocol Bridge', engines: ['All Foundation Models'], ring: 'Transport Ring', wire: 'intelligence-wire/bridge', userExperience: 'Bridge between any AI protocol — encrypted relay between different intelligence systems through one unified surface' },
+  { id: 'EXT-019', slug: 'creative-muse', name: 'Creative Muse', engines: ['SD', 'DALL-E', 'MusicGen', 'Suno'], ring: 'Geometry Ring', wire: 'intelligence-wire/muse', userExperience: 'Multi-modal creative studio — images, music, and text generated and fused by multiple AI engines into one creation' },
+  { id: 'EXT-020', slug: 'sovereign-nexus', name: 'Sovereign Nexus', engines: ['All 40 Foundation Models', 'Kuramoto'], ring: 'Sovereign Ring', wire: 'intelligence-wire/nexus', userExperience: 'The master hub — all 20 extensions unified into one sovereign intelligence interface, every model and every wire in one panel' },
+  { id: 'EXT-021', slug: 'marketplace-hub', name: 'Marketplace Hub', engines: ['ToolRegistry', 'FamilyProfiles', 'MarketplaceRouter'], ring: 'Interface Ring', wire: 'intelligence-wire/marketplace', userExperience: 'Browse, search, and invoke 24 callable tools with natural language — family-tabbed browsing, one-click invocation, live results' }
 ];
 
 /**

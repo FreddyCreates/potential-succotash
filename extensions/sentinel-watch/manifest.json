@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Sentinel Watch",
   "version": "1.0.0",
-  "description": "Security Intelligence Monitor — Guards + GPT + Claude",
+  "description": "AI User Experience — Real-time phishing, malware, and social engineering detection on every page you visit",
   "permissions": [
     "activeTab",
     "webRequest",
