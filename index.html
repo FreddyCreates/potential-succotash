@@ -308,6 +308,35 @@
   .wire-label { color: var(--dim); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .wire-target { color: var(--accent); font-weight: bold; }
 
+  .worker-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 0.8rem;
+    margin: 1rem 0;
+  }
+  .worker-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.8rem;
+    text-align: center;
+    transition: border-color 0.3s;
+  }
+  .worker-card.alive { border-color: var(--accent2); }
+  .worker-card.booting { border-color: #f0ad4e; }
+  .worker-card.error { border-color: #ff4757; }
+  .worker-card .wname { font-weight: bold; font-size: 0.9rem; margin-bottom: 0.3rem; text-transform: capitalize; }
+  .worker-card .wstatus { font-size: 0.75rem; color: var(--dim); }
+  .worker-card .wstatus .dot {
+    display: inline-block; width: 8px; height: 8px;
+    border-radius: 50%; margin-right: 4px; vertical-align: middle;
+  }
+  .worker-card .dot.alive { background: var(--accent2); }
+  .worker-card .dot.booting { background: #f0ad4e; }
+  .worker-card .dot.error { background: #ff4757; }
+  .worker-card .dot.unknown { background: #666; }
+  .worker-card .wbeats { font-size: 0.7rem; color: var(--dim); margin-top: 0.2rem; }
+
   /* ── Footer ───────────────────────────────────────── */
   .footer {
     text-align: center;
@@ -349,6 +378,7 @@
 <div class="stats">
   <div class="stat"><div class="num">25</div><div class="label">AI Extensions</div></div>
   <div class="stat"><div class="num">40+</div><div class="label">AI Engines Wired</div></div>
+  <div class="stat"><div class="num">5</div><div class="label">Web Workers</div></div>
   <div class="stat"><div class="num">0</div><div class="label">Servers Needed</div></div>
   <div class="stat"><div class="num">1</div><div class="label">Click to Install</div></div>
 </div>
@@ -409,15 +439,25 @@
 <!-- ═══════════════════ LIVE ENGINE DASHBOARD ═══════════════════ -->
 <div class="dashboard" id="engine-dashboard">
   <h2>🧬 Live Engine — Running Now</h2>
-  <p class="desc">This isn't a page — it's the product. 40 AI engine families are running in a Web Worker right now. Dispatch tasks, watch routing, monitor wires.</p>
+  <p class="desc">This isn't a page — it's the product. 5 permanent Web Workers running 40 AI engines, sovereign memory, protocol routing, health telemetry, and cryptography — all in your browser right now.</p>
 
   <div class="live-bar" id="live-bar">
     <div class="live-item"><span class="heartbeat-dot" id="hb-dot"></span><span class="lval" id="hb-status">booting…</span> Status</div>
     <div class="live-item"><span class="lval" id="hb-beat">0</span> Heartbeat</div>
     <div class="live-item"><span class="lval" id="hb-engines">0</span> Engines</div>
     <div class="live-item"><span class="lval" id="hb-wires">0</span> Wires</div>
+    <div class="live-item"><span class="lval" id="hb-workers">0/5</span> Workers</div>
     <div class="live-item"><span class="lval" id="hb-dispatched">0</span> Dispatched</div>
     <div class="live-item"><span class="lval" id="hb-uptime">0s</span> Uptime</div>
+  </div>
+
+  <h3 style="color:var(--accent2);font-size:0.95rem;margin-bottom:0.5rem;">⚙ Worker Status — 5 Permanent Web Workers</h3>
+  <div class="worker-grid" id="worker-grid">
+    <div class="worker-card booting"><div class="wname">🧠 Engine</div><div class="wstatus"><span class="dot booting"></span>booting</div><div class="wbeats">0 beats</div></div>
+    <div class="worker-card booting"><div class="wname">💾 Memory</div><div class="wstatus"><span class="dot booting"></span>booting</div><div class="wbeats">0 beats</div></div>
+    <div class="worker-card booting"><div class="wname">🔀 Routing</div><div class="wstatus"><span class="dot booting"></span>booting</div><div class="wbeats">0 beats</div></div>
+    <div class="worker-card booting"><div class="wname">📊 Telemetry</div><div class="wstatus"><span class="dot booting"></span>booting</div><div class="wbeats">0 beats</div></div>
+    <div class="worker-card booting"><div class="wname">🔐 Crypto</div><div class="wstatus"><span class="dot booting"></span>booting</div><div class="wbeats">0 beats</div></div>
   </div>
 
   <div class="dispatch-panel">
@@ -603,6 +643,27 @@ node organism-cli/organism.js install</code></pre>
 
   /* ── Boot the organism engine ───────────────────────────────── */
   var dispatchCount = 0;
+  var WORKER_ICONS = { engine: '🧠', memory: '💾', routing: '🔀', telemetry: '📊', crypto: '🔐' };
+
+  function renderWorkerCards(statuses) {
+    var grid = document.getElementById('worker-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    var aliveCount = 0;
+    for (var i = 0; i < statuses.length; i++) {
+      var w = statuses[i];
+      var icon = WORKER_ICONS[w.name] || '⚙';
+      var card = document.createElement('div');
+      card.className = 'worker-card ' + w.status;
+      card.innerHTML =
+        '<div class="wname">' + icon + ' ' + w.name.charAt(0).toUpperCase() + w.name.slice(1) + '</div>' +
+        '<div class="wstatus"><span class="dot ' + w.status + '"></span>' + w.status + '</div>' +
+        '<div class="wbeats">' + w.heartbeats + ' beats</div>';
+      grid.appendChild(card);
+      if (w.status === 'alive') aliveCount++;
+    }
+    setText('hb-workers', aliveCount + '/' + statuses.length);
+  }
 
   var bridge = new OrganismBridge({
     onBooted: function (data) {
@@ -642,6 +703,46 @@ node organism-cli/organism.js install</code></pre>
       if (query === 'wires') {
         renderWires(data);
       }
+    },
+
+    onWorkerStatus: function (statuses) {
+      renderWorkerCards(statuses);
+    },
+
+    onMemory: function (msg) {
+      if (msg.type === 'stored') {
+        addLog('💾 Memory stored: ' + msg.key + ' [' + (msg.tags || []).join(', ') + ']');
+      } else if (msg.type === 'memory-stats') {
+        addLog('💾 Memory: ' + msg.stats.totalMemories + ' stored, ' + msg.stats.uniqueTags + ' tags');
+      }
+    },
+
+    onRouting: function (msg) {
+      if (msg.type === 'route-result') {
+        var steps = msg.data.steps || [];
+        var protoNames = steps.map(function(s) { return s.name; }).join(' → ');
+        addLog('🔀 Route: ' + msg.data.capability + ' via ' + protoNames);
+      }
+    },
+
+    onCrypto: function (msg) {
+      if (msg.type === 'token') {
+        addLog('🔐 Token: ' + msg.data.token.substring(0, 16) + '… (' + msg.data.entropy + '-bit)');
+      } else if (msg.type === 'hashed') {
+        addLog('🔐 Hash: ' + msg.data.hash.substring(0, 16) + '… (' + msg.data.algorithm + ')');
+      } else if (msg.type === 'encrypted') {
+        addLog('🔐 Encrypted: ' + msg.data.algorithm);
+      }
+    },
+
+    onTelemetry: function (msg) {
+      if (msg.type === 'health-report') {
+        addLog('📊 Health: ' + msg.data.overall + ' (' + msg.data.overallScore + '%) — ' + msg.data.workersAlive + '/' + msg.data.workersTotal + ' alive');
+      }
+    },
+
+    onAlert: function (alert) {
+      addLog('⚠ Alert: ' + alert.message, 'error');
     },
 
     onError: function (err) {
