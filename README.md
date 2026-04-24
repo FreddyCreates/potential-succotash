@@ -6,7 +6,33 @@
 
 > Download individual extensions or all 25 at once. Zips are built natively in your browser — no server needed.
 >
-> _If hosting locally, open `download.html` directly from the repo root._
+> _If the download page hasn't loaded yet, use the direct links below._
+
+### ⬇ Direct Downloads
+
+| Extension | Download |
+|---|---|
+| **All 25 Extensions** | [📦 all-extensions.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip) |
+| Sovereign Mind | [⬇ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-mind.zip) |
+| Cipher Shield | [⬇ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/cipher-shield.zip) |
+| Code Sovereign | [⬇ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/code-sovereign.zip) |
+| Vision Weaver | [⬇ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/vision-weaver.zip) |
+| Memory Palace | [⬇ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/memory-palace.zip) |
+| Polyglot Oracle | [⬇ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/polyglot-oracle.zip) |
+| Sentinel Watch | [⬇ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sentinel-watch.zip) |
+| Research Nexus | [⬇ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/research-nexus.zip) |
+| Voice Forge | [⬇ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/voice-forge.zip) |
+| Data Alchemist | [⬇ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/data-alchemist.zip) |
+| Video Architect | [⬇ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/video-architect.zip) |
+| Logic Prover | [⬇ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/logic-prover.zip) |
+| Social Cortex | [⬇ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/social-cortex.zip) |
+| Edge Runner | [⬇ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-runner.zip) |
+| Contract Forge | [⬇ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/contract-forge.zip) |
+| Organism Dashboard | [⬇ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/organism-dashboard.zip) |
+| Knowledge Cartographer | [⬇ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/knowledge-cartographer.zip) |
+| Protocol Bridge | [⬇ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/protocol-bridge.zip) |
+| Creative Muse | [⬇ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/creative-muse.zip) |
+| Sovereign Nexus | [⬇ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-nexus.zip) |
 
 ---
 

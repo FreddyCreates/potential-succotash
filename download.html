@@ -389,6 +389,15 @@ node organism-cli/organism.js install</code></pre>
   function init() {
     renderGrid();
 
+    // Detect file:// protocol or environments where fetch/Worker won't work.
+    // In these cases, go straight to GitHub download links — they always work.
+    var isLocalFile = window.location.protocol === 'file:';
+    if (isLocalFile) {
+      document.getElementById('worker-status').textContent = 'local file mode';
+      enableGitHubFallback();
+      return;
+    }
+
     document.getElementById('worker-status').textContent = 'loading sources…';
     document.getElementById('worker-status').classList.add('building');
 
