@@ -1,23 +1,33 @@
 /**
- * OrganismBridge — Multi-Worker Orchestration Bridge
+ * OrganismBridge — Autonomous Multi-Worker Orchestration Bridge
  *
- * Boots and coordinates ALL 13 organism workers:
- * - engine-worker.js:       EngineCore + ModelRouter + ModelWire (40 AI families)
- * - memory-worker.js:       Sovereign Memory (spatial store, search, persistence)
- * - routing-worker.js:      Protocol routing (10 protocols, fusion, circuit breakers)
- * - telemetry-worker.js:    Health monitoring (per-worker status, ring health, alerts)
- * - crypto-worker.js:       Cryptography (AES-256-GCM, hashing, tokens)
- * - contract-worker.js:     Contract verification, SLA enforcement, audit trail
- * - scheduler-worker.js:    24/7 task scheduling, cron jobs, deferred execution
- * - mesh-worker.js:         Infrastructure mesh, cross-tab coordination, leader election
- * - analytics-worker.js:    Product analytics, funnel analysis, session tracking
- * - guardian-worker.js:     Security guardian, threat detection, rate limiting
- * - pipeline-worker.js:     Data pipeline, ETL transforms, stream processing
- * - inference-worker.js:    Local ML inference, classification, embeddings
- * - orchestrator-worker.js: Micro-worker orchestration, task decomposition, workflows
+ * Boots, coordinates, and SELF-HEALS all 13 organism workers,
+ * organized into 4 autonomous divisions:
  *
- * This bridge IS the nervous system. It connects all workers to each other
- * and to the UI. Every heartbeat from every worker flows through here.
+ * 🧠 BRAIN DIVISION — Thinking & reasoning
+ *   - engine-worker.js:       EngineCore + ModelRouter + ModelWire (40 AI families)
+ *   - inference-worker.js:    Local ML inference, classification, embeddings
+ *   - orchestrator-worker.js: Micro-worker orchestration, task decomposition
+ *
+ * 💾 DATA DIVISION — Memory, analytics & pipelines
+ *   - memory-worker.js:       Sovereign Memory (spatial store, search, persistence)
+ *   - analytics-worker.js:    Product analytics, funnel analysis, session tracking
+ *   - pipeline-worker.js:     Data pipeline, ETL transforms, stream processing
+ *
+ * 🏗 INFRASTRUCTURE DIVISION — Always-on backbone
+ *   - mesh-worker.js:         Infrastructure mesh, cross-tab coordination, leader election
+ *   - scheduler-worker.js:    24/7 task scheduling, cron jobs, deferred execution
+ *   - guardian-worker.js:     Security guardian, threat detection, rate limiting
+ *   - telemetry-worker.js:    Health monitoring (per-worker status, ring health, alerts)
+ *
+ * 🔐 PROTOCOL DIVISION — Communication & trust
+ *   - routing-worker.js:      Protocol routing (10 protocols, fusion, circuit breakers)
+ *   - crypto-worker.js:       Cryptography (AES-256-GCM, hashing, tokens)
+ *   - contract-worker.js:     Contract verification, SLA enforcement, audit trail
+ *
+ * AUTONOMY: Every worker is monitored. If a worker misses heartbeats,
+ * it is automatically terminated and restarted with φ-backoff.
+ * Each division reports aggregate health. The organism heals itself.
  *
  * Usage:
  *   var bridge = new OrganismBridge({
@@ -30,12 +40,19 @@
  *     onTelemetry: function(event) { ... },
  *     onCrypto: function(event) { ... },
  *     onWorkerStatus: function(statuses) { ... },
+ *     onDivisionStatus: function(divisions) { ... },
+ *     onWorkerRestart: function(name, restarts) { ... },
  *     onError: function(err) { ... }
  *   });
  *   bridge.boot();
  */
 
 'use strict';
+
+var PHI = 1.618033988749895;
+var HEARTBEAT_MS = 873;
+var MAX_MISSED_HEARTBEATS = 5;
+var MAX_RESTARTS_PER_WORKER = 50;
 
 var WORKER_PATHS = {
   engine:       'organism/web/engine-worker.js',
@@ -53,25 +70,40 @@ var WORKER_PATHS = {
   orchestrator: 'organism/web/orchestrator-worker.js'
 };
 
+/* ════════════════════════════════════════════════════════════════
+   Worker Divisions — autonomous groupings
+   ════════════════════════════════════════════════════════════════ */
+
+var DIVISIONS = {
+  brain:          { name: 'Brain',          icon: '🧠', workers: ['engine', 'inference', 'orchestrator'],       purpose: 'Thinking & reasoning' },
+  data:           { name: 'Data',           icon: '💾', workers: ['memory', 'analytics', 'pipeline'],           purpose: 'Memory, analytics & pipelines' },
+  infrastructure: { name: 'Infrastructure', icon: '🏗', workers: ['mesh', 'scheduler', 'guardian', 'telemetry'], purpose: 'Always-on backbone' },
+  protocol:       { name: 'Protocol',       icon: '🔐', workers: ['routing', 'crypto', 'contract'],             purpose: 'Communication & trust' }
+};
+
 function OrganismBridge(config) {
   this.config = config || {};
   this.workers = {};         // name → Worker
-  this.workerStatus = {};    // name → { status, heartbeats, lastBeat }
+  this.workerStatus = {};    // name → { status, heartbeats, lastBeat, restarts, missedBeats, lastRestart }
   this.status = 'idle';
   this.heartbeatCount = 0;
   this.lastHeartbeat = 0;
   this.bootData = null;
   this.lastMetrics = null;
   this.memoryStorageKey = 'organism-memory-store';
+  this._healthInterval = null;
+  this._autonomyBoot = Date.now();
+  this._totalRestarts = 0;
 }
 
 /* ────────────────────────────────────────────────────────
-   Boot — starts ALL workers in parallel
+   Boot — starts ALL workers in parallel + autonomy monitor
    ──────────────────────────────────────────────────────── */
 
 OrganismBridge.prototype.boot = function () {
   var self = this;
   this.status = 'booting';
+  this._autonomyBoot = Date.now();
 
   // Launch every worker
   for (var name in WORKER_PATHS) {
@@ -94,6 +126,9 @@ OrganismBridge.prototype.boot = function () {
     this.workers.analytics.postMessage({ type: 'page-view', page: location.pathname || '/' });
   }
 
+  // Start the autonomy health monitor — runs forever
+  this._startHealthMonitor();
+
   // Restore persisted memory
   this._restoreMemory();
 };
@@ -101,7 +136,19 @@ OrganismBridge.prototype.boot = function () {
 OrganismBridge.prototype._startWorker = function (name, path) {
   var self = this;
 
-  this.workerStatus[name] = { status: 'booting', heartbeats: 0, lastBeat: 0 };
+  // Preserve restart count across restarts
+  if (!this.workerStatus[name]) {
+    this.workerStatus[name] = { status: 'booting', heartbeats: 0, lastBeat: 0, restarts: 0, missedBeats: 0, lastRestart: 0 };
+  } else {
+    this.workerStatus[name].status = 'booting';
+    this.workerStatus[name].missedBeats = 0;
+  }
+
+  // Terminate existing worker if any
+  if (this.workers[name]) {
+    try { this.workers[name].terminate(); } catch (e) { /* ignore */ }
+    this.workers[name] = null;
+  }
 
   try {
     this.workers[name] = new Worker(path);
@@ -116,12 +163,13 @@ OrganismBridge.prototype._startWorker = function (name, path) {
   };
 
   this.workers[name].onerror = function (err) {
-    self.workerStatus[name].status = 'error';
+    self.workerStatus[name].status = 'crashed';
     // Report to telemetry worker
-    if (self.workers.telemetry) {
+    if (self.workers.telemetry && name !== 'telemetry') {
       self.workers.telemetry.postMessage({ type: 'report', worker: name, data: { error: err.message } });
     }
     if (self.config.onError) self.config.onError(name + ': ' + (err.message || 'Worker error'));
+    // Autonomy will detect the crash and restart
   };
 };
 
@@ -434,6 +482,125 @@ OrganismBridge.prototype.executeWorkflow = function (workflowId) {
 };
 OrganismBridge.prototype.decomposeTask = function (task) {
   if (this.workers.orchestrator) this.workers.orchestrator.postMessage({ type: 'decompose', task: task });
+};
+
+/* ────────────────────────────────────────────────────────
+   Autonomy — Self-Healing Health Monitor
+   Runs forever. Detects dead workers. Restarts them.
+   ──────────────────────────────────────────────────────── */
+
+OrganismBridge.prototype._startHealthMonitor = function () {
+  var self = this;
+  if (this._healthInterval) clearInterval(this._healthInterval);
+
+  this._healthInterval = setInterval(function () {
+    if (self.status === 'stopped') return;
+    var now = Date.now();
+
+    for (var name in self.workerStatus) {
+      var ws = self.workerStatus[name];
+
+      // Skip workers that haven't sent their first heartbeat yet (still booting)
+      if (ws.lastBeat === 0 && ws.status === 'booting') {
+        // Give workers 10s to send first heartbeat before considering them dead
+        if (ws.lastRestart > 0 && (now - ws.lastRestart) > 10000) {
+          ws.status = 'crashed';
+        }
+        continue;
+      }
+
+      // Check for missed heartbeats
+      if (ws.lastBeat > 0) {
+        var elapsed = now - ws.lastBeat;
+        if (elapsed > HEARTBEAT_MS * 2) {
+          ws.missedBeats++;
+          if (ws.missedBeats >= MAX_MISSED_HEARTBEATS && ws.status !== 'restarting') {
+            ws.status = 'crashed';
+          }
+        }
+      }
+
+      // Auto-restart crashed workers
+      if (ws.status === 'crashed' && ws.restarts < MAX_RESTARTS_PER_WORKER) {
+        self._restartWorker(name);
+      }
+    }
+
+    // Emit division statuses
+    if (self.config.onDivisionStatus) {
+      self.config.onDivisionStatus(self.getDivisionStatuses());
+    }
+  }, HEARTBEAT_MS);
+};
+
+OrganismBridge.prototype._restartWorker = function (name) {
+  var ws = this.workerStatus[name];
+  ws.status = 'restarting';
+  ws.restarts++;
+  ws.lastRestart = Date.now();
+  ws.missedBeats = 0;
+  this._totalRestarts++;
+
+  // φ-backoff: delay = 500ms * φ^(restarts-1), capped at 30s
+  var delay = Math.min(500 * Math.pow(PHI, ws.restarts - 1), 30000);
+
+  var self = this;
+  setTimeout(function () {
+    self._startWorker(name, WORKER_PATHS[name]);
+
+    // Re-boot engine if it was the engine worker
+    if (name === 'engine' && self.workers.engine) {
+      self.workers.engine.postMessage({ type: 'boot' });
+    }
+    // Re-join mesh if mesh was restarted
+    if (name === 'mesh' && self.workers.mesh) {
+      self.workers.mesh.postMessage({ type: 'join', nodeId: 'tab-' + Date.now().toString(36), capabilities: Object.keys(WORKER_PATHS) });
+    }
+
+    if (self.config.onWorkerRestart) {
+      self.config.onWorkerRestart(name, ws.restarts);
+    }
+  }, delay);
+};
+
+/* ────────────────────────────────────────────────────────
+   Division Status — aggregate health per division
+   ──────────────────────────────────────────────────────── */
+
+OrganismBridge.prototype.getDivisionStatuses = function () {
+  var result = [];
+  for (var divId in DIVISIONS) {
+    var div = DIVISIONS[divId];
+    var alive = 0;
+    var total = div.workers.length;
+    var totalBeats = 0;
+    var totalRestarts = 0;
+
+    for (var i = 0; i < div.workers.length; i++) {
+      var ws = this.workerStatus[div.workers[i]];
+      if (ws) {
+        if (ws.status === 'alive') alive++;
+        totalBeats += ws.heartbeats;
+        totalRestarts += ws.restarts;
+      }
+    }
+
+    var health = total > 0 ? Math.round((alive / total) * 100) : 0;
+    result.push({
+      id: divId,
+      name: div.name,
+      icon: div.icon,
+      purpose: div.purpose,
+      workers: div.workers,
+      alive: alive,
+      total: total,
+      health: health,
+      totalBeats: totalBeats,
+      totalRestarts: totalRestarts,
+      autonomous: true
+    });
+  }
+  return result;
 };
 
 /* ────────────────────────────────────────────────────────
