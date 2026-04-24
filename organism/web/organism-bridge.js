@@ -1,12 +1,20 @@
 /**
  * OrganismBridge — Multi-Worker Orchestration Bridge
  *
- * Boots and coordinates ALL organism workers:
- * - engine-worker.js:    EngineCore + ModelRouter + ModelWire (40 AI families)
- * - memory-worker.js:    Sovereign Memory (spatial store, search, persistence)
- * - routing-worker.js:   Protocol routing (10 protocols, fusion, circuit breakers)
- * - telemetry-worker.js: Health monitoring (per-worker status, ring health, alerts)
- * - crypto-worker.js:    Cryptography (AES-256-GCM, hashing, tokens)
+ * Boots and coordinates ALL 13 organism workers:
+ * - engine-worker.js:       EngineCore + ModelRouter + ModelWire (40 AI families)
+ * - memory-worker.js:       Sovereign Memory (spatial store, search, persistence)
+ * - routing-worker.js:      Protocol routing (10 protocols, fusion, circuit breakers)
+ * - telemetry-worker.js:    Health monitoring (per-worker status, ring health, alerts)
+ * - crypto-worker.js:       Cryptography (AES-256-GCM, hashing, tokens)
+ * - contract-worker.js:     Contract verification, SLA enforcement, audit trail
+ * - scheduler-worker.js:    24/7 task scheduling, cron jobs, deferred execution
+ * - mesh-worker.js:         Infrastructure mesh, cross-tab coordination, leader election
+ * - analytics-worker.js:    Product analytics, funnel analysis, session tracking
+ * - guardian-worker.js:     Security guardian, threat detection, rate limiting
+ * - pipeline-worker.js:     Data pipeline, ETL transforms, stream processing
+ * - inference-worker.js:    Local ML inference, classification, embeddings
+ * - orchestrator-worker.js: Micro-worker orchestration, task decomposition, workflows
  *
  * This bridge IS the nervous system. It connects all workers to each other
  * and to the UI. Every heartbeat from every worker flows through here.
@@ -30,11 +38,19 @@
 'use strict';
 
 var WORKER_PATHS = {
-  engine:    'organism/web/engine-worker.js',
-  memory:    'organism/web/memory-worker.js',
-  routing:   'organism/web/routing-worker.js',
-  telemetry: 'organism/web/telemetry-worker.js',
-  crypto:    'organism/web/crypto-worker.js'
+  engine:       'organism/web/engine-worker.js',
+  memory:       'organism/web/memory-worker.js',
+  routing:      'organism/web/routing-worker.js',
+  telemetry:    'organism/web/telemetry-worker.js',
+  crypto:       'organism/web/crypto-worker.js',
+  contract:     'organism/web/contract-worker.js',
+  scheduler:    'organism/web/scheduler-worker.js',
+  mesh:         'organism/web/mesh-worker.js',
+  analytics:    'organism/web/analytics-worker.js',
+  guardian:     'organism/web/guardian-worker.js',
+  pipeline:     'organism/web/pipeline-worker.js',
+  inference:    'organism/web/inference-worker.js',
+  orchestrator: 'organism/web/orchestrator-worker.js'
 };
 
 function OrganismBridge(config) {
@@ -65,6 +81,17 @@ OrganismBridge.prototype.boot = function () {
   // Boot the engine
   if (this.workers.engine) {
     this.workers.engine.postMessage({ type: 'boot' });
+  }
+
+  // Auto-join mesh network
+  if (this.workers.mesh) {
+    this.workers.mesh.postMessage({ type: 'join', nodeId: 'tab-' + Date.now().toString(36), capabilities: Object.keys(WORKER_PATHS) });
+  }
+
+  // Start analytics session
+  if (this.workers.analytics) {
+    this.workers.analytics.postMessage({ type: 'session-start' });
+    this.workers.analytics.postMessage({ type: 'page-view', page: location.pathname || '/' });
   }
 
   // Restore persisted memory
@@ -131,6 +158,16 @@ OrganismBridge.prototype._handleMessage = function (workerName, msg) {
       break;
     case 'crypto':
       this._handleCryptoMessage(msg);
+      break;
+    case 'contract':
+    case 'scheduler':
+    case 'mesh':
+    case 'analytics':
+    case 'guardian':
+    case 'pipeline':
+    case 'inference':
+    case 'orchestrator':
+      this._handleExtendedMessage(workerName, msg);
       break;
   }
 
@@ -222,6 +259,33 @@ OrganismBridge.prototype._handleCryptoMessage = function (msg) {
   if (this.config.onCrypto) this.config.onCrypto(msg);
 };
 
+OrganismBridge.prototype._handleExtendedMessage = function (workerName, msg) {
+  // Forward threat alerts from guardian
+  if (workerName === 'guardian' && msg.type === 'threat-alert') {
+    if (this.config.onAlert) this.config.onAlert({ message: 'Security: ' + msg.threat.type + ' — ' + msg.threat.detail, source: 'guardian' });
+  }
+  // Forward micro-tasks from orchestrator to appropriate workers
+  if (workerName === 'orchestrator' && msg.type === 'micro-task') {
+    var targetWorker = this.workers[msg.worker];
+    if (targetWorker) {
+      targetWorker.postMessage({ type: msg.action, task: msg.payload, _orchestratorTaskId: msg.taskId });
+    }
+  }
+  // Forward scheduled job firings
+  if (workerName === 'scheduler' && msg.type === 'job-fired') {
+    // Route job to the appropriate worker based on action
+    if (msg.action && this.workers[msg.action]) {
+      this.workers[msg.action].postMessage({ type: 'dispatch', task: msg.payload });
+    }
+  }
+  // Auto-track events in analytics
+  if (workerName !== 'analytics' && msg.type !== 'heartbeat' && this.workers.analytics) {
+    this.workers.analytics.postMessage({ type: 'track', event: { name: msg.type, category: workerName, data: null } });
+  }
+  // Generic callback
+  if (this.config.onWorkerMessage) this.config.onWorkerMessage(workerName, msg);
+};
+
 /* ────────────────────────────────────────────────────────
    Memory persistence
    ──────────────────────────────────────────────────────── */
@@ -289,6 +353,87 @@ OrganismBridge.prototype.dashboard = function () {
 
 OrganismBridge.prototype.systemHealth = function () {
   if (this.workers.telemetry) this.workers.telemetry.postMessage({ type: 'health' });
+};
+
+/* ────────────────────────────────────────────────────────
+   Extended Worker APIs — contracts, scheduler, mesh,
+   analytics, guardian, pipeline, inference, orchestrator
+   ──────────────────────────────────────────────────────── */
+
+// Contract Worker
+OrganismBridge.prototype.createContract = function (contract) {
+  if (this.workers.contract) this.workers.contract.postMessage({ type: 'create-contract', contract: contract });
+};
+OrganismBridge.prototype.verifyContract = function (contractId, operation) {
+  if (this.workers.contract) this.workers.contract.postMessage({ type: 'verify', contractId: contractId, operation: operation });
+};
+OrganismBridge.prototype.enforceSla = function (contractId, metrics) {
+  if (this.workers.contract) this.workers.contract.postMessage({ type: 'enforce-sla', contractId: contractId, metrics: metrics });
+};
+
+// Scheduler Worker
+OrganismBridge.prototype.scheduleJob = function (job) {
+  if (this.workers.scheduler) this.workers.scheduler.postMessage({ type: 'schedule', job: job });
+};
+OrganismBridge.prototype.deferTask = function (task) {
+  if (this.workers.scheduler) this.workers.scheduler.postMessage({ type: 'defer', task: task });
+};
+
+// Mesh Worker
+OrganismBridge.prototype.joinMesh = function (nodeId, capabilities) {
+  if (this.workers.mesh) this.workers.mesh.postMessage({ type: 'join', nodeId: nodeId, capabilities: capabilities });
+};
+OrganismBridge.prototype.meshBroadcast = function (message) {
+  if (this.workers.mesh) this.workers.mesh.postMessage({ type: 'broadcast', message: message });
+};
+
+// Analytics Worker
+OrganismBridge.prototype.trackEvent = function (event) {
+  if (this.workers.analytics) this.workers.analytics.postMessage({ type: 'track', event: event });
+};
+OrganismBridge.prototype.analyticsReport = function (period) {
+  if (this.workers.analytics) this.workers.analytics.postMessage({ type: 'report', period: period || 'all' });
+};
+
+// Guardian Worker
+OrganismBridge.prototype.securityCheck = function (operation) {
+  if (this.workers.guardian) this.workers.guardian.postMessage({ type: 'check', operation: operation });
+};
+OrganismBridge.prototype.rateCheck = function (key, limit, windowMs) {
+  if (this.workers.guardian) this.workers.guardian.postMessage({ type: 'rate-check', key: key, limit: limit, windowMs: windowMs });
+};
+
+// Pipeline Worker
+OrganismBridge.prototype.createPipeline = function (pipeline) {
+  if (this.workers.pipeline) this.workers.pipeline.postMessage({ type: 'create-pipeline', pipeline: pipeline });
+};
+OrganismBridge.prototype.pushToPipeline = function (pipelineId, data) {
+  if (this.workers.pipeline) this.workers.pipeline.postMessage({ type: 'push', pipelineId: pipelineId, data: data });
+};
+
+// Inference Worker
+OrganismBridge.prototype.classify = function (text, categories) {
+  if (this.workers.inference) this.workers.inference.postMessage({ type: 'classify', text: text, categories: categories });
+};
+OrganismBridge.prototype.sentiment = function (text) {
+  if (this.workers.inference) this.workers.inference.postMessage({ type: 'sentiment', text: text });
+};
+OrganismBridge.prototype.embed = function (text) {
+  if (this.workers.inference) this.workers.inference.postMessage({ type: 'embed', text: text });
+};
+OrganismBridge.prototype.extractKeywords = function (text, topK) {
+  if (this.workers.inference) this.workers.inference.postMessage({ type: 'keywords', text: text, topK: topK || 10 });
+};
+
+// Orchestrator Worker
+OrganismBridge.prototype.createWorkflow = function (workflow) {
+  if (this.workers.orchestrator) this.workers.orchestrator.postMessage({ type: 'create-workflow', workflow: workflow });
+};
+OrganismBridge.prototype.executeWorkflow = function (workflowId) {
+  if (this.workers.orchestrator) this.workers.orchestrator.postMessage({ type: 'execute', workflowId: workflowId });
+};
+OrganismBridge.prototype.decomposeTask = function (task) {
+  if (this.workers.orchestrator) this.workers.orchestrator.postMessage({ type: 'decompose', task: task });
 };
 
 /* ────────────────────────────────────────────────────────

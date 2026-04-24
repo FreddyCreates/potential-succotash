@@ -439,25 +439,33 @@
 <!-- ═══════════════════ LIVE ENGINE DASHBOARD ═══════════════════ -->
 <div class="dashboard" id="engine-dashboard">
   <h2>🧬 Live Engine — Running Now</h2>
-  <p class="desc">This isn't a page — it's the product. 5 permanent Web Workers running 40 AI engines, sovereign memory, protocol routing, health telemetry, and cryptography — all in your browser right now.</p>
+  <p class="desc">This isn't a page — it's the product. 13 permanent Web Workers running 40 AI engines, sovereign memory, protocol routing, health telemetry, cryptography, contracts, scheduling, mesh networking, analytics, security, data pipelines, inference, and orchestration — all in your browser right now.</p>
 
   <div class="live-bar" id="live-bar">
     <div class="live-item"><span class="heartbeat-dot" id="hb-dot"></span><span class="lval" id="hb-status">booting…</span> Status</div>
     <div class="live-item"><span class="lval" id="hb-beat">0</span> Heartbeat</div>
     <div class="live-item"><span class="lval" id="hb-engines">0</span> Engines</div>
     <div class="live-item"><span class="lval" id="hb-wires">0</span> Wires</div>
-    <div class="live-item"><span class="lval" id="hb-workers">0/5</span> Workers</div>
+    <div class="live-item"><span class="lval" id="hb-workers">0/13</span> Workers</div>
     <div class="live-item"><span class="lval" id="hb-dispatched">0</span> Dispatched</div>
     <div class="live-item"><span class="lval" id="hb-uptime">0s</span> Uptime</div>
   </div>
 
-  <h3 style="color:var(--accent2);font-size:0.95rem;margin-bottom:0.5rem;">⚙ Worker Status — 5 Permanent Web Workers</h3>
+  <h3 style="color:var(--accent2);font-size:0.95rem;margin-bottom:0.5rem;">⚙ Worker Status — 13 Permanent Web Workers</h3>
   <div class="worker-grid" id="worker-grid">
     <div class="worker-card booting"><div class="wname">🧠 Engine</div><div class="wstatus"><span class="dot booting"></span>booting</div><div class="wbeats">0 beats</div></div>
     <div class="worker-card booting"><div class="wname">💾 Memory</div><div class="wstatus"><span class="dot booting"></span>booting</div><div class="wbeats">0 beats</div></div>
     <div class="worker-card booting"><div class="wname">🔀 Routing</div><div class="wstatus"><span class="dot booting"></span>booting</div><div class="wbeats">0 beats</div></div>
     <div class="worker-card booting"><div class="wname">📊 Telemetry</div><div class="wstatus"><span class="dot booting"></span>booting</div><div class="wbeats">0 beats</div></div>
     <div class="worker-card booting"><div class="wname">🔐 Crypto</div><div class="wstatus"><span class="dot booting"></span>booting</div><div class="wbeats">0 beats</div></div>
+    <div class="worker-card booting"><div class="wname">📜 Contract</div><div class="wstatus"><span class="dot booting"></span>booting</div><div class="wbeats">0 beats</div></div>
+    <div class="worker-card booting"><div class="wname">⏰ Scheduler</div><div class="wstatus"><span class="dot booting"></span>booting</div><div class="wbeats">0 beats</div></div>
+    <div class="worker-card booting"><div class="wname">🕸 Mesh</div><div class="wstatus"><span class="dot booting"></span>booting</div><div class="wbeats">0 beats</div></div>
+    <div class="worker-card booting"><div class="wname">📈 Analytics</div><div class="wstatus"><span class="dot booting"></span>booting</div><div class="wbeats">0 beats</div></div>
+    <div class="worker-card booting"><div class="wname">🛡 Guardian</div><div class="wstatus"><span class="dot booting"></span>booting</div><div class="wbeats">0 beats</div></div>
+    <div class="worker-card booting"><div class="wname">🔧 Pipeline</div><div class="wstatus"><span class="dot booting"></span>booting</div><div class="wbeats">0 beats</div></div>
+    <div class="worker-card booting"><div class="wname">🤖 Inference</div><div class="wstatus"><span class="dot booting"></span>booting</div><div class="wbeats">0 beats</div></div>
+    <div class="worker-card booting"><div class="wname">🎯 Orchestrator</div><div class="wstatus"><span class="dot booting"></span>booting</div><div class="wbeats">0 beats</div></div>
   </div>
 
   <div class="dispatch-panel">
@@ -643,7 +651,7 @@ node organism-cli/organism.js install</code></pre>
 
   /* ── Boot the organism engine ───────────────────────────────── */
   var dispatchCount = 0;
-  var WORKER_ICONS = { engine: '🧠', memory: '💾', routing: '🔀', telemetry: '📊', crypto: '🔐' };
+  var WORKER_ICONS = { engine: '🧠', memory: '💾', routing: '🔀', telemetry: '📊', crypto: '🔐', contract: '📜', scheduler: '⏰', mesh: '🕸', analytics: '📈', guardian: '🛡', pipeline: '🔧', inference: '🤖', orchestrator: '🎯' };
 
   function renderWorkerCards(statuses) {
     var grid = document.getElementById('worker-grid');

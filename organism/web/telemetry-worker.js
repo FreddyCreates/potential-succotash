@@ -36,7 +36,7 @@ var running = true;
    Worker Health Registry — tracks all organism workers
    ════════════════════════════════════════════════════════════════ */
 
-var KNOWN_WORKERS = ['engine', 'memory', 'routing', 'crypto', 'download'];
+var KNOWN_WORKERS = ['engine', 'memory', 'routing', 'crypto', 'download', 'contract', 'scheduler', 'mesh', 'analytics', 'guardian', 'pipeline', 'inference', 'orchestrator'];
 
 var workerHealth = Object.create(null);
 
