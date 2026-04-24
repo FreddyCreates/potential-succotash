@@ -81,7 +81,7 @@ var CAPABILITY_ROUTES = {
    Protocol State — circuit breakers, metrics
    ════════════════════════════════════════════════════════════════ */
 
-var protocolState = {};
+var protocolState = Object.create(null);
 
 function initProtocols() {
   for (var i = 0; i < PROTOCOLS.length; i++) {
@@ -302,11 +302,14 @@ self.onmessage = function (e) {
     }
 
     case 'reset-circuit': {
-      var ps = protocolState[msg.protocolId];
-      if (ps) {
-        ps.status = 'closed';
-        ps.consecutiveFailures = 0;
-        self.postMessage({ type: 'circuit-reset', protocolId: msg.protocolId });
+      var resetId = msg.protocolId;
+      if (typeof resetId === 'string' && resetId !== '__proto__' && resetId !== 'constructor' && resetId !== 'prototype') {
+        var ps = protocolState[resetId];
+        if (ps) {
+          ps.status = 'closed';
+          ps.consecutiveFailures = 0;
+          self.postMessage({ type: 'circuit-reset', protocolId: resetId });
+        }
       }
       break;
     }

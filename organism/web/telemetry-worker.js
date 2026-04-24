@@ -38,7 +38,11 @@ var running = true;
 
 var KNOWN_WORKERS = ['engine', 'memory', 'routing', 'crypto', 'download'];
 
-var workerHealth = {};
+var workerHealth = Object.create(null);
+
+function isSafeKey(key) {
+  return typeof key === 'string' && key !== '__proto__' && key !== 'constructor' && key !== 'prototype';
+}
 
 function initWorkerHealth() {
   for (var i = 0; i < KNOWN_WORKERS.length; i++) {
@@ -71,7 +75,7 @@ var RINGS = [
   'Proof Ring', 'Counsel Ring'
 ];
 
-var ringHealth = {};
+var ringHealth = Object.create(null);
 
 function initRingHealth() {
   for (var i = 0; i < RINGS.length; i++) {
@@ -111,6 +115,8 @@ var activeAlerts = [];
    ════════════════════════════════════════════════════════════════ */
 
 function processReport(workerName, data) {
+  if (!isSafeKey(workerName)) return;
+
   var wh = workerHealth[workerName];
   if (!wh) {
     // Unknown worker — register dynamically
@@ -138,6 +144,7 @@ function processReport(workerName, data) {
   // Merge metrics
   if (data) {
     for (var key in data) {
+      if (!isSafeKey(key)) continue;
       wh.metrics[key] = data[key];
     }
   }
@@ -163,6 +170,7 @@ function processReport(workerName, data) {
 }
 
 function processHeartbeat(workerName) {
+  if (!isSafeKey(workerName)) return;
   var wh = workerHealth[workerName];
   if (!wh) return;
   wh.lastHeartbeat = Date.now();

@@ -67,12 +67,17 @@ function phiDistance(a, b) {
    ════════════════════════════════════════════════════════════════ */
 
 var memoryIndex = 0;
-var memories = {};     // key → memory record
-var tagIndex = {};     // tag → [keys]
+var memories = Object.create(null);     // key → memory record
+var tagIndex = Object.create(null);     // tag → [keys]
 var timeline = [];     // ordered keys by creation time
+
+function isSafeKey(key) {
+  return typeof key === 'string' && key !== '__proto__' && key !== 'constructor' && key !== 'prototype';
+}
 
 function storeMemory(mem) {
   var key = mem.key || ('mem-' + Date.now() + '-' + memoryIndex);
+  if (!isSafeKey(key)) key = 'mem-' + Date.now() + '-' + memoryIndex;
   memoryIndex++;
 
   var record = {
@@ -103,6 +108,7 @@ function storeMemory(mem) {
   // Update tag index
   for (var i = 0; i < record.tags.length; i++) {
     var tag = record.tags[i];
+    if (!isSafeKey(tag)) continue;
     if (!tagIndex[tag]) tagIndex[tag] = [];
     tagIndex[tag].push(key);
   }
@@ -122,7 +128,7 @@ function removeFromTagIndex(key, tags) {
 
 function recallMemory(query) {
   // By key
-  if (query.key && memories[query.key]) {
+  if (query.key && isSafeKey(query.key) && memories[query.key]) {
     var m = memories[query.key];
     m.accessCount++;
     m.lastAccessed = Date.now();
@@ -131,10 +137,12 @@ function recallMemory(query) {
 
   // By tags
   if (query.tags && query.tags.length > 0) {
-    var candidates = {};
+    var candidates = Object.create(null);
     for (var t = 0; t < query.tags.length; t++) {
+      if (!isSafeKey(query.tags[t])) continue;
       var tagged = tagIndex[query.tags[t]] || [];
       for (var j = 0; j < tagged.length; j++) {
+        if (!isSafeKey(tagged[j])) continue;
         candidates[tagged[j]] = (candidates[tagged[j]] || 0) + 1;
       }
     }
@@ -233,8 +241,8 @@ function deleteMemory(key) {
 }
 
 function clearMemories() {
-  memories = {};
-  tagIndex = {};
+  memories = Object.create(null);
+  tagIndex = Object.create(null);
   timeline = [];
   memoryIndex = 0;
 }
