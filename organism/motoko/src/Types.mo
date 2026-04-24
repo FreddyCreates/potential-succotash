@@ -40,6 +40,67 @@ module {
     timestampNs : Int;
   };
 
+  // ── AutoGenerateCallsEngine Types ────────────────────────────────────
+
+  /// Worker Builder AI engine triad (Generator + Router + Builder)
+  public type EngineTriad = {
+    generator : EngineState;
+    router    : EngineState;
+    builder   : EngineState;
+  };
+
+  /// Individual engine state within a triad
+  public type EngineState = {
+    name         : Text;
+    status       : Text;
+    callsRouted  : Nat;
+    confidence   : Float;
+    lastActiveNs : Int;
+  };
+
+  /// Auto-generated call definition
+  public type CallDefinition = {
+    callId       : Nat;
+    callName     : Text;
+    domain       : Text;
+    targetModule : Text;
+    workerName   : Text;
+    priority     : Float;
+    autoRouted   : Bool;
+  };
+
+  /// Worker Builder AI state (one of 12)
+  public type WorkerState = {
+    id             : Nat;
+    name           : Text;
+    latinName      : Text;
+    domain         : Text;
+    engines        : EngineTriad;
+    totalCalls     : Nat;
+    callsGenerated : Nat;
+    healthy        : Bool;
+  };
+
+  /// Full AutoGenerateCallsEngine snapshot
+  public type AutoGenSnapshot = {
+    workers        : [WorkerState];
+    totalWorkers   : Nat;
+    totalEngines   : Nat;
+    totalCalls     : Nat;
+    healthyWorkers : Nat;
+    timestampNs    : Int;
+  };
+
+  /// Call routing result
+  public type CallRoutingResult = {
+    callName   : Text;
+    routedTo   : Text;
+    workerUsed : Text;
+    engineUsed : Text;
+    confidence : Float;
+    phiWeight  : Float;
+  };
+
   /// Result of multi-model fusion with phi-weighted scoring.
   public type FusionResult = {
     prompt         : Text;

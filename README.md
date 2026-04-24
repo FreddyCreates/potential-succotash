@@ -289,8 +289,41 @@ Four side panel AI extensions built for Microsoft Edge using the `sidePanel` API
 
 ## The Numbers
 
-8 SDKs. 35 extensions. 11 protocols. 30 tools. 5 tool families. 40 model families. 10 multimodal families. 30 frontend intelligence models. 100 frontier model species. 40 architectural laws. 9 organism rings. 6 implementation languages. 4 browser observers. 4 Edge side panels. 1 heartbeat at 873ms.
+8 SDKs. 35 extensions. 11 protocols. 30 tools. 5 tool families. 40 model families. 10 multimodal families. 30 frontend intelligence models. 100 frontier model species. 40 architectural laws. 9 organism rings. 6 implementation languages. 4 browser observers. 4 Edge side panels. 12 Builder AIs. 36 engines. 776+ auto-generated calls. 1 heartbeat at 873ms.
 
 All of it is AI. All of it is intelligence. All of it is wired together. All of it is downloadable. And all of it is inside this repo.
 
 As above, so below.
+
+---
+
+## AutoGenerateCallsEngine.mo — MOTOR AUTO-GENERATIONIS VOCATIONUM
+
+12 Web Worker Builder AIs (OPERARII AEDIFICATORES), each Latin-named with 3 dedicated engines (Generator + Router + Builder). 36 engines total. 776+ auto-generated calls across every domain in the organism. Full routing table — every call auto-routed to its correct target module. All AI, AGI, 24/7, user-facing, cross-substrate.
+
+| # | Name | Latin Name | Domain | Calls | Engines |
+|---|------|-----------|--------|-------|---------|
+| 1 | PROTOCOLLUM | OPERARIUS PROTOCOLLORUM | Protocols, Consensus, BFT | 144 | Generator / Router / Builder |
+| 2 | TERMINALIS | OPERARIUS TERMINALIUM | Terminals, AI/AGI Hierarchy | 50 | Generator / Router / Builder |
+| 3 | ORGANISMUS | OPERARIUS ORGANISMORUM | SDK Organisms, Emergence | 180 | Generator / Router / Builder |
+| 4 | MERCATOR | OPERARIUS MERCATUS | Marketplace, Tools, Tiers | 64 | Generator / Router / Builder |
+| 5 | ORCHESTRATOR | OPERARIUS ORCHESTRATORUM | Houses, Models, Families | 37 | Generator / Router / Builder |
+| 6 | MATHEMATICUS | OPERARIUS MATHEMATICORUM | Math Formulas, Constants | 60 | Generator / Router / Builder |
+| 7 | SYNAPTICUS | OPERARIUS SYNAPSIUM | Synapses, Chaos, Connections | 20 | Generator / Router / Builder |
+| 8 | SUBSTRATUM | OPERARIUS SUBSTRATI | Blockchain, Nodes, Layers | 40 | Generator / Router / Builder |
+| 9 | UNIVERSUM | OPERARIUS UNIVERSORUM | Domains, Ecosystems, Councils | 105 | Generator / Router / Builder |
+| 10 | CANISTRUM | OPERARIUS CANISTRORUM | Canister Tech, Factory | 23 | Generator / Router / Builder |
+| 11 | LICENTIATOR | OPERARIUS LICENTIARUM | Licenses, Documents, Rights | 24 | Generator / Router / Builder |
+| 12 | DEFENSOR | OPERARIUS DEFENSIONIS ET CURAE | Defense, Care, Arsenal | 29 | Generator / Router / Builder |
+
+**Architecture:**
+- **36 engines** total (3 per worker: Generator + Router + Builder)
+- **776+ auto-generated calls** across all domains
+- Full routing table — every call auto-routed to correct target module
+- Phi-weighted priority scoring on every call
+- Self-healing workers with keepalive monitoring
+- Runs as ICP canister (`organism/motoko/src/AutoGenerateCallsEngine.mo`)
+
+**Endpoints:**
+- 6 `main.mo` endpoints — `getWorkers`, `getSnapshot`, `routeCall`, `generateAllCalls`, `getWorkerById`, `healthCheck`
+- 2 `IntelligenceWire.ts` endpoints — `wireAutoGenerate`, `wireRouteCall`
