@@ -60,11 +60,11 @@ There are no dumb pipes. No static configs. No passive layers. Everything in thi
 
 ## How It's Built
 
-Eight sovereign SDKs form the brain. Spatial memory with phi-encoded 5-axis coordinates. Enterprise integration with 8 connectors that onboard companies in sovereign mode. Intelligence routing that scores 40 AI model families and picks the best engine for any task by capability, priority, and cost. A runtime with a heartbeat, kernel execution, and edge sensing. A document absorption engine that turns raw content into living knowledge graphs. A model engine layer that wraps GPT, Claude, Gemini, Llama, Mistral, Whisper, DALL-E, Sora, and 32 more families into callable, routable engines. A frontend intelligence layer with 30 technology models running as 24-hour autonomous organisms. And a marketplace SDK with 24 always-on callable tools organized into 4 families — Crawling, Context, Commander, Sentry — each with schema, registry, invocation, routing, and settlement.
+Eight sovereign SDKs form the brain. Spatial memory with phi-encoded 5-axis coordinates. Enterprise integration with 8 connectors that onboard companies in sovereign mode. Intelligence routing that scores 40 AI model families and picks the best engine for any task by capability, priority, and cost. A runtime with a heartbeat, kernel execution, and edge sensing. A document absorption engine that turns raw content into living knowledge graphs. A model engine layer that wraps GPT, Claude, Gemini, Llama, Mistral, Whisper, DALL-E, Sora, and 32 more families into callable, routable engines. A frontend intelligence layer with 30 technology models running as 24-hour autonomous organisms. And a marketplace SDK with 60 always-on callable tools organized into 5 families — Crawling, Context, Commander, Sentry, Builder — each with schema, registry, invocation, routing, and settlement.
 
-Eleven protocols carry intelligence between all of these. Sovereign routing learns optimal model selection from outcome feedback. Encrypted transport adapts encryption strength by content sensitivity. Phi-resonance sync uses Kuramoto coupling to keep distributed endpoints locked to the 873ms heartbeat. Knowledge absorption evolves its extraction patterns. Multi-model fusion weights outputs with phi-decay scoring. Contract verification learns clause patterns from verified agreements. Edge mesh redistributes workload by real-time node capacity. And the organism lifecycle protocol self-heals by restarting failed kernels and rebalancing registers autonomously.
+60 protocols carry intelligence between all of these. Sovereign routing learns optimal model selection from outcome feedback. Encrypted transport adapts encryption strength by content sensitivity. Phi-resonance sync uses Kuramoto coupling to keep distributed endpoints locked to the 873ms heartbeat. Knowledge absorption evolves its extraction patterns. Multi-model fusion weights outputs with phi-decay scoring. Contract verification learns clause patterns from verified agreements. Edge mesh redistributes workload by real-time node capacity. Organism lifecycle self-heals by restarting failed kernels. Plus 50 new protocols covering consensus/BFT, AI hierarchy governance, cross-model communication, zero-knowledge security, marketplace settlement, observer intelligence, web worker orchestration, autonomous agent planning, cross-substrate bridging, signal processing, emergence detection, and resonance coupling.
 
-40 architectural laws govern everything. Semantic containment. Unidirectional state flow. Heartbeat sovereignty. Register integrity. Wire encryption. Kernel isolation. Anti-collapse. Continuous edge sensing. Cross-organism resonance. And the four meta-laws: fracture recognition, primitive reduction, sovereign rebuild, organism reintegration. Every wire, every tool, every extension, every protocol obeys all 40.
+60 architectural laws govern everything. Semantic containment. Unidirectional state flow. Heartbeat sovereignty. Register integrity. Wire encryption. Kernel isolation. Anti-collapse. Continuous edge sensing. Cross-organism resonance. The four meta-laws: fracture recognition, primitive reduction, sovereign rebuild, organism reintegration. Plus 20 new laws covering AI safety (prompt injection prevention, hallucination detection, toxicity filtering), agent autonomy boundaries, multi-model governance (sunset, capability scoring, bias detection), protocol versioning, marketplace integrity (tool attestation, settlement finality), observer intelligence lifecycle, web worker containment, cross-substrate migration safety, phase lock enforcement, and entity uniqueness. Every wire, every tool, every extension, every protocol obeys all 60.
 
 ---
 
@@ -124,7 +124,7 @@ AIs don't "just know" what tools exist. That's the biggest misconception. They n
 
 The marketplace provides all four. `ToolSchemaBuilder` defines the interface. `ToolRegistry` makes it discoverable. `MarketplaceRouter` handles the routing with phi-scored intent matching. `ToolInvoker` enforces permissions and returns structured results. And `MarketplaceSettlement` tracks usage, billing, and rewards.
 
-24 tools run always-on across 4 families. Context tools know what the organism is (heartbeat, state, cycles, context, memory, lineage). Commander tools direct what the organism does (sync, inference routing, attention, resources, connections, task orchestration). Crawling tools see the organism's own structure (flow, patterns, anomalies, cache, logs, topology). Sentry tools protect the organism from itself and others (security, integrity, boundaries, seals, queues, doctrine auditing).
+60 tools run always-on across 5 families. Context tools know what the organism is (heartbeat, state, cycles, context, memory, lineage, capability scoring, resonance coordination). Commander tools direct what the organism does (sync, inference routing, attention, resources, connections, task orchestration, worker orchestration, autonomous planning, multi-model consensus). Crawling tools see the organism's own structure (flow, patterns, anomalies, cache, logs, topology, observer scanning, emergence detection, entity deduplication). Sentry tools protect the organism from itself and others (security, integrity, boundaries, seals, queues, doctrine auditing, prompt shields, PII detection, bias auditing, law enforcement). Builder tools construct and manage the infrastructure (12 worker engines, marketplace registry, settlement, rewards, rollout gates, tool attestation).
 
 Exposure starts internal, then partner, then enterprise, then public. You don't open a marketplace to the world before your own organisms use it fluently.
 
@@ -289,7 +289,7 @@ Four side panel AI extensions built for Microsoft Edge using the `sidePanel` API
 
 ## The Numbers
 
-8 SDKs. 35 extensions. 11 protocols. 30 tools. 5 tool families. 40 model families. 10 multimodal families. 30 frontend intelligence models. 100 frontier model species. 40 architectural laws. 9 organism rings. 6 implementation languages. 4 browser observers. 4 Edge side panels. 12 Builder AIs. 36 engines. 776+ auto-generated calls. 1 heartbeat at 873ms.
+8 SDKs. 35 extensions. 60 protocols. 60 tools. 5 tool families. 40 model families. 10 multimodal families. 30 frontend intelligence models. 100 frontier model species. 60 architectural laws. 9 organism rings. 6 implementation languages. 4 browser observers. 4 Edge side panels. 12 Builder AIs. 36 engines. 976+ auto-generated calls. 1 heartbeat at 873ms.
 
 All of it is AI. All of it is intelligence. All of it is wired together. All of it is downloadable. And all of it is inside this repo.
 
@@ -299,29 +299,33 @@ As above, so below.
 
 ## AutoGenerateCallsEngine.mo — MOTOR AUTO-GENERATIONIS VOCATIONUM
 
-12 Web Worker Builder AIs (OPERARII AEDIFICATORES), each Latin-named with 3 dedicated engines (Generator + Router + Builder). 36 engines total. 776+ auto-generated calls across every domain in the organism. Full routing table — every call auto-routed to its correct target module. All AI, AGI, 24/7, user-facing, cross-substrate.
+12 Web Worker Builder AIs (OPERARII AEDIFICATORES), each Latin-named with 3 dedicated engines (Generator + Router + Builder). 36 engines total. 976+ auto-generated calls across every domain in the organism including 200+ multi-power cross-domain calls. Full routing table — every call auto-routed to its correct target module. All AI, AGI, 24/7, user-facing, cross-substrate. Call Marketplace Spec v1 defines registry schema, tool metadata, call contracts, permission tiers, pricing classes, and rollout gates (INTERNAL → PARTNER → ENTERPRISE → PUBLIC).
 
 | # | Name | Latin Name | Domain | Calls | Engines |
 |---|------|-----------|--------|-------|---------|
-| 1 | PROTOCOLLUM | OPERARIUS PROTOCOLLORUM | Protocols, Consensus, BFT | 144 | Generator / Router / Builder |
-| 2 | TERMINALIS | OPERARIUS TERMINALIUM | Terminals, AI/AGI Hierarchy | 50 | Generator / Router / Builder |
-| 3 | ORGANISMUS | OPERARIUS ORGANISMORUM | SDK Organisms, Emergence | 180 | Generator / Router / Builder |
-| 4 | MERCATOR | OPERARIUS MERCATUS | Marketplace, Tools, Tiers | 64 | Generator / Router / Builder |
-| 5 | ORCHESTRATOR | OPERARIUS ORCHESTRATORUM | Houses, Models, Families | 37 | Generator / Router / Builder |
+| 1 | PROTOCOLLUM | OPERARIUS PROTOCOLLORUM | Protocols, Consensus, BFT | 164 | Generator / Router / Builder |
+| 2 | TERMINALIS | OPERARIUS TERMINALIUM | Terminals, AI/AGI Hierarchy | 70 | Generator / Router / Builder |
+| 3 | ORGANISMUS | OPERARIUS ORGANISMORUM | SDK Organisms, Emergence | 195 | Generator / Router / Builder |
+| 4 | MERCATOR | OPERARIUS MERCATUS | Marketplace, Tools, Tiers | 89 | Generator / Router / Builder |
+| 5 | ORCHESTRATOR | OPERARIUS ORCHESTRATORUM | Houses, Models, Families | 67 | Generator / Router / Builder |
 | 6 | MATHEMATICUS | OPERARIUS MATHEMATICORUM | Math Formulas, Constants | 60 | Generator / Router / Builder |
-| 7 | SYNAPTICUS | OPERARIUS SYNAPSIUM | Synapses, Chaos, Connections | 20 | Generator / Router / Builder |
-| 8 | SUBSTRATUM | OPERARIUS SUBSTRATI | Blockchain, Nodes, Layers | 40 | Generator / Router / Builder |
-| 9 | UNIVERSUM | OPERARIUS UNIVERSORUM | Domains, Ecosystems, Councils | 105 | Generator / Router / Builder |
+| 7 | SYNAPTICUS | OPERARIUS SYNAPSIUM | Synapses, Chaos, Connections | 35 | Generator / Router / Builder |
+| 8 | SUBSTRATUM | OPERARIUS SUBSTRATI | Blockchain, Nodes, Layers | 55 | Generator / Router / Builder |
+| 9 | UNIVERSUM | OPERARIUS UNIVERSORUM | Domains, Ecosystems, Councils | 130 | Generator / Router / Builder |
 | 10 | CANISTRUM | OPERARIUS CANISTRORUM | Canister Tech, Factory | 23 | Generator / Router / Builder |
-| 11 | LICENTIATOR | OPERARIUS LICENTIARUM | Licenses, Documents, Rights | 24 | Generator / Router / Builder |
-| 12 | DEFENSOR | OPERARIUS DEFENSIONIS ET CURAE | Defense, Care, Arsenal | 29 | Generator / Router / Builder |
+| 11 | LICENTIATOR | OPERARIUS LICENTIARUM | Licenses, Documents, Rights | 39 | Generator / Router / Builder |
+| 12 | DEFENSOR | OPERARIUS DEFENSIONIS ET CURAE | Defense, Care, Arsenal | 49 | Generator / Router / Builder |
 
 **Architecture:**
 - **36 engines** total (3 per worker: Generator + Router + Builder)
-- **776+ auto-generated calls** across all domains
+- **976+ auto-generated calls** across all domains (776 base + 200 multi-power cross-domain)
 - Full routing table — every call auto-routed to correct target module
 - Phi-weighted priority scoring on every call
 - Self-healing workers with keepalive monitoring
+- Call Marketplace Spec v1 (`CallMarketplaceSpec_v1.json`) — registry schema, call contracts, permission tiers, pricing classes, rollout gates
+- All calls registered in `Organism_Marketplace_Register.csv` (60 tools)
+- 60 protocols in `AI_Protocols_Register.csv` — used by workers, observers, and AIs
+- 60 architectural laws in `Architectural_Laws_Register.csv` — wired to every call
 - Runs as ICP canister (`organism/motoko/src/AutoGenerateCallsEngine.mo`)
 
 **Endpoints:**
