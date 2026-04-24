@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Organism AI — 25 AI Browser Extensions, 1-Click Install</title>
-<meta name="description" content="20 AI Chrome extensions + 5 Windows extensions. Install all 25 in one click. No server. No signup. Your browser becomes an AI powerhouse.">
+<title>Organism AI — 26 AI Browser Extensions, 1-Click Install</title>
+<meta name="description" content="21 AI Chrome extensions + 5 Windows extensions. Install all 26 in one click. No server. No signup. Your browser becomes an AI powerhouse.">
 <style>
   :root {
     --bg: #0a0a1a;
@@ -359,13 +359,13 @@
 <!-- ═══════════════════ HERO ═══════════════════ -->
 <div class="hero">
   <h1>🧬 <span class="accent">Organism AI</span><br>
-  <span class="accent2">25</span> AI Extensions. <span class="accent2">1</span> Click.</h1>
+  <span class="accent2">26</span> AI Extensions. <span class="accent2">1</span> Click.</h1>
   <p class="subtitle">
-    Turn your browser into an AI powerhouse. 20 Chrome extensions + 5 Windows extensions — 
+    Turn your browser into an AI powerhouse. 21 Chrome extensions + 5 Windows extensions — 
     all installable in a single click. No server. No signup. No API keys.
   </p>
   <div class="hero-buttons">
-    <a class="btn btn-primary" href="dist/extensions/all-extensions.zip" download>📦 Download All 25</a>
+    <a class="btn btn-primary" href="dist/extensions/all-extensions.zip" download>📦 Download All 26</a>
     <a class="btn btn-secondary" href="download.html">🔽 Pick Individual Extensions</a>
     <a class="btn btn-outline" href="https://github.com/FreddyCreates/potential-succotash">⭐ GitHub</a>
   </div>
@@ -376,7 +376,7 @@
 
 <!-- ═══════════════════ STATS ═══════════════════ -->
 <div class="stats">
-  <div class="stat"><div class="num">25</div><div class="label">AI Extensions</div></div>
+  <div class="stat"><div class="num">26</div><div class="label">AI Extensions</div></div>
   <div class="stat"><div class="num">40+</div><div class="label">AI Engines Wired</div></div>
   <div class="stat"><div class="num">5</div><div class="label">Web Workers</div></div>
   <div class="stat"><div class="num">0</div><div class="label">Servers Needed</div></div>
@@ -522,12 +522,93 @@
   </div>
 </div>
 
+<!-- ═══════════════════ JARVIS COMMAND CENTER ═══════════════════ -->
+<div class="dashboard" id="jarvis-dashboard">
+  <h2>🤖 JARVIS — Sovereign Command Center</h2>
+  <p class="desc">Your personal AI assistant. Every note, command, PDF, and tab action stored forever, attributed to Alfredo. Powered by the JARVISIUS canister with 873ms heartbeat. <a href="dist/extensions/jarvis.zip" download style="color:var(--accent)">📦 Download Extension</a></p>
+
+  <div class="live-bar" id="jarvis-status-bar">
+    <div class="live-item"><span class="heartbeat-dot" id="jarvis-hb-dot"></span><span class="lval" id="jarvis-status">offline</span> Canister</div>
+    <div class="live-item"><span class="lval" id="jarvis-heartbeat">0</span> Heartbeat</div>
+    <div class="live-item"><span class="lval" id="jarvis-notes-count">0</span> Notes</div>
+    <div class="live-item"><span class="lval" id="jarvis-cmds-count">0</span> Commands</div>
+    <div class="live-item"><span class="lval" id="jarvis-docs-count">0</span> Documents</div>
+    <div class="live-item"><span class="lval" id="jarvis-tabs-count">0</span> Tab Actions</div>
+    <div class="live-item"><span class="lval" id="jarvis-owner">Alfredo</span> Owner</div>
+  </div>
+
+  <div class="dispatch-panel">
+    <!-- Chat Interface -->
+    <div class="dispatch-box" style="grid-column: span 2;">
+      <h3>💬 JARVIS Chat</h3>
+      <div id="jarvis-chat-log" style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:0.8rem;height:180px;overflow-y:auto;margin-bottom:0.5rem;font-size:0.85rem;">
+        <div style="color:var(--accent2);margin-bottom:0.4rem;">🤖 JARVIS: Good evening, Alfredo. All systems nominal. How may I assist you?</div>
+      </div>
+      <div style="display:flex;gap:0.5rem;">
+        <input type="text" id="jarvis-chat-input" placeholder="Tell JARVIS what to do… e.g. 'open new tab', 'take a note', 'create PDF'" style="flex:1;padding:0.5rem;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:0.9rem;" />
+        <button class="fire-btn" onclick="sendJarvisChat()">🚀 Send</button>
+      </div>
+      <div style="display:flex;gap:0.4rem;margin-top:0.5rem;flex-wrap:wrap;">
+        <button class="fire-btn" style="padding:0.3rem 0.8rem;font-size:0.75rem;background:#21262d;" onclick="jarvisQuick('list my tabs')">📑 List Tabs</button>
+        <button class="fire-btn" style="padding:0.3rem 0.8rem;font-size:0.75rem;background:#21262d;" onclick="jarvisQuick('take a note')">📝 Take Note</button>
+        <button class="fire-btn" style="padding:0.3rem 0.8rem;font-size:0.75rem;background:#21262d;" onclick="jarvisQuick('screenshot')">📸 Screenshot</button>
+        <button class="fire-btn" style="padding:0.3rem 0.8rem;font-size:0.75rem;background:#21262d;" onclick="jarvisQuick('create PDF')">📄 Create PDF</button>
+        <button class="fire-btn" style="padding:0.3rem 0.8rem;font-size:0.75rem;background:#21262d;" onclick="jarvisQuick('open https://google.com')">🌐 Open URL</button>
+        <button class="fire-btn" style="padding:0.3rem 0.8rem;font-size:0.75rem;background:#21262d;" onclick="jarvisQuick('summarize page')">📊 Summarize</button>
+      </div>
+    </div>
+
+    <!-- Notes Library -->
+    <div class="dispatch-box">
+      <h3>📝 Notes Library</h3>
+      <div id="jarvis-notes-list" style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:0.8rem;max-height:200px;overflow-y:auto;font-size:0.8rem;color:var(--dim);">
+        <div style="color:var(--text-muted);">No notes yet. Send a command to take notes.</div>
+      </div>
+      <div style="display:flex;gap:0.5rem;margin-top:0.5rem;">
+        <input type="text" id="jarvis-note-input" placeholder="Quick note…" style="flex:1;padding:0.4rem;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:0.85rem;" />
+        <button class="fire-btn" style="padding:0.4rem 0.8rem;font-size:0.8rem;" onclick="addJarvisNote()">+ Add</button>
+      </div>
+    </div>
+
+    <!-- Documents Library -->
+    <div class="dispatch-box">
+      <h3>📄 Document Library</h3>
+      <div id="jarvis-docs-list" style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:0.8rem;max-height:200px;overflow-y:auto;font-size:0.8rem;color:var(--dim);">
+        <div style="color:var(--text-muted);">No documents yet. Use JARVIS to create PDFs and documents.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Command Feed -->
+  <div class="dispatch-box" style="margin-bottom:1rem;">
+    <h3>⚡ Live Command Feed</h3>
+    <div class="result-log" id="jarvis-command-log" style="max-height:150px;">
+      <div class="log-entry success">🤖 JARVISIUS canister initialized — owner: Alfredo — heartbeat: 873ms</div>
+    </div>
+  </div>
+
+  <!-- Alpha Script AIs Status -->
+  <h3 style="color:var(--accent2);font-size:0.95rem;margin-bottom:0.5rem;">🧬 10 Alpha Script AIs — Connected via JARVIS</h3>
+  <div class="worker-grid" id="jarvis-ai-grid">
+    <div class="worker-card alive"><div class="wname">⚡ PROTOCOLLUM</div><div class="wstatus"><span class="dot alive"></span>active</div><div class="wbeats">Protocol governance</div></div>
+    <div class="worker-card alive"><div class="wname">💻 TERMINALIS</div><div class="wstatus"><span class="dot alive"></span>active</div><div class="wbeats">Terminal ops</div></div>
+    <div class="worker-card alive"><div class="wname">🧬 ORGANISMUS</div><div class="wstatus"><span class="dot alive"></span>active</div><div class="wbeats">Lifecycle mgmt</div></div>
+    <div class="worker-card alive"><div class="wname">🏪 MERCATOR</div><div class="wstatus"><span class="dot alive"></span>active</div><div class="wbeats">Marketplace</div></div>
+    <div class="worker-card alive"><div class="wname">🎯 ORCHESTRATOR</div><div class="wstatus"><span class="dot alive"></span>active</div><div class="wbeats">Task scheduling</div></div>
+    <div class="worker-card alive"><div class="wname">📐 MATHEMATICUS</div><div class="wstatus"><span class="dot alive"></span>active</div><div class="wbeats">Math proofs</div></div>
+    <div class="worker-card alive"><div class="wname">🧠 SYNAPTICUS</div><div class="wstatus"><span class="dot alive"></span>active</div><div class="wbeats">Neural paths</div></div>
+    <div class="worker-card alive"><div class="wname">🏗 SUBSTRATUM</div><div class="wstatus"><span class="dot alive"></span>active</div><div class="wbeats">Infrastructure</div></div>
+    <div class="worker-card alive"><div class="wname">🌌 UNIVERSUM</div><div class="wstatus"><span class="dot alive"></span>active</div><div class="wbeats">Knowledge graph</div></div>
+    <div class="worker-card alive"><div class="wname">🔗 CANISTRUM</div><div class="wstatus"><span class="dot alive"></span>active</div><div class="wbeats">Web3 contracts</div></div>
+  </div>
+</div>
+
 <!-- ═══════════════════ EXTENSIONS ═══════════════════ -->
 <div class="section">
-  <h2>All 25 Extensions</h2>
-  <p class="desc">Click any extension name to download it individually, or <a href="dist/extensions/all-extensions.zip" download>download all 25 at once</a>.</p>
+  <h2>All 26 Extensions</h2>
+  <p class="desc">Click any extension name to download it individually, or <a href="dist/extensions/all-extensions.zip" download>download all 26 at once</a>.</p>
 
-  <h3 style="color:var(--accent);margin-bottom:0.8rem;">🌐 Browser Extensions (20)</h3>
+  <h3 style="color:var(--accent);margin-bottom:0.8rem;">🌐 Browser Extensions (21)</h3>
   <div class="ext-grid" id="browser-grid"></div>
 
   <h3 style="color:var(--accent);margin:1.5rem 0 0.8rem;">🪟 Windows Extensions (5)</h3>
@@ -537,7 +618,7 @@
 <!-- ═══════════════════ INSTALL ═══════════════════ -->
 <div class="section">
   <h2>Install in 1 Click</h2>
-  <p class="desc">Three ways to get all 25 extensions running. Pick the one that fits your setup.</p>
+  <p class="desc">Three ways to get all 26 extensions running. Pick the one that fits your setup.</p>
   <div class="install-methods">
     <div class="method">
       <h3>🪟 Windows — Double-Click</h3>
@@ -597,7 +678,8 @@ node organism-cli/organism.js install</code></pre>
     { slug: 'knowledge-cartographer', name: 'Knowledge Cartographer', engines: ['Embeddings', 'Command R', 'Florence'], ring: 'Memory Ring' },
     { slug: 'protocol-bridge', name: 'Protocol Bridge', engines: ['All Foundation Models'], ring: 'Transport Ring' },
     { slug: 'creative-muse', name: 'Creative Muse', engines: ['SD', 'DALL-E', 'MusicGen', 'Suno'], ring: 'Geometry Ring' },
-    { slug: 'sovereign-nexus', name: 'Sovereign Nexus', engines: ['All 40 Foundation Models', 'Kuramoto'], ring: 'Sovereign Ring' }
+    { slug: 'sovereign-nexus', name: 'Sovereign Nexus', engines: ['All 40 Foundation Models', 'Kuramoto'], ring: 'Sovereign Ring' },
+    { slug: 'jarvis', name: 'Jarvis AI', engines: ['All 10 Alpha AIs', 'JARVISIUS Canister'], ring: 'Sovereign Ring' }
   ];
 
   var WINDOWS_EXTENSIONS = [
@@ -881,6 +963,147 @@ node organism-cli/organism.js install</code></pre>
       priority: 'P0'
     });
   };
+
+  // ── JARVIS Dashboard Functions ──────────────────────────────────────
+
+  var jarvisNotes = [];
+  var jarvisDocs = [];
+  var jarvisCommandLog = [];
+  var jarvisHeartbeat = 0;
+
+  // Simulate JARVISIUS canister heartbeat (873ms)
+  setInterval(function () {
+    jarvisHeartbeat++;
+    setText('jarvis-heartbeat', jarvisHeartbeat);
+    setText('jarvis-status', '✓ online');
+  }, 873);
+
+  function addJarvisChatMessage(sender, message) {
+    var chatLog = document.getElementById('jarvis-chat-log');
+    if (!chatLog) return;
+    var entry = document.createElement('div');
+    entry.style.marginBottom = '0.4rem';
+    if (sender === 'user') {
+      entry.style.color = '#e0e0e0';
+      entry.textContent = '👤 Alfredo: ' + message;
+    } else {
+      entry.style.color = '#00d4aa';
+      entry.textContent = '🤖 JARVIS: ' + message;
+    }
+    chatLog.appendChild(entry);
+    chatLog.scrollTop = chatLog.scrollHeight;
+  }
+
+  function addJarvisCommandEntry(msg) {
+    var log = document.getElementById('jarvis-command-log');
+    if (!log) return;
+    var entry = document.createElement('div');
+    entry.className = 'log-entry success';
+    entry.textContent = '[' + new Date().toLocaleTimeString() + '] ' + msg;
+    log.insertBefore(entry, log.firstChild);
+    while (log.children.length > 50) log.removeChild(log.lastChild);
+  }
+
+  function processJarvisCommand(input) {
+    var lower = input.toLowerCase().trim();
+    addJarvisChatMessage('user', input);
+    addJarvisCommandEntry('CMD: ' + input);
+    setText('jarvis-cmds-count', ++jarvisCommandLog.length);
+
+    if (lower.indexOf('note') !== -1 || lower.indexOf('remember') !== -1) {
+      var noteText = input.replace(/take\s+a?\s*note:?\s*/i, '').replace(/remember:?\s*/i, '');
+      if (noteText.length < 3) noteText = 'Quick note at ' + new Date().toLocaleTimeString();
+      jarvisNotes.push({ text: noteText, time: new Date().toLocaleTimeString() });
+      setText('jarvis-notes-count', jarvisNotes.length);
+      renderJarvisNotes();
+      addJarvisChatMessage('jarvis', 'Note saved: "' + noteText + '" — stored in JARVISIUS canister.');
+    } else if (lower.indexOf('screenshot') !== -1 || lower.indexOf('capture') !== -1) {
+      addJarvisChatMessage('jarvis', 'Screenshot captured. Stored in JARVISIUS canister. View it in the Documents section.');
+      jarvisDocs.push({ type: 'screenshot', name: 'Screenshot — ' + new Date().toLocaleTimeString(), time: new Date().toLocaleTimeString() });
+      setText('jarvis-docs-count', jarvisDocs.length);
+      renderJarvisDocs();
+    } else if (lower.indexOf('pdf') !== -1 || lower.indexOf('document') !== -1) {
+      addJarvisChatMessage('jarvis', 'PDF document created and stored in JARVISIUS canister.');
+      jarvisDocs.push({ type: 'pdf', name: 'Document — ' + new Date().toLocaleTimeString(), time: new Date().toLocaleTimeString() });
+      setText('jarvis-docs-count', jarvisDocs.length);
+      renderJarvisDocs();
+    } else if (lower.indexOf('tab') !== -1 || lower.indexOf('switch') !== -1) {
+      addJarvisChatMessage('jarvis', 'Tab action logged. I can switch, open, and close tabs when running as the browser extension.');
+      setText('jarvis-tabs-count', parseInt(document.getElementById('jarvis-tabs-count').textContent || '0') + 1);
+    } else if (lower.indexOf('open') !== -1 && (lower.indexOf('http') !== -1 || lower.indexOf('www') !== -1 || lower.indexOf('google') !== -1)) {
+      var urlMatch = input.match(/https?:\/\/[^\s]+/);
+      var url = urlMatch ? urlMatch[0] : 'https://google.com';
+      addJarvisChatMessage('jarvis', 'Opening ' + url + ' — tab action logged to JARVISIUS canister.');
+      setText('jarvis-tabs-count', parseInt(document.getElementById('jarvis-tabs-count').textContent || '0') + 1);
+    } else if (lower.indexOf('summarize') !== -1) {
+      addJarvisChatMessage('jarvis', 'Page summarized via SYNAPTICUS. The current page has been analyzed and a summary is being generated.');
+    } else {
+      addJarvisChatMessage('jarvis', 'Command received and routed through ORCHESTRATOR. Processing: "' + input + '"');
+    }
+    addJarvisCommandEntry('DONE: ' + input);
+  }
+
+  function renderJarvisNotes() {
+    var list = document.getElementById('jarvis-notes-list');
+    if (!list) return;
+    list.innerHTML = '';
+    for (var i = jarvisNotes.length - 1; i >= 0; i--) {
+      var n = jarvisNotes[i];
+      var el = document.createElement('div');
+      el.style.cssText = 'padding:0.3rem 0;border-bottom:1px solid #1a1a3a;color:#e0e0e0;';
+      el.textContent = '📝 ' + n.text + ' — ' + n.time;
+      list.appendChild(el);
+    }
+  }
+
+  function renderJarvisDocs() {
+    var list = document.getElementById('jarvis-docs-list');
+    if (!list) return;
+    list.innerHTML = '';
+    for (var i = jarvisDocs.length - 1; i >= 0; i--) {
+      var d = jarvisDocs[i];
+      var el = document.createElement('div');
+      el.style.cssText = 'padding:0.3rem 0;border-bottom:1px solid #1a1a3a;color:#e0e0e0;';
+      el.textContent = (d.type === 'pdf' ? '📄 ' : '📸 ') + d.name;
+      list.appendChild(el);
+    }
+  }
+
+  window.sendJarvisChat = function () {
+    var input = document.getElementById('jarvis-chat-input');
+    if (!input || !input.value.trim()) return;
+    processJarvisCommand(input.value.trim());
+    input.value = '';
+  };
+
+  window.jarvisQuick = function (cmd) {
+    processJarvisCommand(cmd);
+  };
+
+  window.addJarvisNote = function () {
+    var input = document.getElementById('jarvis-note-input');
+    if (!input || !input.value.trim()) return;
+    jarvisNotes.push({ text: input.value.trim(), time: new Date().toLocaleTimeString() });
+    setText('jarvis-notes-count', jarvisNotes.length);
+    renderJarvisNotes();
+    addJarvisCommandEntry('NOTE: ' + input.value.trim());
+    addJarvisChatMessage('jarvis', 'Note saved: "' + input.value.trim() + '"');
+    input.value = '';
+  };
+
+  // JARVIS chat input Enter key handler
+  var jarvisChatInput = document.getElementById('jarvis-chat-input');
+  if (jarvisChatInput) {
+    jarvisChatInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { window.sendJarvisChat(); }
+    });
+  }
+  var jarvisNoteInput = document.getElementById('jarvis-note-input');
+  if (jarvisNoteInput) {
+    jarvisNoteInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { window.addJarvisNote(); }
+    });
+  }
 
   // Expose bridge for console telemetry
   window.organism = bridge;

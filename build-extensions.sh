@@ -78,7 +78,7 @@ for ext_dir in "$EXT_SRC"/*/; do
   fi
 
   # Include any popup or options pages if present
-  for f in popup.html popup.js options.html options.js styles.css; do
+  for f in popup.html popup.js options.html options.js styles.css sidepanel.html sidepanel.js; do
     [ -f "$ext_dir/$f" ] && FILES_TO_ZIP="$FILES_TO_ZIP $f"
   done
 

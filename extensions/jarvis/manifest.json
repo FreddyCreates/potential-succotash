@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "Jarvis AI",
+  "version": "1.0.0",
+  "description": "AI sovereign assistant — side panel with tab control, notes, screen capture, and command routing through Alpha Script AIs",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "alarms",
+    "tabs",
+    "scripting",
+    "sidePanel",
+    "downloads"
+  ],
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "minimum_chrome_version": "114",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+    },
+    "default_title": "Open JARVIS"
+  }
+}
