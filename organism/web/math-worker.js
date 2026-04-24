@@ -481,9 +481,14 @@ function goldenSectionSearch(fn, a, b, tol) {
 // Safely evaluate simple math expressions (polynomials, trig, exp, log)
 function buildSafeFunction(expr) {
   if (typeof expr !== 'string') return null;
-  // Only allow safe math characters and functions
-  var safe = /^[0-9x+\-*/().^ sincotaglqrtexpbmhpi\s]+$/i;
+  // Only allow safe math characters: digits, x, operators, parens, dot, caret, space,
+  // and individual characters that compose function names (sin, cos, tan, abs, log, sqrt, exp, pi)
+  var safe = /^[0-9x+\-*/().^ a-z\s]+$/i;
   if (!safe.test(expr)) return null;
+
+  // Only allow known math functions — reject anything else
+  var stripped = expr.replace(/\b(sin|cos|tan|abs|sqrt|exp|log|pi|x)\b/gi, '').replace(/[0-9+\-*/().^ \s]/g, '');
+  if (stripped.length > 0) return null;
 
   var jsExpr = expr
     .replace(/\^/g, '**')

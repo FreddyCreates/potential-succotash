@@ -1385,13 +1385,19 @@ node organism-cli/organism.js install</code></pre>
   // ═══════════════════ AI CHAT ═══════════════════
   var chatHistory = [];
 
+  function escapeHtml(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
   function addChatMsg(role, text, meta) {
     var container = document.getElementById('chat-messages');
     if (!container) return;
     var div = document.createElement('div');
     div.className = 'chat-msg ' + role;
     var label = role === 'user' ? '👤 You' : '🧬 Twin Alpha';
-    div.innerHTML = '<strong>' + label + '</strong><br>' + text + '<div class="msg-meta">' + (meta || '') + '</div>';
+    // User messages are escaped; AI messages contain pre-sanitized HTML from internal workers only
+    var safeText = role === 'user' ? escapeHtml(text) : text;
+    div.innerHTML = '<strong>' + label + '</strong><br>' + safeText + '<div class="msg-meta">' + escapeHtml(meta || '') + '</div>';
     container.appendChild(div);
     container.scrollTop = container.scrollHeight;
   }
