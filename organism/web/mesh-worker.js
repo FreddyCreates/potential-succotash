@@ -28,6 +28,7 @@
  */
 
 'use strict';
+importScripts('neuro-core.js');
 
 var PHI = 1.618033988749895;
 var HEARTBEAT_MS = 873;
@@ -199,6 +200,7 @@ function pruneDeadPeers() {
 
 self.onmessage = function (e) {
   var msg = e.data;
+  neuro.onMessage(msg.type);
 
   switch (msg.type) {
     case 'join': {
@@ -258,17 +260,23 @@ self.onmessage = function (e) {
       self.postMessage({ type: 'mesh-stats', stats: meshMetrics, peerCount: Object.keys(peers).length, leader: leaderId });
       break;
     }
+    case 'neuro-signal':
+      neuro.receiveNeuroSignal(msg);
+      break;
     case 'stop':
       running = false;
       broadcastMesh({ meshType: 'leave', nodeId: localNodeId, timestamp: Date.now() });
       if (meshChannel) meshChannel.close();
       break;
   }
+  neuro.onMessageDone();
 };
 
 /* ════════════════════════════════════════════════════════════════
    Heartbeat + Peer maintenance
    ════════════════════════════════════════════════════════════════ */
+
+var neuro = new NeuroCore('mesh');
 
 setInterval(function () {
   if (!running) return;
@@ -286,6 +294,7 @@ setInterval(function () {
     beat: beatCount,
     timestamp: Date.now(),
     status: 'alive',
-    metrics: meshMetrics
+    metrics: meshMetrics,
+    neuro: neuro.pulse()
   });
 }, HEARTBEAT_MS);

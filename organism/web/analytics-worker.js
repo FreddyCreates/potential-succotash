@@ -27,6 +27,7 @@
  */
 
 'use strict';
+importScripts('neuro-core.js');
 
 var PHI = 1.618033988749895;
 var HEARTBEAT_MS = 873;
@@ -195,6 +196,7 @@ function generateReport(period) {
 
 self.onmessage = function (e) {
   var msg = e.data;
+  neuro.onMessage(msg.type);
 
   switch (msg.type) {
     case 'track': {
@@ -237,15 +239,21 @@ self.onmessage = function (e) {
       self.postMessage({ type: 'analytics-stats', stats: analyticsMetrics, counters: counters });
       break;
     }
+    case 'neuro-signal':
+      neuro.receiveNeuroSignal(msg);
+      break;
     case 'stop':
       running = false;
       break;
   }
+  neuro.onMessageDone();
 };
 
 /* ════════════════════════════════════════════════════════════════
    Heartbeat
    ════════════════════════════════════════════════════════════════ */
+
+var neuro = new NeuroCore('analytics');
 
 setInterval(function () {
   if (!running) return;
@@ -256,6 +264,7 @@ setInterval(function () {
     beat: beatCount,
     timestamp: Date.now(),
     status: 'alive',
-    metrics: analyticsMetrics
+    metrics: analyticsMetrics,
+    neuro: neuro.pulse()
   });
 }, HEARTBEAT_MS);

@@ -27,6 +27,7 @@
  */
 
 'use strict';
+importScripts('neuro-core.js');
 
 var PHI = 1.618033988749895;
 var HEARTBEAT_MS = 873;
@@ -227,6 +228,7 @@ function decompose(task) {
 
 self.onmessage = function (e) {
   var msg = e.data;
+  neuro.onMessage(msg.type);
 
   switch (msg.type) {
     case 'create-workflow': {
@@ -269,15 +271,21 @@ self.onmessage = function (e) {
       self.postMessage({ type: 'orchestrator-stats', stats: orchestratorMetrics });
       break;
     }
+    case 'neuro-signal':
+      neuro.receiveNeuroSignal(msg);
+      break;
     case 'stop':
       running = false;
       break;
   }
+  neuro.onMessageDone();
 };
 
 /* ════════════════════════════════════════════════════════════════
    Heartbeat
    ════════════════════════════════════════════════════════════════ */
+
+var neuro = new NeuroCore('orchestrator');
 
 setInterval(function () {
   if (!running) return;
@@ -288,6 +296,7 @@ setInterval(function () {
     beat: beatCount,
     timestamp: Date.now(),
     status: 'alive',
-    metrics: orchestratorMetrics
+    metrics: orchestratorMetrics,
+    neuro: neuro.pulse()
   });
 }, HEARTBEAT_MS);

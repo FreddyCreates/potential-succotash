@@ -27,6 +27,7 @@
  */
 
 'use strict';
+importScripts('neuro-core.js');
 
 var PHI = 1.618033988749895;
 var HEARTBEAT_MS = 873;
@@ -216,6 +217,7 @@ function tick() {
 
 self.onmessage = function (e) {
   var msg = e.data;
+  neuro.onMessage(msg.type);
 
   switch (msg.type) {
     case 'schedule': {
@@ -257,10 +259,14 @@ self.onmessage = function (e) {
       self.postMessage({ type: 'scheduler-stats', stats: schedulerMetrics });
       break;
     }
+    case 'neuro-signal':
+      neuro.receiveNeuroSignal(msg);
+      break;
     case 'stop':
       running = false;
       break;
   }
+  neuro.onMessageDone();
 };
 
 /* ════════════════════════════════════════════════════════════════
@@ -268,6 +274,8 @@ self.onmessage = function (e) {
    ════════════════════════════════════════════════════════════════ */
 
 setInterval(tick, TICK_MS);
+
+var neuro = new NeuroCore('scheduler');
 
 setInterval(function () {
   if (!running) return;
@@ -278,6 +286,7 @@ setInterval(function () {
     beat: beatCount,
     timestamp: Date.now(),
     status: 'alive',
-    metrics: schedulerMetrics
+    metrics: schedulerMetrics,
+    neuro: neuro.pulse()
   });
 }, HEARTBEAT_MS);

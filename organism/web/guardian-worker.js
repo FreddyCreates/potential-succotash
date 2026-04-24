@@ -27,6 +27,7 @@
  */
 
 'use strict';
+importScripts('neuro-core.js');
 
 var PHI = 1.618033988749895;
 var HEARTBEAT_MS = 873;
@@ -181,6 +182,7 @@ function unblockKey(key) {
 
 self.onmessage = function (e) {
   var msg = e.data;
+  neuro.onMessage(msg.type);
 
   switch (msg.type) {
     case 'check': {
@@ -216,15 +218,21 @@ self.onmessage = function (e) {
       self.postMessage({ type: 'guardian-stats', stats: guardianMetrics, blocklistSize: Object.keys(blocklist).length });
       break;
     }
+    case 'neuro-signal':
+      neuro.receiveNeuroSignal(msg);
+      break;
     case 'stop':
       running = false;
       break;
   }
+  neuro.onMessageDone();
 };
 
 /* ════════════════════════════════════════════════════════════════
    Heartbeat
    ════════════════════════════════════════════════════════════════ */
+
+var neuro = new NeuroCore('guardian');
 
 setInterval(function () {
   if (!running) return;
@@ -246,6 +254,7 @@ setInterval(function () {
     beat: beatCount,
     timestamp: Date.now(),
     status: 'alive',
-    metrics: guardianMetrics
+    metrics: guardianMetrics,
+    neuro: neuro.pulse()
   });
 }, HEARTBEAT_MS);

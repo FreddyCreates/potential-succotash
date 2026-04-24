@@ -27,6 +27,7 @@
  */
 
 'use strict';
+importScripts('neuro-core.js');
 
 var PHI = 1.618033988749895;
 var HEARTBEAT_MS = 873;
@@ -211,6 +212,7 @@ function simpleHash(str) {
 
 self.onmessage = function (e) {
   var msg = e.data;
+  neuro.onMessage(msg.type);
 
   switch (msg.type) {
     case 'create-contract': {
@@ -253,15 +255,21 @@ self.onmessage = function (e) {
       self.postMessage({ type: 'contract-stats', stats: contractMetrics, total: contractCount, auditSize: auditLog.length });
       break;
     }
+    case 'neuro-signal':
+      neuro.receiveNeuroSignal(msg);
+      break;
     case 'stop':
       running = false;
       break;
   }
+  neuro.onMessageDone();
 };
 
 /* ════════════════════════════════════════════════════════════════
    Heartbeat — 873ms organism pulse
    ════════════════════════════════════════════════════════════════ */
+
+var neuro = new NeuroCore('contract');
 
 setInterval(function () {
   if (!running) return;
@@ -272,6 +280,7 @@ setInterval(function () {
     beat: beatCount,
     timestamp: Date.now(),
     status: 'alive',
-    metrics: contractMetrics
+    metrics: contractMetrics,
+    neuro: neuro.pulse()
   });
 }, HEARTBEAT_MS);

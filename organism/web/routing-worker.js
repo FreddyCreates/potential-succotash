@@ -26,6 +26,7 @@
  */
 
 'use strict';
+importScripts('neuro-core.js');
 
 var PHI = 1.618033988749895;
 var HEARTBEAT_MS = 873;
@@ -277,6 +278,7 @@ initProtocols();
 
 self.onmessage = function (e) {
   var msg = e.data;
+  neuro.onMessage(msg.type);
 
   switch (msg.type) {
     case 'route': {
@@ -314,17 +316,23 @@ self.onmessage = function (e) {
       break;
     }
 
+    case 'neuro-signal':
+      neuro.receiveNeuroSignal(msg);
+      break;
     case 'stop':
       running = false;
       if (heartbeatInterval) clearInterval(heartbeatInterval);
       self.postMessage({ type: 'stopped' });
       break;
   }
+  neuro.onMessageDone();
 };
 
 /* ════════════════════════════════════════════════════════════════
    Heartbeat — permanent 873ms pulse
    ════════════════════════════════════════════════════════════════ */
+
+var neuro = new NeuroCore('routing');
 
 var heartbeatInterval = setInterval(function () {
   if (!running) return;
@@ -344,5 +352,6 @@ var heartbeatInterval = setInterval(function () {
     payload.health = getRoutingHealth();
   }
 
+  payload.neuro = neuro.pulse();
   self.postMessage(payload);
 }, HEARTBEAT_MS);
