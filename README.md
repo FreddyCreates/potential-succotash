@@ -103,54 +103,17 @@ The organism isn't conceptual. It's compiled. It's running. The 873ms heartbeat 
 
 ## Download & Install Extensions
 
-Everything works without GitHub. Download the files, put them anywhere — USB drive, your own server, a shared folder, whatever — and run.
+No terminal. No commands. No GitHub account. Download a zip, unzip it, load it into Chrome. That's it.
 
-### 1-Click Install (Any Platform)
+### Download Page (works offline)
 
-**Got the repo (or the release bundle)?** Just run one command:
+Open **[dist/download.html](dist/download.html)** in any browser. Every extension has a download link pointing to the zip file right next to that page. Works from a USB drive, a download folder, a local server, a `file://` URL — no internet needed.
 
-```bash
-# Linux / macOS — no Node.js needed
-bash install.sh
+### Direct Downloads
 
-# Linux / macOS / Windows — with Node.js
-node organism-cli
+Every link below downloads the real `.zip` file. Click → save → unzip → load into Chrome.
 
-# Windows — double-click
-install-organism.bat
-```
-
-That's it. It scans all 26 extensions, validates Manifest V3 compliance, detects Chrome/Edge/Brave, and launches your browser with every extension already attached. No developer mode. No manual steps.
-
-### Standalone Release Bundle (No GitHub Needed)
-
-Build a fully self-contained release that can go anywhere:
-
-```bash
-npm run bundle
-# Output: dist/sovereign-organism-v1.0.0.tar.gz
-# Output: dist/sovereign-organism-v1.0.0.zip
-```
-
-The bundle contains everything: all 26 extension zips, install scripts for every OS, the CLI, raw extension source, an offline download page, README, and LICENSE. Upload it to your own server, put it on a USB drive, email it — no GitHub dependency.
-
-Users unpack and run:
-
-```bash
-tar xzf sovereign-organism-v1.0.0.tar.gz
-cd sovereign-organism-v1.0.0
-bash install.sh
-```
-
-On Windows, unzip and double-click `install-organism.bat`.
-
-### Offline Download Page
-
-Open `dist/download.html` in any browser. It's a self-contained page with download links to every extension zip. Works offline, works on a local web server, works from a file:// URL. No GitHub Pages needed.
-
-### Direct Downloads (GitHub)
-
-Every link below downloads the real `.zip` file. Click → get the extension.
+**[Download ALL 26 Extensions (single zip)](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip)**
 
 | | Extension | Download |
 |---|---|---|
@@ -181,39 +144,21 @@ Every link below downloads the real `.zip` file. Click → get the extension.
 | 🔷 | Pattern Forge | **[pattern-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/pattern-forge.zip)** |
 | 🏗 | Register | **[register.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/register.zip)** |
 
-**[Download ALL 26 Extensions (single zip)](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip)**
+### How to install a downloaded .zip
 
-### Windows Installers
+1. Download any `.zip` from above (or the all-in-one bundle)
+2. **Unzip it** (right-click → Extract All)
+3. Open Chrome and go to `chrome://extensions`
+4. Turn on **Developer mode** (toggle in the top-right corner)
+5. Click **Load unpacked** → pick the unzipped folder
+6. Done — the extension is live and running
 
-- **install-organism.bat** — double-click → extracts + launches Chrome with all extensions
-- **install-extensions.ps1** — right-click → Run with PowerShell
+Same steps for Edge (`edge://extensions`) and Brave (`brave://extensions`).
 
-### Manual Install (Any Browser)
+### Windows — double-click install
 
-1. Download any `.zip` from above
-2. Unzip it
-3. Open Chrome → `chrome://extensions`
-4. Enable "Developer mode" (top-right toggle)
-5. Click "Load unpacked" → select the unzipped folder
-6. Done — the extension is live
-
-### Build From Source
-
-```bash
-bash build-extensions.sh
-# Output: dist/extensions/<name>.zip (one per extension)
-# Output: dist/extensions/all-extensions.zip (all 26 bundled)
-```
-
-### SDKs via npm
-
-All 11 SDKs are independently publishable to npm:
-
-```bash
-cd sdk/organism-marketplace && npm publish
-cd sdk/ai-model-engines && npm publish
-# etc.
-```
+- **install-organism.bat** — double-click it, extensions install and Chrome opens with everything attached
+- **install-extensions.ps1** — right-click → Run with PowerShell (same thing)
 
 ---
 
