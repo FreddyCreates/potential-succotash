@@ -26,5 +26,17 @@
   ],
   "files": [
     "src/"
-  ]
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FreddyCreates/potential-succotash.git",
+    "directory": "sdk/organism-runtime-sdk"
+  },
+  "author": "Medina",
+  "publishConfig": {
+    "access": "public"
+  }
 }

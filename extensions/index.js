@@ -1,7 +1,7 @@
 /**
  * AI Intelligence Extensions — Organism Wire Index
  *
- * 21 multi-modal, multi-AI Edge extensions wired into the sovereign organism.
+ * 26 multi-modal, multi-AI Edge extensions wired into the sovereign organism.
  * Each extension is a self-contained Manifest V3 directory with
  * background.js (engine), content.js (DOM UI), and manifest.json.
  *

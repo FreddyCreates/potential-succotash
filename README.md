@@ -103,18 +103,17 @@ The organism isn't conceptual. It's compiled. It's running. The 873ms heartbeat 
 
 ## Download & Install Extensions
 
-### ⚡ 1-Click Install (All Platforms)
+No terminal. No commands. No GitHub account. Download a zip, unzip it, load it into Chrome. That's it.
 
-```bash
-git clone https://github.com/FreddyCreates/potential-succotash.git
-node potential-succotash/organism-cli
-```
+### Download Page (works offline)
 
-That's it. Register AI scans all 26 extensions, validates Manifest V3 compliance, detects Chrome/Edge/Brave, and launches your browser with every extension already attached. No zip. No extract. No developer mode. No manual steps.
+Open **[dist/download.html](dist/download.html)** in any browser. Every extension has a download link pointing to the zip file right next to that page. Works from a USB drive, a download folder, a local server, a `file://` URL — no internet needed.
 
-### 📦 Direct Downloads
+### Direct Downloads
 
-Every link below downloads the real `.zip` file. Click → get the extension.
+Every link below downloads the real `.zip` file. Click → save → unzip → load into Chrome.
+
+**[Download ALL 26 Extensions (single zip)](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip)**
 
 | | Extension | Download |
 |---|---|---|
@@ -145,20 +144,21 @@ Every link below downloads the real `.zip` file. Click → get the extension.
 | 🔷 | Pattern Forge | **[pattern-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/pattern-forge.zip)** |
 | 🏗 | Register | **[register.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/register.zip)** |
 
-**[📦 Download ALL 26 Extensions (single zip)](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip)**
+### How to install a downloaded .zip
 
-### Windows Installers
+1. Download any `.zip` from above (or the all-in-one bundle)
+2. **Unzip it** (right-click → Extract All)
+3. Open Chrome and go to `chrome://extensions`
+4. Turn on **Developer mode** (toggle in the top-right corner)
+5. Click **Load unpacked** → pick the unzipped folder
+6. Done — the extension is live and running
 
-- **[install-organism.bat](https://github.com/FreddyCreates/potential-succotash/raw/main/install-organism.bat)** — double-click → extracts + launches Chrome with all extensions
-- **[install-extensions.ps1](https://github.com/FreddyCreates/potential-succotash/raw/main/install-extensions.ps1)** — PowerShell equivalent
+Same steps for Edge (`edge://extensions`) and Brave (`brave://extensions`).
 
-### Build From Source
+### Windows — double-click install
 
-```bash
-bash build-extensions.sh
-# Output: dist/extensions/<name>.zip (one per extension)
-# Output: dist/extensions/all-extensions.zip (all 26 bundled)
-```
+- **install-organism.bat** — double-click it, extensions install and Chrome opens with everything attached
+- **install-extensions.ps1** — right-click → Run with PowerShell (same thing)
 
 ---
 
