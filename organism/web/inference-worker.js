@@ -411,14 +411,16 @@ function classifyIntent(text) {
 
 function chainOfThought(question) {
   var intent = classifyIntent(question);
-  inferenceMetrics.totalIntents--; // Don't double-count
   var tokens = tokenize(question);
   var entities = extractEntities(question);
-  inferenceMetrics.totalEntities--; // Don't double-count
   var sentiment = analyzeSentiment(question);
-  inferenceMetrics.totalSentiments--; // Don't double-count
   var keywords = extractKeywords(question, 5);
-  inferenceMetrics.totalKeywords--; // Don't double-count
+
+  // Correct the sub-function metric counts — chain-of-thought counts as a single operation
+  inferenceMetrics.totalIntents--;
+  inferenceMetrics.totalEntities--;
+  inferenceMetrics.totalSentiments--;
+  inferenceMetrics.totalKeywords--;
 
   var steps = [];
 

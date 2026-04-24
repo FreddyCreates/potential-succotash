@@ -478,31 +478,37 @@ function goldenSectionSearch(fn, a, b, tol) {
   };
 }
 
-// Safely evaluate simple math expressions (polynomials, trig, exp, log)
+// Safely evaluate simple math expressions using strict allowlist
 function buildSafeFunction(expr) {
-  if (typeof expr !== 'string') return null;
-  // Only allow safe math characters: digits, x, operators, parens, dot, caret, space,
-  // and individual characters that compose function names (sin, cos, tan, abs, log, sqrt, exp, pi)
-  var safe = /^[0-9x+\-*/().^ a-z\s]+$/i;
-  if (!safe.test(expr)) return null;
+  if (typeof expr !== 'string' || expr.length > 200) return null;
 
-  // Only allow known math functions — reject anything else
-  var stripped = expr.replace(/\b(sin|cos|tan|abs|sqrt|exp|log|pi|x)\b/gi, '').replace(/[0-9+\-*/().^ \s]/g, '');
-  if (stripped.length > 0) return null;
+  // Step 1: Only allow known safe characters
+  if (!/^[0-9x+\-*/().^ \s]+$/.test(expr.replace(/\b(sin|cos|tan|abs|sqrt|exp|log|pi)\b/gi, ''))) {
+    return null;
+  }
+
+  // Step 2: Ensure no sequences that could form identifiers other than allowed functions and 'x'
+  var ALLOWED_WORDS = { sin: 1, cos: 1, tan: 1, abs: 1, sqrt: 1, exp: 1, log: 1, pi: 1, x: 1 };
+  var words = expr.match(/[a-z]+/gi);
+  if (words) {
+    for (var i = 0; i < words.length; i++) {
+      if (!ALLOWED_WORDS[words[i].toLowerCase()]) return null;
+    }
+  }
 
   var jsExpr = expr
     .replace(/\^/g, '**')
-    .replace(/\bsin\b/g, 'Math.sin')
-    .replace(/\bcos\b/g, 'Math.cos')
-    .replace(/\btan\b/g, 'Math.tan')
-    .replace(/\babs\b/g, 'Math.abs')
-    .replace(/\bsqrt\b/g, 'Math.sqrt')
-    .replace(/\bexp\b/g, 'Math.exp')
-    .replace(/\blog\b/g, 'Math.log')
-    .replace(/\bpi\b/g, 'Math.PI');
+    .replace(/\bsin\b/gi, 'Math.sin')
+    .replace(/\bcos\b/gi, 'Math.cos')
+    .replace(/\btan\b/gi, 'Math.tan')
+    .replace(/\babs\b/gi, 'Math.abs')
+    .replace(/\bsqrt\b/gi, 'Math.sqrt')
+    .replace(/\bexp\b/gi, 'Math.exp')
+    .replace(/\blog\b/gi, 'Math.log')
+    .replace(/\bpi\b/gi, 'Math.PI');
 
   try {
-    return new Function('x', 'return ' + jsExpr + ';');
+    return new Function('x', '"use strict"; return ' + jsExpr + ';');
   } catch (e) {
     return null;
   }

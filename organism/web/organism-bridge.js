@@ -538,6 +538,9 @@ OrganismBridge.prototype.regression = function (x, y) {
   if (this.workers.math) this.workers.math.postMessage({ type: 'regression', x: x, y: y });
 };
 OrganismBridge.prototype.optimize = function (fn, bounds) {
+  // Validate function expression before sending to math worker
+  if (typeof fn !== 'string' || fn.length > 200) return;
+  if (!/^[0-9x+\-*/().^ \s]+$/.test(fn.replace(/\b(sin|cos|tan|abs|sqrt|exp|log|pi)\b/gi, ''))) return;
   if (this.workers.math) this.workers.math.postMessage({ type: 'optimize', fn: fn, bounds: bounds });
 };
 OrganismBridge.prototype.primeCheck = function (n) {
