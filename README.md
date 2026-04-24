@@ -103,14 +103,31 @@ The organism isn't conceptual. It's compiled. It's running. The 873ms heartbeat 
 
 ## Download & Install Extensions
 
-### ⚡ 1-Click Install (All Platforms)
+### ⚡ 1-Click Install (Windows — Double-Click, Done)
+
+```
+git clone https://github.com/FreddyCreates/potential-succotash.git
+```
+
+Then double-click **`install-organism.bat`** inside the cloned folder. That's it. The bat file scans all 31 extensions from source, finds Edge (or Chrome/Brave), and launches with every extension attached. No zip. No extract. No compile step. Already compiled and working. One click native.
+
+> **No Git?** Download the repo as a ZIP from GitHub → extract → double-click `install-organism.bat`.
+
+### 🖥 Windows Installers (Edge-First, One Click Native)
+
+Both installers load extensions **directly from source** — no zip extraction needed. If run outside the repo, they auto-clone it first.
+
+- **`install-organism.bat`** — double-click → scans extensions from source → launches Edge with all 31 extensions attached
+- **`install-extensions.ps1`** — PowerShell equivalent: `powershell -ExecutionPolicy Bypass -File install-extensions.ps1`
+
+### ⚡ Terminal Install (All Platforms)
 
 ```bash
 git clone https://github.com/FreddyCreates/potential-succotash.git
 node potential-succotash/organism-cli
 ```
 
-That's it. Register AI scans all 31 extensions, validates Manifest V3 compliance, detects Edge/Chrome/Brave (Edge-first on Windows), and launches your browser with every extension already attached. No zip. No extract. No developer mode. No manual steps. One click native.
+Register AI scans all 31 extensions, validates Manifest V3 compliance, detects Edge/Chrome/Brave (Edge-first on Windows), and launches your browser with every extension already attached. No zip. No extract. No developer mode. No manual steps.
 
 ### 📦 Direct Downloads
 
@@ -151,11 +168,6 @@ Every link below downloads the real `.zip` file. Click → get the extension.
 | ⌨️ | Windows Terminal Forge | **[windows-terminal-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/windows-terminal-forge.zip)** |
 
 **[📦 Download ALL 31 Extensions (single zip)](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip)**
-
-### Windows Installers (Edge-First, One Click Native)
-
-- **[install-organism.bat](https://github.com/FreddyCreates/potential-succotash/raw/main/install-organism.bat)** — double-click → extracts + launches Edge with all extensions (falls back to Chrome/Brave)
-- **[install-extensions.ps1](https://github.com/FreddyCreates/potential-succotash/raw/main/install-extensions.ps1)** — PowerShell equivalent, Edge-first
 
 ### Build From Source
 
