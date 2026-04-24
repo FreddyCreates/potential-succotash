@@ -1,7 +1,7 @@
 /**
  * AI-Intelligent Protocols — Organism Wire Index
  *
- * 10 protocols, each a literal AI: adaptive, self-healing, multi-engine,
+ * 11 protocols, each a literal AI: adaptive, self-healing, multi-engine,
  * phi-math wired throughout. All export into the sovereign organism.
  *
  * @module protocols
