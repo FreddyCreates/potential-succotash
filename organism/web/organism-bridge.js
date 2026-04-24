@@ -1,14 +1,15 @@
 /**
  * OrganismBridge — Autonomous Multi-Worker Orchestration Bridge
  *
- * Boots, coordinates, and SELF-HEALS all 14 organism workers,
+ * Boots, coordinates, and SELF-HEALS all 15 organism workers,
  * organized into 4 autonomous divisions:
  *
  * 🧠 BRAIN DIVISION — Thinking & reasoning
  *   - engine-worker.js:       EngineCore + ModelRouter + ModelWire (40 AI families)
- *   - inference-worker.js:    Local ML inference, classification, embeddings
+ *   - inference-worker.js:    Local ML inference, classification, embeddings, summarization, QA, intent, CoT, topics
  *   - orchestrator-worker.js: Micro-worker orchestration, task decomposition
  *   - twin-alpha-worker.js:   User-facing intermediary, memory search, task routing, monitoring
+ *   - math-worker.js:         Math Intelligence (matrix, stats, phi, fourier, probability, optimize, regression, number theory)
  *
  * 💾 DATA DIVISION — Memory, analytics & pipelines
  *   - memory-worker.js:       Sovereign Memory (spatial store, search, persistence)
@@ -69,7 +70,8 @@ var WORKER_PATHS = {
   pipeline:     'organism/web/pipeline-worker.js',
   inference:    'organism/web/inference-worker.js',
   orchestrator: 'organism/web/orchestrator-worker.js',
-  'twin-alpha':  'organism/web/twin-alpha-worker.js'
+  'twin-alpha':  'organism/web/twin-alpha-worker.js',
+  math:          'organism/web/math-worker.js'
 };
 
 /* ════════════════════════════════════════════════════════════════
@@ -77,7 +79,7 @@ var WORKER_PATHS = {
    ════════════════════════════════════════════════════════════════ */
 
 var DIVISIONS = {
-  brain:          { name: 'Brain',          icon: '🧠', workers: ['engine', 'inference', 'orchestrator', 'twin-alpha'], purpose: 'Thinking & reasoning' },
+  brain:          { name: 'Brain',          icon: '🧠', workers: ['engine', 'inference', 'orchestrator', 'twin-alpha', 'math'], purpose: 'Thinking & reasoning' },
   data:           { name: 'Data',           icon: '💾', workers: ['memory', 'analytics', 'pipeline'],           purpose: 'Memory, analytics & pipelines' },
   infrastructure: { name: 'Infrastructure', icon: '🏗', workers: ['mesh', 'scheduler', 'guardian', 'telemetry'], purpose: 'Always-on backbone' },
   protocol:       { name: 'Protocol',       icon: '🔐', workers: ['routing', 'crypto', 'contract'],             purpose: 'Communication & trust' }
