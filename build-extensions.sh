@@ -34,12 +34,14 @@ for ext_dir in "$EXT_SRC"/*/; do
 
   echo "📦 Packaging: $name"
 
-  # Create a clean zip — only include the files Chrome needs
+  # Create a clean zip — only include the files Chrome/Edge needs
+  # Include sidepanel.html if the extension uses the side_panel API
   (cd "$ext_dir" && zip -r -q "$DIST/${name}.zip" \
     manifest.json \
     background.js \
     content.js \
     icons/ \
+    $([ -f sidepanel.html ] && echo sidepanel.html) \
     2>/dev/null || true)
 
   count=$((count + 1))

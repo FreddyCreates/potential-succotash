@@ -1,4 +1,4 @@
-# Sovereign Organism — 31 AI Browser Extensions
+# Sovereign Organism — 35 AI Browser Extensions
 
 > **These are working AI apps.** Every extension is a real Chrome/Edge Manifest V3 app with a background AI engine and interactive UI. Install them and they run. No API keys. No setup. No bullshit.
 
@@ -8,7 +8,7 @@
 |---|---|
 | **[🌐 itsnotAilabs.com](https://itsnotAilabs.com)** | The website — launch the organism, download extensions, see everything |
 | **[🧬 Launch Live Organism](https://itsnotAilabs.com/organism/web/index.html)** | Open the organism runtime — 873ms heartbeat, 4-register state, live vitals — right in your browser |
-| **[📦 Download Extensions](https://itsnotAilabs.com/download.html)** | Browse all 31 extensions, download individually or all at once, with native in-browser zip builds |
+| **[📦 Download Extensions](https://itsnotAilabs.com/download.html)** | Browse all 35 extensions, download individually or all at once, with native in-browser zip builds |
 
 No install needed. Click → it opens. The organism is alive in the browser.
 
@@ -18,9 +18,9 @@ No install needed. Click → it opens. The organism is alive in the browser.
 
 ### Windows (Recommended)
 
-**[📥 Download install-organism.bat](https://github.com/FreddyCreates/potential-succotash/raw/main/install-organism.bat)** → double-click → Edge opens with all 31 AI extensions live.
+**[📥 Download install-organism.bat](https://github.com/FreddyCreates/potential-succotash/raw/main/install-organism.bat)** → double-click → Edge opens with all 35 AI extensions live.
 
-That's it. The bat file clones the repo, scans all 31 extensions, finds Edge/Chrome/Brave, and launches with every extension attached. If Edge is installed, it uses Edge. Working app, one click.
+That's it. The bat file clones the repo, scans all 35 extensions, finds Edge/Chrome/Brave, and launches with every extension attached. If Edge is installed, it uses Edge. Working app, one click.
 
 ### Any Platform
 
@@ -154,7 +154,7 @@ The organism isn't conceptual. It's compiled. It's running. The 873ms heartbeat 
 | **Any platform (terminal)** | `git clone https://github.com/FreddyCreates/potential-succotash.git && node potential-succotash/organism-cli` |
 | **Manual** | Clone repo → `edge://extensions` → Developer Mode → Load unpacked → select extension folder |
 
-The bat and ps1 files auto-clone the repo if needed. They scan all 31 extensions from source, find Edge (or Chrome/Brave), and launch with every extension attached. No zip needed. Edge-first on Windows.
+The bat and ps1 files auto-clone the repo if needed. They scan all 35 extensions from source, find Edge (or Chrome/Brave), and launch with every extension attached. No zip needed. Edge-first on Windows.
 
 ### 📦 Individual Extension Downloads
 
@@ -193,15 +193,19 @@ Every link below downloads the real `.zip` file. Click → get the extension.
 | 🔔 | Windows Notification Cortex | **[windows-notification-cortex.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/windows-notification-cortex.zip)** |
 | 🐚 | Windows Shell Intelligence | **[windows-shell-intelligence.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/windows-shell-intelligence.zip)** |
 | ⌨️ | Windows Terminal Forge | **[windows-terminal-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/windows-terminal-forge.zip)** |
+| 🤖 | Edge AI Assistant | **[edge-ai-assistant.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-ai-assistant.zip)** |
+| 📊 | Edge Tab Analyzer | **[edge-tab-analyzer.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-tab-analyzer.zip)** |
+| 🧪 | Edge Prompt Lab | **[edge-prompt-lab.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-prompt-lab.zip)** |
+| 🔥 | Edge Context Engine | **[edge-context-engine.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-context-engine.zip)** |
 
-**[📦 Download ALL 31 Extensions (single zip)](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip)**
+**[📦 Download ALL 35 Extensions (single zip)](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip)**
 
 ### Build From Source
 
 ```bash
 bash build-extensions.sh
 # Output: dist/extensions/<name>.zip (one per extension)
-# Output: dist/extensions/all-extensions.zip (all 31 bundled)
+# Output: dist/extensions/all-extensions.zip (all 35 bundled)
 ```
 
 ---
@@ -210,7 +214,7 @@ bash build-extensions.sh
 
 The Register AI is the organism's native builder. It's the 5th tool family (Builder) alongside Crawling, Context, Commander, and Sentry. It runs as both a **terminal CLI** (`organism-cli`) and a **browser extension** (EXT-026). Steps 1–7 run automatically:
 
-1. **Scan** — discovers all 31 extensions in `extensions/`
+1. **Scan** — discovers all 35 extensions in `extensions/`
 2. **Validate** — checks every manifest for Manifest V3 compliance
 3. **Detect Browser** — finds Chrome, Edge, or Brave on any OS
 4. **Load Extensions** — launches browser with `--load-extension` (direct from source, no zip)
@@ -221,7 +225,7 @@ The Register AI is the organism's native builder. It's the 5th tool family (Buil
 ### Terminal AI (organism-cli)
 
 ```bash
-node organism-cli               # 1-click install — all 31 extensions live in Edge/Chrome
+node organism-cli               # 1-click install — all 35 extensions live in Edge/Chrome
 node organism-cli validate      # check all manifests
 node organism-cli list          # show all extensions with status
 node organism-cli status        # Register AI health report
@@ -269,9 +273,23 @@ Five extensions built for Windows and Microsoft Edge. One-click native install �
 
 ---
 
+## Edge Side Panel AI Extensions (4 New)
+
+Four side panel AI extensions built for Microsoft Edge using the `sidePanel` API. Each opens as a native Edge sidebar — click the extension icon and the AI panel slides open alongside your page. Real side panel, not a floating overlay. Manifest V3 with `side_panel` config, `minimum_chrome_version: 114`. Every description ≤ 132 characters for Chrome/Edge store compliance.
+
+**Edge AI Assistant** (EXT-032) — General-purpose AI side panel. GPT + Claude + Gemini + Phi fused through phi-weighted scoring. Type any question, the engine routes to the best model, fuses all responses, and returns one sovereign answer in the Edge sidebar. Multi-model reasoning from your side panel.
+
+**Edge Tab Analyzer** (EXT-033) — Tab content analysis side panel. Embeddings + Claude + Rerankers analyze the active tab's content — word count, readability score, key entities, semantic extraction, and AI-generated summary. Open the sidebar and instantly understand any page.
+
+**Edge Prompt Lab** (EXT-034) — Prompt engineering side panel. GPT + Claude + Llama + DeepSeek power a template library, prompt testing workspace, and response comparison view. Write a prompt, test it against 4 models simultaneously, compare outputs side-by-side in the Edge sidebar.
+
+**Edge Context Engine** (EXT-035) — Browsing session context side panel. Embeddings + GPT + Command R + Florence track your browsing context across tabs — running topic summary, entity extraction, context timeline, and knowledge accumulation. The sidebar shows what you've been researching and connects the dots.
+
+---
+
 ## The Numbers
 
-8 SDKs. 31 extensions. 11 protocols. 30 tools. 5 tool families. 40 model families. 10 multimodal families. 30 frontend intelligence models. 100 frontier model species. 40 architectural laws. 9 organism rings. 6 implementation languages. 4 browser observers. 1 heartbeat at 873ms.
+8 SDKs. 35 extensions. 11 protocols. 30 tools. 5 tool families. 40 model families. 10 multimodal families. 30 frontend intelligence models. 100 frontier model species. 40 architectural laws. 9 organism rings. 6 implementation languages. 4 browser observers. 4 Edge side panels. 1 heartbeat at 873ms.
 
 All of it is AI. All of it is intelligence. All of it is wired together. All of it is downloadable. And all of it is inside this repo.
 

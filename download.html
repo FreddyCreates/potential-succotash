@@ -94,14 +94,14 @@
 </section>
 
 <div class="status-bar" id="status-bar">
-  <div class="status-item"><span class="status-dot ready" id="worker-dot"></span> <span id="worker-status">31 extensions ready</span></div>
-  <div class="status-item">📦 <span id="built-count">31</span> / <span id="total-count">31</span> ready</div>
+  <div class="status-item"><span class="status-dot ready" id="worker-dot"></span> <span id="worker-status">35 extensions ready</span></div>
+  <div class="status-item">📦 <span id="built-count">35</span> / <span id="total-count">35</span> ready</div>
   <div class="status-item">💓 <span id="beat-counter">0</span></div>
 </div>
 
 <div class="dl-all" id="dl-all-section">
-  <a id="dl-all-btn" href="https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip" download="all-extensions.zip">📦 Download All 31 Extensions</a>
-  <div class="sub">Single zip containing all 31 extensions (including 5 Windows + Edge native). Click — instant download.</div>
+  <a id="dl-all-btn" href="https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip" download="all-extensions.zip">📦 Download All 35 Extensions</a>
+  <div class="sub">Single zip containing all 35 extensions (including 5 Windows native + 4 Edge side panel AI). Click — instant download.</div>
 </div>
 
 <div class="ext-grid" id="ext-grid"></div>
@@ -169,6 +169,10 @@ const EXTENSIONS = [
   { id:'EXT-029', slug:'windows-notification-cortex', name:'Windows Notification Cortex', initials:'WN', color:'#ff8c00', engines:['GPT','Claude','Inflection'], ring:'Interface Ring', desc:'Smart Notification Intelligence — empathic composing and urgency scoring' },
   { id:'EXT-030', slug:'windows-shell-intelligence', name:'Windows Shell Intelligence', initials:'WS', color:'#107c10', engines:['Codex','CodeLlama','DeepSeek'], ring:'Build Ring', desc:'Shell & Explorer AI — context-menu intelligence for file operations' },
   { id:'EXT-031', slug:'windows-terminal-forge', name:'Windows Terminal Forge', initials:'WT', color:'#61d6d6', engines:['Codex','DeepSeek','Phi'], ring:'Build Ring', desc:'Terminal & PowerShell AI — command generation and autocomplete' },
+  { id:'EXT-032', slug:'edge-ai-assistant', name:'Edge AI Assistant', initials:'EA', color:'#0078d4', engines:['GPT','Claude','Gemini','Phi'], ring:'Interface Ring', desc:'Edge side panel AI assistant — multi-model phi-weighted reasoning' },
+  { id:'EXT-033', slug:'edge-tab-analyzer', name:'Edge Tab Analyzer', initials:'TA', color:'#8764b8', engines:['Embeddings','Claude','Rerankers'], ring:'Memory Ring', desc:'Edge side panel tab analyzer — semantic extraction and scoring' },
+  { id:'EXT-034', slug:'edge-prompt-lab', name:'Edge Prompt Lab', initials:'PL', color:'#107c10', engines:['GPT','Claude','Llama','DeepSeek'], ring:'Build Ring', desc:'Edge side panel prompt lab — template library and model comparison' },
+  { id:'EXT-035', slug:'edge-context-engine', name:'Edge Context Engine', initials:'CE', color:'#ff8c00', engines:['Embeddings','GPT','Command R','Florence'], ring:'Memory Ring', desc:'Edge side panel context engine — session knowledge builder' },
 ];
 
 /* ─── Fallback URLs: if local fetch fails, use GitHub raw ── */
@@ -176,7 +180,7 @@ const GH_RAW = 'https://raw.githubusercontent.com/FreddyCreates/potential-succot
 const GH_DL  = 'https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/';
 
 /* ─── State ────────────────────────────────────────────────── */
-let builtCount = 31; // Links work immediately via GitHub raw
+let builtCount = 35; // Links work immediately via GitHub raw
 let blobURLs = {};  // slug → blob URL (upgraded by Worker if available)
 let worker = null;
 let useWorkerBuild = true;
