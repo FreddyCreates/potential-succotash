@@ -86,7 +86,7 @@
 
 <section class="hero">
   <h1>🧬 Sovereign Organism Extensions</h1>
-  <p>31 AI extensions for Chrome, Edge, and Brave — each powered by named engines and models. 5 new Windows + Edge native extensions included. Every link is a real download. Click → get the .zip. The Register AI Web Worker upgrades to native blob builds when running on your device.</p>
+  <p>35 AI extensions for Chrome, Edge, and Brave — each powered by named engines and models. 5 Windows + Edge native extensions and 4 Edge side panel AI extensions included. Every link is a real download. Click → get the .zip. The Register AI Web Worker upgrades to native blob builds when running on your device.</p>
   <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
     <a href="organism/web/index.html" style="display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#6c63ff,#e94560);color:#fff;text-decoration:none;border-radius:10px;font-weight:800;font-size:1.1em;transition:transform .15s,box-shadow .15s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(108,99,255,.4)'" onmouseout="this.style.transform='';this.style.boxShadow=''">🧬 Launch Live Organism</a>
     <a href="#ext-grid" style="display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#238636,#2ea043);color:#fff;text-decoration:none;border-radius:10px;font-weight:800;font-size:1.1em;transition:transform .15s,box-shadow .15s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(0,230,118,.4)'" onmouseout="this.style.transform='';this.style.boxShadow=''">⬇ Browse Extensions</a>
@@ -112,7 +112,7 @@
     <code>git clone https://github.com/FreddyCreates/potential-succotash.git<br>
 node potential-succotash/organism-cli</code>
   </div>
-  <p style="color:var(--muted);font-size:.9em;margin-top:8px">Register AI auto-detects Edge/Chrome → loads all 31 extensions directly from source. No zip needed. Edge-first on Windows.</p>
+  <p style="color:var(--muted);font-size:.9em;margin-top:8px">Register AI auto-detects Edge/Chrome → loads all 35 extensions directly from source. No zip needed. Edge-first on Windows.</p>
 </section>
 
 <footer>
@@ -125,7 +125,7 @@ node potential-succotash/organism-cli</code>
 /* ═══════════════════════════════════════════════════════════════
    Register AI — Native Download Page Controller
    
-   1. Reads all 31 extension source files via fetch()
+   1. Reads all 35 extension source files via fetch()
    2. Sends them to download-worker.js (Web Worker)
    3. Worker builds real .zip Blobs
    4. Page creates blob: URLs → click = instant real download
@@ -335,7 +335,7 @@ function handleWorkerMessage(e) {
 
 /* ─── Fallback: Worker unavailable, links already work via GitHub raw ─ */
 function fallbackToPrebuilt() {
-  document.getElementById('worker-status').textContent = '31 extensions ready — direct download';
+  document.getElementById('worker-status').textContent = '35 extensions ready — direct download';
   document.getElementById('worker-dot').className = 'status-dot ready';
   // Links are already set to GH_DL URLs in the card render — nothing else needed
 }

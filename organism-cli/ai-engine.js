@@ -2,7 +2,7 @@
  * Register AI Engine — Terminal Intelligence
  *
  * The AI brain of organism-cli. Scans, validates, builds, installs,
- * and monitors all 31 browser extensions. Runs steps 1–7 automatically.
+ * and monitors all 35 browser extensions. Runs steps 1–7 automatically.
  *
  * This IS the Register AI (TOOL-025) from the Builder family,
  * running natively in your terminal instead of in the browser.
@@ -283,7 +283,7 @@ class RegisterAIEngine {
 
     console.log('');
     console.log(`${c.bold}${c.cyan}  ╔══════════════════════════════════════════════╗${c.reset}`);
-    console.log(`${c.bold}${c.cyan}  ║   🧬 Sovereign Organism — 31 AI Extensions  ║${c.reset}`);
+    console.log(`${c.bold}${c.cyan}  ║   🧬 Sovereign Organism — 35 AI Extensions  ║${c.reset}`);
     console.log(`${c.bold}${c.cyan}  ╚══════════════════════════════════════════════╝${c.reset}`);
     console.log('');
 

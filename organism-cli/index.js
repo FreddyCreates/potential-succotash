@@ -7,7 +7,7 @@
  *
  *   node organism-cli/index.js
  *
- * That's it. Register AI scans all 31 extensions, validates them,
+ * That's it. Register AI scans all 35 extensions, validates them,
  * finds your Edge/Chrome/Brave, and launches it with every extension
  * already attached. Edge-first on Windows. No zip. No extract.
  * No developer mode. No manual steps.
