@@ -1,0 +1,36 @@
+name: Build Extensions
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'extensions/**'
+      - 'build-extensions.sh'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build all extension zips
+        run: bash build-extensions.sh
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: extension-zips
+          path: dist/extensions/*.zip
+
+      - name: Commit built zips
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add dist/extensions/
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Auto-build extension zips [skip ci]"
+            git push
+          fi

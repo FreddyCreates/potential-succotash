@@ -1,3 +1,33 @@
+# Sovereign Organism — 31 AI Browser Extensions
+
+> **These are working AI apps.** Every extension is a real Chrome/Edge Manifest V3 app with a background AI engine and interactive UI. Install them and they run. No API keys. No setup. No bullshit.
+
+## ⚡ Install Now (One Click)
+
+### Windows (Recommended)
+
+**[📥 Download install-organism.bat](https://github.com/FreddyCreates/potential-succotash/raw/main/install-organism.bat)** → double-click → Edge opens with all 31 AI extensions live.
+
+That's it. The bat file clones the repo, scans all 31 extensions, finds Edge/Chrome/Brave, and launches with every extension attached. If Edge is installed, it uses Edge. Working app, one click.
+
+### Any Platform
+
+```bash
+git clone https://github.com/FreddyCreates/potential-succotash.git
+cd potential-succotash
+node organism-cli
+```
+
+### Manual Install
+
+1. Clone or [download the repo as ZIP](https://github.com/FreddyCreates/potential-succotash/archive/refs/heads/main.zip)
+2. Open `edge://extensions` or `chrome://extensions`
+3. Enable **Developer Mode** (top right toggle)
+4. Click **Load unpacked** → select any folder inside `extensions/`
+5. Each extension shows its AI panel on every page you visit
+
+---
+
 # It's All Intelligence
 
 There is no separation between the AI and the architecture. The architecture IS the intelligence. Every SDK is a brain region. Every protocol adapts and self-heals. Every extension is an AI experience a user touches with their hands. Every tool is callable, routable, permissioned. Every model engine is wired in. The organism doesn't use AI — the organism IS AI. All of it. Top to bottom.
@@ -103,33 +133,18 @@ The organism isn't conceptual. It's compiled. It's running. The 873ms heartbeat 
 
 ## Download & Install Extensions
 
-### ⚡ 1-Click Install (Windows — Double-Click, Done)
+### ⚡ Quick Install
 
-```
-git clone https://github.com/FreddyCreates/potential-succotash.git
-```
+| Method | What to Do |
+|---|---|
+| **Windows (1-click)** | **[📥 Download install-organism.bat](https://github.com/FreddyCreates/potential-succotash/raw/main/install-organism.bat)** → double-click → done |
+| **Windows (PowerShell)** | **[📥 Download install-extensions.ps1](https://github.com/FreddyCreates/potential-succotash/raw/main/install-extensions.ps1)** → right-click → Run with PowerShell |
+| **Any platform (terminal)** | `git clone https://github.com/FreddyCreates/potential-succotash.git && node potential-succotash/organism-cli` |
+| **Manual** | Clone repo → `edge://extensions` → Developer Mode → Load unpacked → select extension folder |
 
-Then double-click **`install-organism.bat`** inside the cloned folder. That's it. The bat file scans all 31 extensions from source, finds Edge (or Chrome/Brave), and launches with every extension attached. No zip. No extract. No compile step. Already compiled and working. One click native.
+The bat and ps1 files auto-clone the repo if needed. They scan all 31 extensions from source, find Edge (or Chrome/Brave), and launch with every extension attached. No zip needed. Edge-first on Windows.
 
-> **No Git?** Download the repo as a ZIP from GitHub → extract → double-click `install-organism.bat`.
-
-### 🖥 Windows Installers (Edge-First, One Click Native)
-
-Both installers load extensions **directly from source** — no zip extraction needed. If run outside the repo, they auto-clone it first.
-
-- **`install-organism.bat`** — double-click → scans extensions from source → launches Edge with all 31 extensions attached
-- **`install-extensions.ps1`** — PowerShell equivalent: `powershell -ExecutionPolicy Bypass -File install-extensions.ps1`
-
-### ⚡ Terminal Install (All Platforms)
-
-```bash
-git clone https://github.com/FreddyCreates/potential-succotash.git
-node potential-succotash/organism-cli
-```
-
-Register AI scans all 31 extensions, validates Manifest V3 compliance, detects Edge/Chrome/Brave (Edge-first on Windows), and launches your browser with every extension already attached. No zip. No extract. No developer mode. No manual steps.
-
-### 📦 Direct Downloads
+### 📦 Individual Extension Downloads
 
 Every link below downloads the real `.zip` file. Click → get the extension.
 
