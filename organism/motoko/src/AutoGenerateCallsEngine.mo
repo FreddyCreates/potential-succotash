@@ -1,9 +1,9 @@
 /// AutoGenerateCallsEngine.mo — MOTOR AUTO-GENERATIONIS VOCATIONUM
 ///
-/// 12 Web Worker Builder AIs (OPERARII AEDIFICATORES), each Latin-named
+/// 22 Web Worker Builder AIs (OPERARII AEDIFICATORES), each Latin-named
 /// with 3 dedicated engines (Generator + Router + Builder).
 ///
-/// 36 engines total. 1176+ auto-generated calls across all domains.
+/// 66 engines total. 1344+ auto-generated calls across all domains.
 /// Full routing table — every call auto-routed to correct target module.
 /// All AI, AGI, 24/7, user-facing, cross-substrate.
 ///
@@ -54,7 +54,7 @@ module {
     autoRouted   : Bool;
   };
 
-  /// Worker state — one of the 12 Builder AIs
+  /// Worker state — one of the 22 Builder AIs
   public type WorkerState = {
     id           : Nat;
     name         : Text;
@@ -88,7 +88,7 @@ module {
 
   // ══════════════════════════════════════════════════════════════════════
   //  WORKER REGISTRY — REGISTRUM OPERARIORUM
-  //  12 Workers × 3 Engines = 36 Engines
+  //  22 Workers × 3 Engines = 66 Engines
   // ══════════════════════════════════════════════════════════════════════
 
   /// Build the initial engine triad for a worker
@@ -118,7 +118,7 @@ module {
     }
   };
 
-  /// Initialize all 12 workers with their Latin names, domains, and call counts
+  /// Initialize all 22 workers with their Latin names, domains, and call counts
   public func initWorkers(ts : Int) : [WorkerState] {
     [
       // 1. PROTOCOLLUM — Protocols, Consensus, BFT — 184 calls (+20 new protocols)
@@ -204,13 +204,83 @@ module {
         domain = "Defense, Care, Arsenal";
         engines = buildTriad("DEFENSOR", ts);
         totalCalls = 69; callsGenerated = 0; healthy = true;
+      },
+      // 13. FABRICATOR — Forgeworks, Software Engineering — 20 calls
+      {
+        id = 13; name = "FABRICATOR"; latinName = "OPERARIUS FABRICATIONIS";
+        domain = "Forgeworks, Software Engineering";
+        engines = buildTriad("FABRICATOR", ts);
+        totalCalls = 20; callsGenerated = 0; healthy = true;
+      },
+      // 14. NEURONICUS — Neuromorphic Compute — 15 calls
+      {
+        id = 14; name = "NEURONICUS"; latinName = "OPERARIUS NEUROMORPHICORUM";
+        domain = "Neuromorphic Compute";
+        engines = buildTriad("NEURONICUS", ts);
+        totalCalls = 15; callsGenerated = 0; healthy = true;
+      },
+      // 15. AGENTICUS — Multi-Agent Coordination — 15 calls
+      {
+        id = 15; name = "AGENTICUS"; latinName = "OPERARIUS AGENTIUM";
+        domain = "Multi-Agent Coordination";
+        engines = buildTriad("AGENTICUS", ts);
+        totalCalls = 15; callsGenerated = 0; healthy = true;
+      },
+      // 16. PRIVATICUS — Privacy-Preserving Analytics — 15 calls
+      {
+        id = 16; name = "PRIVATICUS"; latinName = "OPERARIUS PRIVATORUM";
+        domain = "Privacy-Preserving Analytics";
+        engines = buildTriad("PRIVATICUS", ts);
+        totalCalls = 15; callsGenerated = 0; healthy = true;
+      },
+      // 17. CACHEXIUS — Intelligent Caching — 15 calls
+      {
+        id = 17; name = "CACHEXIUS"; latinName = "OPERARIUS CACHEORUM";
+        domain = "Intelligent Caching";
+        engines = buildTriad("CACHEXIUS", ts);
+        totalCalls = 15; callsGenerated = 0; healthy = true;
+      },
+      // 18. TENANTIUS — Multi-Tenant Management — 18 calls
+      {
+        id = 18; name = "TENANTIUS"; latinName = "OPERARIUS TENANTIUM";
+        domain = "Multi-Tenant Management";
+        engines = buildTriad("TENANTIUS", ts);
+        totalCalls = 18; callsGenerated = 0; healthy = true;
+      },
+      // 19. CHAOTICUS — Chaos Engineering, Scaling — 15 calls
+      {
+        id = 19; name = "CHAOTICUS"; latinName = "OPERARIUS CHAOTICUM";
+        domain = "Chaos Engineering, Scaling";
+        engines = buildTriad("CHAOTICUS", ts);
+        totalCalls = 15; callsGenerated = 0; healthy = true;
+      },
+      // 20. EXTERNALIS — External SDK, API Gateway — 20 calls
+      {
+        id = 20; name = "EXTERNALIS"; latinName = "OPERARIUS EXTERNORUM";
+        domain = "External SDK, API Gateway";
+        engines = buildTriad("EXTERNALIS", ts);
+        totalCalls = 20; callsGenerated = 0; healthy = true;
+      },
+      // 21. BLUEPRINTUS — Blueprint, Hook Discovery — 15 calls
+      {
+        id = 21; name = "BLUEPRINTUS"; latinName = "OPERARIUS BLUEPRINTORUM";
+        domain = "Blueprint, Hook Discovery";
+        engines = buildTriad("BLUEPRINTUS", ts);
+        totalCalls = 15; callsGenerated = 0; healthy = true;
+      },
+      // 22. JARVISIUS — Jarvis AI Command, Orchestration — 20 calls
+      {
+        id = 22; name = "JARVISIUS"; latinName = "OPERARIUS JARVISII";
+        domain = "Jarvis AI Command, Orchestration";
+        engines = buildTriad("JARVISIUS", ts);
+        totalCalls = 20; callsGenerated = 0; healthy = true;
       }
     ]
   };
 
   // ══════════════════════════════════════════════════════════════════════
   //  CALL GENERATION — GENERATIO VOCATIONUM
-  //  976+ calls auto-generated and routed
+  //  1144+ calls auto-generated and routed
   // ══════════════════════════════════════════════════════════════════════
 
   /// Generate calls for PROTOCOLLUM — 144 protocol calls
@@ -615,6 +685,258 @@ module {
     calls
   };
 
+  /// Generate calls for FABRICATOR — 20 forgeworks/software engineering calls
+  public func generateFabricatorCalls(ts : Int) : [CallDefinition] {
+    let entities = [
+      "CodeAnalyzer", "RefactorEngine", "TestRunner",
+      "CIPipeline", "BuildOrchestrator"
+    ];
+    let operations = ["analyze", "refactor", "test", "deploy"];
+    var calls : [CallDefinition] = [];
+    var id : Nat = 1200;
+    for (e in entities.vals()) {
+      for (op in operations.vals()) {
+        id += 1;
+        calls := Array.append(calls, [{
+          callId = id;
+          callName = e # "." # op;
+          domain = "Forgeworks";
+          targetModule = "sdk/forgeworks/" # e;
+          workerName = "FABRICATOR";
+          priority = PHI * Float.fromInt(id % 5 + 1) / 5.0;
+          autoRouted = true;
+        }]);
+      };
+    };
+    calls
+  };
+
+  /// Generate calls for NEURONICUS — 15 neuromorphic compute calls
+  public func generateNeuronicusCalls(ts : Int) : [CallDefinition] {
+    let entities = [
+      "SpikingNeural", "DendriticProcessor", "GlialNetwork"
+    ];
+    let operations = ["spike", "dendrite", "glial", "cortical", "simulate"];
+    var calls : [CallDefinition] = [];
+    var id : Nat = 1250;
+    for (e in entities.vals()) {
+      for (op in operations.vals()) {
+        id += 1;
+        calls := Array.append(calls, [{
+          callId = id;
+          callName = e # "." # op;
+          domain = "Neuromorphic";
+          targetModule = "sdk/neuromorphic/" # e;
+          workerName = "NEURONICUS";
+          priority = PHI_INV * Float.fromInt(id % 5 + 1);
+          autoRouted = true;
+        }]);
+      };
+    };
+    calls
+  };
+
+  /// Generate calls for AGENTICUS — 15 multi-agent coordination calls
+  public func generateAgenticusCalls(ts : Int) : [CallDefinition] {
+    let entities = [
+      "NegotiationEngine", "ConsensusAgent", "SwarmController"
+    ];
+    let operations = ["negotiate", "consensus", "swarm", "coalition", "coordinate"];
+    var calls : [CallDefinition] = [];
+    var id : Nat = 1300;
+    for (e in entities.vals()) {
+      for (op in operations.vals()) {
+        id += 1;
+        calls := Array.append(calls, [{
+          callId = id;
+          callName = e # "." # op;
+          domain = "MultiAgent";
+          targetModule = "sdk/multiagent/" # e;
+          workerName = "AGENTICUS";
+          priority = PHI * Float.fromInt(id % 5 + 1) / 5.0;
+          autoRouted = true;
+        }]);
+      };
+    };
+    calls
+  };
+
+  /// Generate calls for PRIVATICUS — 15 privacy-preserving analytics calls
+  public func generatePrivaticusCalls(ts : Int) : [CallDefinition] {
+    let entities = [
+      "DifferentialPrivacy", "HomomorphicEngine", "MPCProtocol"
+    ];
+    let operations = ["privatize", "encrypt", "compute", "verify", "aggregate"];
+    var calls : [CallDefinition] = [];
+    var id : Nat = 1350;
+    for (e in entities.vals()) {
+      for (op in operations.vals()) {
+        id += 1;
+        calls := Array.append(calls, [{
+          callId = id;
+          callName = e # "." # op;
+          domain = "Privacy";
+          targetModule = "sdk/privacy/" # e;
+          workerName = "PRIVATICUS";
+          priority = PHI_INV * Float.fromInt(id % 6 + 1);
+          autoRouted = true;
+        }]);
+      };
+    };
+    calls
+  };
+
+  /// Generate calls for CACHEXIUS — 15 intelligent caching calls
+  public func generateCachexiusCalls(ts : Int) : [CallDefinition] {
+    let entities = [
+      "PredictiveWarmer", "SemanticInvalidator", "CacheTiering"
+    ];
+    let operations = ["warm", "invalidate", "tier", "prefetch", "evict"];
+    var calls : [CallDefinition] = [];
+    var id : Nat = 1400;
+    for (e in entities.vals()) {
+      for (op in operations.vals()) {
+        id += 1;
+        calls := Array.append(calls, [{
+          callId = id;
+          callName = e # "." # op;
+          domain = "Caching";
+          targetModule = "sdk/caching/" # e;
+          workerName = "CACHEXIUS";
+          priority = PHI * Float.fromInt(id % 4 + 1) / 4.0;
+          autoRouted = true;
+        }]);
+      };
+    };
+    calls
+  };
+
+  /// Generate calls for TENANTIUS — 18 multi-tenant management calls
+  public func generateTentiusCalls(ts : Int) : [CallDefinition] {
+    let entities = [
+      "TenantIsolator", "TenantDeployer", "FeatureFlagManager"
+    ];
+    let operations = ["isolate", "deploy", "flag", "provision", "migrate", "audit"];
+    var calls : [CallDefinition] = [];
+    var id : Nat = 1450;
+    for (e in entities.vals()) {
+      for (op in operations.vals()) {
+        id += 1;
+        calls := Array.append(calls, [{
+          callId = id;
+          callName = e # "." # op;
+          domain = "MultiTenant";
+          targetModule = "sdk/multitenant/" # e;
+          workerName = "TENANTIUS";
+          priority = PHI * Float.fromInt(id % 6 + 1) / 6.0;
+          autoRouted = true;
+        }]);
+      };
+    };
+    calls
+  };
+
+  /// Generate calls for CHAOTICUS — 15 chaos engineering/scaling calls
+  public func generateChaoticusCalls(ts : Int) : [CallDefinition] {
+    let entities = [
+      "FaultInjector", "GameDayRunner", "ScalingEngine"
+    ];
+    let operations = ["inject", "simulate", "scale", "recover", "observe"];
+    var calls : [CallDefinition] = [];
+    var id : Nat = 1500;
+    for (e in entities.vals()) {
+      for (op in operations.vals()) {
+        id += 1;
+        calls := Array.append(calls, [{
+          callId = id;
+          callName = e # "." # op;
+          domain = "ChaosEngineering";
+          targetModule = "sdk/chaos/" # e;
+          workerName = "CHAOTICUS";
+          priority = PHI_INV * Float.fromInt(id % 5 + 1);
+          autoRouted = true;
+        }]);
+      };
+    };
+    calls
+  };
+
+  /// Generate calls for EXTERNALIS — 20 external SDK/API gateway calls
+  public func generateExternalisCalls(ts : Int) : [CallDefinition] {
+    let entities = [
+      "SDKRouter", "APIVersionManager", "DeveloperPortal", "RateLimiter"
+    ];
+    let operations = ["route", "version", "portal", "limit", "authorize"];
+    var calls : [CallDefinition] = [];
+    var id : Nat = 1550;
+    for (e in entities.vals()) {
+      for (op in operations.vals()) {
+        id += 1;
+        calls := Array.append(calls, [{
+          callId = id;
+          callName = e # "." # op;
+          domain = "ExternalSDK";
+          targetModule = "sdk/external/" # e;
+          workerName = "EXTERNALIS";
+          priority = PHI * Float.fromInt(id % 7 + 1) / 7.0;
+          autoRouted = true;
+        }]);
+      };
+    };
+    calls
+  };
+
+  /// Generate calls for BLUEPRINTUS — 15 blueprint/hook discovery calls
+  public func generateBlueprintusCalls(ts : Int) : [CallDefinition] {
+    let entities = [
+      "BlueprintScanner", "HookMapper", "InterfaceResolver"
+    ];
+    let operations = ["scan", "map", "resolve", "discover", "validate"];
+    var calls : [CallDefinition] = [];
+    var id : Nat = 1600;
+    for (e in entities.vals()) {
+      for (op in operations.vals()) {
+        id += 1;
+        calls := Array.append(calls, [{
+          callId = id;
+          callName = e # "." # op;
+          domain = "Blueprints";
+          targetModule = "sdk/blueprints/" # e;
+          workerName = "BLUEPRINTUS";
+          priority = PHI * Float.fromInt(id % 5 + 1) / 5.0;
+          autoRouted = true;
+        }]);
+      };
+    };
+    calls
+  };
+
+  /// Generate calls for JARVISIUS — 20 Jarvis AI command/orchestration calls
+  public func generateJarvisiusCalls(ts : Int) : [CallDefinition] {
+    let entities = [
+      "JarvisCommandRouter", "JarvisMemoryCore",
+      "JarvisAutomation", "JarvisContext"
+    ];
+    let operations = ["command", "recall", "automate", "contextualize", "orchestrate"];
+    var calls : [CallDefinition] = [];
+    var id : Nat = 1650;
+    for (e in entities.vals()) {
+      for (op in operations.vals()) {
+        id += 1;
+        calls := Array.append(calls, [{
+          callId = id;
+          callName = e # "." # op;
+          domain = "JarvisAI";
+          targetModule = "sdk/jarvis/" # e;
+          workerName = "JARVISIUS";
+          priority = PHI * Float.fromInt(id % 8 + 1) / 8.0;
+          autoRouted = true;
+        }]);
+      };
+    };
+    calls
+  };
+
   /// Generate multi-power cross-domain calls — 200+ orchestration calls
   public func generateMultiPowerCalls(ts : Int) : [CallDefinition] {
     var calls : [CallDefinition] = [];
@@ -945,6 +1267,37 @@ module {
       "SYNAPTICUS"
     } else if (textStartsWith(callName, "LawEnforcement")) {
       "LICENTIATOR"
+    // ── New Builder AI prefixes ──
+    } else if (textStartsWith(callName, "CodeAnalyzer") or textStartsWith(callName, "RefactorEngine") or
+               textStartsWith(callName, "TestRunner") or textStartsWith(callName, "CIPipeline") or
+               textStartsWith(callName, "BuildOrchestrator")) {
+      "FABRICATOR"
+    } else if (textStartsWith(callName, "SpikingNeural") or textStartsWith(callName, "DendriticProcessor") or
+               textStartsWith(callName, "GlialNetwork")) {
+      "NEURONICUS"
+    } else if (textStartsWith(callName, "NegotiationEngine") or textStartsWith(callName, "ConsensusAgent") or
+               textStartsWith(callName, "SwarmController")) {
+      "AGENTICUS"
+    } else if (textStartsWith(callName, "DifferentialPrivacy") or textStartsWith(callName, "HomomorphicEngine") or
+               textStartsWith(callName, "MPCProtocol")) {
+      "PRIVATICUS"
+    } else if (textStartsWith(callName, "PredictiveWarmer") or textStartsWith(callName, "SemanticInvalidator") or
+               textStartsWith(callName, "CacheTiering")) {
+      "CACHEXIUS"
+    } else if (textStartsWith(callName, "TenantIsolator") or textStartsWith(callName, "TenantDeployer") or
+               textStartsWith(callName, "FeatureFlag")) {
+      "TENANTIUS"
+    } else if (textStartsWith(callName, "FaultInjector") or textStartsWith(callName, "GameDayRunner") or
+               textStartsWith(callName, "ScalingEngine")) {
+      "CHAOTICUS"
+    } else if (textStartsWith(callName, "SDKRouter") or textStartsWith(callName, "APIVersion") or
+               textStartsWith(callName, "DeveloperPortal") or textStartsWith(callName, "RateLimiter")) {
+      "EXTERNALIS"
+    } else if (textStartsWith(callName, "BlueprintScanner") or textStartsWith(callName, "HookMapper") or
+               textStartsWith(callName, "InterfaceResolver")) {
+      "BLUEPRINTUS"
+    } else if (textStartsWith(callName, "Jarvis")) {
+      "JARVISIUS"
     } else {
       "ORGANISMUS" // Default fallback
     }
@@ -982,6 +1335,16 @@ module {
       case "CANISTRUM"     { "sdk/canisters/" # callName };
       case "LICENTIATOR"   { "sdk/licenses/" # callName };
       case "DEFENSOR"      { "sdk/defense/" # callName };
+      case "FABRICATOR"    { "sdk/forgeworks/" # callName };
+      case "NEURONICUS"    { "sdk/neuromorphic/" # callName };
+      case "AGENTICUS"     { "sdk/multiagent/" # callName };
+      case "PRIVATICUS"    { "sdk/privacy/" # callName };
+      case "CACHEXIUS"     { "sdk/caching/" # callName };
+      case "TENANTIUS"     { "sdk/multitenant/" # callName };
+      case "CHAOTICUS"     { "sdk/chaos/" # callName };
+      case "EXTERNALIS"    { "sdk/external/" # callName };
+      case "BLUEPRINTUS"   { "sdk/blueprints/" # callName };
+      case "JARVISIUS"     { "sdk/jarvis/" # callName };
       case _               { "sdk/" # callName };
     }
   };
@@ -1000,8 +1363,8 @@ module {
     };
     {
       workers = workers;
-      totalWorkers = 12;
-      totalEngines = 36;
+      totalWorkers = 22;
+      totalEngines = 66;
       totalCalls = totalCalls;
       healthyWorkers = healthy;
       timestampNs = ts;
