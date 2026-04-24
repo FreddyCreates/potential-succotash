@@ -1,13 +1,14 @@
 /**
  * OrganismBridge — Autonomous Multi-Worker Orchestration Bridge
  *
- * Boots, coordinates, and SELF-HEALS all 13 organism workers,
+ * Boots, coordinates, and SELF-HEALS all 14 organism workers,
  * organized into 4 autonomous divisions:
  *
  * 🧠 BRAIN DIVISION — Thinking & reasoning
  *   - engine-worker.js:       EngineCore + ModelRouter + ModelWire (40 AI families)
  *   - inference-worker.js:    Local ML inference, classification, embeddings
  *   - orchestrator-worker.js: Micro-worker orchestration, task decomposition
+ *   - twin-alpha-worker.js:   User-facing intermediary, memory search, task routing, monitoring
  *
  * 💾 DATA DIVISION — Memory, analytics & pipelines
  *   - memory-worker.js:       Sovereign Memory (spatial store, search, persistence)
