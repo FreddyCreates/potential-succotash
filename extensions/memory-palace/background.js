@@ -238,3 +238,44 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 
   return true;
 });
+
+/* -- Production 24/7 Keep-Alive ---------------------------------------- */
+(function () {
+  var ALARM_NAME = 'memory-palace-heartbeat';
+  var ALARM_PERIOD = 0.4; /* minutes -- fires every ~24 seconds to beat Chrome's 30s kill timer */
+
+  chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
+
+  chrome.alarms.onAlarm.addListener(function (alarm) {
+    if (alarm.name !== ALARM_NAME) return;
+    /* Re-initialize engine if it was garbage collected */
+    if (!globalThis.memoryPalace) {
+      globalThis.memoryPalace = new MemoryPalaceEngine();
+      console.log('[Memory Palace] Engine re-initialized by keepalive alarm');
+    }
+    /* Persist state snapshot */
+    try {
+      chrome.storage.local.set({
+        'memory-palace_state': {
+          heartbeatCount: globalThis.memoryPalace.heartbeatCount || globalThis.memoryPalace.state?.heartbeatCount || 0,
+          lastAlive: Date.now(),
+          uptime: Date.now() - (globalThis.memoryPalace.state?.startTime || globalThis.memoryPalace.startTime || Date.now())
+        }
+      });
+    } catch (e) { /* storage not available in some contexts */ }
+  });
+
+  /* Restore state on startup */
+  chrome.storage.local.get('memory-palace_state', function (data) {
+    if (data && data['memory-palace_state']) {
+      console.log('[Memory Palace] Restored from previous session \u2014 last alive: ' +
+        new Date(data['memory-palace_state'].lastAlive).toISOString());
+    }
+  });
+
+  /* Also re-init on install/update */
+  chrome.runtime.onInstalled.addListener(function () {
+    chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
+    console.log('[Memory Palace] Installed/updated \u2014 24/7 keepalive active');
+  });
+})();

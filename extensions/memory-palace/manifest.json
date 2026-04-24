@@ -2,12 +2,13 @@
   "manifest_version": 3,
   "name": "Memory Palace",
   "version": "1.0.0",
-  "description": "Spatial Memory Intelligence — Embeddings + Command R + Rerankers",
+  "description": "AI User Experience \u2014 Sovereign bookmarking with phi-encoded spatial coordinates, searchable by meaning and resonance",
   "permissions": [
     "activeTab",
     "storage",
     "bookmarks",
-    "history"
+    "history",
+    "alarms"
   ],
   "background": {
     "service_worker": "background.js"
@@ -22,10 +23,16 @@
       ]
     }
   ],
+  "minimum_chrome_version": "110",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
-  "minimum_chrome_version": "110"
+  "action": {
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+    }
+  }
 }

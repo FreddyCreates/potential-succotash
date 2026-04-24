@@ -2,11 +2,12 @@
   "manifest_version": 3,
   "name": "Social Cortex",
   "version": "1.0.0",
-  "description": "Social Intelligence Analyzer — Grok + Inflection + GPT",
+  "description": "AI User Experience \u2014 AI reads the social room with sentiment analysis, empathy detection, and response drafting",
   "permissions": [
     "activeTab",
     "storage",
-    "tabs"
+    "tabs",
+    "alarms"
   ],
   "background": {
     "service_worker": "background.js"
@@ -21,10 +22,16 @@
       ]
     }
   ],
+  "minimum_chrome_version": "110",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
-  "minimum_chrome_version": "110"
+  "action": {
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+    }
+  }
 }

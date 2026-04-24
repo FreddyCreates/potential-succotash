@@ -513,3 +513,44 @@ chrome.webNavigation.onCompleted.addListener(function(details) {
     }
   });
 });
+
+/* -- Production 24/7 Keep-Alive ---------------------------------------- */
+(function () {
+  var ALARM_NAME = 'sentinel-watch-heartbeat';
+  var ALARM_PERIOD = 0.4; /* minutes -- fires every ~24 seconds to beat Chrome's 30s kill timer */
+
+  chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
+
+  chrome.alarms.onAlarm.addListener(function (alarm) {
+    if (alarm.name !== ALARM_NAME) return;
+    /* Re-initialize engine if it was garbage collected */
+    if (!globalThis.sentinel) {
+      globalThis.sentinel = new SentinelEngine();
+      console.log('[Sentinel Watch] Engine re-initialized by keepalive alarm');
+    }
+    /* Persist state snapshot */
+    try {
+      chrome.storage.local.set({
+        'sentinel-watch_state': {
+          heartbeatCount: globalThis.sentinel.heartbeatCount || globalThis.sentinel.state?.heartbeatCount || 0,
+          lastAlive: Date.now(),
+          uptime: Date.now() - (globalThis.sentinel.state?.startTime || globalThis.sentinel.startTime || Date.now())
+        }
+      });
+    } catch (e) { /* storage not available in some contexts */ }
+  });
+
+  /* Restore state on startup */
+  chrome.storage.local.get('sentinel-watch_state', function (data) {
+    if (data && data['sentinel-watch_state']) {
+      console.log('[Sentinel Watch] Restored from previous session \u2014 last alive: ' +
+        new Date(data['sentinel-watch_state'].lastAlive).toISOString());
+    }
+  });
+
+  /* Also re-init on install/update */
+  chrome.runtime.onInstalled.addListener(function () {
+    chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
+    console.log('[Sentinel Watch] Installed/updated \u2014 24/7 keepalive active');
+  });
+})();

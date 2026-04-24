@@ -14,5 +14,19 @@
     "24-hour-runtime",
     "phi-encoded",
     "intelligence-fracture"
-  ]
+  ],
+  "files": [
+    "src/"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FreddyCreates/potential-succotash.git",
+    "directory": "sdk/frontend-intelligence-models"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

@@ -2,15 +2,24 @@
   "manifest_version": 3,
   "name": "Sovereign Mind",
   "version": "1.0.0",
-  "description": "Multi-Modal Reasoning Intelligence — GPT + Claude + Gemini Fusion",
-  "permissions": ["activeTab", "storage", "identity"],
+  "description": "AI User Experience — Sovereign reasoning engine built from your data. FusionCore + AlphaRouter + PhiScorer fused with phi-weighted confidence scoring. No third-party models — your mind, your data.",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "identity",
+    "alarms"
+  ],
   "background": {
     "service_worker": "background.js"
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ]
     }
   ],
   "icons": {
@@ -18,5 +27,11 @@
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
-  "minimum_chrome_version": "110"
+  "minimum_chrome_version": "110",
+  "action": {
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+    }
+  }
 }

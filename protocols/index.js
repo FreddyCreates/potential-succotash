@@ -1,7 +1,7 @@
 /**
  * AI-Intelligent Protocols — Organism Wire Index
  *
- * 10 protocols, each a literal AI: adaptive, self-healing, multi-engine,
+ * 11 protocols, each a literal AI: adaptive, self-healing, multi-engine,
  * phi-math wired throughout. All export into the sovereign organism.
  *
  * @module protocols
@@ -17,3 +17,4 @@ export { EdgeMeshIntelligenceProtocol } from './edge-mesh-intelligence-protocol.
 export { VisualSceneIntelligenceProtocol } from './visual-scene-intelligence-protocol.js';
 export { MemoryLineageProtocol } from './memory-lineage-protocol.js';
 export { OrganismLifecycleProtocol } from './organism-lifecycle-protocol.js';
+export { OrganismMarketplaceProtocol } from './organism-marketplace-protocol.js';

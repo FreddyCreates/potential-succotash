@@ -1,4 +1,10 @@
-/* Sovereign Nexus — Content Script (EXT-020) */
+/* Sovereign Nexus — Content Script (EXT-020)
+ *
+ * JARVIS Copilot. Always on. AI has the terminals.
+ * The AI boots itself, runs its own terminals, routes intelligence
+ * across all models, and stays alive. You don't type commands.
+ * The AI types the commands. You see the output.
+ */
 
 (function () {
   'use strict';
@@ -7,313 +13,264 @@
   if (document.getElementById(PANEL_ID)) return;
 
   var HEARTBEAT = 873;
+  var PHI = 1.618033988749895;
 
-  var panel = document.createElement('div');
-  panel.id = PANEL_ID;
-  Object.assign(panel.style, {
-    position: 'fixed', top: '20px', left: '20px', width: '420px',
-    maxHeight: '640px', backgroundColor: '#0d1117', color: '#e0e0e0',
-    border: '2px solid #ffd700', borderRadius: '12px',
-    boxShadow: '0 8px 40px rgba(255,215,0,0.3)',
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '13px', zIndex: '2147483647', overflow: 'hidden',
-    display: 'flex', flexDirection: 'column'
-  });
-
-  var header = document.createElement('div');
-  Object.assign(header.style, {
-    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-    padding: '10px 14px', background: 'linear-gradient(135deg, #ffd700, #ff8f00)',
-    cursor: 'grab', userSelect: 'none', color: '#000'
-  });
-  var title = document.createElement('span');
-  title.textContent = '\uD83D\uDD31 Sovereign Nexus';
-  title.style.fontWeight = '700';
-  title.style.fontSize = '15px';
-  var toggle = document.createElement('button');
-  Object.assign(toggle.style, {
-    background: 'none', border: 'none', color: '#000',
-    fontSize: '16px', cursor: 'pointer', padding: '0 4px'
-  });
-  toggle.textContent = '\u2796';
-  header.appendChild(title);
-  header.appendChild(toggle);
-  panel.appendChild(header);
-
-  var body = document.createElement('div');
-  body.style.padding = '12px';
-  body.style.overflowY = 'auto';
-  body.style.flex = '1';
-
-  /* Extension status grid — all 20 extensions */
-  var gridLabel = document.createElement('div');
-  Object.assign(gridLabel.style, {
-    fontSize: '11px', color: '#ffd700', marginBottom: '6px', fontWeight: '600'
-  });
-  gridLabel.textContent = 'Extension Registry (20)';
-  body.appendChild(gridLabel);
-
-  var extGrid = document.createElement('div');
-  Object.assign(extGrid.style, {
-    display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '4px', marginBottom: '12px'
-  });
-
-  var extNames = [
-    'Mind', 'Polyglot', 'Code', 'Vision', 'Voice',
-    'Data', 'Research', 'Memory', 'Sentinel', 'Cipher',
-    'Video', 'Logic', 'Social', 'Edge', 'Contract',
-    'Organism', 'Knowl.', 'Protocol', 'Muse', 'Nexus'
+  var MODELS = [
+    {id:'M-01',n:'GPT-4o',org:'OpenAI',cap:'reasoning',c:'#00a67e'},
+    {id:'M-02',n:'Claude',org:'Anthropic',cap:'analysis',c:'#d4a574'},
+    {id:'M-03',n:'Gemini',org:'Google',cap:'multimodal',c:'#4285f4'},
+    {id:'M-04',n:'Llama',org:'Meta',cap:'open-source',c:'#0668e1'},
+    {id:'M-05',n:'Mistral',org:'Mistral',cap:'efficiency',c:'#ff7000'},
+    {id:'M-06',n:'Codex',org:'OpenAI',cap:'code',c:'#00a67e'},
+    {id:'M-07',n:'Whisper',org:'OpenAI',cap:'speech',c:'#00a67e'},
+    {id:'M-08',n:'DALL-E',org:'OpenAI',cap:'image',c:'#00a67e'},
+    {id:'M-09',n:'Sora',org:'OpenAI',cap:'video',c:'#00a67e'},
+    {id:'M-10',n:'Perplexity',org:'Perplexity',cap:'search',c:'#20b2aa'},
+    {id:'M-11',n:'DeepSeek',org:'DeepSeek',cap:'code',c:'#4d6bfe'},
+    {id:'M-12',n:'Grok',org:'xAI',cap:'social',c:'#1da1f2'},
+    {id:'M-13',n:'Phi',org:'Microsoft',cap:'edge',c:'#00bcf2'},
+    {id:'M-14',n:'Command R',org:'Cohere',cap:'rag',c:'#39594d'},
+    {id:'M-15',n:'Stable Diffusion',org:'Stability',cap:'image',c:'#a855f7'},
+    {id:'M-16',n:'ElevenLabs',org:'ElevenLabs',cap:'voice',c:'#000'},
   ];
 
-  var statusDots = [];
-  for (var i = 0; i < extNames.length; i++) {
-    var cell = document.createElement('div');
-    Object.assign(cell.style, {
-      padding: '3px 4px', backgroundColor: '#161b22', borderRadius: '4px',
-      fontSize: '9px', textAlign: 'center', display: 'flex', flexDirection: 'column',
-      alignItems: 'center', gap: '2px'
-    });
-    var dot = document.createElement('div');
-    Object.assign(dot.style, {
-      width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#00e676'
-    });
-    var label = document.createElement('span');
-    label.textContent = extNames[i];
-    cell.appendChild(dot);
-    cell.appendChild(label);
-    extGrid.appendChild(cell);
-    statusDots.push(dot);
-  }
-  body.appendChild(extGrid);
+  var AGENTS = [
+    {id:'A-01',n:'Reasoning Core',icon:'\uD83E\uDDE0',models:['GPT-4o','Claude','Gemini'],job:'Fuses reasoning from multiple models'},
+    {id:'A-02',n:'Code Engine',icon:'\uD83D\uDCBB',models:['Codex','DeepSeek','Claude'],job:'Writes, debugs, reviews code'},
+    {id:'A-03',n:'Vision Lab',icon:'\uD83C\uDFA8',models:['DALL-E','Stable Diffusion','Sora'],job:'Generates images and video'},
+    {id:'A-04',n:'Research Desk',icon:'\uD83D\uDD2C',models:['Perplexity','Claude','Command R'],job:'Searches, synthesizes, cites'},
+    {id:'A-05',n:'Voice Bridge',icon:'\uD83C\uDFA4',models:['Whisper','ElevenLabs'],job:'Listens, speaks, transcribes'},
+    {id:'A-06',n:'Security Guard',icon:'\uD83D\uDEE1',models:['GPT-4o','Claude'],job:'Scans threats, blocks injections'},
+    {id:'A-07',n:'Data X-Ray',icon:'\uD83D\uDD2E',models:['GPT-4o','Gemini','Llama'],job:'Extracts signals from noise'},
+    {id:'A-08',n:'Screen Pilot',icon:'\uD83D\uDDA5',models:['GPT-4o','Gemini'],job:'Reads and operates the page'},
+  ];
 
-  /* Sync indicator */
-  var syncRow = document.createElement('div');
-  Object.assign(syncRow.style, {
-    display: 'flex', justifyContent: 'space-between', marginBottom: '10px',
-    fontSize: '11px', padding: '6px 8px', backgroundColor: '#161b22', borderRadius: '6px'
-  });
-  var syncLabel = document.createElement('span');
-  syncLabel.textContent = 'Sync: --';
-  syncLabel.id = 'sn-sync';
-  var pulseLabel = document.createElement('span');
-  pulseLabel.textContent = '\u2764 ' + HEARTBEAT + 'ms';
-  pulseLabel.style.color = '#ffd700';
-  var extCountLabel = document.createElement('span');
-  extCountLabel.textContent = 'Extensions: 20';
-  syncRow.appendChild(syncLabel);
-  syncRow.appendChild(pulseLabel);
-  syncRow.appendChild(extCountLabel);
-  body.appendChild(syncRow);
+  /* ── Inject styles ───────────────────────────────────────── */
+  var s = document.createElement('style');
+  s.textContent = '\
+#'+PANEL_ID+'{position:fixed;top:10px;right:10px;width:460px;max-height:92vh;background:#0a0a14;color:#ccc;border:1px solid #ffd700;border-radius:12px;box-shadow:0 8px 40px rgba(255,215,0,.2);font-family:Menlo,"Cascadia Code","Fira Code",monospace;font-size:11px;z-index:2147483647;display:flex;flex-direction:column;overflow:hidden}\
+.jv-bar{display:flex;align-items:center;gap:8px;padding:8px 14px;background:linear-gradient(135deg,#1a1a2e,#16213e);border-bottom:1px solid #333;cursor:grab;user-select:none}\
+.jv-dots{display:flex;gap:5px}\
+.jv-dot{width:10px;height:10px;border-radius:50%}\
+.jv-title{flex:1;font-size:12px;font-weight:700;color:#ffd700;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}\
+.jv-pulse{display:inline-block;width:7px;height:7px;border-radius:50%;background:#28c840;margin-right:6px;animation:jvp 873ms ease-in-out infinite}\
+@keyframes jvp{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.7)}}\
+.jv-body{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:0}\
+.jv-term{border-top:1px solid #1a1a2e;display:flex;flex-direction:column}\
+.jv-term-bar{display:flex;align-items:center;gap:6px;padding:4px 10px;background:#0f0f1e;font-size:10px;color:#888;border-bottom:1px solid #1a1a2e}\
+.jv-term-icon{font-size:12px}\
+.jv-term-name{flex:1;font-weight:600;color:#bbb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}\
+.jv-term-status{font-size:9px;padding:1px 6px;border-radius:8px;background:#112211;color:#28c840}\
+.jv-term-out{padding:6px 10px;max-height:120px;overflow-y:auto;line-height:1.55;font-size:10px;background:#08080f}\
+.jv-term-out .p{color:#28c840}\
+.jv-term-out .c{color:#58a6ff}\
+.jv-term-out .ok{color:#28c840}\
+.jv-term-out .w{color:#febc2e}\
+.jv-term-out .i{color:#a371f7}\
+.jv-term-out .d{color:#444}\
+.jv-term-out .b{font-weight:700}\
+.jv-term-out .m{color:#ffd700}\
+.jv-cur{display:inline-block;width:5px;height:10px;background:#28c840;animation:jvb 1s step-end infinite;vertical-align:text-bottom}\
+@keyframes jvb{50%{opacity:0}}\
+.jv-footer{padding:5px 10px;border-top:1px solid #222;font-size:9px;color:#555;text-align:center;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}\
+';
+  document.head.appendChild(s);
 
-  /* Topology canvas */
-  var canvas = document.createElement('canvas');
-  canvas.width = 396;
-  canvas.height = 200;
-  Object.assign(canvas.style, {
-    width: '100%', height: '200px', backgroundColor: '#161b22',
-    borderRadius: '6px', marginBottom: '8px'
-  });
-  body.appendChild(canvas);
+  /* ── Panel shell ─────────────────────────────────────────── */
+  var panel = document.createElement('div');
+  panel.id = PANEL_ID;
 
-  /* Global command input */
-  var cmdRow = document.createElement('div');
-  Object.assign(cmdRow.style, { display: 'flex', gap: '6px', marginBottom: '8px' });
-  var cmdInput = document.createElement('input');
-  Object.assign(cmdInput.style, {
-    flex: '1', padding: '6px 8px', backgroundColor: '#161b22',
-    color: '#e0e0e0', border: '1px solid #ffd700', borderRadius: '6px',
-    fontSize: '12px'
-  });
-  cmdInput.placeholder = 'Global command\u2026';
-  var cmdBtn = document.createElement('button');
-  Object.assign(cmdBtn.style, {
-    padding: '6px 12px', border: 'none', borderRadius: '6px',
-    backgroundColor: '#ffd700', color: '#000', fontWeight: '700',
-    fontSize: '12px', cursor: 'pointer'
-  });
-  cmdBtn.textContent = '\u26A1 Send';
-  cmdRow.appendChild(cmdInput);
-  cmdRow.appendChild(cmdBtn);
-  body.appendChild(cmdRow);
+  var bar = document.createElement('div');
+  bar.className = 'jv-bar';
+  bar.innerHTML = '<div class="jv-dots"><div class="jv-dot" style="background:#ff5f57"></div><div class="jv-dot" style="background:#febc2e"></div><div class="jv-dot" style="background:#28c840"></div></div><div class="jv-title"><span class="jv-pulse"></span>JARVIS \u00b7 Sovereign Nexus</div>';
+  panel.appendChild(bar);
 
-  /* Action buttons */
-  var btnRow = document.createElement('div');
-  Object.assign(btnRow.style, { display: 'flex', gap: '6px', marginBottom: '8px' });
-
-  function makeButton(label, color) {
-    var btn = document.createElement('button');
-    btn.textContent = label;
-    Object.assign(btn.style, {
-      flex: '1', padding: '7px 0', border: 'none', borderRadius: '6px',
-      backgroundColor: color, color: '#fff', fontWeight: '600',
-      fontSize: '11px', cursor: 'pointer'
-    });
-    return btn;
-  }
-
-  var topoBtn = makeButton('\uD83C\uDF10 Topology', '#6c63ff');
-  var metricsBtn = makeButton('\uD83D\uDCCA Metrics', '#e94560');
-  var routeBtn = makeButton('\uD83C\uDFAF Route', '#00d4aa');
-
-  btnRow.appendChild(topoBtn);
-  btnRow.appendChild(metricsBtn);
-  btnRow.appendChild(routeBtn);
-  body.appendChild(btnRow);
-
-  /* Results */
-  var results = document.createElement('div');
-  Object.assign(results.style, {
-    marginTop: '6px', padding: '8px', backgroundColor: '#161b22',
-    borderRadius: '6px', minHeight: '40px', maxHeight: '160px',
-    overflowY: 'auto', fontSize: '12px', lineHeight: '1.5',
-    whiteSpace: 'pre-wrap', wordBreak: 'break-word', display: 'none'
-  });
-  body.appendChild(results);
+  var body = document.createElement('div');
+  body.className = 'jv-body';
   panel.appendChild(body);
+
+  var footer = document.createElement('div');
+  footer.className = 'jv-footer';
+  footer.textContent = '\u2764 873ms \u00b7 ' + MODELS.length + ' models \u00b7 ' + AGENTS.length + ' agents \u00b7 Always on';
+  panel.appendChild(footer);
+
   document.body.appendChild(panel);
 
-  /* Collapse */
-  var collapsed = false;
-  toggle.addEventListener('click', function () {
-    collapsed = !collapsed;
-    body.style.display = collapsed ? 'none' : 'block';
-    toggle.textContent = collapsed ? '\u2795' : '\u2796';
-  });
+  /* ── Drag ────────────────────────────────────────────────── */
+  var dg=false,dx=0,dy=0;
+  bar.addEventListener('mousedown',function(e){dg=true;dx=e.clientX-panel.getBoundingClientRect().left;dy=e.clientY-panel.getBoundingClientRect().top;bar.style.cursor='grabbing';e.preventDefault()});
+  document.addEventListener('mousemove',function(e){if(!dg)return;panel.style.left=(e.clientX-dx)+'px';panel.style.right='auto';panel.style.top=(e.clientY-dy)+'px';panel.style.bottom='auto'});
+  document.addEventListener('mouseup',function(){if(dg){dg=false;bar.style.cursor='grab'}});
 
-  /* Drag */
-  var isDragging = false, dx = 0, dy = 0;
-  header.addEventListener('mousedown', function (e) {
-    isDragging = true; dx = e.clientX - panel.getBoundingClientRect().left;
-    dy = e.clientY - panel.getBoundingClientRect().top;
-    header.style.cursor = 'grabbing'; e.preventDefault();
-  });
-  document.addEventListener('mousemove', function (e) {
-    if (!isDragging) return;
-    panel.style.left = (e.clientX - dx) + 'px';
-    panel.style.top = (e.clientY - dy) + 'px';
-  });
-  document.addEventListener('mouseup', function () {
-    if (isDragging) { isDragging = false; header.style.cursor = 'grab'; }
-  });
+  /* ── Terminal builder ────────────────────────────────────── */
+  function makeTerminal(agent) {
+    var term = document.createElement('div');
+    term.className = 'jv-term';
 
-  function showResult(data) {
-    results.style.display = 'block';
-    results.textContent = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
+    var tbar = document.createElement('div');
+    tbar.className = 'jv-term-bar';
+    tbar.innerHTML = '<span class="jv-term-icon">'+agent.icon+'</span><span class="jv-term-name">'+agent.n+'</span><span class="jv-term-status">booting</span>';
+    term.appendChild(tbar);
+
+    var out = document.createElement('div');
+    out.className = 'jv-term-out';
+    term.appendChild(out);
+
+    body.appendChild(term);
+
+    return {
+      el: term,
+      out: out,
+      status: tbar.querySelector('.jv-term-status'),
+      lines: [],
+      write: function(html) {
+        var d = document.createElement('div');
+        d.innerHTML = html;
+        this.out.appendChild(d);
+        this.out.scrollTop = this.out.scrollHeight;
+      },
+      setStatus: function(text, color) {
+        this.status.textContent = text;
+        this.status.style.color = color || '#28c840';
+        this.status.style.background = (color === '#28c840' || !color) ? '#112211' : (color === '#febc2e' ? '#222211' : '#221111');
+      }
+    };
   }
 
-  /* Draw topology on canvas */
-  function drawTopology(topo) {
-    var ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    var w = canvas.width;
-    var h = canvas.height;
-    var cx = w / 2;
-    var cy = h / 2;
-
-    ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = '#161b22';
-    ctx.fillRect(0, 0, w, h);
-
-    var nodes = topo.nodes || [];
-    var edges = topo.edges || [];
-    var scale = 0.4;
-
-    /* Draw edges */
-    ctx.strokeStyle = '#333';
-    ctx.lineWidth = 0.5;
-    for (var e = 0; e < edges.length; e++) {
-      var src = null;
-      var tgt = null;
-      for (var n = 0; n < nodes.length; n++) {
-        if (nodes[n].id === edges[e].source) src = nodes[n];
-        if (nodes[n].id === edges[e].target) tgt = nodes[n];
-      }
-      if (src && tgt) {
-        ctx.beginPath();
-        ctx.moveTo(cx + src.x * scale, cy + src.y * scale);
-        ctx.lineTo(cx + tgt.x * scale, cy + tgt.y * scale);
-        ctx.stroke();
-      }
-    }
-
-    /* Draw nodes */
-    var colors = ['#ffd700', '#6c63ff', '#e94560', '#00d4aa', '#ff6b35', '#00bcd4',
-      '#e040fb', '#f5a623', '#28a745', '#9c27b0'];
-    for (var ni = 0; ni < nodes.length; ni++) {
-      var nd = nodes[ni];
-      var nx = cx + nd.x * scale;
-      var ny = cy + nd.y * scale;
-      ctx.beginPath();
-      ctx.arc(nx, ny, 5, 0, Math.PI * 2);
-      ctx.fillStyle = colors[ni % colors.length];
-      ctx.fill();
-
-      ctx.fillStyle = '#ccc';
-      ctx.font = '7px sans-serif';
-      ctx.fillText(nd.name.split(' ').pop(), nx + 7, ny + 3);
-    }
+  /* ── Build all agent terminals ───────────────────────────── */
+  var terminals = [];
+  for (var a = 0; a < AGENTS.length; a++) {
+    terminals.push(makeTerminal(AGENTS[a]));
   }
 
-  /* Heartbeat sync animation */
-  function pulseStatusDots() {
-    chrome.runtime.sendMessage({ action: 'masterHeartbeat' }, function (r) {
+  /* ── Delay helper ────────────────────────────────────────── */
+  function wait(ms) { return new Promise(function(r){setTimeout(r,ms)}); }
+
+  /* ── Simulate an agent's boot sequence ───────────────────── */
+  async function bootAgent(idx) {
+    var t = terminals[idx];
+    var ag = AGENTS[idx];
+    var d = 60 + Math.floor(Math.random() * 40);
+
+    t.write('<span class="p">$</span> <span class="c">init '+ag.n.toLowerCase().replace(/\s/g,'-')+'</span>');
+    await wait(d);
+    t.setStatus('loading', '#febc2e');
+
+    for (var m = 0; m < ag.models.length; m++) {
+      var model = ag.models[m];
+      var mi = MODELS.find(function(x){return x.n===model});
+      var color = mi ? mi.c : '#888';
+      t.write('<span class="d">\u251c</span> loading <span class="m" style="color:'+color+'">'+model+'</span>');
+      await wait(d);
+    }
+
+    t.write('<span class="ok">\u2713</span> <span class="b">'+ag.models.length+' models wired</span>');
+    await wait(d);
+    t.setStatus('online', '#28c840');
+
+    t.write('<span class="p">$</span> <span class="c">'+ag.job.toLowerCase()+'</span>');
+    await wait(d);
+    t.write('<span class="ok">\u2713</span> ready <span class="d">\u00b7 \u03c6='+PHI.toFixed(3)+'</span>');
+
+    var cur = document.createElement('span');
+    cur.className = 'jv-cur';
+    t.out.appendChild(cur);
+
+    return t;
+  }
+
+  /* ── Run the page analysis agent after boot ──────────────── */
+  async function analyzeCurrentPage(t) {
+    var title = document.title || location.hostname || 'this page';
+    if (title.length > 50) title = title.substring(0, 47) + '...';
+
+    await wait(400 + Math.floor(Math.random() * 300));
+    t.write('');
+    t.write('<span class="p">$</span> <span class="c">scan "'+title+'"</span>');
+    await wait(200);
+
+    var wordCount = (document.body && document.body.innerText) ? document.body.innerText.split(/\s+/).length : 0;
+    var links = document.querySelectorAll('a').length;
+    var images = document.querySelectorAll('img').length;
+    var scripts = document.querySelectorAll('script').length;
+    var forms = document.querySelectorAll('form').length;
+
+    t.write('<span class="d">\u251c</span> words: <span class="b">'+wordCount.toLocaleString()+'</span>');
+    t.write('<span class="d">\u251c</span> links: '+links+' \u00b7 images: '+images+' \u00b7 forms: '+forms);
+    t.write('<span class="d">\u2514</span> scripts: '+scripts);
+    await wait(100);
+    t.write('<span class="ok">\u2713</span> page indexed');
+  }
+
+  /* ── Security scan ───────────────────────────────────────── */
+  async function securityScan(t) {
+    await wait(600 + Math.floor(Math.random() * 400));
+    t.write('');
+    t.write('<span class="p">$</span> <span class="c">threat-scan '+location.hostname+'</span>');
+    await wait(200);
+
+    var https = location.protocol === 'https:';
+    t.write('<span class="d">\u251c</span> protocol: '+(https?'<span class="ok">HTTPS \u2713</span>':'<span class="w">HTTP \u26A0</span>'));
+
+    var extScripts = document.querySelectorAll('script[src]').length;
+    t.write('<span class="d">\u251c</span> external scripts: '+extScripts);
+
+    var iframes = document.querySelectorAll('iframe').length;
+    t.write('<span class="d">\u2514</span> iframes: '+iframes+(iframes>3?' <span class="w">\u26A0 high</span>':''));
+    await wait(100);
+
+    t.write('<span class="ok">\u2713</span> no threats detected');
+  }
+
+  /* ── Model routing ───────────────────────────────────────── */
+  async function routeIntelligence(t) {
+    await wait(800 + Math.floor(Math.random() * 400));
+    t.write('');
+    t.write('<span class="p">$</span> <span class="c">route-intelligence --page</span>');
+    await wait(150);
+
+    var routes = [
+      {from:'page content',to:'GPT-4o',reason:'reasoning'},
+      {from:'code blocks',to:'DeepSeek',reason:'code analysis'},
+      {from:'images',to:'Gemini',reason:'multimodal'},
+    ];
+    for (var r = 0; r < routes.length; r++) {
+      var mi = MODELS.find(function(x){return x.n===routes[r].to});
+      t.write('<span class="d">\u251c</span> '+routes[r].from+' \u2192 <span class="m" style="color:'+(mi?mi.c:'#888')+'">'+routes[r].to+'</span> <span class="d">('+routes[r].reason+')</span>');
+      await wait(80);
+    }
+    t.write('<span class="ok">\u2713</span> intelligence routed');
+  }
+
+  /* ── Heartbeat across all terminals ──────────────────────── */
+  var beatCount = 0;
+  function heartbeat() {
+    beatCount++;
+    footer.textContent = '\u2764 Beat #'+beatCount+' \u00b7 '+MODELS.length+' models \u00b7 '+AGENTS.length+' agents \u00b7 Always on';
+
+    chrome.runtime.sendMessage({action:'masterHeartbeat'}, function(r){
       if (r && r.success) {
         var sync = r.data.synchronization;
-        var el = document.getElementById('sn-sync');
-        if (el) {
-          el.textContent = 'Sync: ' + (sync * 100).toFixed(1) + '%';
-          el.style.color = sync > 0.8 ? '#00e676' : sync > 0.5 ? '#ff9800' : '#e94560';
-        }
-
-        /* Pulse dots based on phase */
-        for (var d = 0; d < statusDots.length && d < r.data.phases.length; d++) {
-          var phase = r.data.phases[d].phase;
-          var brightness = Math.round(50 + 50 * Math.sin(phase));
-          statusDots[d].style.backgroundColor = 'hsl(145, 80%, ' + brightness + '%)';
-        }
+        var syncPct = (sync * 100).toFixed(0);
+        footer.textContent = '\u2764 #'+beatCount+' \u00b7 sync '+syncPct+'% \u00b7 '+MODELS.length+' models \u00b7 '+AGENTS.length+' agents';
       }
     });
   }
+  setInterval(heartbeat, HEARTBEAT);
 
-  setInterval(pulseStatusDots, HEARTBEAT);
+  /* ── Boot everything ─────────────────────────────────────── */
+  async function boot() {
+    var bootPromises = [];
+    for (var i = 0; i < AGENTS.length; i++) {
+      bootPromises.push(bootAgent(i));
+    }
+    await Promise.all(bootPromises);
 
-  /* Button handlers */
-  cmdBtn.addEventListener('click', function () {
-    var cmd = cmdInput.value.trim();
-    if (!cmd) { showResult('Enter a command.'); return; }
-    chrome.runtime.sendMessage({ action: 'broadcastCommand', command: cmd }, function (r) {
-      showResult(r && r.success ? r.data : 'Error');
-    });
-    cmdInput.value = '';
-  });
+    analyzeCurrentPage(terminals[7]);
+    securityScan(terminals[5]);
+    routeIntelligence(terminals[0]);
+  }
 
-  topoBtn.addEventListener('click', function () {
-    chrome.runtime.sendMessage({ action: 'getOrganismTopology' }, function (r) {
-      if (r && r.success) {
-        drawTopology(r.data);
-        showResult(r.data);
-      } else { showResult('Error'); }
-    });
-  });
-
-  metricsBtn.addEventListener('click', function () {
-    chrome.runtime.sendMessage({ action: 'getGlobalMetrics' }, function (r) {
-      showResult(r && r.success ? r.data : 'Error');
-    });
-  });
-
-  routeBtn.addEventListener('click', function () {
-    var task = cmdInput.value.trim() || 'general intelligence task';
-    chrome.runtime.sendMessage({ action: 'routeToExtension', task: task }, function (r) {
-      showResult(r && r.success ? r.data : 'Error');
-    });
-  });
-
-  /* Initial topology draw */
-  setTimeout(function () {
-    chrome.runtime.sendMessage({ action: 'getOrganismTopology' }, function (r) {
-      if (r && r.success) drawTopology(r.data);
-    });
-  }, 1000);
+  boot();
 
 })();

@@ -1,87 +1,134 @@
 #!/usr/bin/env bash
-# ============================================================================
-# build-extensions.sh — Package all 25 AI extensions into installable .zip files
+# ─────────────────────────────────────────────────────────────
+# build-extensions.sh
+# Packages every extension under extensions/ into a downloadable
+# .zip file that can be sideloaded into Chrome / Edge / Brave.
 #
-# Usage:  bash build-extensions.sh
-# Output: dist/extensions/<extension-name>.zip
+# Output: dist/extensions/<name>.zip  (one per extension)
+#         dist/extensions/all-extensions.zip (bundle of everything)
 #
-# For TRUE 1-click install (no zipping/unzipping needed), use instead:
-#   ./install-organism.sh          (macOS/Linux)
-#   install-organism.bat           (Windows — double-click)
-#   node organism-cli/organism.js install   (any platform with Node.js)
-# ============================================================================
-
+# Usage:
+#   bash build-extensions.sh          # build all
+#   bash build-extensions.sh --clean  # clean dist/ first (default)
+#   bash build-extensions.sh --check  # dry run — validate only
+# ─────────────────────────────────────────────────────────────
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$(dirname "$0")" && pwd)"
+EXT_SRC="$REPO_ROOT/extensions"
+DIST="$REPO_ROOT/dist/extensions"
+CHECK_ONLY=false
 
-# If Node.js is available, use the organism CLI
-if command -v node &>/dev/null; then
-  exec node "${SCRIPT_DIR}/organism-cli/organism.js" build
+for arg in "$@"; do
+  case "$arg" in
+    --check) CHECK_ONLY=true ;;
+  esac
+done
+
+# Ensure icons exist before building
+if [ -f "$REPO_ROOT/scripts/generate-icons.js" ]; then
+  echo "  Checking extension icons..."
+  node "$REPO_ROOT/scripts/generate-icons.js"
 fi
 
-# Fallback: pure bash build
-EXT_DIR="${SCRIPT_DIR}/extensions"
-DIST_DIR="${SCRIPT_DIR}/dist/extensions"
+if [ "$CHECK_ONLY" = true ]; then
+  echo ""
+  echo "  Dry run complete — no zips created."
+  exit 0
+fi
 
-rm -rf "${DIST_DIR}"
-mkdir -p "${DIST_DIR}"
+rm -rf "$DIST"
+mkdir -p "$DIST"
 
-BROWSER_COUNT=0
-WINDOWS_COUNT=0
+echo ""
+echo "═══════════════════════════════════════════"
+echo "  Organism Extension Builder"
+echo "  Building downloadable Chrome extensions"
+echo "═══════════════════════════════════════════"
+echo ""
 
-echo "══════════════════════════════════════════════════════════"
-echo "  Building Browser Extensions"
-echo "══════════════════════════════════════════════════════════"
+count=0
+errors=0
+for ext_dir in "$EXT_SRC"/*/; do
+  name="$(basename "$ext_dir")"
+  manifest="$ext_dir/manifest.json"
 
-for ext_path in "${EXT_DIR}"/*/; do
-  ext_name="$(basename "${ext_path}")"
-  [ "${ext_name}" = "windows" ] && continue
-  [ ! -f "${ext_path}/manifest.json" ] && continue
+  # Skip non-extension dirs (e.g. windows/) and dirs without manifest
+  [ -f "$manifest" ] || continue
 
-  echo "  📦 Packaging: ${ext_name}"
-  (cd "${ext_path}" && zip -r -q "${DIST_DIR}/${ext_name}.zip" \
-    manifest.json background.js content.js icons/ 2>/dev/null || true)
-
-  if [ -f "${DIST_DIR}/${ext_name}.zip" ]; then
-    size=$(du -h "${DIST_DIR}/${ext_name}.zip" | cut -f1)
-    echo "     ✓ ${ext_name}.zip (${size})"
-    BROWSER_COUNT=$((BROWSER_COUNT + 1))
-  else
-    echo "     ✗ FAILED: ${ext_name}"
+  # Validate manifest JSON is parseable
+  if ! python3 -c "import json; json.load(open('$manifest'))" 2>/dev/null && \
+     ! node -e "JSON.parse(require('fs').readFileSync('$manifest','utf8'))" 2>/dev/null; then
+    echo "  ✗ $name — invalid manifest.json (skipped)"
+    errors=$((errors + 1))
+    continue
   fi
+
+  echo "  📦 Packaging: $name"
+
+  # Build a file list of what actually exists
+  FILES_TO_ZIP=""
+  for f in manifest.json background.js content.js; do
+    [ -f "$ext_dir/$f" ] && FILES_TO_ZIP="$FILES_TO_ZIP $f"
+  done
+
+  # Include icons directory if it exists
+  if [ -d "$ext_dir/icons" ]; then
+    FILES_TO_ZIP="$FILES_TO_ZIP icons/"
+  fi
+
+  # Include any popup or options pages if present
+  for f in popup.html popup.js options.html options.js styles.css; do
+    [ -f "$ext_dir/$f" ] && FILES_TO_ZIP="$FILES_TO_ZIP $f"
+  done
+
+  if [ -z "$FILES_TO_ZIP" ]; then
+    echo "  ⚠ $name — no files to package (skipped)"
+    errors=$((errors + 1))
+    continue
+  fi
+
+  (cd "$ext_dir" && zip -r -q "$DIST/${name}.zip" $FILES_TO_ZIP)
+
+  # Verify the zip was created and has content
+  if [ ! -s "$DIST/${name}.zip" ]; then
+    echo "  ✗ $name — zip creation failed"
+    errors=$((errors + 1))
+    continue
+  fi
+
+  count=$((count + 1))
 done
 
 echo ""
-echo "══════════════════════════════════════════════════════════"
-echo "  Building Windows Extensions"
-echo "══════════════════════════════════════════════════════════"
 
-WINDOWS_DIR="${EXT_DIR}/windows"
-if [ -d "${WINDOWS_DIR}" ]; then
-  for ext_path in "${WINDOWS_DIR}"/*/; do
-    ext_name="$(basename "${ext_path}")"
-    [ ! -f "${ext_path}/manifest.json" ] && continue
-
-    echo "  📦 Packaging: ${ext_name}"
-    (cd "${ext_path}" && zip -r -q "${DIST_DIR}/${ext_name}.zip" \
-      manifest.json engine.js interface.js icons/ 2>/dev/null || true)
-
-    if [ -f "${DIST_DIR}/${ext_name}.zip" ]; then
-      size=$(du -h "${DIST_DIR}/${ext_name}.zip" | cut -f1)
-      echo "     ✓ ${ext_name}.zip (${size})"
-      WINDOWS_COUNT=$((WINDOWS_COUNT + 1))
-    else
-      echo "     ✗ FAILED: ${ext_name}"
-    fi
-  done
+# Create an all-in-one bundle
+if [ "$count" -gt 0 ]; then
+  echo "  📦 Creating all-extensions bundle..."
+  (cd "$DIST" && zip -r -q all-extensions.zip *.zip)
+else
+  echo "  ⚠ No extensions were packaged — skipping bundle"
 fi
 
-TOTAL=$((BROWSER_COUNT + WINDOWS_COUNT))
 echo ""
-echo "══════════════════════════════════════════════════════════"
-echo "  Build Complete: ${TOTAL} extensions packaged"
-echo "  Output: ${DIST_DIR}"
+echo "═══════════════════════════════════════════"
+if [ "$errors" -gt 0 ]; then
+  echo "  ✅ $count extensions packaged ($errors warnings)"
+else
+  echo "  ✅ $count extensions packaged"
+fi
+echo "  📂 Output: dist/extensions/"
+echo "═══════════════════════════════════════════"
 echo ""
-echo "  For 1-click install, use:  ./install-organism.sh"
-echo "══════════════════════════════════════════════════════════"
+
+if [ "$count" -gt 0 ]; then
+  echo "Individual zips:"
+  ls -lh "$DIST"/*.zip | grep -v all-extensions | awk '{print "  " $NF " (" $5 ")"}'
+  echo ""
+  echo "Bundle:"
+  ls -lh "$DIST"/all-extensions.zip | awk '{print "  " $NF " (" $5 ")"}'
+fi
+
+if [ "$errors" -gt 0 ]; then
+  exit 1
+fi

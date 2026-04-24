@@ -1,0 +1,40 @@
+{
+  "name": "@medina/sovereign-organism",
+  "version": "1.0.0",
+  "description": "AI Intelligence Organism — 8 SDKs, 26 browser extensions, 11 protocols, 30 callable tools. The organism IS the intelligence.",
+  "private": true,
+  "scripts": {
+    "build": "bash build-extensions.sh",
+    "build:icons": "node scripts/generate-icons.js",
+    "prebuild": "node scripts/generate-icons.js",
+    "test": "node --test test/**/*.test.js",
+    "test:sdk": "node --test test/sdk/*.test.js",
+    "test:extensions": "node --test test/extensions/*.test.js",
+    "test:cli": "node --test test/cli/*.test.js",
+    "lint": "node scripts/lint-manifests.js",
+    "validate": "node organism-cli validate",
+    "list": "node organism-cli list",
+    "status": "node organism-cli status",
+    "install-extensions": "node organism-cli install",
+    "bundle": "node scripts/bundle-release.js",
+    "prepare-sdks": "node scripts/prepare-sdks.js",
+    "clean": "rm -rf dist/"
+  },
+  "keywords": [
+    "ai",
+    "intelligence",
+    "organism",
+    "browser-extensions",
+    "chrome-extensions",
+    "sdk",
+    "marketplace",
+    "sovereign",
+    "phi",
+    "multimodal"
+  ],
+  "author": "Medina",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

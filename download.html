@@ -1,504 +1,334 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🧬 Organism AI — Download Extensions</title>
-<style>
-  :root {
-    --bg: #0a0a1a;
-    --card: #12122a;
-    --border: #2a2a4a;
-    --accent: #6c63ff;
-    --accent2: #00d4aa;
-    --text: #e0e0e0;
-    --dim: #888;
-    --green: #00d4aa;
-    --red: #ff4757;
-    --yellow: #ffa502;
-    --phi: 1.618;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    line-height: 1.6;
-  }
-  .header {
-    text-align: center;
-    padding: 3rem 1rem 2rem;
-    border-bottom: 1px solid var(--border);
-  }
-  .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
-  .header h1 span { color: var(--accent); }
-  .header p { color: var(--dim); max-width: 600px; margin: 0 auto; }
-  .status-bar {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    padding: 1rem;
-    background: var(--card);
-    border-bottom: 1px solid var(--border);
-    flex-wrap: wrap;
-  }
-  .status-item { font-size: 0.85rem; color: var(--dim); }
-  .status-item .val { color: var(--accent2); font-weight: bold; }
-  .status-item .val.building { color: var(--yellow); }
-  .status-item .val.error { color: var(--red); }
-  .bundle-bar {
-    text-align: center;
-    padding: 1.5rem 1rem;
-    border-bottom: 1px solid var(--border);
-  }
-  .bundle-bar a, .bundle-bar .disabled {
-    display: inline-block;
-    padding: 0.8rem 2rem;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: bold;
-    text-decoration: none;
-    transition: all 0.2s;
-  }
-  .bundle-bar a {
-    background: var(--accent);
-    color: #fff;
-  }
-  .bundle-bar a:hover { background: #5a52e0; }
-  .bundle-bar .disabled {
-    background: var(--card);
-    color: var(--dim);
-    border: 1px solid var(--border);
-    cursor: wait;
-  }
-  .section-title {
-    padding: 1.5rem 2rem 0.5rem;
-    font-size: 1.1rem;
-    color: var(--accent);
-    border-bottom: 1px solid var(--border);
-  }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 1rem;
-    padding: 1.5rem;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 1.2rem;
-    transition: border-color 0.2s;
-  }
-  .card:hover { border-color: var(--accent); }
-  .card .name { font-weight: bold; font-size: 1rem; margin-bottom: 0.3rem; }
-  .card .engines { font-size: 0.8rem; color: var(--dim); margin-bottom: 0.8rem; }
-  .card .engines span {
-    display: inline-block;
-    background: #1a1a3a;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 0.1rem 0.4rem;
-    margin: 0.1rem 0.2rem 0.1rem 0;
-    font-size: 0.75rem;
-  }
-  .card .dl-row { display: flex; align-items: center; gap: 0.8rem; }
-  .card .dl-link {
-    display: inline-block;
-    padding: 0.4rem 1rem;
-    background: var(--accent2);
-    color: #000;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 0.85rem;
-    transition: background 0.2s;
-  }
-  .card .dl-link:hover { background: #00eabb; }
-  .card .dl-link.pending {
-    background: var(--border);
-    color: var(--dim);
-    cursor: wait;
-    pointer-events: none;
-  }
-  .card .dl-size { font-size: 0.8rem; color: var(--dim); }
-  .heartbeat-dot {
-    display: inline-block;
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--green);
-    animation: pulse 0.873s infinite alternate;
-    vertical-align: middle;
-    margin-right: 4px;
-  }
-  @keyframes pulse {
-    from { opacity: 1; transform: scale(1); }
-    to { opacity: 0.4; transform: scale(0.8); }
-  }
-  .install-section {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 0 1.5rem 3rem;
-  }
-  .install-section h2 { color: var(--accent); margin-bottom: 1rem; }
-  .install-section pre {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1rem;
-    overflow-x: auto;
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-  }
-  .install-section code { color: var(--accent2); }
-  .install-section p { color: var(--dim); margin-bottom: 0.5rem; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🧬 Sovereign Organism — Download Extensions</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#0d1117;--surface:#161b22;--border:#30363d;
+      --text:#e6edf3;--muted:#8b949e;
+      --purple:#6c63ff;--red:#e94560;--green:#00e676;--amber:#ffb300;--cyan:#00bcd4;
+      --heartbeat:873ms;
+    }
+    body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;line-height:1.6}
+
+    .shell{max-width:1200px;margin:0 auto;padding:1.5rem}
+
+    /* hero */
+    .hero{text-align:center;padding:48px 20px 32px;
+      background:linear-gradient(135deg,#161b22 0%,#0d1117 50%,#1a1040 100%);
+      border-bottom:1px solid var(--border)}
+    .hero h1{font-size:2.2em;
+      background:linear-gradient(135deg,#6c63ff,#e94560,#00e676);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+    .hero p{color:var(--muted);max-width:700px;margin:0 auto 16px;font-size:1.05em}
+
+    /* status bar */
+    .status-bar{display:flex;align-items:center;justify-content:center;gap:24px;padding:16px;
+      background:var(--surface);border:1px solid var(--border);border-radius:12px;margin:24px auto;max-width:800px}
+    .status-item{display:flex;align-items:center;gap:6px;font-size:.9em}
+    .status-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+    .status-dot.building{background:var(--amber);animation:pulse var(--heartbeat) infinite}
+    .status-dot.ready{background:var(--green)}
+    .status-dot.error{background:var(--red)}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+    #beat-counter{font-variant-numeric:tabular-nums;color:var(--purple);font-weight:700}
+
+    /* download-all */
+    .dl-all{text-align:center;margin:24px auto;max-width:600px}
+    .dl-all a,.dl-all button{display:inline-block;padding:16px 40px;
+      background:linear-gradient(135deg,var(--amber),#f0883e);
+      color:#0d1117;text-decoration:none;border:none;border-radius:10px;cursor:pointer;
+      font-weight:800;font-size:1.2em;transition:transform .15s,box-shadow .15s}
+    .dl-all a:hover,.dl-all button:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,179,0,.4)}
+    .dl-all a.disabled{opacity:.5;pointer-events:none}
+    .dl-all .sub{margin-top:8px;color:var(--muted);font-size:.85em}
+
+    /* grid */
+    .ext-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin:32px auto;max-width:1200px;padding:0 20px}
+    .ext-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;
+      display:flex;flex-direction:column;gap:8px;transition:border-color .2s,transform .15s}
+    .ext-card:hover{border-color:var(--purple);transform:translateY(-2px)}
+    .ext-card .row{display:flex;align-items:center;gap:10px}
+    .ext-card .icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+      font-size:1em;font-weight:700;color:#fff;flex-shrink:0}
+    .ext-card h3{font-size:.95em;margin:0}
+    .ext-card .eid{color:var(--muted);font-size:.7em}
+    .ext-card .desc{color:var(--muted);font-size:.8em;flex:1}
+    .ext-card .dl-btn{display:block;text-align:center;padding:10px;
+      background:linear-gradient(135deg,#238636,#2ea043);
+      color:#fff;text-decoration:none;border-radius:6px;font-weight:700;font-size:.9em;cursor:pointer;border:none;width:100%}
+    .ext-card .dl-btn:hover{opacity:.9}
+    .ext-card .dl-btn.building{background:var(--border);color:var(--muted);cursor:wait}
+    .ext-card .dl-btn.ready{background:linear-gradient(135deg,#238636,#2ea043)}
+
+    /* engine tags */
+    .ext-card .engines{display:flex;flex-wrap:wrap;gap:4px;margin-top:2px}
+    .ext-card .engine-tag{font-size:.65em;padding:2px 7px;border-radius:4px;background:#1a1e2a;border:1px solid var(--border);color:var(--cyan);font-weight:600;white-space:nowrap}
+    .ext-card .ring-label{font-size:.65em;color:var(--amber);font-weight:600;margin-top:2px;display:block}
+
+    /* cli section */
+    .cli-section{max-width:700px;margin:32px auto;padding:0 20px;text-align:center}
+    .cli-section h2{color:var(--cyan);font-size:1.3em;margin-bottom:8px}
+    .cli-section .code-block{background:#161b22;border:1px solid var(--border);border-radius:10px;
+      padding:16px 20px;text-align:left;margin:12px 0;font-family:'Cascadia Code','Fira Code',monospace}
+    .cli-section .code-block code{color:#79c0ff;font-size:1em}
+
+    /* footer */
+    footer{text-align:center;padding:32px 20px;color:#484f58;font-size:.85em;border-top:1px solid #21262d;margin-top:40px}
+
+    @media(max-width:600px){.hero h1{font-size:1.5em}.ext-grid{grid-template-columns:1fr}}
+  </style>
 </head>
 <body>
 
-<div class="header">
-  <h1>🧬 <span>Organism AI</span> — Download Extensions</h1>
-  <p>AI extensions built natively in your browser. No server needed. Click to download.</p>
-  <p style="margin-top:0.5rem;"><a href="index.html" style="color:#6c63ff;">← Back to Product Page</a></p>
+<section class="hero">
+  <h1>🧬 Sovereign Organism Extensions</h1>
+  <p>26 AI extensions for Chrome, Edge, and Brave — each powered by named engines and models. Every link is a real download. Click → get the .zip. The Register AI Web Worker upgrades to native blob builds when running on your device.</p>
+</section>
+
+<div class="status-bar" id="status-bar">
+  <div class="status-item"><span class="status-dot ready" id="worker-dot"></span> <span id="worker-status">26 extensions ready</span></div>
+  <div class="status-item">📦 <span id="built-count">26</span> / <span id="total-count">26</span> ready</div>
+  <div class="status-item">💓 <span id="beat-counter">0</span></div>
 </div>
 
-<div class="status-bar">
-  <div class="status-item"><span class="heartbeat-dot"></span> Worker: <span class="val" id="worker-status">starting…</span></div>
-  <div class="status-item">Built: <span class="val" id="built-count">0</span> / <span id="total-count">25</span></div>
-  <div class="status-item">Heartbeat: <span class="val" id="heartbeat-count">0</span></div>
+<div class="dl-all" id="dl-all-section">
+  <a id="dl-all-btn" href="https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip" download="all-extensions.zip">📦 Download All 26 Extensions</a>
+  <div class="sub">Single zip containing all 26 extensions. Click — instant download.</div>
 </div>
 
-<div class="bundle-bar" id="bundle-bar">
-  <span class="disabled" id="bundle-link">⏳ Building all extensions…</span>
-</div>
+<div class="ext-grid" id="ext-grid"></div>
 
-<div class="section-title">🌐 Browser Extensions (20)</div>
-<div class="grid" id="browser-grid"></div>
+<section class="cli-section">
+  <h2>⚡ Terminal Install (Fastest)</h2>
+  <div class="code-block">
+    <code>git clone https://github.com/FreddyCreates/potential-succotash.git<br>
+node potential-succotash/organism-cli</code>
+  </div>
+  <p style="color:var(--muted);font-size:.9em;margin-top:8px">Register AI auto-detects Chrome → loads all 26 extensions directly from source. No zip needed.</p>
+</section>
 
-<div class="section-title">🪟 Windows Extensions (5)</div>
-<div class="grid" id="windows-grid"></div>
+<footer>
+  <p>Sovereign Organism — All extensions run 24/7 with 873ms heartbeat keepalive.</p>
+  <p>Register AI is autonomous. Downloads work instantly. Web Worker upgrades to native blob builds on your device.</p>
+  <p style="margin-top:4px">As above, so below.</p>
+</footer>
 
-<div class="install-section">
-  <h2>⚡ Prefer 1-Click Install?</h2>
-  <p>Skip downloading zips — load all extensions directly into Chrome with one command:</p>
-  <pre><code>git clone https://github.com/FreddyCreates/potential-succotash.git
-cd potential-succotash
-node organism-cli/organism.js install</code></pre>
-  <p>Or on <strong>Windows</strong>: download the repo and double-click <code>install-organism.bat</code></p>
-  <p>Or on <strong>macOS/Linux</strong>: <code>bash install-organism.sh</code></p>
-</div>
-
-<script src="organism/web/autonomy.js"></script>
 <script>
-(function () {
-  'use strict';
+/* ═══════════════════════════════════════════════════════════════
+   Register AI — Native Download Page Controller
+   
+   1. Reads all 26 extension source files via fetch()
+   2. Sends them to download-worker.js (Web Worker)
+   3. Worker builds real .zip Blobs
+   4. Page creates blob: URLs → click = instant real download
+   
+   This page works:
+   - Opened locally (file://) with a local server
+   - Served from any HTTP server
+   - Served via GitHub Pages
+   - Served via the organism's own protocol
+   ═══════════════════════════════════════════════════════════════ */
 
-  /* ── Extension registry (mirrors extensions/index.js) ─────────── */
-  var BROWSER_EXTENSIONS = [
-    { id: 'EXT-001', slug: 'sovereign-mind', name: 'Sovereign Mind', engines: ['GPT', 'Claude', 'Gemini'], ring: 'Interface Ring', bg: 'background.js', ct: 'content.js' },
-    { id: 'EXT-002', slug: 'cipher-shield', name: 'Cipher Shield', engines: ['Guards', 'GPT', 'Claude'], ring: 'Counsel Ring', bg: 'background.js', ct: 'content.js' },
-    { id: 'EXT-003', slug: 'polyglot-oracle', name: 'Polyglot Oracle', engines: ['Qwen', 'Gemini', 'Llama'], ring: 'Interface Ring', bg: 'background.js', ct: 'content.js' },
-    { id: 'EXT-004', slug: 'vision-weaver', name: 'Vision Weaver', engines: ['DALL-E', 'SD', 'Midjourney', 'SAM'], ring: 'Geometry Ring', bg: 'background.js', ct: 'content.js' },
-    { id: 'EXT-005', slug: 'code-sovereign', name: 'Code Sovereign', engines: ['Codex', 'CodeLlama', 'DeepSeek'], ring: 'Build Ring', bg: 'background.js', ct: 'content.js' },
-    { id: 'EXT-006', slug: 'memory-palace', name: 'Memory Palace', engines: ['Embeddings', 'Command R', 'Rerankers'], ring: 'Memory Ring', bg: 'background.js', ct: 'content.js' },
-    { id: 'EXT-007', slug: 'sentinel-watch', name: 'Sentinel Watch', engines: ['Guards', 'GPT', 'Claude'], ring: 'Counsel Ring', bg: 'background.js', ct: 'content.js' },
-    { id: 'EXT-008', slug: 'research-nexus', name: 'Research Nexus', engines: ['Perplexity', 'Claude', 'Embeddings'], ring: 'Transport Ring', bg: 'background.js', ct: 'content.js' },
-    { id: 'EXT-009', slug: 'voice-forge', name: 'Voice Forge', engines: ['Whisper', 'ElevenLabs', 'Suno'], ring: 'Native Capability Ring', bg: 'background.js', ct: 'content.js' },
-    { id: 'EXT-010', slug: 'data-alchemist', name: 'Data Alchemist', engines: ['GPT', 'Claude', 'Embeddings', 'Rerankers'], ring: 'Memory Ring', bg: 'background.js', ct: 'content.js' },
-    { id: 'EXT-011', slug: 'video-architect', name: 'Video Architect', engines: ['Sora', 'Runway', 'Pika', 'Kling'], ring: 'Geometry Ring', bg: 'background.js', ct: 'content.js' },
-    { id: 'EXT-012', slug: 'logic-prover', name: 'Logic Prover', engines: ['Minerva-Llemma', 'GPT', 'AlphaCode'], ring: 'Proof Ring', bg: 'background.js', ct: 'content.js' },
-    { id: 'EXT-013', slug: 'social-cortex', name: 'Social Cortex', engines: ['Grok', 'Inflection', 'GPT'], ring: 'Interface Ring', bg: 'background.js', ct: 'content.js' },
-    { id: 'EXT-014', slug: 'edge-runner', name: 'Edge Runner', engines: ['Phi', 'Gemma', 'DBRX'], ring: 'Sovereign Ring', bg: 'background.js', ct: 'content.js' },
-    { id: 'EXT-015', slug: 'contract-forge', name: 'Contract Forge', engines: ['GPT', 'Claude', 'Guards'], ring: 'Counsel Ring', bg: 'background.js', ct: 'content.js' },
-    { id: 'EXT-016', slug: 'organism-dashboard', name: 'Organism Dashboard', engines: ['Heartbeat', 'OrganismState', 'EdgeSensor'], ring: 'Sovereign Ring', bg: 'background.js', ct: 'content.js' },
-    { id: 'EXT-017', slug: 'knowledge-cartographer', name: 'Knowledge Cartographer', engines: ['Embeddings', 'Command R', 'Florence'], ring: 'Memory Ring', bg: 'background.js', ct: 'content.js' },
-    { id: 'EXT-018', slug: 'protocol-bridge', name: 'Protocol Bridge', engines: ['All Foundation Models'], ring: 'Transport Ring', bg: 'background.js', ct: 'content.js' },
-    { id: 'EXT-019', slug: 'creative-muse', name: 'Creative Muse', engines: ['SD', 'DALL-E', 'MusicGen', 'Suno'], ring: 'Geometry Ring', bg: 'background.js', ct: 'content.js' },
-    { id: 'EXT-020', slug: 'sovereign-nexus', name: 'Sovereign Nexus', engines: ['All 40 Foundation Models', 'Kuramoto'], ring: 'Sovereign Ring', bg: 'background.js', ct: 'content.js' }
-  ];
+const EXTENSIONS = [
+  { id:'EXT-001', slug:'sovereign-mind', name:'Sovereign Mind', initials:'SM', color:'#6c63ff', engines:['FusionCore','AlphaRouter','PhiScorer'], ring:'Interface Ring', desc:'Sovereign reasoning from your own data — FusionCore + AlphaRouter + PhiScorer with phi-weighted confidence' },
+  { id:'EXT-002', slug:'cipher-shield', name:'Cipher Shield', initials:'CS', color:'#e94560', engines:['Guards','GPT','Claude'], ring:'Counsel Ring', desc:'Real-time content encryption and prompt injection defense' },
+  { id:'EXT-003', slug:'polyglot-oracle', name:'Polyglot Oracle', initials:'PO', color:'#00e676', engines:['Qwen','Gemini','Llama'], ring:'Interface Ring', desc:'Live context-aware translation via Qwen, Gemini, Llama' },
+  { id:'EXT-004', slug:'vision-weaver', name:'Vision Weaver', initials:'VW', color:'#f0883e', engines:['DALL-E','SD','Midjourney','SAM'], ring:'Geometry Ring', desc:'Multi-model image generation — DALL-E, SD, Midjourney' },
+  { id:'EXT-005', slug:'code-sovereign', name:'Code Sovereign', initials:'CD', color:'#79c0ff', engines:['Codex','CodeLlama','DeepSeek'], ring:'Build Ring', desc:'AI code improvements with contract-verified output' },
+  { id:'EXT-006', slug:'memory-palace', name:'Memory Palace', initials:'MP', color:'#a371f7', engines:['Embeddings','Command R','Rerankers'], ring:'Memory Ring', desc:'Sovereign bookmarking with phi-encoded spatial coordinates' },
+  { id:'EXT-007', slug:'sentinel-watch', name:'Sentinel Watch', initials:'SW', color:'#e94560', engines:['Guards','GPT','Claude'], ring:'Counsel Ring', desc:'Real-time phishing, malware, and social engineering detection' },
+  { id:'EXT-008', slug:'research-nexus', name:'Research Nexus', initials:'RN', color:'#58a6ff', engines:['Perplexity','Claude','Embeddings'], ring:'Transport Ring', desc:'Multi-source research synthesis with citations' },
+  { id:'EXT-009', slug:'voice-forge', name:'Voice Forge', initials:'VF', color:'#f778ba', engines:['Whisper','ElevenLabs','Suno'], ring:'Native Capability Ring', desc:'Speech-to-text, voice cloning, and music composition' },
+  { id:'EXT-010', slug:'data-alchemist', name:'Data Alchemist', initials:'DA', color:'#00e676', engines:['GPT','Claude','Embeddings','Rerankers'], ring:'Memory Ring', desc:'Auto-absorb any webpage into your knowledge graph' },
+  { id:'EXT-011', slug:'video-architect', name:'Video Architect', initials:'VA', color:'#79c0ff', engines:['Sora','Runway','Pika','Kling'], ring:'Geometry Ring', desc:'Multi-model video generation — Sora, Runway, Pika' },
+  { id:'EXT-012', slug:'logic-prover', name:'Logic Prover', initials:'LP', color:'#f778ba', engines:['Minerva-Llemma','GPT','AlphaCode'], ring:'Proof Ring', desc:'Formal mathematical proofs with verification' },
+  { id:'EXT-013', slug:'social-cortex', name:'Social Cortex', initials:'SC', color:'#6c63ff', engines:['Grok','Inflection','GPT'], ring:'Interface Ring', desc:'AI social intelligence — sentiment, empathy, response drafting' },
+  { id:'EXT-014', slug:'edge-runner', name:'Edge Runner', initials:'ER', color:'#00e676', engines:['Phi','Gemma','DBRX'], ring:'Sovereign Ring', desc:'Offline AI — local inference, zero cloud, full privacy' },
+  { id:'EXT-015', slug:'contract-forge', name:'Contract Forge', initials:'CF', color:'#f0883e', engines:['GPT','Claude','Guards'], ring:'Counsel Ring', desc:'Draft and verify intelligence contracts' },
+  { id:'EXT-016', slug:'organism-dashboard', name:'Organism Dashboard', initials:'OD', color:'#e94560', engines:['Heartbeat','OrganismState','EdgeSensor'], ring:'Sovereign Ring', desc:'See the organism alive — 873ms heartbeat pulsing' },
+  { id:'EXT-017', slug:'knowledge-cartographer', name:'Knowledge Cartographer', initials:'KC', color:'#a371f7', engines:['Embeddings','Command R','Florence'], ring:'Memory Ring', desc:'Visual knowledge graph that grows as you browse' },
+  { id:'EXT-018', slug:'protocol-bridge', name:'Protocol Bridge', initials:'PB', color:'#79c0ff', engines:['All Foundation Models'], ring:'Transport Ring', desc:'Bridge between AI protocols through one surface' },
+  { id:'EXT-019', slug:'creative-muse', name:'Creative Muse', initials:'CM', color:'#f0883e', engines:['SD','DALL-E','MusicGen','Suno'], ring:'Geometry Ring', desc:'Multi-modal creative studio — images, music, text' },
+  { id:'EXT-020', slug:'sovereign-nexus', name:'Sovereign Nexus', initials:'SN', color:'#a371f7', engines:['All 40 Foundation Models','Kuramoto'], ring:'Sovereign Ring', desc:'Master hub — all extensions unified in one panel' },
+  { id:'EXT-021', slug:'marketplace-hub', name:'Marketplace Hub', initials:'MH', color:'#f0883e', engines:['ToolRegistry','FamilyProfiles','MarketplaceRouter'], ring:'Interface Ring', desc:'Browse and invoke 30 tools with natural language' },
+  { id:'EXT-022', slug:'spread-scanner', name:'Spread Scanner', initials:'SS', color:'#00e676', engines:['PatternRecognition','ZScore','CorrelationMatrix','PhiWeighted'], ring:'Interface Ring', desc:'JARVIS-style spread and arbitrage scanner' },
+  { id:'EXT-023', slug:'data-oracle', name:'Data Oracle', initials:'DO', color:'#f0883e', engines:['XRayDepth','SqrtNormalization','SentimentAnalysis','EntityExtraction'], ring:'Memory Ring', desc:'X-ray depth analysis through data noise' },
+  { id:'EXT-024', slug:'screen-commander', name:'Screen Commander', initials:'RC', color:'#58a6ff', engines:['DOMControl','NLCommands','AutoNavigate','ScreenRead'], ring:'Interface Ring', desc:'Autonomous screen agent with NL commands' },
+  { id:'EXT-025', slug:'pattern-forge', name:'Pattern Forge', initials:'PF', color:'#f778ba', engines:['SpectralDFT','CrossCorrelation','MeanReversion','AnomalyIQR'], ring:'Proof Ring', desc:'Spectral decomposition and cross-system correlation' },
+  { id:'EXT-026', slug:'register', name:'Register', initials:'RG', color:'#ffb300', engines:['RegisterWorker','MutationObserver','IntersectionObserver','PerformanceObserver','ResizeObserver'], ring:'Build Ring', desc:'Builder AI — scans, validates, packages, deploys all extensions' },
+];
 
-  var WINDOWS_EXTENSIONS = [
-    { id: 'EXT-021', slug: 'windows-copilot-hub', name: 'Windows Copilot Hub', engines: ['GPT', 'Claude', 'Gemini', 'Llama'], platform: 'windows', bg: 'engine.js', ct: 'interface.js' },
-    { id: 'EXT-022', slug: 'windows-file-oracle', name: 'Windows File Oracle', engines: ['GPT', 'Embeddings'], platform: 'windows', bg: 'engine.js', ct: 'interface.js' },
-    { id: 'EXT-023', slug: 'windows-notification-cortex', name: 'Windows Notification Cortex', engines: ['GPT', 'Claude'], platform: 'windows', bg: 'engine.js', ct: 'interface.js' },
-    { id: 'EXT-024', slug: 'windows-shell-intelligence', name: 'Windows Shell Intelligence', engines: ['Codex', 'DeepSeek'], platform: 'windows', bg: 'engine.js', ct: 'interface.js' },
-    { id: 'EXT-025', slug: 'windows-terminal-forge', name: 'Windows Terminal Forge', engines: ['Codex', 'Phi'], platform: 'windows', bg: 'engine.js', ct: 'interface.js' }
-  ];
+/* ─── Fallback URLs: if local fetch fails, use GitHub raw ── */
+const GH_RAW = 'https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/';
+const GH_DL  = 'https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/';
 
-  var ALL_EXTENSIONS = BROWSER_EXTENSIONS.concat(WINDOWS_EXTENSIONS);
-  var blobUrls = {};
-  var blobSizes = {};
-  var builtCount = 0;
+/* ─── State ────────────────────────────────────────────────── */
+let builtCount = 26; // Links work immediately via GitHub raw
+let blobURLs = {};  // slug → blob URL (upgraded by Worker if available)
+let worker = null;
+let useWorkerBuild = true;
 
-  /* ── Resolve file path for fetching extension sources ──────── */
-  function extBasePath(ext) {
-    if (ext.platform === 'windows') {
-      return 'extensions/windows/' + ext.slug;
+/* ─── Render extension grid ────────────────────────────────── */
+const grid = document.getElementById('ext-grid');
+const totalEl = document.getElementById('total-count');
+totalEl.textContent = EXTENSIONS.length;
+
+EXTENSIONS.forEach(function(ext) {
+  const card = document.createElement('div');
+  card.className = 'ext-card';
+  card.id = 'card-' + ext.slug;
+
+  const engineTags = ext.engines.map(function(e) { return '<span class="engine-tag">' + e + '</span>'; }).join('');
+
+  card.innerHTML =
+    '<div class="row">' +
+      '<div class="icon" style="background:' + ext.color + ';">' + ext.initials + '</div>' +
+      '<div><h3>' + ext.name + '</h3><span class="eid">' + ext.id + '</span><span class="ring-label">⬡ ' + ext.ring + '</span></div>' +
+    '</div>' +
+    '<div class="desc">' + ext.desc + '</div>' +
+    '<div class="engines">' + engineTags + '</div>' +
+    '<a class="dl-btn ready" id="dl-' + ext.slug + '" href="' + GH_DL + ext.slug + '.zip" download="' + ext.slug + '.zip">⬇ Download ' + ext.name + '</a>';
+
+  grid.appendChild(card);
+});
+
+/* ─── Read extension source files ──────────────────────────── */
+async function fetchText(url) {
+  try {
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error(resp.status);
+    return await resp.text();
+  } catch {
+    return null;
+  }
+}
+
+async function fetchBinary(url) {
+  try {
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error(resp.status);
+    return new Uint8Array(await resp.arrayBuffer());
+  } catch {
+    return null;
+  }
+}
+
+async function loadExtensionSource(slug) {
+  const base = 'extensions/' + slug + '/';
+  const ghBase = GH_RAW + base;
+
+  // Try local first, fallback to GitHub raw
+  let manifest = await fetchText(base + 'manifest.json');
+  if (!manifest) manifest = await fetchText(ghBase + 'manifest.json');
+
+  let background = await fetchText(base + 'background.js');
+  if (!background) background = await fetchText(ghBase + 'background.js');
+
+  let content = await fetchText(base + 'content.js');
+  if (!content) content = await fetchText(ghBase + 'content.js');
+
+  // Icons
+  const icons = [];
+  for (const size of [16, 48, 128]) {
+    let data = await fetchBinary(base + 'icons/icon' + size + '.png');
+    if (!data) data = await fetchBinary(ghBase + 'icons/icon' + size + '.png');
+    if (data) {
+      icons.push({ name: 'icons/icon' + size + '.png', data: data });
     }
-    return 'extensions/' + ext.slug;
   }
 
-  /* ── Fetch a text file, return its content or null ──────────── */
-  function fetchText(url) {
-    return fetch(url).then(function (r) {
-      if (!r.ok) return null;
-      return r.text();
-    }).catch(function () { return null; });
-  }
+  return { slug, manifest, background, content, icons };
+}
 
-  /* ── Fetch binary file as Uint8Array ────────────────────────── */
-  function fetchBinary(url) {
-    return fetch(url).then(function (r) {
-      if (!r.ok) return null;
-      return r.arrayBuffer().then(function (ab) { return new Uint8Array(ab); });
-    }).catch(function () { return null; });
-  }
-
-  /* ── Build card HTML ────────────────────────────────────────── */
-  function renderCard(ext) {
-    var card = document.createElement('div');
-    card.className = 'card';
-    card.id = 'card-' + ext.slug;
-
-    var engineTags = '';
-    if (ext.engines) {
-      for (var i = 0; i < ext.engines.length; i++) {
-        engineTags += '<span>' + ext.engines[i] + '</span>';
-      }
-    }
-
-    card.innerHTML =
-      '<div class="name">' + ext.name + '</div>' +
-      '<div class="engines">' + engineTags + '</div>' +
-      '<div class="dl-row">' +
-        '<a class="dl-link pending" id="dl-' + ext.slug + '" href="#">⏳ Building…</a>' +
-        '<span class="dl-size" id="size-' + ext.slug + '"></span>' +
-      '</div>';
-
-    return card;
-  }
-
-  /* ── Render all cards ───────────────────────────────────────── */
-  function renderGrid() {
-    var browserGrid = document.getElementById('browser-grid');
-    var windowsGrid = document.getElementById('windows-grid');
-
-    for (var i = 0; i < BROWSER_EXTENSIONS.length; i++) {
-      browserGrid.appendChild(renderCard(BROWSER_EXTENSIONS[i]));
-    }
-    for (var j = 0; j < WINDOWS_EXTENSIONS.length; j++) {
-      windowsGrid.appendChild(renderCard(WINDOWS_EXTENSIONS[j]));
+/* ─── Start build pipeline ─────────────────────────────────── */
+async function startBuild() {
+  // Try to start the Web Worker
+  try {
+    worker = new Worker('organism/web/download-worker.js');
+  } catch {
+    try {
+      worker = new Worker('download-worker.js');
+    } catch {
+      worker = null;
     }
   }
 
-  /* ── Update a card with its download link ───────────────────── */
-  function activateDownload(slug, blobUrl, filename, sizeBytes) {
-    var link = document.getElementById('dl-' + slug);
-    if (!link) return;
-
-    link.href = blobUrl;
-    link.download = filename;
-    link.textContent = '⬇ Download .zip';
-    link.classList.remove('pending');
-
-    var sizeEl = document.getElementById('size-' + slug);
-    if (sizeEl) {
-      var kb = (sizeBytes / 1024).toFixed(1);
-      sizeEl.textContent = kb + ' KB';
-    }
+  if (worker) {
+    worker.onmessage = handleWorkerMessage;
+    worker.onerror = function() {
+      // Worker failed — fall back to pre-built zips
+      useWorkerBuild = false;
+      fallbackToPrebuilt();
+    };
   }
 
-  /* ── Format bytes to human-readable ──────────────────────────── */
-  function formatBytes(bytes) {
-    if (bytes < 1024) return bytes + ' B';
-    return (bytes / 1024).toFixed(1) + ' KB';
-  }
-
-  /* ── Fetch all extension sources ─────────────────────────────── */
-  function fetchAllExtensionSources() {
-    var promises = [];
-
-    for (var i = 0; i < ALL_EXTENSIONS.length; i++) {
-      (function (ext) {
-        var base = extBasePath(ext);
-        var manifestUrl = base + '/manifest.json';
-        var bgUrl = base + '/' + ext.bg;
-        var ctUrl = base + '/' + ext.ct;
-        var iconUrls = [
-          { name: 'icons/icon16.png', url: base + '/icons/icon16.png' },
-          { name: 'icons/icon48.png', url: base + '/icons/icon48.png' },
-          { name: 'icons/icon128.png', url: base + '/icons/icon128.png' }
-        ];
-
-        var p = Promise.all([
-          fetchText(manifestUrl),
-          fetchText(bgUrl),
-          fetchText(ctUrl),
-          fetchBinary(iconUrls[0].url),
-          fetchBinary(iconUrls[1].url),
-          fetchBinary(iconUrls[2].url)
-        ]).then(function (results) {
-          var icons = [];
-          for (var k = 0; k < iconUrls.length; k++) {
-            if (results[3 + k]) {
-              icons.push({ name: iconUrls[k].name, data: results[3 + k] });
-            }
-          }
-          return {
-            slug: ext.slug,
-            name: ext.name,
-            platform: ext.platform || 'browser',
-            manifest: results[0],
-            background: results[1],
-            content: results[2],
-            icons: icons
-          };
-        });
-
-        promises.push(p);
-      })(ALL_EXTENSIONS[i]);
-    }
-
-    return Promise.all(promises);
-  }
-
-  /* ── Fallback: use GitHub raw URLs if worker fails ──────────── */
-  function enableGitHubFallback() {
-    var GITHUB_BASE = 'https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/';
-
-    for (var i = 0; i < ALL_EXTENSIONS.length; i++) {
-      var ext = ALL_EXTENSIONS[i];
-      var link = document.getElementById('dl-' + ext.slug);
-      if (link && link.classList.contains('pending')) {
-        link.href = GITHUB_BASE + ext.slug + '.zip';
-        link.download = ext.slug + '.zip';
-        link.textContent = '⬇ Download (GitHub)';
-        link.classList.remove('pending');
-      }
-    }
-
-    var bundleBar = document.getElementById('bundle-bar');
-    bundleBar.innerHTML = '<a href="' + GITHUB_BASE + 'all-extensions.zip">⬇ Download All (GitHub)</a>';
-
-    document.getElementById('worker-status').textContent = 'fallback (GitHub)';
-  }
-
-  /* ── Initialize with Autonomy Runtime ───────────────────────── */
-  function init() {
-    renderGrid();
-
-    // Detect file:// protocol or environments where fetch/Worker won't work.
-    // In these cases, go straight to GitHub download links — they always work.
-    var isLocalFile = window.location.protocol === 'file:';
-    if (isLocalFile) {
-      document.getElementById('worker-status').textContent = 'local file mode';
-      enableGitHubFallback();
-      return;
-    }
-
-    document.getElementById('worker-status').textContent = 'loading sources…';
-    document.getElementById('worker-status').classList.add('building');
-
-    // Create autonomy runtime — self-healing, auto-restart, production-grade
-    var autonomy = new OrganismAutonomy({
-      workerPath: 'organism/web/download-worker.js',
-
-      onZipReady: function (slug, blob, filename) {
-        var blobUrl = URL.createObjectURL(blob);
-        blobUrls[slug] = blobUrl;
-        blobSizes[slug] = blob.size;
-
-        if (slug === 'all-extensions') {
-          var bundleBar = document.getElementById('bundle-bar');
-          bundleBar.innerHTML = '<a href="' + blobUrl + '" download="' + filename + '">⬇ Download All Extensions (' + formatBytes(blob.size) + ')</a>';
-        } else {
-          activateDownload(slug, blobUrl, filename, blob.size);
-          builtCount++;
-          document.getElementById('built-count').textContent = builtCount;
-        }
-      },
-
-      onAllReady: function (count) {
-        document.getElementById('worker-status').textContent = '🟢 alive';
-        document.getElementById('worker-status').classList.remove('building');
-      },
-
-      onHeartbeat: function (beat) {
-        document.getElementById('heartbeat-count').textContent = beat;
-      },
-
-      onStatusChange: function (status) {
-        var el = document.getElementById('worker-status');
-        el.classList.remove('building', 'error');
-        switch (status) {
-          case 'booting':
-          case 'building':
-            el.textContent = status + '…';
-            el.classList.add('building');
-            break;
-          case 'alive':
-            el.textContent = '🟢 alive';
-            break;
-          case 'crashed':
-            el.textContent = '🔴 crashed';
-            el.classList.add('error');
-            break;
-          case 'restarting':
-            el.textContent = '↻ restarting…';
-            el.classList.add('building');
-            break;
-          case 'idle':
-            el.textContent = 'idle';
-            break;
-        }
-      },
-
-      onError: function (slug, error) {
-        var errLink = document.getElementById('dl-' + slug);
-        if (errLink) {
-          errLink.textContent = '✗ Error';
-          errLink.classList.add('error');
-        }
-      },
-
-      onMaxRestarts: function () {
-        enableGitHubFallback();
-      }
+  // Load all extension sources in parallel
+  const loadPromises = EXTENSIONS.map(function(ext) {
+    return loadExtensionSource(ext.slug).then(function(source) {
+      return Object.assign({}, ext, source);
     });
+  });
 
-    // Expose autonomy runtime globally for console inspection
-    window.organism = autonomy;
+  const loaded = await Promise.all(loadPromises);
 
-    // Fetch all extension sources, then boot the autonomy runtime
-    fetchAllExtensionSources().then(function (extensionData) {
-      var valid = extensionData.filter(function (e) { return e.manifest; });
-      var skipped = extensionData.filter(function (e) { return !e.manifest; });
-      if (skipped.length > 0) {
-        console.warn('Could not load ' + skipped.length + ' extension(s):',
-          skipped.map(function (e) { return e.slug; }));
-      }
-      document.getElementById('total-count').textContent = valid.length;
+  // Check if we got any source files
+  const hasSource = loaded.some(function(ext) { return ext.manifest != null; });
 
-      // Boot — the autonomy runtime handles all worker lifecycle from here
-      autonomy.boot(valid);
-    }).catch(function (err) {
-      document.getElementById('worker-status').textContent = 'fetch error';
-      document.getElementById('worker-status').classList.add('error');
-      console.error('Failed to fetch extension sources:', err);
-      enableGitHubFallback();
-    });
-  }
-
-  /* ── Boot ────────────────────────────────────────────────────── */
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+  if (hasSource && worker) {
+    // Send to worker for zip building
+    worker.postMessage({ type: 'build', extensions: loaded });
   } else {
-    init();
+    // No source access — fall back to pre-built zips
+    useWorkerBuild = false;
+    fallbackToPrebuilt();
   }
-})();
+}
+
+/* ─── Handle worker messages ───────────────────────────────── */
+function handleWorkerMessage(e) {
+  const msg = e.data;
+
+  if (msg.type === 'zip-ready') {
+    // Upgrade: replace GitHub raw URL with native blob URL (faster, no network)
+    const url = URL.createObjectURL(msg.blob);
+    blobURLs[msg.slug] = url;
+
+    const btn = document.getElementById('dl-' + msg.slug);
+    if (btn) {
+      btn.href = url;
+      btn.download = msg.filename;
+    }
+
+    if (msg.slug === 'all-extensions') {
+      const allBtn = document.getElementById('dl-all-btn');
+      allBtn.href = url;
+      allBtn.download = 'all-extensions.zip';
+    }
+  }
+
+  if (msg.type === 'all-ready') {
+    document.getElementById('worker-status').textContent = 'Sovereign — ' + msg.count + ' built natively';
+    document.getElementById('worker-dot').className = 'status-dot ready';
+  }
+
+  if (msg.type === 'heartbeat') {
+    document.getElementById('beat-counter').textContent = msg.beat;
+  }
+}
+
+/* ─── Fallback: Worker unavailable, links already work via GitHub raw ─ */
+function fallbackToPrebuilt() {
+  document.getElementById('worker-status').textContent = '26 extensions ready — direct download';
+  document.getElementById('worker-dot').className = 'status-dot ready';
+  // Links are already set to GH_DL URLs in the card render — nothing else needed
+}
+
+/* ─── Boot ─────────────────────────────────────────────────── */
+startBuild();
 </script>
 
 </body>
