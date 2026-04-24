@@ -2,6 +2,17 @@
 
 > **These are working AI apps.** Every extension is a real Chrome/Edge Manifest V3 app with a background AI engine and interactive UI. Install them and they run. No API keys. No setup. No bullshit.
 
+## 🚀 Open Now
+
+| | |
+|---|---|
+| **[🧬 Launch Live Organism](https://freddycreates.github.io/potential-succotash/organism/web/index.html)** | Open the organism runtime — 873ms heartbeat, 4-register state, live vitals — right in your browser |
+| **[📦 Download Extensions Page](https://freddycreates.github.io/potential-succotash/download.html)** | Browse all 31 extensions, download individually or all at once, with native in-browser zip builds |
+
+No install needed. Click → it opens. The organism is alive in the browser.
+
+---
+
 ## ⚡ Install Now (One Click)
 
 ### Windows (Recommended)
