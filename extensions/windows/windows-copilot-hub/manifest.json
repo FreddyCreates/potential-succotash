@@ -4,12 +4,23 @@
   "version": "1.0.0",
   "description": "Unified Windows Copilot Intelligence — GPT + Claude + Gemini + Llama multi-model fusion for Windows desktop",
   "platform": "windows",
-  "permissions": ["system-tray", "notifications", "clipboard", "file-system", "protocol-launch"],
+  "permissions": [
+    "system-tray",
+    "notifications",
+    "clipboard",
+    "file-system",
+    "protocol-launch"
+  ],
   "engine": {
     "service": "engine.js"
   },
   "interface": {
     "entry": "interface.js"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
   },
   "minimum_windows_version": "10.0.19041"
 }
