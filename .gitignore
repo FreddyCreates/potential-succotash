@@ -8,6 +8,10 @@ node_modules/
 # Keep dist/ tracked so download links and GitHub Pages work
 # To rebuild: bash build-extensions.sh
 
+# Release bundles (built on-demand via npm run bundle)
+dist/sovereign-organism-*.tar.gz
+dist/sovereign-organism-*.zip
+
 # IDE / editor
 .idea/
 .vscode/

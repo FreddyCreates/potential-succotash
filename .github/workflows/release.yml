@@ -29,11 +29,16 @@ jobs:
       - name: Build extension zips
         run: bash build-extensions.sh
 
+      - name: Build standalone release bundle
+        run: node scripts/bundle-release.js
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
             dist/extensions/*.zip
+            dist/sovereign-organism-*.tar.gz
+            dist/sovereign-organism-*.zip
           generate_release_notes: true
           draft: false
           prerelease: false

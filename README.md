@@ -103,16 +103,52 @@ The organism isn't conceptual. It's compiled. It's running. The 873ms heartbeat 
 
 ## Download & Install Extensions
 
-### ⚡ 1-Click Install (All Platforms)
+Everything works without GitHub. Download the files, put them anywhere — USB drive, your own server, a shared folder, whatever — and run.
+
+### 1-Click Install (Any Platform)
+
+**Got the repo (or the release bundle)?** Just run one command:
 
 ```bash
-git clone https://github.com/FreddyCreates/potential-succotash.git
-node potential-succotash/organism-cli
+# Linux / macOS — no Node.js needed
+bash install.sh
+
+# Linux / macOS / Windows — with Node.js
+node organism-cli
+
+# Windows — double-click
+install-organism.bat
 ```
 
-That's it. Register AI scans all 26 extensions, validates Manifest V3 compliance, detects Chrome/Edge/Brave, and launches your browser with every extension already attached. No zip. No extract. No developer mode. No manual steps.
+That's it. It scans all 26 extensions, validates Manifest V3 compliance, detects Chrome/Edge/Brave, and launches your browser with every extension already attached. No developer mode. No manual steps.
 
-### 📦 Direct Downloads
+### Standalone Release Bundle (No GitHub Needed)
+
+Build a fully self-contained release that can go anywhere:
+
+```bash
+npm run bundle
+# Output: dist/sovereign-organism-v1.0.0.tar.gz
+# Output: dist/sovereign-organism-v1.0.0.zip
+```
+
+The bundle contains everything: all 26 extension zips, install scripts for every OS, the CLI, raw extension source, an offline download page, README, and LICENSE. Upload it to your own server, put it on a USB drive, email it — no GitHub dependency.
+
+Users unpack and run:
+
+```bash
+tar xzf sovereign-organism-v1.0.0.tar.gz
+cd sovereign-organism-v1.0.0
+bash install.sh
+```
+
+On Windows, unzip and double-click `install-organism.bat`.
+
+### Offline Download Page
+
+Open `dist/download.html` in any browser. It's a self-contained page with download links to every extension zip. Works offline, works on a local web server, works from a file:// URL. No GitHub Pages needed.
+
+### Direct Downloads (GitHub)
 
 Every link below downloads the real `.zip` file. Click → get the extension.
 
@@ -145,12 +181,21 @@ Every link below downloads the real `.zip` file. Click → get the extension.
 | 🔷 | Pattern Forge | **[pattern-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/pattern-forge.zip)** |
 | 🏗 | Register | **[register.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/register.zip)** |
 
-**[📦 Download ALL 26 Extensions (single zip)](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip)**
+**[Download ALL 26 Extensions (single zip)](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip)**
 
 ### Windows Installers
 
-- **[install-organism.bat](https://github.com/FreddyCreates/potential-succotash/raw/main/install-organism.bat)** — double-click → extracts + launches Chrome with all extensions
-- **[install-extensions.ps1](https://github.com/FreddyCreates/potential-succotash/raw/main/install-extensions.ps1)** — PowerShell equivalent
+- **install-organism.bat** — double-click → extracts + launches Chrome with all extensions
+- **install-extensions.ps1** — right-click → Run with PowerShell
+
+### Manual Install (Any Browser)
+
+1. Download any `.zip` from above
+2. Unzip it
+3. Open Chrome → `chrome://extensions`
+4. Enable "Developer mode" (top-right toggle)
+5. Click "Load unpacked" → select the unzipped folder
+6. Done — the extension is live
 
 ### Build From Source
 
@@ -158,6 +203,16 @@ Every link below downloads the real `.zip` file. Click → get the extension.
 bash build-extensions.sh
 # Output: dist/extensions/<name>.zip (one per extension)
 # Output: dist/extensions/all-extensions.zip (all 26 bundled)
+```
+
+### SDKs via npm
+
+All 11 SDKs are independently publishable to npm:
+
+```bash
+cd sdk/organism-marketplace && npm publish
+cd sdk/ai-model-engines && npm publish
+# etc.
 ```
 
 ---

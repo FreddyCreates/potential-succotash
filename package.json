@@ -16,6 +16,8 @@
     "list": "node organism-cli list",
     "status": "node organism-cli status",
     "install-extensions": "node organism-cli install",
+    "bundle": "node scripts/bundle-release.js",
+    "prepare-sdks": "node scripts/prepare-sdks.js",
     "clean": "rm -rf dist/"
   },
   "keywords": [
