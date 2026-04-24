@@ -45,8 +45,8 @@ if not exist "%EXT_DIR%" (
         exit /b 1
     )
 
-    set "REPO_DIR=%USERPROFILE%\SovereignOrganism\"
-    set "EXT_DIR=!REPO_DIR!extensions"
+    set "REPO_DIR=%USERPROFILE%\SovereignOrganism"
+    set "EXT_DIR=!REPO_DIR!\extensions"
 
     if exist "!EXT_DIR!" (
         echo  Found existing clone at !REPO_DIR!
