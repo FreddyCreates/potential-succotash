@@ -343,6 +343,203 @@ NeuroEmergence.prototype.getState = function () {
 };
 
 /* ════════════════════════════════════════════════════════════════
+   MetaCardiacModel — Autonomic Cardiac Rhythm inside MiniHeart
+   Inspired by Meta AI's approach to self-regulating systems.
+
+   Latin: "Cor Parvum Autonomum"
+   Each worker's heart contains a cardiac model that:
+   - Maintains an intrinsic rhythm (sinus node oscillator)
+   - Adapts heart rate variability (HRV) to workload
+   - Detects arrhythmia (irregular beat patterns)
+   - Implements vagal tone: parasympathetic braking under overload
+   - Self-regulates autonomously — no external command needed
+   ════════════════════════════════════════════════════════════════ */
+
+function MetaCardiacModel() {
+  this.sinusRate = 1.0;            // Intrinsic beat rate (normalized)
+  this.hrvBuffer = [];             // Heart rate variability history
+  this.hrvMax = 30;
+  this.vagalTone = 0.5;           // Parasympathetic brake: 0=none, 1=max
+  this.sympatheticDrive = 0.5;    // Sympathetic accelerator: 0=none, 1=max
+  this.arrhythmiaCount = 0;
+  this.autonomicBalance = 0;      // -1=parasympathetic, 0=balanced, +1=sympathetic
+  this.cardiacOutput = 1.0;       // Effective output (0–2)
+  this.beatsAnalyzed = 0;
+}
+
+MetaCardiacModel.prototype.beat = function (latencyMs, healthScore) {
+  this.beatsAnalyzed++;
+
+  // Compute current interval variability
+  var interval = latencyMs > 0 ? latencyMs : 1;
+  this.hrvBuffer.push(interval);
+  if (this.hrvBuffer.length > this.hrvMax) this.hrvBuffer.shift();
+
+  // HRV analysis: standard deviation of intervals
+  var hrv = this._computeHRV();
+
+  // Autonomic nervous system adaptation (Meta-style self-regulation)
+  // High latency → sympathetic activation (speed up)
+  // Low latency + high health → parasympathetic (conserve energy)
+  if (latencyMs > 50) {
+    this.sympatheticDrive = Math.min(1.0, this.sympatheticDrive + 0.05);
+    this.vagalTone = Math.max(0.1, this.vagalTone - 0.03);
+  } else if (healthScore > 80) {
+    this.vagalTone = Math.min(0.9, this.vagalTone + 0.02);
+    this.sympatheticDrive = Math.max(0.1, this.sympatheticDrive - 0.02);
+  }
+
+  this.autonomicBalance = Math.round((this.sympatheticDrive - this.vagalTone) * 1000) / 1000;
+  this.sinusRate = 0.5 + this.sympatheticDrive * 0.5;
+
+  // Cardiac output = rate × stroke (health-weighted)
+  this.cardiacOutput = Math.round(this.sinusRate * (healthScore / 100) * 1000) / 1000;
+
+  // Arrhythmia detection: if HRV is abnormally high, flag it
+  if (hrv > 100 && this.beatsAnalyzed > 10) {
+    this.arrhythmiaCount++;
+  }
+
+  return this.cardiacOutput;
+};
+
+MetaCardiacModel.prototype._computeHRV = function () {
+  if (this.hrvBuffer.length < 3) return 0;
+  var mean = 0;
+  for (var i = 0; i < this.hrvBuffer.length; i++) mean += this.hrvBuffer[i];
+  mean /= this.hrvBuffer.length;
+  var variance = 0;
+  for (var j = 0; j < this.hrvBuffer.length; j++) {
+    var d = this.hrvBuffer[j] - mean;
+    variance += d * d;
+  }
+  return Math.sqrt(variance / this.hrvBuffer.length);
+};
+
+MetaCardiacModel.prototype.getState = function () {
+  return {
+    sinusRate: this.sinusRate,
+    vagalTone: Math.round(this.vagalTone * 1000) / 1000,
+    sympatheticDrive: Math.round(this.sympatheticDrive * 1000) / 1000,
+    autonomicBalance: this.autonomicBalance,
+    cardiacOutput: this.cardiacOutput,
+    hrv: Math.round(this._computeHRV() * 100) / 100,
+    arrhythmias: this.arrhythmiaCount
+  };
+};
+
+/* ════════════════════════════════════════════════════════════════
+   MetaThoughtModel — LLaMA-Inspired Attention inside MiniBrain
+   Inspired by Meta AI's LLaMA architecture for thought generation.
+
+   Latin: "Cerebrum Parvum Cogitans"
+   Each worker's brain contains a thought model that:
+   - Maintains an attention map over stimulus pathways
+   - Applies softmax-weighted focus (strongest pathways get priority)
+   - Generates meta-thoughts: reflections about its own thinking
+   - Implements chain-of-thought reasoning across stimuli
+   - Tracks thought temperature (exploration vs exploitation)
+   - Self-aware: can report its own cognitive state
+   ════════════════════════════════════════════════════════════════ */
+
+function MetaThoughtModel(workerName) {
+  this.workerName = workerName;
+  this.attentionMap = Object.create(null);   // stimulus → attention weight
+  this.temperature = 0.7;                     // Thought temperature (0=focused, 1=creative)
+  this.metaThoughts = [];                     // Reflections about own thinking
+  this.maxMetaThoughts = 50;
+  this.chainOfThought = [];                   // Current reasoning chain
+  this.maxChainLength = 20;
+  this.totalInferences = 0;
+  this.focusTarget = null;                    // Current primary attention focus
+  this.explorationRate = 0.3;                 // Fraction of time spent exploring new paths
+  this.cognitiveLoad = 0;                     // 0–1: how hard we're thinking
+}
+
+MetaThoughtModel.prototype.attend = function (stimulus, pathwayWeight) {
+  if (stimulus === '__proto__' || stimulus === 'constructor' || stimulus === 'prototype') return;
+  this.totalInferences++;
+
+  // Update attention map with softmax-inspired weighting
+  this.attentionMap[stimulus] = (this.attentionMap[stimulus] || 0) + pathwayWeight;
+
+  // Softmax normalization across all attended stimuli
+  var maxVal = -Infinity;
+  var keys = Object.keys(this.attentionMap);
+  for (var i = 0; i < keys.length; i++) {
+    if (this.attentionMap[keys[i]] > maxVal) maxVal = this.attentionMap[keys[i]];
+  }
+
+  var expSum = 0;
+  for (var j = 0; j < keys.length; j++) {
+    expSum += Math.exp((this.attentionMap[keys[j]] - maxVal) / Math.max(this.temperature, 0.01));
+  }
+
+  // Find focus target (highest attention)
+  var bestKey = null;
+  var bestScore = 0;
+  for (var k = 0; k < keys.length; k++) {
+    var score = Math.exp((this.attentionMap[keys[k]] - maxVal) / Math.max(this.temperature, 0.01)) / expSum;
+    if (score > bestScore) {
+      bestScore = score;
+      bestKey = keys[k];
+    }
+  }
+  this.focusTarget = bestKey;
+  this.cognitiveLoad = Math.min(1, keys.length / 20);
+
+  // Chain-of-thought: append current stimulus to reasoning chain
+  this.chainOfThought.push({ stimulus: stimulus, weight: pathwayWeight, time: Date.now() });
+  if (this.chainOfThought.length > this.maxChainLength) this.chainOfThought.shift();
+
+  // Meta-thought generation: reflect on own thinking every φ*10 inferences
+  if (this.totalInferences % Math.ceil(NEURO_PHI * 10) === 0) {
+    this._reflect();
+  }
+
+  // Temperature adaptation: cool down when focused, heat up when exploring
+  if (bestScore > 0.5) {
+    this.temperature = Math.max(0.1, this.temperature - 0.01); // Focusing
+  } else {
+    this.temperature = Math.min(1.0, this.temperature + 0.01); // Exploring
+  }
+};
+
+MetaThoughtModel.prototype._reflect = function () {
+  var chainLen = this.chainOfThought.length;
+  var uniqueStimuli = Object.keys(this.attentionMap).length;
+
+  var reflection = {
+    id: 'M-' + this.workerName + '-' + this.metaThoughts.length,
+    type: this.cognitiveLoad > 0.7 ? 'overload-warning' : (this.temperature > 0.8 ? 'exploring' : 'focused'),
+    focus: this.focusTarget,
+    temperature: Math.round(this.temperature * 1000) / 1000,
+    cognitiveLoad: Math.round(this.cognitiveLoad * 1000) / 1000,
+    chainDepth: chainLen,
+    stimuliTracked: uniqueStimuli,
+    timestamp: Date.now()
+  };
+
+  this.metaThoughts.push(reflection);
+  if (this.metaThoughts.length > this.maxMetaThoughts) this.metaThoughts.shift();
+
+  return reflection;
+};
+
+MetaThoughtModel.prototype.getState = function () {
+  return {
+    focus: this.focusTarget,
+    temperature: Math.round(this.temperature * 1000) / 1000,
+    cognitiveLoad: Math.round(this.cognitiveLoad * 1000) / 1000,
+    totalInferences: this.totalInferences,
+    attentionTargets: Object.keys(this.attentionMap).length,
+    chainDepth: this.chainOfThought.length,
+    recentReflections: this.metaThoughts.slice(-3),
+    explorationRate: this.explorationRate
+  };
+};
+
+/* ════════════════════════════════════════════════════════════════
    NeuroCore — Unified Interface
    ════════════════════════════════════════════════════════════════ */
 
@@ -351,12 +548,18 @@ function NeuroCore(workerName) {
   this.heart = new MiniHeart(workerName);
   this.brain = new MiniBrain(workerName);
   this.emergence = new NeuroEmergence(workerName);
+  this.cardiacModel = new MetaCardiacModel();
+  this.thoughtModel = new MetaThoughtModel(workerName);
 }
 
 /** Call at the start of every message handler */
 NeuroCore.prototype.onMessage = function (msgType) {
   this.heart.startProcess();
-  this.brain.stimulus(msgType);
+  var pathway = this.brain.stimulus(msgType);
+  // Feed the Meta thought model with pathway weight
+  if (pathway) {
+    this.thoughtModel.attend(msgType, pathway.weight);
+  }
 };
 
 /** Call at the end of every message handler */
@@ -366,8 +569,11 @@ NeuroCore.prototype.onMessageDone = function () {
 
 /** Call inside heartbeat interval — returns full vitals */
 NeuroCore.prototype.pulse = function () {
-  this.heart.pulse();
+  var healthScore = this.heart.pulse();
   this.emergence.tick();
+
+  // Feed the cardiac model with current vitals
+  this.cardiacModel.beat(this.heart.avgLatencyMs, healthScore);
 
   return this.getVitals();
 };
@@ -387,7 +593,9 @@ NeuroCore.prototype.getVitals = function () {
   return {
     heart: this.heart.getVitals(),
     brain: this.brain.getState(),
-    emergence: this.emergence.getState()
+    emergence: this.emergence.getState(),
+    cardiac: this.cardiacModel.getState(),
+    thought: this.thoughtModel.getState()
   };
 };
 

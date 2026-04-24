@@ -439,7 +439,7 @@
 <!-- ═══════════════════ LIVE ENGINE DASHBOARD ═══════════════════ -->
 <div class="dashboard" id="engine-dashboard">
   <h2>🧬 Live Engine — Neuroemergence Active</h2>
-  <p class="desc">This isn't a page — it's the product. 13 permanent Web Workers organized into 4 autonomous divisions, each with a mini heart, mini brain, and neuroemergence core — running 40 AI engines, sovereign memory, protocol routing, health telemetry, cryptography, contracts, scheduling, mesh networking, analytics, security, data pipelines, inference, and orchestration — all alive in your browser right now and forever.</p>
+  <p class="desc">This isn't a page — it's the product. 13 permanent Web Workers organized into 4 autonomous divisions, each with a mini heart (Cor Parvum + MetaCardiacModel), mini brain (Cerebrum Parvum + MetaThoughtModel), and neuroemergence core — running 40 AI engines, sovereign memory, protocol routing, health telemetry, cryptography, contracts, scheduling, mesh networking, analytics, security, data pipelines, inference, and orchestration — all alive in your browser right now and forever. <a href="research/neuro-paper.html" style="color:var(--accent)">📄 Read the Research Paper</a></p>
 
   <div class="live-bar" id="live-bar">
     <div class="live-item"><span class="heartbeat-dot" id="hb-dot"></span><span class="lval" id="hb-status">booting…</span> Status</div>
@@ -458,6 +458,14 @@
     <div class="live-item">🔮 <span class="lval" id="neuro-resonance">0</span> Resonance</div>
     <div class="live-item">🔥 <span class="lval" id="neuro-cascade">—</span> Cascade</div>
     <div class="live-item">↻ <span class="lval" id="neuro-restarts">0</span> Restarts</div>
+  </div>
+  <div class="live-bar" id="meta-bar" style="margin-top:0.2rem;border-top:1px solid var(--border);font-size:0.82rem;">
+    <div class="live-item">🫀 <span class="lval" id="meta-cardiac">—</span> Cardiac</div>
+    <div class="live-item">🧬 <span class="lval" id="meta-vagal">—</span> Vagal</div>
+    <div class="live-item">⚡ <span class="lval" id="meta-sympathetic">—</span> Sympath.</div>
+    <div class="live-item">🎯 <span class="lval" id="meta-focus">—</span> Focus</div>
+    <div class="live-item">🌡 <span class="lval" id="meta-temp">—</span> Temp</div>
+    <div class="live-item">💭 <span class="lval" id="meta-inferences">0</span> Inferences</div>
   </div>
 
   <h3 style="color:var(--accent2);font-size:0.95rem;margin-bottom:0.5rem;">⚡ 4 Autonomous Worker Divisions — Neuroemergence Active</h3>
@@ -774,6 +782,38 @@ node organism-cli/organism.js install</code></pre>
       setText('neuro-resonance', summary.avgResonance);
       setText('neuro-cascade', summary.cascadeActive ? '🔥 ACTIVE' : '—');
       setText('neuro-restarts', summary.totalRestarts);
+
+      // Update Meta model indicators (aggregate from first worker with data)
+      var totalCardiac = 0, totalVagal = 0, totalSymp = 0, totalTemp = 0, totalInf = 0, metaCount = 0;
+      var focusMap = Object.create(null);
+      for (var si = 0; si < statuses.length; si++) {
+        var ws = statuses[si];
+        if (ws.neuro && ws.neuro.cardiac) {
+          metaCount++;
+          totalCardiac += ws.neuro.cardiac.cardiacOutput || 0;
+          totalVagal += ws.neuro.cardiac.vagalTone || 0;
+          totalSymp += ws.neuro.cardiac.sympatheticDrive || 0;
+        }
+        if (ws.neuro && ws.neuro.thought) {
+          totalTemp += ws.neuro.thought.temperature || 0;
+          totalInf += ws.neuro.thought.totalInferences || 0;
+          if (ws.neuro.thought.focus) {
+            focusMap[ws.neuro.thought.focus] = (focusMap[ws.neuro.thought.focus] || 0) + 1;
+          }
+        }
+      }
+      if (metaCount > 0) {
+        setText('meta-cardiac', (totalCardiac / metaCount).toFixed(2));
+        setText('meta-vagal', (totalVagal / metaCount).toFixed(2));
+        setText('meta-sympathetic', (totalSymp / metaCount).toFixed(2));
+        setText('meta-temp', (totalTemp / metaCount).toFixed(2));
+        setText('meta-inferences', totalInf);
+        // Most common focus across workers
+        var topFocus = '—';
+        var topCount = 0;
+        for (var fk in focusMap) { if (focusMap[fk] > topCount) { topCount = focusMap[fk]; topFocus = fk; } }
+        setText('meta-focus', topFocus);
+      }
     },
 
     onDivisionStatus: function (divisions) {
