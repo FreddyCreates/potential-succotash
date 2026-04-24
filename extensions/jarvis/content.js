@@ -1110,4 +1110,91 @@
   setTimeout(function () {
     showResult('\uD83E\uDD16 J.A.R.V.I.S. online.\nType a command or use the quick action buttons above.\n\nExamples:\n  \u2022 "scroll down 500px"\n  \u2022 "read this page"\n  \u2022 "find \\"search term\\""\n  \u2022 "summarize"\n  \u2022 "analyze page"\n  \u2022 "remember \\"important note\\""\n\nKeyboard: Ctrl+Shift+J to toggle panel');
   }, 300);
+
+  /* ── Floating Action Button (FAB) ──────────────────────────── */
+  var fab = document.createElement('div');
+  fab.id = 'jarvis-fab';
+  Object.assign(fab.style, {
+    position: 'fixed', bottom: '24px', right: '24px', width: '56px', height: '56px',
+    borderRadius: '50%', backgroundColor: '#161b22', border: '2px solid #58a6ff',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    cursor: 'pointer', zIndex: '2147483646', fontSize: '24px',
+    boxShadow: '0 4px 16px rgba(88,166,255,0.3), 0 0 40px rgba(212,175,55,0.1)',
+    transition: 'all 0.3s ease', userSelect: 'none'
+  });
+  fab.textContent = '\u2B50';
+  fab.title = 'Toggle JARVIS Panel';
+  fab.addEventListener('mouseenter', function () {
+    fab.style.transform = 'scale(1.15)';
+    fab.style.boxShadow = '0 6px 24px rgba(88,166,255,0.5), 0 0 60px rgba(212,175,55,0.2)';
+  });
+  fab.addEventListener('mouseleave', function () {
+    fab.style.transform = 'scale(1)';
+    fab.style.boxShadow = '0 4px 16px rgba(88,166,255,0.3), 0 0 40px rgba(212,175,55,0.1)';
+  });
+  fab.addEventListener('click', function () {
+    var p = document.getElementById(PANEL_ID);
+    if (p) {
+      p.style.display = p.style.display === 'none' ? 'flex' : 'none';
+    }
+  });
+  document.body.appendChild(fab);
+
+  /* ── Arc Reactor Pulse on FAB ──────────────────────────────── */
+  var fabPulse = document.createElement('div');
+  Object.assign(fabPulse.style, {
+    position: 'absolute', top: '50%', left: '50%', width: '12px', height: '12px',
+    borderRadius: '50%', backgroundColor: '#d4af37',
+    transform: 'translate(-50%, -50%)', animation: 'jarvis-fab-pulse 1.618s ease-in-out infinite'
+  });
+  fab.appendChild(fabPulse);
+  var fabStyle = document.createElement('style');
+  fabStyle.textContent = '@keyframes jarvis-fab-pulse { 0%,100% { opacity:0.6; box-shadow:0 0 8px #d4af37; } 50% { opacity:1; box-shadow:0 0 20px #d4af37, 0 0 40px rgba(212,175,55,0.3); } }';
+  document.head.appendChild(fabStyle);
+
+  /* ── Auto Page Analysis ────────────────────────────────────── */
+  var pageAnalysis = {
+    run: function () {
+      var result = {
+        title: document.title || '(untitled)',
+        url: location.href,
+        wordCount: (document.body.innerText || '').split(/\s+/).filter(function (w) { return w.length > 0; }).length,
+        linkCount: document.querySelectorAll('a[href]').length,
+        imageCount: document.querySelectorAll('img').length,
+        formCount: document.querySelectorAll('form').length,
+        inputCount: document.querySelectorAll('input, textarea, select').length,
+        headingCount: document.querySelectorAll('h1, h2, h3, h4, h5, h6').length,
+        metaCount: document.querySelectorAll('meta').length,
+        scriptCount: document.querySelectorAll('script').length,
+        styleCount: document.querySelectorAll('style, link[rel="stylesheet"]').length,
+        timestamp: Date.now()
+      };
+      return result;
+    }
+  };
+
+  /* ── PostMessage Bridge (for side panel communication) ────── */
+  window.addEventListener('message', function (e) {
+    if (!e.data || e.data.source !== 'jarvis-sidepanel') return;
+    if (e.data.type === 'page-analysis-request') {
+      var analysis = pageAnalysis.run();
+      window.postMessage({ source: 'jarvis-content', type: 'page-analysis-response', data: analysis }, '*');
+    }
+    if (e.data.type === 'execute-command') {
+      executeCommand(e.data.command);
+    }
+  });
+
+  /* ── Respond to background.js queries ──────────────────────── */
+  chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
+    if (msg.type === 'jarvis-page-analysis') {
+      sendResponse(pageAnalysis.run());
+      return true;
+    }
+    if (msg.type === 'jarvis-execute') {
+      executeCommand(msg.command);
+      sendResponse({ ok: true });
+      return true;
+    }
+  });
 })();
