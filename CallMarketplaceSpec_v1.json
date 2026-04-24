@@ -4,7 +4,7 @@
   "architect": "Freddy Medina",
   "product": "Sovereign Organism AI",
   "generatedAt": "2026-04-22T21:00:00.000Z",
-  "summary": "Formal specification for the Sovereign Organism Call Marketplace — a registry of 1176+ auto-generated callable tools produced by 12 Web Worker Builder AIs across 36 engines. 260 marketplace tools across 13 families (Context, Commander, Crawling, Sentry, Builder, Blueprint, Recipe, Lens, Hook, Trigger, Adapter, Sensor, Shield). 130 protocols. 60 architectural laws. Every call is registered, contracted, permissioned, priced, and law-enforced using phi-harmonic mathematics.",
+  "summary": "Formal specification for the Sovereign Organism Call Marketplace — a registry of 1176+ auto-generated callable tools produced by 12 Web Worker Builder AIs across 36 engines. 260 marketplace tools across 13 families (Context, Commander, Crawling, Sentry, Builder, Blueprint, Recipe, Lens, Hook, Trigger, Adapter, Sensor, Shield). 180 protocols. 60 architectural laws. Every call is registered, contracted, permissioned, priced, and law-enforced using phi-harmonic mathematics.",
 
   "phiConstants": {
     "PHI": 1.618033988749895,

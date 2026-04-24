@@ -8,7 +8,7 @@
 |---|---|
 | **[🌐 itsnotAilabs.com](https://itsnotAilabs.com)** | The website — launch the organism, download extensions, see everything |
 | **[🧬 Launch Live Organism](https://itsnotAilabs.com/organism/web/index.html)** | Open the organism runtime — 873ms heartbeat, 4-register state, live vitals — right in your browser |
-| **[📦 Download Extensions](https://itsnotAilabs.com/download.html)** | Browse all 35 extensions, download individually or all at once, with native in-browser zip builds |
+| **[📦 Download Extensions](https://itsnotAilabs.com/download.html)** | Browse all 36 extensions, download individually or all at once, with native in-browser zip builds |
 
 No install needed. Click → it opens. The organism is alive in the browser.
 
@@ -20,7 +20,7 @@ No install needed. Click → it opens. The organism is alive in the browser.
 
 **[📥 Download install-organism.bat](https://github.com/FreddyCreates/potential-succotash/raw/main/install-organism.bat)** → double-click → Edge opens with all 35 AI extensions live.
 
-That's it. The bat file clones the repo, scans all 35 extensions, finds Edge/Chrome/Brave, and launches with every extension attached. If Edge is installed, it uses Edge. Working app, one click.
+That's it. The bat file clones the repo, scans all 36 extensions, finds Edge/Chrome/Brave, and launches with every extension attached. If Edge is installed, it uses Edge. Working app, one click.
 
 ### Any Platform
 
@@ -62,7 +62,7 @@ There are no dumb pipes. No static configs. No passive layers. Everything in thi
 
 Eight sovereign SDKs form the brain. Spatial memory with phi-encoded 5-axis coordinates. Enterprise integration with 8 connectors that onboard companies in sovereign mode. Intelligence routing that scores 40 AI model families and picks the best engine for any task by capability, priority, and cost. A runtime with a heartbeat, kernel execution, and edge sensing. A document absorption engine that turns raw content into living knowledge graphs. A model engine layer that wraps GPT, Claude, Gemini, Llama, Mistral, Whisper, DALL-E, Sora, and 32 more families into callable, routable engines. A frontend intelligence layer with 30 technology models running as 24-hour autonomous organisms. And a marketplace SDK with 60 always-on callable tools organized into 5 families — Crawling, Context, Commander, Sentry, Builder — each with schema, registry, invocation, routing, and settlement.
 
-130 protocols carry intelligence between all of these. Sovereign routing learns optimal model selection from outcome feedback. Encrypted transport adapts encryption strength by content sensitivity. Phi-resonance sync uses Kuramoto coupling to keep distributed endpoints locked to the 873ms heartbeat. Knowledge absorption evolves its extraction patterns. Multi-model fusion weights outputs with phi-decay scoring. Contract verification learns clause patterns from verified agreements. Edge mesh redistributes workload by real-time node capacity. Organism lifecycle self-heals by restarting failed kernels. Plus 120 additional protocols covering consensus/BFT, AI hierarchy governance, cross-model communication, zero-knowledge security, marketplace settlement, observer intelligence, web worker orchestration, autonomous agent planning, cross-substrate bridging, signal processing, emergence detection, resonance coupling, goal decomposition, hallucination detection, adversarial robustness, federated learning, explainability, data lineage, swarm coordination, quantum-ready encryption, cross-chain bridging, sovereign identity, emotion-aware interaction, digital twin sync, zero-knowledge proofs, autonomous code review, predictive maintenance, content authenticity, distributed consensus, spatial computing, neuromorphic compute, chaos engineering, and cross-organism interoperability. Research papers for all 130 protocols at research/protocol-papers.html. Licenses for all 130 protocols at research/protocol-licenses.html.
+180 protocols carry intelligence between all of these. Sovereign routing learns optimal model selection from outcome feedback. Encrypted transport adapts encryption strength by content sensitivity. Phi-resonance sync uses Kuramoto coupling to keep distributed endpoints locked to the 873ms heartbeat. Knowledge absorption evolves its extraction patterns. Multi-model fusion weights outputs with phi-decay scoring. Contract verification learns clause patterns from verified agreements. Edge mesh redistributes workload by real-time node capacity. Organism lifecycle self-heals by restarting failed kernels. Plus 170 additional protocols covering consensus/BFT, AI hierarchy governance, cross-model communication, zero-knowledge security, marketplace settlement, observer intelligence, web worker orchestration, autonomous agent planning, cross-substrate bridging, signal processing, emergence detection, resonance coupling, goal decomposition, hallucination detection, adversarial robustness, federated learning, explainability, data lineage, swarm coordination, quantum-ready encryption, cross-chain bridging, sovereign identity, emotion-aware interaction, digital twin sync, zero-knowledge proofs, autonomous code review, predictive maintenance, content authenticity, distributed consensus, spatial computing, neuromorphic compute, chaos engineering, cross-organism interoperability, autonomous debugging, autonomous test generation, autonomous refactoring, autonomous performance profiling, autonomous CI/CD, neuromorphic spike timing, neuromorphic reservoir computing, multi-agent debate, multi-agent swarm intelligence, multi-agent consensus, multi-agent negotiation, privacy-preserving analytics, ethical guardrails, secure enclaves, intelligent caching, multi-tenant isolation, federated inference, self-documenting code, knowledge graph evolution, semantic code search, real-time collaboration, digital watermarks, predictive resource allocation, autonomous optimization, terminal autonomy, AGI orchestration, blueprint discovery, and sovereign division management. Research papers for all 180 protocols at research/protocol-papers.html. Licenses for all 180 protocols at research/protocol-licenses.html.
 
 60 architectural laws govern everything. Semantic containment. Unidirectional state flow. Heartbeat sovereignty. Register integrity. Wire encryption. Kernel isolation. Anti-collapse. Continuous edge sensing. Cross-organism resonance. The four meta-laws: fracture recognition, primitive reduction, sovereign rebuild, organism reintegration. Plus 20 new laws covering AI safety (prompt injection prevention, hallucination detection, toxicity filtering), agent autonomy boundaries, multi-model governance (sunset, capability scoring, bias detection), protocol versioning, marketplace integrity (tool attestation, settlement finality), observer intelligence lifecycle, web worker containment, cross-substrate migration safety, phase lock enforcement, and entity uniqueness. Every wire, every tool, every extension, every protocol obeys all 60.
 
@@ -154,7 +154,7 @@ The organism isn't conceptual. It's compiled. It's running. The 873ms heartbeat 
 | **Any platform (terminal)** | `git clone https://github.com/FreddyCreates/potential-succotash.git && node potential-succotash/organism-cli` |
 | **Manual** | Clone repo → `edge://extensions` → Developer Mode → Load unpacked → select extension folder |
 
-The bat and ps1 files auto-clone the repo if needed. They scan all 35 extensions from source, find Edge (or Chrome/Brave), and launch with every extension attached. No zip needed. Edge-first on Windows.
+The bat and ps1 files auto-clone the repo if needed. They scan all 36 extensions from source, find Edge (or Chrome/Brave), and launch with every extension attached. No zip needed. Edge-first on Windows.
 
 ### 📦 Individual Extension Downloads
 
@@ -214,7 +214,7 @@ bash build-extensions.sh
 
 The Register AI is the organism's native builder. It's the 5th tool family (Builder) alongside Crawling, Context, Commander, and Sentry. It runs as both a **terminal CLI** (`organism-cli`) and a **browser extension** (EXT-026). Steps 1–7 run automatically:
 
-1. **Scan** — discovers all 35 extensions in `extensions/`
+1. **Scan** — discovers all 36 extensions in `extensions/`
 2. **Validate** — checks every manifest for Manifest V3 compliance
 3. **Detect Browser** — finds Chrome, Edge, or Brave on any OS
 4. **Load Extensions** — launches browser with `--load-extension` (direct from source, no zip)
@@ -225,7 +225,7 @@ The Register AI is the organism's native builder. It's the 5th tool family (Buil
 ### Terminal AI (organism-cli)
 
 ```bash
-node organism-cli               # 1-click install — all 35 extensions live in Edge/Chrome
+node organism-cli               # 1-click install — all 36 extensions live in Edge/Chrome
 node organism-cli validate      # check all manifests
 node organism-cli list          # show all extensions with status
 node organism-cli status        # Register AI health report
@@ -243,9 +243,11 @@ Builder Family Tools: Register (TOOL-025), Packager (TOOL-026), Validator (TOOL-
 
 ---
 
-## JARVIS Intelligence Suite (4 Autonomous Agents)
+## JARVIS Intelligence Suite (5 Autonomous Agents)
 
-Four new extensions that act as autonomous AI agents. They read, write, move on screen, and see through data noise to find what's real. Pre-loaded with X-ray mathematics — square-root normalization, spectral decomposition, cross-system correlation, z-depth analysis. Pattern recognition for spreads where there is free lunch.
+Five extensions that act as autonomous AI agents. They read, write, move on screen, and see through data noise to find what's real. Pre-loaded with X-ray mathematics — square-root normalization, spectral decomposition, cross-system correlation, z-depth analysis. Pattern recognition for spreads where there is free lunch.
+
+**Jarvis AI** (EXT-036) — The ultimate JARVIS autonomous AI assistant. Voice commands, screen control, task automation, memory system, page analysis, scheduled tasks. 18 command intents with phi-weighted task queue. Arc reactor status indicator. Ctrl+Shift+J to summon.
 
 **Spread Scanner** (EXT-022) — Scans any page for financial data. Computes pairwise spreads, phi-weighted z-scores, correlation matrices. Grades arbitrage opportunities A through F. Finds the free lunch.
 
@@ -289,7 +291,7 @@ Four side panel AI extensions built for Microsoft Edge using the `sidePanel` API
 
 ## The Numbers
 
-8 SDKs. 35 extensions. 130 protocols. 260 tools. 13 tool families. 40 model families. 10 multimodal families. 30 frontend intelligence models. 100 frontier model species. 60 architectural laws. 9 organism rings. 6 implementation languages. 4 browser observers. 4 Edge side panels. 12 Builder AIs. 36 engines. 1176+ auto-generated calls. 1 heartbeat at 873ms.
+8 SDKs. 36 extensions. 180 protocols. 260 tools. 13 tool families. 40 model families. 10 multimodal families. 30 frontend intelligence models. 100 frontier model species. 60 architectural laws. 9 organism rings. 6 implementation languages. 4 browser observers. 4 Edge side panels. 12 Builder AIs. 36 engines. 1176+ auto-generated calls. 1 heartbeat at 873ms.
 
 All of it is AI. All of it is intelligence. All of it is wired together. All of it is downloadable. And all of it is inside this repo.
 
@@ -324,7 +326,7 @@ As above, so below.
 - Self-healing workers with keepalive monitoring
 - Call Marketplace Spec v1 (`CallMarketplaceSpec_v1.json`) — registry schema, call contracts, permission tiers, pricing classes, rollout gates
 - All calls registered in `Organism_Marketplace_Register.csv` (60 tools)
-- 130 protocols in `AI_Protocols_Register.csv` — used by workers, observers, and AIs. Licenses at `research/protocol-licenses.html`
+- 180 protocols in `AI_Protocols_Register.csv` — used by workers, observers, and AIs. Licenses at `research/protocol-licenses.html`
 - 60 architectural laws in `Architectural_Laws_Register.csv` — wired to every call
 - Runs as ICP canister (`organism/motoko/src/AutoGenerateCallsEngine.mo`)
 
