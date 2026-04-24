@@ -67,7 +67,8 @@ var WORKER_PATHS = {
   guardian:     'organism/web/guardian-worker.js',
   pipeline:     'organism/web/pipeline-worker.js',
   inference:    'organism/web/inference-worker.js',
-  orchestrator: 'organism/web/orchestrator-worker.js'
+  orchestrator: 'organism/web/orchestrator-worker.js',
+  'twin-alpha':  'organism/web/twin-alpha-worker.js'
 };
 
 /* ════════════════════════════════════════════════════════════════
@@ -75,7 +76,7 @@ var WORKER_PATHS = {
    ════════════════════════════════════════════════════════════════ */
 
 var DIVISIONS = {
-  brain:          { name: 'Brain',          icon: '🧠', workers: ['engine', 'inference', 'orchestrator'],       purpose: 'Thinking & reasoning' },
+  brain:          { name: 'Brain',          icon: '🧠', workers: ['engine', 'inference', 'orchestrator', 'twin-alpha'], purpose: 'Thinking & reasoning' },
   data:           { name: 'Data',           icon: '💾', workers: ['memory', 'analytics', 'pipeline'],           purpose: 'Memory, analytics & pipelines' },
   infrastructure: { name: 'Infrastructure', icon: '🏗', workers: ['mesh', 'scheduler', 'guardian', 'telemetry'], purpose: 'Always-on backbone' },
   protocol:       { name: 'Protocol',       icon: '🔐', workers: ['routing', 'crypto', 'contract'],             purpose: 'Communication & trust' }
