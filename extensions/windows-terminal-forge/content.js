@@ -122,25 +122,31 @@
     genBtn.addEventListener('click', function () {
       var desc = textarea.value.trim();
       if (!desc) { showResult('Please describe what you need.'); return; }
-      if (typeof globalThis.windowsTerminalForge !== 'undefined') {
-        showResult(globalThis.windowsTerminalForge.generateCommand(desc, 'powershell'));
-      } else { showResult('Engine not loaded.'); }
+      showResult('⏳ Generating...');
+      chrome.runtime.sendMessage({ action: 'generateCommand', description: desc, shell: 'powershell' }, function (resp) {
+        if (chrome.runtime.lastError) { showResult('Error: ' + chrome.runtime.lastError.message); return; }
+        showResult(resp);
+      });
     });
 
     explainBtn.addEventListener('click', function () {
       var cmd = textarea.value.trim();
       if (!cmd) { showResult('Please enter a command to explain.'); return; }
-      if (typeof globalThis.windowsTerminalForge !== 'undefined') {
-        showResult(globalThis.windowsTerminalForge.explainCommand(cmd, 'powershell'));
-      } else { showResult('Engine not loaded.'); }
+      showResult('⏳ Explaining...');
+      chrome.runtime.sendMessage({ action: 'explainCommand', command: cmd, shell: 'powershell' }, function (resp) {
+        if (chrome.runtime.lastError) { showResult('Error: ' + chrome.runtime.lastError.message); return; }
+        showResult(resp);
+      });
     });
 
     routeBtn.addEventListener('click', function () {
       var task = textarea.value.trim();
       if (!task) { showResult('Please enter a task.'); return; }
-      if (typeof globalThis.windowsTerminalForge !== 'undefined') {
-        showResult(globalThis.windowsTerminalForge.routeToAlpha(task));
-      } else { showResult('Engine not loaded.'); }
+      showResult('⏳ Routing...');
+      chrome.runtime.sendMessage({ action: 'routeToAlpha', task: task }, function (resp) {
+        if (chrome.runtime.lastError) { showResult('Error: ' + chrome.runtime.lastError.message); return; }
+        showResult(resp);
+      });
     });
 
     return container;

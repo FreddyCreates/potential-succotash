@@ -116,17 +116,21 @@
     composeBtn.addEventListener('click', function () {
       var text = textarea.value.trim();
       if (!text) { showResult('Please enter notification content.'); return; }
-      if (typeof globalThis.windowsNotificationCortex !== 'undefined') {
-        showResult(globalThis.windowsNotificationCortex.compose('Alert', text, 'normal'));
-      } else { showResult('Engine not loaded.'); }
+      showResult('⏳ Composing...');
+      chrome.runtime.sendMessage({ action: 'compose', title: 'Alert', body: text, priority: 'normal' }, function (resp) {
+        if (chrome.runtime.lastError) { showResult('Error: ' + chrome.runtime.lastError.message); return; }
+        showResult(resp);
+      });
     });
 
     scoreBtn.addEventListener('click', function () {
       var text = textarea.value.trim();
       if (!text) { showResult('Please enter content to score.'); return; }
-      if (typeof globalThis.windowsNotificationCortex !== 'undefined') {
-        showResult(globalThis.windowsNotificationCortex.scoreUrgency(text));
-      } else { showResult('Engine not loaded.'); }
+      showResult('⏳ Scoring...');
+      chrome.runtime.sendMessage({ action: 'scoreUrgency', content: text }, function (resp) {
+        if (chrome.runtime.lastError) { showResult('Error: ' + chrome.runtime.lastError.message); return; }
+        showResult(resp);
+      });
     });
 
     return container;

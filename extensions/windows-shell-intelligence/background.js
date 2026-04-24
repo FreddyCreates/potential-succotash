@@ -176,3 +176,43 @@ class WindowsShellIntelligenceEngine {
 }
 
 globalThis.windowsShellIntelligence = new WindowsShellIntelligenceEngine();
+
+/* ── Message Router ───────────────────────────────────────── */
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+  var engine = globalThis.windowsShellIntelligence;
+  switch (message.action) {
+    case 'executeShellAction':
+      sendResponse(engine.executeShellAction(message.actionName, message.context));
+      break;
+    case 'generateContextMenu':
+      sendResponse(engine.generateContextMenu(message.selectedFiles));
+      break;
+    case 'routeToAlpha':
+      sendResponse(engine.routeToAlpha(message.task));
+      break;
+    case 'getState':
+      sendResponse(engine.state);
+      break;
+    default:
+      sendResponse({ error: 'Unknown action: ' + message.action });
+  }
+  return true;
+});
+
+/* -- Production 24/7 Keep-Alive ---------------------------------------- */
+(function () {
+  var ALARM_NAME = 'windows-shell-intelligence-keepalive';
+  var ALARM_PERIOD = 0.4;
+  chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
+  chrome.alarms.onAlarm.addListener(function (alarm) {
+    if (alarm.name !== ALARM_NAME) return;
+    if (!globalThis.windowsShellIntelligence) {
+      globalThis.windowsShellIntelligence = new WindowsShellIntelligenceEngine();
+    }
+    try { chrome.storage.local.set({ 'windows-shell-intelligence_lastAlive': Date.now() }); } catch (e) { }
+  });
+  chrome.runtime.onInstalled.addListener(function () {
+    chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
+    console.log('[Windows Shell Intelligence] Installed — 24/7 keepalive active');
+  });
+})();

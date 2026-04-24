@@ -129,17 +129,21 @@
     execBtn.addEventListener('click', function () {
       var task = textarea.value.trim();
       if (!task) { showResult('Please describe a shell operation.'); return; }
-      if (typeof globalThis.windowsShellIntelligence !== 'undefined') {
-        showResult(globalThis.windowsShellIntelligence.executeShellAction('generate-script', { task: task }));
-      } else { showResult('Engine not loaded.'); }
+      showResult('⏳ Executing...');
+      chrome.runtime.sendMessage({ action: 'executeShellAction', actionName: 'generate-script', context: { task: task } }, function (resp) {
+        if (chrome.runtime.lastError) { showResult('Error: ' + chrome.runtime.lastError.message); return; }
+        showResult(resp);
+      });
     });
 
     routeBtn.addEventListener('click', function () {
       var task = textarea.value.trim();
       if (!task) { showResult('Please enter a task.'); return; }
-      if (typeof globalThis.windowsShellIntelligence !== 'undefined') {
-        showResult(globalThis.windowsShellIntelligence.routeToAlpha(task));
-      } else { showResult('Engine not loaded.'); }
+      showResult('⏳ Routing...');
+      chrome.runtime.sendMessage({ action: 'routeToAlpha', task: task }, function (resp) {
+        if (chrome.runtime.lastError) { showResult('Error: ' + chrome.runtime.lastError.message); return; }
+        showResult(resp);
+      });
     });
 
     return container;

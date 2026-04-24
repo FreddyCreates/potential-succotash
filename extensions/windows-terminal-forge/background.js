@@ -208,3 +208,46 @@ class WindowsTerminalForgeEngine {
 }
 
 globalThis.windowsTerminalForge = new WindowsTerminalForgeEngine();
+
+/* ── Message Router ───────────────────────────────────────── */
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+  var engine = globalThis.windowsTerminalForge;
+  switch (message.action) {
+    case 'generateCommand':
+      sendResponse(engine.generateCommand(message.description, message.shell));
+      break;
+    case 'explainCommand':
+      sendResponse(engine.explainCommand(message.command, message.shell));
+      break;
+    case 'autocomplete':
+      sendResponse(engine.autocomplete(message.partial, message.shell));
+      break;
+    case 'routeToAlpha':
+      sendResponse(engine.routeToAlpha(message.task));
+      break;
+    case 'getState':
+      sendResponse(engine.state);
+      break;
+    default:
+      sendResponse({ error: 'Unknown action: ' + message.action });
+  }
+  return true;
+});
+
+/* -- Production 24/7 Keep-Alive ---------------------------------------- */
+(function () {
+  var ALARM_NAME = 'windows-terminal-forge-keepalive';
+  var ALARM_PERIOD = 0.4;
+  chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
+  chrome.alarms.onAlarm.addListener(function (alarm) {
+    if (alarm.name !== ALARM_NAME) return;
+    if (!globalThis.windowsTerminalForge) {
+      globalThis.windowsTerminalForge = new WindowsTerminalForgeEngine();
+    }
+    try { chrome.storage.local.set({ 'windows-terminal-forge_lastAlive': Date.now() }); } catch (e) { }
+  });
+  chrome.runtime.onInstalled.addListener(function () {
+    chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
+    console.log('[Windows Terminal Forge] Installed — 24/7 keepalive active');
+  });
+})();

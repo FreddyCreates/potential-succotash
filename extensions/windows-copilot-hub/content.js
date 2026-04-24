@@ -204,29 +204,38 @@
     fuseBtn.addEventListener('click', function () {
       var prompt = textarea.value.trim();
       if (!prompt) { showResult('Please enter a prompt.'); return; }
-      if (typeof globalThis.windowsCopilotHub !== 'undefined') {
-        showResult(globalThis.windowsCopilotHub.fuseReasoning(prompt));
-      } else {
-        showResult('Engine not loaded.');
-      }
+      showResult('⏳ Fusing models...');
+      chrome.runtime.sendMessage(
+        { action: 'fuseReasoning', prompt: prompt },
+        function (resp) {
+          if (chrome.runtime.lastError) { showResult('Error: ' + chrome.runtime.lastError.message); return; }
+          showResult(resp);
+        }
+      );
     });
 
     routeBtn.addEventListener('click', function () {
       var task = textarea.value.trim();
       if (!task) { showResult('Please enter a task.'); return; }
-      if (typeof globalThis.windowsCopilotHub !== 'undefined') {
-        showResult(globalThis.windowsCopilotHub.routeToAlpha(task));
-      } else {
-        showResult('Engine not loaded.');
-      }
+      showResult('⏳ Routing...');
+      chrome.runtime.sendMessage(
+        { action: 'routeToAlpha', task: task },
+        function (resp) {
+          if (chrome.runtime.lastError) { showResult('Error: ' + chrome.runtime.lastError.message); return; }
+          showResult(resp);
+        }
+      );
     });
 
     panelBtn.addEventListener('click', function () {
-      if (typeof globalThis.windowsCopilotHub !== 'undefined') {
-        showResult(globalThis.windowsCopilotHub.openSidePanel({ source: 'ui-button' }));
-      } else {
-        showResult('Engine not loaded.');
-      }
+      showResult('⏳ Opening side panel...');
+      chrome.runtime.sendMessage(
+        { action: 'openSidePanel', context: { source: 'ui-button' } },
+        function (resp) {
+          if (chrome.runtime.lastError) { showResult('Error: ' + chrome.runtime.lastError.message); return; }
+          showResult(resp);
+        }
+      );
     });
 
     return container;

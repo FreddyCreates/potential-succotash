@@ -216,3 +216,56 @@ class WindowsCopilotHubEngine {
 }
 
 globalThis.windowsCopilotHub = new WindowsCopilotHubEngine();
+
+/* ── Message Router ───────────────────────────────────────── */
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+  var hub = globalThis.windowsCopilotHub;
+
+  switch (message.action) {
+    case 'fuseReasoning':
+      sendResponse(hub.fuseReasoning(message.prompt, message.models));
+      break;
+    case 'routeToAlpha':
+      sendResponse(hub.routeToAlpha(message.task));
+      break;
+    case 'openSidePanel':
+      sendResponse(hub.openSidePanel(message.context));
+      break;
+    case 'getState':
+      sendResponse(hub.state);
+      break;
+    default:
+      sendResponse({ error: 'Unknown action: ' + message.action });
+  }
+  return true;
+});
+
+/* -- Production 24/7 Keep-Alive ---------------------------------------- */
+(function () {
+  var ALARM_NAME = 'windows-copilot-hub-keepalive';
+  var ALARM_PERIOD = 0.4;
+
+  chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
+
+  chrome.alarms.onAlarm.addListener(function (alarm) {
+    if (alarm.name !== ALARM_NAME) return;
+    if (!globalThis.windowsCopilotHub) {
+      globalThis.windowsCopilotHub = new WindowsCopilotHubEngine();
+      console.log('[Windows Copilot Hub] Engine re-initialized by keepalive');
+    }
+    try {
+      chrome.storage.local.set({
+        'windows-copilot-hub_state': {
+          heartbeatCount: globalThis.windowsCopilotHub.state.heartbeatCount,
+          healthy: globalThis.windowsCopilotHub.state.healthy,
+          lastAlive: Date.now()
+        }
+      });
+    } catch (e) { }
+  });
+
+  chrome.runtime.onInstalled.addListener(function () {
+    chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
+    console.log('[Windows Copilot Hub] Installed — 24/7 keepalive active');
+  });
+})();

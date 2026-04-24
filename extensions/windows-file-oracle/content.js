@@ -118,23 +118,29 @@
     searchBtn.addEventListener('click', function () {
       var query = textarea.value.trim();
       if (!query) { showResult('Please enter a search query.'); return; }
-      if (typeof globalThis.windowsFileOracle !== 'undefined') {
-        showResult(globalThis.windowsFileOracle.search(query));
-      } else { showResult('Engine not loaded.'); }
+      showResult('⏳ Searching...');
+      chrome.runtime.sendMessage({ action: 'search', query: query }, function (resp) {
+        if (chrome.runtime.lastError) { showResult('Error: ' + chrome.runtime.lastError.message); return; }
+        showResult(resp);
+      });
     });
 
     indexBtn.addEventListener('click', function () {
       var path = textarea.value.trim();
       if (!path) { showResult('Please enter a file path.'); return; }
-      if (typeof globalThis.windowsFileOracle !== 'undefined') {
-        showResult(globalThis.windowsFileOracle.indexFile(path, {}));
-      } else { showResult('Engine not loaded.'); }
+      showResult('⏳ Indexing...');
+      chrome.runtime.sendMessage({ action: 'indexFile', filePath: path, metadata: {} }, function (resp) {
+        if (chrome.runtime.lastError) { showResult('Error: ' + chrome.runtime.lastError.message); return; }
+        showResult(resp);
+      });
     });
 
     dupeBtn.addEventListener('click', function () {
-      if (typeof globalThis.windowsFileOracle !== 'undefined') {
-        showResult(globalThis.windowsFileOracle.findDuplicates());
-      } else { showResult('Engine not loaded.'); }
+      showResult('⏳ Finding duplicates...');
+      chrome.runtime.sendMessage({ action: 'findDuplicates' }, function (resp) {
+        if (chrome.runtime.lastError) { showResult('Error: ' + chrome.runtime.lastError.message); return; }
+        showResult(resp);
+      });
     });
 
     return container;

@@ -305,3 +305,41 @@ if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.onMessage)
     return true;
   });
 }
+
+/* -- Production 24/7 Keep-Alive ---------------------------------------- */
+(function () {
+  var ALARM_NAME = 'register-keepalive';
+  var ALARM_PERIOD = 0.4; /* ~24 seconds to beat Chrome's 30s kill timer */
+
+  if (typeof chrome !== 'undefined' && chrome.alarms) {
+    chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
+
+    chrome.alarms.onAlarm.addListener(function (alarm) {
+      if (alarm.name !== ALARM_NAME) return;
+      /* Re-initialize if GC'd */
+      if (!registerEngine || !registerEngine.state) {
+        registerEngine = new RegisterEngine();
+        console.log('[Register] Engine re-initialized by keepalive alarm');
+      }
+      /* Persist state */
+      try {
+        chrome.storage.local.set({
+          'register_state': {
+            heartbeatCount: registerEngine.state.heartbeatCount,
+            healthy: registerEngine.state.healthy,
+            lastAlive: Date.now()
+          }
+        });
+      } catch (e) { /* storage not available */ }
+    });
+  }
+
+  if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.onInstalled) {
+    chrome.runtime.onInstalled.addListener(function () {
+      if (chrome.alarms) {
+        chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
+      }
+      console.log('[Register] Installed/updated — 24/7 keepalive active');
+    });
+  }
+})();

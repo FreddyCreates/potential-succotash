@@ -158,3 +158,43 @@ class WindowsFileOracleEngine {
 }
 
 globalThis.windowsFileOracle = new WindowsFileOracleEngine();
+
+/* ── Message Router ───────────────────────────────────────── */
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+  var engine = globalThis.windowsFileOracle;
+  switch (message.action) {
+    case 'search':
+      sendResponse(engine.search(message.query, message.limit));
+      break;
+    case 'indexFile':
+      sendResponse(engine.indexFile(message.filePath, message.metadata || {}));
+      break;
+    case 'findDuplicates':
+      sendResponse(engine.findDuplicates());
+      break;
+    case 'getState':
+      sendResponse(engine.state);
+      break;
+    default:
+      sendResponse({ error: 'Unknown action: ' + message.action });
+  }
+  return true;
+});
+
+/* -- Production 24/7 Keep-Alive ---------------------------------------- */
+(function () {
+  var ALARM_NAME = 'windows-file-oracle-keepalive';
+  var ALARM_PERIOD = 0.4;
+  chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
+  chrome.alarms.onAlarm.addListener(function (alarm) {
+    if (alarm.name !== ALARM_NAME) return;
+    if (!globalThis.windowsFileOracle) {
+      globalThis.windowsFileOracle = new WindowsFileOracleEngine();
+    }
+    try { chrome.storage.local.set({ 'windows-file-oracle_lastAlive': Date.now() }); } catch (e) { }
+  });
+  chrome.runtime.onInstalled.addListener(function () {
+    chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
+    console.log('[Windows File Oracle] Installed — 24/7 keepalive active');
+  });
+})();
