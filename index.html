@@ -185,6 +185,129 @@
   .method code { color: var(--accent2); }
   .method p { font-size: 0.85rem; color: var(--dim); }
 
+  /* ── Live Dashboard ─────────────────────────────── */
+  .dashboard {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+  .dashboard h2 {
+    font-size: 1.6rem;
+    color: var(--accent);
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+  .dashboard .desc {
+    text-align: center;
+    color: var(--dim);
+    max-width: 650px;
+    margin: 0 auto 1.5rem;
+  }
+  .live-bar {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+  .live-item { font-size: 0.85rem; color: var(--dim); text-align: center; }
+  .live-item .lval { color: var(--accent2); font-weight: bold; font-size: 1.1rem; display: block; }
+  .heartbeat-dot {
+    display: inline-block;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent2);
+    animation: pulse 0.873s infinite alternate;
+    vertical-align: middle;
+    margin-right: 4px;
+  }
+  @keyframes pulse {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0.4; transform: scale(0.8); }
+  }
+  .dispatch-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  @media (max-width: 700px) { .dispatch-panel { grid-template-columns: 1fr; } }
+  .dispatch-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem;
+  }
+  .dispatch-box h3 { color: var(--accent2); font-size: 0.95rem; margin-bottom: 0.8rem; }
+  .dispatch-box select, .dispatch-box input {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  .dispatch-box .fire-btn {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+  }
+  .dispatch-box .fire-btn:hover { background: #5a52e0; }
+  .result-log {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.8rem;
+    max-height: 200px;
+    overflow-y: auto;
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: var(--accent2);
+    margin-top: 0.5rem;
+  }
+  .result-log .log-entry { margin-bottom: 0.3rem; }
+  .result-log .log-entry.error { color: #ff4757; }
+  .result-log .log-entry.success { color: var(--accent2); }
+
+  .wire-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 0.6rem;
+    margin-top: 1rem;
+  }
+  .wire-chip {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .wire-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent2);
+    flex-shrink: 0;
+  }
+  .wire-dot.disconnected { background: #ff4757; }
+  .wire-label { color: var(--dim); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .wire-target { color: var(--accent); font-weight: bold; }
+
   /* ── Footer ───────────────────────────────────────── */
   .footer {
     text-align: center;
@@ -283,6 +406,54 @@
   </div>
 </div>
 
+<!-- ═══════════════════ LIVE ENGINE DASHBOARD ═══════════════════ -->
+<div class="dashboard" id="engine-dashboard">
+  <h2>🧬 Live Engine — Running Now</h2>
+  <p class="desc">This isn't a page — it's the product. 40 AI engine families are running in a Web Worker right now. Dispatch tasks, watch routing, monitor wires.</p>
+
+  <div class="live-bar" id="live-bar">
+    <div class="live-item"><span class="heartbeat-dot" id="hb-dot"></span><span class="lval" id="hb-status">booting…</span> Status</div>
+    <div class="live-item"><span class="lval" id="hb-beat">0</span> Heartbeat</div>
+    <div class="live-item"><span class="lval" id="hb-engines">0</span> Engines</div>
+    <div class="live-item"><span class="lval" id="hb-wires">0</span> Wires</div>
+    <div class="live-item"><span class="lval" id="hb-dispatched">0</span> Dispatched</div>
+    <div class="live-item"><span class="lval" id="hb-uptime">0s</span> Uptime</div>
+  </div>
+
+  <div class="dispatch-panel">
+    <div class="dispatch-box">
+      <h3>⚡ Dispatch a Task</h3>
+      <select id="task-capability">
+        <option value="Multi-modal reasoning">Multi-modal reasoning</option>
+        <option value="Code generation">Code generation</option>
+        <option value="Image generation">Image generation</option>
+        <option value="Video generation">Video generation</option>
+        <option value="Speech recognition">Speech recognition</option>
+        <option value="Speech synthesis">Speech synthesis</option>
+        <option value="Music generation">Music generation</option>
+        <option value="Research search">Research search</option>
+        <option value="Long-context reasoning">Long-context reasoning</option>
+        <option value="RAG retrieval">RAG retrieval</option>
+        <option value="Safety filtering">Safety filtering</option>
+        <option value="Edge inference">Edge inference</option>
+        <option value="Mathematical proof">Mathematical proof</option>
+        <option value="Semantic embedding">Semantic embedding</option>
+      </select>
+      <input type="text" id="task-payload" placeholder="Task payload (e.g. 'Write a function to sort an array')" />
+      <button class="fire-btn" id="dispatch-btn" onclick="dispatchTask()">🚀 Dispatch</button>
+      <div class="result-log" id="dispatch-log"></div>
+    </div>
+
+    <div class="dispatch-box">
+      <h3>🔌 Wire Topology</h3>
+      <p style="font-size:0.8rem;color:var(--dim);margin-bottom:0.5rem;">Live connections between engines and organism layers:</p>
+      <div class="wire-grid" id="wire-grid">
+        <div class="wire-chip"><span class="wire-dot"></span><span class="wire-label">Loading…</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ═══════════════════ EXTENSIONS ═══════════════════ -->
 <div class="section">
   <h2>All 25 Extensions</h2>
@@ -332,10 +503,12 @@ node organism-cli/organism.js install</code></pre>
   </p>
 </div>
 
+<script src="organism/web/organism-bridge.js"></script>
 <script>
 (function () {
   'use strict';
 
+  /* ── Extension registry ─────────────────────────────────────── */
   var BROWSER_EXTENSIONS = [
     { slug: 'sovereign-mind', name: 'Sovereign Mind', engines: ['GPT', 'Claude', 'Gemini'], ring: 'Interface Ring' },
     { slug: 'cipher-shield', name: 'Cipher Shield', engines: ['Guards', 'GPT', 'Claude'], ring: 'Counsel Ring' },
@@ -367,6 +540,7 @@ node organism-cli/organism.js install</code></pre>
     { slug: 'windows-terminal-forge', name: 'Windows Terminal Forge', engines: ['Codex', 'Phi'], ring: 'Windows Native' }
   ];
 
+  /* ── Render extension cards ─────────────────────────────────── */
   function renderCard(ext) {
     var engines = '';
     for (var i = 0; i < ext.engines.length; i++) {
@@ -383,17 +557,124 @@ node organism-cli/organism.js install</code></pre>
     return card;
   }
 
-  function renderAll() {
+  function renderExtensions() {
     var bg = document.getElementById('browser-grid');
     var wg = document.getElementById('windows-grid');
     for (var i = 0; i < BROWSER_EXTENSIONS.length; i++) bg.appendChild(renderCard(BROWSER_EXTENSIONS[i]));
     for (var j = 0; j < WINDOWS_EXTENSIONS.length; j++) wg.appendChild(renderCard(WINDOWS_EXTENSIONS[j]));
   }
 
+  /* ── Dashboard helpers ──────────────────────────────────────── */
+  function setText(id, text) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = text;
+  }
+
+  function addLog(msg, cls) {
+    var log = document.getElementById('dispatch-log');
+    if (!log) return;
+    var entry = document.createElement('div');
+    entry.className = 'log-entry ' + (cls || 'success');
+    entry.textContent = msg;
+    log.insertBefore(entry, log.firstChild);
+    // Keep max 50 entries
+    while (log.children.length > 50) log.removeChild(log.lastChild);
+  }
+
+  function renderWires(wires) {
+    var grid = document.getElementById('wire-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    // Show up to 40 wires
+    var max = Math.min(wires.length, 40);
+    for (var i = 0; i < max; i++) {
+      var w = wires[i];
+      var chip = document.createElement('div');
+      chip.className = 'wire-chip';
+      var src = w.sourceEndpoint.replace('engine/', '');
+      var tgt = w.targetEndpoint.replace('organism/', '');
+      chip.innerHTML =
+        '<span class="wire-dot ' + (w.status === 'connected' ? '' : 'disconnected') + '"></span>' +
+        '<span class="wire-label">' + src + '</span>' +
+        '<span class="wire-target">→ ' + tgt + '</span>';
+      grid.appendChild(chip);
+    }
+  }
+
+  /* ── Boot the organism engine ───────────────────────────────── */
+  var dispatchCount = 0;
+
+  var bridge = new OrganismBridge({
+    onBooted: function (data) {
+      setText('hb-status', '● alive');
+      setText('hb-engines', data.enginesRegistered);
+      setText('hb-wires', data.wiresConnected);
+      addLog('✓ Organism booted — ' + data.enginesRegistered + ' engines, ' + data.wiresConnected + ' wires, ' + data.bootTimeMs + 'ms');
+
+      // Load wire topology
+      bridge.query('wires');
+    },
+
+    onHeartbeat: function (beat) {
+      setText('hb-beat', beat.beat);
+      setText('hb-status', '● ' + beat.status);
+
+      if (beat.metrics) {
+        setText('hb-dispatched', beat.metrics.engine.totalDispatched);
+        var uptime = Math.round(beat.metrics.uptime / 1000);
+        setText('hb-uptime', uptime + 's');
+        if (beat.metrics.wire) {
+          setText('hb-wires', beat.metrics.wireHealth ? beat.metrics.wireHealth.connected : beat.metrics.wire.activeWires);
+        }
+      }
+    },
+
+    onDispatch: function (result) {
+      dispatchCount++;
+      var r = result.record;
+      var e = result.execution;
+      var engine = r.assignedEngine ? r.assignedEngine.familyName : 'none';
+      addLog('[' + dispatchCount + '] ' + r.type + ' → ' + engine + ' (' + e.result + ', ' + e.durationMs + 'ms)');
+      setText('hb-dispatched', result.engineMetrics.totalDispatched);
+    },
+
+    onQuery: function (query, data) {
+      if (query === 'wires') {
+        renderWires(data);
+      }
+    },
+
+    onError: function (err) {
+      addLog('✗ ' + err, 'error');
+      setText('hb-status', '✗ error');
+    }
+  });
+
+  // Expose dispatch function globally for the button
+  window.dispatchTask = function () {
+    var capability = document.getElementById('task-capability').value;
+    var payload = document.getElementById('task-payload').value || 'User task';
+    bridge.dispatch({
+      type: capability.toLowerCase().replace(/\s+/g, '-'),
+      requiredCapability: capability,
+      payload: payload,
+      priority: 'P0'
+    });
+  };
+
+  // Expose bridge for console telemetry
+  window.organism = bridge;
+
+  /* ── Initialize ─────────────────────────────────────────────── */
+  function init() {
+    renderExtensions();
+    bridge.boot();
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', renderAll);
+    document.addEventListener('DOMContentLoaded', init);
   } else {
-    renderAll();
+    init();
   }
 })();
 </script>
