@@ -4,9 +4,11 @@ on:
   push:
     branches: [main]
     paths:
+      - 'index.html'
       - 'download.html'
       - 'dist/**'
       - 'organism/web/**'
+      - 'CNAME'
   workflow_dispatch:
 
 permissions:

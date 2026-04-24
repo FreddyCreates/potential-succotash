@@ -6,8 +6,9 @@
 
 | | |
 |---|---|
-| **[🧬 Launch Live Organism](https://freddycreates.github.io/potential-succotash/organism/web/index.html)** | Open the organism runtime — 873ms heartbeat, 4-register state, live vitals — right in your browser |
-| **[📦 Download Extensions Page](https://freddycreates.github.io/potential-succotash/download.html)** | Browse all 31 extensions, download individually or all at once, with native in-browser zip builds |
+| **[🌐 itsnotAilabs.com](https://itsnotAilabs.com)** | The website — launch the organism, download extensions, see everything |
+| **[🧬 Launch Live Organism](https://itsnotAilabs.com/organism/web/index.html)** | Open the organism runtime — 873ms heartbeat, 4-register state, live vitals — right in your browser |
+| **[📦 Download Extensions](https://itsnotAilabs.com/download.html)** | Browse all 31 extensions, download individually or all at once, with native in-browser zip builds |
 
 No install needed. Click → it opens. The organism is alive in the browser.
 
