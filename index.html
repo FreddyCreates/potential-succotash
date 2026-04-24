@@ -438,8 +438,8 @@
 
 <!-- ═══════════════════ LIVE ENGINE DASHBOARD ═══════════════════ -->
 <div class="dashboard" id="engine-dashboard">
-  <h2>🧬 Live Engine — Running Now</h2>
-  <p class="desc">This isn't a page — it's the product. 13 permanent Web Workers running 40 AI engines, sovereign memory, protocol routing, health telemetry, cryptography, contracts, scheduling, mesh networking, analytics, security, data pipelines, inference, and orchestration — all in your browser right now.</p>
+  <h2>🧬 Live Engine — Neuroemergence Active</h2>
+  <p class="desc">This isn't a page — it's the product. 13 permanent Web Workers organized into 4 autonomous divisions, each with a mini heart, mini brain, and neuroemergence core — running 40 AI engines, sovereign memory, protocol routing, health telemetry, cryptography, contracts, scheduling, mesh networking, analytics, security, data pipelines, inference, and orchestration — all alive in your browser right now and forever.</p>
 
   <div class="live-bar" id="live-bar">
     <div class="live-item"><span class="heartbeat-dot" id="hb-dot"></span><span class="lval" id="hb-status">booting…</span> Status</div>
@@ -451,7 +451,19 @@
     <div class="live-item"><span class="lval" id="hb-uptime">0s</span> Uptime</div>
   </div>
 
-  <h3 style="color:var(--accent2);font-size:0.95rem;margin-bottom:0.5rem;">⚙ Worker Status — 13 Permanent Web Workers</h3>
+  <div class="live-bar" id="neuro-bar" style="margin-top:0.3rem;border-top:1px solid var(--border);">
+    <div class="live-item">⚡ <span class="lval" id="neuro-emergence">0</span> Emergence</div>
+    <div class="live-item">🧠 <span class="lval" id="neuro-awareness">0</span> Awareness</div>
+    <div class="live-item">💓 <span class="lval" id="neuro-health">0</span> Health</div>
+    <div class="live-item">🔮 <span class="lval" id="neuro-resonance">0</span> Resonance</div>
+    <div class="live-item">🔥 <span class="lval" id="neuro-cascade">—</span> Cascade</div>
+    <div class="live-item">↻ <span class="lval" id="neuro-restarts">0</span> Restarts</div>
+  </div>
+
+  <h3 style="color:var(--accent2);font-size:0.95rem;margin-bottom:0.5rem;">⚡ 4 Autonomous Worker Divisions — Neuroemergence Active</h3>
+  <div id="division-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0.6rem;margin-bottom:1rem;"></div>
+
+  <h3 style="color:var(--accent2);font-size:0.95rem;margin-bottom:0.5rem;">⚙ Worker Status — 13 Permanent Web Workers (Mini Heart + Brain)</h3>
   <div class="worker-grid" id="worker-grid">
     <div class="worker-card booting"><div class="wname">🧠 Engine</div><div class="wstatus"><span class="dot booting"></span>booting</div><div class="wbeats">0 beats</div></div>
     <div class="worker-card booting"><div class="wname">💾 Memory</div><div class="wstatus"><span class="dot booting"></span>booting</div><div class="wbeats">0 beats</div></div>
@@ -629,6 +641,32 @@ node organism-cli/organism.js install</code></pre>
     while (log.children.length > 50) log.removeChild(log.lastChild);
   }
 
+  function renderDivisions(divisions) {
+    var grid = document.getElementById('division-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    for (var i = 0; i < divisions.length; i++) {
+      var d = divisions[i];
+      var healthColor = d.health >= 80 ? '#00ff41' : (d.health >= 50 ? '#ffa500' : '#ff4444');
+      var card = document.createElement('div');
+      card.style.cssText = 'background:var(--card-bg);border:1px solid var(--border);border-radius:6px;padding:0.6rem;';
+      card.innerHTML =
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.3rem;">' +
+          '<strong style="color:var(--accent)">' + d.icon + ' ' + d.name + ' Division</strong>' +
+          '<span style="color:' + healthColor + ';font-size:0.8rem;font-weight:bold;">' + d.health + '%</span>' +
+        '</div>' +
+        '<div style="font-size:0.7rem;color:var(--dim);margin-bottom:0.3rem;">' + d.purpose + '</div>' +
+        '<div style="display:flex;gap:0.5rem;flex-wrap:wrap;font-size:0.7rem;">' +
+          '<span>💓 ' + (d.neuro ? d.neuro.avgHealth : 0) + '</span>' +
+          '<span>🧠 ' + (d.neuro ? d.neuro.avgAwareness : 0) + '</span>' +
+          '<span>⚡ ' + (d.neuro ? d.neuro.avgEmergence : 0) + '</span>' +
+          '<span>' + d.alive + '/' + d.total + ' alive</span>' +
+          (d.totalRestarts > 0 ? '<span style="color:#ffa500">↻' + d.totalRestarts + '</span>' : '') +
+        '</div>';
+      grid.appendChild(card);
+    }
+  }
+
   function renderWires(wires) {
     var grid = document.getElementById('wire-grid');
     if (!grid) return;
@@ -663,10 +701,22 @@ node organism-cli/organism.js install</code></pre>
       var icon = WORKER_ICONS[w.name] || '⚙';
       var card = document.createElement('div');
       card.className = 'worker-card ' + w.status;
+      var neuroLine = '';
+      if (w.neuro && w.neuro.heart) {
+        var h = w.neuro.heart;
+        var b = w.neuro.brain || {};
+        var em = w.neuro.emergence || {};
+        neuroLine =
+          '<div style="font-size:0.65rem;color:var(--dim);margin-top:2px;">' +
+            '💓' + h.health + ' 🧠' + (b.awareness || 0) + ' ⚡' + (em.emergence || 0) +
+            (w.restarts > 0 ? ' <span style="color:#ffa500">↻' + w.restarts + '</span>' : '') +
+          '</div>';
+      }
       card.innerHTML =
         '<div class="wname">' + icon + ' ' + w.name.charAt(0).toUpperCase() + w.name.slice(1) + '</div>' +
         '<div class="wstatus"><span class="dot ' + w.status + '"></span>' + w.status + '</div>' +
-        '<div class="wbeats">' + w.heartbeats + ' beats</div>';
+        '<div class="wbeats">' + w.heartbeats + ' beats</div>' +
+        neuroLine;
       grid.appendChild(card);
       if (w.status === 'alive') aliveCount++;
     }
@@ -715,6 +765,27 @@ node organism-cli/organism.js install</code></pre>
 
     onWorkerStatus: function (statuses) {
       renderWorkerCards(statuses);
+
+      // Update neuro summary bar
+      var summary = bridge.getNeuroSummary();
+      setText('neuro-emergence', summary.avgEmergence);
+      setText('neuro-awareness', summary.avgAwareness);
+      setText('neuro-health', summary.avgHealth);
+      setText('neuro-resonance', summary.avgResonance);
+      setText('neuro-cascade', summary.cascadeActive ? '🔥 ACTIVE' : '—');
+      setText('neuro-restarts', summary.totalRestarts);
+    },
+
+    onDivisionStatus: function (divisions) {
+      renderDivisions(divisions);
+    },
+
+    onWorkerRestart: function (name, restarts) {
+      addLog('↻ Auto-restart: ' + name + ' (attempt ' + restarts + ')', 'error');
+    },
+
+    onCascade: function (workerName, emergence) {
+      addLog('⚡ Neuroemergence CASCADE activated via ' + workerName + ' (emergence=' + emergence.emergence + ')', 'success');
     },
 
     onMemory: function (msg) {

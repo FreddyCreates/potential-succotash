@@ -183,6 +183,36 @@ OrganismBridge.prototype._handleMessage = function (workerName, msg) {
     this.workerStatus[workerName].status = 'alive';
     this.workerStatus[workerName].heartbeats = msg.beat;
     this.workerStatus[workerName].lastBeat = msg.timestamp;
+    this.workerStatus[workerName].missedBeats = 0;
+
+    // Track neuro vitals from heartbeat
+    if (msg.neuro) {
+      this.workerStatus[workerName].neuro = msg.neuro;
+
+      // Phase coupling: broadcast this worker's phase to all other workers
+      var phase = msg.neuro.emergence ? msg.neuro.emergence.phase : 0;
+      for (var peer in this.workers) {
+        if (peer !== workerName && this.workers[peer]) {
+          this.workers[peer].postMessage({
+            type: 'neuro-signal',
+            neuroSource: workerName,
+            neuroPhase: phase
+          });
+        }
+      }
+
+      // Emit neuro status to UI
+      if (this.config.onNeuroStatus) {
+        this.config.onNeuroStatus(workerName, msg.neuro);
+      }
+
+      // Detect cascade activation
+      if (msg.neuro.emergence && msg.neuro.emergence.cascadeActive) {
+        if (this.config.onCascade) {
+          this.config.onCascade(workerName, msg.neuro.emergence);
+        }
+      }
+    }
 
     // Forward heartbeats to telemetry
     if (workerName !== 'telemetry' && this.workers.telemetry) {
@@ -575,6 +605,10 @@ OrganismBridge.prototype.getDivisionStatuses = function () {
     var total = div.workers.length;
     var totalBeats = 0;
     var totalRestarts = 0;
+    var avgHealth = 0;
+    var avgAwareness = 0;
+    var avgEmergence = 0;
+    var neuroWorkers = 0;
 
     for (var i = 0; i < div.workers.length; i++) {
       var ws = this.workerStatus[div.workers[i]];
@@ -582,7 +616,20 @@ OrganismBridge.prototype.getDivisionStatuses = function () {
         if (ws.status === 'alive') alive++;
         totalBeats += ws.heartbeats;
         totalRestarts += ws.restarts;
+
+        if (ws.neuro) {
+          neuroWorkers++;
+          if (ws.neuro.heart) avgHealth += ws.neuro.heart.health;
+          if (ws.neuro.brain) avgAwareness += ws.neuro.brain.awareness;
+          if (ws.neuro.emergence) avgEmergence += ws.neuro.emergence.emergence;
+        }
       }
+    }
+
+    if (neuroWorkers > 0) {
+      avgHealth = Math.round(avgHealth / neuroWorkers);
+      avgAwareness = Math.round(avgAwareness / neuroWorkers);
+      avgEmergence = Math.round(avgEmergence / neuroWorkers * 1000) / 1000;
     }
 
     var health = total > 0 ? Math.round((alive / total) * 100) : 0;
@@ -597,7 +644,12 @@ OrganismBridge.prototype.getDivisionStatuses = function () {
       health: health,
       totalBeats: totalBeats,
       totalRestarts: totalRestarts,
-      autonomous: true
+      autonomous: true,
+      neuro: {
+        avgHealth: avgHealth,
+        avgAwareness: avgAwareness,
+        avgEmergence: avgEmergence
+      }
     });
   }
   return result;
@@ -610,17 +662,24 @@ OrganismBridge.prototype.getDivisionStatuses = function () {
 OrganismBridge.prototype.getWorkerStatuses = function () {
   var statuses = [];
   for (var name in this.workerStatus) {
+    var ws = this.workerStatus[name];
     statuses.push({
       name: name,
-      status: this.workerStatus[name].status,
-      heartbeats: this.workerStatus[name].heartbeats,
-      lastBeat: this.workerStatus[name].lastBeat
+      status: ws.status,
+      heartbeats: ws.heartbeats,
+      lastBeat: ws.lastBeat,
+      restarts: ws.restarts,
+      neuro: ws.neuro || null
     });
   }
   return statuses;
 };
 
 OrganismBridge.prototype.shutdown = function () {
+  if (this._healthInterval) {
+    clearInterval(this._healthInterval);
+    this._healthInterval = null;
+  }
   for (var name in this.workers) {
     if (this.workers[name]) {
       this.workers[name].postMessage({ type: 'stop' });
@@ -631,6 +690,47 @@ OrganismBridge.prototype.shutdown = function () {
   this.status = 'stopped';
 };
 
+/* ────────────────────────────────────────────────────────
+   Neuroemergence Summary — aggregate neuro state
+   ──────────────────────────────────────────────────────── */
+
+OrganismBridge.prototype.getNeuroSummary = function () {
+  var workerCount = 0;
+  var totalHealth = 0;
+  var totalAwareness = 0;
+  var totalEmergence = 0;
+  var totalResonance = 0;
+  var cascadeWorkers = [];
+
+  for (var name in this.workerStatus) {
+    var ws = this.workerStatus[name];
+    if (ws.neuro) {
+      workerCount++;
+      if (ws.neuro.heart) totalHealth += ws.neuro.heart.health;
+      if (ws.neuro.brain) totalAwareness += ws.neuro.brain.awareness;
+      if (ws.neuro.emergence) {
+        totalEmergence += ws.neuro.emergence.emergence;
+        totalResonance += ws.neuro.emergence.resonance;
+        if (ws.neuro.emergence.cascadeActive) cascadeWorkers.push(name);
+      }
+    }
+  }
+
+  return {
+    workers: workerCount,
+    avgHealth: workerCount > 0 ? Math.round(totalHealth / workerCount) : 0,
+    avgAwareness: workerCount > 0 ? Math.round(totalAwareness / workerCount) : 0,
+    avgEmergence: workerCount > 0 ? Math.round(totalEmergence / workerCount * 1000) / 1000 : 0,
+    avgResonance: workerCount > 0 ? Math.round(totalResonance / workerCount * 1000) / 1000 : 0,
+    cascadeActive: cascadeWorkers.length > 0,
+    cascadeWorkers: cascadeWorkers,
+    totalRestarts: this._totalRestarts,
+    uptime: Date.now() - this._autonomyBoot,
+    divisions: this.getDivisionStatuses()
+  };
+};
+
 if (typeof window !== 'undefined') {
   window.OrganismBridge = OrganismBridge;
+  window.ORGANISM_DIVISIONS = DIVISIONS;
 }
