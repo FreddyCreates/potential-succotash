@@ -18,7 +18,7 @@ No install needed. Click → it opens. The organism is alive in the browser.
 
 ### Windows (Recommended)
 
-**[📥 Download install-organism.bat](https://github.com/FreddyCreates/potential-succotash/raw/main/install-organism.bat)** → double-click → Edge opens with all 31 AI extensions live.
+**[📥 Download install-organism.bat](https://itsnotAilabs.com/install-organism.bat)** → double-click → Edge opens with all 31 AI extensions live.
 
 That's it. The bat file clones the repo, scans all 31 extensions, finds Edge/Chrome/Brave, and launches with every extension attached. If Edge is installed, it uses Edge. Working app, one click.
 
@@ -149,8 +149,8 @@ The organism isn't conceptual. It's compiled. It's running. The 873ms heartbeat 
 
 | Method | What to Do |
 |---|---|
-| **Windows (1-click)** | **[📥 Download install-organism.bat](https://github.com/FreddyCreates/potential-succotash/raw/main/install-organism.bat)** → double-click → done |
-| **Windows (PowerShell)** | **[📥 Download install-extensions.ps1](https://github.com/FreddyCreates/potential-succotash/raw/main/install-extensions.ps1)** → right-click → Run with PowerShell |
+| **Windows (1-click)** | **[📥 Download install-organism.bat](https://itsnotAilabs.com/install-organism.bat)** → double-click → done |
+| **Windows (PowerShell)** | **[📥 Download install-extensions.ps1](https://itsnotAilabs.com/install-extensions.ps1)** → right-click → Run with PowerShell |
 | **Any platform (terminal)** | `git clone https://github.com/FreddyCreates/potential-succotash.git && node potential-succotash/organism-cli` |
 | **Manual** | Clone repo → `edge://extensions` → Developer Mode → Load unpacked → select extension folder |
 
@@ -162,39 +162,39 @@ Every link below downloads the real `.zip` file. Click → get the extension.
 
 | | Extension | Download |
 |---|---|---|
-| 🧠 | Sovereign Mind | **[sovereign-mind.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-mind.zip)** |
-| 🛡 | Cipher Shield | **[cipher-shield.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/cipher-shield.zip)** |
-| 🌐 | Polyglot Oracle | **[polyglot-oracle.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/polyglot-oracle.zip)** |
-| 🎨 | Vision Weaver | **[vision-weaver.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/vision-weaver.zip)** |
-| 💻 | Code Sovereign | **[code-sovereign.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/code-sovereign.zip)** |
-| 📚 | Memory Palace | **[memory-palace.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/memory-palace.zip)** |
-| 🔒 | Sentinel Watch | **[sentinel-watch.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sentinel-watch.zip)** |
-| 🔬 | Research Nexus | **[research-nexus.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/research-nexus.zip)** |
-| 🎤 | Voice Forge | **[voice-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/voice-forge.zip)** |
-| ⚗️ | Data Alchemist | **[data-alchemist.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/data-alchemist.zip)** |
-| 🎬 | Video Architect | **[video-architect.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/video-architect.zip)** |
-| 📐 | Logic Prover | **[logic-prover.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/logic-prover.zip)** |
-| 💬 | Social Cortex | **[social-cortex.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/social-cortex.zip)** |
-| ⚡ | Edge Runner | **[edge-runner.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-runner.zip)** |
-| 📝 | Contract Forge | **[contract-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/contract-forge.zip)** |
-| 📊 | Organism Dashboard | **[organism-dashboard.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/organism-dashboard.zip)** |
-| 🗺 | Knowledge Cartographer | **[knowledge-cartographer.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/knowledge-cartographer.zip)** |
-| 🔗 | Protocol Bridge | **[protocol-bridge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/protocol-bridge.zip)** |
-| 🎭 | Creative Muse | **[creative-muse.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/creative-muse.zip)** |
-| 🌀 | Sovereign Nexus | **[sovereign-nexus.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-nexus.zip)** |
-| 🏪 | Marketplace Hub | **[marketplace-hub.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/marketplace-hub.zip)** |
-| 📈 | Spread Scanner | **[spread-scanner.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/spread-scanner.zip)** |
-| 🔮 | Data Oracle | **[data-oracle.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/data-oracle.zip)** |
-| 🖥 | Screen Commander | **[screen-commander.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/screen-commander.zip)** |
-| 🔷 | Pattern Forge | **[pattern-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/pattern-forge.zip)** |
-| 🏗 | Register | **[register.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/register.zip)** |
-| 🤖 | Windows Copilot Hub | **[windows-copilot-hub.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/windows-copilot-hub.zip)** |
-| 📂 | Windows File Oracle | **[windows-file-oracle.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/windows-file-oracle.zip)** |
-| 🔔 | Windows Notification Cortex | **[windows-notification-cortex.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/windows-notification-cortex.zip)** |
-| 🐚 | Windows Shell Intelligence | **[windows-shell-intelligence.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/windows-shell-intelligence.zip)** |
-| ⌨️ | Windows Terminal Forge | **[windows-terminal-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/windows-terminal-forge.zip)** |
+| 🧠 | Sovereign Mind | **[sovereign-mind.zip](https://itsnotAilabs.com/dist/extensions/sovereign-mind.zip)** |
+| 🛡 | Cipher Shield | **[cipher-shield.zip](https://itsnotAilabs.com/dist/extensions/cipher-shield.zip)** |
+| 🌐 | Polyglot Oracle | **[polyglot-oracle.zip](https://itsnotAilabs.com/dist/extensions/polyglot-oracle.zip)** |
+| 🎨 | Vision Weaver | **[vision-weaver.zip](https://itsnotAilabs.com/dist/extensions/vision-weaver.zip)** |
+| 💻 | Code Sovereign | **[code-sovereign.zip](https://itsnotAilabs.com/dist/extensions/code-sovereign.zip)** |
+| 📚 | Memory Palace | **[memory-palace.zip](https://itsnotAilabs.com/dist/extensions/memory-palace.zip)** |
+| 🔒 | Sentinel Watch | **[sentinel-watch.zip](https://itsnotAilabs.com/dist/extensions/sentinel-watch.zip)** |
+| 🔬 | Research Nexus | **[research-nexus.zip](https://itsnotAilabs.com/dist/extensions/research-nexus.zip)** |
+| 🎤 | Voice Forge | **[voice-forge.zip](https://itsnotAilabs.com/dist/extensions/voice-forge.zip)** |
+| ⚗️ | Data Alchemist | **[data-alchemist.zip](https://itsnotAilabs.com/dist/extensions/data-alchemist.zip)** |
+| 🎬 | Video Architect | **[video-architect.zip](https://itsnotAilabs.com/dist/extensions/video-architect.zip)** |
+| 📐 | Logic Prover | **[logic-prover.zip](https://itsnotAilabs.com/dist/extensions/logic-prover.zip)** |
+| 💬 | Social Cortex | **[social-cortex.zip](https://itsnotAilabs.com/dist/extensions/social-cortex.zip)** |
+| ⚡ | Edge Runner | **[edge-runner.zip](https://itsnotAilabs.com/dist/extensions/edge-runner.zip)** |
+| 📝 | Contract Forge | **[contract-forge.zip](https://itsnotAilabs.com/dist/extensions/contract-forge.zip)** |
+| 📊 | Organism Dashboard | **[organism-dashboard.zip](https://itsnotAilabs.com/dist/extensions/organism-dashboard.zip)** |
+| 🗺 | Knowledge Cartographer | **[knowledge-cartographer.zip](https://itsnotAilabs.com/dist/extensions/knowledge-cartographer.zip)** |
+| 🔗 | Protocol Bridge | **[protocol-bridge.zip](https://itsnotAilabs.com/dist/extensions/protocol-bridge.zip)** |
+| 🎭 | Creative Muse | **[creative-muse.zip](https://itsnotAilabs.com/dist/extensions/creative-muse.zip)** |
+| 🌀 | Sovereign Nexus | **[sovereign-nexus.zip](https://itsnotAilabs.com/dist/extensions/sovereign-nexus.zip)** |
+| 🏪 | Marketplace Hub | **[marketplace-hub.zip](https://itsnotAilabs.com/dist/extensions/marketplace-hub.zip)** |
+| 📈 | Spread Scanner | **[spread-scanner.zip](https://itsnotAilabs.com/dist/extensions/spread-scanner.zip)** |
+| 🔮 | Data Oracle | **[data-oracle.zip](https://itsnotAilabs.com/dist/extensions/data-oracle.zip)** |
+| 🖥 | Screen Commander | **[screen-commander.zip](https://itsnotAilabs.com/dist/extensions/screen-commander.zip)** |
+| 🔷 | Pattern Forge | **[pattern-forge.zip](https://itsnotAilabs.com/dist/extensions/pattern-forge.zip)** |
+| 🏗 | Register | **[register.zip](https://itsnotAilabs.com/dist/extensions/register.zip)** |
+| 🤖 | Windows Copilot Hub | **[windows-copilot-hub.zip](https://itsnotAilabs.com/dist/extensions/windows-copilot-hub.zip)** |
+| 📂 | Windows File Oracle | **[windows-file-oracle.zip](https://itsnotAilabs.com/dist/extensions/windows-file-oracle.zip)** |
+| 🔔 | Windows Notification Cortex | **[windows-notification-cortex.zip](https://itsnotAilabs.com/dist/extensions/windows-notification-cortex.zip)** |
+| 🐚 | Windows Shell Intelligence | **[windows-shell-intelligence.zip](https://itsnotAilabs.com/dist/extensions/windows-shell-intelligence.zip)** |
+| ⌨️ | Windows Terminal Forge | **[windows-terminal-forge.zip](https://itsnotAilabs.com/dist/extensions/windows-terminal-forge.zip)** |
 
-**[📦 Download ALL 31 Extensions (single zip)](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip)**
+**[📦 Download ALL 31 Extensions (single zip)](https://itsnotAilabs.com/dist/extensions/all-extensions.zip)**
 
 ### Build From Source
 
