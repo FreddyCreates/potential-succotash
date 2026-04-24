@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JARVIS AI — Side Panel</title>
+<style>
+/* ── Reset & Base ──────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0d1117; --bg2: #161b22; --bg3: #21262d;
+  --accent: #58a6ff; --gold: #d4af37;
+  --text: #e0e0e0; --muted: #8b949e;
+  --success: #3fb950; --error: #f85149; --border: #30363d;
+}
+html, body {
+  height: 100%; background: var(--bg); color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13px; overflow-y: auto;
+}
+
+/* ── Scrollbar ─────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--bg3); border-radius: 3px; }
+
+/* ── Header ────────────────────────────────────────────────── */
+.header {
+  display: flex; align-items: center; padding: 10px 14px;
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 10;
+}
+.arc-reactor {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--accent); margin-right: 8px; flex-shrink: 0;
+  animation: pulse 873ms ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 4px var(--accent); opacity: 0.7; }
+  50% { box-shadow: 0 0 12px var(--accent), 0 0 24px rgba(88,166,255,0.3); opacity: 1; }
+}
+.header-title { font-size: 15px; font-weight: 700; color: var(--gold); flex: 1; }
+.header-version { font-size: 10px; color: var(--muted); margin-right: 10px; }
+.header-btn {
+  background: none; border: none; color: var(--muted); cursor: pointer;
+  font-size: 16px; padding: 2px 6px; border-radius: 4px;
+}
+.header-btn:hover { color: var(--text); background: var(--bg3); }
+
+/* ── Status Bar ────────────────────────────────────────────── */
+.status-bar {
+  display: flex; align-items: center; gap: 12px;
+  padding: 6px 14px; background: var(--bg2);
+  border-bottom: 1px solid var(--border); font-size: 11px; color: var(--muted);
+}
+.status-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--success); display: inline-block; margin-right: 3px;
+}
+
+/* ── Command Input ─────────────────────────────────────────── */
+.command-section { padding: 10px 14px; position: relative; }
+.command-input {
+  width: 100%; padding: 8px 10px; border-radius: 6px;
+  border: 1px solid var(--border); background: var(--bg2);
+  color: var(--text); font-size: 13px; outline: none;
+}
+.command-input:focus { border-color: var(--accent); }
+.command-input::placeholder { color: var(--muted); }
+.autocomplete {
+  position: absolute; left: 14px; right: 14px; top: 44px;
+  background: var(--bg2); border: 1px solid var(--border); border-radius: 6px;
+  max-height: 160px; overflow-y: auto; z-index: 20; display: none;
+}
+.autocomplete-item {
+  padding: 6px 10px; cursor: pointer; font-size: 12px; color: var(--text);
+}
+.autocomplete-item:hover, .autocomplete-item.active {
+  background: var(--bg3); color: var(--accent);
+}
+
+/* ── Quick Actions ─────────────────────────────────────────── */
+.section-label {
+  padding: 8px 14px 4px; font-size: 10px; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--muted);
+}
+.quick-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 6px; padding: 4px 14px 10px;
+}
+.quick-btn {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; padding: 8px 2px; border-radius: 6px;
+  background: var(--bg2); border: 1px solid var(--border);
+  color: var(--text); cursor: pointer; font-size: 11px; gap: 3px;
+  transition: background 0.15s, border-color 0.15s;
+}
+.quick-btn:hover { background: var(--bg3); border-color: var(--accent); }
+.quick-btn .icon { font-size: 18px; }
+
+/* ── Collapsible Section ───────────────────────────────────── */
+.collapse-header {
+  display: flex; align-items: center; padding: 8px 14px;
+  cursor: pointer; font-size: 12px; font-weight: 600;
+  color: var(--muted); border-top: 1px solid var(--border);
+  user-select: none;
+}
+.collapse-header:hover { color: var(--text); }
+.collapse-arrow { margin-right: 6px; transition: transform 0.2s; font-size: 10px; }
+.collapse-header.open .collapse-arrow { transform: rotate(90deg); }
+.collapse-body { display: none; padding: 0 14px 8px; }
+.collapse-header.open + .collapse-body { display: block; }
+
+/* ── Protocol Browser ──────────────────────────────────────── */
+.proto-division {
+  padding: 5px 8px; margin: 2px 0; border-radius: 4px;
+  background: var(--bg2); font-size: 11px; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.proto-division:hover { background: var(--bg3); }
+.proto-count {
+  background: var(--bg3); color: var(--accent); padding: 1px 6px;
+  border-radius: 8px; font-size: 10px;
+}
+
+/* ── Tab Intelligence ──────────────────────────────────────── */
+.tab-info { padding: 0 14px 8px; }
+.tab-row {
+  display: flex; justify-content: space-between; padding: 3px 0;
+  font-size: 11px; border-bottom: 1px solid var(--border);
+}
+.tab-row-label { color: var(--muted); }
+.tab-row-value { color: var(--text); max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ── History Log ───────────────────────────────────────────── */
+.history-list { max-height: 140px; overflow-y: auto; padding: 0 14px 8px; }
+.history-entry {
+  padding: 4px 0; border-bottom: 1px solid var(--border);
+  font-size: 11px; display: flex; gap: 6px;
+}
+.history-time { color: var(--muted); white-space: nowrap; flex-shrink: 0; }
+.history-text { color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ── Settings Panel ────────────────────────────────────────── */
+.setting-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 6px 0; font-size: 12px;
+}
+.toggle {
+  position: relative; width: 34px; height: 18px;
+  background: var(--bg3); border-radius: 9px; cursor: pointer;
+  transition: background 0.2s;
+}
+.toggle.on { background: var(--accent); }
+.toggle-knob {
+  position: absolute; top: 2px; left: 2px;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--text); transition: left 0.2s;
+}
+.toggle.on .toggle-knob { left: 18px; }
+</style>
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────── -->
+<div class="header">
+  <div class="arc-reactor" id="arcReactor"></div>
+  <span class="header-title">JARVIS AI</span>
+  <span class="header-version">v1.0.0</span>
+  <button class="header-btn" id="btnMinimize" title="Minimize">—</button>
+  <button class="header-btn" id="btnClose" title="Close">✕</button>
+</div>
+
+<!-- ── Status Bar ──────────────────────────────────────────── -->
+<div class="status-bar" id="statusBar">
+  <span>♥ <span id="heartbeatCount">0</span></span>
+  <span>🧠 <span id="memoryCount">0</span></span>
+  <span>📋 <span id="taskCount">0</span></span>
+  <span><span class="status-dot" id="connDot"></span><span id="connLabel">Online</span></span>
+</div>
+
+<!-- ── Main Content (collapsible via minimize) ─────────────── -->
+<div id="mainContent">
+
+  <!-- Command Input -->
+  <div class="command-section">
+    <input class="command-input" id="cmdInput" type="text"
+           placeholder="Type a command… e.g. summarize" autocomplete="off">
+    <div class="autocomplete" id="autocomplete"></div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="section-label">Quick Actions</div>
+  <div class="quick-grid" id="quickGrid"></div>
+
+  <!-- Protocol Browser -->
+  <div class="collapse-header" id="protoHeader">
+    <span class="collapse-arrow">▶</span> Protocol Browser
+  </div>
+  <div class="collapse-body" id="protoBody"></div>
+
+  <!-- Tab Intelligence -->
+  <div class="collapse-header" id="tabHeader">
+    <span class="collapse-arrow">▶</span> Tab Intelligence
+  </div>
+  <div class="collapse-body" id="tabBody">
+    <div class="tab-info" id="tabInfo">
+      <div class="tab-row"><span class="tab-row-label">Title</span><span class="tab-row-value" id="tabTitle">—</span></div>
+      <div class="tab-row"><span class="tab-row-label">URL</span><span class="tab-row-value" id="tabUrl">—</span></div>
+      <div class="tab-row"><span class="tab-row-label">Words</span><span class="tab-row-value" id="tabWords">—</span></div>
+      <div class="tab-row"><span class="tab-row-label">Links</span><span class="tab-row-value" id="tabLinks">—</span></div>
+      <div class="tab-row"><span class="tab-row-label">Images</span><span class="tab-row-value" id="tabImages">—</span></div>
+      <div class="tab-row"><span class="tab-row-label">Forms</span><span class="tab-row-value" id="tabForms">—</span></div>
+      <div class="tab-row"><span class="tab-row-label">Meta Tags</span><span class="tab-row-value" id="tabMeta">—</span></div>
+    </div>
+  </div>
+
+  <!-- History Log -->
+  <div class="collapse-header open" id="historyHeader">
+    <span class="collapse-arrow">▶</span> History
+  </div>
+  <div class="collapse-body" id="historyBody" style="display:block;">
+    <div class="history-list" id="historyList"></div>
+  </div>
+
+  <!-- Settings Panel -->
+  <div class="collapse-header" id="settingsHeader">
+    <span class="collapse-arrow">▶</span> Settings
+  </div>
+  <div class="collapse-body" id="settingsBody">
+    <div id="settingsContainer" style="padding:0 14px 8px;"></div>
+  </div>
+
+</div><!-- /mainContent -->
+
+<script>
+/* ── Constants ─────────────────────────────────────────────── */
+var PHI = 1.618033988749895;
+var HEARTBEAT = 873;
+var MAX_HISTORY = 50;
+
+/* ── State ─────────────────────────────────────────────────── */
+var heartbeatCount = 0;
+var historyLog = [];
+var autocompleteIndex = -1;
+var settings = {
+  autoAnalyze: true,
+  autoSummarize: false,
+  voice: false,
+  darkMode: true,
+  phiWeighting: true
+};
+
+var autocompleteCommands = [
+  'scroll down', 'scroll up', 'read page', 'find "text"',
+  'summarize', 'extract data', 'highlight', 'navigate',
+  'remember', 'analyze page', 'compose', 'automate record',
+  'automate stop', 'automate replay', 'schedule task',
+  'monitor', 'debug', 'translate', 'click', 'write', 'screenshot'
+];
+
+/* ── Quick Actions Definition ──────────────────────────────── */
+var quickActions = [
+  { icon: '📖', label: 'Read',     cmd: 'read page' },
+  { icon: '🔍', label: 'Find',     cmd: 'find' },
+  { icon: '📊', label: 'Analyze',  cmd: 'analyze page' },
+  { icon: '💾', label: 'Save',     cmd: 'remember' },
+  { icon: '🎯', label: 'Focus',    cmd: 'highlight' },
+  { icon: '📝', label: 'Compose',  cmd: 'compose' },
+  { icon: '🔄', label: 'Refresh',  cmd: 'analyze page' },
+  { icon: '⚡', label: 'Quick',    cmd: 'summarize' },
+  { icon: '🛡️', label: 'Guard',   cmd: 'monitor' },
+  { icon: '📋', label: 'Tasks',    cmd: 'schedule task' },
+  { icon: '🧠', label: 'Memory',   cmd: 'remember' },
+  { icon: '⚙️', label: 'Settings', cmd: '_settings' }
+];
+
+/* ── Protocol Divisions ───────────────────────────────────── */
+var protocolDivisions = [
+  { name: 'Sovereign Core',  range: '1–10',    count: 10 },
+  { name: 'Security',        range: '11–20',   count: 10 },
+  { name: 'Knowledge',       range: '21–30',   count: 10 },
+  { name: 'Forgeworks',      range: '181–200', count: 20 },
+  { name: 'Neuromorphic',    range: '201–207', count: 7 },
+  { name: 'Multi-Agent',     range: '208–220', count: 13 },
+  { name: 'Privacy',         range: '221–225', count: 5 },
+  { name: 'Caching',         range: '226–229', count: 4 },
+  { name: 'Self-Doc',        range: '230–232', count: 3 },
+  { name: 'Tenant',          range: '233–237', count: 5 },
+  { name: 'Chaos',           range: '238–243', count: 6 },
+  { name: 'Ethical',         range: '244–250', count: 7 }
+];
+
+/* ── Settings Definitions ──────────────────────────────────── */
+var settingDefs = [
+  { key: 'autoAnalyze',   label: 'Auto-Analyze' },
+  { key: 'autoSummarize', label: 'Auto-Summarize' },
+  { key: 'voice',         label: 'Voice (disabled)', disabled: true },
+  { key: 'darkMode',      label: 'Dark Mode' },
+  { key: 'phiWeighting',  label: 'Phi-Weighting' }
+];
+
+/* ── DOM Refs ──────────────────────────────────────────────── */
+function $(id) { return document.getElementById(id); }
+
+var elHeartbeat    = $('heartbeatCount');
+var elMemory       = $('memoryCount');
+var elTasks        = $('taskCount');
+var elConnDot      = $('connDot');
+var elConnLabel    = $('connLabel');
+var elCmdInput     = $('cmdInput');
+var elAutocomplete = $('autocomplete');
+var elQuickGrid    = $('quickGrid');
+var elProtoBody    = $('protoBody');
+var elHistoryList  = $('historyList');
+var elMainContent  = $('mainContent');
+var elSettingsCont = $('settingsContainer');
+
+/* ── Utility Functions ─────────────────────────────────────── */
+function formatTime(ts) {
+  var d = new Date(ts);
+  var h = d.getHours(); var m = d.getMinutes(); var s = d.getSeconds();
+  return (h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+}
+
+function addHistory(text) {
+  historyLog.unshift({ time: Date.now(), text: text });
+  if (historyLog.length > MAX_HISTORY) historyLog.length = MAX_HISTORY;
+  renderHistory();
+  saveCommandHistory();
+}
+
+function renderHistory() {
+  var html = '';
+  for (var i = 0; i < historyLog.length; i++) {
+    html += '<div class="history-entry">'
+      + '<span class="history-time">' + formatTime(historyLog[i].time) + '</span>'
+      + '<span class="history-text">' + escapeHtml(historyLog[i].text) + '</span>'
+      + '</div>';
+  }
+  elHistoryList.innerHTML = html;
+}
+
+function escapeHtml(str) {
+  var div = document.createElement('div');
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+}
+
+/* ── Chrome Messaging ──────────────────────────────────────── */
+function sendCommand(intent, payload) {
+  var msg = { type: 'jarvis-command', action: 'parseCommand', command: intent, intent: intent, payload: payload || {} };
+  try {
+    chrome.runtime.sendMessage(msg, function (response) {
+      if (chrome.runtime.lastError) {
+        addHistory('⚠ Connection lost: ' + chrome.runtime.lastError.message);
+        setConnectionStatus(false);
+        return;
+      }
+      if (response && response.success) {
+        addHistory('✓ ' + intent);
+        setConnectionStatus(true);
+      } else {
+        addHistory('✗ ' + intent + ': ' + (response ? response.error : 'No response'));
+      }
+    });
+  } catch (e) {
+    addHistory('⚠ Send error: ' + e.message);
+    setConnectionStatus(false);
+  }
+}
+
+function fetchStatus() {
+  try {
+    chrome.runtime.sendMessage({ action: 'getStatus' }, function (response) {
+      if (chrome.runtime.lastError) { setConnectionStatus(false); return; }
+      if (response && response.success && response.data) {
+        elMemory.textContent = response.data.memoryCount || 0;
+        elTasks.textContent = response.data.queuedTasks || 0;
+        setConnectionStatus(true);
+      }
+    });
+  } catch (e) {
+    setConnectionStatus(false);
+  }
+}
+
+function setConnectionStatus(online) {
+  elConnDot.style.background = online ? 'var(--success)' : 'var(--error)';
+  elConnLabel.textContent = online ? 'Online' : 'Offline';
+}
+
+/* ── Heartbeat ─────────────────────────────────────────────── */
+function heartbeatTick() {
+  heartbeatCount++;
+  elHeartbeat.textContent = heartbeatCount;
+  if (heartbeatCount % 10 === 0) fetchStatus();
+}
+setInterval(heartbeatTick, HEARTBEAT);
+
+/* ── Command Input & Autocomplete ──────────────────────────── */
+function showAutocomplete(filter) {
+  var matches = [];
+  var lower = filter.toLowerCase();
+  for (var i = 0; i < autocompleteCommands.length; i++) {
+    if (autocompleteCommands[i].indexOf(lower) !== -1) {
+      matches.push(autocompleteCommands[i]);
+    }
+  }
+  if (matches.length === 0 || filter.length === 0) {
+    elAutocomplete.style.display = 'none';
+    autocompleteIndex = -1;
+    return;
+  }
+  var html = '';
+  for (var j = 0; j < matches.length; j++) {
+    html += '<div class="autocomplete-item" data-cmd="' + escapeHtml(matches[j]) + '">'
+      + escapeHtml(matches[j]) + '</div>';
+  }
+  elAutocomplete.innerHTML = html;
+  elAutocomplete.style.display = 'block';
+  autocompleteIndex = -1;
+
+  var items = elAutocomplete.querySelectorAll('.autocomplete-item');
+  for (var k = 0; k < items.length; k++) {
+    items[k].addEventListener('click', function () {
+      elCmdInput.value = this.getAttribute('data-cmd');
+      elAutocomplete.style.display = 'none';
+      executeCommand(elCmdInput.value);
+    });
+  }
+}
+
+function navigateAutocomplete(dir) {
+  var items = elAutocomplete.querySelectorAll('.autocomplete-item');
+  if (items.length === 0) return;
+  if (autocompleteIndex >= 0 && autocompleteIndex < items.length) {
+    items[autocompleteIndex].classList.remove('active');
+  }
+  autocompleteIndex += dir;
+  if (autocompleteIndex < 0) autocompleteIndex = items.length - 1;
+  if (autocompleteIndex >= items.length) autocompleteIndex = 0;
+  items[autocompleteIndex].classList.add('active');
+  items[autocompleteIndex].scrollIntoView({ block: 'nearest' });
+}
+
+function selectAutocomplete() {
+  var items = elAutocomplete.querySelectorAll('.autocomplete-item');
+  if (autocompleteIndex >= 0 && autocompleteIndex < items.length) {
+    elCmdInput.value = items[autocompleteIndex].getAttribute('data-cmd');
+    elAutocomplete.style.display = 'none';
+    executeCommand(elCmdInput.value);
+    return true;
+  }
+  return false;
+}
+
+elCmdInput.addEventListener('input', function () {
+  showAutocomplete(this.value.trim());
+});
+
+elCmdInput.addEventListener('keydown', function (e) {
+  if (e.key === 'ArrowDown') { e.preventDefault(); navigateAutocomplete(1); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); navigateAutocomplete(-1); }
+  else if (e.key === 'Enter') {
+    e.preventDefault();
+    if (!selectAutocomplete()) {
+      executeCommand(this.value.trim());
+    }
+    this.value = '';
+  }
+  else if (e.key === 'Escape') { elAutocomplete.style.display = 'none'; }
+});
+
+function executeCommand(cmd) {
+  if (!cmd) return;
+  elAutocomplete.style.display = 'none';
+  addHistory('▶ ' + cmd);
+  sendCommand(cmd, {});
+}
+
+/* ── Quick Actions Grid ────────────────────────────────────── */
+function buildQuickActions() {
+  var html = '';
+  for (var i = 0; i < quickActions.length; i++) {
+    html += '<button class="quick-btn" data-cmd="' + escapeHtml(quickActions[i].cmd) + '">'
+      + '<span class="icon">' + quickActions[i].icon + '</span>'
+      + quickActions[i].label + '</button>';
+  }
+  elQuickGrid.innerHTML = html;
+
+  var btns = elQuickGrid.querySelectorAll('.quick-btn');
+  for (var j = 0; j < btns.length; j++) {
+    btns[j].addEventListener('click', function () {
+      var cmd = this.getAttribute('data-cmd');
+      if (cmd === '_settings') {
+        toggleCollapse($('settingsHeader'));
+      } else {
+        executeCommand(cmd);
+      }
+    });
+  }
+}
+
+/* ── Protocol Browser ──────────────────────────────────────── */
+function buildProtocols() {
+  var html = '';
+  for (var i = 0; i < protocolDivisions.length; i++) {
+    var d = protocolDivisions[i];
+    html += '<div class="proto-division" data-range="' + d.range + '" title="Protocols ' + d.range + '">'
+      + '<span>' + escapeHtml(d.name) + ' <small style="color:var(--muted);">(' + d.range + ')</small></span>'
+      + '<span class="proto-count">' + d.count + '</span>'
+      + '</div>';
+  }
+  elProtoBody.innerHTML = html;
+}
+
+/* ── Collapsible Sections ──────────────────────────────────── */
+function toggleCollapse(header) {
+  header.classList.toggle('open');
+  var body = header.nextElementSibling;
+  if (body) {
+    body.style.display = header.classList.contains('open') ? 'block' : 'none';
+  }
+}
+
+function setupCollapsibles() {
+  var headers = document.querySelectorAll('.collapse-header');
+  for (var i = 0; i < headers.length; i++) {
+    headers[i].addEventListener('click', function () { toggleCollapse(this); });
+  }
+}
+
+/* ── Tab Intelligence ──────────────────────────────────────── */
+function analyzeTab() {
+  try {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      if (chrome.runtime.lastError || !tabs || !tabs[0]) return;
+      var tab = tabs[0];
+      $('tabTitle').textContent = tab.title || '—';
+      $('tabTitle').title = tab.title || '';
+      $('tabUrl').textContent = tab.url || '—';
+      $('tabUrl').title = tab.url || '';
+
+      /* Inject a tiny script to gather page stats */
+      chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        func: function () {
+          var body = document.body;
+          var text = body ? body.innerText : '';
+          return {
+            words: text.split(/\s+/).filter(function (w) { return w.length > 0; }).length,
+            links: document.querySelectorAll('a').length,
+            images: document.querySelectorAll('img').length,
+            forms: document.querySelectorAll('form').length,
+            meta: document.querySelectorAll('meta').length
+          };
+        }
+      }, function (results) {
+        if (chrome.runtime.lastError || !results || !results[0]) return;
+        var data = results[0].result;
+        if (!data) return;
+        $('tabWords').textContent = data.words;
+        $('tabLinks').textContent = data.links;
+        $('tabImages').textContent = data.images;
+        $('tabForms').textContent = data.forms;
+        $('tabMeta').textContent = data.meta;
+      });
+    });
+  } catch (e) {
+    /* Not in extension context — ignore gracefully */
+  }
+}
+
+/* ── Settings Panel ────────────────────────────────────────── */
+function buildSettings() {
+  var html = '';
+  for (var i = 0; i < settingDefs.length; i++) {
+    var s = settingDefs[i];
+    var on = settings[s.key];
+    var dis = s.disabled ? ' style="opacity:0.4;pointer-events:none;"' : '';
+    html += '<div class="setting-row"' + dis + '>'
+      + '<span>' + escapeHtml(s.label) + '</span>'
+      + '<div class="toggle' + (on ? ' on' : '') + '" data-key="' + s.key + '">'
+      + '<div class="toggle-knob"></div></div></div>';
+  }
+  elSettingsCont.innerHTML = html;
+
+  var toggles = elSettingsCont.querySelectorAll('.toggle');
+  for (var j = 0; j < toggles.length; j++) {
+    toggles[j].addEventListener('click', function () {
+      var key = this.getAttribute('data-key');
+      settings[key] = !settings[key];
+      this.classList.toggle('on', settings[key]);
+      saveSettings();
+      addHistory('⚙ ' + key + ' → ' + (settings[key] ? 'ON' : 'OFF'));
+    });
+  }
+}
+
+/* ── Persistence ───────────────────────────────────────────── */
+function saveCommandHistory() {
+  try {
+    chrome.storage.local.set({ jarvis_panel_history: historyLog });
+  } catch (e) { /* ignore */ }
+}
+
+function loadCommandHistory() {
+  try {
+    chrome.storage.local.get('jarvis_panel_history', function (data) {
+      if (chrome.runtime.lastError) return;
+      if (data && data.jarvis_panel_history) {
+        historyLog = data.jarvis_panel_history;
+        renderHistory();
+      }
+    });
+  } catch (e) { /* ignore */ }
+}
+
+function saveSettings() {
+  try {
+    chrome.storage.local.set({ jarvis_panel_settings: settings });
+  } catch (e) { /* ignore */ }
+}
+
+function loadSettings() {
+  try {
+    chrome.storage.local.get('jarvis_panel_settings', function (data) {
+      if (chrome.runtime.lastError) return;
+      if (data && data.jarvis_panel_settings) {
+        for (var k in data.jarvis_panel_settings) {
+          if (data.jarvis_panel_settings.hasOwnProperty(k)) {
+            settings[k] = data.jarvis_panel_settings[k];
+          }
+        }
+        buildSettings();
+      }
+    });
+  } catch (e) { /* ignore */ }
+}
+
+/* ── Header Buttons ────────────────────────────────────────── */
+$('btnMinimize').addEventListener('click', function () {
+  var vis = elMainContent.style.display;
+  elMainContent.style.display = (vis === 'none') ? 'block' : 'none';
+  this.textContent = (vis === 'none') ? '—' : '+';
+});
+
+$('btnClose').addEventListener('click', function () {
+  try { window.close(); } catch (e) { document.body.innerHTML = ''; }
+});
+
+/* ── Incoming Messages ─────────────────────────────────────── */
+function setupMessageListener() {
+  try {
+    chrome.runtime.onMessage.addListener(function (message) {
+      if (message && message.type === 'jarvis-response') {
+        addHistory('◀ ' + (message.summary || JSON.stringify(message.data || '').substring(0, 80)));
+        setConnectionStatus(true);
+      }
+      if (message && message.type === 'jarvis-status') {
+        if (message.memoryCount !== undefined) elMemory.textContent = message.memoryCount;
+        if (message.taskCount !== undefined) elTasks.textContent = message.taskCount;
+      }
+    });
+  } catch (e) { /* not in extension context */ }
+}
+
+/* ── Initialization ────────────────────────────────────────── */
+function init() {
+  buildQuickActions();
+  buildProtocols();
+  buildSettings();
+  setupCollapsibles();
+  setupMessageListener();
+  loadCommandHistory();
+  loadSettings();
+  fetchStatus();
+  analyzeTab();
+  addHistory('JARVIS side panel initialized (φ=' + PHI.toFixed(4) + ')');
+}
+
+init();
+</script>
+</body>
+</html>
