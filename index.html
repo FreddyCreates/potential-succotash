@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Organism AI — 25 AI Browser Extensions, 1-Click Install</title>
+<meta name="description" content="20 AI Chrome extensions + 5 Windows extensions. Install all 25 in one click. No server. No signup. Your browser becomes an AI powerhouse.">
+<style>
+  :root {
+    --bg: #0a0a1a;
+    --card: #12122a;
+    --border: #2a2a4a;
+    --accent: #6c63ff;
+    --accent2: #00d4aa;
+    --text: #e0e0e0;
+    --dim: #888;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+  a { color: var(--accent2); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── Hero ──────────────────────────────────────────── */
+  .hero {
+    text-align: center;
+    padding: 5rem 1.5rem 3rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .hero h1 {
+    font-size: 2.8rem;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+  .hero h1 .accent { color: var(--accent); }
+  .hero h1 .accent2 { color: var(--accent2); }
+  .hero .subtitle {
+    font-size: 1.15rem;
+    color: var(--dim);
+    margin-bottom: 2.5rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+  .btn {
+    display: inline-block;
+    padding: 0.9rem 2rem;
+    border-radius: 8px;
+    font-size: 1.05rem;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+  }
+  .btn:hover { text-decoration: none; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #5a52e0; }
+  .btn-secondary { background: var(--accent2); color: #000; }
+  .btn-secondary:hover { background: #00eabb; }
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  .hero-note {
+    font-size: 0.85rem;
+    color: var(--dim);
+  }
+
+  /* ── Stats bar ────────────────────────────────────── */
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    padding: 2rem 1rem;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat .num { font-size: 2rem; font-weight: bold; color: var(--accent2); }
+  .stat .label { font-size: 0.85rem; color: var(--dim); }
+
+  /* ── Section ──────────────────────────────────────── */
+  .section {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+  }
+  .section h2 {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+    color: var(--accent);
+    text-align: center;
+  }
+  .section p.desc {
+    text-align: center;
+    color: var(--dim);
+    max-width: 650px;
+    margin: -0.5rem auto 2rem;
+  }
+
+  /* ── Feature grid ─────────────────────────────────── */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.2rem;
+  }
+  .feature {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    transition: border-color 0.2s;
+  }
+  .feature:hover { border-color: var(--accent); }
+  .feature .icon { font-size: 1.6rem; margin-bottom: 0.6rem; }
+  .feature h3 { font-size: 1rem; margin-bottom: 0.4rem; }
+  .feature p { font-size: 0.85rem; color: var(--dim); }
+
+  /* ── Extension showcase ───────────────────────────── */
+  .ext-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.8rem;
+  }
+  .ext-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    transition: border-color 0.2s;
+  }
+  .ext-card:hover { border-color: var(--accent); }
+  .ext-card .name { font-weight: bold; font-size: 0.95rem; margin-bottom: 0.3rem; }
+  .ext-card .engines { font-size: 0.75rem; color: var(--dim); }
+  .ext-card .engines span {
+    display: inline-block;
+    background: #1a1a3a;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.05rem 0.35rem;
+    margin: 0.1rem 0.15rem 0.1rem 0;
+  }
+  .ext-card .ring { font-size: 0.7rem; color: var(--accent); margin-top: 0.4rem; }
+
+  /* ── Install steps ────────────────────────────────── */
+  .install-methods {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .method {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+  }
+  .method h3 { font-size: 1rem; margin-bottom: 0.8rem; color: var(--accent2); }
+  .method pre {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.8rem;
+    overflow-x: auto;
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+  }
+  .method code { color: var(--accent2); }
+  .method p { font-size: 0.85rem; color: var(--dim); }
+
+  /* ── Footer ───────────────────────────────────────── */
+  .footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    border-top: 1px solid var(--border);
+    color: var(--dim);
+    font-size: 0.85rem;
+  }
+  .footer a { color: var(--accent); }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 2rem; }
+    .stats { gap: 1.5rem; }
+    .stat .num { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<div class="hero">
+  <h1>🧬 <span class="accent">Organism AI</span><br>
+  <span class="accent2">25</span> AI Extensions. <span class="accent2">1</span> Click.</h1>
+  <p class="subtitle">
+    Turn your browser into an AI powerhouse. 20 Chrome extensions + 5 Windows extensions — 
+    all installable in a single click. No server. No signup. No API keys.
+  </p>
+  <div class="hero-buttons">
+    <a class="btn btn-primary" href="dist/extensions/all-extensions.zip" download>📦 Download All 25</a>
+    <a class="btn btn-secondary" href="download.html">🔽 Pick Individual Extensions</a>
+    <a class="btn btn-outline" href="https://github.com/FreddyCreates/potential-succotash">⭐ GitHub</a>
+  </div>
+  <p class="hero-note">
+    Works on Chrome, Edge &amp; Brave · Manifest V3 · Zero dependencies · 100% local
+  </p>
+</div>
+
+<!-- ═══════════════════ STATS ═══════════════════ -->
+<div class="stats">
+  <div class="stat"><div class="num">25</div><div class="label">AI Extensions</div></div>
+  <div class="stat"><div class="num">40+</div><div class="label">AI Engines Wired</div></div>
+  <div class="stat"><div class="num">0</div><div class="label">Servers Needed</div></div>
+  <div class="stat"><div class="num">1</div><div class="label">Click to Install</div></div>
+</div>
+
+<!-- ═══════════════════ WHAT YOU GET ═══════════════════ -->
+<div class="section">
+  <h2>What You Get</h2>
+  <p class="desc">Every extension is a self-contained AI engine that runs entirely in your browser. No cloud. No accounts. Your data never leaves your device.</p>
+  <div class="features">
+    <div class="feature">
+      <div class="icon">🧠</div>
+      <h3>Multi-AI Fusion</h3>
+      <p>Route across GPT, Claude, Gemini, Codex, Llama, Whisper, DALL-E, and 30+ more models from a single interface.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">🔒</div>
+      <h3>Privacy First</h3>
+      <p>All processing happens in your browser's service worker. Zero data exfiltration. No telemetry. No tracking.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">💻</div>
+      <h3>Code Intelligence</h3>
+      <p>Code Sovereign wires Codex, CodeLlama &amp; DeepSeek for inline code generation, review, and debugging.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">🎨</div>
+      <h3>Vision &amp; Creative</h3>
+      <p>Generate images (DALL-E, Stable Diffusion), video (Sora, Runway), and music (Suno, MusicGen) from any tab.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">🎙️</div>
+      <h3>Voice &amp; Audio</h3>
+      <p>Voice Forge wires Whisper for transcription and ElevenLabs for speech synthesis — right in your browser.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">📊</div>
+      <h3>Data &amp; Research</h3>
+      <p>Data Alchemist absorbs any document. Research Nexus wires Perplexity for deep research. Knowledge graphs built in real time.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">🪟</div>
+      <h3>Windows Native</h3>
+      <p>5 Edge-native extensions for Windows: Copilot Hub, File Oracle, Shell Intelligence, Terminal Forge, Notification Cortex.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">⚡</div>
+      <h3>Self-Healing</h3>
+      <p>Every extension has a keepalive alarm that beats Chrome's 30-second service worker kill timer. They never die.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">🧬</div>
+      <h3>Organism Architecture</h3>
+      <p>All 25 extensions wire into a single organism with rings, wires, and a sovereign runtime. They work together.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ EXTENSIONS ═══════════════════ -->
+<div class="section">
+  <h2>All 25 Extensions</h2>
+  <p class="desc">Click any extension name to download it individually, or <a href="dist/extensions/all-extensions.zip" download>download all 25 at once</a>.</p>
+
+  <h3 style="color:var(--accent);margin-bottom:0.8rem;">🌐 Browser Extensions (20)</h3>
+  <div class="ext-grid" id="browser-grid"></div>
+
+  <h3 style="color:var(--accent);margin:1.5rem 0 0.8rem;">🪟 Windows Extensions (5)</h3>
+  <div class="ext-grid" id="windows-grid"></div>
+</div>
+
+<!-- ═══════════════════ INSTALL ═══════════════════ -->
+<div class="section">
+  <h2>Install in 1 Click</h2>
+  <p class="desc">Three ways to get all 25 extensions running. Pick the one that fits your setup.</p>
+  <div class="install-methods">
+    <div class="method">
+      <h3>🪟 Windows — Double-Click</h3>
+      <p>1. <a href="https://github.com/FreddyCreates/potential-succotash/archive/refs/heads/main.zip">Download the repo</a> and unzip it</p>
+      <p>2. Double-click <strong>install-organism.bat</strong></p>
+      <p>3. ✅ Edge launches with all extensions loaded</p>
+    </div>
+    <div class="method">
+      <h3>🍎 macOS / Linux — One Command</h3>
+      <pre><code>git clone https://github.com/FreddyCreates/potential-succotash.git
+cd potential-succotash
+bash install-organism.sh</code></pre>
+      <p>✅ Chrome launches with all extensions loaded</p>
+    </div>
+    <div class="method">
+      <h3>🖥️ Any Platform — Node.js CLI</h3>
+      <pre><code>git clone https://github.com/FreddyCreates/potential-succotash.git
+cd potential-succotash
+node organism-cli/organism.js install</code></pre>
+      <p>Auto-detects Chrome, Edge, or Brave. Validates Manifest V3.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<div class="footer">
+  <p>
+    <a href="download.html">Download Page</a> · 
+    <a href="https://github.com/FreddyCreates/potential-succotash">GitHub</a> · 
+    Built with sovereign intelligence
+  </p>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var BROWSER_EXTENSIONS = [
+    { slug: 'sovereign-mind', name: 'Sovereign Mind', engines: ['GPT', 'Claude', 'Gemini'], ring: 'Interface Ring' },
+    { slug: 'cipher-shield', name: 'Cipher Shield', engines: ['Guards', 'GPT', 'Claude'], ring: 'Counsel Ring' },
+    { slug: 'polyglot-oracle', name: 'Polyglot Oracle', engines: ['Qwen', 'Gemini', 'Llama'], ring: 'Interface Ring' },
+    { slug: 'vision-weaver', name: 'Vision Weaver', engines: ['DALL-E', 'SD', 'Midjourney', 'SAM'], ring: 'Geometry Ring' },
+    { slug: 'code-sovereign', name: 'Code Sovereign', engines: ['Codex', 'CodeLlama', 'DeepSeek'], ring: 'Build Ring' },
+    { slug: 'memory-palace', name: 'Memory Palace', engines: ['Embeddings', 'Command R', 'Rerankers'], ring: 'Memory Ring' },
+    { slug: 'sentinel-watch', name: 'Sentinel Watch', engines: ['Guards', 'GPT', 'Claude'], ring: 'Counsel Ring' },
+    { slug: 'research-nexus', name: 'Research Nexus', engines: ['Perplexity', 'Claude', 'Embeddings'], ring: 'Transport Ring' },
+    { slug: 'voice-forge', name: 'Voice Forge', engines: ['Whisper', 'ElevenLabs', 'Suno'], ring: 'Native Capability Ring' },
+    { slug: 'data-alchemist', name: 'Data Alchemist', engines: ['GPT', 'Claude', 'Embeddings', 'Rerankers'], ring: 'Memory Ring' },
+    { slug: 'video-architect', name: 'Video Architect', engines: ['Sora', 'Runway', 'Pika', 'Kling'], ring: 'Geometry Ring' },
+    { slug: 'logic-prover', name: 'Logic Prover', engines: ['Minerva-Llemma', 'GPT', 'AlphaCode'], ring: 'Proof Ring' },
+    { slug: 'social-cortex', name: 'Social Cortex', engines: ['Grok', 'Inflection', 'GPT'], ring: 'Interface Ring' },
+    { slug: 'edge-runner', name: 'Edge Runner', engines: ['Phi', 'Gemma', 'DBRX'], ring: 'Sovereign Ring' },
+    { slug: 'contract-forge', name: 'Contract Forge', engines: ['GPT', 'Claude', 'Guards'], ring: 'Counsel Ring' },
+    { slug: 'organism-dashboard', name: 'Organism Dashboard', engines: ['Heartbeat', 'OrganismState', 'EdgeSensor'], ring: 'Sovereign Ring' },
+    { slug: 'knowledge-cartographer', name: 'Knowledge Cartographer', engines: ['Embeddings', 'Command R', 'Florence'], ring: 'Memory Ring' },
+    { slug: 'protocol-bridge', name: 'Protocol Bridge', engines: ['All Foundation Models'], ring: 'Transport Ring' },
+    { slug: 'creative-muse', name: 'Creative Muse', engines: ['SD', 'DALL-E', 'MusicGen', 'Suno'], ring: 'Geometry Ring' },
+    { slug: 'sovereign-nexus', name: 'Sovereign Nexus', engines: ['All 40 Foundation Models', 'Kuramoto'], ring: 'Sovereign Ring' }
+  ];
+
+  var WINDOWS_EXTENSIONS = [
+    { slug: 'windows-copilot-hub', name: 'Windows Copilot Hub', engines: ['GPT', 'Claude', 'Gemini', 'Llama'], ring: 'Windows Native' },
+    { slug: 'windows-file-oracle', name: 'Windows File Oracle', engines: ['GPT', 'Embeddings'], ring: 'Windows Native' },
+    { slug: 'windows-notification-cortex', name: 'Windows Notification Cortex', engines: ['GPT', 'Claude'], ring: 'Windows Native' },
+    { slug: 'windows-shell-intelligence', name: 'Windows Shell Intelligence', engines: ['Codex', 'DeepSeek'], ring: 'Windows Native' },
+    { slug: 'windows-terminal-forge', name: 'Windows Terminal Forge', engines: ['Codex', 'Phi'], ring: 'Windows Native' }
+  ];
+
+  function renderCard(ext) {
+    var engines = '';
+    for (var i = 0; i < ext.engines.length; i++) {
+      engines += '<span>' + ext.engines[i] + '</span>';
+    }
+    var card = document.createElement('a');
+    card.className = 'ext-card';
+    card.href = 'dist/extensions/' + ext.slug + '.zip';
+    card.download = ext.slug + '.zip';
+    card.innerHTML =
+      '<div class="name">' + ext.name + '</div>' +
+      '<div class="engines">' + engines + '</div>' +
+      '<div class="ring">⚙ ' + ext.ring + '</div>';
+    return card;
+  }
+
+  function renderAll() {
+    var bg = document.getElementById('browser-grid');
+    var wg = document.getElementById('windows-grid');
+    for (var i = 0; i < BROWSER_EXTENSIONS.length; i++) bg.appendChild(renderCard(BROWSER_EXTENSIONS[i]));
+    for (var j = 0; j < WINDOWS_EXTENSIONS.length; j++) wg.appendChild(renderCard(WINDOWS_EXTENSIONS[j]));
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderAll);
+  } else {
+    renderAll();
+  }
+})();
+</script>
+</body>
+</html>

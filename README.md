@@ -2,11 +2,13 @@
 
 > 20 AI Chrome extensions + 5 Windows extensions + Terminal AI — all installable in **1 click**.
 
-### 📥 [**→ Open the Download Page ←**](https://freddycreates.github.io/potential-succotash/download.html)
+### 🌐 [**→ Open the Product Page ←**](https://freddycreates.github.io/potential-succotash/)
 
-> Download individual extensions or all 25 at once. Zips are built natively in your browser — no server needed.
+### 🔽 [**→ Download Individual Extensions ←**](https://freddycreates.github.io/potential-succotash/download.html)
+
+> Download all 25 extensions in one click, or pick individual ones. No server needed.
 >
-> _If the download page hasn't loaded yet, use the direct links below._
+> _Use the direct links below if the page hasn't loaded yet._
 
 ### ⬇ Direct Downloads
 
