@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Data Oracle",
   "version": "1.0.0",
-  "description": "AI User Experience \u2014 JARVIS-style data ingestion engine. Reads all metadata and data from any page, structures it, runs X-ray depth analysis through the noise to find fundamental signals",
+  "description": "AI User Experience — Data ingestion engine. Reads page metadata, structures it, and runs X-ray depth analysis",
   "permissions": [
     "activeTab",
     "storage",

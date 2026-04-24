@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Sovereign Mind",
   "version": "1.0.0",
-  "description": "AI User Experience — Sovereign reasoning engine built from your data. FusionCore + AlphaRouter + PhiScorer fused with phi-weighted confidence scoring. No third-party models — your mind, your data.",
+  "description": "AI User Experience — Sovereign reasoning with FusionCore + AlphaRouter + PhiScorer. Your mind, your data",
   "permissions": [
     "activeTab",
     "storage",

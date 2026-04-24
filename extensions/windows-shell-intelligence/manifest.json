@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Windows Shell Intelligence",
   "version": "1.0.0",
-  "description": "AI User Experience — Shell & Explorer AI with Codex + CodeLlama + DeepSeek code intelligence for Windows context menus and shell operations in Edge.",
+  "description": "AI User Experience — Shell & Explorer AI with Codex + CodeLlama + DeepSeek for Windows context menus",
   "permissions": [
     "activeTab",
     "storage",

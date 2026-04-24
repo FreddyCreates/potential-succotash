@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Screen Commander",
   "version": "1.0.0",
-  "description": "AI User Experience \u2014 JARVIS-style autonomous screen agent. Reads, writes, moves elements, opens panels, navigates pages. AI that operates your screen for you with voice-command intent",
+  "description": "AI User Experience — Autonomous screen agent. Reads, writes, moves elements, and navigates pages with AI",
   "permissions": [
     "activeTab",
     "storage",

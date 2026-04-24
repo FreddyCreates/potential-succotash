@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Pattern Forge",
   "version": "1.0.0",
-  "description": "AI User Experience \u2014 X-ray mathematics engine. Underlying math that sees through noise to fundamentals. Square-root normalization, spectral decomposition, cross-system correlation, z-depth analysis for pattern recognition across spreads and data",
+  "description": "AI User Experience — X-ray math engine. Spectral decomposition and phi-weighted pattern recognition across data",
   "permissions": [
     "activeTab",
     "storage",

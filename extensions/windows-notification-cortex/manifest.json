@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Windows Notification Cortex",
   "version": "1.0.0",
-  "description": "AI User Experience — Smart Notification Intelligence with GPT + Claude + Inflection empathic notification management for Windows browsers.",
+  "description": "AI User Experience — Smart Notification AI with GPT + Claude + Inflection empathic management for Windows",
   "permissions": [
     "activeTab",
     "storage",

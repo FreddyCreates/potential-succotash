@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Register",
   "version": "1.0.0",
-  "description": "AI User Experience — The organism's native builder AI. Scans, validates, packages, and deploys all 26 extensions automatically via Web Workers. No CI/CD — the AI builds natively. Steps 1–7 run on every page load.",
+  "description": "AI User Experience — Native builder AI. Scans, validates, packages, and deploys all extensions via Web Workers",
   "permissions": ["activeTab", "storage", "alarms", "downloads"],
   "background": { "service_worker": "background.js" },
   "content_scripts": [{ "matches": ["<all_urls>"], "js": ["content.js"] }],

@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Organism Dashboard",
   "version": "1.0.0",
-  "description": "AI User Experience \u2014 See your organism live with heartbeat pulse, state registers, vitality scores, and edge sensor readings in real-time",
+  "description": "AI User Experience — Live organism dashboard with heartbeat, state registers, vitality scores, and sensors",
   "permissions": [
     "activeTab",
     "storage",

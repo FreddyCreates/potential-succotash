@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Windows File Oracle",
   "version": "1.0.0",
-  "description": "AI User Experience — File System Intelligence with Embeddings + Florence + CLIP visual and semantic file understanding for Windows browsers.",
+  "description": "AI User Experience — File System Intelligence with Embeddings + Florence + CLIP for Windows browsers",
   "permissions": [
     "activeTab",
     "storage",

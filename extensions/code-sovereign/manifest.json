@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Code Sovereign",
   "version": "1.0.0",
-  "description": "AI User Experience \u2014 Highlight any code on any page and get AI-generated improvements with contract-verified output from Codex + CodeLlama + DeepSeek",
+  "description": "AI User Experience — Highlight code on any page and get AI improvements from Codex + CodeLlama + DeepSeek",
   "permissions": [
     "activeTab",
     "storage",

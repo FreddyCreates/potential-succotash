@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Windows Copilot Hub",
   "version": "1.0.0",
-  "description": "AI User Experience — Unified Windows Copilot Intelligence with GPT + Claude + Gemini + Llama multi-model fusion. Phi-weighted reasoning from your desktop to your browser.",
+  "description": "AI User Experience — Windows Copilot with GPT + Claude + Gemini + Llama multi-model phi-weighted fusion",
   "permissions": [
     "activeTab",
     "storage",

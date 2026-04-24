@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Sovereign Nexus",
   "version": "1.0.0",
-  "description": "AI User Experience \u2014 The master hub unifying all 20 extensions into one sovereign intelligence interface with all 40 foundation models",
+  "description": "AI User Experience — Master hub unifying all extensions into one sovereign intelligence interface",
   "permissions": [
     "activeTab",
     "storage",
