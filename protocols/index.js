@@ -1,8 +1,11 @@
 /**
  * AI-Intelligent Protocols — Organism Wire Index
  *
- * 10 protocols, each a literal AI: adaptive, self-healing, multi-engine,
+ * 80 protocols total (11 implemented JS + 69 registered in AI_Protocols_Register.csv).
+ * Each a literal AI: adaptive, self-healing, multi-engine,
  * phi-math wired throughout. All export into the sovereign organism.
+ *
+ * Research papers for all 80 protocols: research/protocol-papers.html
  *
  * @module protocols
  */

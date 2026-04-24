@@ -3,7 +3,7 @@
 /// 12 Web Worker Builder AIs (OPERARII AEDIFICATORES), each Latin-named
 /// with 3 dedicated engines (Generator + Router + Builder).
 ///
-/// 36 engines total. 976+ auto-generated calls across all domains.
+/// 36 engines total. 1176+ auto-generated calls across all domains.
 /// Full routing table — every call auto-routed to correct target module.
 /// All AI, AGI, 24/7, user-facing, cross-substrate.
 ///
@@ -121,40 +121,40 @@ module {
   /// Initialize all 12 workers with their Latin names, domains, and call counts
   public func initWorkers(ts : Int) : [WorkerState] {
     [
-      // 1. PROTOCOLLUM — Protocols, Consensus, BFT — 164 calls
+      // 1. PROTOCOLLUM — Protocols, Consensus, BFT — 184 calls (+20 new protocols)
       {
         id = 1; name = "PROTOCOLLUM"; latinName = "OPERARIUS PROTOCOLLORUM";
         domain = "Protocols, Consensus, BFT";
         engines = buildTriad("PROTOCOLLUM", ts);
-        totalCalls = 164; callsGenerated = 0; healthy = true;
+        totalCalls = 184; callsGenerated = 0; healthy = true;
       },
-      // 2. TERMINALIS — Terminals, AI/AGI Hierarchy — 70 calls
+      // 2. TERMINALIS — Terminals, AI/AGI Hierarchy — 110 calls (+40 AI calls)
       {
         id = 2; name = "TERMINALIS"; latinName = "OPERARIUS TERMINALIUM";
         domain = "Terminals, AI/AGI Hierarchy";
         engines = buildTriad("TERMINALIS", ts);
-        totalCalls = 70; callsGenerated = 0; healthy = true;
+        totalCalls = 110; callsGenerated = 0; healthy = true;
       },
-      // 3. ORGANISMUS — SDK Organisms, Emergence — 195 calls
+      // 3. ORGANISMUS — SDK Organisms, Emergence — 215 calls (+20 blueprints)
       {
         id = 3; name = "ORGANISMUS"; latinName = "OPERARIUS ORGANISMORUM";
         domain = "SDK Organisms, Emergence";
         engines = buildTriad("ORGANISMUS", ts);
-        totalCalls = 195; callsGenerated = 0; healthy = true;
+        totalCalls = 215; callsGenerated = 0; healthy = true;
       },
-      // 4. MERCATOR — Marketplace, Tools, Tiers — 89 calls
+      // 4. MERCATOR — Marketplace, Tools, Tiers — 129 calls (+20 recipes + 20 adapters)
       {
         id = 4; name = "MERCATOR"; latinName = "OPERARIUS MERCATUS";
         domain = "Marketplace, Tools, Tiers";
         engines = buildTriad("MERCATOR", ts);
-        totalCalls = 89; callsGenerated = 0; healthy = true;
+        totalCalls = 129; callsGenerated = 0; healthy = true;
       },
-      // 5. ORCHESTRATOR — Houses, Models, Families — 67 calls
+      // 5. ORCHESTRATOR — Houses, Models, Families — 87 calls (+20 lenses)
       {
         id = 5; name = "ORCHESTRATOR"; latinName = "OPERARIUS ORCHESTRATORUM";
         domain = "Houses, Models, Families";
         engines = buildTriad("ORCHESTRATOR", ts);
-        totalCalls = 67; callsGenerated = 0; healthy = true;
+        totalCalls = 87; callsGenerated = 0; healthy = true;
       },
       // 6. MATHEMATICUS — Math Formulas, Constants — 60 calls
       {
@@ -163,12 +163,12 @@ module {
         engines = buildTriad("MATHEMATICUS", ts);
         totalCalls = 60; callsGenerated = 0; healthy = true;
       },
-      // 7. SYNAPTICUS — Synapses, Chaos, Connections — 35 calls
+      // 7. SYNAPTICUS — Synapses, Chaos, Connections — 55 calls (+20 hooks)
       {
         id = 7; name = "SYNAPTICUS"; latinName = "OPERARIUS SYNAPSIUM";
         domain = "Synapses, Chaos, Connections";
         engines = buildTriad("SYNAPTICUS", ts);
-        totalCalls = 35; callsGenerated = 0; healthy = true;
+        totalCalls = 55; callsGenerated = 0; healthy = true;
       },
       // 8. SUBSTRATUM — Blockchain, Nodes, Layers — 55 calls
       {
@@ -177,12 +177,12 @@ module {
         engines = buildTriad("SUBSTRATUM", ts);
         totalCalls = 55; callsGenerated = 0; healthy = true;
       },
-      // 9. UNIVERSUM — Domains, Ecosystems, Councils — 130 calls
+      // 9. UNIVERSUM — Domains, Ecosystems, Councils — 150 calls (+20 triggers)
       {
         id = 9; name = "UNIVERSUM"; latinName = "OPERARIUS UNIVERSORUM";
         domain = "Domains, Ecosystems, Councils";
         engines = buildTriad("UNIVERSUM", ts);
-        totalCalls = 130; callsGenerated = 0; healthy = true;
+        totalCalls = 150; callsGenerated = 0; healthy = true;
       },
       // 10. CANISTRUM — Canister Tech, Factory — 23 calls
       {
@@ -198,12 +198,12 @@ module {
         engines = buildTriad("LICENTIATOR", ts);
         totalCalls = 39; callsGenerated = 0; healthy = true;
       },
-      // 12. DEFENSOR — Defense, Care, Arsenal — 49 calls
+      // 12. DEFENSOR — Defense, Care, Arsenal — 69 calls (+20 shields)
       {
         id = 12; name = "DEFENSOR"; latinName = "OPERARIUS DEFENSIONIS ET CURAE";
         domain = "Defense, Care, Arsenal";
         engines = buildTriad("DEFENSOR", ts);
-        totalCalls = 49; callsGenerated = 0; healthy = true;
+        totalCalls = 69; callsGenerated = 0; healthy = true;
       }
     ]
   };
