@@ -4,6 +4,10 @@
     "organism": {
       "type": "motoko",
       "main": "src/Organism.mo"
+    },
+    "jarvisius": {
+      "type": "motoko",
+      "main": "src/Jarvisius.mo"
     }
   },
   "defaults": {

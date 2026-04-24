@@ -58,4 +58,52 @@ module {
     reasoning      : Text;
     alternates     : [Text];
   };
+
+  // ── JARVISIUS Types ───────────────────────────────────────────────────
+
+  /// A note stored by the Jarvisius canister.
+  public type JarvisNote = {
+    id          : Text;
+    content     : Text;
+    owner       : Text;
+    timestampNs : Int;
+  };
+
+  /// A command logged by the Jarvisius canister.
+  public type JarvisCommand = {
+    id          : Text;
+    intent      : Text;
+    payload     : Text;
+    owner       : Text;
+    timestampNs : Int;
+  };
+
+  /// A document stored by the Jarvisius canister.
+  public type JarvisDocument = {
+    id          : Text;
+    docType     : Text;
+    content     : Text;
+    owner       : Text;
+    timestampNs : Int;
+  };
+
+  /// A tab action logged by the Jarvisius canister.
+  public type JarvisTabAction = {
+    id          : Text;
+    actionType  : Text;
+    tabInfo     : Text;
+    owner       : Text;
+    timestampNs : Int;
+  };
+
+  /// Snapshot of the Jarvisius canister state.
+  public type JarvisSnapshot = {
+    heartbeatCount : Nat;
+    noteCount      : Nat;
+    commandCount   : Nat;
+    documentCount  : Nat;
+    tabActionCount : Nat;
+    owner          : Text;
+    timestampNs    : Int;
+  };
 };
