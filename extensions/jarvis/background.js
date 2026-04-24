@@ -368,7 +368,11 @@ JarvisEngine.prototype.buildAction = function (parsed) {
 // Tab operations
 JarvisEngine.prototype.executeTabSwitch = function (tabIndex, callback) {
   chrome.tabs.query({}, function (tabs) {
-    var idx = Math.max(0, Math.min(tabIndex - 1, tabs.length - 1));
+    if (tabIndex < 1 || tabIndex > tabs.length) {
+      callback({ success: false, message: 'Tab ' + tabIndex + ' out of range. ' + tabs.length + ' tabs open (1-' + tabs.length + ').' });
+      return;
+    }
+    var idx = tabIndex - 1;
     if (tabs[idx]) {
       chrome.tabs.update(tabs[idx].id, { active: true }, function () {
         callback({ success: true, message: 'Switched to tab ' + tabIndex + ': ' + tabs[idx].title });
@@ -431,7 +435,7 @@ JarvisEngine.prototype.executeOpenUrl = function (url, callback) {
     callback({ success: false, message: 'No URL provided' });
     return;
   }
-  if (url.indexOf('://') === -1 && url.indexOf('www.') === -1) {
+  if (url.indexOf('://') === -1) {
     url = 'https://' + url;
   }
   chrome.tabs.create({ url: url }, function (tab) {
@@ -574,12 +578,12 @@ JarvisEngine.prototype.executeSummarize = function (tabId, callback) {
 JarvisEngine.prototype.executeNavigate = function (direction, tabId, callback) {
   switch (direction) {
     case 'back':
-      chrome.tabs.goBack(tabId, function () {
+      chrome.scripting.executeScript({ target: { tabId: tabId }, func: function () { history.back(); } }, function () {
         callback({ success: true, message: 'Navigated back' });
       });
       break;
     case 'forward':
-      chrome.tabs.goForward(tabId, function () {
+      chrome.scripting.executeScript({ target: { tabId: tabId }, func: function () { history.forward(); } }, function () {
         callback({ success: true, message: 'Navigated forward' });
       });
       break;

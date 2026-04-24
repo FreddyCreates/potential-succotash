@@ -102,6 +102,51 @@ done
 
 echo ""
 
+# ── Also package nested Windows extensions ───────────────────────────
+if [ -d "$EXT_SRC/windows" ]; then
+  for ext_dir in "$EXT_SRC"/windows/*/; do
+    name="$(basename "$ext_dir")"
+    manifest="$ext_dir/manifest.json"
+    [ -f "$manifest" ] || continue
+
+    if ! python3 -c "import json; json.load(open('$manifest'))" 2>/dev/null && \
+       ! node -e "JSON.parse(require('fs').readFileSync('$manifest','utf8'))" 2>/dev/null; then
+      echo "  ✗ $name — invalid manifest.json (skipped)"
+      errors=$((errors + 1))
+      continue
+    fi
+
+    echo "  📦 Packaging: $name (Windows)"
+
+    FILES_TO_ZIP=""
+    for f in manifest.json background.js content.js; do
+      [ -f "$ext_dir/$f" ] && FILES_TO_ZIP="$FILES_TO_ZIP $f"
+    done
+    if [ -d "$ext_dir/icons" ]; then
+      FILES_TO_ZIP="$FILES_TO_ZIP icons/"
+    fi
+    for f in popup.html popup.js options.html options.js styles.css sidepanel.html sidepanel.js; do
+      [ -f "$ext_dir/$f" ] && FILES_TO_ZIP="$FILES_TO_ZIP $f"
+    done
+
+    if [ -z "$FILES_TO_ZIP" ]; then
+      echo "  ⚠ $name — no files to package (skipped)"
+      errors=$((errors + 1))
+      continue
+    fi
+
+    (cd "$ext_dir" && zip -r -q "$DIST/${name}.zip" $FILES_TO_ZIP)
+
+    if [ ! -s "$DIST/${name}.zip" ]; then
+      echo "  ✗ $name — zip creation failed"
+      errors=$((errors + 1))
+      continue
+    fi
+
+    count=$((count + 1))
+  done
+fi
+
 # Create an all-in-one bundle
 if [ "$count" -gt 0 ]; then
   echo "  📦 Creating all-extensions bundle..."
