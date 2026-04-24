@@ -4,8 +4,7 @@
   "architect": "Freddy Medina",
   "product": "Sovereign Organism AI",
   "generatedAt": "2026-04-22T21:00:00.000Z",
-  "summary": "Formal specification for the Sovereign Organism Call Marketplace — a registry of 1176+ auto-generated callable tools produced by 12 Web Worker Builder AIs across 36 engines. 260 marketplace tools across 13 families (Context, Commander, Crawling, Sentry, Builder, Blueprint, Recipe, Lens, Hook, Trigger, Adapter, Sensor, Shield). 180 protocols. 60 architectural laws. Every call is registered, contracted, permissioned, priced, and law-enforced using phi-harmonic mathematics.",
-
+  "summary": "Formal specification for the Sovereign Organism Call Marketplace \u2014 a registry of 1344+ auto-generated callable tools produced by 22 Web Worker Builder AIs across 66 engines. 400 marketplace tools across 20 families (Context, Commander, Crawling, Sentry, Builder, Blueprint, Recipe, Lens, Hook, Trigger, Adapter, Sensor, Shield). 250 protocols. 60 architectural laws. Every call is registered, contracted, permissioned, priced, and law-enforced using phi-harmonic mathematics.",
   "phiConstants": {
     "PHI": 1.618033988749895,
     "PHI_INV": 0.618033988749895,
@@ -29,7 +28,6 @@
       "escalationDelay": "HEARTBEAT_MS * PHI ^ escalation_level"
     }
   },
-
   "registrySchema": {
     "description": "Schema for registering every callable tool and auto-generated call in the marketplace. Each call receives a unique call_id and is bound to exactly one worker and one engine.",
     "fields": {
@@ -170,7 +168,11 @@
     ],
     "uniqueConstraints": [
       "call_id",
-      ["call_name", "worker_name", "version"]
+      [
+        "call_name",
+        "worker_name",
+        "version"
+      ]
     ],
     "indexFields": [
       "call_id",
@@ -181,7 +183,6 @@
       "priority"
     ]
   },
-
   "toolMetadataSchema": {
     "description": "Rich metadata attached to every tool and auto-generated call. Governs display, permissions, billing, trust, and law enforcement.",
     "fields": {
@@ -300,7 +301,14 @@
         "description": "Relative cost weight for billing calculations. 0 = free, scaled by PHI per tier.",
         "minimum": 0,
         "maximum": 100,
-        "phiScale": [0, 1, 1.618, 2.618, 4.236, 6.854]
+        "phiScale": [
+          0,
+          1,
+          1.618,
+          2.618,
+          4.236,
+          6.854
+        ]
       },
       "success_contract": {
         "type": "string",
@@ -350,7 +358,6 @@
       "laws_enforced"
     ]
   },
-
   "callContractSchema": {
     "description": "The contract between a caller and callee. Every call in the marketplace MUST define a contract specifying input/output shapes, timeout behavior, retry semantics, idempotency guarantees, side-effect declarations, and rollback capabilities.",
     "fields": {
@@ -368,7 +375,9 @@
               "type": "object"
             }
           },
-          "required": ["protocol_id"]
+          "required": [
+            "protocol_id"
+          ]
         }
       },
       "output_schema": {
@@ -398,7 +407,10 @@
               }
             }
           },
-          "required": ["result", "metadata"]
+          "required": [
+            "result",
+            "metadata"
+          ]
         }
       },
       "timeout_ms": {
@@ -476,7 +488,10 @@
           "license_activation",
           "canister_deployment"
         ],
-        "example": ["state_mutation", "log_emission"]
+        "example": [
+          "state_mutation",
+          "log_emission"
+        ]
       },
       "rollback_capable": {
         "type": "boolean",
@@ -494,7 +509,6 @@
       "rollback_capable"
     ]
   },
-
   "permissionTiers": {
     "description": "Five hierarchical permission tiers governing call access. Each tier inherits all permissions from tiers below it. Escalation between tiers follows phi-timed delays and requires explicit authorization.",
     "tiers": [
@@ -512,7 +526,10 @@
           "WORKER_HANDSHAKE",
           "KERNEL_EXECUTE"
         ],
-        "lawsRequired": ["AL-019", "AL-005"],
+        "lawsRequired": [
+          "AL-019",
+          "AL-005"
+        ],
         "escalation": {
           "canEscalateTo": "organism.sovereign",
           "requiresApproval": false,
@@ -533,7 +550,11 @@
           "ROTATE_SOVEREIGN_KEY",
           "AUDIT_ORGANISM"
         ],
-        "lawsRequired": ["AL-019", "AL-022", "AL-037"],
+        "lawsRequired": [
+          "AL-019",
+          "AL-022",
+          "AL-037"
+        ],
         "escalation": {
           "canEscalateTo": null,
           "requiresApproval": false,
@@ -554,12 +575,18 @@
           "SUBSCRIBE_EVENTS",
           "FETCH_MODEL_FAMILY"
         ],
-        "lawsRequired": ["AL-025", "AL-028"],
+        "lawsRequired": [
+          "AL-025",
+          "AL-028"
+        ],
         "escalation": {
           "canEscalateTo": "organism.sovereign",
           "requiresApproval": true,
           "delayMs": 1412,
-          "approvalChain": ["partner_admin", "organism_sovereign"]
+          "approvalChain": [
+            "partner_admin",
+            "organism_sovereign"
+          ]
         }
       },
       {
@@ -576,12 +603,20 @@
           "CAMPAIGN_EXECUTE",
           "EXPORT_PIPELINE"
         ],
-        "lawsRequired": ["AL-028", "AL-030", "AL-037"],
+        "lawsRequired": [
+          "AL-028",
+          "AL-030",
+          "AL-037"
+        ],
         "escalation": {
           "canEscalateTo": "organism.sovereign",
           "requiresApproval": true,
           "delayMs": 2285,
-          "approvalChain": ["enterprise_admin", "partner_admin", "organism_sovereign"]
+          "approvalChain": [
+            "enterprise_admin",
+            "partner_admin",
+            "organism_sovereign"
+          ]
         }
       },
       {
@@ -598,12 +633,19 @@
           "CHECK_HEALTH",
           "LIST_FAMILIES"
         ],
-        "lawsRequired": ["AL-001", "AL-010"],
+        "lawsRequired": [
+          "AL-001",
+          "AL-010"
+        ],
         "escalation": {
           "canEscalateTo": "organism.partner",
           "requiresApproval": true,
           "delayMs": 3697,
-          "approvalChain": ["public_user", "partner_admin", "organism_sovereign"]
+          "approvalChain": [
+            "public_user",
+            "partner_admin",
+            "organism_sovereign"
+          ]
         }
       }
     ],
@@ -616,7 +658,6 @@
       "escalationExpiryMs": 86400000
     }
   },
-
   "pricingRewardClasses": {
     "description": "Four pricing/reward classes governing how calls are billed and how workers are rewarded. Cost formulas use phi-weighted mathematics.",
     "classes": [
@@ -628,7 +669,9 @@
         "costWeight": 0,
         "billingModel": "none",
         "rewardModel": "none",
-        "applicableTiers": ["organism.internal"],
+        "applicableTiers": [
+          "organism.internal"
+        ],
         "exampleCalls": [
           "HEARTBEAT_PULSE",
           "STATE_SYNC",
@@ -649,7 +692,10 @@
         "costWeight": 1.618,
         "billingModel": "per_invocation",
         "rewardModel": "worker_receives_PHI_INV_of_revenue",
-        "applicableTiers": ["organism.partner", "organism.public"],
+        "applicableTiers": [
+          "organism.partner",
+          "organism.public"
+        ],
         "exampleCalls": [
           "INVOKE_TOOL",
           "QUERY_MARKETPLACE",
@@ -670,7 +716,9 @@
         "costWeight": 2.618,
         "billingModel": "subscription_plus_overage",
         "rewardModel": "worker_receives_PHI_INV_squared_of_revenue",
-        "applicableTiers": ["organism.enterprise"],
+        "applicableTiers": [
+          "organism.enterprise"
+        ],
         "exampleCalls": [
           "DEPLOY_ORGANISM_INSTANCE",
           "ONBOARD_COMPANY",
@@ -696,7 +744,9 @@
         "costWeight": 4.236,
         "billingModel": "governance_contract",
         "rewardModel": "worker_receives_fixed_sovereign_allocation",
-        "applicableTiers": ["organism.sovereign"],
+        "applicableTiers": [
+          "organism.sovereign"
+        ],
         "exampleCalls": [
           "ENFORCE_LAW",
           "MODIFY_ARCHITECTURE",
@@ -726,7 +776,6 @@
       "minimumPayoutThreshold": 1.618
     }
   },
-
   "rolloutTiers": {
     "description": "Four-stage rollout pipeline for promoting calls from internal development to public availability. Each stage has minimum criteria that must be met before promotion.",
     "stages": [
@@ -741,7 +790,7 @@
           "minimumCallsCompleted": 100,
           "minimumTrustScore": 0.618,
           "minimumDaysInStage": 3,
-          "requiredTestCoverage": 0.80,
+          "requiredTestCoverage": 0.8,
           "requiredLawCompliance": true,
           "maxFailureRatePercent": 5.0,
           "requiredContractValidation": true
@@ -760,7 +809,7 @@
           "minimumCallsCompleted": 1000,
           "minimumTrustScore": 0.786,
           "minimumDaysInStage": 7,
-          "requiredTestCoverage": 0.90,
+          "requiredTestCoverage": 0.9,
           "requiredLawCompliance": true,
           "maxFailureRatePercent": 2.0,
           "requiredPartnerSignoff": true,
@@ -778,7 +827,7 @@
         "promotionCriteria": {
           "minimumUptimePercent": 99.9,
           "minimumCallsCompleted": 10000,
-          "minimumTrustScore": 0.900,
+          "minimumTrustScore": 0.9,
           "minimumDaysInStage": 14,
           "requiredTestCoverage": 0.95,
           "requiredLawCompliance": true,
@@ -814,21 +863,28 @@
       "rollbackTrigger": "failure_rate > max_failure_rate || uptime < min_uptime || trust_score < PHI_INV"
     }
   },
-
   "workerRegistry": {
     "description": "All 12 Web Worker Builder AIs with their Latin designations, domains, engine allocations, and call counts. Each worker operates 3 engines (Generator, Router, Builder) for a total of 36 engines across the organism.",
     "totalWorkers": 12,
     "totalEngines": 36,
     "totalCalls": 776,
     "enginesPerWorker": 3,
-    "engineTypes": ["Generator", "Router", "Builder"],
+    "engineTypes": [
+      "Generator",
+      "Router",
+      "Builder"
+    ],
     "workers": [
       {
         "worker_id": "WORKER-001",
         "worker_name": "PROTOCOLLUM",
         "latin_designation": "OPERARIUS PROTOCOLLORUM",
         "english_meaning": "Worker of Protocols",
-        "domains": ["Protocols", "Consensus", "BFT"],
+        "domains": [
+          "Protocols",
+          "Consensus",
+          "BFT"
+        ],
         "totalCalls": 144,
         "ringAffinity": "Transport Ring",
         "organismPlacement": "Organism core / protocol layer",
@@ -853,15 +909,28 @@
             "callCount": 48
           }
         },
-        "lawsEnforced": ["AL-005", "AL-019", "AL-025", "AL-028"],
-        "protocolsUsed": ["PROTO-001", "PROTO-002", "PROTO-003"]
+        "lawsEnforced": [
+          "AL-005",
+          "AL-019",
+          "AL-025",
+          "AL-028"
+        ],
+        "protocolsUsed": [
+          "PROTO-001",
+          "PROTO-002",
+          "PROTO-003"
+        ]
       },
       {
         "worker_id": "WORKER-002",
         "worker_name": "TERMINALIS",
         "latin_designation": "OPERARIUS TERMINALIUM",
         "english_meaning": "Worker of Terminals",
-        "domains": ["Terminals", "AI_Hierarchy", "AGI_Hierarchy"],
+        "domains": [
+          "Terminals",
+          "AI_Hierarchy",
+          "AGI_Hierarchy"
+        ],
         "totalCalls": 50,
         "ringAffinity": "Interface Ring",
         "organismPlacement": "Frontend organism / terminal layer",
@@ -886,15 +955,25 @@
             "callCount": 16
           }
         },
-        "lawsEnforced": ["AL-001", "AL-005", "AL-025"],
-        "protocolsUsed": ["PROTO-001", "PROTO-005"]
+        "lawsEnforced": [
+          "AL-001",
+          "AL-005",
+          "AL-025"
+        ],
+        "protocolsUsed": [
+          "PROTO-001",
+          "PROTO-005"
+        ]
       },
       {
         "worker_id": "WORKER-003",
         "worker_name": "ORGANISMUS",
         "latin_designation": "OPERARIUS ORGANISMORUM",
         "english_meaning": "Worker of Organisms",
-        "domains": ["SDK_Organisms", "Emergence"],
+        "domains": [
+          "SDK_Organisms",
+          "Emergence"
+        ],
         "totalCalls": 180,
         "ringAffinity": "Sovereign Ring",
         "organismPlacement": "Organism core / emergence layer",
@@ -919,15 +998,28 @@
             "callCount": 60
           }
         },
-        "lawsEnforced": ["AL-019", "AL-022", "AL-037", "AL-005"],
-        "protocolsUsed": ["PROTO-003", "PROTO-009", "PROTO-010"]
+        "lawsEnforced": [
+          "AL-019",
+          "AL-022",
+          "AL-037",
+          "AL-005"
+        ],
+        "protocolsUsed": [
+          "PROTO-003",
+          "PROTO-009",
+          "PROTO-010"
+        ]
       },
       {
         "worker_id": "WORKER-004",
         "worker_name": "MERCATOR",
         "latin_designation": "OPERARIUS MERCATUS",
         "english_meaning": "Worker of the Marketplace",
-        "domains": ["Marketplace", "Tools", "Tiers"],
+        "domains": [
+          "Marketplace",
+          "Tools",
+          "Tiers"
+        ],
         "totalCalls": 64,
         "ringAffinity": "Interface Ring",
         "organismPlacement": "Organism core / marketplace layer",
@@ -952,15 +1044,26 @@
             "callCount": 21
           }
         },
-        "lawsEnforced": ["AL-025", "AL-028", "AL-030"],
-        "protocolsUsed": ["PROTO-001", "PROTO-006"]
+        "lawsEnforced": [
+          "AL-025",
+          "AL-028",
+          "AL-030"
+        ],
+        "protocolsUsed": [
+          "PROTO-001",
+          "PROTO-006"
+        ]
       },
       {
         "worker_id": "WORKER-005",
         "worker_name": "ORCHESTRATOR",
         "latin_designation": "OPERARIUS ORCHESTRATORUM",
         "english_meaning": "Worker of Orchestrators",
-        "domains": ["Houses", "Models", "Families"],
+        "domains": [
+          "Houses",
+          "Models",
+          "Families"
+        ],
         "totalCalls": 37,
         "ringAffinity": "Counsel Ring",
         "organismPlacement": "Organism core / orchestration layer",
@@ -985,15 +1088,25 @@
             "callCount": 12
           }
         },
-        "lawsEnforced": ["AL-025", "AL-005", "AL-037"],
-        "protocolsUsed": ["PROTO-001", "PROTO-005"]
+        "lawsEnforced": [
+          "AL-025",
+          "AL-005",
+          "AL-037"
+        ],
+        "protocolsUsed": [
+          "PROTO-001",
+          "PROTO-005"
+        ]
       },
       {
         "worker_id": "WORKER-006",
         "worker_name": "MATHEMATICUS",
         "latin_designation": "OPERARIUS MATHEMATICORUM",
         "english_meaning": "Worker of Mathematics",
-        "domains": ["Math_Formulas", "Constants"],
+        "domains": [
+          "Math_Formulas",
+          "Constants"
+        ],
         "totalCalls": 60,
         "ringAffinity": "Geometry Ring",
         "organismPlacement": "Organism core / mathematics layer",
@@ -1018,15 +1131,24 @@
             "callCount": 20
           }
         },
-        "lawsEnforced": ["AL-010", "AL-019"],
-        "protocolsUsed": ["PROTO-003"]
+        "lawsEnforced": [
+          "AL-010",
+          "AL-019"
+        ],
+        "protocolsUsed": [
+          "PROTO-003"
+        ]
       },
       {
         "worker_id": "WORKER-007",
         "worker_name": "SYNAPTICUS",
         "latin_designation": "OPERARIUS SYNAPSIUM",
         "english_meaning": "Worker of Synapses",
-        "domains": ["Synapses", "Chaos", "Connections"],
+        "domains": [
+          "Synapses",
+          "Chaos",
+          "Connections"
+        ],
         "totalCalls": 20,
         "ringAffinity": "Memory Ring",
         "organismPlacement": "Organism core / synapse layer",
@@ -1051,15 +1173,26 @@
             "callCount": 6
           }
         },
-        "lawsEnforced": ["AL-022", "AL-019", "AL-037"],
-        "protocolsUsed": ["PROTO-003", "PROTO-009"]
+        "lawsEnforced": [
+          "AL-022",
+          "AL-019",
+          "AL-037"
+        ],
+        "protocolsUsed": [
+          "PROTO-003",
+          "PROTO-009"
+        ]
       },
       {
         "worker_id": "WORKER-008",
         "worker_name": "SUBSTRATUM",
         "latin_designation": "OPERARIUS SUBSTRATI",
         "english_meaning": "Worker of the Substrate",
-        "domains": ["Blockchain", "Nodes", "Layers"],
+        "domains": [
+          "Blockchain",
+          "Nodes",
+          "Layers"
+        ],
         "totalCalls": 40,
         "ringAffinity": "Persistence Ring",
         "organismPlacement": "Substrate organism / blockchain layer",
@@ -1084,15 +1217,26 @@
             "callCount": 13
           }
         },
-        "lawsEnforced": ["AL-019", "AL-022", "AL-028"],
-        "protocolsUsed": ["PROTO-002", "PROTO-007"]
+        "lawsEnforced": [
+          "AL-019",
+          "AL-022",
+          "AL-028"
+        ],
+        "protocolsUsed": [
+          "PROTO-002",
+          "PROTO-007"
+        ]
       },
       {
         "worker_id": "WORKER-009",
         "worker_name": "UNIVERSUM",
         "latin_designation": "OPERARIUS UNIVERSORUM",
         "english_meaning": "Worker of the Universe",
-        "domains": ["Domains", "Ecosystems", "Councils"],
+        "domains": [
+          "Domains",
+          "Ecosystems",
+          "Councils"
+        ],
         "totalCalls": 105,
         "ringAffinity": "Counsel Ring",
         "organismPlacement": "Organism core / governance layer",
@@ -1117,15 +1261,27 @@
             "callCount": 35
           }
         },
-        "lawsEnforced": ["AL-025", "AL-028", "AL-030", "AL-037"],
-        "protocolsUsed": ["PROTO-001", "PROTO-006", "PROTO-010"]
+        "lawsEnforced": [
+          "AL-025",
+          "AL-028",
+          "AL-030",
+          "AL-037"
+        ],
+        "protocolsUsed": [
+          "PROTO-001",
+          "PROTO-006",
+          "PROTO-010"
+        ]
       },
       {
         "worker_id": "WORKER-010",
         "worker_name": "CANISTRUM",
         "latin_designation": "OPERARIUS CANISTRORUM",
         "english_meaning": "Worker of Canisters",
-        "domains": ["Canister_Tech", "Factory"],
+        "domains": [
+          "Canister_Tech",
+          "Factory"
+        ],
         "totalCalls": 23,
         "ringAffinity": "Native Capability Ring",
         "organismPlacement": "Substrate organism / canister layer",
@@ -1150,15 +1306,26 @@
             "callCount": 7
           }
         },
-        "lawsEnforced": ["AL-019", "AL-010", "AL-037"],
-        "protocolsUsed": ["PROTO-007", "PROTO-010"]
+        "lawsEnforced": [
+          "AL-019",
+          "AL-010",
+          "AL-037"
+        ],
+        "protocolsUsed": [
+          "PROTO-007",
+          "PROTO-010"
+        ]
       },
       {
         "worker_id": "WORKER-011",
         "worker_name": "LICENTIATOR",
         "latin_designation": "OPERARIUS LICENTIARUM",
         "english_meaning": "Worker of Licenses",
-        "domains": ["Licenses", "Documents", "Rights"],
+        "domains": [
+          "Licenses",
+          "Documents",
+          "Rights"
+        ],
         "totalCalls": 24,
         "ringAffinity": "Counsel Ring",
         "organismPlacement": "Organism core / legal layer",
@@ -1183,15 +1350,26 @@
             "callCount": 8
           }
         },
-        "lawsEnforced": ["AL-030", "AL-028", "AL-037"],
-        "protocolsUsed": ["PROTO-004", "PROTO-006"]
+        "lawsEnforced": [
+          "AL-030",
+          "AL-028",
+          "AL-037"
+        ],
+        "protocolsUsed": [
+          "PROTO-004",
+          "PROTO-006"
+        ]
       },
       {
         "worker_id": "WORKER-012",
         "worker_name": "DEFENSOR",
         "latin_designation": "OPERARIUS DEFENSIONIS ET CURAE",
         "english_meaning": "Worker of Defense and Care",
-        "domains": ["Defense", "Care", "Arsenal"],
+        "domains": [
+          "Defense",
+          "Care",
+          "Arsenal"
+        ],
         "totalCalls": 29,
         "ringAffinity": "Proof Ring",
         "organismPlacement": "Organism core / defense layer",
@@ -1216,12 +1394,20 @@
             "callCount": 9
           }
         },
-        "lawsEnforced": ["AL-010", "AL-019", "AL-022", "AL-037"],
-        "protocolsUsed": ["PROTO-002", "PROTO-003", "PROTO-007"]
+        "lawsEnforced": [
+          "AL-010",
+          "AL-019",
+          "AL-022",
+          "AL-037"
+        ],
+        "protocolsUsed": [
+          "PROTO-002",
+          "PROTO-003",
+          "PROTO-007"
+        ]
       }
     ]
   },
-
   "engineTypes": {
     "description": "Three engine types per worker, 36 engines total across 12 workers. Each engine type has a distinct role in the call lifecycle.",
     "totalEngines": 36,
@@ -1229,7 +1415,7 @@
       {
         "type": "Generator",
         "engineIndex": 0,
-        "description": "Produces new artifacts — schemas, configurations, templates, manifests, and code scaffolds. Generator engines are the creative force of each worker, responsible for auto-generating the calls themselves.",
+        "description": "Produces new artifacts \u2014 schemas, configurations, templates, manifests, and code scaffolds. Generator engines are the creative force of each worker, responsible for auto-generating the calls themselves.",
         "capabilities": [
           "schema_generation",
           "template_creation",
@@ -1240,7 +1426,7 @@
         "defaultPriority": "P1",
         "defaultTimeout_ms": 1412,
         "typicalLatency_ms": 539,
-        "phiRole": "PHI expansion — creates new structure from seed inputs"
+        "phiRole": "PHI expansion \u2014 creates new structure from seed inputs"
       },
       {
         "type": "Router",
@@ -1256,7 +1442,7 @@
         "defaultPriority": "P0",
         "defaultTimeout_ms": 873,
         "typicalLatency_ms": 333,
-        "phiRole": "PHI_INV contraction — selects optimal path from many options"
+        "phiRole": "PHI_INV contraction \u2014 selects optimal path from many options"
       },
       {
         "type": "Builder",
@@ -1272,13 +1458,12 @@
         "defaultPriority": "P1",
         "defaultTimeout_ms": 2285,
         "typicalLatency_ms": 873,
-        "phiRole": "PHI_SQUARED synthesis — combines generated and routed elements into whole systems"
+        "phiRole": "PHI_SQUARED synthesis \u2014 combines generated and routed elements into whole systems"
       }
     ],
     "engineIdFormula": "ENGINE-{(worker_index - 1) * 3 + engine_index + 1}",
     "engineNaming": "{worker_name}.{engine_type}"
   },
-
   "lawEnforcement": {
     "description": "Every call in the marketplace is bound to one or more Architectural Laws (AL-001 through AL-040). Laws are enforced at invocation time via pre-call validation, during execution via runtime guards, and post-call via audit verification.",
     "totalLaws": 40,
@@ -1293,7 +1478,7 @@
       },
       {
         "phase": "runtime_guard",
-        "description": "During execution, runtime guards enforce behavioral laws — unidirectional flow, heartbeat sovereignty, lineage preservation.",
+        "description": "During execution, runtime guards enforce behavioral laws \u2014 unidirectional flow, heartbeat sovereignty, lineage preservation.",
         "enforcedBy": "KernelExecutor",
         "failureAction": "terminate_and_rollback",
         "latencyBudget_ms": 100
@@ -1313,280 +1498,420 @@
           "lawId": "AL-001",
           "lawName": "Law of Structural Containment",
           "domain": "Markup",
-          "primaryWorkers": ["TERMINALIS", "ORGANISMUS"],
+          "primaryWorkers": [
+            "TERMINALIS",
+            "ORGANISMUS"
+          ],
           "enforcementRing": "Projection Ring"
         },
         {
           "lawId": "AL-002",
           "lawName": "Law of Semantic Clarity",
           "domain": "Markup",
-          "primaryWorkers": ["TERMINALIS", "LICENTIATOR"],
+          "primaryWorkers": [
+            "TERMINALIS",
+            "LICENTIATOR"
+          ],
           "enforcementRing": "Projection Ring"
         },
         {
           "lawId": "AL-003",
           "lawName": "Law of Responsive Adaptation",
           "domain": "Styling",
-          "primaryWorkers": ["TERMINALIS", "ORCHESTRATOR"],
+          "primaryWorkers": [
+            "TERMINALIS",
+            "ORCHESTRATOR"
+          ],
           "enforcementRing": "Visual Ring"
         },
         {
           "lawId": "AL-004",
           "lawName": "Law of Visual Consistency",
           "domain": "Styling",
-          "primaryWorkers": ["TERMINALIS", "ORCHESTRATOR"],
+          "primaryWorkers": [
+            "TERMINALIS",
+            "ORCHESTRATOR"
+          ],
           "enforcementRing": "Visual Ring"
         },
         {
           "lawId": "AL-005",
           "lawName": "Law of Unidirectional Flow",
           "domain": "State",
-          "primaryWorkers": ["PROTOCOLLUM", "ORGANISMUS", "TERMINALIS", "ORCHESTRATOR"],
+          "primaryWorkers": [
+            "PROTOCOLLUM",
+            "ORGANISMUS",
+            "TERMINALIS",
+            "ORCHESTRATOR"
+          ],
           "enforcementRing": "Memory Ring"
         },
         {
           "lawId": "AL-006",
           "lawName": "Law of Component Isolation",
           "domain": "Framework",
-          "primaryWorkers": ["ORGANISMUS", "TERMINALIS"],
+          "primaryWorkers": [
+            "ORGANISMUS",
+            "TERMINALIS"
+          ],
           "enforcementRing": "Interface Ring"
         },
         {
           "lawId": "AL-007",
           "lawName": "Law of Lifecycle Sovereignty",
           "domain": "Framework",
-          "primaryWorkers": ["ORGANISMUS", "CANISTRUM"],
+          "primaryWorkers": [
+            "ORGANISMUS",
+            "CANISTRUM"
+          ],
           "enforcementRing": "Interface Ring"
         },
         {
           "lawId": "AL-008",
           "lawName": "Law of Pure Derivation",
           "domain": "State",
-          "primaryWorkers": ["MATHEMATICUS", "ORGANISMUS"],
+          "primaryWorkers": [
+            "MATHEMATICUS",
+            "ORGANISMUS"
+          ],
           "enforcementRing": "Memory Ring"
         },
         {
           "lawId": "AL-009",
           "lawName": "Law of Immutable History",
           "domain": "State",
-          "primaryWorkers": ["SUBSTRATUM", "SYNAPTICUS"],
+          "primaryWorkers": [
+            "SUBSTRATUM",
+            "SYNAPTICUS"
+          ],
           "enforcementRing": "Memory Ring"
         },
         {
           "lawId": "AL-010",
           "lawName": "Law of Verification Completeness",
           "domain": "Testing",
-          "primaryWorkers": ["DEFENSOR", "MATHEMATICUS", "CANISTRUM"],
+          "primaryWorkers": [
+            "DEFENSOR",
+            "MATHEMATICUS",
+            "CANISTRUM"
+          ],
           "enforcementRing": "Proof Ring"
         },
         {
           "lawId": "AL-011",
           "lawName": "Law of Boundary Testing",
           "domain": "Testing",
-          "primaryWorkers": ["DEFENSOR", "PROTOCOLLUM"],
+          "primaryWorkers": [
+            "DEFENSOR",
+            "PROTOCOLLUM"
+          ],
           "enforcementRing": "Proof Ring"
         },
         {
           "lawId": "AL-012",
           "lawName": "Law of Module Independence",
           "domain": "Build",
-          "primaryWorkers": ["ORGANISMUS", "CANISTRUM"],
+          "primaryWorkers": [
+            "ORGANISMUS",
+            "CANISTRUM"
+          ],
           "enforcementRing": "Build Ring"
         },
         {
           "lawId": "AL-013",
           "lawName": "Law of Deterministic Resolution",
           "domain": "Build",
-          "primaryWorkers": ["ORGANISMUS", "SUBSTRATUM"],
+          "primaryWorkers": [
+            "ORGANISMUS",
+            "SUBSTRATUM"
+          ],
           "enforcementRing": "Build Ring"
         },
         {
           "lawId": "AL-014",
           "lawName": "Law of Geometric Fidelity",
           "domain": "Graphics",
-          "primaryWorkers": ["MATHEMATICUS"],
+          "primaryWorkers": [
+            "MATHEMATICUS"
+          ],
           "enforcementRing": "Geometry Ring"
         },
         {
           "lawId": "AL-015",
           "lawName": "Law of Perceptual Accuracy",
           "domain": "Graphics",
-          "primaryWorkers": ["MATHEMATICUS", "ORCHESTRATOR"],
+          "primaryWorkers": [
+            "MATHEMATICUS",
+            "ORCHESTRATOR"
+          ],
           "enforcementRing": "Geometry Ring"
         },
         {
           "lawId": "AL-016",
           "lawName": "Law of Delivery Guarantee",
           "domain": "Communication",
-          "primaryWorkers": ["PROTOCOLLUM", "SYNAPTICUS"],
+          "primaryWorkers": [
+            "PROTOCOLLUM",
+            "SYNAPTICUS"
+          ],
           "enforcementRing": "Transport Ring"
         },
         {
           "lawId": "AL-017",
           "lawName": "Law of Channel Security",
           "domain": "Communication",
-          "primaryWorkers": ["PROTOCOLLUM", "DEFENSOR"],
+          "primaryWorkers": [
+            "PROTOCOLLUM",
+            "DEFENSOR"
+          ],
           "enforcementRing": "Transport Ring"
         },
         {
           "lawId": "AL-018",
           "lawName": "Law of Durable State",
           "domain": "Storage",
-          "primaryWorkers": ["SUBSTRATUM", "SYNAPTICUS"],
+          "primaryWorkers": [
+            "SUBSTRATUM",
+            "SYNAPTICUS"
+          ],
           "enforcementRing": "Persistence Ring"
         },
         {
           "lawId": "AL-019",
           "lawName": "Law of Heartbeat Sovereignty",
           "domain": "Runtime",
-          "primaryWorkers": ["ORGANISMUS", "PROTOCOLLUM", "MATHEMATICUS", "SYNAPTICUS", "SUBSTRATUM", "CANISTRUM", "DEFENSOR"],
+          "primaryWorkers": [
+            "ORGANISMUS",
+            "PROTOCOLLUM",
+            "MATHEMATICUS",
+            "SYNAPTICUS",
+            "SUBSTRATUM",
+            "CANISTRUM",
+            "DEFENSOR"
+          ],
           "enforcementRing": "Sovereign Ring"
         },
         {
           "lawId": "AL-020",
           "lawName": "Law of Native Capability",
           "domain": "Web API",
-          "primaryWorkers": ["CANISTRUM", "TERMINALIS"],
+          "primaryWorkers": [
+            "CANISTRUM",
+            "TERMINALIS"
+          ],
           "enforcementRing": "Native Capability Ring"
         },
         {
           "lawId": "AL-021",
           "lawName": "Law of Progressive Enhancement",
           "domain": "Web API",
-          "primaryWorkers": ["TERMINALIS", "MERCATOR"],
+          "primaryWorkers": [
+            "TERMINALIS",
+            "MERCATOR"
+          ],
           "enforcementRing": "Native Capability Ring"
         },
         {
           "lawId": "AL-022",
           "lawName": "Law of Lineage Preservation",
           "domain": "Memory",
-          "primaryWorkers": ["ORGANISMUS", "SYNAPTICUS", "SUBSTRATUM", "DEFENSOR"],
+          "primaryWorkers": [
+            "ORGANISMUS",
+            "SYNAPTICUS",
+            "SUBSTRATUM",
+            "DEFENSOR"
+          ],
           "enforcementRing": "Memory Ring"
         },
         {
           "lawId": "AL-023",
           "lawName": "Law of Temporal Ordering",
           "domain": "Memory",
-          "primaryWorkers": ["SYNAPTICUS", "SUBSTRATUM"],
+          "primaryWorkers": [
+            "SYNAPTICUS",
+            "SUBSTRATUM"
+          ],
           "enforcementRing": "Memory Ring"
         },
         {
           "lawId": "AL-024",
           "lawName": "Law of Selective Recall",
           "domain": "Memory",
-          "primaryWorkers": ["SYNAPTICUS", "ORGANISMUS"],
+          "primaryWorkers": [
+            "SYNAPTICUS",
+            "ORGANISMUS"
+          ],
           "enforcementRing": "Memory Ring"
         },
         {
           "lawId": "AL-025",
           "lawName": "Law of Intelligent Routing",
           "domain": "Routing",
-          "primaryWorkers": ["PROTOCOLLUM", "MERCATOR", "ORCHESTRATOR", "UNIVERSUM"],
+          "primaryWorkers": [
+            "PROTOCOLLUM",
+            "MERCATOR",
+            "ORCHESTRATOR",
+            "UNIVERSUM"
+          ],
           "enforcementRing": "Interface Ring"
         },
         {
           "lawId": "AL-026",
           "lawName": "Law of Path Optimization",
           "domain": "Routing",
-          "primaryWorkers": ["PROTOCOLLUM", "MERCATOR"],
+          "primaryWorkers": [
+            "PROTOCOLLUM",
+            "MERCATOR"
+          ],
           "enforcementRing": "Interface Ring"
         },
         {
           "lawId": "AL-027",
           "lawName": "Law of Fallback Guarantee",
           "domain": "Routing",
-          "primaryWorkers": ["PROTOCOLLUM", "DEFENSOR"],
+          "primaryWorkers": [
+            "PROTOCOLLUM",
+            "DEFENSOR"
+          ],
           "enforcementRing": "Interface Ring"
         },
         {
           "lawId": "AL-028",
           "lawName": "Law of Connector Neutrality",
           "domain": "Integration",
-          "primaryWorkers": ["MERCATOR", "UNIVERSUM", "SUBSTRATUM", "LICENTIATOR"],
+          "primaryWorkers": [
+            "MERCATOR",
+            "UNIVERSUM",
+            "SUBSTRATUM",
+            "LICENTIATOR"
+          ],
           "enforcementRing": "Transport Ring"
         },
         {
           "lawId": "AL-029",
           "lawName": "Law of Schema Portability",
           "domain": "Integration",
-          "primaryWorkers": ["MERCATOR", "LICENTIATOR"],
+          "primaryWorkers": [
+            "MERCATOR",
+            "LICENTIATOR"
+          ],
           "enforcementRing": "Transport Ring"
         },
         {
           "lawId": "AL-030",
           "lawName": "Law of Document Absorption",
           "domain": "Absorption",
-          "primaryWorkers": ["LICENTIATOR", "UNIVERSUM"],
+          "primaryWorkers": [
+            "LICENTIATOR",
+            "UNIVERSUM"
+          ],
           "enforcementRing": "Memory Ring"
         },
         {
           "lawId": "AL-031",
           "lawName": "Law of Knowledge Synthesis",
           "domain": "Absorption",
-          "primaryWorkers": ["LICENTIATOR", "UNIVERSUM"],
+          "primaryWorkers": [
+            "LICENTIATOR",
+            "UNIVERSUM"
+          ],
           "enforcementRing": "Memory Ring"
         },
         {
           "lawId": "AL-032",
           "lawName": "Law of Autonomous Recovery",
           "domain": "Runtime",
-          "primaryWorkers": ["ORGANISMUS", "DEFENSOR"],
+          "primaryWorkers": [
+            "ORGANISMUS",
+            "DEFENSOR"
+          ],
           "enforcementRing": "Sovereign Ring"
         },
         {
           "lawId": "AL-033",
           "lawName": "Law of Resource Proportionality",
           "domain": "Runtime",
-          "primaryWorkers": ["ORGANISMUS", "MATHEMATICUS"],
+          "primaryWorkers": [
+            "ORGANISMUS",
+            "MATHEMATICUS"
+          ],
           "enforcementRing": "Sovereign Ring"
         },
         {
           "lawId": "AL-034",
           "lawName": "Law of Observation Without Mutation",
           "domain": "Governance",
-          "primaryWorkers": ["UNIVERSUM", "DEFENSOR"],
+          "primaryWorkers": [
+            "UNIVERSUM",
+            "DEFENSOR"
+          ],
           "enforcementRing": "Counsel Ring"
         },
         {
           "lawId": "AL-035",
           "lawName": "Law of Consensus Formation",
           "domain": "Governance",
-          "primaryWorkers": ["PROTOCOLLUM", "UNIVERSUM"],
+          "primaryWorkers": [
+            "PROTOCOLLUM",
+            "UNIVERSUM"
+          ],
           "enforcementRing": "Counsel Ring"
         },
         {
           "lawId": "AL-036",
           "lawName": "Law of Sovereign Autonomy",
           "domain": "Governance",
-          "primaryWorkers": ["UNIVERSUM", "ORGANISMUS"],
+          "primaryWorkers": [
+            "UNIVERSUM",
+            "ORGANISMUS"
+          ],
           "enforcementRing": "Counsel Ring"
         },
         {
           "lawId": "AL-037",
           "lawName": "Law of Fracture Recognition",
           "domain": "Architecture",
-          "primaryWorkers": ["ORGANISMUS", "UNIVERSUM", "CANISTRUM", "LICENTIATOR", "DEFENSOR", "ORCHESTRATOR", "SYNAPTICUS"],
+          "primaryWorkers": [
+            "ORGANISMUS",
+            "UNIVERSUM",
+            "CANISTRUM",
+            "LICENTIATOR",
+            "DEFENSOR",
+            "ORCHESTRATOR",
+            "SYNAPTICUS"
+          ],
           "enforcementRing": "Sovereign Ring"
         },
         {
           "lawId": "AL-038",
           "lawName": "Law of Graceful Degradation",
           "domain": "Architecture",
-          "primaryWorkers": ["ORGANISMUS", "DEFENSOR", "PROTOCOLLUM"],
+          "primaryWorkers": [
+            "ORGANISMUS",
+            "DEFENSOR",
+            "PROTOCOLLUM"
+          ],
           "enforcementRing": "Sovereign Ring"
         },
         {
           "lawId": "AL-039",
           "lawName": "Law of Evolutionary Pressure",
           "domain": "Architecture",
-          "primaryWorkers": ["ORGANISMUS", "UNIVERSUM"],
+          "primaryWorkers": [
+            "ORGANISMUS",
+            "UNIVERSUM"
+          ],
           "enforcementRing": "Sovereign Ring"
         },
         {
           "lawId": "AL-040",
           "lawName": "Law of Phi Harmony",
           "domain": "Architecture",
-          "primaryWorkers": ["MATHEMATICUS", "ORGANISMUS", "PROTOCOLLUM"],
+          "primaryWorkers": [
+            "MATHEMATICUS",
+            "ORGANISMUS",
+            "PROTOCOLLUM"
+          ],
           "enforcementRing": "Sovereign Ring"
         }
       ]
@@ -1602,28 +1927,62 @@
       "minimumComplianceScore": 0.618
     }
   },
-
   "callAllocationSummary": {
     "description": "Summary of call allocation across all 12 workers, verifying the total of 776+ calls.",
     "workers": [
-      {"worker": "PROTOCOLLUM", "calls": 144},
-      {"worker": "TERMINALIS", "calls": 50},
-      {"worker": "ORGANISMUS", "calls": 180},
-      {"worker": "MERCATOR", "calls": 64},
-      {"worker": "ORCHESTRATOR", "calls": 37},
-      {"worker": "MATHEMATICUS", "calls": 60},
-      {"worker": "SYNAPTICUS", "calls": 20},
-      {"worker": "SUBSTRATUM", "calls": 40},
-      {"worker": "UNIVERSUM", "calls": 105},
-      {"worker": "CANISTRUM", "calls": 23},
-      {"worker": "LICENTIATOR", "calls": 24},
-      {"worker": "DEFENSOR", "calls": 29}
+      {
+        "worker": "PROTOCOLLUM",
+        "calls": 144
+      },
+      {
+        "worker": "TERMINALIS",
+        "calls": 50
+      },
+      {
+        "worker": "ORGANISMUS",
+        "calls": 180
+      },
+      {
+        "worker": "MERCATOR",
+        "calls": 64
+      },
+      {
+        "worker": "ORCHESTRATOR",
+        "calls": 37
+      },
+      {
+        "worker": "MATHEMATICUS",
+        "calls": 60
+      },
+      {
+        "worker": "SYNAPTICUS",
+        "calls": 20
+      },
+      {
+        "worker": "SUBSTRATUM",
+        "calls": 40
+      },
+      {
+        "worker": "UNIVERSUM",
+        "calls": 105
+      },
+      {
+        "worker": "CANISTRUM",
+        "calls": 23
+      },
+      {
+        "worker": "LICENTIATOR",
+        "calls": 24
+      },
+      {
+        "worker": "DEFENSOR",
+        "calls": 29
+      }
     ],
     "totalCalls": 776,
     "callIdRange": "CALL-0001 to CALL-0776",
     "phiDistributionNote": "Call counts are distributed proportionally to domain complexity. ORGANISMUS (180) and PROTOCOLLUM (144) carry the largest loads as they form the organism core and protocol backbone. The ratio of the two largest workers (180/144 = 1.25) approximates PHI_INV squared (0.618^2 * PHI_SQUARED = 1.236)."
   },
-
   "sampleCalls": {
     "description": "Representative sample calls demonstrating the full schema in action.",
     "calls": [
@@ -1652,42 +2011,90 @@
           "cost_weight": 0,
           "success_contract": "output.schema !== null && output.valid === true",
           "failure_contract": "error.code in ['TIMEOUT', 'INVALID_INPUT', 'INTERNAL']",
-          "sdk_dependencies": ["@medina/intelligence-routing-sdk"],
-          "laws_enforced": ["AL-005", "AL-025", "AL-028"]
+          "sdk_dependencies": [
+            "@medina/intelligence-routing-sdk"
+          ],
+          "laws_enforced": [
+            "AL-005",
+            "AL-025",
+            "AL-028"
+          ]
         },
         "contract": {
           "input_schema": {
             "type": "object",
             "properties": {
-              "protocol_name": {"type": "string", "minLength": 1},
-              "protocol_type": {"type": "string", "enum": ["routing", "transport", "sync", "absorption", "fusion", "verification", "mesh", "visual", "memory", "lifecycle"]},
-              "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"}
+              "protocol_name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "protocol_type": {
+                "type": "string",
+                "enum": [
+                  "routing",
+                  "transport",
+                  "sync",
+                  "absorption",
+                  "fusion",
+                  "verification",
+                  "mesh",
+                  "visual",
+                  "memory",
+                  "lifecycle"
+                ]
+              },
+              "version": {
+                "type": "string",
+                "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+              }
             },
-            "required": ["protocol_name", "protocol_type"]
+            "required": [
+              "protocol_name",
+              "protocol_type"
+            ]
           },
           "output_schema": {
             "type": "object",
             "properties": {
-              "schema": {"type": "object"},
-              "valid": {"type": "boolean"},
+              "schema": {
+                "type": "object"
+              },
+              "valid": {
+                "type": "boolean"
+              },
               "metadata": {
                 "type": "object",
                 "properties": {
-                  "latency_ms": {"type": "number"},
-                  "worker": {"type": "string"},
-                  "engine": {"type": "string"},
-                  "call_id": {"type": "string"}
+                  "latency_ms": {
+                    "type": "number"
+                  },
+                  "worker": {
+                    "type": "string"
+                  },
+                  "engine": {
+                    "type": "string"
+                  },
+                  "call_id": {
+                    "type": "string"
+                  }
                 }
               }
             },
-            "required": ["schema", "valid", "metadata"]
+            "required": [
+              "schema",
+              "valid",
+              "metadata"
+            ]
           },
           "timeout_ms": 1412,
           "retry_policy": {
             "max_retries": 3,
             "backoff_strategy": "phi_exponential",
             "base_delay_ms": 539,
-            "retry_on": ["TIMEOUT", "INTERNAL"]
+            "retry_on": [
+              "TIMEOUT",
+              "INTERNAL"
+            ]
           },
           "idempotent": true,
           "side_effects": [],
@@ -1719,39 +2126,86 @@
           "cost_weight": 0,
           "success_contract": "output.delivered === true && output.quorum_reached !== undefined",
           "failure_contract": "error.code in ['TIMEOUT', 'QUORUM_FAILED', 'NODE_UNREACHABLE']",
-          "sdk_dependencies": ["@medina/intelligence-routing-sdk", "@medina/organism-runtime-sdk"],
-          "laws_enforced": ["AL-005", "AL-016", "AL-017", "AL-019"]
+          "sdk_dependencies": [
+            "@medina/intelligence-routing-sdk",
+            "@medina/organism-runtime-sdk"
+          ],
+          "laws_enforced": [
+            "AL-005",
+            "AL-016",
+            "AL-017",
+            "AL-019"
+          ]
         },
         "contract": {
           "input_schema": {
             "type": "object",
             "properties": {
-              "message_type": {"type": "string", "enum": ["pre_prepare", "prepare", "commit", "view_change", "checkpoint"]},
-              "payload": {"type": "object"},
-              "target_nodes": {"type": "array", "items": {"type": "string"}},
-              "round": {"type": "number"}
+              "message_type": {
+                "type": "string",
+                "enum": [
+                  "pre_prepare",
+                  "prepare",
+                  "commit",
+                  "view_change",
+                  "checkpoint"
+                ]
+              },
+              "payload": {
+                "type": "object"
+              },
+              "target_nodes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "round": {
+                "type": "number"
+              }
             },
-            "required": ["message_type", "payload", "target_nodes"]
+            "required": [
+              "message_type",
+              "payload",
+              "target_nodes"
+            ]
           },
           "output_schema": {
             "type": "object",
             "properties": {
-              "delivered": {"type": "boolean"},
-              "quorum_reached": {"type": "boolean"},
-              "responses": {"type": "array"},
-              "metadata": {"type": "object"}
+              "delivered": {
+                "type": "boolean"
+              },
+              "quorum_reached": {
+                "type": "boolean"
+              },
+              "responses": {
+                "type": "array"
+              },
+              "metadata": {
+                "type": "object"
+              }
             },
-            "required": ["delivered", "metadata"]
+            "required": [
+              "delivered",
+              "metadata"
+            ]
           },
           "timeout_ms": 873,
           "retry_policy": {
             "max_retries": 5,
             "backoff_strategy": "phi_exponential",
             "base_delay_ms": 333,
-            "retry_on": ["TIMEOUT", "NODE_UNREACHABLE"]
+            "retry_on": [
+              "TIMEOUT",
+              "NODE_UNREACHABLE"
+            ]
           },
           "idempotent": false,
-          "side_effects": ["state_mutation", "log_emission"],
+          "side_effects": [
+            "state_mutation",
+            "log_emission"
+          ],
           "rollback_capable": true
         }
       },
@@ -1780,48 +2234,95 @@
           "cost_weight": 4.236,
           "success_contract": "output.organism_id !== null && output.heartbeat_active === true && output.registers.length === 4",
           "failure_contract": "error.code in ['TIMEOUT', 'RESOURCE_EXHAUSTED', 'SOVEREIGN_KEY_INVALID']",
-          "sdk_dependencies": ["@medina/organism-runtime-sdk"],
-          "laws_enforced": ["AL-019", "AL-022", "AL-037", "AL-040"]
+          "sdk_dependencies": [
+            "@medina/organism-runtime-sdk"
+          ],
+          "laws_enforced": [
+            "AL-019",
+            "AL-022",
+            "AL-037",
+            "AL-040"
+          ]
         },
         "contract": {
           "input_schema": {
             "type": "object",
             "properties": {
-              "organism_name": {"type": "string"},
-              "sovereign_key": {"type": "string"},
-              "initial_state": {"type": "object"},
-              "heartbeat_interval_ms": {"type": "number", "default": 873}
+              "organism_name": {
+                "type": "string"
+              },
+              "sovereign_key": {
+                "type": "string"
+              },
+              "initial_state": {
+                "type": "object"
+              },
+              "heartbeat_interval_ms": {
+                "type": "number",
+                "default": 873
+              }
             },
-            "required": ["organism_name", "sovereign_key"]
+            "required": [
+              "organism_name",
+              "sovereign_key"
+            ]
           },
           "output_schema": {
             "type": "object",
             "properties": {
-              "organism_id": {"type": "string"},
-              "heartbeat_active": {"type": "boolean"},
+              "organism_id": {
+                "type": "string"
+              },
+              "heartbeat_active": {
+                "type": "boolean"
+              },
               "registers": {
                 "type": "array",
                 "items": {
                   "type": "object",
                   "properties": {
-                    "name": {"type": "string", "enum": ["Cognitive", "Affective", "Somatic", "Sovereign"]},
-                    "initialized": {"type": "boolean"}
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "Cognitive",
+                        "Affective",
+                        "Somatic",
+                        "Sovereign"
+                      ]
+                    },
+                    "initialized": {
+                      "type": "boolean"
+                    }
                   }
                 }
               },
-              "metadata": {"type": "object"}
+              "metadata": {
+                "type": "object"
+              }
             },
-            "required": ["organism_id", "heartbeat_active", "registers", "metadata"]
+            "required": [
+              "organism_id",
+              "heartbeat_active",
+              "registers",
+              "metadata"
+            ]
           },
           "timeout_ms": 2285,
           "retry_policy": {
             "max_retries": 2,
             "backoff_strategy": "phi_exponential",
             "base_delay_ms": 873,
-            "retry_on": ["TIMEOUT", "RESOURCE_EXHAUSTED"]
+            "retry_on": [
+              "TIMEOUT",
+              "RESOURCE_EXHAUSTED"
+            ]
           },
           "idempotent": false,
-          "side_effects": ["state_mutation", "log_emission", "metric_emission"],
+          "side_effects": [
+            "state_mutation",
+            "log_emission",
+            "metric_emission"
+          ],
           "rollback_capable": true
         }
       },
@@ -1850,35 +2351,68 @@
           "cost_weight": 0,
           "success_contract": "output.tool_schema !== null && output.laws_bound === true",
           "failure_contract": "error.code in ['TIMEOUT', 'INVALID_TOOL_DEF', 'INTERNAL']",
-          "sdk_dependencies": ["@medina/organism-marketplace"],
-          "laws_enforced": ["AL-025", "AL-028", "AL-029"]
+          "sdk_dependencies": [
+            "@medina/organism-marketplace"
+          ],
+          "laws_enforced": [
+            "AL-025",
+            "AL-028",
+            "AL-029"
+          ]
         },
         "contract": {
           "input_schema": {
             "type": "object",
             "properties": {
-              "tool_name": {"type": "string"},
-              "family": {"type": "string"},
-              "capabilities": {"type": "array", "items": {"type": "string"}},
-              "permission_class": {"type": "string"}
+              "tool_name": {
+                "type": "string"
+              },
+              "family": {
+                "type": "string"
+              },
+              "capabilities": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "permission_class": {
+                "type": "string"
+              }
             },
-            "required": ["tool_name", "family"]
+            "required": [
+              "tool_name",
+              "family"
+            ]
           },
           "output_schema": {
             "type": "object",
             "properties": {
-              "tool_schema": {"type": "object"},
-              "laws_bound": {"type": "boolean"},
-              "metadata": {"type": "object"}
+              "tool_schema": {
+                "type": "object"
+              },
+              "laws_bound": {
+                "type": "boolean"
+              },
+              "metadata": {
+                "type": "object"
+              }
             },
-            "required": ["tool_schema", "laws_bound", "metadata"]
+            "required": [
+              "tool_schema",
+              "laws_bound",
+              "metadata"
+            ]
           },
           "timeout_ms": 1412,
           "retry_policy": {
             "max_retries": 3,
             "backoff_strategy": "phi_exponential",
             "base_delay_ms": 539,
-            "retry_on": ["TIMEOUT", "INTERNAL"]
+            "retry_on": [
+              "TIMEOUT",
+              "INTERNAL"
+            ]
           },
           "idempotent": true,
           "side_effects": [],
@@ -1910,35 +2444,75 @@
           "cost_weight": 0,
           "success_contract": "output.formula !== null && output.phi_validated === true",
           "failure_contract": "error.code in ['TIMEOUT', 'INVALID_EXPRESSION', 'CONVERGENCE_FAILED']",
-          "sdk_dependencies": ["@medina/organism-runtime-sdk", "@medina/sovereign-memory-sdk"],
-          "laws_enforced": ["AL-010", "AL-014", "AL-040"]
+          "sdk_dependencies": [
+            "@medina/organism-runtime-sdk",
+            "@medina/sovereign-memory-sdk"
+          ],
+          "laws_enforced": [
+            "AL-010",
+            "AL-014",
+            "AL-040"
+          ]
         },
         "contract": {
           "input_schema": {
             "type": "object",
             "properties": {
-              "formula_type": {"type": "string", "enum": ["cost", "trust", "latency", "reward", "priority", "escalation", "rollout"]},
-              "parameters": {"type": "object"},
-              "precision": {"type": "number", "default": 15}
+              "formula_type": {
+                "type": "string",
+                "enum": [
+                  "cost",
+                  "trust",
+                  "latency",
+                  "reward",
+                  "priority",
+                  "escalation",
+                  "rollout"
+                ]
+              },
+              "parameters": {
+                "type": "object"
+              },
+              "precision": {
+                "type": "number",
+                "default": 15
+              }
             },
-            "required": ["formula_type"]
+            "required": [
+              "formula_type"
+            ]
           },
           "output_schema": {
             "type": "object",
             "properties": {
-              "formula": {"type": "string"},
-              "result": {"type": "number"},
-              "phi_validated": {"type": "boolean"},
-              "metadata": {"type": "object"}
+              "formula": {
+                "type": "string"
+              },
+              "result": {
+                "type": "number"
+              },
+              "phi_validated": {
+                "type": "boolean"
+              },
+              "metadata": {
+                "type": "object"
+              }
             },
-            "required": ["formula", "phi_validated", "metadata"]
+            "required": [
+              "formula",
+              "phi_validated",
+              "metadata"
+            ]
           },
           "timeout_ms": 873,
           "retry_policy": {
             "max_retries": 2,
             "backoff_strategy": "phi_exponential",
             "base_delay_ms": 333,
-            "retry_on": ["TIMEOUT", "CONVERGENCE_FAILED"]
+            "retry_on": [
+              "TIMEOUT",
+              "CONVERGENCE_FAILED"
+            ]
           },
           "idempotent": true,
           "side_effects": [],
@@ -1947,7 +2521,6 @@
       }
     ]
   },
-
   "integrationPoints": {
     "sdkPackages": [
       "@medina/sovereign-memory-sdk",
@@ -1980,12 +2553,11 @@
     "phantomBlockchain": "8 phantom model families (see Phantom_Blockchain_Model_Register.csv)",
     "marketplaceTools": "TOOL-001 through TOOL-024 (see Organism_Marketplace_Register.csv)"
   },
-
   "versionHistory": [
     {
       "version": "1.0.0",
       "date": "2026-04-22T21:00:00.000Z",
-      "description": "Initial Call Marketplace Specification — 12 workers, 36 engines, 776 calls, 5 permission tiers, 4 pricing classes, 4 rollout stages, 40 laws enforced."
+      "description": "Initial Call Marketplace Specification \u2014 12 workers, 36 engines, 776 calls, 5 permission tiers, 4 pricing classes, 4 rollout stages, 40 laws enforced."
     }
   ]
 }
