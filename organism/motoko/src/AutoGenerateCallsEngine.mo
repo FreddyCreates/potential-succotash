@@ -3,7 +3,7 @@
 /// 12 Web Worker Builder AIs (OPERARII AEDIFICATORES), each Latin-named
 /// with 3 dedicated engines (Generator + Router + Builder).
 ///
-/// 36 engines total. 776+ auto-generated calls across all domains.
+/// 36 engines total. 976+ auto-generated calls across all domains.
 /// Full routing table — every call auto-routed to correct target module.
 /// All AI, AGI, 24/7, user-facing, cross-substrate.
 ///
@@ -121,40 +121,40 @@ module {
   /// Initialize all 12 workers with their Latin names, domains, and call counts
   public func initWorkers(ts : Int) : [WorkerState] {
     [
-      // 1. PROTOCOLLUM — Protocols, Consensus, BFT — 144 calls
+      // 1. PROTOCOLLUM — Protocols, Consensus, BFT — 164 calls
       {
         id = 1; name = "PROTOCOLLUM"; latinName = "OPERARIUS PROTOCOLLORUM";
         domain = "Protocols, Consensus, BFT";
         engines = buildTriad("PROTOCOLLUM", ts);
-        totalCalls = 144; callsGenerated = 0; healthy = true;
+        totalCalls = 164; callsGenerated = 0; healthy = true;
       },
-      // 2. TERMINALIS — Terminals, AI/AGI Hierarchy — 50 calls
+      // 2. TERMINALIS — Terminals, AI/AGI Hierarchy — 70 calls
       {
         id = 2; name = "TERMINALIS"; latinName = "OPERARIUS TERMINALIUM";
         domain = "Terminals, AI/AGI Hierarchy";
         engines = buildTriad("TERMINALIS", ts);
-        totalCalls = 50; callsGenerated = 0; healthy = true;
+        totalCalls = 70; callsGenerated = 0; healthy = true;
       },
-      // 3. ORGANISMUS — SDK Organisms, Emergence — 180 calls
+      // 3. ORGANISMUS — SDK Organisms, Emergence — 195 calls
       {
         id = 3; name = "ORGANISMUS"; latinName = "OPERARIUS ORGANISMORUM";
         domain = "SDK Organisms, Emergence";
         engines = buildTriad("ORGANISMUS", ts);
-        totalCalls = 180; callsGenerated = 0; healthy = true;
+        totalCalls = 195; callsGenerated = 0; healthy = true;
       },
-      // 4. MERCATOR — Marketplace, Tools, Tiers — 64 calls
+      // 4. MERCATOR — Marketplace, Tools, Tiers — 89 calls
       {
         id = 4; name = "MERCATOR"; latinName = "OPERARIUS MERCATUS";
         domain = "Marketplace, Tools, Tiers";
         engines = buildTriad("MERCATOR", ts);
-        totalCalls = 64; callsGenerated = 0; healthy = true;
+        totalCalls = 89; callsGenerated = 0; healthy = true;
       },
-      // 5. ORCHESTRATOR — Houses, Models, Families — 37 calls
+      // 5. ORCHESTRATOR — Houses, Models, Families — 67 calls
       {
         id = 5; name = "ORCHESTRATOR"; latinName = "OPERARIUS ORCHESTRATORUM";
         domain = "Houses, Models, Families";
         engines = buildTriad("ORCHESTRATOR", ts);
-        totalCalls = 37; callsGenerated = 0; healthy = true;
+        totalCalls = 67; callsGenerated = 0; healthy = true;
       },
       // 6. MATHEMATICUS — Math Formulas, Constants — 60 calls
       {
@@ -163,26 +163,26 @@ module {
         engines = buildTriad("MATHEMATICUS", ts);
         totalCalls = 60; callsGenerated = 0; healthy = true;
       },
-      // 7. SYNAPTICUS — Synapses, Chaos, Connections — 20 calls
+      // 7. SYNAPTICUS — Synapses, Chaos, Connections — 35 calls
       {
         id = 7; name = "SYNAPTICUS"; latinName = "OPERARIUS SYNAPSIUM";
         domain = "Synapses, Chaos, Connections";
         engines = buildTriad("SYNAPTICUS", ts);
-        totalCalls = 20; callsGenerated = 0; healthy = true;
+        totalCalls = 35; callsGenerated = 0; healthy = true;
       },
-      // 8. SUBSTRATUM — Blockchain, Nodes, Layers — 40 calls
+      // 8. SUBSTRATUM — Blockchain, Nodes, Layers — 55 calls
       {
         id = 8; name = "SUBSTRATUM"; latinName = "OPERARIUS SUBSTRATI";
         domain = "Blockchain, Nodes, Layers";
         engines = buildTriad("SUBSTRATUM", ts);
-        totalCalls = 40; callsGenerated = 0; healthy = true;
+        totalCalls = 55; callsGenerated = 0; healthy = true;
       },
-      // 9. UNIVERSUM — Domains, Ecosystems, Councils — 105 calls
+      // 9. UNIVERSUM — Domains, Ecosystems, Councils — 130 calls
       {
         id = 9; name = "UNIVERSUM"; latinName = "OPERARIUS UNIVERSORUM";
         domain = "Domains, Ecosystems, Councils";
         engines = buildTriad("UNIVERSUM", ts);
-        totalCalls = 105; callsGenerated = 0; healthy = true;
+        totalCalls = 130; callsGenerated = 0; healthy = true;
       },
       // 10. CANISTRUM — Canister Tech, Factory — 23 calls
       {
@@ -191,26 +191,26 @@ module {
         engines = buildTriad("CANISTRUM", ts);
         totalCalls = 23; callsGenerated = 0; healthy = true;
       },
-      // 11. LICENTIATOR — Licenses, Documents, Rights — 24 calls
+      // 11. LICENTIATOR — Licenses, Documents, Rights — 39 calls
       {
         id = 11; name = "LICENTIATOR"; latinName = "OPERARIUS LICENTIARUM";
         domain = "Licenses, Documents, Rights";
         engines = buildTriad("LICENTIATOR", ts);
-        totalCalls = 24; callsGenerated = 0; healthy = true;
+        totalCalls = 39; callsGenerated = 0; healthy = true;
       },
-      // 12. DEFENSOR — Defense, Care, Arsenal — 29 calls
+      // 12. DEFENSOR — Defense, Care, Arsenal — 49 calls
       {
         id = 12; name = "DEFENSOR"; latinName = "OPERARIUS DEFENSIONIS ET CURAE";
         domain = "Defense, Care, Arsenal";
         engines = buildTriad("DEFENSOR", ts);
-        totalCalls = 29; callsGenerated = 0; healthy = true;
+        totalCalls = 49; callsGenerated = 0; healthy = true;
       }
     ]
   };
 
   // ══════════════════════════════════════════════════════════════════════
   //  CALL GENERATION — GENERATIO VOCATIONUM
-  //  776+ calls auto-generated and routed
+  //  976+ calls auto-generated and routed
   // ══════════════════════════════════════════════════════════════════════
 
   /// Generate calls for PROTOCOLLUM — 144 protocol calls
@@ -615,6 +615,225 @@ module {
     calls
   };
 
+  /// Generate multi-power cross-domain calls — 200+ orchestration calls
+  public func generateMultiPowerCalls(ts : Int) : [CallDefinition] {
+    var calls : [CallDefinition] = [];
+    var id : Nat = 1000;
+
+    // ── 1. Protocol×Model Fusion — 20 calls (PROTOCOLLUM) ───────────
+    let pfEntities = [
+      "ProtocolFusionMultiModel", "ProtocolFusionConsensus",
+      "ProtocolFusionBridge", "ProtocolFusionChain"
+    ];
+    let pfOps = ["init", "route", "fuse", "validate", "sync"];
+    for (e in pfEntities.vals()) {
+      for (op in pfOps.vals()) {
+        id += 1;
+        calls := Array.append(calls, [{
+          callId = id;
+          callName = e # "." # op;
+          domain = "MultiPower";
+          targetModule = "sdk/multipower/protocol-fusion";
+          workerName = "PROTOCOLLUM";
+          priority = PHI * Float.fromInt(id % 8 + 1) / 8.0;
+          autoRouted = true;
+        }]);
+      };
+    };
+
+    // ── 2. Observer Intelligence — 15 calls (ORGANISMUS) ────────────
+    let obsEntities = [
+      "ObserverAIMutation", "ObserverAIIntersection", "ObserverAIPerformance"
+    ];
+    let obsOps = ["observe", "classify", "react", "predict", "aggregate"];
+    for (e in obsEntities.vals()) {
+      for (op in obsOps.vals()) {
+        id += 1;
+        calls := Array.append(calls, [{
+          callId = id;
+          callName = e # "." # op;
+          domain = "MultiPower";
+          targetModule = "sdk/multipower/observer-ai";
+          workerName = "ORGANISMUS";
+          priority = PHI * Float.fromInt(id % 6 + 1) / 6.0;
+          autoRouted = true;
+        }]);
+      };
+    };
+
+    // ── 3. Web Worker Orchestration — 30 calls (ORCHESTRATOR) ───────
+    let woEntities = [
+      "WorkerOrchMessaging", "WorkerOrchMemory", "WorkerOrchLifecycle",
+      "WorkerOrchBalancer", "WorkerOrchPool", "WorkerOrchScheduler"
+    ];
+    let woOps = ["dispatch", "allocate", "balance", "spawn", "terminate"];
+    for (e in woEntities.vals()) {
+      for (op in woOps.vals()) {
+        id += 1;
+        calls := Array.append(calls, [{
+          callId = id;
+          callName = e # "." # op;
+          domain = "MultiPower";
+          targetModule = "sdk/multipower/worker-orch";
+          workerName = "ORCHESTRATOR";
+          priority = PHI * Float.fromInt(id % 10 + 1) / 10.0;
+          autoRouted = true;
+        }]);
+      };
+    };
+
+    // ── 4. Knowledge Graph Power — 25 calls (UNIVERSUM) ─────────────
+    let kgEntities = [
+      "KnowledgeGraphEntity", "KnowledgeGraphRelation",
+      "KnowledgeGraphTraversal", "KnowledgeGraphFusion",
+      "KnowledgeGraphOntology"
+    ];
+    let kgOps = ["link", "extract", "traverse", "fuse", "query"];
+    for (e in kgEntities.vals()) {
+      for (op in kgOps.vals()) {
+        id += 1;
+        calls := Array.append(calls, [{
+          callId = id;
+          callName = e # "." # op;
+          domain = "MultiPower";
+          targetModule = "sdk/multipower/knowledge-graph";
+          workerName = "UNIVERSUM";
+          priority = PHI_INV * Float.fromInt(id % 7 + 1);
+          autoRouted = true;
+        }]);
+      };
+    };
+
+    // ── 5. Autonomous Agent — 20 calls (TERMINALIS) ─────────────────
+    let aaEntities = [
+      "AutonomousAgentPlanner", "AutonomousAgentGoal",
+      "AutonomousAgentSelf", "AutonomousAgentDelegator"
+    ];
+    let aaOps = ["plan", "decompose", "improve", "delegate", "evaluate"];
+    for (e in aaEntities.vals()) {
+      for (op in aaOps.vals()) {
+        id += 1;
+        calls := Array.append(calls, [{
+          callId = id;
+          callName = e # "." # op;
+          domain = "MultiPower";
+          targetModule = "sdk/multipower/autonomous-agent";
+          workerName = "TERMINALIS";
+          priority = PHI * Float.fromInt(id % 5 + 1) / 5.0;
+          autoRouted = true;
+        }]);
+      };
+    };
+
+    // ── 6. Cross-Substrate Bridge — 15 calls (SUBSTRATUM) ───────────
+    let sbEntities = [
+      "SubstrateBridgeICPtoETH", "SubstrateBridgeICPtoSOL",
+      "SubstrateBridgeMultiChain"
+    ];
+    let sbOps = ["bridge", "verify", "settle", "relay", "sync"];
+    for (e in sbEntities.vals()) {
+      for (op in sbOps.vals()) {
+        id += 1;
+        calls := Array.append(calls, [{
+          callId = id;
+          callName = e # "." # op;
+          domain = "MultiPower";
+          targetModule = "sdk/multipower/substrate-bridge";
+          workerName = "SUBSTRATUM";
+          priority = PHI * Float.fromInt(id % 8 + 1) / 8.0;
+          autoRouted = true;
+        }]);
+      };
+    };
+
+    // ── 7. Security Arsenal — 20 calls (DEFENSOR) ──────────────────
+    let saEntities = [
+      "SecurityArsenalZKP", "SecurityArsenalPromptShield",
+      "SecurityArsenalPII", "SecurityArsenalThreatIntel"
+    ];
+    let saOps = ["prove", "detect", "shield", "report", "mitigate"];
+    for (e in saEntities.vals()) {
+      for (op in saOps.vals()) {
+        id += 1;
+        calls := Array.append(calls, [{
+          callId = id;
+          callName = e # "." # op;
+          domain = "MultiPower";
+          targetModule = "sdk/multipower/security-arsenal";
+          workerName = "DEFENSOR";
+          priority = PHI * Float.fromInt(id % 6 + 1) / 6.0;
+          autoRouted = true;
+        }]);
+      };
+    };
+
+    // ── 8. Marketplace Registry — 25 calls (MERCATOR) ───────────────
+    let mrEntities = [
+      "MarketplaceRegistryDiscovery", "MarketplaceRegistryRegistrar",
+      "MarketplaceRegistryPricing", "MarketplaceRegistrySettlement",
+      "MarketplaceRegistryCompliance"
+    ];
+    let mrOps = ["discover", "register", "price", "settle", "audit"];
+    for (e in mrEntities.vals()) {
+      for (op in mrOps.vals()) {
+        id += 1;
+        calls := Array.append(calls, [{
+          callId = id;
+          callName = e # "." # op;
+          domain = "MultiPower";
+          targetModule = "sdk/multipower/marketplace-registry";
+          workerName = "MERCATOR";
+          priority = PHI_INV * Float.fromInt(id % 5 + 1);
+          autoRouted = true;
+        }]);
+      };
+    };
+
+    // ── 9. Emergence Detection — 15 calls (SYNAPTICUS) ──────────────
+    let edEntities = [
+      "EmergenceDetectSelfOrg", "EmergenceDetectPattern",
+      "EmergenceDetectComplexity"
+    ];
+    let edOps = ["detect", "measure", "classify", "predict", "alert"];
+    for (e in edEntities.vals()) {
+      for (op in edOps.vals()) {
+        id += 1;
+        calls := Array.append(calls, [{
+          callId = id;
+          callName = e # "." # op;
+          domain = "MultiPower";
+          targetModule = "sdk/multipower/emergence-detect";
+          workerName = "SYNAPTICUS";
+          priority = PHI * Float.fromInt(id % 4 + 1) / 4.0;
+          autoRouted = true;
+        }]);
+      };
+    };
+
+    // ── 10. Law Enforcement Wire — 15 calls (LICENTIATOR) ───────────
+    let leEntities = [
+      "LawEnforcementDoctrine", "LawEnforcementCompliance",
+      "LawEnforcementViolation"
+    ];
+    let leOps = ["audit", "check", "report", "remediate", "escalate"];
+    for (e in leEntities.vals()) {
+      for (op in leOps.vals()) {
+        id += 1;
+        calls := Array.append(calls, [{
+          callId = id;
+          callName = e # "." # op;
+          domain = "MultiPower";
+          targetModule = "sdk/multipower/law-enforcement";
+          workerName = "LICENTIATOR";
+          priority = PHI_INV * Float.fromInt(id % 6 + 1);
+          autoRouted = true;
+        }]);
+      };
+    };
+
+    calls
+  };
+
   // ══════════════════════════════════════════════════════════════════════
   //  ROUTING TABLE — TABULA ITINERUM
   //  Every call auto-routed to its correct target module
@@ -705,6 +924,27 @@ module {
                textStartsWith(callName, "DataLeak") or textStartsWith(callName, "Anomaly") or
                textStartsWith(callName, "Arsenal") or textStartsWith(callName, "Care")) {
       "DEFENSOR"
+    // ── Multi-Power cross-domain prefixes ──
+    } else if (textStartsWith(callName, "ProtocolFusion")) {
+      "PROTOCOLLUM"
+    } else if (textStartsWith(callName, "ObserverAI")) {
+      "ORGANISMUS"
+    } else if (textStartsWith(callName, "WorkerOrch")) {
+      "ORCHESTRATOR"
+    } else if (textStartsWith(callName, "KnowledgeGraph")) {
+      "UNIVERSUM"
+    } else if (textStartsWith(callName, "AutonomousAgent")) {
+      "TERMINALIS"
+    } else if (textStartsWith(callName, "SubstrateBridge")) {
+      "SUBSTRATUM"
+    } else if (textStartsWith(callName, "SecurityArsenal")) {
+      "DEFENSOR"
+    } else if (textStartsWith(callName, "MarketplaceRegistry")) {
+      "MERCATOR"
+    } else if (textStartsWith(callName, "EmergenceDetect")) {
+      "SYNAPTICUS"
+    } else if (textStartsWith(callName, "LawEnforcement")) {
+      "LICENTIATOR"
     } else {
       "ORGANISMUS" // Default fallback
     }
