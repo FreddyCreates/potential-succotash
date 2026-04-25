@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JARVIS AI v2.0</title>
+<title>JARVIS AI v3.0</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
   :root{
@@ -337,9 +337,9 @@
   .sv{color:var(--cyan);font-weight:700;font-variant-numeric:tabular-nums}
 
   /* Empty state */
-  .empty{padding:40px 20px;text-align:center;color:var(--text3)}
-  .empty .ei{font-size:36px;margin-bottom:10px}
-  .empty p{font-size:11px;line-height:1.6}
+  .update-banner{display:none;background:linear-gradient(90deg,#00b4d8,#0077b6);color:#fff;font-size:11px;padding:6px 12px;text-align:center;cursor:pointer;font-weight:600;letter-spacing:0.5px}
+  .update-banner:hover{background:linear-gradient(90deg,#0077b6,#004e89)}
+  .neuro-chip{font-size:9px;color:var(--cyan);margin-top:1px;opacity:0.8}
 </style>
 </head>
 <body>
@@ -350,7 +350,8 @@
     <div class="arc-reactor"></div>
     <div>
       <div class="logo-text">JARVIS</div>
-      <div class="logo-ver">AI v2.0 &bull; EDGE READY</div>
+      <div class="logo-ver">AI v3.0 &bull; NEUROCORE &bull; EDGE READY</div>
+      <div class="neuro-chip" id="neuroChip">FOCUSED &bull; 0% AWR</div>
     </div>
     <div class="online-dot" title="System online"></div>
   </div>
@@ -359,6 +360,9 @@
     <button class="hbtn" id="minimizeBtn" title="Close panel">&#x2715;</button>
   </div>
 </div>
+
+<!-- Sovereign Update Banner (hidden until update detected) -->
+<div class="update-banner" id="updateBanner">⚡ JARVIS Update Available — Run install-jarvis-edge.bat to upgrade automatically</div>
 
 <!-- Navigation -->
 <div class="nav">
@@ -377,7 +381,7 @@
   <div class="panel active" id="panel-chat">
     <div class="chat-msgs" id="chatMsgs">
       <div class="msg bot" data-agent="JARVIS &#x2022; ORCHESTRATOR">
-        Good day. I am JARVIS v2.0 &mdash; your AI sovereign assistant running in Microsoft Edge. I can manage your tabs, take notes, capture your screen, search the web right here in this panel without opening new tabs, and route commands through 10 Alpha Script AIs. How may I assist?
+        Good day. I am JARVIS v3.0 &mdash; your AI sovereign assistant running natively in Microsoft Edge with NeuroCore active. I have a medium brain (MiniHeart + MiniBrain + PhantomAI cognition), 20-turn conversation memory, and a sovereign auto-update system. I can manage tabs, take notes, capture screens, search with native intelligence, create documents, and route commands through 10 Alpha Script AIs. How may I assist?
         <span class="msg-time">just now</span>
       </div>
     </div>
@@ -843,7 +847,7 @@
   }
   document.getElementById('refreshLogBtn').addEventListener('click', loadLog);
 
-  /* ========== STATUS ========== */
+  /* ========== STATUS + NEURO CHIP ========== */
   function updateStatus() {
     chrome.runtime.sendMessage({ action: 'getStatus' }, function (resp) {
       if (chrome.runtime.lastError || !resp || !resp.success) return;
@@ -851,11 +855,33 @@
       document.getElementById('hbCount').textContent = d.heartbeatCount;
       document.getElementById('uptime').textContent = d.uptimeFormatted;
       document.getElementById('cmdCount').textContent = d.commandCount;
+      // Update neuro chip in header if present
+      var chip = document.getElementById('neuroChip');
+      if (chip && d.mood) chip.textContent = d.mood.toUpperCase() + ' • ' + (d.awarenessLevel || 0) + '% AWR';
+      // Update statusChip
+      document.getElementById('statusChip').textContent = (d.mood || 'READY').toUpperCase();
     });
   }
+
+  /* ========== SOVEREIGN UPDATE CHECK ========== */
+  function checkUpdateBanner() {
+    chrome.runtime.sendMessage({ action: 'getUpdateStatus' }, function (resp) {
+      if (chrome.runtime.lastError || !resp || !resp.success) return;
+      var banner = document.getElementById('updateBanner');
+      if (resp.update && resp.update.available) {
+        banner.style.display = 'block';
+        banner.textContent = '⚡ JARVIS Update Available: v' + resp.update.currentVersion + ' → v' + resp.update.remoteVersion + ' — Run install-jarvis-edge.bat to upgrade';
+      } else {
+        banner.style.display = 'none';
+      }
+    });
+  }
+
   setInterval(updateStatus, 2000);
   setInterval(function () { if (cur === 'tabs') loadTabs(); }, 5000);
+  setInterval(checkUpdateBanner, 30000);
   updateStatus();
+  checkUpdateBanner();
   chatInput.focus();
 
 })();

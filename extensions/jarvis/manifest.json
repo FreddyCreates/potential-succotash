@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Jarvis AI",
-  "version": "2.0.0",
-  "description": "AI sovereign assistant — side panel with tab control, notes, screen capture, sandbox search, and command routing through Alpha Script AIs",
+  "version": "3.0.0",
+  "description": "AI sovereign assistant — native NeuroCore brain + PhantomAI cognition, tab control, notes, screen capture, sovereign auto-update",
   "permissions": [
     "activeTab",
     "storage",
@@ -13,6 +13,9 @@
     "downloads",
     "tabCapture",
     "desktopCapture"
+  ],
+  "host_permissions": [
+    "https://raw.githubusercontent.com/*"
   ],
   "side_panel": {
     "default_path": "sidepanel.html"
