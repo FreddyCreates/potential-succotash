@@ -96,7 +96,7 @@
   function addLog(msg,type){
     const el=document.createElement('div');
     el.className='log-entry'+(type?' '+type:'');
-    el.innerHTML='<span class="ts">['+ts()+']</span> <span class="msg">'+msg+'</span>';
+    var tsSpan=document.createElement('span');tsSpan.className='ts';tsSpan.textContent='['+ts()+']';var msgSpan=document.createElement('span');msgSpan.className='msg';msgSpan.textContent=msg;el.appendChild(tsSpan);el.appendChild(document.createTextNode(' '));el.appendChild(msgSpan);
     logViewer.appendChild(el);
     logViewer.scrollTop=logViewer.scrollHeight;
     if(logViewer.children.length>200)logViewer.removeChild(logViewer.firstChild);

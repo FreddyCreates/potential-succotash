@@ -91,10 +91,8 @@
   }
 
   function renderActivity(list){
-    if(!list.length){activityList.innerHTML='<div class="activity-item"><span>No recent activity</span><span class="ts">—</span></div>';return;}
-    activityList.innerHTML=list.map(function(item){
-      return '<div class="activity-item"><span>'+item.action+'</span><span class="ts">'+item.time+'</span></div>';
-    }).join('');
+    activityList.textContent="";if(!list.length){var empty=document.createElement("div");empty.className="activity-item";var s1=document.createElement("span");s1.textContent="No recent activity";var s2=document.createElement("span");s2.className="ts";s2.textContent="\u2014";empty.appendChild(s1);empty.appendChild(s2);activityList.appendChild(empty);return;}
+    list.forEach(function(item){var row=document.createElement("div");row.className="activity-item";var s1=document.createElement("span");s1.textContent=item.action;var s2=document.createElement("span");s2.className="ts";s2.textContent=item.time;row.appendChild(s1);row.appendChild(s2);activityList.appendChild(row);});
   }
 
   function sendCommand(cmd){
