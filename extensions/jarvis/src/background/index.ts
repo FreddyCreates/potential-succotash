@@ -697,6 +697,61 @@ class JarvisEngine {
       });
       return;
 
+    // 12c. Timer / Reminder
+    } else if (/set (a )?(timer|alarm|reminder|countdown)|remind me|timer (for|in)|in (\d+) (minute|hour|second)/i.test(text)) {
+      const timeMatch = raw.match(/(\d+(?:\.\d+)?)\s*(hour|hr|h|minute|min|m|second|sec|s)/i);
+      if (!timeMatch) {
+        response = 'Please specify a duration, sir. For example: "Set a timer for 25 minutes" or "Remind me in 2 hours."';
+      } else {
+        const val = parseFloat(timeMatch[1]);
+        const unit = timeMatch[2].toLowerCase();
+        let minutes = unit.startsWith('h') ? val * 60 : unit.startsWith('s') ? val / 60 : val;
+        const labelMatch = raw.match(/(?:for|called|labelled?|named?)\s+["']?([^"']+?)["']?\s*(?:in|\d|$)/i);
+        const label = labelMatch?.[1]?.trim() || (raw.replace(/set (a )?(timer|alarm|reminder|countdown)|remind me|in \d+.*$/i, '').trim() || 'Timer');
+        const cleanLabel = label.replace(/^(a |an |the )/i, '').substring(0, 40) || 'Timer';
+        const alarmName = 'jarvis-timer-' + Date.now();
+        chrome.alarms.create(alarmName, { delayInMinutes: minutes });
+        chrome.storage.local.get(['jarvis_timers'], (d) => {
+          const timers: Record<string, { label: string; finishAt: number; minutes: number }> = d['jarvis_timers'] || {};
+          timers[alarmName] = { label: cleanLabel, finishAt: Date.now() + minutes * 60 * 1000, minutes };
+          chrome.storage.local.set({ jarvis_timers: timers });
+        });
+        const h2 = Math.floor(minutes / 60);
+        const m2 = Math.round(minutes % 60);
+        const durStr = h2 > 0 ? (h2 + ' hour' + (h2 !== 1 ? 's' : '') + (m2 > 0 ? ' ' + m2 + 'm' : '')) : m2 + ' minute' + (m2 !== 1 ? 's' : '');
+        response = '⏱ Timer set, sir. "' + cleanLabel + '" — ' + durStr + '. I\'ll notify you the moment it completes.';
+        agent = 'JARVIS • ORCHESTRATOR';
+      }
+
+    // 12d. List timers
+    } else if (/list (timers?|alarms?|reminders?)|what timers?|active timers?|my timers?/i.test(text)) {
+      chrome.storage.local.get(['jarvis_timers'], (d) => {
+        const timers: Record<string, { label: string; finishAt: number }> = d['jarvis_timers'] || {};
+        const now2 = Date.now();
+        const active = Object.entries(timers).filter(([, t]) => t.finishAt > now2);
+        if (active.length === 0) {
+          callback({ success: true, message: 'No active timers, sir.', agent: 'JARVIS • ORCHESTRATOR', mood, awareness });
+          return;
+        }
+        const list2 = active.map(([, t]) => {
+          const remaining = Math.ceil((t.finishAt - now2) / 60000);
+          return '⏱ "' + t.label + '" — ' + remaining + 'm remaining';
+        }).join('\n');
+        callback({ success: true, message: 'Active timers, sir:\n\n' + list2, agent: 'JARVIS • ORCHESTRATOR', mood, awareness });
+      });
+      return;
+
+    // 12e. Cancel timers
+    } else if (/cancel (all )?(timers?|alarms?|reminders?)|stop (all )?(timers?|alarms?)/i.test(text)) {
+      chrome.storage.local.get(['jarvis_timers'], (d) => {
+        const timers: Record<string, { label: string; finishAt: number }> = d['jarvis_timers'] || {};
+        let count2 = 0;
+        for (const name of Object.keys(timers)) { chrome.alarms.clear(name); count2++; }
+        chrome.storage.local.set({ jarvis_timers: {} });
+        callback({ success: true, message: count2 > 0 ? 'All ' + count2 + ' timer(s) cancelled, sir.' : 'No timers to cancel, sir.', agent: 'JARVIS • ORCHESTRATOR', mood, awareness });
+      });
+      return;
+
     // 13. Joke
     } else if (/joke|make me (laugh|smile)|funny|humor/i.test(text)) {
       response = pick(['Why do programmers prefer dark mode? Because light attracts bugs.', 'There are 10 types of people: those who understand binary and those who don\'t.', 'Why did the AI get upgraded to React? Because class components were too stateful.', 'My code never has bugs. It just develops random features.']);
@@ -1107,6 +1162,57 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       });
       break;
     }
+    case 'setTimer': {
+      const minutes = parseFloat((message.minutes as string) || '0');
+      const label = (message.label as string) || 'Timer';
+      if (!minutes || minutes <= 0 || minutes > 1440) {
+        sendResponse({ success: false, message: 'Please specify a duration between 1 minute and 24 hours, sir.' });
+        break;
+      }
+      const alarmName = 'jarvis-timer-' + Date.now();
+      chrome.alarms.create(alarmName, { delayInMinutes: minutes });
+      const finishAt = Date.now() + minutes * 60 * 1000;
+      chrome.storage.local.get(['jarvis_timers'], (d) => {
+        const timers: Record<string, { label: string; finishAt: number; minutes: number }> = d['jarvis_timers'] || {};
+        timers[alarmName] = { label, finishAt, minutes };
+        chrome.storage.local.set({ jarvis_timers: timers });
+      });
+      const h = Math.floor(minutes / 60);
+      const m = Math.round(minutes % 60);
+      const durationStr = h > 0 ? (h + 'h ' + (m > 0 ? m + 'm' : '')) : m + ' minute' + (m !== 1 ? 's' : '');
+      sendResponse({ success: true, message: 'Timer set, sir. "' + label + '" — ' + durationStr + '. I\'ll notify you the moment it completes.', alarmName });
+      break;
+    }
+    case 'listTimers': {
+      chrome.storage.local.get(['jarvis_timers'], (d) => {
+        const timers: Record<string, { label: string; finishAt: number; minutes: number }> = d['jarvis_timers'] || {};
+        const now = Date.now();
+        const active = Object.entries(timers).filter(([, t]) => t.finishAt > now);
+        if (active.length === 0) {
+          sendResponse({ success: true, message: 'No active timers, sir.' });
+          return;
+        }
+        const list = active.map(([, t]) => {
+          const remaining = Math.ceil((t.finishAt - now) / 60000);
+          return '• "' + t.label + '" — ' + remaining + 'm remaining';
+        }).join('\n');
+        sendResponse({ success: true, message: 'Active timers, sir:\n\n' + list });
+      });
+      break;
+    }
+    case 'cancelTimers': {
+      chrome.storage.local.get(['jarvis_timers'], (d) => {
+        const timers: Record<string, { label: string; finishAt: number }> = d['jarvis_timers'] || {};
+        let count = 0;
+        for (const name of Object.keys(timers)) {
+          chrome.alarms.clear(name);
+          count++;
+        }
+        chrome.storage.local.set({ jarvis_timers: {} });
+        sendResponse({ success: true, message: count > 0 ? 'All ' + count + ' timer(s) cancelled, sir.' : 'No timers to cancel, sir.' });
+      });
+      break;
+    }
     default: sendResponse({ success: false, error: 'Unknown action: ' + (message.action as string) });
   }
 
@@ -1114,8 +1220,33 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 /* ----------------------------------------------------------
- *  24/7 Keep-Alive Alarm
+ *  Timer Alarm Handler
  * ---------------------------------------------------------- */
+chrome.alarms.onAlarm.addListener((alarm) => {
+  if (!alarm.name.startsWith('jarvis-timer-')) return;
+  chrome.storage.local.get(['jarvis_timers'], (d) => {
+    const timers: Record<string, { label: string; finishAt: number; minutes: number }> = d['jarvis_timers'] || {};
+    const entry = timers[alarm.name];
+    const label = entry?.label || 'Timer';
+    // Remove finished timer
+    delete timers[alarm.name];
+    chrome.storage.local.set({ jarvis_timers: timers });
+    // Show Chrome notification
+    try {
+      chrome.notifications.create('jarvis-timer-done-' + Date.now(), {
+        type: 'basic',
+        iconUrl: 'icons/icon128.png',
+        title: 'JARVIS — ' + label + ' Complete',
+        message: 'Your "' + label + '" has completed, sir.',
+        priority: 2,
+      });
+    } catch { /* ignore */ }
+    // Push a message to the side panel so it can speak the alert
+    chrome.runtime.sendMessage({ action: '_timerDone', label }).catch(() => {});
+  });
+});
+
+
 
 const ALARM_NAME = 'jarvis-keepalive';
 chrome.alarms.create(ALARM_NAME, { periodInMinutes: 0.4 });
@@ -1156,3 +1287,27 @@ chrome.alarms.onAlarm.addListener((alarm) => {
       }
     }).catch(() => {});
 });
+
+/* ----------------------------------------------------------
+ *  Proactive Tab-Awareness — brief JARVIS when tab switches
+ * ---------------------------------------------------------- */
+let _lastActiveTabId: number | null = null;
+
+chrome.tabs.onActivated.addListener(({ tabId }) => {
+  if (tabId === _lastActiveTabId) return;
+  _lastActiveTabId = tabId;
+  chrome.tabs.get(tabId, (tab) => {
+    if (chrome.runtime.lastError || !tab?.url || tab.url.startsWith('chrome://')) return;
+    const title = (tab.title || 'Unknown').substring(0, 70);
+    const isSearch = /google\.com\/search|bing\.com\/search|duckduckgo\.com/i.test(tab.url);
+    const isGitHub = /github\.com/i.test(tab.url);
+    const isYouTube = /youtube\.com/i.test(tab.url);
+    let context = '';
+    if (isSearch) context = 'Detecting a search query — shall I assist with research, sir?';
+    else if (isGitHub) context = 'GitHub repository detected — I can read the page or generate a code summary.';
+    else if (isYouTube) context = 'Video content detected. I can summarize the description if you need, sir.';
+    // Push tab-change awareness to sidepanel
+    chrome.runtime.sendMessage({ action: '_tabChanged', title, url: tab.url, context }).catch(() => {});
+  });
+});
+

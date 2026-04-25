@@ -4,8 +4,9 @@ import { useJarvisStore } from '../../store';
 const QUICK_ACTIONS = [
   { label: 'Brief me', text: '__brief__' },
   { label: 'Status', text: 'what is your status' },
+  { label: 'Timer', text: 'set a timer for ' },
+  { label: 'Timers', text: '__listtimers__' },
   { label: 'Summarize', text: 'summarize this page' },
-  { label: 'Note', text: 'take note: ' },
   { label: 'Help', text: 'what can you do' },
 ];
 
@@ -71,11 +72,39 @@ export default function ChatPanel() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  /** Listen for proactive background messages (_timerDone, _tabChanged) */
+  useEffect(() => {
+    const listener = (msg: Record<string, unknown>) => {
+      if (msg.action === '_timerDone') {
+        const label = (msg.label as string) || 'Timer';
+        const alert = '⏱ "' + label + '" complete, sir. Your timer has finished.';
+        addMessage({ role: 'jarvis', text: alert, ts: Date.now() });
+        speak(alert);
+      } else if (msg.action === '_tabChanged') {
+        const title = (msg.title as string) || 'Unknown';
+        const context = (msg.context as string) || '';
+        const note = '🌐 Active page: "' + title + '".' + (context ? '\n' + context : '');
+        addMessage({ role: 'jarvis', text: note, ts: Date.now() });
+        // Only speak tab changes if TTS enabled — don't speak context automatically to avoid spam
+      }
+    };
+    chrome.runtime.onMessage.addListener(listener);
+    return () => { chrome.runtime.onMessage.removeListener(listener); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addMessage]);
+
   const sendMessage = (text: string) => {
     if (!text.trim()) return;
-    // "Brief me" special action
+    // Special quick actions
     if (text === '__brief__') {
       chrome.runtime.sendMessage({ action: 'brief' }, (resp) => {
+        if (chrome.runtime.lastError || !resp?.success) return;
+        deliverResponse(resp.message as string);
+      });
+      return;
+    }
+    if (text === '__listtimers__') {
+      chrome.runtime.sendMessage({ action: 'listTimers' }, (resp) => {
         if (chrome.runtime.lastError || !resp?.success) return;
         deliverResponse(resp.message as string);
       });
