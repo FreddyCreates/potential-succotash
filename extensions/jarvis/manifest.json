@@ -14,9 +14,6 @@
     "tabCapture",
     "desktopCapture"
   ],
-  "host_permissions": [
-    "https://api.duckduckgo.com/*"
-  ],
   "side_panel": {
     "default_path": "sidepanel.html"
   },

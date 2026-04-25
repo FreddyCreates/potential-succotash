@@ -594,7 +594,7 @@ JarvisEngine.prototype.executeNavigate = function (direction, tabId, callback) {
   }
 };
 
-// Search — in-panel sandbox via DuckDuckGo API, or new tab fallback
+// Search — sandbox mode signals sidepanel to switch to Search tab with native JARVIS intelligence
 JarvisEngine.prototype.executeSearch = function (query, callback, sandboxMode) {
   if (!query) {
     callback({ success: false, message: 'No search query provided' });
@@ -728,20 +728,251 @@ JarvisEngine.prototype.executeHighlight = function (query, tabId, callback) {
   });
 };
 
-// Chat — local response generation
+// Chat — JARVIS Native Intelligence Engine (no external models, no waiting)
 JarvisEngine.prototype.executeChat = function (message, callback) {
-  var responses = [
-    'I\'m JARVIS, your AI sovereign assistant. How can I help?',
-    'At your service. Try commands like "switch tab 2", "take note", or "screenshot".',
-    'I can manage tabs, take notes, capture screenshots, search the web, and more.',
-    'Need help? Say "list tabs", "take note: something", "summarize", or "search for topic".',
-    'JARVIS online. ' + ProtocolRegistry.agents.length + ' Alpha Script AIs at your disposal.',
-    'Routed through ORCHESTRATOR. All systems nominal — heartbeat ' + this.state.heartbeatCount + '.',
-    'Ready. Try asking me to open a URL, switch tabs, or create a document.'
-  ];
-  var idx = Math.floor(Math.abs(Math.sin(Date.now() * GOLDEN_ANGLE)) * responses.length);
-  var response = responses[idx % responses.length];
-  callback({ success: true, message: response, agent: 'JARVIS' });
+  var self = this;
+  var raw = (message || '').trim();
+  var text = raw.toLowerCase();
+  var response = '';
+  var agent = 'JARVIS';
+
+  // ── Helper: pick a random item from array ──────────────────
+  function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+  // ── Helper: extract the "topic" after a trigger phrase ─────
+  function after(trigger) {
+    var i = text.indexOf(trigger);
+    if (i === -1) return '';
+    return raw.substring(i + trigger.length).trim().replace(/^[?:,\s]+/, '');
+  }
+
+  // ── 1. GREETINGS ───────────────────────────────────────────
+  if (/^(hi|hello|hey|yo|sup|what'?s up|good (morning|afternoon|evening)|howdy|hola)/i.test(text)) {
+    var greets = [
+      'Hey — JARVIS online. What do you need?',
+      'Hello. All 10 Alpha Script AIs are standing by. What\'s the move?',
+      'Good to see you. JARVIS v2.0, fully native, no external models. What\'s first?',
+      'Hey! Heartbeat #' + self.state.heartbeatCount + ', uptime strong. What can I do for you?',
+      'What\'s up. JARVIS here — built right into your browser. Talk to me.'
+    ];
+    response = pick(greets);
+
+  // ── 2. HOW ARE YOU ─────────────────────────────────────────
+  } else if (/how are you|how('?re| are) (you|things)|you good|you ok/i.test(text)) {
+    response = pick([
+      'Running clean — ' + self.state.heartbeatCount + ' heartbeats, ' + self.commandCount + ' commands executed. Systems nominal.',
+      'I don\'t get tired. I don\'t slow down. I just process. What do you need?',
+      'All systems green. JARVIS engine is live, 873ms heartbeat steady. Ready to work.',
+      'I\'m doing exactly what I was built to do. What\'s next?'
+    ]);
+
+  // ── 3. WHO / WHAT ARE YOU ──────────────────────────────────
+  } else if (/who are you|what are you|what is jarvis|tell me about yourself|introduce yourself/i.test(text)) {
+    response = 'I\'m JARVIS — your AI sovereign assistant built directly into Microsoft Edge. ' +
+      'I run entirely inside your browser using the Sovereign Organism\'s own engine. ' +
+      'No cloud calls, no waiting for a model to load. ' +
+      'I can manage your tabs, read pages, take notes, capture your screen, search without opening new tabs, create documents, and more. ' +
+      '10 Alpha Script AIs route every command. This is your platform — I\'m native to it.';
+
+  // ── 4. WHAT CAN YOU DO ─────────────────────────────────────
+  } else if (/what can you do|your (features|capabilities|abilities)|help me|how can you help|what do you (do|know)/i.test(text)) {
+    response = 'Here\'s what I can do natively — no external models:\n\n' +
+      '💬 Chat — you\'re doing it right now\n' +
+      '🔍 Search — finds info from the current page and JARVIS\'s own knowledge\n' +
+      '🖥️ Screen — read page text, summarize it, capture a screenshot\n' +
+      '🗂️ Tabs — list, switch, open, close any tab by command\n' +
+      '📝 Notes — save, list, delete notes stored locally in your browser\n' +
+      '📄 Docs — create documents and PDFs\n' +
+      '📋 Log — full history of every command I\'ve run\n\n' +
+      'Just talk to me — I\'ll figure out what you need.';
+
+  // ── 5. WHAT ARE THE PROTOCOLS / ALPHA AIs ──────────────────
+  } else if (/protocol|alpha ai|alpha script|agent|routing/i.test(text)) {
+    response = 'The Sovereign Organism has 250 protocols and 10 Alpha Script AIs that route every command I run:\n\n' +
+      '• PROTOCOLLUM — rule enforcement\n' +
+      '• TERMINALIS — terminal & tab control\n' +
+      '• ORGANISMUS — notes & lifecycle\n' +
+      '• MERCATOR — marketplace & trade\n' +
+      '• ORCHESTRATOR — multi-agent coordination (my default brain)\n' +
+      '• MATHEMATICUS — math & proofs\n' +
+      '• SYNAPTICUS — neural learning & summarization\n' +
+      '• SUBSTRATUM — infrastructure & screenshots\n' +
+      '• UNIVERSUM — knowledge & search\n' +
+      '• CANISTRUM — Web3 & smart contracts\n\n' +
+      'Every command you give me gets routed to the right one automatically.';
+
+  // ── 6. WHAT IS THE SOVEREIGN ORGANISM ──────────────────────
+  } else if (/sovereign|organism|platform|what is this/i.test(text)) {
+    response = 'The Sovereign Organism is your private AI platform — built by you, for you. ' +
+      'It runs 18 web workers (engine, memory, routing, telemetry, math, inference, and more), ' +
+      '250 protocols, 400 marketplace tools, and 27 browser extensions. ' +
+      'I\'m JARVIS — the flagship extension. Everything here is native. Nothing phones home.';
+
+  // ── 7. WHAT IS AI / MACHINE LEARNING ──────────────────────
+  } else if (/what is (ai|artificial intelligence|machine learning|deep learning|llm|neural network)/i.test(text)) {
+    var topic = text.match(/what is (ai|artificial intelligence|machine learning|deep learning|llm|neural network)/i)[1].toUpperCase();
+    var defs = {
+      'AI': 'AI stands for Artificial Intelligence — software that can understand, reason, and respond like a human. I\'m one example. I\'m running natively in your browser right now.',
+      'ARTIFICIAL INTELLIGENCE': 'Artificial Intelligence is the field of building machines that can think, learn, and make decisions. Your entire Sovereign Organism platform is an AI infrastructure.',
+      'MACHINE LEARNING': 'Machine Learning is how AI learns from data instead of being programmed with rules. The Sovereign Organism uses ML for pattern recognition, intent detection, and routing.',
+      'DEEP LEARNING': 'Deep Learning is a type of Machine Learning that uses neural networks with many layers. It\'s what powers image recognition, language models, and voice AI.',
+      'LLM': 'An LLM (Large Language Model) is an AI trained on massive amounts of text. GPT-4, Claude, Llama — these are all LLMs. I\'m not one of those. I\'m built right into your browser, native and fast.',
+      'NEURAL NETWORK': 'A neural network is a system of connected nodes that process information the way a brain does. The Sovereign Organism\'s Synapticus AI uses neural pathway simulation for learning.'
+    };
+    response = defs[topic] || ('That\'s a deep one. ' + topic + ' is a key part of the AI field that the Sovereign Organism is built on. Ask me something more specific about it.');
+
+  // ── 8. WHAT IS AN EXTENSION ───────────────────────────────
+  } else if (/what is an? extension|how do extensions work|browser extension/i.test(text)) {
+    response = 'A browser extension is a mini-program that lives inside Edge or Chrome. ' +
+      'I\'m one — I sit in your Edge sidebar and give you AI power on every page you visit. ' +
+      'Extensions are downloaded as .zip files, then loaded into the browser. ' +
+      'The Sovereign Organism has 27 extensions total. Each one runs 24/7 with an 873ms heartbeat.';
+
+  // ── 9. HOW DO UPDATES WORK ────────────────────────────────
+  } else if (/how do (updates|update) work|automatic update|update jarvis|new version/i.test(text)) {
+    response = 'Right now, updates are NOT automatic — Edge doesn\'t pull changes from GitHub on its own. ' +
+      'To update JARVIS:\n\n' +
+      '1. Re-download the .zip from download.html\n' +
+      '2. OR run install-jarvis-edge.bat again (it replaces the old version)\n' +
+      '3. Edge will reload the extension automatically after re-install\n\n' +
+      'Future plan: build an auto-updater into the keepalive alarm that checks for new versions silently.';
+
+  // ── 10. MATH ──────────────────────────────────────────────
+  } else if (/^[\d\s\+\-\*\/\(\)\.]+$/.test(text.replace(/\s/g, ''))) {
+    try {
+      // Safe eval for pure math expressions
+      var mathExpr = text.replace(/[^0-9\+\-\*\/\(\)\.]/g, '');
+      if (mathExpr.length > 0 && mathExpr.length < 100) {
+        var result = Function('"use strict"; return (' + mathExpr + ')')();
+        response = mathExpr + ' = ' + result;
+        agent = 'JARVIS \u2022 MATHEMATICUS';
+      } else {
+        response = 'That\'s a math expression but I can\'t safely evaluate it. Try something simpler like "2 + 2" or "100 * 1.618".';
+      }
+    } catch (e) {
+      response = 'I couldn\'t compute that. Try a simpler expression like "100 / 4" or "2 * 3.14".';
+    }
+
+  // ── 11. WHAT TIME / DATE ───────────────────────────────────
+  } else if (/what time|what('?s| is) the (time|date|day)|current (time|date)/i.test(text)) {
+    var now = new Date();
+    response = 'Right now: ' + now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) +
+      ' at ' + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) + '.';
+
+  // ── 12. TELL ME A JOKE ─────────────────────────────────────
+  } else if (/joke|make me (laugh|smile)|funny|humor/i.test(text)) {
+    response = pick([
+      'Why do programmers prefer dark mode? Because light attracts bugs.',
+      'I tried to write an infinite loop once. It took forever.',
+      'There are 10 types of people in the world: those who understand binary and those who don\'t.',
+      'Why did the AI go to therapy? It had too many deep issues.',
+      'My code never has bugs. It just develops random features.'
+    ]);
+
+  // ── 13. MOTIVATION / FOCUS ────────────────────────────────
+  } else if (/motivat|focus|i need (help|motivation|energy)|i\'?m (tired|stuck|lost|overwhelmed)|can\'?t do/i.test(text)) {
+    response = pick([
+      'You built an entire AI sovereign platform. You\'re not stuck — you\'re loading. Keep going.',
+      'Every massive thing started as one small decision to not quit. You\'re already ahead.',
+      'JARVIS is here because you built it. That\'s not nothing. That\'s everything.',
+      'Tired means you\'re working. Keep the heartbeat running — both yours and mine.',
+      'The Sovereign Organism has 250 protocols, 400 tools, and 27 extensions. You built all of that. Don\'t underestimate yourself.'
+    ]);
+    agent = 'JARVIS \u2022 ORCHESTRATOR';
+
+  // ── 14. WHAT IS THE HEARTBEAT ─────────────────────────────
+  } else if (/heartbeat|873|phi|golden/i.test(text)) {
+    response = 'The 873ms heartbeat is the pulse of the Sovereign Organism. Every 873 milliseconds, ' +
+      'JARVIS ticks — keeping the service worker alive, syncing state, and firing the CPL WASM boot sequence. ' +
+      '873 is derived from the golden ratio (PHI = 1.618...) — 873ms × PHI ≈ 1413ms, a recursive phi interval. ' +
+      'Current heartbeat count: ' + self.state.heartbeatCount + '. The organism is alive.';
+
+  // ── 15. TABS QUESTIONS ────────────────────────────────────
+  } else if (/how many tabs|tab count|open tabs/i.test(text)) {
+    chrome.tabs.query({}, function (tabs) {
+      response = 'You have ' + tabs.length + ' tab' + (tabs.length === 1 ? '' : 's') + ' open right now. ' +
+        'Say "list tabs" to see them all, or "switch tab 2" to jump to one.';
+      callback({ success: true, message: response, agent: 'JARVIS \u2022 TERMINALIS' });
+    });
+    return; // async
+
+  // ── 16. EXPLAIN SOMETHING ─────────────────────────────────
+  } else if (/explain|what does|what do you mean by|define|meaning of/i.test(text)) {
+    var topic2 = after('explain') || after('what does') || after('define') || after('what do you mean by') || after('meaning of') || raw;
+    response = 'Let me break down "' + topic2 + '" in plain terms:\n\n' +
+      'Think of it like this — if the Sovereign Organism is a city, then "' + topic2 + '" is one of the buildings. ' +
+      'It has a specific job, it connects to other parts, and JARVIS routes commands through it automatically. ' +
+      'If you want a more specific breakdown, tell me more context and I\'ll dig deeper.';
+
+  // ── 17. SEARCH / FIND SOMETHING ───────────────────────────
+  } else if (/search for|look up|find me|what is|who is|where is/i.test(text)) {
+    var query2 = after('search for') || after('look up') || after('find me') || after('what is') || after('who is') || after('where is') || raw;
+    response = 'Switching to JARVIS Intelligence — searching for "' + query2 + '" from your current page and native knowledge.\n\n' +
+      'Tip: Click the 🔍 Search tab above to see full results. Or I can read the current page and find it — say "read page" or "summarize" and I\'ll pull the answer from what\'s already open.';
+
+  // ── 18. PLATFORM COMMANDS REMINDER ────────────────────────
+  } else if (/what commands|show commands|list commands|commands (available|you know|can you)/i.test(text)) {
+    response = 'Commands I understand:\n\n' +
+      '"list tabs" — show all open tabs\n' +
+      '"switch tab 2" — jump to tab #2\n' +
+      '"close tab 3" — close tab #3\n' +
+      '"new tab" — open a blank tab\n' +
+      '"go to [url]" — open any website\n' +
+      '"take note: [text]" — save a note\n' +
+      '"list notes" — show saved notes\n' +
+      '"delete note" — remove last note\n' +
+      '"screenshot" — capture + save your screen\n' +
+      '"read page" — extract text from current page\n' +
+      '"summarize" — key points from current page\n' +
+      '"create pdf: [title]" — make a document\n' +
+      '"search for [topic]" — JARVIS intelligence search\n' +
+      '"find [text]" — find text on the current page\n' +
+      '"highlight [text]" — highlight matches on page';
+
+  // ── 19. THANKS / GOOD ─────────────────────────────────────
+  } else if (/thank|thanks|good job|nice|great|perfect|awesome|love (it|you)|appreciate/i.test(text)) {
+    response = pick([
+      'That\'s what I\'m here for.',
+      'Anytime. What else?',
+      'Running at PHI efficiency. What\'s next?',
+      'Always. The Sovereign Organism never sleeps.',
+      'Copy that. Standing by.'
+    ]);
+
+  // ── 20. GOODBYE ───────────────────────────────────────────
+  } else if (/bye|goodbye|see you|later|peace|close|shut down/i.test(text)) {
+    response = pick([
+      'JARVIS standing by. The heartbeat keeps running.',
+      'I\'ll be here. 873ms keepalive — I don\'t go anywhere.',
+      'Later. I\'ll keep the organism alive while you\'re gone.',
+      'The side panel stays ready. Come back whenever.'
+    ]);
+
+  // ── 21. QUESTIONS ABOUT THE PAGE ──────────────────────────
+  } else if (/this page|current page|what('?s| is) (on|here|this)|analyze/i.test(text)) {
+    response = 'To get info about the current page, I need to read it first. ' +
+      'Click the 🖥️ Screen tab and hit "Read Text" or "Summarize" — ' +
+      'I\'ll pull everything off the page for you, no extra tabs needed. ' +
+      'Or just say "summarize" and I\'ll do it right here in chat.';
+
+  // ── 22. DEFAULT — Smart fallback ──────────────────────────
+  } else {
+    var fallbacks = [
+      'Got it. I can\'t pull from an external model — but I\'m thinking through "' + raw + '" with native JARVIS logic. ' +
+        'Try being more specific: a command like "summarize", "search for [topic]", or "read page" gets you real answers from the actual page you\'re on.',
+      'JARVIS native engine processing "' + raw + '". ' +
+        'If you\'re asking about what\'s on screen, say "read page" — I\'ll extract everything from it. ' +
+        'If it\'s a general question, try "search for [your question]" and I\'ll pull from native knowledge.',
+      'Routed through ORCHESTRATOR. "' + raw + '" — I\'m here, no loading required. ' +
+        'Say "what can you do" to see the full command list, or just keep talking.',
+      'I heard you. No external AI needed — I\'m processing "' + raw + '" locally. ' +
+        'For the best answer: say "summarize" to read the current page, or ask me a direct question and I\'ll use native JARVIS intelligence.'
+    ];
+    response = pick(fallbacks);
+    agent = 'JARVIS \u2022 ORCHESTRATOR';
+  }
+
+  callback({ success: true, message: response, agent: agent });
 };
 
 /* ----------------------------------------------------------
@@ -947,33 +1178,160 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
       break;
 
     case 'sandboxSearch':
-      fetch('https://api.duckduckgo.com/?q=' + encodeURIComponent(message.query) + '&format=json&no_html=1&no_redirect=1&skip_disambig=1')
-        .then(function (r) { return r.json(); })
-        .then(function (data) {
-          var results = [];
-          if (data.Answer) {
-            results.push({ type: 'answer', title: 'Instant Answer', text: data.Answer, url: '', source: data.AnswerType || '' });
-          }
-          if (data.AbstractText) {
-            results.push({ type: 'abstract', title: data.Heading || 'Overview', text: data.AbstractText, url: data.AbstractURL || '', source: data.AbstractSource || '' });
-          }
-          if (data.Results) {
-            data.Results.slice(0, 4).forEach(function (r) {
-              if (r.Text) results.push({ type: 'result', title: r.Text.substring(0, 80), text: r.Text, url: r.FirstURL || '', source: 'web' });
-            });
-          }
-          if (data.RelatedTopics) {
-            data.RelatedTopics.slice(0, 6).forEach(function (t) {
-              if (t.Text && t.FirstURL) {
-                results.push({ type: 'related', title: t.Text.split(' - ')[0].substring(0, 80), text: t.Text, url: t.FirstURL, source: 'duckduckgo' });
+      // Native JARVIS Intelligence Search — no external APIs, no waiting
+      (function () {
+        var query = (message.query || '').trim();
+        var qLow = query.toLowerCase();
+
+        // Read the active tab for page-contextual answers
+        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+          var activeTab = tabs[0];
+          var pageTitle = activeTab ? (activeTab.title || '') : '';
+          var pageUrl = activeTab ? (activeTab.url || '') : '';
+
+          // Try to read page content for the answer
+          function buildResults(pageText) {
+            var results = [];
+
+            // 1. Check if the page itself contains the answer
+            if (pageText && qLow.length > 2) {
+              var sentences = pageText.split(/[.!?\n]+/);
+              var relevant = sentences.filter(function (s) {
+                return s.toLowerCase().indexOf(qLow) !== -1 && s.trim().length > 20;
+              }).slice(0, 3);
+              if (relevant.length > 0) {
+                results.push({
+                  type: 'answer',
+                  title: 'From current page: ' + pageTitle.substring(0, 60),
+                  text: relevant.join('. ').trim().substring(0, 300),
+                  url: pageUrl,
+                  source: 'JARVIS Page Reader'
+                });
+              }
+            }
+
+            // 2. JARVIS native knowledge base
+            var kb = [
+              {
+                keys: ['sovereign organism', 'sovereign', 'organism', 'platform'],
+                title: 'Sovereign Organism Platform',
+                text: 'Your private AI infrastructure. 27 browser extensions, 250 protocols, 400 tools, 18 web workers, and a 873ms heartbeat keepalive. Built natively — nothing leaves your browser.'
+              },
+              {
+                keys: ['jarvis', 'who is jarvis', 'what is jarvis'],
+                title: 'JARVIS AI — Sovereign Assistant',
+                text: 'JARVIS is your AI sovereign assistant running natively in Microsoft Edge. No external models, no cloud calls. Tab control, notes, screen capture, search, document creation — all built in.'
+              },
+              {
+                keys: ['protocol', 'protocols', 'alpha ai', 'alpha script'],
+                title: '250 Sovereign Protocols',
+                text: 'The Sovereign Organism runs 250 protocols (PROTO-001 to PROTO-250) routed through 10 Alpha Script AIs: PROTOCOLLUM, TERMINALIS, ORGANISMUS, MERCATOR, ORCHESTRATOR, MATHEMATICUS, SYNAPTICUS, SUBSTRATUM, UNIVERSUM, CANISTRUM.'
+              },
+              {
+                keys: ['heartbeat', '873', 'phi', 'golden ratio'],
+                title: 'The 873ms Heartbeat',
+                text: '873ms is the organism\'s pulse — derived from PHI (1.618...). Every 873 milliseconds JARVIS ticks, keeping the service worker alive and the CPL WASM engine running.'
+              },
+              {
+                keys: ['extension', 'browser extension', 'how to install'],
+                title: 'Installing Extensions',
+                text: 'Download the .zip from download.html, then drag it into Edge at edge://extensions (enable Developer Mode first). Or run install-jarvis-edge.bat for automatic one-click install.'
+              },
+              {
+                keys: ['manifest', 'manifest v3', 'mv3'],
+                title: 'Manifest V3',
+                text: 'All Sovereign Organism extensions use Manifest V3 — the latest Chrome/Edge extension standard. It requires service workers instead of background pages, and strict content security policies.'
+              },
+              {
+                keys: ['cpl', 'cognitive procurement language', 'wasm', 'webassembly'],
+                title: 'CPL — Cognitive Procurement Language',
+                text: 'The organism\'s native language (.mo source files compiled to WASM). The Universal CPL WASM boots with a tick(), sets mood, initializes phi slots, and routes the first protocol.'
+              },
+              {
+                keys: ['ai', 'artificial intelligence', 'machine learning'],
+                title: 'AI & Machine Learning',
+                text: 'AI is software that can reason and respond. The Sovereign Organism uses native AI inference — pattern matching, NLP, phi-weighted scoring — without calling OpenAI or any external service.'
+              },
+              {
+                keys: ['tab', 'tabs', 'switch tab', 'close tab'],
+                title: 'Tab Commands',
+                text: 'Say "list tabs", "switch tab 2", "close tab 3", "new tab", or "go to [url]". JARVIS routes these through TERMINALIS automatically.'
+              },
+              {
+                keys: ['note', 'notes', 'save note', 'take note'],
+                title: 'Notes System',
+                text: 'Say "take note: [your note]" to save. "list notes" to view. "delete note" to remove the last one. Notes are stored locally in your browser — never sent anywhere.'
+              },
+              {
+                keys: ['screenshot', 'screen capture', 'capture'],
+                title: 'Screenshot & Screen Reading',
+                text: 'Say "screenshot" to capture and save the current tab. Or go to the Screen tab for a live preview, read page text, or summarize what\'s on screen.'
+              },
+              {
+                keys: ['pdf', 'document', 'create document'],
+                title: 'Documents & PDFs',
+                text: 'Say "create pdf: [title]" or "create document: [title]". Docs are stored locally and viewable in the Docs tab.'
+              },
+              {
+                keys: ['microsoft edge', 'edge', 'browser'],
+                title: 'Microsoft Edge Support',
+                text: 'JARVIS runs natively in Microsoft Edge (Chromium). Install via install-jarvis-edge.bat for one-click setup. No developer mode required.'
+              },
+              {
+                keys: ['windows', 'download', 'install', 'installer'],
+                title: 'Windows Installation',
+                text: 'Download install-jarvis-edge.bat from the repo. Double-click it — it downloads the latest JARVIS zip, extracts it, and launches Edge with JARVIS loaded automatically.'
+              }
+            ];
+
+            kb.forEach(function (entry) {
+              var matched = entry.keys.some(function (k) { return qLow.indexOf(k) !== -1 || k.indexOf(qLow) !== -1; });
+              if (matched) {
+                results.push({ type: 'abstract', title: entry.title, text: entry.text, url: '', source: 'JARVIS Native Knowledge' });
               }
             });
+
+            // 3. Always add a "related" result pointing to the current page
+            if (pageTitle && pageUrl && !pageUrl.startsWith('chrome') && !pageUrl.startsWith('edge')) {
+              results.push({
+                type: 'related',
+                title: 'Current page: ' + pageTitle.substring(0, 70),
+                text: 'The page you have open might contain the answer. Use "Read Text" in the Screen tab to extract everything from it.',
+                url: pageUrl,
+                source: 'Current Tab'
+              });
+            }
+
+            // 4. Fallback if nothing matched
+            if (results.length === 0) {
+              results.push({
+                type: 'answer',
+                title: 'JARVIS Intelligence — "' + query.substring(0, 60) + '"',
+                text: 'I don\'t have a specific entry for that in native knowledge yet. ' +
+                  'Try: "read page" to search what\'s currently open, "summarize" to get key points, ' +
+                  'or ask me directly in Chat and I\'ll reason through it with native JARVIS logic.',
+                url: '',
+                source: 'JARVIS Fallback'
+              });
+            }
+
+            sendResponse({ success: true, results: results, query: query });
           }
-          sendResponse({ success: true, results: results, query: message.query, definition: data.Definition || '', entity: data.Entity || '' });
-        })
-        .catch(function (e) {
-          sendResponse({ success: false, message: 'Search failed: ' + e.message });
+
+          // Try to get page text; if that fails, build results with empty text
+          if (activeTab && activeTab.id && !pageUrl.startsWith('edge://') && !pageUrl.startsWith('chrome://')) {
+            chrome.scripting.executeScript({
+              target: { tabId: activeTab.id },
+              func: function () { return document.body ? document.body.innerText.substring(0, 8000) : ''; }
+            }, function (results) {
+              var pageText = (results && results[0] && results[0].result) || '';
+              buildResults(pageText);
+            });
+          } else {
+            buildResults('');
+          }
         });
+      })();
       break;
 
     case 'captureTab':

@@ -403,13 +403,13 @@
         <button class="search-go" id="searchGoBtn">Search</button>
       </div>
       <div class="search-note">
-        Powered by <a href="#" id="searchOpenFull">DuckDuckGo</a> &bull; Results appear right here in the panel
+        JARVIS Native Intelligence &bull; reads your current page + built-in knowledge &bull; no external services
       </div>
     </div>
     <div class="scroll" id="searchResults">
       <div class="search-empty">
         <div class="sei">&#x1F50D;</div>
-        <p>Type anything above and hit Search.<br>Results load here &mdash; no new tabs opened.</p>
+        <p>Type anything above and hit Search.<br>JARVIS reads this page + native knowledge &mdash; zero external services.</p>
       </div>
     </div>
   </div>
@@ -604,50 +604,44 @@
     });
   });
 
-  /* ========== SANDBOX SEARCH ========== */
+  /* ========== JARVIS INTELLIGENCE SEARCH ========== */
   var searchInput = document.getElementById('searchInput');
   var searchResults = document.getElementById('searchResults');
 
   function runSearch(query) {
     if (!query) return;
-    searchResults.innerHTML = '<div class="search-loading"><div class="spinner"></div>&nbsp;Searching for "' + esc(query) + '"&hellip;</div>';
+    searchResults.innerHTML = '<div class="search-loading"><div class="spinner"></div>&nbsp;JARVIS analyzing "' + esc(query) + '"&hellip;</div>';
     chrome.runtime.sendMessage({ action: 'sandboxSearch', query: query }, function (resp) {
       if (chrome.runtime.lastError || !resp || !resp.success || !resp.results || !resp.results.length) {
         var msg = (resp && resp.message) || 'No results found.';
-        searchResults.innerHTML = '<div class="search-empty"><div class="sei">&#x1F636;</div><p>' + esc(msg) +
-          '<br><br><a href="https://duckduckgo.com/?q=' + encodeURIComponent(query) +
-          '" target="_blank" style="color:var(--cyan)">Open full search in new tab</a></p></div>';
+        searchResults.innerHTML = '<div class="search-empty"><div class="sei">&#x1F916;</div><p>' + esc(msg) +
+          '<br><br>Try asking in Chat, or say "read page" to extract from what\'s currently open.</p></div>';
         return;
       }
       searchResults.innerHTML = '<div style="font-size:10px;color:var(--text3);margin-bottom:8px;padding:0 2px">' +
-        '&#x1F50D; Results for: <strong style="color:var(--text2)">' + esc(resp.query) + '</strong></div>';
+        '&#x26A1; JARVIS Intelligence results for: <strong style="color:var(--text2)">' + esc(resp.query) + '</strong></div>';
       resp.results.forEach(function (r) {
         var card = document.createElement('div');
         card.className = 'result-card';
-        var labels = { answer: 'Instant', abstract: 'Overview', result: 'Web', related: 'Related' };
+        var labels = { answer: 'From Page', abstract: 'Knowledge', result: 'Native', related: 'Context', fallback: 'JARVIS' };
         var urlHtml = r.url ? '<a class="result-url" href="' + esc(r.url) + '" target="_blank">' +
           esc(r.url.substring(0, 60)) + (r.url.length > 60 ? '&hellip;' : '') + '</a>' : '';
-        card.innerHTML = '<span class="result-type ' + r.type + '">' + esc(labels[r.type] || r.type) + '</span>' +
+        card.innerHTML = '<span class="result-type ' + (r.type === 'fallback' ? 'answer' : r.type) + '">' + esc(labels[r.type] || r.type) + '</span>' +
+          (r.source ? '<span style="font-size:9px;color:var(--text3);float:right;margin-top:2px">' + esc(r.source) + '</span>' : '') +
           '<div class="result-title">' + esc(r.title) + '</div>' +
-          '<div class="result-text">' + esc(r.text.substring(0, 200)) + (r.text.length > 200 ? '&hellip;' : '') + '</div>' +
+          '<div class="result-text">' + esc(r.text.substring(0, 250)) + (r.text.length > 250 ? '&hellip;' : '') + '</div>' +
           urlHtml;
         searchResults.appendChild(card);
       });
       var footer = document.createElement('div');
       footer.style.cssText = 'text-align:center;padding:12px 0;font-size:11px;color:var(--text3)';
-      footer.innerHTML = '<a href="https://duckduckgo.com/?q=' + encodeURIComponent(query) +
-        '" target="_blank" style="color:var(--accent)">Open full DuckDuckGo results in new tab &rarr;</a>';
+      footer.textContent = '100% native \u2014 no external APIs used';
       searchResults.appendChild(footer);
     });
   }
 
   document.getElementById('searchGoBtn').addEventListener('click', function () { runSearch(searchInput.value.trim()); });
   searchInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); runSearch(searchInput.value.trim()); } });
-  document.getElementById('searchOpenFull').addEventListener('click', function (e) {
-    e.preventDefault();
-    var q = searchInput.value.trim() || 'duckduckgo';
-    chrome.tabs.create({ url: 'https://duckduckgo.com/?q=' + encodeURIComponent(q) });
-  });
 
   /* ========== SCREEN READER ========== */
   var screenPreview = document.getElementById('screenPreview');
