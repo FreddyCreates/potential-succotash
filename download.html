@@ -90,8 +90,8 @@
 </section>
 
 <div class="status-bar" id="status-bar">
-  <div class="status-item"><span class="status-dot ready" id="worker-dot"></span> <span id="worker-status">30 extensions ready</span></div>
-  <div class="status-item">📦 <span id="built-count">30</span> / <span id="total-count">30</span> ready</div>
+  <div class="status-item"><span class="status-dot ready" id="worker-dot"></span> <span id="worker-status">27 extensions ready</span></div>
+  <div class="status-item">📦 <span id="built-count">27</span> / <span id="total-count">27</span> ready</div>
   <div class="status-item">💓 <span id="beat-counter">0</span></div>
 </div>
 
@@ -160,10 +160,7 @@ const EXTENSIONS = [
   { id:'EXT-024', slug:'screen-commander', name:'Screen Commander', initials:'RC', color:'#58a6ff', engines:['DOMControl','NLCommands','AutoNavigate','ScreenRead'], ring:'Interface Ring', desc:'Autonomous screen agent with NL commands' },
   { id:'EXT-025', slug:'pattern-forge', name:'Pattern Forge', initials:'PF', color:'#f778ba', engines:['SpectralDFT','CrossCorrelation','MeanReversion','AnomalyIQR'], ring:'Proof Ring', desc:'Spectral decomposition and cross-system correlation' },
   { id:'EXT-026', slug:'register', name:'Register', initials:'RG', color:'#ffb300', engines:['RegisterWorker','MutationObserver','IntersectionObserver','PerformanceObserver','ResizeObserver'], ring:'Build Ring', desc:'Builder AI — scans, validates, packages, deploys all extensions' },
-  { id:'EXT-027', slug:'workbook-ai', name:'Workbook AI', initials:'WB', color:'#89b4fa', engines:['RichEditor','ChromeStorage','MarkdownExport'], ring:'Interface Ring', desc:'Full workbook and notes manager — rich text, categories, search, export to Markdown/JSON' },
-  { id:'EXT-028', slug:'page-intelligence', name:'Page Intelligence', initials:'PI', color:'#7aa2f7', engines:['DOMAnalysis','SEOAudit','A11yCheck','PerfAPI'], ring:'Build Ring', desc:'Real page analysis — word count, headings, links, images, SEO, accessibility, performance' },
-  { id:'EXT-029', slug:'secure-clipboard', name:'Secure Clipboard', initials:'SC', color:'#4fc3f7', engines:['WebCryptoAES','PBKDF2','ClipboardAPI'], ring:'Counsel Ring', desc:'Clipboard manager with AES-GCM encrypted vault — PIN-protected, auto-categorize, search' },
-  { id:'EXT-030', slug:'command-bar', name:'Command Bar', initials:'CB', color:'#a6e3a1', engines:['CommandParser','DOMExecutor','TabManager'], ring:'Interface Ring', desc:'Spotlight-style command palette — scroll, find, navigate, extract, dark mode, 25 commands' },
+  { id:'EXT-027', slug:'sovereign-alpha', name:'Sovereign Alpha', initials:'SA', color:'#89b4fa', engines:['Workbook','PageIntelligence','SecureVault','CommandBar'], ring:'Sovereign Ring', desc:'φ-compression: Workbook AI + Page Intelligence + Secure Vault + Command Bar — one install, four modules' },
 ];
 
 /* ─── Fallback URLs: if local fetch fails, use GitHub raw ── */
@@ -171,7 +168,7 @@ const GH_RAW = 'https://raw.githubusercontent.com/FreddyCreates/potential-succot
 const GH_DL  = 'https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/';
 
 /* ─── State ────────────────────────────────────────────────── */
-let builtCount = 30; // Links work immediately via GitHub raw
+let builtCount = 27; // Links work immediately via GitHub raw
 let blobURLs = {};  // slug → blob URL (upgraded by Worker if available)
 let worker = null;
 let useWorkerBuild = true;
@@ -326,7 +323,7 @@ function handleWorkerMessage(e) {
 
 /* ─── Fallback: Worker unavailable, links already work via GitHub raw ─ */
 function fallbackToPrebuilt() {
-  document.getElementById('worker-status').textContent = '30 extensions ready — direct download';
+  document.getElementById('worker-status').textContent = '27 extensions ready — direct download';
   document.getElementById('worker-dot').className = 'status-dot ready';
   // Links are already set to GH_DL URLs in the card render — nothing else needed
 }

@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sovereign Alpha</title>
+<style>
+/* ── Reset & Shared Variables ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #1e1e2e; --bg2: #252536; --bg3: #2a2a3d; --bg4: #313145;
+  --text: #cdd6f4; --text2: #a6adc8; --text3: #7f849c;
+  --accent: #89b4fa; --green: #a6e3a1; --red: #f38ba8;
+  --yellow: #f9e2af; --mauve: #cba6f7; --cyan: #74c7ec;
+  --border: #45475a; --radius: 8px;
+}
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg); color: var(--text); font-size: 13px;
+  display: flex; flex-direction: column;
+}
+button { cursor: pointer; border: none; background: none; color: var(--text); font-family: inherit; font-size: inherit; }
+input, select, textarea { font-family: inherit; font-size: inherit; color: var(--text); background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); padding: 6px 10px; outline: none; }
+input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+
+/* ── Master Tab Bar ───────────────────────────────────────────────────── */
+.master-tabs {
+  display: flex; background: var(--bg2); border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.master-tab {
+  flex: 1; padding: 10px 6px; text-align: center; font-size: 11px; font-weight: 600;
+  color: var(--text3); border-bottom: 2px solid transparent; transition: color .15s, border .15s;
+  cursor: pointer; user-select: none; white-space: nowrap;
+}
+.master-tab:hover { color: var(--text2); }
+.master-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* ── Tab Panels ───────────────────────────────────────────────────────── */
+.tab-panel { display: none; flex: 1; overflow-y: auto; flex-direction: column; }
+.tab-panel.active { display: flex; }
+
+/* ── Shared button styles ─────────────────────────────────────────────── */
+.btn-primary {
+  background: var(--accent); color: var(--bg); padding: 6px 14px;
+  border-radius: var(--radius); font-weight: 600; font-size: 12px;
+}
+.btn-primary:hover { opacity: .85; }
+.btn-outline {
+  background: transparent; color: var(--accent); border: 1px solid var(--accent);
+  padding: 5px 12px; border-radius: var(--radius); font-size: 12px;
+}
+.btn-outline:hover { background: rgba(137,180,250,.08); }
+.btn-icon {
+  width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius); font-size: 16px;
+}
+.btn-icon:hover { background: var(--bg3); }
+
+/* ── Shared toast ─────────────────────────────────────────────────────── */
+#sp-toast {
+  position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+  background: var(--accent); color: var(--bg); padding: 7px 18px;
+  border-radius: 20px; font-size: 12px; font-weight: 600;
+  z-index: 9999; opacity: 0; transition: opacity .3s; pointer-events: none;
+}
+#sp-toast.show { opacity: 1; }
+
+/* ══════════════════════════════════════════════════════════════════════
+   TAB 1 — WORKBOOK
+   ══════════════════════════════════════════════════════════════════════ */
+#tab-workbook { flex-direction: column; overflow: hidden; }
+
+#tab-workbook .wb-header {
+  display: flex; align-items: center; gap: 6px; padding: 8px 10px;
+  background: var(--bg2); border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+#tab-workbook .wb-logo { font-weight: 700; font-size: 13px; color: var(--accent); white-space: nowrap; }
+#tab-workbook .wb-search-wrap { flex: 1; position: relative; min-width: 0; }
+#tab-workbook .wb-search-wrap input { width: 100%; padding-left: 26px; }
+#tab-workbook .wb-search-icon { position: absolute; left: 8px; top: 50%; transform: translateY(-50%); font-size: 12px; color: var(--text3); pointer-events: none; }
+
+#tab-workbook .wb-main { display: flex; flex: 1; overflow: hidden; }
+#tab-workbook .wb-sidebar {
+  width: 120px; flex-shrink: 0; border-right: 1px solid var(--border);
+  background: var(--bg2); display: flex; flex-direction: column; overflow: hidden;
+  transition: width .2s;
+}
+#tab-workbook .wb-sidebar.collapsed { width: 0; }
+#tab-workbook .wb-sidebar-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 10px; font-size: 11px; font-weight: 600; color: var(--text3);
+  text-transform: uppercase; letter-spacing: .5px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+#tab-workbook .wb-sidebar-header button { font-size: 18px; color: var(--text3); line-height: 1; }
+#tab-workbook .wb-sidebar-header button:hover { color: var(--accent); }
+#tab-workbook .wb-add-cat-wrap { padding: 0 6px 6px; }
+#tab-workbook .wb-add-cat-input { width: 100%; font-size: 12px; display: none; }
+#tab-workbook .wb-add-cat-input.visible { display: block; }
+#tab-workbook .wb-cat-list { flex: 1; overflow-y: auto; list-style: none; }
+#tab-workbook .wb-cat-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 6px 10px; cursor: pointer; font-size: 12px; color: var(--text2);
+  border-radius: 4px; margin: 2px 4px; transition: background .15s;
+}
+#tab-workbook .wb-cat-item:hover { background: var(--bg3); color: var(--text); }
+#tab-workbook .wb-cat-item.active { background: var(--bg4); color: var(--accent); font-weight: 600; }
+#tab-workbook .wb-cat-count { font-size: 10px; background: var(--bg4); padding: 1px 5px; border-radius: 10px; color: var(--text3); }
+
+#tab-workbook .wb-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+#tab-workbook .wb-toolbar {
+  display: flex; align-items: center; gap: 8px; padding: 6px 10px;
+  border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+#tab-workbook .wb-note-count { font-size: 11px; color: var(--text3); flex: 1; }
+#tab-workbook select { font-size: 11px; padding: 4px 6px; }
+
+#tab-workbook .wb-note-list { flex: 1; overflow-y: auto; padding: 6px; }
+#tab-workbook .wb-note-card {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 10px; margin-bottom: 6px; cursor: pointer; transition: border-color .15s;
+}
+#tab-workbook .wb-note-card:hover { border-color: var(--accent); }
+#tab-workbook .wb-card-title { font-weight: 600; color: var(--text); margin-bottom: 3px; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#tab-workbook .wb-card-preview { font-size: 11px; color: var(--text3); margin-bottom: 5px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+#tab-workbook .wb-card-meta { display: flex; gap: 6px; align-items: center; font-size: 10px; color: var(--text3); flex-wrap: wrap; }
+#tab-workbook .wb-badge { background: var(--bg3); padding: 1px 6px; border-radius: 10px; color: var(--text2); }
+
+#tab-workbook .wb-empty { text-align: center; padding: 40px 20px; color: var(--text3); }
+#tab-workbook .wb-empty .icon { font-size: 32px; margin-bottom: 8px; }
+
+#tab-workbook .wb-editor { display: none; flex-direction: column; flex: 1; overflow: hidden; }
+#tab-workbook .wb-editor.active { display: flex; }
+#tab-workbook .wb-editor-topbar {
+  display: flex; align-items: center; gap: 8px; padding: 6px 10px;
+  border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+#tab-workbook .wb-editor-fields { padding: 8px 10px; display: flex; gap: 8px; flex-shrink: 0; }
+#tab-workbook .wb-editor-title { flex: 1; font-size: 14px; font-weight: 600; }
+#tab-workbook .wb-format-bar {
+  display: flex; gap: 3px; padding: 4px 10px; flex-shrink: 0;
+  border-bottom: 1px solid var(--border); flex-wrap: wrap;
+}
+#tab-workbook .wb-fmt-btn {
+  padding: 3px 7px; border-radius: 4px; font-size: 12px;
+  color: var(--text2); transition: background .1s;
+}
+#tab-workbook .wb-fmt-btn:hover { background: var(--bg3); color: var(--text); }
+#tab-workbook .wb-fmt-sep { width: 1px; background: var(--border); margin: 2px 2px; }
+#tab-workbook .wb-editor-body { flex: 1; overflow-y: auto; padding: 10px; }
+#tab-workbook .wb-editor-content {
+  min-height: 200px; outline: none; line-height: 1.6; font-size: 13px;
+}
+#tab-workbook .wb-editor-content code { background: var(--bg3); padding: 1px 4px; border-radius: 3px; font-size: 12px; }
+#tab-workbook .wb-editor-footer {
+  display: flex; align-items: center; gap: 8px; padding: 6px 10px;
+  border-top: 1px solid var(--border); flex-shrink: 0; font-size: 11px; color: var(--text3);
+}
+#tab-workbook .wb-editor-footer .save-status { color: var(--green); }
+
+/* ══════════════════════════════════════════════════════════════════════
+   TAB 2 — PAGE INTELLIGENCE
+   ══════════════════════════════════════════════════════════════════════ */
+#tab-intelligence { flex-direction: column; }
+
+#tab-intelligence .pi-header {
+  display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+  border-bottom: 1px solid var(--border); flex-shrink: 0; background: var(--bg2);
+}
+#tab-intelligence .pi-logo {
+  width: 28px; height: 28px; background: var(--accent); border-radius: 6px;
+  display: flex; align-items: center; justify-content: center; color: var(--bg);
+  font-weight: 800; font-size: 12px; flex-shrink: 0;
+}
+#tab-intelligence .pi-title { font-size: 14px; font-weight: 600; color: var(--text); flex: 1; }
+#tab-intelligence .pi-toolbar {
+  padding: 8px 14px; display: flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+#tab-intelligence .pi-meta { font-size: 11px; color: var(--text3); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+#tab-intelligence .pi-inner-tabs {
+  display: flex; border-bottom: 1px solid var(--border); overflow-x: auto;
+  background: var(--bg); flex-shrink: 0;
+}
+#tab-intelligence .pi-inner-tab {
+  padding: 8px 12px; cursor: pointer; font-size: 11px; color: var(--text3);
+  border-bottom: 2px solid transparent; white-space: nowrap; transition: color .15s, border .15s;
+}
+#tab-intelligence .pi-inner-tab:hover { color: var(--text2); }
+#tab-intelligence .pi-inner-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+#tab-intelligence .pi-panels { flex: 1; overflow-y: auto; }
+#tab-intelligence .pi-panel { display: none; padding: 14px; }
+#tab-intelligence .pi-panel.active { display: block; }
+#tab-intelligence .pi-empty { text-align: center; padding: 40px 20px; color: var(--text3); }
+#tab-intelligence .pi-empty .icon { font-size: 32px; margin-bottom: 8px; }
+
+#tab-intelligence .pi-card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px,1fr)); gap: 8px; margin-bottom: 14px; }
+#tab-intelligence .pi-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px; }
+#tab-intelligence .pi-card .label { font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: var(--text3); margin-bottom: 2px; }
+#tab-intelligence .pi-card .value { font-size: 18px; font-weight: 700; color: var(--text); }
+#tab-intelligence .pi-card .value.accent { color: var(--accent); }
+#tab-intelligence .pi-card .value.green { color: var(--green); }
+#tab-intelligence .pi-card .value.red { color: var(--red); }
+
+#tab-intelligence .pi-section-title { font-size: 12px; font-weight: 600; color: var(--text2); margin: 14px 0 6px; display: flex; align-items: center; gap: 6px; }
+#tab-intelligence .pi-section-title:first-child { margin-top: 0; }
+
+#tab-intelligence .pi-issue { display: flex; align-items: flex-start; gap: 8px; padding: 7px 10px; margin-bottom: 5px; background: var(--bg2); border-radius: 6px; border-left: 3px solid var(--border); }
+#tab-intelligence .pi-issue.error { border-left-color: var(--red); }
+#tab-intelligence .pi-issue.warning { border-left-color: var(--yellow); }
+#tab-intelligence .pi-issue .sev { font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 1px 5px; border-radius: 3px; flex-shrink: 0; }
+#tab-intelligence .pi-issue .sev.error { background: rgba(243,139,168,.15); color: var(--red); }
+#tab-intelligence .pi-issue .sev.warning { background: rgba(249,226,175,.15); color: var(--yellow); }
+#tab-intelligence .pi-issue .msg { font-size: 12px; color: var(--text2); }
+
+#tab-intelligence .pi-heading-item { display: flex; align-items: center; gap: 6px; padding: 5px 0; border-bottom: 1px solid var(--border); }
+#tab-intelligence .pi-h-tag { font-size: 10px; font-weight: 700; color: var(--bg); padding: 1px 5px; border-radius: 3px; min-width: 26px; text-align: center; }
+#tab-intelligence .pi-h-text { font-size: 12px; color: var(--text2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+#tab-intelligence .pi-bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+#tab-intelligence .pi-bar-label { width: 80px; text-align: right; font-size: 11px; color: var(--text3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#tab-intelligence .pi-bar-track { flex: 1; height: 16px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
+#tab-intelligence .pi-bar-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width .4s ease; min-width: 2px; }
+#tab-intelligence .pi-bar-count { font-size: 10px; color: var(--text3); width: 28px; }
+
+#tab-intelligence .pi-table-wrap { overflow-x: auto; margin: 8px 0; border: 1px solid var(--border); border-radius: var(--radius); }
+#tab-intelligence table { width: 100%; border-collapse: collapse; font-size: 11px; }
+#tab-intelligence th { background: var(--bg2); color: var(--text3); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; padding: 7px 10px; text-align: left; }
+#tab-intelligence td { padding: 6px 10px; border-top: 1px solid var(--border); color: var(--text2); max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#tab-intelligence .pi-perf-metric { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+#tab-intelligence .pi-perf-value { color: var(--text); font-weight: 600; }
+
+/* ══════════════════════════════════════════════════════════════════════
+   TAB 3 — SECURE VAULT
+   ══════════════════════════════════════════════════════════════════════ */
+#tab-vault { flex-direction: column; }
+
+#tab-vault .sv-header {
+  display: flex; align-items: center; gap: 8px; padding: 10px 14px;
+  background: var(--bg2); border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+#tab-vault .sv-logo { font-size: 18px; }
+#tab-vault .sv-title { font-size: 14px; font-weight: 700; color: var(--accent); flex: 1; }
+#tab-vault .sv-lock-badge {
+  font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 10px;
+  background: rgba(243,139,168,.15); color: var(--red);
+}
+#tab-vault .sv-lock-badge.unlocked { background: rgba(166,227,161,.15); color: var(--green); }
+
+#tab-vault .sv-tabs {
+  display: flex; border-bottom: 1px solid var(--border); flex-shrink: 0; background: var(--bg2);
+}
+#tab-vault .sv-tab {
+  flex: 1; padding: 8px 4px; text-align: center; font-size: 11px; font-weight: 600;
+  color: var(--text3); border-bottom: 2px solid transparent; cursor: pointer;
+}
+#tab-vault .sv-tab:hover { color: var(--text2); }
+#tab-vault .sv-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+#tab-vault .sv-panels { flex: 1; overflow-y: auto; }
+#tab-vault .sv-panel { display: none; padding: 12px; }
+#tab-vault .sv-panel.active { display: block; }
+
+#tab-vault .sv-search-row { display: flex; gap: 8px; margin-bottom: 10px; }
+#tab-vault .sv-search { flex: 1; }
+#tab-vault .sv-filter-select { width: 110px; }
+
+#tab-vault .sv-clip-item {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 10px; margin-bottom: 6px; cursor: pointer; transition: border-color .15s;
+}
+#tab-vault .sv-clip-item:hover { border-color: var(--accent); }
+#tab-vault .sv-clip-item.pinned { border-left: 3px solid var(--accent); }
+#tab-vault .sv-clip-text { font-size: 12px; color: var(--text); margin-bottom: 6px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; white-space: pre-wrap; word-break: break-word; }
+#tab-vault .sv-clip-meta { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+#tab-vault .sv-clip-cat { font-size: 10px; background: var(--bg3); padding: 1px 6px; border-radius: 10px; color: var(--text2); }
+#tab-vault .sv-clip-time { font-size: 10px; color: var(--text3); flex: 1; }
+#tab-vault .sv-clip-actions { display: flex; gap: 4px; }
+#tab-vault .sv-action-btn { font-size: 13px; padding: 2px 6px; border-radius: 4px; color: var(--text3); }
+#tab-vault .sv-action-btn:hover { background: var(--bg3); color: var(--text); }
+
+#tab-vault .sv-section-title { font-size: 12px; font-weight: 600; color: var(--text2); margin: 12px 0 8px; }
+
+#tab-vault .sv-vault-locked { text-align: center; padding: 30px 16px; }
+#tab-vault .sv-vault-locked .lock-icon { font-size: 48px; margin-bottom: 12px; }
+#tab-vault .sv-vault-locked p { font-size: 12px; color: var(--text3); margin-bottom: 12px; }
+#tab-vault .sv-pin-row { display: flex; gap: 8px; margin-bottom: 8px; }
+#tab-vault .sv-pin-input { flex: 1; font-size: 16px; letter-spacing: 6px; text-align: center; }
+
+#tab-vault .sv-vault-item {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 10px; margin-bottom: 6px;
+}
+#tab-vault .sv-vault-item-label { font-size: 11px; font-weight: 600; color: var(--text2); margin-bottom: 4px; }
+#tab-vault .sv-vault-item-preview { font-size: 12px; color: var(--text3); font-family: monospace; }
+
+#tab-vault .sv-add-vault-form { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; margin-bottom: 10px; display: none; }
+#tab-vault .sv-add-vault-form.visible { display: block; }
+#tab-vault .sv-add-vault-form input, #tab-vault .sv-add-vault-form textarea { width: 100%; margin-bottom: 8px; }
+#tab-vault .sv-add-vault-form textarea { min-height: 60px; resize: vertical; }
+
+/* ══════════════════════════════════════════════════════════════════════
+   TAB 4 — COMMAND BAR
+   ══════════════════════════════════════════════════════════════════════ */
+#tab-command { flex-direction: column; }
+
+#tab-command .cb-header {
+  display: flex; align-items: center; gap: 8px; padding: 10px 14px;
+  background: var(--bg2); border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+#tab-command .cb-title { font-size: 14px; font-weight: 700; color: var(--accent); flex: 1; }
+#tab-command .cb-shortcut { font-size: 10px; color: var(--text3); background: var(--bg3); padding: 2px 6px; border-radius: 4px; }
+
+#tab-command .cb-input-area { padding: 12px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+#tab-command .cb-cmd-row { display: flex; gap: 8px; }
+#tab-command .cb-input { flex: 1; font-size: 14px; }
+#tab-command .cb-result {
+  margin-top: 10px; padding: 10px; background: var(--bg2); border-radius: var(--radius);
+  font-size: 12px; white-space: pre-wrap; word-break: break-word; line-height: 1.5;
+  color: var(--green); display: none; max-height: 160px; overflow-y: auto;
+}
+#tab-command .cb-result.error { color: var(--red); }
+
+#tab-command .cb-body { flex: 1; overflow-y: auto; padding: 12px; }
+#tab-command .cb-section-title { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+#tab-command .cb-history-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 7px 10px; background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 6px; margin-bottom: 4px; cursor: pointer; transition: border-color .15s;
+}
+#tab-command .cb-history-item:hover { border-color: var(--accent); }
+#tab-command .cb-history-cmd { font-size: 12px; color: var(--text); font-family: monospace; }
+#tab-command .cb-history-time { font-size: 10px; color: var(--text3); }
+#tab-command .cb-cmd-ref { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid var(--border); font-size: 11px; }
+#tab-command .cb-cmd-name { color: var(--accent); font-family: monospace; }
+#tab-command .cb-cmd-desc { color: var(--text3); text-align: right; max-width: 55%; }
+#tab-command .cb-saved-action {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 10px; background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 6px; margin-bottom: 4px; cursor: pointer; transition: border-color .15s;
+}
+#tab-command .cb-saved-action:hover { border-color: var(--accent); }
+#tab-command .cb-saved-name { font-size: 12px; font-weight: 600; color: var(--text); }
+#tab-command .cb-saved-cmd { font-size: 11px; color: var(--text3); font-family: monospace; }
+#tab-command .cb-inner-tabs { display: flex; gap: 2px; margin-bottom: 12px; }
+#tab-command .cb-inner-tab {
+  padding: 5px 12px; border-radius: 14px; font-size: 11px; font-weight: 600;
+  color: var(--text3); cursor: pointer; transition: all .15s;
+}
+#tab-command .cb-inner-tab.active { background: var(--accent); color: var(--bg); }
+#tab-command .cb-inner-tab:not(.active):hover { background: var(--bg3); color: var(--text); }
+#tab-command .cb-section { display: none; }
+#tab-command .cb-section.active { display: block; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ MASTER TAB BAR ════════════════════════════════ -->
+<nav class="master-tabs">
+  <button class="master-tab active" data-tab="workbook">📓 Workbook</button>
+  <button class="master-tab" data-tab="intelligence">🔍 Intelligence</button>
+  <button class="master-tab" data-tab="vault">🔐 Vault</button>
+  <button class="master-tab" data-tab="command">⌨️ Command</button>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     TAB 1 — WORKBOOK AI
+     ═══════════════════════════════════════════════════════════════════ -->
+<div id="tab-workbook" class="tab-panel active">
+  <!-- Header -->
+  <div class="wb-header">
+    <button class="btn-icon" id="wbToggleSidebar" title="Toggle sidebar">☰</button>
+    <span class="wb-logo">📓 Workbook</span>
+    <button class="btn-primary" id="wbNewNoteBtn">+ New</button>
+    <div class="wb-search-wrap">
+      <span class="wb-search-icon">🔍</span>
+      <input type="text" id="wbSearchInput" placeholder="Search notes…">
+    </div>
+    <button class="btn-icon" id="wbExportBtn" title="Export/Import">⬇</button>
+  </div>
+  <!-- Main layout -->
+  <div class="wb-main">
+    <!-- Sidebar -->
+    <div class="wb-sidebar" id="wbSidebar">
+      <div class="wb-sidebar-header">
+        <span>Categories</span>
+        <button id="wbAddCatBtn" title="Add category">+</button>
+      </div>
+      <div class="wb-add-cat-wrap">
+        <input type="text" class="wb-add-cat-input" id="wbAddCatInput" placeholder="New category…" maxlength="30">
+      </div>
+      <ul class="wb-cat-list" id="wbCatList"></ul>
+    </div>
+    <!-- Content -->
+    <div class="wb-content">
+      <!-- List view -->
+      <div class="wb-toolbar wb-list-el">
+        <select id="wbSortSelect">
+          <option value="modified">Modified</option>
+          <option value="created">Created</option>
+          <option value="title">Title</option>
+        </select>
+        <span class="wb-note-count" id="wbNoteCount"></span>
+      </div>
+      <div class="wb-note-list wb-list-el" id="wbNoteList"></div>
+      <!-- Editor view -->
+      <div class="wb-editor" id="wbEditorView">
+        <div class="wb-editor-topbar">
+          <button class="btn-outline" id="wbBackBtn">← Back</button>
+          <button class="btn-icon" id="wbDeleteBtn" title="Delete note" style="color:var(--red)">🗑</button>
+          <div style="flex:1"></div>
+          <button class="btn-primary" id="wbSaveBtn">💾 Save</button>
+        </div>
+        <div class="wb-editor-fields">
+          <input type="text" id="wbEditorTitle" class="wb-editor-title" placeholder="Note title…" maxlength="200">
+          <select id="wbEditorCategory"></select>
+        </div>
+        <div class="wb-format-bar" id="wbFormatBar">
+          <button class="wb-fmt-btn" data-cmd="bold"><b>B</b></button>
+          <button class="wb-fmt-btn" data-cmd="italic"><i>I</i></button>
+          <button class="wb-fmt-btn" data-cmd="underline"><u>U</u></button>
+          <button class="wb-fmt-btn" data-cmd="strikeThrough"><s>S</s></button>
+          <div class="wb-fmt-sep"></div>
+          <button class="wb-fmt-btn" data-cmd="code">&lt;/&gt;</button>
+          <button class="wb-fmt-btn" data-cmd="heading">H</button>
+          <div class="wb-fmt-sep"></div>
+          <button class="wb-fmt-btn" data-cmd="insertUnorderedList">•</button>
+          <button class="wb-fmt-btn" data-cmd="insertOrderedList">1.</button>
+          <div class="wb-fmt-sep"></div>
+          <button class="wb-fmt-btn" data-cmd="createLink">🔗</button>
+        </div>
+        <div class="wb-editor-body">
+          <div class="wb-editor-content" id="wbEditorContent" contenteditable="true"></div>
+        </div>
+        <div class="wb-editor-footer">
+          <span id="wbEditorStats">0 words</span>
+          <span style="flex:1"></span>
+          <span id="wbSaveStatus" class="save-status"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Export modal -->
+  <div id="wbModal" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,.6);z-index:1000;align-items:center;justify-content:center;">
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;width:260px;display:flex;flex-direction:column;gap:8px;">
+      <h3 style="font-size:13px;color:var(--text)">Export / Import</h3>
+      <button class="btn-primary" id="wbExportJsonBtn">📦 Export All (JSON)</button>
+      <button class="btn-outline" id="wbImportJsonBtn">📥 Import JSON</button>
+      <textarea id="wbImportArea" placeholder="Paste JSON here…" style="display:none;min-height:80px;resize:vertical;font-size:11px;font-family:monospace;"></textarea>
+      <button class="btn-primary" id="wbImportConfirmBtn" style="display:none;">✓ Import</button>
+      <button id="wbModalCloseBtn" style="font-size:12px;color:var(--text3);">✕ Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     TAB 2 — PAGE INTELLIGENCE
+     ═══════════════════════════════════════════════════════════════════ -->
+<div id="tab-intelligence" class="tab-panel">
+  <div class="pi-header">
+    <div class="pi-logo">PI</div>
+    <span class="pi-title">Page Intelligence</span>
+    <button class="btn-icon" id="piExportBtn" title="Export JSON">📥</button>
+    <button class="btn-icon" id="piCopyBtn" title="Copy Summary">📋</button>
+  </div>
+  <div class="pi-toolbar">
+    <button class="btn-primary" id="piAnalyzeBtn">⚡ Analyze Page</button>
+    <span class="pi-meta" id="piMeta">Click Analyze to start</span>
+  </div>
+  <div class="pi-inner-tabs" id="piTabBar">
+    <div class="pi-inner-tab active" data-pi="overview">Overview</div>
+    <div class="pi-inner-tab" data-pi="text">Text</div>
+    <div class="pi-inner-tab" data-pi="structure">Structure</div>
+    <div class="pi-inner-tab" data-pi="links">Links</div>
+    <div class="pi-inner-tab" data-pi="images">Images</div>
+    <div class="pi-inner-tab" data-pi="seo">SEO</div>
+    <div class="pi-inner-tab" data-pi="a11y">Accessibility</div>
+  </div>
+  <div class="pi-panels">
+    <div id="piEmpty" class="pi-empty"><div class="icon">🔍</div><p>Analyze a page to see detailed insights</p></div>
+    <div class="pi-panel active" data-pi-panel="overview" id="piPanelOverview">
+      <div class="pi-card-grid" id="piOverviewCards"></div>
+      <div id="piOverviewIssues"></div>
+    </div>
+    <div class="pi-panel" data-pi-panel="text" id="piPanelText">
+      <div class="pi-card-grid" id="piTextCards"></div>
+      <div class="pi-section-title">📊 Top Words</div>
+      <div id="piTopWords"></div>
+    </div>
+    <div class="pi-panel" data-pi-panel="structure" id="piPanelStructure">
+      <div class="pi-card-grid" id="piStructCards"></div>
+      <div id="piStructIssues"></div>
+      <div class="pi-section-title">🏗 Heading Tree</div>
+      <div id="piHeadingTree"></div>
+    </div>
+    <div class="pi-panel" data-pi-panel="links" id="piPanelLinks">
+      <div class="pi-card-grid" id="piLinkCards"></div>
+      <div class="pi-table-wrap"><table id="piLinkTable"><thead><tr><th>Text</th><th>URL</th><th>Type</th></tr></thead><tbody></tbody></table></div>
+    </div>
+    <div class="pi-panel" data-pi-panel="images" id="piPanelImages">
+      <div class="pi-card-grid" id="piImgCards"></div>
+      <div id="piImgGrid"></div>
+    </div>
+    <div class="pi-panel" data-pi-panel="seo" id="piPanelSeo">
+      <div class="pi-section-title">📝 Meta Tags</div><div id="piSeoMeta"></div>
+      <div class="pi-section-title">🔗 Open Graph</div><div id="piSeoOg"></div>
+      <div class="pi-section-title">🐦 Twitter Card</div><div id="piSeoTwitter"></div>
+      <div class="pi-section-title">⚠️ SEO Issues</div><div id="piSeoIssues"></div>
+    </div>
+    <div class="pi-panel" data-pi-panel="a11y" id="piPanelA11y">
+      <div class="pi-card-grid" id="piA11yCards"></div>
+      <div class="pi-section-title">⚠️ Issues</div>
+      <div id="piA11yIssues"></div>
+    </div>
+    <div class="pi-panel" data-pi-panel="perf" id="piPanelPerf">
+      <div class="pi-section-title">⚡ Performance Metrics</div>
+      <div id="piPerfMetrics"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     TAB 3 — SECURE VAULT
+     ═══════════════════════════════════════════════════════════════════ -->
+<div id="tab-vault" class="tab-panel">
+  <div class="sv-header">
+    <span class="sv-logo">🔐</span>
+    <span class="sv-title">Secure Vault</span>
+    <span class="sv-lock-badge" id="svLockBadge">Locked</span>
+  </div>
+  <div class="sv-tabs">
+    <button class="sv-tab active" data-sv="history">📋 Clipboard History</button>
+    <button class="sv-tab" data-sv="vault">🔒 Encrypted Vault</button>
+    <button class="sv-tab" data-sv="settings">⚙️ Settings</button>
+  </div>
+  <div class="sv-panels">
+    <!-- History Panel -->
+    <div class="sv-panel active" data-sv-panel="history" id="svPanelHistory">
+      <div class="sv-search-row">
+        <input type="text" class="sv-search" id="svSearch" placeholder="Search clipboard…">
+        <select class="sv-filter-select" id="svFilter">
+          <option value="all">All Categories</option>
+          <option value="URLs">URLs</option>
+          <option value="Code">Code</option>
+          <option value="Email">Email</option>
+          <option value="Numbers">Numbers</option>
+          <option value="General">General</option>
+        </select>
+      </div>
+      <div style="display:flex;gap:6px;margin-bottom:10px;">
+        <button class="btn-outline" id="svClearHistBtn" style="font-size:11px;padding:4px 10px;">🗑 Clear</button>
+        <span id="svHistCount" style="font-size:11px;color:var(--text3);line-height:1;align-self:center;"></span>
+      </div>
+      <div id="svHistList"></div>
+    </div>
+    <!-- Vault Panel -->
+    <div class="sv-panel" data-sv-panel="vault" id="svPanelVault">
+      <div id="svVaultLocked" class="sv-vault-locked">
+        <div class="lock-icon">🔒</div>
+        <p>Enter your PIN to unlock the encrypted vault.<br>Items are AES-256-GCM encrypted in your browser.</p>
+        <div class="sv-pin-row">
+          <input type="password" class="sv-pin-input" id="svPinInput" placeholder="● ● ● ●" maxlength="8">
+        </div>
+        <button class="btn-primary" id="svUnlockBtn" style="width:100%;margin-bottom:8px;">🔓 Unlock</button>
+        <button class="btn-outline" id="svSetPinBtn" style="width:100%;font-size:11px;">Set New PIN (creates new vault)</button>
+        <p id="svPinError" style="color:var(--red);font-size:11px;margin-top:8px;"></p>
+      </div>
+      <div id="svVaultUnlocked" style="display:none;">
+        <div style="display:flex;gap:8px;margin-bottom:12px;">
+          <button class="btn-primary" id="svAddItemBtn">+ Add Item</button>
+          <button class="btn-outline" id="svLockVaultBtn" style="font-size:11px;">🔒 Lock</button>
+        </div>
+        <div class="sv-add-vault-form" id="svAddForm">
+          <input type="text" id="svItemLabel" placeholder="Label (e.g. GitHub Token)" style="width:100%;margin-bottom:6px;">
+          <textarea id="svItemSecret" placeholder="Secret value…" style="width:100%;min-height:60px;resize:vertical;"></textarea>
+          <div style="display:flex;gap:6px;margin-top:6px;">
+            <button class="btn-primary" id="svSaveItemBtn">Save</button>
+            <button class="btn-outline" id="svCancelItemBtn" style="font-size:11px;">Cancel</button>
+          </div>
+        </div>
+        <div id="svVaultList"></div>
+      </div>
+    </div>
+    <!-- Settings Panel -->
+    <div class="sv-panel" data-sv-panel="settings" id="svPanelSettings">
+      <div class="sv-section-title">Clipboard Settings</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <label style="display:flex;align-items:center;justify-content:space-between;font-size:12px;">
+          <span>Auto-capture copies</span>
+          <input type="checkbox" id="svAutoCapture" checked>
+        </label>
+        <label style="display:flex;flex-direction:column;gap:4px;font-size:12px;">
+          <span>Auto-clear timer</span>
+          <select id="svAutoClear">
+            <option value="never">Never</option>
+            <option value="1hr">After 1 hour</option>
+            <option value="4hr">After 4 hours</option>
+            <option value="24hr">After 24 hours</option>
+          </select>
+        </label>
+        <label style="display:flex;flex-direction:column;gap:4px;font-size:12px;">
+          <span>Max history items</span>
+          <input type="number" id="svMaxHistory" value="500" min="10" max="2000">
+        </label>
+        <button class="btn-primary" id="svSaveSettings">Save Settings</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     TAB 4 — COMMAND BAR
+     ═══════════════════════════════════════════════════════════════════ -->
+<div id="tab-command" class="tab-panel">
+  <div class="cb-header">
+    <span style="font-size:18px;">⌨️</span>
+    <span class="cb-title">Command Bar</span>
+    <span class="cb-shortcut">Ctrl+Shift+K</span>
+  </div>
+  <div class="cb-input-area">
+    <div class="cb-cmd-row">
+      <input type="text" class="cb-input" id="cbInput" placeholder="Type a command (scroll down, find, summarize…)" autocomplete="off" spellcheck="false">
+      <button class="btn-primary" id="cbRunBtn">Run</button>
+    </div>
+    <div class="cb-result" id="cbResult"></div>
+  </div>
+  <div class="cb-body">
+    <div class="cb-inner-tabs">
+      <button class="cb-inner-tab active" data-cb="history">History</button>
+      <button class="cb-inner-tab" data-cb="actions">Quick Actions</button>
+      <button class="cb-inner-tab" data-cb="reference">Reference</button>
+    </div>
+    <!-- History section -->
+    <div class="cb-section active" id="cbSectionHistory">
+      <div style="display:flex;gap:8px;margin-bottom:8px;">
+        <span class="cb-section-title" style="margin:0;align-self:center;">Recent Commands</span>
+        <button class="btn-outline" id="cbClearHistBtn" style="font-size:11px;padding:3px 8px;margin-left:auto;">Clear</button>
+      </div>
+      <div id="cbHistList"></div>
+    </div>
+    <!-- Quick Actions section -->
+    <div class="cb-section" id="cbSectionActions">
+      <div class="cb-section-title">Quick Actions</div>
+      <div id="cbActionsList"></div>
+    </div>
+    <!-- Reference section -->
+    <div class="cb-section" id="cbSectionReference">
+      <div class="cb-section-title">25 Commands</div>
+      <div id="cbRefList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Shared toast -->
+<div id="sp-toast"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════
+   Sovereign Alpha — Unified Sidepanel Application
+   φ-compression: four panels in one sovereign UI
+   ═══════════════════════════════════════════════════════════════════════ */
+
+// ── Shared utilities ─────────────────────────────────────────────────────
+function spToast(msg) {
+  const t = document.getElementById('sp-toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+function escHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+function formatTime(ts) { return new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); }
+function formatDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return d.toLocaleDateString([], { month: 'short', day: 'numeric' }) + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+// ── Master tab switching ─────────────────────────────────────────────────
+const masterTabs = document.querySelectorAll('.master-tab');
+const tabPanels  = document.querySelectorAll('.tab-panel');
+const initialized = {};
+
+masterTabs.forEach(btn => {
+  btn.addEventListener('click', () => {
+    masterTabs.forEach(t => t.classList.remove('active'));
+    tabPanels.forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    const id = 'tab-' + btn.dataset.tab;
+    document.getElementById(id).classList.add('active');
+    if (!initialized[id]) { initialized[id] = true; initTab(btn.dataset.tab); }
+  });
+});
+
+function initTab(name) {
+  if (name === 'vault')        initVault();
+  if (name === 'intelligence') initIntelligence();
+  if (name === 'command')      initCommand();
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// WORKBOOK (initialized on load since it's the default tab)
+// ════════════════════════════════════════════════════════════════════════
+let wbNotes = [], wbCategories = ['General','Work','Personal','Ideas','Code Snippets'];
+let wbActiveCategory = null, wbCurrentNote = null, wbIsDirty = false;
+
+function wbGenId() { return Date.now().toString(36) + Math.random().toString(36).slice(2,9); }
+function wbStripHtml(html) { const d = document.createElement('div'); d.innerHTML = html; return d.textContent || ''; }
+function wbCountWords(html) { return wbStripHtml(html).trim().split(/\s+/).filter(Boolean).length; }
+function wbTruncate(s, n) { return s.length <= n ? s : s.slice(0,n) + '…'; }
+
+async function wbLoad() {
+  return new Promise(r => {
+    chrome.storage.local.get(['notes','categories'], res => {
+      wbNotes = res.notes || [];
+      if (res.categories && res.categories.length) wbCategories = res.categories;
+      r();
+    });
+  });
+}
+async function wbPersistNotes() { return new Promise(r => chrome.storage.local.set({ notes: wbNotes }, r)); }
+async function wbPersistCats()  { return new Promise(r => chrome.storage.local.set({ categories: wbCategories }, r)); }
+
+function wbRenderCats() {
+  const list = document.getElementById('wbCatList'); list.innerHTML = '';
+  const mkItem = (label, count, isActive, onClick) => {
+    const li = document.createElement('li'); li.className = 'wb-cat-item' + (isActive ? ' active' : '');
+    li.innerHTML = `<span>${escHtml(label)}</span><span class="wb-cat-count">${count}</span>`;
+    li.addEventListener('click', onClick); list.appendChild(li);
+  };
+  mkItem('All Notes', wbNotes.length, wbActiveCategory === null, () => { wbActiveCategory = null; wbRenderCats(); wbRenderNotes(); });
+  wbCategories.forEach(cat => {
+    mkItem(cat, wbNotes.filter(n => n.category === cat).length, wbActiveCategory === cat, () => { wbActiveCategory = cat; wbRenderCats(); wbRenderNotes(); });
+  });
+}
+
+function wbRenderNotes() {
+  const q = document.getElementById('wbSearchInput').value.trim().toLowerCase();
+  const sort = document.getElementById('wbSortSelect').value;
+  let list = wbNotes;
+  if (wbActiveCategory) list = list.filter(n => n.category === wbActiveCategory);
+  if (q) list = list.filter(n => (n.title||'').toLowerCase().includes(q) || wbStripHtml(n.content||'').toLowerCase().includes(q));
+  list = [...list].sort((a,b) => {
+    if (sort==='title') return (a.title||'').localeCompare(b.title||'');
+    if (sort==='created') return new Date(b.createdAt) - new Date(a.createdAt);
+    return new Date(b.modifiedAt) - new Date(a.modifiedAt);
+  });
+  const container = document.getElementById('wbNoteList');
+  document.getElementById('wbNoteCount').textContent = list.length + ' note' + (list.length!==1?'s':'');
+  container.innerHTML = '';
+  if (!list.length) {
+    container.innerHTML = `<div class="wb-empty"><div class="icon">📝</div><p>${q?'No matches found.':'No notes yet. Click + New to start!'}</p></div>`;
+    return;
+  }
+  list.forEach(note => {
+    const card = document.createElement('div');
+    card.className = 'wb-note-card';
+    card.innerHTML = `<div class="wb-card-title">${escHtml(note.title||'Untitled')}</div>
+      <div class="wb-card-preview">${escHtml(wbTruncate(wbStripHtml(note.content||''),120))}</div>
+      <div class="wb-card-meta"><span class="wb-badge">${escHtml(note.category||'General')}</span><span>${formatDate(note.modifiedAt)}</span><span>${note.wordCount||0}w</span></div>`;
+    card.addEventListener('click', () => wbOpenEditor(note.id));
+    container.appendChild(card);
+  });
+}
+
+function wbPopulateCatSelect() {
+  const sel = document.getElementById('wbEditorCategory'); sel.innerHTML = '';
+  wbCategories.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; sel.appendChild(o); });
+}
+
+function wbOpenEditor(id) {
+  const note = wbNotes.find(n => n.id === id); if (!note) return;
+  wbCurrentNote = note; wbIsDirty = false;
+  wbPopulateCatSelect();
+  document.getElementById('wbEditorTitle').value = note.title || '';
+  document.getElementById('wbEditorCategory').value = note.category || 'General';
+  document.getElementById('wbEditorContent').innerHTML = note.content || '';
+  document.getElementById('wbEditorStats').textContent = wbCountWords(note.content||'') + ' words';
+  document.getElementById('wbSaveStatus').textContent = '';
+  document.getElementById('wbEditorView').classList.add('active');
+  document.querySelectorAll('.wb-list-el').forEach(el => el.style.display = 'none');
+  document.getElementById('wbEditorContent').focus();
+}
+
+function wbCloseEditor() {
+  if (wbIsDirty) wbSaveNote();
+  wbCurrentNote = null; wbIsDirty = false;
+  document.getElementById('wbEditorView').classList.remove('active');
+  document.querySelectorAll('.wb-list-el').forEach(el => el.style.display = '');
+  wbRenderNotes(); wbRenderCats();
+}
+
+function wbSaveNote() {
+  if (!wbCurrentNote) return;
+  wbCurrentNote.title = document.getElementById('wbEditorTitle').value.trim() || 'Untitled';
+  wbCurrentNote.content = document.getElementById('wbEditorContent').innerHTML;
+  wbCurrentNote.category = document.getElementById('wbEditorCategory').value;
+  wbCurrentNote.modifiedAt = new Date().toISOString();
+  wbCurrentNote.wordCount = wbCountWords(wbCurrentNote.content);
+  const idx = wbNotes.findIndex(n => n.id === wbCurrentNote.id);
+  if (idx >= 0) wbNotes[idx] = wbCurrentNote;
+  wbPersistNotes();
+  wbIsDirty = false;
+  document.getElementById('wbSaveStatus').textContent = '✓ Saved';
+  setTimeout(() => { if (document.getElementById('wbSaveStatus').textContent === '✓ Saved') document.getElementById('wbSaveStatus').textContent = ''; }, 2000);
+}
+
+function wbCreateNote() {
+  const note = { id: wbGenId(), title: '', content: '', category: wbActiveCategory || 'General', createdAt: new Date().toISOString(), modifiedAt: new Date().toISOString(), wordCount: 0 };
+  wbNotes.unshift(note); wbPersistNotes(); wbRenderCats(); wbRenderNotes(); wbOpenEditor(note.id); spToast('New note created');
+}
+
+function wbDeleteNote() {
+  if (!wbCurrentNote) return;
+  if (!confirm('Delete "' + (wbCurrentNote.title||'Untitled') + '"?')) return;
+  wbNotes = wbNotes.filter(n => n.id !== wbCurrentNote.id); wbPersistNotes(); spToast('Note deleted'); wbCloseEditor();
+}
+
+function wbExecFormat(cmd) {
+  document.getElementById('wbEditorContent').focus();
+  if (cmd === 'code') {
+    const sel = window.getSelection();
+    if (sel.rangeCount) { const range = sel.getRangeAt(0); const text = range.toString(); if (text) { const code = document.createElement('code'); code.textContent = text; range.deleteContents(); range.insertNode(code); } }
+  } else if (cmd === 'heading') { document.execCommand('formatBlock', false, 'h2'); }
+  else if (cmd === 'createLink') { const url = prompt('Enter URL:'); if (url) document.execCommand('createLink', false, url); }
+  else document.execCommand(cmd, false, null);
+  wbIsDirty = true;
+}
+
+function wbInitEvents() {
+  document.getElementById('wbNewNoteBtn').addEventListener('click', wbCreateNote);
+  document.getElementById('wbSearchInput').addEventListener('input', wbRenderNotes);
+  document.getElementById('wbSortSelect').addEventListener('change', wbRenderNotes);
+  document.getElementById('wbToggleSidebar').addEventListener('click', () => document.getElementById('wbSidebar').classList.toggle('collapsed'));
+  document.getElementById('wbBackBtn').addEventListener('click', wbCloseEditor);
+  document.getElementById('wbDeleteBtn').addEventListener('click', wbDeleteNote);
+  document.getElementById('wbSaveBtn').addEventListener('click', wbSaveNote);
+  document.getElementById('wbAddCatBtn').addEventListener('click', () => {
+    const inp = document.getElementById('wbAddCatInput'); inp.classList.toggle('visible'); if (inp.classList.contains('visible')) inp.focus();
+  });
+  document.getElementById('wbAddCatInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      const name = e.target.value.trim();
+      if (name && !wbCategories.includes(name)) { wbCategories.push(name); wbPersistCats(); wbRenderCats(); spToast('Category added'); }
+      e.target.value = ''; e.target.classList.remove('visible');
+    }
+    if (e.key === 'Escape') { e.target.value = ''; e.target.classList.remove('visible'); }
+  });
+  document.getElementById('wbEditorContent').addEventListener('input', () => {
+    wbIsDirty = true;
+    document.getElementById('wbEditorStats').textContent = wbCountWords(document.getElementById('wbEditorContent').innerHTML) + ' words';
+  });
+  document.getElementById('wbEditorTitle').addEventListener('input', () => { wbIsDirty = true; });
+  document.getElementById('wbEditorCategory').addEventListener('change', () => { wbIsDirty = true; });
+  document.querySelectorAll('.wb-fmt-btn').forEach(btn => btn.addEventListener('click', e => { e.preventDefault(); wbExecFormat(btn.dataset.cmd); }));
+
+  // Export/Import modal
+  document.getElementById('wbExportBtn').addEventListener('click', () => { document.getElementById('wbModal').style.display = 'flex'; });
+  document.getElementById('wbModalCloseBtn').addEventListener('click', () => { document.getElementById('wbModal').style.display = 'none'; });
+  document.getElementById('wbModal').addEventListener('click', e => { if (e.target === document.getElementById('wbModal')) document.getElementById('wbModal').style.display = 'none'; });
+  document.getElementById('wbExportJsonBtn').addEventListener('click', () => {
+    const blob = new Blob([JSON.stringify({ notes: wbNotes, categories: wbCategories, exportedAt: new Date().toISOString() }, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'workbook-backup.json';
+    document.body.appendChild(a); a.click(); setTimeout(() => { document.body.removeChild(a); }, 100);
+    spToast('Exported');
+  });
+  document.getElementById('wbImportJsonBtn').addEventListener('click', () => {
+    document.getElementById('wbImportArea').style.display = 'block';
+    document.getElementById('wbImportConfirmBtn').style.display = 'block';
+  });
+  document.getElementById('wbImportConfirmBtn').addEventListener('click', () => {
+    try {
+      const data = JSON.parse(document.getElementById('wbImportArea').value);
+      const incoming = data.notes || (Array.isArray(data) ? data : []);
+      const ids = new Set(wbNotes.map(n => n.id));
+      let added = 0;
+      incoming.forEach(n => { if (n.id && !ids.has(n.id)) { wbNotes.push(n); ids.add(n.id); added++; } });
+      if (data.categories) data.categories.forEach(c => { if (!wbCategories.includes(c)) wbCategories.push(c); });
+      wbPersistNotes(); wbPersistCats(); wbRenderCats(); wbRenderNotes();
+      spToast(added + ' note(s) imported');
+      document.getElementById('wbModal').style.display = 'none';
+    } catch { spToast('Invalid JSON'); }
+  });
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', e => {
+    if (!document.getElementById('tab-workbook').classList.contains('active')) return;
+    if (e.ctrlKey && e.key === 'n') { e.preventDefault(); wbCreateNote(); }
+    if (e.ctrlKey && e.key === 's') { e.preventDefault(); if (wbCurrentNote) wbSaveNote(); }
+    if (e.key === 'Escape' && wbCurrentNote) wbCloseEditor();
+  });
+
+  // Background messages
+  chrome.runtime.onMessage.addListener(msg => {
+    if (msg.type === 'note-added') { wbLoad().then(() => { wbRenderCats(); wbRenderNotes(); }); spToast('Note captured from page'); }
+    if (msg.type === 'auto-save-tick' && wbIsDirty && wbCurrentNote) wbSaveNote();
+  });
+
+  setInterval(() => { if (wbIsDirty && wbCurrentNote) wbSaveNote(); }, 5000);
+}
+
+// Init workbook immediately (default tab)
+wbLoad().then(() => { wbRenderCats(); wbRenderNotes(); wbInitEvents(); });
+initialized['tab-workbook'] = true;
+
+// ════════════════════════════════════════════════════════════════════════
+// PAGE INTELLIGENCE
+// ════════════════════════════════════════════════════════════════════════
+let piData = null;
+
+function initIntelligence() {
+  document.getElementById('piTabBar').addEventListener('click', e => {
+    const tab = e.target.closest('.pi-inner-tab'); if (!tab) return;
+    document.querySelectorAll('.pi-inner-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.pi-panel').forEach(p => p.classList.remove('active'));
+    const p = document.querySelector(`[data-pi-panel="${tab.dataset.pi}"]`);
+    if (p) p.classList.add('active');
+  });
+
+  document.getElementById('piAnalyzeBtn').addEventListener('click', () => {
+    const btn = document.getElementById('piAnalyzeBtn');
+    btn.disabled = true; btn.textContent = 'Analyzing…';
+    document.getElementById('piMeta').textContent = 'Scanning page…';
+    chrome.runtime.sendMessage({ action: 'analyzePage' }, response => {
+      btn.disabled = false; btn.textContent = '⚡ Analyze Page';
+      if (!response || response.error) { document.getElementById('piMeta').textContent = response?.error || 'Analysis failed.'; return; }
+      piData = response;
+      document.getElementById('piEmpty').style.display = 'none';
+      document.getElementById('piMeta').textContent = (response.url||'').substring(0,55) + ' · ' + new Date(response.timestamp).toLocaleTimeString();
+      piRenderAll(response);
+    });
+  });
+
+  document.getElementById('piExportBtn').addEventListener('click', () => {
+    if (!piData) { spToast('Analyze first'); return; }
+    const a = document.createElement('a'); a.href = 'data:application/json,' + encodeURIComponent(JSON.stringify(piData, null, 2));
+    a.download = 'page-analysis.json'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  });
+  document.getElementById('piCopyBtn').addEventListener('click', () => {
+    if (!piData) { spToast('Analyze first'); return; }
+    const d = piData; const summary = `Page: ${d.url}\nWords: ${d.text.wordCount} · Reading time: ${d.text.readingTime}\nHeadings: ${d.headings.count} · Links: ${d.links.total} · Images: ${d.images.total}\nDOM nodes: ${d.performance.domNodeCount}\nSEO issues: ${d.seo.issues.length} · A11y issues: ${d.accessibility.issues.length}`;
+    navigator.clipboard.writeText(summary).then(() => spToast('Summary copied!')).catch(() => spToast('Copy failed'));
+  });
+}
+
+function piCard(label, value, cls='') { return `<div class="pi-card"><div class="label">${label}</div><div class="value ${cls}">${escHtml(String(value))}</div></div>`; }
+function piIssue(sev, msg) { return `<div class="pi-issue ${sev}"><span class="sev ${sev}">${sev}</span><span class="msg">${escHtml(msg)}</span></div>`; }
+function piSeoItem(label, value, sub='') { return `<div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;margin-bottom:6px;"><div style="font-size:10px;text-transform:uppercase;color:var(--text3);">${label}</div><div style="font-size:12px;color:var(--text);word-break:break-all;">${escHtml(value||'(not set)')}</div>${sub?`<div style="font-size:10px;color:var(--text3);">${sub}</div>`:''}</div>`; }
+
+function piRenderAll(d) {
+  // Overview
+  document.getElementById('piOverviewCards').innerHTML = [
+    piCard('Words', d.text.wordCount.toLocaleString()),
+    piCard('Reading Time', d.text.readingTime, 'accent'),
+    piCard('Headings', d.headings.count),
+    piCard('Links', d.links.total),
+    piCard('Images', d.images.total),
+    piCard('DOM Nodes', d.performance.domNodeCount.toLocaleString()),
+  ].join('');
+  const allIssues = [
+    ...(d.headings.issues||[]).map(i => piIssue('warning', i)),
+    ...(d.seo.issues||[]).map(i => piIssue('warning', i)),
+    ...(d.accessibility.issues||[]).map(i => piIssue(i.severity||'warning', i.message||i)),
+    ...(d.performance.warnings||[]).map(i => piIssue('warning', i)),
+  ];
+  document.getElementById('piOverviewIssues').innerHTML = allIssues.length ? `<div class="pi-section-title">⚠️ Issues (${allIssues.length})</div>` + allIssues.join('') : '<div style="color:var(--green);font-size:12px;margin-top:8px;">✅ No issues found</div>';
+
+  // Text
+  document.getElementById('piTextCards').innerHTML = [
+    piCard('Words', d.text.wordCount.toLocaleString()),
+    piCard('Characters', d.text.charCount.toLocaleString()),
+    piCard('Sentences', d.text.sentenceCount.toLocaleString()),
+    piCard('Paragraphs', d.text.paragraphCount.toLocaleString()),
+    piCard('Reading Time', d.text.readingTime, 'accent'),
+  ].join('');
+  const maxCount = d.text.topWords[0]?.count || 1;
+  document.getElementById('piTopWords').innerHTML = (d.text.topWords||[]).map(({word,count}) =>
+    `<div class="pi-bar-row"><span class="pi-bar-label">${escHtml(word)}</span><div class="pi-bar-track"><div class="pi-bar-fill" style="width:${Math.round(count/maxCount*100)}%"></div></div><span class="pi-bar-count">${count}</span></div>`
+  ).join('');
+
+  // Structure
+  document.getElementById('piStructCards').innerHTML = [
+    piCard('Total', d.headings.count),
+    piCard('Issues', d.headings.issues.length, d.headings.issues.length ? 'red' : 'green'),
+  ].join('');
+  document.getElementById('piStructIssues').innerHTML = d.headings.issues.map(i => piIssue('warning', i)).join('');
+  const hColors = { H1: var_accent(), H2: '#cba6f7', H3: var_green(), H4: '#f9e2af', H5: '#fab387', H6: '#74c7ec' };
+  document.getElementById('piHeadingTree').innerHTML = (d.headings.headings||[]).map(h =>
+    `<div class="pi-heading-item" style="padding-left:${(h.level-1)*12}px"><span class="pi-h-tag" style="background:${hColors[h.tag]||'#89b4fa'}">${h.tag}</span><span class="pi-h-text">${escHtml(h.text)}</span></div>`
+  ).join('') || '<div style="color:var(--text3);font-size:12px;">No headings found</div>';
+
+  // Links
+  document.getElementById('piLinkCards').innerHTML = [
+    piCard('Total', d.links.total),
+    piCard('Internal', d.links.internal, 'green'),
+    piCard('External', d.links.external, 'accent'),
+    piCard('Suspicious', d.links.suspicious, d.links.suspicious ? 'red' : ''),
+  ].join('');
+  const tbody = document.querySelector('#piLinkTable tbody'); tbody.innerHTML = '';
+  (d.links.links||[]).slice(0,200).forEach(link => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td title="${escHtml(link.text)}">${escHtml((link.text||'').slice(0,40))}</td><td title="${escHtml(link.href)}">${escHtml((link.href||'').slice(0,60))}</td><td>${escHtml(link.type)}</td>`;
+    tbody.appendChild(tr);
+  });
+
+  // Images
+  document.getElementById('piImgCards').innerHTML = [
+    piCard('Total', d.images.total),
+    piCard('Missing Alt', d.images.missingAlt, d.images.missingAlt ? 'red' : 'green'),
+    piCard('Lazy Loaded', d.images.lazyLoaded, 'accent'),
+  ].join('');
+  document.getElementById('piImgGrid').innerHTML = (d.images.images||[]).slice(0,50).map(img =>
+    `<div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:8px;font-size:11px;margin-bottom:6px;"><div style="color:var(--text3);margin-bottom:2px;">${img.hasAlt?escHtml(img.alt||'(empty alt)'):'<span style="color:var(--red)">⚠ No alt attribute</span>'}</div><div style="color:var(--text3);font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escHtml((img.src||'').slice(0,80))}</div></div>`
+  ).join('');
+
+  // SEO
+  const seo = d.seo;
+  document.getElementById('piSeoMeta').innerHTML = [
+    piSeoItem('Title', seo.title, `${seo.titleLength} chars · ${seo.titleLength<=60?'✅ Good length':'⚠ Too long'}`),
+    piSeoItem('Description', seo.description, seo.descriptionLength ? `${seo.descriptionLength} chars` : ''),
+    piSeoItem('Canonical URL', seo.canonical),
+    piSeoItem('Language', seo.lang),
+    piSeoItem('Robots', seo.robots),
+  ].join('');
+  document.getElementById('piSeoOg').innerHTML = Object.entries(seo.ogTags||{}).map(([k,v]) => piSeoItem(k, v)).join('') || '<div style="color:var(--text3);font-size:12px;">No OG tags found</div>';
+  document.getElementById('piSeoTwitter').innerHTML = Object.entries(seo.twitterTags||{}).map(([k,v]) => piSeoItem(k, v)).join('') || '<div style="color:var(--text3);font-size:12px;">No Twitter Card tags found</div>';
+  document.getElementById('piSeoIssues').innerHTML = seo.issues.map(i => piIssue('warning', i)).join('') || '<div style="color:var(--green);font-size:12px;">✅ No SEO issues</div>';
+
+  // Accessibility
+  const a11y = d.accessibility;
+  document.getElementById('piA11yCards').innerHTML = [
+    piCard('Issues', a11y.issues.length, a11y.issues.length ? 'red' : 'green'),
+    piCard('Unlabeled Inputs', a11y.unlabeledInputs, a11y.unlabeledInputs ? 'red' : 'green'),
+    piCard('Unnamed Buttons', a11y.unnamedButtons, a11y.unnamedButtons ? 'red' : 'green'),
+  ].join('');
+  document.getElementById('piA11yIssues').innerHTML = a11y.issues.map(i => piIssue(i.severity||'warning', i.message||i)).join('') || '<div style="color:var(--green);font-size:12px;">✅ No accessibility issues</div>';
+}
+
+function var_accent() { return getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#89b4fa'; }
+function var_green()  { return getComputedStyle(document.documentElement).getPropertyValue('--green').trim()  || '#a6e3a1'; }
+
+// ════════════════════════════════════════════════════════════════════════
+// SECURE VAULT
+// ════════════════════════════════════════════════════════════════════════
+let svHistory = [], svVaultUnlocked = false, svVaultData = null, svPin = null;
+
+const SVU8 = str => new TextEncoder().encode(str);
+const SVHEX = buf => Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+const SVUNHEX = hex => new Uint8Array(hex.match(/.{2}/g).map(b => parseInt(b,16)));
+
+async function svDeriveKey(pin, saltHex) {
+  const salt = SVUNHEX(saltHex);
+  const base = await crypto.subtle.importKey('raw', SVU8(pin), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations: 100000, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['encrypt','decrypt']);
+}
+
+async function svEncrypt(text, key) {
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const enc = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, SVU8(text));
+  return { iv: SVHEX(iv.buffer), ct: SVHEX(enc) };
+}
+
+async function svDecrypt(ct, iv, key) {
+  const dec = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: SVUNHEX(iv) }, key, SVUNHEX(ct));
+  return new TextDecoder().decode(dec);
+}
+
+function initVault() {
+  // Tab switching
+  document.querySelectorAll('.sv-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.sv-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.sv-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelector(`[data-sv-panel="${btn.dataset.sv}"]`).classList.add('active');
+      if (btn.dataset.sv === 'history') svRenderHistory();
+      if (btn.dataset.sv === 'settings') svLoadSettings();
+    });
+  });
+
+  // History events
+  document.getElementById('svSearch').addEventListener('input', svRenderHistory);
+  document.getElementById('svFilter').addEventListener('change', svRenderHistory);
+  document.getElementById('svClearHistBtn').addEventListener('click', () => {
+    if (!confirm('Clear all clipboard history?')) return;
+    svHistory = []; chrome.storage.local.set({ clipboardHistory: [] }); svRenderHistory(); spToast('History cleared');
+  });
+
+  // Vault events
+  document.getElementById('svUnlockBtn').addEventListener('click', svTryUnlock);
+  document.getElementById('svPinInput').addEventListener('keydown', e => { if (e.key === 'Enter') svTryUnlock(); });
+  document.getElementById('svSetPinBtn').addEventListener('click', svCreateNewVault);
+  document.getElementById('svLockVaultBtn').addEventListener('click', svLockVault);
+  document.getElementById('svAddItemBtn').addEventListener('click', () => { document.getElementById('svAddForm').classList.add('visible'); });
+  document.getElementById('svCancelItemBtn').addEventListener('click', () => { document.getElementById('svAddForm').classList.remove('visible'); });
+  document.getElementById('svSaveItemBtn').addEventListener('click', svSaveVaultItem);
+
+  // Settings events
+  document.getElementById('svSaveSettings').addEventListener('click', svSaveSettings);
+
+  // Background messages
+  chrome.runtime.onMessage.addListener(msg => {
+    if (msg.type === 'HISTORY_UPDATED') { svHistory.unshift(msg.item); svRenderHistory(); }
+  });
+
+  // Load initial data
+  svLoadHistory();
+}
+
+function svLoadHistory() {
+  chrome.runtime.sendMessage({ type: 'GET_HISTORY' }, res => {
+    svHistory = res?.history || []; svRenderHistory();
+  });
+}
+
+function svRenderHistory() {
+  const q = (document.getElementById('svSearch')?.value || '').toLowerCase();
+  const cat = document.getElementById('svFilter')?.value || 'all';
+  let list = svHistory;
+  if (q) list = list.filter(i => i.text.toLowerCase().includes(q));
+  if (cat !== 'all') list = list.filter(i => i.category === cat);
+  document.getElementById('svHistCount').textContent = list.length + ' item' + (list.length!==1?'s':'');
+  const container = document.getElementById('svHistList'); container.innerHTML = '';
+  if (!list.length) { container.innerHTML = '<div style="text-align:center;padding:30px 10px;color:var(--text3);font-size:12px;">No clipboard items yet.<br>Copy text on any page to capture it.</div>'; return; }
+  list.forEach(item => {
+    const div = document.createElement('div'); div.className = 'sv-clip-item' + (item.pinned?' pinned':'');
+    const ago = Math.round((Date.now()-item.timestamp)/60000);
+    const agoStr = ago < 1 ? 'just now' : ago < 60 ? ago+'m ago' : Math.round(ago/60)+'h ago';
+    div.innerHTML = `<div class="sv-clip-text">${escHtml(item.text)}</div>
+      <div class="sv-clip-meta">
+        <span class="sv-clip-cat">${escHtml(item.category||'General')}</span>
+        <span class="sv-clip-time">${agoStr}</span>
+        <div class="sv-clip-actions">
+          <button class="sv-action-btn" data-id="${item.id}" data-action="copy" title="Copy">📋</button>
+          <button class="sv-action-btn" data-id="${item.id}" data-action="pin" title="${item.pinned?'Unpin':'Pin'}">${item.pinned?'📌':'📍'}</button>
+          <button class="sv-action-btn" data-id="${item.id}" data-action="delete" title="Delete">🗑</button>
+        </div>
+      </div>`;
+    div.querySelectorAll('.sv-action-btn').forEach(btn => {
+      btn.addEventListener('click', e => { e.stopPropagation(); svHistAction(item.id, btn.dataset.action); });
+    });
+    div.addEventListener('click', () => navigator.clipboard.writeText(item.text).then(() => spToast('Copied!')));
+    container.appendChild(div);
+  });
+}
+
+function svHistAction(id, action) {
+  const idx = svHistory.findIndex(i => i.id === id); if (idx < 0) return;
+  if (action === 'copy') { navigator.clipboard.writeText(svHistory[idx].text).then(() => spToast('Copied!')); }
+  if (action === 'pin') { svHistory[idx].pinned = !svHistory[idx].pinned; chrome.runtime.sendMessage({ type: 'SAVE_HISTORY', history: svHistory }); svRenderHistory(); }
+  if (action === 'delete') { svHistory.splice(idx, 1); chrome.runtime.sendMessage({ type: 'SAVE_HISTORY', history: svHistory }); svRenderHistory(); }
+}
+
+async function svTryUnlock() {
+  const pin = document.getElementById('svPinInput').value;
+  if (!pin) { document.getElementById('svPinError').textContent = 'Enter a PIN.'; return; }
+  chrome.runtime.sendMessage({ type: 'GET_VAULT' }, async res => {
+    if (!res.vault) { document.getElementById('svPinError').textContent = 'No vault found. Set a PIN first.'; return; }
+    try {
+      const key = await svDeriveKey(pin, res.vault.salt);
+      await svDecrypt(res.vault.test.ct, res.vault.test.iv, key); // verify
+      svPin = pin; svVaultData = res.vault; svVaultUnlocked = true;
+      document.getElementById('svVaultLocked').style.display = 'none';
+      document.getElementById('svVaultUnlocked').style.display = 'block';
+      document.getElementById('svLockBadge').textContent = 'Unlocked'; document.getElementById('svLockBadge').className = 'sv-lock-badge unlocked';
+      svRenderVaultItems(key);
+    } catch { document.getElementById('svPinError').textContent = 'Incorrect PIN.'; }
+  });
+}
+
+async function svCreateNewVault() {
+  const pin = prompt('Set a new PIN for your vault (4-8 characters):');
+  if (!pin || pin.length < 4) { spToast('PIN must be 4+ characters'); return; }
+  const salt = SVHEX(crypto.getRandomValues(new Uint8Array(16)).buffer);
+  const key = await svDeriveKey(pin, salt);
+  const test = await svEncrypt('sovereign-alpha-vault-v1', key);
+  const vault = { salt, test, items: [] };
+  chrome.runtime.sendMessage({ type: 'SAVE_VAULT', vault }, () => { spToast('Vault created!'); });
+}
+
+async function svRenderVaultItems(key) {
+  const vault = svVaultData; if (!vault) return;
+  const container = document.getElementById('svVaultList'); container.innerHTML = '';
+  if (!vault.items || !vault.items.length) { container.innerHTML = '<div style="color:var(--text3);font-size:12px;text-align:center;padding:20px;">No vault items yet. Click + Add Item.</div>'; return; }
+  for (const item of vault.items) {
+    let decrypted = '(error decrypting)';
+    try { decrypted = await svDecrypt(item.ct, item.iv, key); } catch {}
+    const div = document.createElement('div'); div.className = 'sv-vault-item';
+    div.innerHTML = `<div class="sv-vault-item-label">${escHtml(item.label||'Untitled')}</div><div class="sv-vault-item-preview">${'•'.repeat(Math.min(decrypted.length,20))}</div>
+      <div style="display:flex;gap:6px;margin-top:6px;">
+        <button class="btn-outline" style="font-size:11px;padding:3px 8px;" data-copy="${escHtml(decrypted)}">Copy</button>
+        <button class="btn-outline" style="font-size:11px;padding:3px 8px;color:var(--red)" data-del="${escHtml(item.id||'')}">Delete</button>
+      </div>`;
+    div.querySelector('[data-copy]').addEventListener('click', e => { navigator.clipboard.writeText(e.target.dataset.copy).then(() => spToast('Secret copied!')); });
+    div.querySelector('[data-del]').addEventListener('click', () => { svDeleteVaultItem(item.id); });
+    container.appendChild(div);
+  }
+}
+
+async function svSaveVaultItem() {
+  if (!svVaultUnlocked || !svVaultData) { spToast('Unlock vault first'); return; }
+  const label = document.getElementById('svItemLabel').value.trim();
+  const secret = document.getElementById('svItemSecret').value.trim();
+  if (!label || !secret) { spToast('Fill in both fields'); return; }
+  const key = await svDeriveKey(svPin, svVaultData.salt);
+  const enc = await svEncrypt(secret, key);
+  const item = { id: Date.now().toString(36), label, ...enc };
+  svVaultData.items = svVaultData.items || []; svVaultData.items.push(item);
+  chrome.runtime.sendMessage({ type: 'SAVE_VAULT', vault: svVaultData }, () => {
+    document.getElementById('svItemLabel').value = ''; document.getElementById('svItemSecret').value = '';
+    document.getElementById('svAddForm').classList.remove('visible');
+    svRenderVaultItems(key); spToast('Item saved to vault');
+  });
+}
+
+function svDeleteVaultItem(id) {
+  if (!svVaultData || !confirm('Delete vault item?')) return;
+  svVaultData.items = (svVaultData.items||[]).filter(i => i.id !== id);
+  chrome.runtime.sendMessage({ type: 'SAVE_VAULT', vault: svVaultData }, async () => {
+    const key = await svDeriveKey(svPin, svVaultData.salt);
+    svRenderVaultItems(key); spToast('Item deleted');
+  });
+}
+
+function svLockVault() {
+  svVaultUnlocked = false; svPin = null; svVaultData = null;
+  document.getElementById('svVaultLocked').style.display = 'block';
+  document.getElementById('svVaultUnlocked').style.display = 'none';
+  document.getElementById('svPinInput').value = '';
+  document.getElementById('svPinError').textContent = '';
+  document.getElementById('svLockBadge').textContent = 'Locked'; document.getElementById('svLockBadge').className = 'sv-lock-badge';
+}
+
+function svLoadSettings() {
+  chrome.runtime.sendMessage({ type: 'GET_CLIP_SETTINGS' }, res => {
+    const s = res?.settings || {};
+    document.getElementById('svAutoCapture').checked = s.autoCapture !== false;
+    document.getElementById('svAutoClear').value = s.autoClearTimer || 'never';
+    document.getElementById('svMaxHistory').value = s.maxHistory || 500;
+  });
+}
+
+function svSaveSettings() {
+  const settings = {
+    autoCapture: document.getElementById('svAutoCapture').checked,
+    autoClearTimer: document.getElementById('svAutoClear').value,
+    maxHistory: parseInt(document.getElementById('svMaxHistory').value) || 500,
+    notifications: true
+  };
+  chrome.runtime.sendMessage({ type: 'SAVE_CLIP_SETTINGS', settings }, () => spToast('Settings saved'));
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// COMMAND BAR
+// ════════════════════════════════════════════════════════════════════════
+const CB_COMMANDS = [
+  { name:"scroll up",syntax:"scroll up",desc:"Scroll page up"},
+  { name:"scroll down",syntax:"scroll down",desc:"Scroll page down"},
+  { name:"scroll top",syntax:"scroll top",desc:"Scroll to top"},
+  { name:"scroll bottom",syntax:"scroll bottom",desc:"Scroll to bottom"},
+  { name:"find",syntax:'find "text"',desc:"Find and highlight text"},
+  { name:"click",syntax:"click <selector>",desc:"Click CSS selector"},
+  { name:"read",syntax:"read <selector>",desc:"Read element text"},
+  { name:"goto",syntax:"goto <url>",desc:"Navigate to URL"},
+  { name:"summarize",syntax:"summarize",desc:"Summarize the page"},
+  { name:"extract links",syntax:"extract links",desc:"Extract all links"},
+  { name:"extract images",syntax:"extract images",desc:"Extract all images"},
+  { name:"extract headings",syntax:"extract headings",desc:"Extract headings"},
+  { name:"extract emails",syntax:"extract emails",desc:"Extract email addresses"},
+  { name:"extract numbers",syntax:"extract numbers",desc:"Extract numbers"},
+  { name:"word count",syntax:"word count",desc:"Count page words"},
+  { name:"highlight",syntax:'highlight "text"',desc:"Highlight occurrences"},
+  { name:"dark mode",syntax:"dark mode",desc:"Toggle dark mode"},
+  { name:"zoom in",syntax:"zoom in",desc:"Zoom in"},
+  { name:"zoom out",syntax:"zoom out",desc:"Zoom out"},
+  { name:"bookmark",syntax:"bookmark",desc:"Bookmark current page"},
+  { name:"copy title",syntax:"copy title",desc:"Copy page title"},
+  { name:"copy url",syntax:"copy url",desc:"Copy page URL"},
+  { name:"tabs",syntax:"tabs",desc:"List all open tabs"},
+  { name:"close tab",syntax:"close tab",desc:"Close current tab"},
+  { name:"history",syntax:"history",desc:"Show command history"}
+];
+
+function initCommand() {
+  const input = document.getElementById('cbInput');
+  const resultEl = document.getElementById('cbResult');
+
+  // Render reference
+  document.getElementById('cbRefList').innerHTML = CB_COMMANDS.map(c =>
+    `<div class="cb-cmd-ref"><span class="cb-cmd-name">${escHtml(c.syntax)}</span><span class="cb-cmd-desc">${escHtml(c.desc)}</span></div>`
+  ).join('');
+
+  // Input autocomplete suggestion
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    if (!q) return;
+    const match = CB_COMMANDS.find(c => c.name.startsWith(q) && c.name !== q);
+    // Inline suggestion could be added here
+  });
+
+  // Run button
+  document.getElementById('cbRunBtn').addEventListener('click', cbRun);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') cbRun(); });
+
+  // Inner tab switching
+  document.querySelectorAll('.cb-inner-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.cb-inner-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.cb-section').forEach(s => s.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('cbSection' + btn.dataset.cb.charAt(0).toUpperCase() + btn.dataset.cb.slice(1)).classList.add('active');
+      if (btn.dataset.cb === 'history') cbRenderHistory();
+      if (btn.dataset.cb === 'actions') cbRenderActions();
+    });
+  });
+
+  document.getElementById('cbClearHistBtn').addEventListener('click', () => {
+    chrome.runtime.sendMessage({ type: 'clear-cmd-history' }, () => { cbRenderHistory(); spToast('Command history cleared'); });
+  });
+
+  cbRenderHistory();
+  cbRenderActions();
+}
+
+async function cbRun() {
+  const cmd = document.getElementById('cbInput').value.trim();
+  if (!cmd) return;
+  const resultEl = document.getElementById('cbResult');
+  resultEl.style.display = 'block'; resultEl.className = 'cb-result'; resultEl.textContent = 'Running…';
+  chrome.runtime.sendMessage({ type: 'execute-command', command: cmd }, res => {
+    if (!res) { resultEl.className = 'cb-result error'; resultEl.textContent = 'No response.'; return; }
+    resultEl.className = 'cb-result' + (res.ok ? '' : ' error');
+    resultEl.textContent = res.result || '(no output)';
+    cbRenderHistory();
+  });
+}
+
+function cbRenderHistory() {
+  chrome.runtime.sendMessage({ type: 'get-cmd-history' }, res => {
+    const list = res || [];
+    const container = document.getElementById('cbHistList'); container.innerHTML = '';
+    if (!list.length) { container.innerHTML = '<div style="color:var(--text3);font-size:12px;padding:20px;text-align:center;">No command history yet.</div>'; return; }
+    list.slice(0,50).forEach(entry => {
+      const div = document.createElement('div'); div.className = 'cb-history-item';
+      div.innerHTML = `<span class="cb-history-cmd">${escHtml(entry.command)}</span><span class="cb-history-time">${formatTime(entry.timestamp)}</span>`;
+      div.addEventListener('click', () => { document.getElementById('cbInput').value = entry.command; document.getElementById('cbInput').focus(); });
+      container.appendChild(div);
+    });
+  });
+}
+
+function cbRenderActions() {
+  chrome.runtime.sendMessage({ type: 'get-saved-actions' }, actions => {
+    const container = document.getElementById('cbActionsList'); container.innerHTML = '';
+    (actions || []).forEach(a => {
+      const div = document.createElement('div'); div.className = 'cb-saved-action';
+      div.innerHTML = `<div><div class="cb-saved-name">${escHtml(a.name)}</div><div class="cb-saved-cmd">${escHtml(a.command)}</div></div><button class="btn-primary" style="font-size:11px;padding:4px 10px;">▶ Run</button>`;
+      div.querySelector('button').addEventListener('click', e => { e.stopPropagation(); document.getElementById('cbInput').value = a.command; cbRun(); });
+      div.addEventListener('click', () => { document.getElementById('cbInput').value = a.command; });
+      container.appendChild(div);
+    });
+  });
+}
+</script>
+</body>
+</html>
