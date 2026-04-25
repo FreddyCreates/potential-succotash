@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>JARVIS</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{width:380px;background:#0a0a1a;color:#c8c8e0;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px}
+  .popup{display:flex;flex-direction:column;padding:16px;gap:12px}
+  .hdr{display:flex;align-items:center;gap:10px}
+  .arc-reactor{width:14px;height:14px;border-radius:50%;background:radial-gradient(circle,#6cf 30%,#39f 60%,transparent 70%);box-shadow:0 0 8px #6cf,0 0 16px #39f44;animation:pulse 1.746s ease-in-out infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 8px #6cf,0 0 16px #39f44}50%{box-shadow:0 0 14px #6cf,0 0 28px #39f88}}
+  @keyframes think{0%{opacity:.4}50%{opacity:1}100%{opacity:.4}}
+  .hdr h1{font-size:16px;font-weight:700;color:#e0e0ff;flex:1;letter-spacing:1px}
+  .status{display:flex;align-items:center;gap:6px;font-size:11px;color:#888}
+  .status-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 4px #22c55e80;transition:all .3s}
+  .cmd-section{display:flex;gap:6px}
+  .cmd-input{flex:1;background:#12122a;border:1px solid #2a2a4a;color:#e0e0ff;padding:8px 12px;border-radius:6px;font-size:12px;outline:none;font-family:inherit}
+  .cmd-input:focus{border-color:#6c63ff}
+  .cmd-input::placeholder{color:#444}
+  .send-btn{background:#6c63ff;color:#fff;border:none;border-radius:6px;padding:8px 14px;font-weight:600;cursor:pointer;font-size:12px;transition:background .15s}
+  .send-btn:hover{background:#5a52e0}
+  .thinking-bar{display:none;padding:6px 10px;background:#12122a;border:1px solid #6c63ff33;border-radius:6px;font-size:10px;color:#8888cc;line-height:1.5}
+  .response-area{background:#12122a;border:1px solid #2a2a4a;border-radius:6px;padding:10px;min-height:60px;max-height:140px;overflow-y:auto;font-family:'Courier New',monospace;font-size:11px;color:#a0a0d0;line-height:1.5;white-space:pre-wrap;word-break:break-word}
+  .side-panel-btn{width:100%;background:#6c63ff22;color:#6c63ff;border:1px solid #6c63ff44;border-radius:6px;padding:8px;font-weight:600;cursor:pointer;font-size:12px;transition:all .15s}
+  .side-panel-btn:hover{background:#6c63ff44}
+  .devtools-info{text-align:center;font-size:10px;color:#555}
+  .devtools-info kbd{background:#12122a;padding:1px 5px;border-radius:3px;font-family:'Courier New',monospace;color:#6c63ff;font-size:10px}
+  .quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .qa-btn{background:#12122a;color:#c8c8e0;border:1px solid #2a2a4a;border-radius:6px;padding:8px;font-size:11px;cursor:pointer;font-weight:500;transition:all .15s;text-align:center}
+  .qa-btn:hover{border-color:#6c63ff;color:#6c63ff;background:#6c63ff11}
+  .arch-badges{display:flex;gap:4px;flex-wrap:wrap;justify-content:center}
+  .arch-badge{font-size:9px;padding:2px 6px;background:#1a1a36;border:1px solid #2a2a4a;border-radius:4px;color:#8888cc}
+  .footer{display:flex;justify-content:space-between;align-items:center;font-size:10px;color:#555;padding-top:4px;border-top:1px solid #2a2a4a}
+</style>
+</head>
+<body>
+<div class="popup">
+  <div class="hdr">
+    <div class="arc-reactor"></div>
+    <h1>JARVIS</h1>
+    <div class="status"><span class="status-dot" id="statusDot"></span><span id="statusText">Connecting&#8230;</span></div>
+  </div>
+  <div class="cmd-section">
+    <input class="cmd-input" id="cmdInput" placeholder="Ask Jarvis&#8230;" />
+    <button class="send-btn" id="sendBtn">Send</button>
+  </div>
+  <div class="thinking-bar" id="thinkingBar">&#129504; Phantom AI thinking&#8230;</div>
+  <div class="response-area" id="responseArea">Ready. Phantom AI standing by.</div>
+  <button class="side-panel-btn" id="sidePanelBtn">Open Full Workspace</button>
+  <div class="devtools-info">DevTools Panel: <kbd>F12</kbd> &#8594; <kbd>Jarvis AI</kbd> tab</div>
+  <div class="quick-actions">
+    <button class="qa-btn" data-action="help">&#10067; Help</button>
+    <button class="qa-btn" data-action="status">&#128994; Status</button>
+    <button class="qa-btn" data-action="architectures">&#129504; Architectures</button>
+    <button class="qa-btn" data-action="memory">&#128218; Memory</button>
+  </div>
+  <div class="arch-badges">
+    <span class="arch-badge">&#129504; Reason</span>
+    <span class="arch-badge">&#127912; Create</span>
+    <span class="arch-badge">&#128202; Perceive</span>
+    <span class="arch-badge">&#128737; Protect</span>
+    <span class="arch-badge">&#127744; Command</span>
+  </div>
+  <div class="footer">
+    <span>Phantom AI v1.0.0</span>
+    <span id="hbFooter">HB: 0</span>
+  </div>
+</div>
+<script>
+(function(){
+  var cmdInput=document.getElementById('cmdInput');
+  var sendBtn=document.getElementById('sendBtn');
+  var responseArea=document.getElementById('responseArea');
+  var thinkingBar=document.getElementById('thinkingBar');
+  var sidePanelBtn=document.getElementById('sidePanelBtn');
+  var statusDot=document.getElementById('statusDot');
+  var statusText=document.getElementById('statusText');
+  var hbFooter=document.getElementById('hbFooter');
+  var heartbeats=0;
+
+  function sendCommand(cmd){
+    responseArea.textContent='Thinking\u2026';
+    thinkingBar.style.display='block';
+    statusDot.style.background='#f59e0b';
+    statusDot.style.animation='think 0.8s ease-in-out infinite';
+    try{
+      chrome.runtime.sendMessage({type:'popup',command:cmd},function(resp){
+        thinkingBar.style.display='none';
+        statusDot.style.background='#22c55e';
+        statusDot.style.animation='none';
+        if(resp&&resp.result){responseArea.textContent=resp.result;}
+        else if(resp){responseArea.textContent=JSON.stringify(resp);}
+        else{responseArea.textContent='Command sent (no response).';}
+      });
+    }catch(e){
+      thinkingBar.style.display='none';
+      responseArea.textContent='Error: '+e.message;
+    }
+  }
+
+  sendBtn.addEventListener('click',function(){var v=cmdInput.value.trim();if(v){sendCommand(v);cmdInput.value='';}});
+  cmdInput.addEventListener('keydown',function(e){if(e.key==='Enter'){var v=cmdInput.value.trim();if(v){sendCommand(v);cmdInput.value='';}}});
+  document.querySelectorAll('.qa-btn').forEach(function(btn){btn.addEventListener('click',function(){sendCommand(btn.dataset.action);});});
+
+  sidePanelBtn.addEventListener('click',function(){
+    try{chrome.runtime.sendMessage({type:'openSidePanel'},function(){});}
+    catch(e){responseArea.textContent='Side panel not available.';}
+  });
+
+  function heartbeat(){
+    try{
+      chrome.runtime.sendMessage({type:'heartbeat'},function(resp){
+        heartbeats++;hbFooter.textContent='HB: '+heartbeats;
+        statusDot.style.background='#22c55e';statusDot.style.boxShadow='0 0 4px #22c55e80';statusText.textContent='Online';
+      });
+    }catch(e){statusDot.style.background='#f87171';statusText.textContent='Offline';}
+  }
+  heartbeat();setInterval(heartbeat,5000);
+})();
+</script>
+</body>
+</html>

@@ -2,11 +2,12 @@
   "manifest_version": 3,
   "name": "Spread Scanner",
   "version": "1.0.0",
-  "description": "AI User Experience \u2014 JARVIS-style spread and arbitrage scanner. Reads financial data from any page, runs phi-weighted pattern recognition, and highlights free-lunch mispricing opportunities in real-time",
+  "description": "AI User Experience — JARVIS-style spread and arbitrage scanner. Reads financial data from any page, runs phi-weighted pattern recog…",
   "permissions": [
     "activeTab",
     "storage",
-    "alarms"
+    "alarms",
+    "sidePanel"
   ],
   "background": {
     "service_worker": "background.js"
@@ -21,16 +22,21 @@
       ]
     }
   ],
-  "minimum_chrome_version": "110",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
+  "minimum_chrome_version": "114",
   "action": {
+    "default_popup": "popup.html",
     "default_icon": {
       "16": "icons/icon16.png",
       "48": "icons/icon48.png"
     }
+  },
+  "devtools_page": "devtools.html",
+  "side_panel": {
+    "default_path": "sidepanel.html"
   }
 }
