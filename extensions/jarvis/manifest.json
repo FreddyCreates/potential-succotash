@@ -1,15 +1,16 @@
 {
   "manifest_version": 3,
   "name": "Jarvis AI",
-  "version": "1.0.0",
-  "description": "AI User Experience — JARVIS autonomous intelligence. Voice commands, screen control, task automation, memory",
+  "version": "4.0.0",
+  "description": "JARVIS AI v4.0 — 40-category autonomous intelligence, 250 protocols, persistent memory, PhantomAI conversation engine, tab control, and Universal CPL WASM",
   "permissions": [
     "activeTab",
     "storage",
     "alarms",
     "tabs",
     "scripting",
-    "sidePanel"
+    "sidePanel",
+    "notifications"
   ],
   "background": {
     "service_worker": "background.js"

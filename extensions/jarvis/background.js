@@ -1,8 +1,9 @@
-/* Jarvis AI — Background Service Worker
+/* Jarvis AI — Background Service Worker  v4.0.0
  *
- * JARVIS-style autonomous intelligence. Voice commands, screen control,
- * task automation, memory system, page analysis, and scheduled operations.
- * The ultimate AI command center for your browser.
+ * JARVIS AI V4 — 40-category autonomous intelligence.
+ * PhantomAI V4 thinking engine, 250 sovereign protocols,
+ * Universal CPL WASM, persistent memory, tab control,
+ * and the full JARVIS command center.
  */
 
 /* ── JARVISIUS — Universal CPL WASM Activation ───────────────────────────
@@ -440,7 +441,7 @@ class PhantomAI {
 
     if (/\b(hello|hi|hey|howdy|what's up|sup|greetings)\b/.test(lower)) { intent = 'greeting'; topic = 'greeting'; }
     else if (/\b(how are you|how're you|you okay|you alright|doing well)\b/.test(lower)) { intent = 'wellbeing'; topic = 'personal'; }
-    else if (/\b(what can you do|help me|capabilities|features|what do you know)\b/.test(lower)) { intent = 'capabilities'; topic = 'meta'; }
+    else if (/\b(what can you do|help me|capabilities|features|what do you know|what's new in v4|v4 features)\b/.test(lower)) { intent = 'capabilities'; topic = 'meta'; }
     else if (/\b(remember|you said|earlier|last time|you mentioned|before)\b/.test(lower)) { intent = 'recall'; topic = 'memory'; }
     else if (/\b(open|go to|navigate|visit|browse|tab|url|website)\b/.test(lower)) { intent = 'navigation'; topic = 'browser'; }
     else if (/\b(search|find|look for|google|bing)\b/.test(lower)) { intent = 'search'; topic = 'research'; }
@@ -456,6 +457,12 @@ class PhantomAI {
     else if (/\b(think|opinion|feel|believe|reckon|what do you|what would you)\b/.test(lower)) { intent = 'opinion'; topic = 'reflection'; }
     else if (/\b(can you|could you|would you|please|help me|do)\b/.test(lower)) { intent = 'request'; topic = 'task'; }
     else if (/\b(why|how come|reason|cause|because)\b/.test(lower)) { intent = 'reasoning'; topic = 'knowledge'; }
+    else if (/\b(code|function|class|variable|loop|array|object|method|bug|syntax|compile|runtime|error|exception|null|undefined|async|promise|callback|api|endpoint|fetch|request|response|json|html|css|javascript|python|typescript|react|node)\b/.test(lower)) { intent = 'code'; topic = 'engineering'; }
+    else if (/\b(ai|machine learning|neural network|llm|gpt|model|training|inference|embedding|vector|transformer|attention|fine.?tun|dataset|prompt)\b/.test(lower)) { intent = 'ai_tech'; topic = 'ai'; }
+    else if (/\b(data|database|sql|query|table|schema|index|join|aggregate|csv|excel|chart|graph|visualization|analytics|metric|kpi)\b/.test(lower)) { intent = 'data'; topic = 'data'; }
+    else if (/\b(math|calculate|compute|formula|equation|derivative|integral|matrix|vector|probability|statistics|percent|number|sum|average|median)\b/.test(lower)) { intent = 'math'; topic = 'mathematics'; }
+    else if (/\b(design|ux|ui|layout|color|font|typography|wireframe|prototype|figma|component|style|theme|dark mode|accessibility)\b/.test(lower)) { intent = 'design'; topic = 'design'; }
+    else if (/\b(deploy|ci.?cd|docker|kubernetes|cloud|aws|azure|gcp|server|infrastructure|devops|pipeline|build|release|version)\b/.test(lower)) { intent = 'devops'; topic = 'infrastructure'; }
     else if (/\?/.test(lower)) { intent = 'question'; topic = 'inquiry'; }
 
     if (topic && this.sessionContext.topics.indexOf(topic) === -1) {
@@ -616,6 +623,24 @@ class PhantomAI {
       case 'screenshot':
         body = "On it — capturing the screen now.";
         break;
+      case 'code':
+        body = self._codeHelp(input, lower);
+        break;
+      case 'ai_tech':
+        body = self._aiTech(input, lower);
+        break;
+      case 'math':
+        body = self._mathHelp(input, lower);
+        break;
+      case 'data':
+        body = self._dataHelp(input, lower);
+        break;
+      case 'design':
+        body = self._pick(["Design question — what's the context? Web, mobile, or print? The constraints shape everything.", "Good design topic. Share what you're working with and I can suggest patterns or approaches.", "UX/design: the best solutions usually come from understanding the user's mental model first. What are they trying to accomplish?"]);
+        break;
+      case 'devops':
+        body = self._pick(["DevOps question — what's the stack? Knowing the environment shapes the approach significantly.", "For infrastructure and deployment: what's the current setup and what's the pain point?", "Good engineering ops topic. What's the specific problem — scaling, reliability, speed, or something else?"]);
+        break;
       default:
         body = self._defaultResponse(input, lower, ctx);
         break;
@@ -675,19 +700,19 @@ class PhantomAI {
 
   _identity() {
     var responses = [
-      "I'm JARVIS — your AI assistant built right into your browser. I can control tabs, capture screens, take notes, search the web, and actually have a conversation with you. Think of me as your browser's brain.",
-      "JARVIS at your service! I'm an AI embedded in your Chrome extension. Not just a command runner — I actually think through your requests, remember our conversations, and try to be genuinely useful.",
-      "I'm JARVIS. Bit of a hybrid, really — part browser automation tool, part conversational AI, part digital assistant. I can do practical things like opening tabs or taking screenshots, but I can also just... talk.",
-      "The name's JARVIS. I run in your browser's background, always ready. I handle your tab management, notes, screen captures, and I can have a proper back-and-forth conversation. Not just 'say command, get output.'"
+      "I'm JARVIS AI v4.0 — your autonomous intelligence built right into your browser. V4 brings a 40-category analytical brain, 250 sovereign protocols, persistent memory, and the Universal CPL WASM engine. I think, remember, and act.",
+      "JARVIS v4.0 at your service. I've been upgraded — deeper reasoning, code understanding, data analysis, AI/ML topics, and math. Still the same JARVIS, just a lot more capable.",
+      "JARVIS — version 4. I'm embedded in your browser with a full PhantomAI V4 thinking engine. I can handle code questions, AI concepts, data work, tab automation, and proper conversation. What do you need?",
+      "The name's JARVIS, v4.0 now. I run in your browser's background with 40 intent categories — from engineering and AI to design and infrastructure. Not just 'say command, get output.'"
     ];
     return this._pick(responses);
   }
 
   _capabilities() {
     var responses = [
-      "Quite a bit, actually. I can open/close/switch tabs, capture screenshots, take notes that sync to my canister, search the web, summarize pages, and most importantly — have a real conversation. What do you need help with?",
-      "Let me give you the quick tour: tab control, page analysis, note-taking, screenshots, web search, PDF capture, and genuine chat. I'm not just a command runner — I can reason through problems with you.",
-      "Short version: I control your browser and I think for you. Long version: tabs, notes, search, capture, summarize, automate, remember, and converse. What sounds useful right now?"
+      "V4 capabilities: tab control, page analysis, note-taking, screenshots, web search, summarization, automation — plus new in V4: code help, AI/ML topics, data analysis, math, design, DevOps. I also have a 40-category brain and 250 protocols. What's useful right now?",
+      "Short version: I control your browser and I think for you. V4 adds code understanding, AI/ML reasoning, data analysis, and math. Plus persistent memory, 250 protocols, and the Universal CPL WASM engine. What do you need help with?",
+      "Here's the V4 tour: tabs, notes, search, capture, summarize, automate, remember, converse — and new: explain code, reason about AI, analyze data, compute math, discuss design and DevOps. What sounds useful?"
     ];
     return this._pick(responses);
   }
@@ -830,6 +855,54 @@ class PhantomAI {
       "Okay, here's what I'm thinking: let's " + this._pick(["break it down into smaller pieces.", "focus on the most important part first.", "figure out what we actually know vs. what we're guessing."]) + " Sound good?"
     ];
     return this._pick(general);
+  }
+
+  /* ── V4: Code / Tech helpers ────────────────────────────────── */
+  _codeHelp(input, lower) {
+    var subject = input.replace(/\b(code|function|how|what|explain|write|fix|debug|help with)\b/gi, '').replace(/[?!.,]/g, '').trim();
+    var responses = [
+      "On the code side — the key thing to check is the logic flow and edge cases. If you paste the snippet I can walk through it step by step.",
+      "Good engineering question. The usual suspects are: type mismatches, null/undefined, async timing, or scope issues. Want me to dig into any of those?",
+      "Start by isolating the problem to the smallest reproduction, then check the types at each step. What's the behavior you're seeing vs. what you expect?"
+    ];
+    return this._pick(responses);
+  }
+
+  _aiTech(input, lower) {
+    var responses = [
+      "On the AI/ML side — the core idea is usually about learning patterns from data and generalizing. The tricky part is always training data quality and how well the model generalizes beyond it.",
+      "Great AI topic. Modern LLMs use attention mechanisms — every token attends to every other token to build contextual representations. The magic is in how much knowledge gets compressed into the weights.",
+      "Think of AI models as function approximators. They learn a mapping from input to output. The interesting question is always: what's the right representation for the problem you're solving?"
+    ];
+    return this._pick(responses);
+  }
+
+  _mathHelp(input, lower) {
+    var expr = input.replace(/\b(math|calculate|what is|compute|solve)\b/gi, '').replace(/[?!]/g, '').trim();
+    try {
+      var sanitized = expr.replace(/[^0-9+\-*/.() \t]/g, '').trim();
+      if (sanitized && sanitized.length > 0 && sanitized.length < 80) {
+        var result = Function('"use strict"; return (' + sanitized + ')')();
+        if (typeof result === 'number' && isFinite(result)) {
+          return 'That computes to: ' + result + (Math.abs(result) > 1e6 ? ' (≈ ' + result.toExponential(3) + ')' : '') + '. Want me to walk through the steps?';
+        }
+      }
+    } catch (e) { /* not pure arithmetic */ }
+    var responses = [
+      "For the math — break it into smaller operations. What's the formula you're working with? Share it and I'll walk through it.",
+      "If you share the full expression I can walk through it. I handle arithmetic, algebra, and basic statistics.",
+      "The approach depends on the domain. Is this algebra, calculus, statistics, or something else? Let me know and I'll help."
+    ];
+    return this._pick(responses);
+  }
+
+  _dataHelp(input, lower) {
+    var responses = [
+      "Data question — start with the shape of your data. What are the rows? What are the columns? From there you can decide on the right operation.",
+      "First step: understand the schema, then look for nulls/anomalies, then decide on aggregation or transformation. What does your data look like?",
+      "Are you trying to query, transform, visualize, or model it? Each approach is different. Tell me more about the data and the goal."
+    ];
+    return this._pick(responses);
   }
 
   /* ── Opener / Closer generators ─────────────────────────────── */
@@ -1337,6 +1410,60 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   }
 
   try {
+    /* ── Devtools panel messages (type: 'devtools') ────────────── */
+    if (message.type === 'devtools') {
+      switch (message.action) {
+        case 'getStatus':
+          sendResponse({
+            heartbeatCount: engine.state.heartbeatCount || 0,
+            commandCount:   engine.commandCount || 0,
+            memoryCount:    engine.memory.count(),
+            taskCount:      engine.taskQueue.tasks.filter(function(t){ return t.status === 'queued'; }).length,
+            mood:           ['neutral','curious','playful','focused','empathetic'][engine.state.mood || 0] || 'neutral',
+            uptime:         engine.state.uptime || 0
+          });
+          break;
+        case 'getCplCalls':
+          sendResponse({ calls: engine._cplCallLog || [] });
+          break;
+        case 'getWasmState':
+          sendResponse({
+            loaded:    !!JarviusWasm,
+            version:   JarviusWasm ? JarviusWasm.version()            : null,
+            protocols: JarviusWasm ? JarviusWasm.get_protocol_count() : null,
+            heartbeat: JarviusWasm ? JarviusWasm.get_heartbeat_ms()   : null,
+            bootProto: JarviusWasm ? (engine.state.bootProtocol || null) : null,
+            mood:      JarviusWasm ? JarviusWasm.get_mood()           : null,
+            phi:       JarviusWasm ? JarviusWasm.read_slot(0)         : null,
+            tick:      JarviusWasm ? JarviusWasm.tick()               : null,
+            booted:    JarviusWasm ? (JarviusWasm.read_counter(0) === 1) : false
+          });
+          break;
+        case 'getLogs':
+          sendResponse({ logs: engine._devLogs || [] });
+          break;
+        default:
+          sendResponse({ error: 'Unknown devtools action: ' + message.action });
+      }
+      return true;
+    }
+
+    /* ── Popup type-based messages ────────────────────────────── */
+    if (message.type === 'jarvis-command') {
+      var cmd = message.command || message.intent || '';
+      var parsedCmd = engine.parseCommand(cmd);
+      var builtAction = engine.buildAction(parsedCmd);
+      sendResponse({ success: true, data: { parsed: parsedCmd, action: builtAction } });
+      return true;
+    }
+
+    if (message.type === 'jarvis-status') {
+      var st = engine.getStatus();
+      sendResponse({ success: true, tasks: st.taskStats.queued, data: st });
+      return true;
+    }
+
+    /* ── Action-based messages ─────────────────────────────────── */
     switch (message.action) {
       case 'parseCommand':
         var parsed = engine.parseCommand(message.command);
@@ -1371,6 +1498,17 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
       case 'getStatus':
         sendResponse({ success: true, data: engine.getStatus() });
         break;
+
+      case 'openSidePanel':
+        try {
+          var windowId = sender.tab ? sender.tab.windowId : undefined;
+          chrome.sidePanel.open({ windowId: windowId }, function() {
+            sendResponse({ success: !chrome.runtime.lastError });
+          });
+        } catch (spErr) {
+          sendResponse({ success: false, error: spErr.message });
+        }
+        return true;
 
       case 'remember':
         var memEntry = engine.memory.store(message.key, message.value, message.category);
@@ -1456,39 +1594,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
         sendResponse({ success: true, data: engine.getErrorLog() });
         break;
 
-      /* ── DevTools panel messages ────────────────────────────── */
-      case 'getStatus':  /* aliased devtools handler */
-        sendResponse({
-          heartbeatCount: engine.state.heartbeatCount || 0,
-          commandCount:   engine.commandCount || 0,
-          memoryCount:    engine.memory.count(),
-          taskCount:      engine.taskQueue.tasks.filter(function(t){ return t.status === 'queued'; }).length,
-          mood:           ['neutral','curious','playful','focused','empathetic'][engine.state.mood || 0] || 'neutral',
-          uptime:         engine.state.uptime || 0
-        });
-        break;
-
-      case 'getCplCalls':
-        sendResponse({ calls: engine._cplCallLog || [] });
-        break;
-
-      case 'getWasmState':
-        sendResponse({
-          loaded:    !!JarviusWasm,
-          version:   JarviusWasm ? JarviusWasm.version()            : null,
-          protocols: JarviusWasm ? JarviusWasm.get_protocol_count() : null,
-          heartbeat: JarviusWasm ? JarviusWasm.get_heartbeat_ms()   : null,
-          bootProto: JarviusWasm ? (engine.state.bootProtocol || null) : null,
-          mood:      JarviusWasm ? JarviusWasm.get_mood()           : null,
-          phi:       JarviusWasm ? JarviusWasm.read_slot(0)         : null,
-          tick:      JarviusWasm ? JarviusWasm.tick()               : null,
-          booted:    JarviusWasm ? (JarviusWasm.read_counter(0) === 1) : false
-        });
-        break;
-
-      case 'getLogs':
-        sendResponse({ logs: engine._devLogs || [] });
-        break;
+      default:
         sendResponse({ success: false, error: 'Unknown action: ' + message.action });
     }
   } catch (e) {
@@ -1887,13 +1993,13 @@ function callProtocol(protoId, payload) {
 
 chrome.runtime.onMessageExternal.addListener(function(request, sender, sendResponse) {
   if (request.type === 'jarvis-status') {
-    sendResponse({ status: 'online', version: '1.0.0', protocols: 250, heartbeat: HEARTBEAT });
+    sendResponse({ status: 'online', version: '4.0.0', protocols: 250, heartbeat: HEARTBEAT });
   } else if (request.type === 'call-protocol') {
     sendResponse(callProtocol(request.protocol, request.payload));
   } else if (request.type === 'jarvis-command') {
-    var engine = new JarvisEngine();
-    var result = engine.processCommand(request.intent, request.payload);
-    sendResponse(result);
+    var engine = globalThis.jarvisEngine || new JarvisEngine();
+    var parsed = engine.parseCommand(request.intent || '');
+    sendResponse({ success: true, data: engine.buildAction(parsed) });
   }
   return true;
 });
