@@ -5,6 +5,44 @@
  * The ultimate AI command center for your browser.
  */
 
+/* ── JARVISIUS Engine — pre-built Wasm binary loader ────────────────────── */
+var JarviusWasm = null;
+
+async function loadJarviusEngine() {
+  try {
+    var url = chrome.runtime.getURL('jarvisius-engine.wasm');
+    var response = await fetch(url);
+    var buffer = await response.arrayBuffer();
+    var result = await WebAssembly.instantiate(buffer, {});
+    JarviusWasm = result.instance.exports;
+    console.log('[JARVISIUS] Wasm engine loaded — version EXT-' + JarviusWasm.version() +
+      ', protocols=' + JarviusWasm.get_protocol_count() +
+      ', heartbeat=' + JarviusWasm.get_heartbeat_ms() + 'ms');
+  } catch (e) {
+    console.warn('[JARVISIUS] Wasm load failed, falling back to JS engine:', e.message);
+  }
+}
+
+loadJarviusEngine();
+
+/* Wasm-accelerated helpers (fall back to JS if wasm not loaded) */
+function wasmPhiWeight(priority) {
+  if (JarviusWasm) return JarviusWasm.phi_weight(priority);
+  return Math.round(priority * 1.618);
+}
+function wasmRouteProtocol(intentId, mood) {
+  if (JarviusWasm) return JarviusWasm.route_protocol(intentId, mood);
+  return (intentId * 13 + mood * 7 + 1) % 250 + 1;
+}
+function wasmScoreSentiment(pos, neg) {
+  if (JarviusWasm) return JarviusWasm.score_sentiment(pos, neg);
+  var total = pos + neg; return total ? Math.round((pos / total) * 100) : 50;
+}
+function wasmTick() {
+  if (JarviusWasm) return JarviusWasm.tick();
+  return 0;
+}
+
 var PHI = 1.618033988749895;
 var GOLDEN_ANGLE = 137.508;
 var HEARTBEAT = 873;

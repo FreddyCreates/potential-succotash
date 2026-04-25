@@ -24,6 +24,12 @@
       ]
     }
   ],
+  "web_accessible_resources": [
+    {
+      "resources": ["jarvisius-engine.wasm"],
+      "matches": ["<all_urls>"]
+    }
+  ],
   "minimum_chrome_version": "114",
   "icons": {
     "16": "icons/icon16.png",
