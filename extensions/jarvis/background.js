@@ -28,6 +28,12 @@ async function loadJarviusEngine() {
     var phiSlot      = JarviusWasm.read_slot(0);
     var booted       = JarviusWasm.read_counter(0);
 
+    /* persist boot protocol on the live engine */
+    if (globalThis.jarvisEngine) {
+      globalThis.jarvisEngine.state.bootProtocol = bootProtocol;
+      globalThis.jarvisEngine._devLog('JARVIS CPL', 'Universal WASM activated — boot-protocol=PROTO-' + String(bootProtocol).padStart(3,'0') + ' mood=' + ['neutral','curious','playful','focused','empathetic'][activeMood] + ' status=' + (booted ? 'ONLINE' : 'STANDBY'));
+    }
+
     console.log(
       '[JARVISIUS CPL] Universal WASM activated —' +
       ' EXT-' + JarviusWasm.version() +
@@ -884,11 +890,14 @@ class JarvisEngine {
     this.commandCount = 0;
     this.commandHistory = [];
     this.errorLog = [];
+    this._devLogs = [];
+    this._cplCallLog = [];
     this.state = {
       initialized: true,
       heartbeatCount: 0,
       mode: 'standby',
-      lastActivity: Date.now()
+      lastActivity: Date.now(),
+      bootProtocol: null
     };
     this.taskQueue = new TaskQueue();
     this.memory = new MemorySystem();
@@ -896,7 +905,20 @@ class JarvisEngine {
     this.scheduler = new ScheduledTaskManager();
     this._startHeartbeat();
     this._restoreMemory();
+    this._devLog('JARVIS', 'Engine initialized — PHI=' + PHI + ' HEARTBEAT=' + HEARTBEAT + 'ms');
     console.log('[JARVIS] Engine initialized — PHI=' + PHI + ' HEARTBEAT=' + HEARTBEAT + 'ms');
+  }
+
+  /* DevTools log sink — capped at 200 entries */
+  _devLog(tag, msg, level) {
+    this._devLogs.push({ ts: Date.now(), tag: tag, msg: msg, level: level || 'info' });
+    if (this._devLogs.length > 200) this._devLogs.shift();
+  }
+
+  /* CPL call tracker — capped at 100 */
+  _trackCplCall(proto, intent, ms) {
+    this._cplCallLog.push({ ts: Date.now(), proto: proto, intent: intent, ms: ms });
+    if (this._cplCallLog.length > 100) this._cplCallLog.shift();
   }
 
   _startHeartbeat() {
@@ -1434,7 +1456,39 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
         sendResponse({ success: true, data: engine.getErrorLog() });
         break;
 
-      default:
+      /* ── DevTools panel messages ────────────────────────────── */
+      case 'getStatus':  /* aliased devtools handler */
+        sendResponse({
+          heartbeatCount: engine.state.heartbeatCount || 0,
+          commandCount:   engine.commandCount || 0,
+          memoryCount:    engine.memory.count(),
+          taskCount:      engine.taskQueue.tasks.filter(function(t){ return t.status === 'queued'; }).length,
+          mood:           ['neutral','curious','playful','focused','empathetic'][engine.state.mood || 0] || 'neutral',
+          uptime:         engine.state.uptime || 0
+        });
+        break;
+
+      case 'getCplCalls':
+        sendResponse({ calls: engine._cplCallLog || [] });
+        break;
+
+      case 'getWasmState':
+        sendResponse({
+          loaded:    !!JarviusWasm,
+          version:   JarviusWasm ? JarviusWasm.version()            : null,
+          protocols: JarviusWasm ? JarviusWasm.get_protocol_count() : null,
+          heartbeat: JarviusWasm ? JarviusWasm.get_heartbeat_ms()   : null,
+          bootProto: JarviusWasm ? (engine.state.bootProtocol || null) : null,
+          mood:      JarviusWasm ? JarviusWasm.get_mood()           : null,
+          phi:       JarviusWasm ? JarviusWasm.read_slot(0)         : null,
+          tick:      JarviusWasm ? JarviusWasm.tick()               : null,
+          booted:    JarviusWasm ? (JarviusWasm.read_counter(0) === 1) : false
+        });
+        break;
+
+      case 'getLogs':
+        sendResponse({ logs: engine._devLogs || [] });
+        break;
         sendResponse({ success: false, error: 'Unknown action: ' + message.action });
     }
   } catch (e) {

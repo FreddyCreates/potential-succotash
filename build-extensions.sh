@@ -35,14 +35,18 @@ for ext_dir in "$EXT_SRC"/*/; do
   echo "📦 Packaging: $name"
 
   # Create a clean zip — only include the files Chrome/Edge needs
-  # Include sidepanel.html and popup.html if the extension uses them
+  # Include optional files if the extension uses them
   (cd "$ext_dir" && zip -r -q "$DIST/${name}.zip" \
     manifest.json \
     background.js \
     content.js \
     icons/ \
-    $([ -f sidepanel.html ] && echo sidepanel.html) \
-    $([ -f popup.html ] && echo popup.html) \
+    $([ -f sidepanel.html ]       && echo sidepanel.html) \
+    $([ -f popup.html ]           && echo popup.html) \
+    $([ -f devtools.html ]        && echo devtools.html) \
+    $([ -f devtools.js ]          && echo devtools.js) \
+    $([ -f devtools-panel.html ]  && echo devtools-panel.html) \
+    $([ -f jarvisius-engine.wasm ] && echo jarvisius-engine.wasm) \
     2>/dev/null || true)
 
   count=$((count + 1))
