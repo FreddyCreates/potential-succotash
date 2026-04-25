@@ -1,5 +1,5 @@
 /* ============================================================
- *  JARVIS AI — Background Service Worker v3.0
+ *  JARVIS AI — Background Service Worker v3.1
  *  AI sovereign assistant — native NeuroCore brain
  * ============================================================ */
 
@@ -265,16 +265,26 @@ function JarvisEngine() {
   this.state = {
     initialized: true,
     heartbeatCount: 0,
-    version: '3.0.0',
+    version: '3.1.0',
     agent: 'JARVIS'
   };
 
   // ── Medium Brain + Medium Heart ──────────────────────────
   this.neuro = new NeuroCore('jarvis');
 
-  // ── PhantomAI Conversation Memory (20-turn rolling) ──────
+  // ── PhantomAI Conversation Memory (100-turn rolling — Memory Temple) ──
   this.conversationMemory = [];
-  this.maxMemory = 20;
+  this.maxMemory = 100;
+
+  // ── Memory Temple — categorized long-term storage ────────────────────
+  this.memoryTemple = {
+    research: [],      // Research notes, findings, sources
+    theory: [],        // Theory discussions, ideas, hypotheses
+    decisions: [],     // Key decisions and rationale
+    frameworks: [],    // Frameworks, blueprints discussed
+    insights: []       // Extracted insights and patterns
+  };
+  this.maxTempleEntries = 200; // per category
 
   // ── Topic gravity — tracks what user talks about most ───
   this.topicGravity = Object.create(null);
@@ -283,7 +293,7 @@ function JarvisEngine() {
   this.workflowState = { active: false, steps: [], stepIndex: 0, name: '' };
 
   this._startHeartbeat();
-  console.log('[JARVIS v3.0] Engine initialized — NeuroCore online, PHI=' + PHI + ' HEARTBEAT=' + HEARTBEAT + 'ms');
+  console.log('[JARVIS v3.1] Engine initialized — NeuroCore online, Memory Temple active, PHI=' + PHI + ' HEARTBEAT=' + HEARTBEAT + 'ms');
 }
 
 /* ----------------------------------------------------------
@@ -339,7 +349,9 @@ JarvisEngine.prototype.getStatus = function () {
     mood: this.state.mood || 'focused',
     focus: this.state.focus || 'awareness',
     neuro: this.state.vitals || null,
-    awarenessLevel: this.neuro.brain.awarenessLevel
+    awarenessLevel: this.neuro.brain.awarenessLevel,
+    memoryTempleStats: this._getTempleStats(),
+    memoryTurns: this.conversationMemory.length
   };
 };
 
@@ -368,6 +380,11 @@ JarvisEngine.prototype._remember = function (role, text, intent) {
       this.topicGravity[t] = (this.topicGravity[t] || 0) + 1;
     }
   }
+
+  // Archive user messages with 5+ words to Memory Temple
+  if (role === 'user' && tokens.length >= 5) {
+    this._archiveToTemple(text, intent || 'chat', this.state.mood || 'focused');
+  }
 };
 
 JarvisEngine.prototype._getRecentTopics = function (n) {
@@ -395,6 +412,50 @@ JarvisEngine.prototype._getContextSummary = function () {
     lastIntent: last ? last.intent : null,
     lastText: last ? last.text.substring(0, 80) : null
   };
+};
+
+/* ----------------------------------------------------------
+ *  Memory Temple — categorized long-term storage
+ * ---------------------------------------------------------- */
+
+JarvisEngine.prototype._archiveToTemple = function (text, intent, mood) {
+  var lc = (text || '').toLowerCase();
+  var entry = { text: text.substring(0, 300), intent: intent, mood: mood, timestamp: Date.now() };
+
+  // Auto-categorize by intent + content signals
+  var isResearch = /research|paper|study|data|evidence|source|reference|analysis|literature/i.test(lc);
+  var isTheory = /theory|hypothesis|model|framework|principle|concept|idea|think|believe|pattern/i.test(lc);
+  var isDecision = /decide|decision|build|create|implement|choose|going to|plan to|will/i.test(lc);
+  var isFramework = /framework|blueprint|structure|template|workflow|process|system|architecture/i.test(lc);
+
+  if (isResearch) this._addToTempleCategory('research', entry);
+  else if (isFramework) this._addToTempleCategory('frameworks', entry);
+  else if (isTheory) this._addToTempleCategory('theory', entry);
+  else if (isDecision) this._addToTempleCategory('decisions', entry);
+  else this._addToTempleCategory('insights', entry);
+};
+
+JarvisEngine.prototype._addToTempleCategory = function (cat, entry) {
+  if (!this.memoryTemple[cat]) return;
+  this.memoryTemple[cat].unshift(entry);
+  if (this.memoryTemple[cat].length > this.maxTempleEntries) {
+    this.memoryTemple[cat].pop();
+  }
+};
+
+JarvisEngine.prototype._getTempleContext = function (cat) {
+  var arr = this.memoryTemple[cat] || [];
+  return arr.slice(0, 5); // last 5 entries per category
+};
+
+JarvisEngine.prototype._getTempleStats = function () {
+  var stats = {};
+  var total = 0;
+  for (var k in this.memoryTemple) {
+    stats[k] = this.memoryTemple[k].length;
+    total += this.memoryTemple[k].length;
+  }
+  return { stats: stats, total: total };
 };
 
 JarvisEngine.prototype.parseCommand = function (natural) {
@@ -1239,7 +1300,111 @@ JarvisEngine.prototype.executeChat = function (message, callback) {
       'I\'ll pull everything off the page, no extra tabs needed.\n' +
       'Or just say "summarize" and I\'ll do it right here in chat.';
 
-  // ── 23. PHANTOM COGNITION — ALWAYS COHERENT FALLBACK ──────
+  // ── 23. RESEARCH / FOUNDER ANALYTICAL MODE ─────────────────
+  } else if (/research|paper|study|literature|evidence|data|source|citation|academic|science/i.test(text)) {
+    var researchQ = after('research') || after('paper') || after('study') || after('evidence') || raw;
+    var templeResearch = self._getTempleContext('research');
+    var priorResearch = templeResearch.length > 0 ? '\n\nFrom my memory temple — you\'ve researched: ' + templeResearch.map(function(e){ return e.text.substring(0,40); }).join('; ') : '';
+    response = moodColor + ' Research mode activated. Topic: "' + researchQ + '"\n\n' +
+      '🔬 Research Framework I\'ll apply:\n' +
+      '1. Problem definition → What specifically are we investigating?\n' +
+      '2. Literature scan → What exists? What gap does this fill?\n' +
+      '3. Hypothesis formation → What do we predict?\n' +
+      '4. Evidence mapping → What data supports/challenges it?\n' +
+      '5. Synthesis → What does it mean for the platform?\n\n' +
+      'I\'ll archive this to your Memory Temple (research category).' + priorResearch + '\n\nTell me more — what angle are you coming from?';
+    agent = 'JARVIS \u2022 SYNAPTICUS';
+
+  // ── 24. THEORY TALK MODE ──────────────────────────────────
+  } else if (/theory|hypothesis|model|principle|fundamental|first principles|axiom|assume|postulate/i.test(text)) {
+    var theoryT = after('theory') || after('hypothesis') || after('model') || after('principle') || raw;
+    var templeTheory = self._getTempleContext('theory');
+    var priorTheory = templeTheory.length > 0 ? '\n\nConnects to prior theory discussions: ' + templeTheory.slice(0,2).map(function(e){ return '"' + e.text.substring(0,50) + '"'; }).join(', ') : '';
+    response = moodColor + ' Theory mode active. Subject: "' + theoryT + '"\n\n' +
+      '🧠 PhantomAI Analytical Patterns:\n\n' +
+      '【First Principles】 Strip it down — what is the irreducible truth here?\n' +
+      '【Systems Thinking】 What are the inputs, outputs, feedback loops?\n' +
+      '【Inversion】 What would make this theory wrong? Work backwards.\n' +
+      '【Analogical Reasoning】 What else in nature or business follows this pattern?\n' +
+      '【Gravity Test】 Does this idea pull other ideas toward it? Strong theories do.\n\n' +
+      'I\'m tracking this in your Memory Temple.' + priorTheory + '\n\nLet\'s dig in — state your position and I\'ll pressure-test it.';
+    agent = 'JARVIS \u2022 SYNAPTICUS';
+
+  // ── 25. FRAMEWORK / BLUEPRINT / STRUCTURE ─────────────────
+  } else if (/framework|blueprint|structure|architecture|template|workflow|process design|playbook|system design/i.test(text)) {
+    var fwTopic = after('framework') || after('blueprint') || after('structure') || after('architecture') || after('template') || after('workflow') || raw;
+    var templeFw = self._getTempleContext('frameworks');
+    response = moodColor + ' Framework design mode. Building: "' + fwTopic + '"\n\n' +
+      '🏗️ Sovereign Framework Blueprint:\n\n' +
+      '【Layer 1 — Foundation】 Core principles, non-negotiables, axioms\n' +
+      '【Layer 2 — Structure】 Components, modules, entities and relationships\n' +
+      '【Layer 3 — Process】 Workflows, sequences, decision trees, loops\n' +
+      '【Layer 4 — Interface】 How does this connect to the user? To other systems?\n' +
+      '【Layer 5 — Evolution】 How does it grow? What triggers upgrades?\n\n' +
+      (templeFw.length > 0 ? 'Prior framework work in memory: ' + templeFw[0].text.substring(0,80) + '\n\n' : '') +
+      'Archived to memory temple. Walk me through what you\'re building and I\'ll help blueprint it.';
+    agent = 'JARVIS \u2022 ORCHESTRATOR';
+
+  // ── 26. MEMORY TEMPLE STATUS ──────────────────────────────
+  } else if (/memory temple|what do you remember|what have we discussed|memory status|what do you know/i.test(text)) {
+    var ts2 = self._getTempleStats();
+    var topics2 = self._getRecentTopics(5);
+    response = moodColor + ' Memory Temple Status:\n\n' +
+      '💾 Total archived: ' + ts2.total + ' entries\n' +
+      '🔬 Research notes: ' + ts2.stats.research + '\n' +
+      '🧠 Theory talks: ' + ts2.stats.theory + '\n' +
+      '⚡ Decisions: ' + ts2.stats.decisions + '\n' +
+      '🏗️ Frameworks: ' + ts2.stats.frameworks + '\n' +
+      '💡 Insights: ' + ts2.stats.insights + '\n\n' +
+      '🔮 Topic gravity — you think most about: ' + (topics2.length > 0 ? topics2.slice(0,4).join(', ') : 'nothing tracked yet') + '\n' +
+      '💬 Conversation turns this session: ' + ctx.turnCount + ' / 100\n\n' +
+      'Say "research [topic]", "theory [idea]", or "framework [system]" and I\'ll archive and analyze it.';
+    agent = 'JARVIS \u2022 SYNAPTICUS';
+
+  // ── 27. SOVEREIGN TOOLS ───────────────────────────────────
+  } else if (/sovereign tool|what tools|run tool|tool list|available tools|use tool/i.test(text)) {
+    response = moodColor + ' Sovereign Tools available from this panel:\n\n' +
+      '📋 Notepad — click Tools tab → Quick Note to write and save instantly\n' +
+      '🔬 Research — "research [topic]" activates research framework mode\n' +
+      '🧠 Theory — "theory [idea]" activates pressure-testing mode\n' +
+      '🏗️ Framework — "blueprint [system]" builds a layered architecture\n' +
+      '💾 Memory — "memory temple" shows what I\'ve archived from our talks\n' +
+      '📊 Analyze — "analyze [anything]" applies SWOT + systems lens\n' +
+      '📐 Query — "query [data question]" runs structured inquiry\n' +
+      '🔗 Summarize — "summarize" reads and condenses any open page\n' +
+      '📸 Capture — "screenshot" saves your current view\n' +
+      '📝 Notes — "take note: [text]" stores to local vault\n' +
+      '📄 PDF — "create pdf: [title]" generates a document\n\n' +
+      'Say any tool name to activate it.';
+
+  // ── 28. ANALYSIS / SWOT ───────────────────────────────────
+  } else if (/analyze|analysis|swot|evaluate|assess|critique|review|breakdown|break down/i.test(text)) {
+    var analyzeT = after('analyze') || after('analysis') || after('swot') || after('evaluate') || after('assess') || raw;
+    response = moodColor + ' Analysis mode: "' + analyzeT + '"\n\n' +
+      '🔍 Analytical Frameworks I\'m applying:\n\n' +
+      '【SWOT】 Strengths / Weaknesses / Opportunities / Threats\n' +
+      '【5 Forces】 Competition, suppliers, buyers, substitutes, new entrants\n' +
+      '【Systems】 Inputs → Process → Outputs → Feedback\n' +
+      '【Second Order】 What happens after the first effect?\n' +
+      '【Inversion】 How could this fail? Work backwards from failure.\n\n' +
+      'Give me more specifics: What\'s the context? Who\'s the audience? What decision does this feed?';
+    agent = 'JARVIS \u2022 UNIVERSUM';
+
+  // ── 29. WHAT AM I / FOUNDER CONTEXT ──────────────────────
+  } else if (/who am i|what am i building|what is my role|what should i (do|focus|work|build)|my purpose|my mission/i.test(text)) {
+    var topics3 = self._getRecentTopics(5);
+    response = moodColor + ' You are the founder of the Sovereign Organism — the architect of a self-contained AI platform.\n\n' +
+      '🎯 What you\'re building:\n' +
+      '• A sovereign AI infrastructure that no one controls but you\n' +
+      '• 27 browser extensions, 250 protocols, 400 tools\n' +
+      '• JARVIS as your native AI that runs in Edge 24/7\n' +
+      '• NeuroCore cognition — a thinking system that learns from your patterns\n\n' +
+      '📐 Your current focus areas (from memory):\n' +
+      (topics3.length > 0 ? topics3.slice(0,4).map(function(t){ return '• ' + t; }).join('\n') : '• Nothing tracked yet — start talking') + '\n\n' +
+      'I\'m your research partner, strategist, and system analyst. Tell me what to dig into.';
+    agent = 'JARVIS \u2022 ORCHESTRATOR';
+
+  // ── 30. PHANTOM COGNITION — ALWAYS COHERENT FALLBACK ──────
   } else {
     // Extract keywords from what was said, weight by topic gravity
     var kws = extractKeywords(raw);
@@ -1268,10 +1433,10 @@ JarvisEngine.prototype.executeChat = function (message, callback) {
       var contextHook = recentTopics.length > 0 ? ' We\'ve been talking about ' + recentTopics.slice(0, 2).join(' and ') + ' — does this connect to that?' : '';
       var keyPhrase = kws.slice(0, 3).join(', ');
       chainResponses = [
-        moodColor + ' I\'m processing "' + raw.substring(0, 60) + (raw.length > 60 ? '...' : '') + '" — pulling "' + keyPhrase + '" through my attention map.' + contextHook + '\n\nIf you\'re asking a question, try: "explain [topic]" or "search for [topic]". If you want action: "read page", "summarize", or "list tabs".',
-        'JARVIS cognition active. Topic gravity on: ' + keyPhrase + '.' + contextHook + '\n\nSay "summarize" to get context from the current page, or just keep talking and I\'ll keep learning your patterns.',
-        moodColor + ' Heard: "' + raw.substring(0, 80) + '". Keywords: ' + keyPhrase + '. Mood: ' + mood + ', focus: ' + focus + '.\n\n' + (ctx.lastIntent && ctx.lastIntent !== 'chat' ? 'Last action you ran: ' + ctx.lastIntent + '. Want to continue that?' : 'No prior action context — what do you want to do?'),
-        'PhantomAI chain-of-thought: ' + keyPhrase + ' → connecting to sovereign platform context.' + contextHook + '\n\nFor the clearest result: "read page" extracts what\'s open, "search for ' + kws[0] + '" searches native knowledge, or ask me directly.'
+        moodColor + ' I\'m processing "' + raw.substring(0, 60) + (raw.length > 60 ? '...' : '') + '" — pulling "' + keyPhrase + '" through my attention map.' + contextHook + '\n\nIf you\'re asking a question, try: "explain [topic]", "research [topic]", or "theory [idea]". If you want action: "read page", "analyze [topic]", or "list tabs".',
+        'JARVIS cognition active. Topic gravity on: ' + keyPhrase + '.' + contextHook + '\n\nSay "research" to enter research mode, "theory" for analytical pressure-testing, "framework" to build a blueprint — or just keep talking.',
+        moodColor + ' Heard: "' + raw.substring(0, 80) + '". Keywords: ' + keyPhrase + '. Mood: ' + mood + ', focus: ' + focus + '.\n\n' + (ctx.lastIntent && ctx.lastIntent !== 'chat' ? 'Last action you ran: ' + ctx.lastIntent + '. Want to continue that?' : 'I\'m your research partner. What direction do you want to go?'),
+        'PhantomAI chain-of-thought: ' + keyPhrase + ' → memory temple gravity pulling toward sovereign platform context.' + contextHook + '\n\nFor the clearest result: "analyze ' + kws[0] + '" applies frameworks, "research ' + kws[0] + '" maps the literature space, or ask me directly.'
       ];
     }
     response = pick(chainResponses);
@@ -1279,6 +1444,97 @@ JarvisEngine.prototype.executeChat = function (message, callback) {
   }
 
   callback({ success: true, message: response, agent: agent, mood: mood, awareness: awareness });
+};
+
+/* ----------------------------------------------------------
+ *  Sovereign Tools — callable from panel toolbar
+ * ---------------------------------------------------------- */
+
+JarvisEngine.prototype.executeSovereignTool = function (tool, params, callback) {
+  var self = this;
+  switch (tool) {
+    case 'quickNote':
+      var noteText = params.text || 'Untitled note';
+      this.executeTakeNote(noteText, callback);
+      break;
+
+    case 'researchMode':
+      var topic = params.topic || 'general';
+      this.executeChat('research ' + topic, callback);
+      break;
+
+    case 'theoryMode':
+      this.executeChat('theory ' + (params.idea || 'general'), callback);
+      break;
+
+    case 'frameworkMode':
+      this.executeChat('framework ' + (params.subject || 'general'), callback);
+      break;
+
+    case 'analyzeMode':
+      this.executeChat('analyze ' + (params.subject || 'this'), callback);
+      break;
+
+    case 'mempleStatus':
+      this.executeChat('memory temple', callback);
+      break;
+
+    case 'founderContext':
+      this.executeChat('what am i building', callback);
+      break;
+
+    case 'queryBuilder':
+      var qTopic = params.topic || 'platform';
+      var structured = '🔍 Structured Query: "' + qTopic + '"\n\n' +
+        'WHAT: What specifically are we asking?\n' +
+        'WHY: What decision does this answer?\n' +
+        'WHERE: What data source answers it?\n' +
+        'HOW: What format do we need the answer in?\n' +
+        'THEN: What action follows from the answer?\n\n' +
+        'Refine your question with these dimensions and say it again — I\'ll route it.';
+      callback({ success: true, message: structured, agent: 'JARVIS \u2022 UNIVERSUM' });
+      break;
+
+    case 'swotTool':
+      var swotS = params.subject || 'Sovereign Organism';
+      var swot = '📊 SWOT Analysis: ' + swotS + '\n\n' +
+        '💪 STRENGTHS — What does it do better than anything else?\n' +
+        '⚠️ WEAKNESSES — What\'s the internal constraint or risk?\n' +
+        '🚀 OPPORTUNITIES — What external forces could amplify this?\n' +
+        '🔴 THREATS — What could break or displace it?\n\n' +
+        'Fill in each dimension and I\'ll synthesize the strategic position.';
+      callback({ success: true, message: swot, agent: 'JARVIS \u2022 UNIVERSUM' });
+      break;
+
+    case 'decisionEngine':
+      var decision = params.question || 'What should I build next?';
+      var dec = '⚡ Decision Engine: "' + decision + '"\n\n' +
+        '【Criteria Matrix】 List what matters: impact, effort, alignment, risk\n' +
+        '【Options】 What are the real alternatives? (never fewer than 3)\n' +
+        '【10/10/10】 How will you feel about this in 10 min, 10 months, 10 years?\n' +
+        '【Regret Minimization】 Which choice will you regret NOT making?\n' +
+        '【Gravity】 Which option pulls more ideas and possibilities toward it?\n\n' +
+        'Tell me the decision and I\'ll run it through the engine.';
+      callback({ success: true, message: dec, agent: 'JARVIS \u2022 ORCHESTRATOR' });
+      break;
+
+    case 'readActivePage':
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        if (tabs[0]) self.executeReadPage(tabs[0].id, callback);
+        else callback({ success: false, message: 'No active tab found' });
+      });
+      break;
+
+    case 'summarizeActivePage':
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        if (tabs[0]) self.executeSummarize(tabs[0].id, callback);
+        else callback({ success: false, message: 'No active tab found' });
+      });
+      break;
+
+    default:
+      callback({ success: false, message: 'Unknown sovereign tool: ' + tool + '. Available: quickNote, researchMode, theoryMode, frameworkMode, analyzeMode, mempleStatus, founderContext, queryBuilder, swotTool, decisionEngine, readActivePage, summarizeActivePage' });
+  }
 };
 
 /* ----------------------------------------------------------
@@ -1682,6 +1938,85 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
       });
       break;
 
+    case 'getMemoryTemple':
+      sendResponse({
+        success: true,
+        temple: engine.memoryTemple,
+        stats: engine._getTempleStats(),
+        conversationTurns: engine.conversationMemory.length,
+        topTopics: engine._getRecentTopics(10)
+      });
+      break;
+
+    case 'addTempleEntry':
+      if (message.category && message.text && engine.memoryTemple[message.category] !== undefined) {
+        engine._addToTempleCategory(message.category, { text: message.text, intent: 'manual', mood: engine.neuro.getMood(), timestamp: Date.now() });
+        sendResponse({ success: true, message: 'Archived to memory temple: ' + message.category });
+      } else {
+        sendResponse({ success: false, message: 'Invalid category. Use: research, theory, decisions, frameworks, insights' });
+      }
+      break;
+
+    case 'runSovereignTool':
+      engine.executeSovereignTool(message.tool, message.params || {}, function (result) {
+        sendResponse(result);
+      });
+      break;
+
+    case 'autoInstallUpdate':
+      chrome.storage.local.get('jarvis_update', function (data) {
+        var upd = data.jarvis_update;
+        if (!upd || !upd.available) {
+          sendResponse({ success: false, message: 'No update available' });
+          return;
+        }
+        // Auto-download the BAT installer
+        var batUrl = 'https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/install-jarvis-edge.bat';
+        chrome.downloads.download({
+          url: batUrl,
+          filename: 'install-jarvis-edge.bat',
+          saveAs: false
+        }, function (downloadId) {
+          if (chrome.runtime.lastError) {
+            sendResponse({ success: false, message: 'Download failed: ' + chrome.runtime.lastError.message });
+            return;
+          }
+          // Mark as auto-installing
+          chrome.storage.local.set({ 'jarvis_autoinstall': { downloadId: downloadId, version: upd.remoteVersion, startedAt: Date.now() } });
+          // Send Chrome notification
+          var notifOptions = {
+            type: 'basic',
+            iconUrl: 'icons/icon128.png',
+            title: 'JARVIS Auto-Update: v' + upd.currentVersion + ' → v' + upd.remoteVersion,
+            message: 'Installer downloaded to your Downloads folder. Double-click install-jarvis-edge.bat to complete the update. The bat will replace JARVIS and restart Edge automatically.',
+            priority: 2
+          };
+          try { chrome.notifications.create('jarvis-update-' + Date.now(), notifOptions); } catch (e) {}
+          sendResponse({ success: true, message: 'Installer downloaded. Run install-jarvis-edge.bat from your Downloads folder.', downloadId: downloadId, version: upd.remoteVersion });
+        });
+      });
+      break;
+
+    case 'downloadJarvisZip':
+      chrome.downloads.download({
+        url: 'https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/jarvis.zip',
+        filename: 'jarvis-extension.zip',
+        saveAs: false
+      }, function (downloadId) {
+        sendResponse({ success: !chrome.runtime.lastError, downloadId: downloadId, message: chrome.runtime.lastError ? chrome.runtime.lastError.message : 'Downloading jarvis-extension.zip...' });
+      });
+      break;
+
+    case 'downloadJarvisBat':
+      chrome.downloads.download({
+        url: 'https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/install-jarvis-edge.bat',
+        filename: 'install-jarvis-edge.bat',
+        saveAs: false
+      }, function (downloadId) {
+        sendResponse({ success: !chrome.runtime.lastError, downloadId: downloadId, message: chrome.runtime.lastError ? chrome.runtime.lastError.message : 'Downloading install-jarvis-edge.bat...' });
+      });
+      break;
+
     default:
       sendResponse({ success: false, error: 'Unknown action: ' + message.action });
   }
@@ -1743,7 +2078,8 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   var UPDATE_ALARM = 'jarvis-sovereign-update';
   var UPDATE_PERIOD = 240; // 4 hours in minutes
   var MANIFEST_URL = 'https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/extensions/jarvis/manifest.json';
-  var CURRENT_VERSION = '3.0.0';
+  var BAT_URL = 'https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/install-jarvis-edge.bat';
+  var CURRENT_VERSION = '3.1.0';
 
   function parseVersion(v) {
     return (v || '0.0.0').split('.').map(function (n) { return parseInt(n, 10) || 0; });
@@ -1758,22 +2094,51 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     return false;
   }
 
+  function autoInstallUpdate(remote) {
+    // Auto-download the BAT installer silently
+    chrome.downloads.download({
+      url: BAT_URL,
+      filename: 'install-jarvis-edge.bat',
+      saveAs: false
+    }, function (downloadId) {
+      var didError = !!chrome.runtime.lastError;
+      var status = {
+        available: true,
+        autoInstalled: !didError,
+        downloadId: downloadId || null,
+        currentVersion: CURRENT_VERSION,
+        remoteVersion: remote,
+        detectedAt: Date.now(),
+        note: didError ? 'Auto-download failed — run bat manually' : 'BAT downloaded to Downloads folder. Double-click it to complete update.'
+      };
+      chrome.storage.local.set({ 'jarvis_update': status });
+
+      // Send Chrome notification
+      var msg = didError
+        ? 'Update to v' + remote + ' available — download install-jarvis-edge.bat manually and run it.'
+        : 'Installer downloaded to Downloads. Double-click install-jarvis-edge.bat — Edge will reload with v' + remote + ' automatically.';
+      try {
+        chrome.notifications.create('jarvis-update-' + Date.now(), {
+          type: 'basic',
+          iconUrl: 'icons/icon128.png',
+          title: '⚡ JARVIS Update: v' + CURRENT_VERSION + ' → v' + remote,
+          message: msg,
+          priority: 2
+        });
+      } catch (e) { /* notifications may not be available */ }
+
+      console.log('[JARVIS] Sovereign auto-install: ' + (didError ? 'FAILED' : 'BAT downloaded, id=' + downloadId));
+    });
+  }
+
   function checkForUpdate() {
     fetch(MANIFEST_URL, { cache: 'no-store' })
       .then(function (res) { return res.json(); })
       .then(function (data) {
         var remote = data.version || '0.0.0';
         if (isNewer(remote, CURRENT_VERSION)) {
-          console.log('[JARVIS] Sovereign update available: ' + CURRENT_VERSION + ' → ' + remote);
-          chrome.storage.local.set({
-            'jarvis_update': {
-              available: true,
-              currentVersion: CURRENT_VERSION,
-              remoteVersion: remote,
-              detectedAt: Date.now(),
-              installerNote: 'Run install-jarvis-edge.bat to update automatically'
-            }
-          });
+          console.log('[JARVIS] Sovereign update available: ' + CURRENT_VERSION + ' → ' + remote + '. Auto-installing...');
+          autoInstallUpdate(remote);
         } else {
           console.log('[JARVIS] Sovereign update check: up to date (' + CURRENT_VERSION + ')');
           chrome.storage.local.set({ 'jarvis_update': { available: false, remoteVersion: remote, checkedAt: Date.now() } });

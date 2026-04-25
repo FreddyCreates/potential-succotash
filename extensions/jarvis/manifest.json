@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Jarvis AI",
-  "version": "3.0.0",
-  "description": "AI sovereign assistant — native NeuroCore brain + PhantomAI cognition, tab control, notes, screen capture, sovereign auto-update",
+  "version": "3.1.0",
+  "description": "AI sovereign assistant — NeuroCore brain, PhantomAI cognition, memory temple, sovereign tools, auto-update, research frameworks",
   "permissions": [
     "activeTab",
     "storage",
@@ -11,6 +11,7 @@
     "scripting",
     "sidePanel",
     "downloads",
+    "notifications",
     "tabCapture",
     "desktopCapture"
   ],

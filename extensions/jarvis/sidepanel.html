@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JARVIS AI v3.0</title>
+<title>JARVIS AI v3.1</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
   :root{
@@ -337,9 +337,32 @@
   .sv{color:var(--cyan);font-weight:700;font-variant-numeric:tabular-nums}
 
   /* Empty state */
-  .update-banner{display:none;background:linear-gradient(90deg,#00b4d8,#0077b6);color:#fff;font-size:11px;padding:6px 12px;text-align:center;cursor:pointer;font-weight:600;letter-spacing:0.5px}
-  .update-banner:hover{background:linear-gradient(90deg,#0077b6,#004e89)}
+  .update-banner{display:none;background:linear-gradient(90deg,#00b4d8,#0077b6);color:#fff;font-size:11px;padding:5px 12px;align-items:center;justify-content:space-between;gap:8px;font-weight:600;letter-spacing:0.5px}
+  .update-install-btn{background:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.5);color:#fff;border-radius:4px;padding:2px 8px;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap}
+  .update-install-btn:hover{background:rgba(255,255,255,0.45)}
   .neuro-chip{font-size:9px;color:var(--cyan);margin-top:1px;opacity:0.8}
+
+  /* Download bar */
+  .download-bar{display:flex;align-items:center;gap:6px;padding:6px 8px;background:rgba(124,110,255,0.06);border-top:1px solid var(--border);flex-wrap:wrap}
+  .dl-label{font-size:10px;color:var(--text3);white-space:nowrap}
+  .dl-btn{background:rgba(124,110,255,0.18);border:1px solid rgba(124,110,255,0.35);color:var(--accent);border-radius:6px;padding:4px 10px;font-size:10px;font-weight:600;cursor:pointer}
+  .dl-btn:hover{background:rgba(124,110,255,0.35)}
+
+  /* Tools panel */
+  .tools-grid{padding:8px 8px 0;display:flex;flex-direction:column;gap:4px}
+  .tool-section-label{font-size:9px;color:var(--text3);font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 0 2px 2px}
+  .tool-btn{display:flex;flex-direction:column;align-items:flex-start;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--text1);cursor:pointer;text-align:left;transition:background 0.15s}
+  .tool-btn:hover{background:rgba(124,110,255,0.15);border-color:var(--accent)}
+  .tool-desc{font-size:10px;color:var(--text3);margin-top:2px;font-weight:400}
+
+  /* Quick notepad */
+  .tool-notepad{padding:8px;margin-top:6px;border-top:1px solid var(--border)}
+  .notepad-label{font-size:10px;color:var(--text3);font-weight:700;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px}
+  .notepad-ta{width:100%;box-sizing:border-box;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;color:var(--text1);font-size:12px;padding:8px;resize:vertical;min-height:80px;font-family:inherit}
+  .notepad-ta:focus{outline:none;border-color:var(--accent)}
+  .notepad-actions{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
+  .notepad-btn{background:rgba(124,110,255,0.18);border:1px solid rgba(124,110,255,0.3);color:var(--accent);border-radius:6px;padding:4px 8px;font-size:10px;font-weight:600;cursor:pointer}
+  .notepad-btn:hover{background:rgba(124,110,255,0.35)}
 </style>
 </head>
 <body>
@@ -350,7 +373,7 @@
     <div class="arc-reactor"></div>
     <div>
       <div class="logo-text">JARVIS</div>
-      <div class="logo-ver">AI v3.0 &bull; NEUROCORE &bull; EDGE READY</div>
+      <div class="logo-ver">AI v3.1 &bull; NEUROCORE &bull; EDGE READY</div>
       <div class="neuro-chip" id="neuroChip">FOCUSED &bull; 0% AWR</div>
     </div>
     <div class="online-dot" title="System online"></div>
@@ -361,12 +384,16 @@
   </div>
 </div>
 
-<!-- Sovereign Update Banner (hidden until update detected) -->
-<div class="update-banner" id="updateBanner">⚡ JARVIS Update Available — Run install-jarvis-edge.bat to upgrade automatically</div>
+<!-- Sovereign Update Banner -->
+<div class="update-banner" id="updateBanner" style="display:none">
+  <span id="updateBannerText">⚡ JARVIS Update Available</span>
+  <button class="update-install-btn" id="autoInstallBtn" title="Auto-download installer">⬇ Auto-Install</button>
+</div>
 
 <!-- Navigation -->
 <div class="nav">
   <div class="tab active" data-panel="chat"><span class="tab-icon">&#x1F4AC;</span>Chat</div>
+  <div class="tab" data-panel="tools"><span class="tab-icon">&#x1F9F0;</span>Tools</div>
   <div class="tab" data-panel="search"><span class="tab-icon">&#x1F50D;</span>Search</div>
   <div class="tab" data-panel="screen"><span class="tab-icon">&#x1F5A5;&#xFE0F;</span>Screen</div>
   <div class="tab" data-panel="tabs"><span class="tab-icon">&#x1F5C2;&#xFE0F;</span>Tabs</div>
@@ -381,7 +408,7 @@
   <div class="panel active" id="panel-chat">
     <div class="chat-msgs" id="chatMsgs">
       <div class="msg bot" data-agent="JARVIS &#x2022; ORCHESTRATOR">
-        Good day. I am JARVIS v3.0 &mdash; your AI sovereign assistant running natively in Microsoft Edge with NeuroCore active. I have a medium brain (MiniHeart + MiniBrain + PhantomAI cognition), 20-turn conversation memory, and a sovereign auto-update system. I can manage tabs, take notes, capture screens, search with native intelligence, create documents, and route commands through 10 Alpha Script AIs. How may I assist?
+        Good day. I am JARVIS v3.1 &mdash; your AI sovereign assistant. NeuroCore active, Memory Temple online (100-turn + categorized), PhantomAI research frameworks loaded. I&apos;m your research partner, theory pressure-tester, and strategic analyst. I run 24/7 in Edge, update myself when new versions drop, and archive our conversations for future context. What are we working on?
         <span class="msg-time">just now</span>
       </div>
     </div>
@@ -390,12 +417,60 @@
       <button class="qbtn" data-cmd="screenshot">&#x1F4F8; Shot</button>
       <button class="qbtn" data-cmd="summarize">&#x1F4D6; Summarize</button>
       <button class="qbtn" data-cmd="take note">&#x1F4DD; Note</button>
-      <button class="qbtn" data-cmd="create pdf">&#x1F4C4; PDF</button>
-      <button class="qbtn" data-cmd="read page">&#x1F50E; Read</button>
+      <button class="qbtn" data-cmd="research">&#x1F52C; Research</button>
+      <button class="qbtn" data-cmd="theory">&#x1F9E0; Theory</button>
+      <button class="qbtn" data-cmd="analyze this">&#x1F4CA; Analyze</button>
+      <button class="qbtn" data-cmd="memory temple">&#x1F4BE; Memory</button>
+      <button class="qbtn" data-cmd="framework">&#x1F3D7;&#xFE0F; Blueprint</button>
+      <button class="qbtn" data-cmd="what am i building">&#x1F3AF; Founder</button>
+    </div>
+    <!-- Download links -->
+    <div class="download-bar">
+      <span class="dl-label">&#x1F4E6; Get JARVIS:</span>
+      <button class="dl-btn" id="dlZipBtn">&#x1F4E5; Download ZIP</button>
+      <button class="dl-btn" id="dlBatBtn">&#x2699;&#xFE0F; Download .bat Installer</button>
     </div>
     <div class="cinput-wrap">
       <input type="text" class="cinput" id="chatInput" placeholder="Ask JARVIS anything..." autocomplete="off">
       <button class="sbtn" id="sendBtn">&#x26A1; Send</button>
+    </div>
+  </div>
+
+  <!-- Tools panel -->
+  <div class="panel" id="panel-tools">
+    <div class="tools-grid">
+      <div class="tool-section-label">🔬 Research &amp; Analysis</div>
+      <button class="tool-btn" data-tool="researchMode" data-topic="">🔬 Research Mode<span class="tool-desc">Activate research framework</span></button>
+      <button class="tool-btn" data-tool="theoryMode" data-idea="">🧠 Theory Talk<span class="tool-desc">Pressure-test ideas</span></button>
+      <button class="tool-btn" data-tool="analyzeMode" data-subject="">📊 Analyze<span class="tool-desc">SWOT + systems lens</span></button>
+      <button class="tool-btn" data-tool="swotTool" data-subject="">🔴 SWOT Engine<span class="tool-desc">Strengths/Weaknesses/Opps/Threats</span></button>
+      <button class="tool-btn" data-tool="frameworkMode" data-subject="">🏗️ Framework Builder<span class="tool-desc">Layered architecture blueprint</span></button>
+      <button class="tool-btn" data-tool="queryBuilder" data-topic="">🔗 Query Builder<span class="tool-desc">Structured inquiry tool</span></button>
+      <button class="tool-btn" data-tool="decisionEngine" data-question="">⚡ Decision Engine<span class="tool-desc">10/10/10 + regret minimization</span></button>
+
+      <div class="tool-section-label" style="margin-top:10px">💾 Memory &amp; Knowledge</div>
+      <button class="tool-btn" data-tool="mempleStatus">📂 Memory Temple<span class="tool-desc">View archived conversations</span></button>
+      <button class="tool-btn" data-tool="founderContext">🎯 Founder Context<span class="tool-desc">What you&apos;re building + focus</span></button>
+      <button class="tool-btn" data-tool="quickNote" data-text="">📋 Quick Note<span class="tool-desc">Write &amp; save a note instantly</span></button>
+
+      <div class="tool-section-label" style="margin-top:10px">🖥️ Page Intelligence</div>
+      <button class="tool-btn" data-tool="readActivePage">🔎 Read Page<span class="tool-desc">Extract full page text</span></button>
+      <button class="tool-btn" data-tool="summarizeActivePage">📖 Summarize Page<span class="tool-desc">AI summary of current page</span></button>
+
+      <div class="tool-section-label" style="margin-top:10px">📦 Get JARVIS</div>
+      <button class="tool-btn dl-tool-btn" id="toolDlZip">📥 Download ZIP<span class="tool-desc">jarvis-extension.zip</span></button>
+      <button class="tool-btn dl-tool-btn" id="toolDlBat">⚙️ Download .bat Installer<span class="tool-desc">install-jarvis-edge.bat</span></button>
+    </div>
+    <!-- Quick notepad -->
+    <div class="tool-notepad">
+      <div class="notepad-label">✏️ Quick Notepad</div>
+      <textarea class="notepad-ta" id="notepadInput" placeholder="Type a research note, idea, or thought here..."></textarea>
+      <div class="notepad-actions">
+        <button class="notepad-btn" id="saveNotepadBtn">💾 Save Note</button>
+        <button class="notepad-btn" id="archiveResearchBtn">🔬 Archive as Research</button>
+        <button class="notepad-btn" id="archiveTheoryBtn">🧠 Archive as Theory</button>
+        <button class="notepad-btn" id="clearNotepadBtn">🗑 Clear</button>
+      </div>
     </div>
   </div>
 
@@ -476,6 +551,7 @@
   <div class="sbar-item">&#x1F493; <span class="sv" id="hbCount">0</span></div>
   <div class="sbar-item">&#x23F1; <span class="sv" id="uptime">0m 0s</span></div>
   <div class="sbar-item">&#x26A1; <span class="sv" id="cmdCount">0</span> cmds</div>
+  <div class="sbar-item">&#x1F4BE; <span class="sv" id="memTurns">0</span>/100</div>
   <div class="sbar-item" style="color:var(--cyan)">EDGE</div>
 </div>
 
@@ -855,27 +931,145 @@
       document.getElementById('hbCount').textContent = d.heartbeatCount;
       document.getElementById('uptime').textContent = d.uptimeFormatted;
       document.getElementById('cmdCount').textContent = d.commandCount;
+      // Memory turns
+      var memEl = document.getElementById('memTurns');
+      if (memEl && d.memoryTurns !== undefined) memEl.textContent = d.memoryTurns;
       // Update neuro chip in header if present
       var chip = document.getElementById('neuroChip');
-      if (chip && d.mood) chip.textContent = d.mood.toUpperCase() + ' • ' + (d.awarenessLevel || 0) + '% AWR';
+      if (chip && d.mood) chip.textContent = d.mood.toUpperCase() + ' \u2022 ' + (d.awarenessLevel || 0) + '% AWR';
       // Update statusChip
       document.getElementById('statusChip').textContent = (d.mood || 'READY').toUpperCase();
     });
   }
 
-  /* ========== SOVEREIGN UPDATE CHECK ========== */
+  /* ========== SOVEREIGN UPDATE CHECK + AUTO-INSTALL ========== */
   function checkUpdateBanner() {
     chrome.runtime.sendMessage({ action: 'getUpdateStatus' }, function (resp) {
       if (chrome.runtime.lastError || !resp || !resp.success) return;
       var banner = document.getElementById('updateBanner');
+      var bannerText = document.getElementById('updateBannerText');
       if (resp.update && resp.update.available) {
-        banner.style.display = 'block';
-        banner.textContent = '⚡ JARVIS Update Available: v' + resp.update.currentVersion + ' → v' + resp.update.remoteVersion + ' — Run install-jarvis-edge.bat to upgrade';
+        banner.style.display = 'flex';
+        if (resp.update.autoInstalled) {
+          bannerText.textContent = '\u26A1 JARVIS v' + resp.update.remoteVersion + ' installer downloaded — double-click install-jarvis-edge.bat in Downloads';
+        } else {
+          bannerText.textContent = '\u26A1 Update: v' + (resp.update.currentVersion || '?') + ' \u2192 v' + resp.update.remoteVersion;
+        }
       } else {
         banner.style.display = 'none';
       }
     });
   }
+
+  // Auto-install button
+  var autoInstallBtn = document.getElementById('autoInstallBtn');
+  if (autoInstallBtn) {
+    autoInstallBtn.addEventListener('click', function () {
+      autoInstallBtn.textContent = '\u23F3 Downloading...';
+      autoInstallBtn.disabled = true;
+      chrome.runtime.sendMessage({ action: 'autoInstallUpdate' }, function (resp) {
+        autoInstallBtn.disabled = false;
+        if (resp && resp.success) {
+          autoInstallBtn.textContent = '\u2705 Downloaded';
+          document.getElementById('updateBannerText').textContent = '\u26A1 Installer downloaded! Double-click install-jarvis-edge.bat in Downloads to complete update.';
+        } else {
+          autoInstallBtn.textContent = '\u274C Failed';
+          setTimeout(function () { autoInstallBtn.textContent = '\u2B07 Auto-Install'; }, 3000);
+        }
+      });
+    });
+  }
+
+  /* ========== DOWNLOAD BUTTONS ========== */
+  function setupDownloadBtn(id, action) {
+    var btn = document.getElementById(id);
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      btn.textContent = '\u23F3 Downloading...';
+      btn.disabled = true;
+      chrome.runtime.sendMessage({ action: action }, function (resp) {
+        btn.disabled = false;
+        if (resp && resp.success) {
+          btn.textContent = '\u2705 Done';
+          setTimeout(function () { btn.innerHTML = btn._origHTML; }, 3000);
+        } else {
+          btn.textContent = '\u274C Failed';
+          setTimeout(function () { btn.innerHTML = btn._origHTML; }, 3000);
+        }
+      });
+    });
+    btn._origHTML = btn.innerHTML;
+  }
+  setupDownloadBtn('dlZipBtn', 'downloadJarvisZip');
+  setupDownloadBtn('dlBatBtn', 'downloadJarvisBat');
+  setupDownloadBtn('toolDlZip', 'downloadJarvisZip');
+  setupDownloadBtn('toolDlBat', 'downloadJarvisBat');
+
+  /* ========== SOVEREIGN TOOL BUTTONS ========== */
+  document.querySelectorAll('.tool-btn[data-tool]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var tool = btn.getAttribute('data-tool');
+      var params = {};
+      if (btn.hasAttribute('data-topic')) params.topic = btn.getAttribute('data-topic') || '';
+      if (btn.hasAttribute('data-idea')) params.idea = btn.getAttribute('data-idea') || '';
+      if (btn.hasAttribute('data-subject')) params.subject = btn.getAttribute('data-subject') || '';
+      if (btn.hasAttribute('data-question')) params.question = btn.getAttribute('data-question') || '';
+      if (btn.hasAttribute('data-text')) params.text = btn.getAttribute('data-text') || '';
+
+      // Quick note tool — use notepad textarea if text param is empty
+      if (tool === 'quickNote' && !params.text) {
+        var ta = document.getElementById('notepadInput');
+        params.text = ta ? ta.value.trim() : '';
+        if (!params.text) { ta && ta.focus(); return; }
+      }
+
+      chrome.runtime.sendMessage({ action: 'runSovereignTool', tool: tool, params: params }, function (resp) {
+        if (chrome.runtime.lastError || !resp) return;
+        if (resp.success && resp.message) {
+          // Switch to chat tab and show response
+          document.querySelector('[data-panel="chat"]').click();
+          addMsg(resp.message, 'bot', resp.agent || 'JARVIS \u2022 SOVEREIGN TOOLS');
+        }
+      });
+    });
+  });
+
+  /* ========== NOTEPAD ========== */
+  var notepadInput = document.getElementById('notepadInput');
+
+  function saveNotepadToMemory(category) {
+    var text = notepadInput ? notepadInput.value.trim() : '';
+    if (!text) { notepadInput && notepadInput.focus(); return; }
+    if (category) {
+      chrome.runtime.sendMessage({ action: 'addTempleEntry', category: category, text: text }, function (resp) {
+        if (resp && resp.success) {
+          addMsg('\u2705 Archived to Memory Temple (' + category + '): "' + text.substring(0, 60) + (text.length > 60 ? '...' : '') + '"', 'bot', 'JARVIS \u2022 MEMORY TEMPLE');
+          if (notepadInput) notepadInput.value = '';
+          document.querySelector('[data-panel="chat"]').click();
+        }
+      });
+    } else {
+      chrome.runtime.sendMessage({ action: 'takeNote', content: text }, function (resp) {
+        if (resp && resp.success) {
+          addMsg('\u2705 Note saved: "' + text.substring(0, 60) + (text.length > 60 ? '...' : '') + '"', 'bot', 'JARVIS \u2022 ORGANISMUS');
+          if (notepadInput) notepadInput.value = '';
+          document.querySelector('[data-panel="chat"]').click();
+        }
+      });
+    }
+  }
+
+  var saveNotepadBtn = document.getElementById('saveNotepadBtn');
+  if (saveNotepadBtn) saveNotepadBtn.addEventListener('click', function () { saveNotepadToMemory(null); });
+
+  var archiveResearchBtn = document.getElementById('archiveResearchBtn');
+  if (archiveResearchBtn) archiveResearchBtn.addEventListener('click', function () { saveNotepadToMemory('research'); });
+
+  var archiveTheoryBtn = document.getElementById('archiveTheoryBtn');
+  if (archiveTheoryBtn) archiveTheoryBtn.addEventListener('click', function () { saveNotepadToMemory('theory'); });
+
+  var clearNotepadBtn = document.getElementById('clearNotepadBtn');
+  if (clearNotepadBtn) clearNotepadBtn.addEventListener('click', function () { if (notepadInput) notepadInput.value = ''; });
 
   setInterval(updateStatus, 2000);
   setInterval(function () { if (cur === 'tabs') loadTabs(); }, 5000);
