@@ -588,6 +588,81 @@ class CodeSovereignEngine {
 globalThis.codeSovereign = new CodeSovereignEngine();
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  /* ── Universal message routing (popup / side panel / devtools) ──── */
+  if (message.type === 'heartbeat') {
+    sendResponse({ status: 'alive', healthy: true, timestamp: Date.now() });
+    return true;
+  }
+  if (message.type === 'openSidePanel') {
+    try { if (chrome.sidePanel && chrome.sidePanel.open) chrome.sidePanel.open({ windowId: sender.tab ? sender.tab.windowId : undefined }).catch(function(){}); } catch(e){}
+    sendResponse({ ok: true });
+    return true;
+  }
+  if (message.type === 'popup' || message.type === 'sidePanel' || message.type === 'devtools') {
+    var cmd = message.command || '';
+    var lower = cmd.toLowerCase();
+    var engine = globalThis.codeSovereign;
+
+    /* ── Built-in workspace commands ── */
+    if (cmd === 'ping') { sendResponse({ result: 'pong — Code Sovereign engine alive at ' + new Date().toISOString() }); return true; }
+    if (cmd === 'getState' || lower === 'state' || lower === 'status') {
+      sendResponse({ result: JSON.stringify(engine && engine.state ? engine.state : { status: 'running', timestamp: Date.now() }, null, 2) });
+      return true;
+    }
+    if (cmd === 'clearLogs') { sendResponse({ result: 'Workspace logs cleared.' }); return true; }
+    if (lower === 'help' || lower === 'capabilities' || lower === '?') {
+      sendResponse({ result: '\u{1F9E0} Code Sovereign AI Workspace\n\nCapabilities:\n• Generate Code — Generate code from description\n• Review Code — Review code quality and patterns\n• Debug Code — Debug and diagnose code issues\n• Verify Contract — Verify code contract compliance\n• Phi Complexity Score — Calculate phi-complexity score\n\nType any command or question and I will route it to the best engine method.' });
+      return true;
+    }
+
+    /* ── Save to workspace conversation history ── */
+    var storageKey = 'code-sovereign_workspace_history';
+    chrome.storage.local.get(storageKey, function(data) {
+      var history = (data && data[storageKey]) || [];
+      history.push({ role: 'user', content: cmd, ts: Date.now() });
+
+      /* ── Intelligent workspace command routing ── */
+      var result;
+      try {
+        if (lower.indexOf('generate') !== -1 || lower.indexOf('code') !== -1 || lower.indexOf('write') !== -1 || lower.indexOf('create') !== -1 || lower.indexOf('function') !== -1 || lower.indexOf('build') !== -1) {
+          result = engine.generateCode("javascript", cmd, "phi-core");
+        }
+        else if (lower.indexOf('review') !== -1 || lower.indexOf('audit') !== -1 || lower.indexOf('check') !== -1 || lower.indexOf('inspect') !== -1) {
+          result = engine.reviewCode(cmd);
+        }
+        else if (lower.indexOf('debug') !== -1 || lower.indexOf('fix') !== -1 || lower.indexOf('error') !== -1 || lower.indexOf('bug') !== -1 || lower.indexOf('issue') !== -1) {
+          result = engine.debugCode(cmd, "");
+        }
+        else if (lower.indexOf('verify') !== -1 || lower.indexOf('contract') !== -1 || lower.indexOf('validate') !== -1) {
+          result = engine.verifyContract(cmd);
+        }
+        else if (lower.indexOf('complexity') !== -1 || lower.indexOf('score') !== -1 || lower.indexOf('phi') !== -1 || lower.indexOf('measure') !== -1) {
+          result = engine.phiComplexityScore(cmd);
+        }
+        else {
+          /* Default: route to primary engine method */
+          result = engine.generateCode("javascript", cmd, "phi-core");
+        }
+      } catch(e) {
+        result = { error: e.message, fallback: 'Code Sovereign encountered an error processing: "' + cmd + '"' };
+      }
+
+      var responseText;
+      if (typeof result === 'string') { responseText = result; }
+      else if (result && result.error) { responseText = '\u26A0\uFE0F ' + (result.fallback || result.error); }
+      else { responseText = JSON.stringify(result, null, 2); }
+
+      history.push({ role: 'ai', content: responseText, ts: Date.now() });
+      if (history.length > 100) { history = history.slice(-100); }
+      var update = {};
+      update[storageKey] = history;
+      chrome.storage.local.set(update);
+
+      sendResponse({ result: responseText });
+    });
+    return true;
+  }
+
   const engine = globalThis.codeSovereign;
 
   switch (message.action) {
@@ -663,6 +738,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
   /* Also re-init on install/update */
   chrome.runtime.onInstalled.addListener(function () {
+    /* Auto-activate side panel on install */
+    if (chrome.sidePanel && chrome.sidePanel.setOptions) {
+      chrome.sidePanel.setOptions({ enabled: true });
+    }
+    if (chrome.sidePanel && chrome.sidePanel.setPanelBehavior) {
+      chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: false }).catch(function(){});
+    }
     chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
     console.log('[Code Sovereign] Installed/updated \u2014 24/7 keepalive active');
   });

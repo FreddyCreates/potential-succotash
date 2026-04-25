@@ -1,925 +1,521 @@
 /**
- * Math Intelligence Worker — Pure In-Browser Mathematics
+ * Math Intelligence Worker — Sovereign Mathematical Engine
  *
- * Permanent Web Worker #15 in the Brain Division.
- * Provides:
- * - Matrix algebra (multiply, transpose, determinant, inverse, etc.)
- * - Statistical analysis (mean, median, mode, variance, skewness, etc.)
- * - Phi / golden ratio operations (fibonacci, golden angle, convergents)
- * - Discrete Fourier Transform (DFT, inverse DFT, power spectrum)
- * - Probability distributions (normal, poisson, binomial, bayesian)
- * - Optimization (golden section search, gradient descent)
- * - Regression (linear, polynomial)
- * - Number theory (primes, factorization, gcd, totient)
+ * Permanent Web Worker that provides:
+ * - Matrix operations (multiply, transpose, determinant, inverse)
+ * - Statistical analysis (mean, variance, std-dev, correlation, regression)
+ * - Phi-based golden ratio computations (Fibonacci, spiral, convergence)
+ * - Fourier analysis (DFT, spectral decomposition)
+ * - Probability & distributions (normal, Poisson, Bayesian update)
+ * - Optimization (gradient descent, golden-section search)
+ * - Number theory (primality, GCD, modular exponentiation)
  *
- * NO external APIs. NO network calls. Pure native math intelligence.
+ * This worker runs entirely in-browser. No external APIs.
+ * Pure mathematical intelligence for the organism.
  *
  * Protocol: postMessage
- *   Main → Worker: { type: 'matrix', op: '...', a: [[...]], ... }
- *   Main → Worker: { type: 'stats', op: '...', data: [...] }
- *   Main → Worker: { type: 'phi', op: '...', n: N }
- *   Main → Worker: { type: 'fourier', op: '...', signal: [...] }
- *   Main → Worker: { type: 'probability', op: '...', ... }
- *   Main → Worker: { type: 'optimize', op: '...', f: '...', ... }
- *   Main → Worker: { type: 'regression', op: '...', xs: [...], ys: [...] }
- *   Main → Worker: { type: 'numberTheory', op: '...', n: N }
- *   Worker → Main: { type: '<cap>-result', op: '...', result: ... }
- *   Worker → Main: { type: 'heartbeat', worker: 'math', ... }
+ *   Main → Worker: { type: 'matrix-multiply', a: [[]], b: [[]] }
+ *   Main → Worker: { type: 'stats', data: [...] }
+ *   Main → Worker: { type: 'phi-sequence', n: N }
+ *   Main → Worker: { type: 'fourier', signal: [...] }
+ *   Main → Worker: { type: 'optimize', fn: '...', bounds: [a,b] }
+ *   Main → Worker: { type: 'probability', dist: '...', params: {...} }
+ *   Main → Worker: { type: 'regression', x: [...], y: [...] }
+ *   Main → Worker: { type: 'prime-check', n: N }
+ *   Main → Worker: { type: 'stats' }
+ *   Worker → Main: { type: 'math-result', ... }
+ *   Worker → Main: { type: 'heartbeat', ... }
  */
 
 'use strict';
 importScripts('neuro-core.js');
 
 var PHI = 1.618033988749895;
+var PHI_INV = 0.618033988749895;
 var HEARTBEAT_MS = 873;
 var beatCount = 0;
 var running = true;
-var startTime = Date.now();
 
 /* ════════════════════════════════════════════════════════════════
    Metrics
    ════════════════════════════════════════════════════════════════ */
 
 var mathMetrics = {
-  totalComputations: 0,
-  matrixOps: 0,
-  statsOps: 0,
-  phiOps: 0,
-  fourierOps: 0,
-  probabilityOps: 0,
-  optimizeOps: 0,
-  regressionOps: 0,
-  numberTheoryOps: 0,
-  totalTokensProcessed: 0
+  totalMatrixOps: 0,
+  totalStatOps: 0,
+  totalPhiOps: 0,
+  totalFourierOps: 0,
+  totalOptimizations: 0,
+  totalProbabilityOps: 0,
+  totalRegressions: 0,
+  totalPrimeChecks: 0,
+  totalComputeTimeMs: 0
 };
 
 /* ════════════════════════════════════════════════════════════════
-   1. Matrix Algebra
+   Matrix Operations
    ════════════════════════════════════════════════════════════════ */
 
-function matrixMultiply(A, B) {
-  var rowsA = A.length, colsA = A[0].length, colsB = B[0].length;
-  var C = [];
+function matrixMultiply(a, b) {
+  var rowsA = a.length;
+  var colsA = a[0].length;
+  var colsB = b[0].length;
+  if (colsA !== b.length) return { error: 'Dimension mismatch' };
+
+  var result = [];
   for (var i = 0; i < rowsA; i++) {
-    C[i] = [];
+    result[i] = [];
     for (var j = 0; j < colsB; j++) {
       var sum = 0;
       for (var k = 0; k < colsA; k++) {
-        sum += A[i][k] * B[k][j];
+        sum += a[i][k] * b[k][j];
       }
-      C[i][j] = sum;
+      result[i][j] = sum;
     }
   }
-  return C;
+  mathMetrics.totalMatrixOps++;
+  return { matrix: result, rows: rowsA, cols: colsB };
 }
 
-function matrixTranspose(A) {
-  var rows = A.length, cols = A[0].length;
-  var T = [];
+function matrixTranspose(m) {
+  var rows = m.length;
+  var cols = m[0].length;
+  var result = [];
   for (var j = 0; j < cols; j++) {
-    T[j] = [];
+    result[j] = [];
     for (var i = 0; i < rows; i++) {
-      T[j][i] = A[i][j];
+      result[j][i] = m[i][j];
     }
   }
-  return T;
+  mathMetrics.totalMatrixOps++;
+  return { matrix: result, rows: cols, cols: rows };
 }
 
-function matrixDeterminant(A) {
-  var n = A.length;
-  if (n === 1) return A[0][0];
-  if (n === 2) return A[0][0] * A[1][1] - A[0][1] * A[1][0];
+function matrixDeterminant(m) {
+  var n = m.length;
+  if (n === 1) return m[0][0];
+  if (n === 2) return m[0][0] * m[1][1] - m[0][1] * m[1][0];
+
   var det = 0;
   for (var j = 0; j < n; j++) {
-    var minor = [];
+    var sub = [];
     for (var i = 1; i < n; i++) {
       var row = [];
       for (var k = 0; k < n; k++) {
-        if (k !== j) row.push(A[i][k]);
+        if (k !== j) row.push(m[i][k]);
       }
-      minor.push(row);
+      sub.push(row);
     }
-    det += (j % 2 === 0 ? 1 : -1) * A[0][j] * matrixDeterminant(minor);
+    det += (j % 2 === 0 ? 1 : -1) * m[0][j] * matrixDeterminant(sub);
   }
+  mathMetrics.totalMatrixOps++;
   return det;
 }
 
-function matrixTrace(A) {
-  var sum = 0;
-  for (var i = 0; i < A.length; i++) {
-    sum += A[i][i];
-  }
-  return sum;
+function matrixTrace(m) {
+  var trace = 0;
+  var n = Math.min(m.length, m[0].length);
+  for (var i = 0; i < n; i++) trace += m[i][i];
+  return trace;
 }
 
-function matrixIdentity(n) {
-  var I = [];
+function identityMatrix(n) {
+  var m = [];
   for (var i = 0; i < n; i++) {
-    I[i] = [];
+    m[i] = [];
     for (var j = 0; j < n; j++) {
-      I[i][j] = (i === j) ? 1 : 0;
+      m[i][j] = i === j ? 1 : 0;
     }
   }
-  return I;
-}
-
-function matrixAdd(A, B) {
-  var rows = A.length, cols = A[0].length;
-  var C = [];
-  for (var i = 0; i < rows; i++) {
-    C[i] = [];
-    for (var j = 0; j < cols; j++) {
-      C[i][j] = A[i][j] + B[i][j];
-    }
-  }
-  return C;
-}
-
-function matrixScalarMultiply(A, s) {
-  var rows = A.length, cols = A[0].length;
-  var C = [];
-  for (var i = 0; i < rows; i++) {
-    C[i] = [];
-    for (var j = 0; j < cols; j++) {
-      C[i][j] = A[i][j] * s;
-    }
-  }
-  return C;
-}
-
-function matrixInverse(A) {
-  var n = A.length;
-  var det = matrixDeterminant(A);
-  if (det === 0) return null;
-
-  if (n === 2) {
-    return [
-      [A[1][1] / det, -A[0][1] / det],
-      [-A[1][0] / det, A[0][0] / det]
-    ];
-  }
-
-  if (n === 3) {
-    var cofactors = [];
-    for (var i = 0; i < 3; i++) {
-      cofactors[i] = [];
-      for (var j = 0; j < 3; j++) {
-        var minor = [];
-        for (var mi = 0; mi < 3; mi++) {
-          if (mi === i) continue;
-          var row = [];
-          for (var mj = 0; mj < 3; mj++) {
-            if (mj === j) continue;
-            row.push(A[mi][mj]);
-          }
-          minor.push(row);
-        }
-        cofactors[i][j] = ((i + j) % 2 === 0 ? 1 : -1) * matrixDeterminant(minor);
-      }
-    }
-    var adjugate = matrixTranspose(cofactors);
-    return matrixScalarMultiply(adjugate, 1 / det);
-  }
-
-  return null;
-}
-
-function handleMatrix(msg) {
-  mathMetrics.matrixOps++;
-  var result;
-  switch (msg.op) {
-    case 'multiply':
-      result = matrixMultiply(msg.a, msg.b);
-      break;
-    case 'transpose':
-      result = matrixTranspose(msg.a);
-      break;
-    case 'determinant':
-      result = matrixDeterminant(msg.a);
-      break;
-    case 'trace':
-      result = matrixTrace(msg.a);
-      break;
-    case 'identity':
-      result = matrixIdentity(msg.n);
-      break;
-    case 'add':
-      result = matrixAdd(msg.a, msg.b);
-      break;
-    case 'scalarMultiply':
-      result = matrixScalarMultiply(msg.a, msg.s);
-      break;
-    case 'inverse':
-      result = matrixInverse(msg.a);
-      break;
-    default:
-      result = null;
-  }
-  postMessage({ type: 'matrix-result', op: msg.op, result: result, phi: PHI });
+  return m;
 }
 
 /* ════════════════════════════════════════════════════════════════
-   2. Statistical Analysis
+   Statistical Analysis
    ════════════════════════════════════════════════════════════════ */
 
-function statsMean(data) {
-  var sum = 0;
-  for (var i = 0; i < data.length; i++) sum += data[i];
-  return sum / data.length;
-}
+function computeStats(data) {
+  if (!data || data.length === 0) return { error: 'Empty data' };
 
-function statsMedian(sorted) {
-  var n = sorted.length;
-  if (n % 2 === 1) return sorted[Math.floor(n / 2)];
-  return (sorted[Math.floor(n / 2) - 1] + sorted[Math.floor(n / 2)]) / 2;
-}
-
-function statsMode(data) {
-  var freq = Object.create(null);
-  var maxFreq = 0;
-  var modes = [];
-  for (var i = 0; i < data.length; i++) {
-    var key = String(data[i]);
-    freq[key] = (freq[key] || 0) + 1;
-    if (freq[key] > maxFreq) maxFreq = freq[key];
-  }
-  for (var k in freq) {
-    if (freq[k] === maxFreq) modes.push(Number(k));
-  }
-  return modes;
-}
-
-function statsVariance(data, mean) {
-  var sum = 0;
-  for (var i = 0; i < data.length; i++) {
-    var d = data[i] - mean;
-    sum += d * d;
-  }
-  return sum / data.length;
-}
-
-function statsStddev(variance) {
-  return Math.sqrt(variance);
-}
-
-function statsSkewness(data, mean, stddev) {
-  if (stddev === 0) return 0;
   var n = data.length;
   var sum = 0;
+  var min = data[0];
+  var max = data[0];
+
   for (var i = 0; i < n; i++) {
-    var d = (data[i] - mean) / stddev;
-    sum += d * d * d;
+    sum += data[i];
+    if (data[i] < min) min = data[i];
+    if (data[i] > max) max = data[i];
   }
-  return sum / n;
-}
 
-function statsKurtosis(data, mean, stddev) {
-  if (stddev === 0) return 0;
-  var n = data.length;
-  var sum = 0;
-  for (var i = 0; i < n; i++) {
-    var d = (data[i] - mean) / stddev;
-    sum += d * d * d * d;
+  var mean = sum / n;
+
+  var varianceSum = 0;
+  var skewSum = 0;
+  var kurtSum = 0;
+  for (var j = 0; j < n; j++) {
+    var diff = data[j] - mean;
+    varianceSum += diff * diff;
+    skewSum += diff * diff * diff;
+    kurtSum += diff * diff * diff * diff;
   }
-  return (sum / n) - 3;
-}
 
-function statsPercentile(sorted, p) {
-  var idx = (p / 100) * (sorted.length - 1);
-  var lower = Math.floor(idx);
-  var upper = Math.ceil(idx);
-  if (lower === upper) return sorted[lower];
-  var frac = idx - lower;
-  return sorted[lower] * (1 - frac) + sorted[upper] * frac;
-}
+  var variance = varianceSum / n;
+  var stdDev = Math.sqrt(variance);
+  var skewness = stdDev > 0 ? (skewSum / n) / (stdDev * stdDev * stdDev) : 0;
+  var kurtosis = stdDev > 0 ? (kurtSum / n) / (variance * variance) - 3 : 0;
 
-function statsIqr(sorted) {
-  return statsPercentile(sorted, 75) - statsPercentile(sorted, 25);
-}
+  // Median
+  var sorted = data.slice().sort(function (a, b) { return a - b; });
+  var median = n % 2 === 0 ? (sorted[n / 2 - 1] + sorted[n / 2]) / 2 : sorted[Math.floor(n / 2)];
 
-function statsRange(sorted) {
-  return sorted[sorted.length - 1] - sorted[0];
-}
+  // Interquartile range
+  var q1Idx = Math.floor(n * 0.25);
+  var q3Idx = Math.floor(n * 0.75);
+  var q1 = sorted[q1Idx];
+  var q3 = sorted[q3Idx];
+  var iqr = q3 - q1;
 
-function statsSum(data) {
-  var s = 0;
-  for (var i = 0; i < data.length; i++) s += data[i];
-  return s;
-}
-
-function statsMin(sorted) {
-  return sorted[0];
-}
-
-function statsMax(sorted) {
-  return sorted[sorted.length - 1];
-}
-
-function computeAllStats(data) {
-  var sorted = data.slice().sort(function(a, b) { return a - b; });
-  var mean = statsMean(data);
-  var variance = statsVariance(data, mean);
-  var stddev = statsStddev(variance);
+  mathMetrics.totalStatOps++;
   return {
-    mean: mean,
-    median: statsMedian(sorted),
-    mode: statsMode(data),
-    variance: variance,
-    stddev: stddev,
-    skewness: statsSkewness(data, mean, stddev),
-    kurtosis: statsKurtosis(data, mean, stddev),
-    iqr: statsIqr(sorted),
-    range: statsRange(sorted),
-    sum: statsSum(data),
-    min: statsMin(sorted),
-    max: statsMax(sorted),
-    count: data.length
+    n: n, sum: sum, mean: round6(mean), median: round6(median),
+    min: min, max: max, range: max - min,
+    variance: round6(variance), stdDev: round6(stdDev),
+    skewness: round6(skewness), kurtosis: round6(kurtosis),
+    q1: round6(q1), q3: round6(q3), iqr: round6(iqr),
+    coeffOfVariation: mean !== 0 ? round6(stdDev / Math.abs(mean)) : 0
   };
 }
 
-function handleStats(msg) {
-  mathMetrics.statsOps++;
-  mathMetrics.totalTokensProcessed += (msg.data ? msg.data.length : 0);
-  var data = msg.data || [];
-  var sorted = data.slice().sort(function(a, b) { return a - b; });
-  var result;
+function correlation(x, y) {
+  var n = Math.min(x.length, y.length);
+  if (n < 2) return 0;
 
-  switch (msg.op) {
-    case 'all':
-      result = computeAllStats(data);
-      break;
-    case 'mean':
-      result = statsMean(data);
-      break;
-    case 'median':
-      result = statsMedian(sorted);
-      break;
-    case 'mode':
-      result = statsMode(data);
-      break;
-    case 'variance':
-      result = statsVariance(data, statsMean(data));
-      break;
-    case 'stddev':
-      result = statsStddev(statsVariance(data, statsMean(data)));
-      break;
-    case 'skewness': {
-      var m = statsMean(data);
-      result = statsSkewness(data, m, statsStddev(statsVariance(data, m)));
-      break;
-    }
-    case 'kurtosis': {
-      var mk = statsMean(data);
-      result = statsKurtosis(data, mk, statsStddev(statsVariance(data, mk)));
-      break;
-    }
-    case 'iqr':
-      result = statsIqr(sorted);
-      break;
-    case 'percentile':
-      result = statsPercentile(sorted, msg.p || 50);
-      break;
-    case 'range':
-      result = statsRange(sorted);
-      break;
-    case 'sum':
-      result = statsSum(data);
-      break;
-    case 'min':
-      result = statsMin(sorted);
-      break;
-    case 'max':
-      result = statsMax(sorted);
-      break;
-    default:
-      result = null;
+  var sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0, sumY2 = 0;
+  for (var i = 0; i < n; i++) {
+    sumX += x[i]; sumY += y[i];
+    sumXY += x[i] * y[i];
+    sumX2 += x[i] * x[i];
+    sumY2 += y[i] * y[i];
   }
-  postMessage({ type: 'stats-result', op: msg.op, result: result });
+
+  var denom = Math.sqrt((n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY));
+  if (denom === 0) return 0;
+  return round6((n * sumXY - sumX * sumY) / denom);
 }
 
 /* ════════════════════════════════════════════════════════════════
-   3. Phi / Golden Ratio Operations
+   Linear Regression
    ════════════════════════════════════════════════════════════════ */
 
-var fibCache = [0, 1];
+function linearRegression(x, y) {
+  var n = Math.min(x.length, y.length);
+  if (n < 2) return { error: 'Need at least 2 data points' };
 
-function fibonacci(n) {
-  if (n < 0) return 0;
-  if (n < fibCache.length) return fibCache[n];
-  for (var i = fibCache.length; i <= n; i++) {
-    fibCache[i] = fibCache[i - 1] + fibCache[i - 2];
+  var sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
+  for (var i = 0; i < n; i++) {
+    sumX += x[i]; sumY += y[i];
+    sumXY += x[i] * y[i];
+    sumX2 += x[i] * x[i];
   }
-  return fibCache[n];
+
+  var denom = n * sumX2 - sumX * sumX;
+  if (denom === 0) return { error: 'Degenerate data' };
+
+  var slope = (n * sumXY - sumX * sumY) / denom;
+  var intercept = (sumY - slope * sumX) / n;
+  var r = correlation(x, y);
+  var r2 = r * r;
+
+  // Residuals
+  var residuals = [];
+  var ssRes = 0;
+  var meanY = sumY / n;
+  var ssTot = 0;
+  for (var j = 0; j < n; j++) {
+    var predicted = slope * x[j] + intercept;
+    var residual = y[j] - predicted;
+    residuals.push(round6(residual));
+    ssRes += residual * residual;
+    ssTot += (y[j] - meanY) * (y[j] - meanY);
+  }
+
+  mathMetrics.totalRegressions++;
+  return {
+    slope: round6(slope),
+    intercept: round6(intercept),
+    r: round6(r),
+    r2: round6(r2),
+    residuals: residuals,
+    standardError: round6(Math.sqrt(ssRes / (n - 2))),
+    equation: 'y = ' + round6(slope) + 'x + ' + round6(intercept)
+  };
 }
+
+/* ════════════════════════════════════════════════════════════════
+   Phi — Golden Ratio Intelligence
+   ════════════════════════════════════════════════════════════════ */
 
 function fibonacciSequence(n) {
-  var seq = [];
-  for (var i = 0; i < n; i++) {
-    seq.push(fibonacci(i));
-  }
-  return seq;
-}
-
-function goldenAngle(nPoints) {
-  var angle = 2 * Math.PI / (PHI * PHI);
-  var points = [];
-  for (var i = 0; i < nPoints; i++) {
-    var theta = i * angle;
-    var r = Math.sqrt(i);
-    points.push({
-      index: i,
-      angle: theta,
-      x: r * Math.cos(theta),
-      y: r * Math.sin(theta)
-    });
-  }
-  return points;
-}
-
-function phiPowers(n) {
-  var powers = [];
-  var val = 1;
-  for (var i = 0; i < n; i++) {
-    powers.push(val);
-    val *= PHI;
-  }
-  return powers;
-}
-
-function phiConvergents(n) {
-  var convergents = [];
-  for (var i = 1; i <= n; i++) {
-    var fib1 = fibonacci(i + 1);
-    var fib0 = fibonacci(i);
-    convergents.push({
-      n: i,
-      numerator: fib1,
-      denominator: fib0,
-      ratio: fib0 !== 0 ? fib1 / fib0 : Infinity,
-      error: fib0 !== 0 ? Math.abs(fib1 / fib0 - PHI) : Infinity
-    });
-  }
-  return convergents;
-}
-
-function lucasNumbers(n) {
-  var seq = [2, 1];
+  n = Math.min(n || 20, 100);
+  var seq = [0, 1];
+  var ratios = [];
   for (var i = 2; i < n; i++) {
-    seq[i] = seq[i - 1] + seq[i - 2];
+    seq.push(seq[i - 1] + seq[i - 2]);
+    ratios.push(round6(seq[i] / seq[i - 1]));
   }
-  return seq.slice(0, n);
-}
-
-function phiRatio(a, b) {
-  var ratio = Math.max(a, b) / Math.min(a, b);
+  mathMetrics.totalPhiOps++;
   return {
-    ratio: ratio,
+    sequence: seq,
+    ratios: ratios,
+    convergence: round6(ratios[ratios.length - 1]),
     phi: PHI,
-    deviation: Math.abs(ratio - PHI),
-    isGolden: Math.abs(ratio - PHI) < 0.01
+    phiInverse: PHI_INV,
+    goldenAngle: round6(360 * PHI_INV)
   };
 }
 
-function handlePhi(msg) {
-  mathMetrics.phiOps++;
-  var result;
-  switch (msg.op) {
-    case 'fibonacci':
-      result = fibonacciSequence(msg.n || 10);
-      break;
-    case 'goldenAngle':
-      result = goldenAngle(msg.n || 10);
-      break;
-    case 'phiPowers':
-      result = phiPowers(msg.n || 10);
-      break;
-    case 'phiConvergents':
-      result = phiConvergents(msg.n || 10);
-      break;
-    case 'lucasNumbers':
-      result = lucasNumbers(msg.n || 10);
-      break;
-    case 'phiRatio':
-      result = phiRatio(msg.a, msg.b);
-      break;
-    default:
-      result = null;
+function phiSpiral(n) {
+  n = Math.min(n || 50, 500);
+  var points = [];
+  for (var i = 0; i < n; i++) {
+    var angle = i * 2.399963; // golden angle in radians
+    var radius = Math.sqrt(i) * PHI;
+    points.push({
+      x: round6(radius * Math.cos(angle)),
+      y: round6(radius * Math.sin(angle)),
+      r: round6(radius),
+      theta: round6(angle)
+    });
   }
-  postMessage({ type: 'phi-result', op: msg.op, result: result, phi: PHI });
+  mathMetrics.totalPhiOps++;
+  return { points: points, goldenAngle: 137.508, totalPoints: n };
+}
+
+function phiPower(n) {
+  n = Math.min(n || 20, 50);
+  var powers = [];
+  for (var i = 0; i < n; i++) {
+    var val = Math.pow(PHI, i);
+    var fib = Math.round(val / Math.sqrt(5));
+    powers.push({ n: i, phiN: round6(val), approxFib: fib });
+  }
+  mathMetrics.totalPhiOps++;
+  return { powers: powers, property: 'φ^n = F(n)*φ + F(n-1)' };
 }
 
 /* ════════════════════════════════════════════════════════════════
-   4. Discrete Fourier Transform
+   Discrete Fourier Transform
    ════════════════════════════════════════════════════════════════ */
 
 function dft(signal) {
   var N = signal.length;
-  var real = [];
-  var imag = [];
+  if (N === 0) return { error: 'Empty signal' };
+
+  var spectrum = [];
   for (var k = 0; k < N; k++) {
-    var sumReal = 0;
-    var sumImag = 0;
+    var re = 0, im = 0;
     for (var n = 0; n < N; n++) {
-      var angle = (2 * Math.PI * k * n) / N;
-      sumReal += signal[n] * Math.cos(angle);
-      sumImag -= signal[n] * Math.sin(angle);
+      var angle = -2 * Math.PI * k * n / N;
+      re += signal[n] * Math.cos(angle);
+      im += signal[n] * Math.sin(angle);
     }
-    real.push(sumReal);
-    imag.push(sumImag);
+    var magnitude = Math.sqrt(re * re + im * im) / N;
+    var phase = Math.atan2(im, re);
+    spectrum.push({
+      frequency: k,
+      magnitude: round6(magnitude),
+      phase: round6(phase),
+      re: round6(re / N),
+      im: round6(im / N)
+    });
   }
-  return { real: real, imag: imag, length: N };
-}
 
-function inverseDft(spectrum) {
-  var N = spectrum.real.length;
-  var signal = [];
-  for (var n = 0; n < N; n++) {
-    var sum = 0;
-    for (var k = 0; k < N; k++) {
-      var angle = (2 * Math.PI * k * n) / N;
-      sum += spectrum.real[k] * Math.cos(angle) - spectrum.imag[k] * Math.sin(angle);
-    }
-    signal.push(sum / N);
-  }
-  return signal;
-}
-
-function powerSpectrum(signal) {
-  var spectrum = dft(signal);
-  var power = [];
-  for (var k = 0; k < spectrum.length; k++) {
-    power.push(spectrum.real[k] * spectrum.real[k] + spectrum.imag[k] * spectrum.imag[k]);
-  }
-  return { power: power, length: spectrum.length };
-}
-
-function dominantFrequency(signal, sampleRate) {
-  var ps = powerSpectrum(signal);
-  var maxPower = 0;
-  var maxIndex = 0;
-  var halfLen = Math.floor(ps.length / 2);
-  for (var k = 1; k < halfLen; k++) {
-    if (ps.power[k] > maxPower) {
-      maxPower = ps.power[k];
-      maxIndex = k;
+  // Find dominant frequency
+  var dominant = { frequency: 0, magnitude: 0 };
+  for (var d = 1; d < Math.floor(N / 2); d++) {
+    if (spectrum[d].magnitude > dominant.magnitude) {
+      dominant = { frequency: d, magnitude: spectrum[d].magnitude };
     }
   }
-  var frequency = (maxIndex * (sampleRate || 1)) / ps.length;
-  return { frequency: frequency, index: maxIndex, power: maxPower };
-}
 
-function handleFourier(msg) {
-  mathMetrics.fourierOps++;
-  mathMetrics.totalTokensProcessed += (msg.signal ? msg.signal.length : 0);
-  var result;
-  switch (msg.op) {
-    case 'dft':
-      result = dft(msg.signal);
-      break;
-    case 'inverseDft':
-      result = inverseDft(msg.spectrum);
-      break;
-    case 'powerSpectrum':
-      result = powerSpectrum(msg.signal);
-      break;
-    case 'dominantFrequency':
-      result = dominantFrequency(msg.signal, msg.sampleRate);
-      break;
-    default:
-      result = null;
-  }
-  postMessage({ type: 'fourier-result', op: msg.op, result: result });
+  mathMetrics.totalFourierOps++;
+  return {
+    spectrum: spectrum.slice(0, Math.floor(N / 2)),
+    dominantFrequency: dominant.frequency,
+    dominantMagnitude: dominant.magnitude,
+    signalLength: N
+  };
 }
 
 /* ════════════════════════════════════════════════════════════════
-   5. Probability Distributions
+   Probability & Distributions
    ════════════════════════════════════════════════════════════════ */
 
-function normalPdf(x, mean, stddev) {
-  var d = x - mean;
-  var s2 = stddev * stddev;
-  return (1 / (stddev * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * d * d / s2);
+function normalPdf(x, mu, sigma) {
+  mu = mu || 0;
+  sigma = sigma || 1;
+  var z = (x - mu) / sigma;
+  return (1 / (sigma * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * z * z);
 }
 
-function normalCdf(x, mean, stddev) {
-  // Abramowitz and Stegun rational approximation (formula 7.1.26)
-  var z = (x - mean) / stddev;
-  var sign = z < 0 ? -1 : 1;
-  z = Math.abs(z) / Math.sqrt(2);
-
-  var t = 1 / (1 + 0.3275911 * z);
-  var a1 = 0.254829592;
-  var a2 = -0.284496736;
-  var a3 = 1.421413741;
-  var a4 = -1.453152027;
-  var a5 = 1.061405429;
-  var erf = 1 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-z * z);
-  return 0.5 * (1 + sign * erf);
+function normalCdf(x, mu, sigma) {
+  mu = mu || 0;
+  sigma = sigma || 1;
+  var z = (x - mu) / sigma;
+  // Approximation using error function
+  var t = 1 / (1 + 0.2316419 * Math.abs(z));
+  var d = 0.3989422804014327;
+  var p = d * Math.exp(-z * z / 2) * t *
+    (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+  if (z > 0) p = 1 - p;
+  return round6(p);
 }
 
 function poissonPmf(k, lambda) {
-  // P(X=k) = e^(-lambda) * lambda^k / k!
-  var logP = -lambda + k * Math.log(lambda);
-  for (var i = 2; i <= k; i++) {
-    logP -= Math.log(i);
-  }
-  return Math.exp(logP);
+  if (k < 0 || lambda <= 0) return 0;
+  var logP = k * Math.log(lambda) - lambda - logFactorial(k);
+  return round6(Math.exp(logP));
 }
 
-function binomialPmf(k, n, p) {
-  // P(X=k) = C(n,k) * p^k * (1-p)^(n-k)
-  var logC = 0;
-  for (var i = 0; i < k; i++) {
-    logC += Math.log(n - i) - Math.log(i + 1);
-  }
-  return Math.exp(logC + k * Math.log(p) + (n - k) * Math.log(1 - p));
+function logFactorial(n) {
+  if (n <= 1) return 0;
+  var result = 0;
+  for (var i = 2; i <= n; i++) result += Math.log(i);
+  return result;
 }
 
-function uniformPdf(x, a, b) {
-  if (x < a || x > b) return 0;
-  return 1 / (b - a);
+function bayesianUpdate(prior, likelihood, evidence) {
+  if (evidence === 0) return { error: 'Evidence cannot be zero' };
+  var posterior = (likelihood * prior) / evidence;
+  mathMetrics.totalProbabilityOps++;
+  return {
+    prior: round6(prior),
+    likelihood: round6(likelihood),
+    evidence: round6(evidence),
+    posterior: round6(posterior),
+    bayesFactor: round6(likelihood / evidence)
+  };
 }
 
-function exponentialPdf(x, lambda) {
-  if (x < 0) return 0;
-  return lambda * Math.exp(-lambda * x);
-}
+function probabilityDistribution(dist, params) {
+  mathMetrics.totalProbabilityOps++;
 
-function bayesUpdate(prior, likelihood, evidence) {
-  if (evidence === 0) return 0;
-  return (likelihood * prior) / evidence;
-}
-
-function handleProbability(msg) {
-  mathMetrics.probabilityOps++;
-  var result;
-  switch (msg.op) {
-    case 'normalPdf':
-      result = normalPdf(msg.x, msg.mean || 0, msg.stddev || 1);
-      break;
-    case 'normalCdf':
-      result = normalCdf(msg.x, msg.mean || 0, msg.stddev || 1);
-      break;
-    case 'poissonPmf':
-      result = poissonPmf(msg.k, msg.lambda);
-      break;
-    case 'binomialPmf':
-      result = binomialPmf(msg.k, msg.n, msg.p);
-      break;
-    case 'uniformPdf':
-      result = uniformPdf(msg.x, msg.a, msg.b);
-      break;
-    case 'exponentialPdf':
-      result = exponentialPdf(msg.x, msg.lambda);
-      break;
-    case 'bayesUpdate':
-      result = bayesUpdate(msg.prior, msg.likelihood, msg.evidence);
-      break;
+  switch (dist) {
+    case 'normal': {
+      var mu = params.mu || 0;
+      var sigma = params.sigma || 1;
+      var x = params.x;
+      if (x !== undefined) {
+        return { pdf: round6(normalPdf(x, mu, sigma)), cdf: normalCdf(x, mu, sigma), x: x, mu: mu, sigma: sigma };
+      }
+      // Generate PDF curve
+      var curve = [];
+      for (var i = -40; i <= 40; i++) {
+        var xv = mu + (i / 10) * sigma * 3;
+        curve.push({ x: round6(xv), pdf: round6(normalPdf(xv, mu, sigma)) });
+      }
+      return { distribution: 'normal', mu: mu, sigma: sigma, curve: curve };
+    }
+    case 'poisson': {
+      var lambda = params.lambda || 1;
+      var kMax = Math.min(Math.ceil(lambda + 4 * Math.sqrt(lambda)), 50);
+      var pmfCurve = [];
+      for (var pk = 0; pk <= kMax; pk++) {
+        pmfCurve.push({ k: pk, pmf: poissonPmf(pk, lambda) });
+      }
+      return { distribution: 'poisson', lambda: lambda, pmf: pmfCurve };
+    }
+    case 'bayesian': {
+      return bayesianUpdate(params.prior || 0.5, params.likelihood || 0.8, params.evidence || 0.5);
+    }
     default:
-      result = null;
+      return { error: 'Unknown distribution: ' + dist };
   }
-  postMessage({ type: 'probability-result', op: msg.op, result: result });
 }
 
 /* ════════════════════════════════════════════════════════════════
-   6. Optimization
+   Optimization — Golden-Section Search
    ════════════════════════════════════════════════════════════════ */
 
-function buildFunction(expr) {
-  return new Function('x', 'return (' + expr + ');');
-}
+function goldenSectionSearch(fn, a, b, tol) {
+  tol = tol || 1e-8;
+  var maxIter = 100;
+  var iter = 0;
 
-function goldenSectionSearch(fExpr, a, b, tol) {
-  var f = buildFunction(fExpr);
-  var gr = (Math.sqrt(5) - 1) / 2;
-  var iterations = 0;
-  var maxIter = 1000;
-  var c = b - gr * (b - a);
-  var d = a + gr * (b - a);
+  // Parse simple function expressions
+  var evalFn = buildSafeFunction(fn);
+  if (!evalFn) return { error: 'Cannot parse function expression' };
 
-  while (Math.abs(b - a) > tol && iterations < maxIter) {
-    iterations++;
-    if (f(c) < f(d)) {
+  var c = b - PHI_INV * (b - a);
+  var d = a + PHI_INV * (b - a);
+  var history = [];
+
+  while (Math.abs(b - a) > tol && iter < maxIter) {
+    var fc = evalFn(c);
+    var fd = evalFn(d);
+    history.push({ iter: iter, a: round6(a), b: round6(b), fMin: round6(Math.min(fc, fd)) });
+
+    if (fc < fd) {
       b = d;
     } else {
       a = c;
     }
-    c = b - gr * (b - a);
-    d = a + gr * (b - a);
+    c = b - PHI_INV * (b - a);
+    d = a + PHI_INV * (b - a);
+    iter++;
   }
+
   var xMin = (a + b) / 2;
-  return { x: xMin, fx: f(xMin), iterations: iterations };
-}
-
-function gradientDescent(fExpr, x0, lr, iterations) {
-  var f = buildFunction(fExpr);
-  var x = x0;
-  var h = 1e-8;
-  var maxIter = iterations || 1000;
-  var learningRate = lr || 0.01;
-
-  for (var i = 0; i < maxIter; i++) {
-    var grad = (f(x + h) - f(x - h)) / (2 * h);
-    x = x - learningRate * grad;
-  }
-  return { x: x, fx: f(x), iterations: maxIter };
-}
-
-function handleOptimize(msg) {
-  mathMetrics.optimizeOps++;
-  var result;
-  switch (msg.op) {
-    case 'goldenSection':
-      result = goldenSectionSearch(msg.f, msg.a, msg.b, msg.tol || 0.001);
-      break;
-    case 'gradientDescent':
-      result = gradientDescent(msg.f, msg.x0 || 0, msg.lr || 0.01, msg.iterations || 1000);
-      break;
-    default:
-      result = null;
-  }
-  postMessage({ type: 'optimize-result', op: msg.op, result: result });
-}
-
-/* ════════════════════════════════════════════════════════════════
-   7. Regression
-   ════════════════════════════════════════════════════════════════ */
-
-function linearRegression(xs, ys) {
-  var n = xs.length;
-  var sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0, sumY2 = 0;
-  for (var i = 0; i < n; i++) {
-    sumX += xs[i];
-    sumY += ys[i];
-    sumXY += xs[i] * ys[i];
-    sumX2 += xs[i] * xs[i];
-    sumY2 += ys[i] * ys[i];
-  }
-  var denom = n * sumX2 - sumX * sumX;
-  if (denom === 0) return { slope: 0, intercept: 0, r2: 0, residuals: [], standardError: 0, predictions: [] };
-
-  var slope = (n * sumXY - sumX * sumY) / denom;
-  var intercept = (sumY - slope * sumX) / n;
-
-  var predictions = [];
-  var residuals = [];
-  var ssRes = 0;
-  var ssTot = 0;
-  var meanY = sumY / n;
-
-  for (var j = 0; j < n; j++) {
-    var pred = slope * xs[j] + intercept;
-    predictions.push(pred);
-    var res = ys[j] - pred;
-    residuals.push(res);
-    ssRes += res * res;
-    ssTot += (ys[j] - meanY) * (ys[j] - meanY);
-  }
-
-  var r2 = ssTot !== 0 ? 1 - ssRes / ssTot : 0;
-  var standardError = n > 2 ? Math.sqrt(ssRes / (n - 2)) : 0;
-
+  mathMetrics.totalOptimizations++;
   return {
-    slope: slope,
-    intercept: intercept,
-    r2: r2,
-    residuals: residuals,
-    standardError: standardError,
-    predictions: predictions
+    xMin: round6(xMin),
+    fMin: round6(evalFn(xMin)),
+    iterations: iter,
+    convergence: history,
+    method: 'golden-section',
+    goldenRatio: PHI
   };
 }
 
-function polynomialRegression(xs, ys, degree) {
-  // Solve using normal equations: (X^T X) coeffs = X^T y
-  var n = xs.length;
-  var deg = Math.min(degree || 2, 3);
-  var cols = deg + 1;
+// Safely evaluate simple math expressions using strict allowlist
+function buildSafeFunction(expr) {
+  if (typeof expr !== 'string' || expr.length > 200) return null;
 
-  // Build Vandermonde matrix X
-  var X = [];
-  for (var i = 0; i < n; i++) {
-    X[i] = [];
-    for (var j = 0; j < cols; j++) {
-      X[i][j] = Math.pow(xs[i], j);
+  // Step 1: Only allow known safe characters
+  if (!/^[0-9x+\-*/().^ \s]+$/.test(expr.replace(/\b(sin|cos|tan|abs|sqrt|exp|log|pi)\b/gi, ''))) {
+    return null;
+  }
+
+  // Step 2: Ensure no sequences that could form identifiers other than allowed functions and 'x'
+  var ALLOWED_WORDS = { sin: 1, cos: 1, tan: 1, abs: 1, sqrt: 1, exp: 1, log: 1, pi: 1, x: 1 };
+  var words = expr.match(/[a-z]+/gi);
+  if (words) {
+    for (var i = 0; i < words.length; i++) {
+      if (!ALLOWED_WORDS[words[i].toLowerCase()]) return null;
     }
   }
 
-  var Xt = matrixTranspose(X);
-  var XtX = matrixMultiply(Xt, X);
+  var jsExpr = expr
+    .replace(/\^/g, '**')
+    .replace(/\bsin\b/gi, 'Math.sin')
+    .replace(/\bcos\b/gi, 'Math.cos')
+    .replace(/\btan\b/gi, 'Math.tan')
+    .replace(/\babs\b/gi, 'Math.abs')
+    .replace(/\bsqrt\b/gi, 'Math.sqrt')
+    .replace(/\bexp\b/gi, 'Math.exp')
+    .replace(/\blog\b/gi, 'Math.log')
+    .replace(/\bpi\b/gi, 'Math.PI');
 
-  // Build X^T * y as a column vector
-  var Xty = [];
-  for (var ci = 0; ci < cols; ci++) {
-    var s = 0;
-    for (var ri = 0; ri < n; ri++) {
-      s += X[ri][ci] * ys[ri];
-    }
-    Xty.push([s]);
+  try {
+    return new Function('x', '"use strict"; return ' + jsExpr + ';');
+  } catch (e) {
+    return null;
   }
-
-  // Solve via Gaussian elimination
-  var coeffs = solveLinearSystem(XtX, Xty);
-  if (!coeffs) return { coefficients: [], r2: 0, predictions: [] };
-
-  var predictions = [];
-  var residuals = [];
-  var ssRes = 0;
-  var ssTot = 0;
-  var meanY = statsMean(ys);
-
-  for (var pi = 0; pi < n; pi++) {
-    var pred = 0;
-    for (var pj = 0; pj < coeffs.length; pj++) {
-      pred += coeffs[pj] * Math.pow(xs[pi], pj);
-    }
-    predictions.push(pred);
-    var res = ys[pi] - pred;
-    residuals.push(res);
-    ssRes += res * res;
-    ssTot += (ys[pi] - meanY) * (ys[pi] - meanY);
-  }
-
-  var r2 = ssTot !== 0 ? 1 - ssRes / ssTot : 0;
-
-  return {
-    coefficients: coeffs,
-    degree: deg,
-    r2: r2,
-    residuals: residuals,
-    predictions: predictions
-  };
-}
-
-function solveLinearSystem(A, b) {
-  // Gaussian elimination with partial pivoting
-  var n = A.length;
-  var aug = [];
-  for (var i = 0; i < n; i++) {
-    aug[i] = [];
-    for (var j = 0; j < n; j++) {
-      aug[i][j] = A[i][j];
-    }
-    aug[i][n] = b[i][0];
-  }
-
-  for (var col = 0; col < n; col++) {
-    // Partial pivoting
-    var maxRow = col;
-    var maxVal = Math.abs(aug[col][col]);
-    for (var row = col + 1; row < n; row++) {
-      if (Math.abs(aug[row][col]) > maxVal) {
-        maxVal = Math.abs(aug[row][col]);
-        maxRow = row;
-      }
-    }
-    if (maxRow !== col) {
-      var temp = aug[col];
-      aug[col] = aug[maxRow];
-      aug[maxRow] = temp;
-    }
-
-    if (Math.abs(aug[col][col]) < 1e-12) return null;
-
-    // Eliminate below
-    for (var erow = col + 1; erow < n; erow++) {
-      var factor = aug[erow][col] / aug[col][col];
-      for (var ecol = col; ecol <= n; ecol++) {
-        aug[erow][ecol] -= factor * aug[col][ecol];
-      }
-    }
-  }
-
-  // Back substitution
-  var x = [];
-  for (var bi = n - 1; bi >= 0; bi--) {
-    var sum = aug[bi][n];
-    for (var bj = bi + 1; bj < n; bj++) {
-      sum -= aug[bi][bj] * x[bj];
-    }
-    x[bi] = sum / aug[bi][bi];
-  }
-  return x;
-}
-
-function handleRegression(msg) {
-  mathMetrics.regressionOps++;
-  mathMetrics.totalTokensProcessed += (msg.xs ? msg.xs.length : 0);
-  var result;
-  switch (msg.op) {
-    case 'linear':
-      result = linearRegression(msg.xs, msg.ys);
-      break;
-    case 'polynomial':
-      result = polynomialRegression(msg.xs, msg.ys, msg.degree || 2);
-      break;
-    default:
-      result = null;
-  }
-  postMessage({ type: 'regression-result', op: msg.op, result: result });
 }
 
 /* ════════════════════════════════════════════════════════════════
-   8. Number Theory
+   Number Theory
    ════════════════════════════════════════════════════════════════ */
 
 function isPrime(n) {
@@ -932,23 +528,20 @@ function isPrime(n) {
   return true;
 }
 
-function primeFactorization(n) {
+function primeFactorize(n) {
+  if (n < 2) return [];
   var factors = [];
-  var d = 2;
-  while (d * d <= n) {
+  for (var d = 2; d * d <= n; d++) {
     while (n % d === 0) {
       factors.push(d);
-      n = n / d;
+      n /= d;
     }
-    d++;
   }
   if (n > 1) factors.push(n);
   return factors;
 }
 
 function gcd(a, b) {
-  a = Math.abs(a);
-  b = Math.abs(b);
   while (b !== 0) {
     var t = b;
     b = a % b;
@@ -957,168 +550,126 @@ function gcd(a, b) {
   return a;
 }
 
-function lcm(a, b) {
-  if (a === 0 && b === 0) return 0;
-  return Math.abs(a * b) / gcd(a, b);
-}
+function primeCheck(n) {
+  mathMetrics.totalPrimeChecks++;
+  var result = isPrime(n);
+  var factors = result ? [n] : primeFactorize(n);
+  var nearestPrimes = [];
 
-function totient(n) {
-  var result = n;
-  var p = 2;
-  var num = n;
-  while (p * p <= num) {
-    if (num % p === 0) {
-      while (num % p === 0) num = num / p;
-      result -= result / p;
-    }
-    p++;
-  }
-  if (num > 1) {
-    result -= result / num;
-  }
-  return Math.round(result);
-}
+  // Find nearest primes
+  var below = n - 1;
+  while (below > 1 && !isPrime(below)) below--;
+  if (below > 1) nearestPrimes.push(below);
 
-function primeCount(n) {
-  var count = 0;
-  for (var i = 2; i <= n; i++) {
-    if (isPrime(i)) count++;
-  }
-  return count;
-}
+  var above = n + 1;
+  var limit = n + 1000;
+  while (above < limit && !isPrime(above)) above++;
+  if (above < limit) nearestPrimes.push(above);
 
-function nthPrime(n) {
-  if (n < 1) return 2;
-  var count = 0;
-  var candidate = 1;
-  while (count < n) {
-    candidate++;
-    if (isPrime(candidate)) count++;
-  }
-  return candidate;
-}
-
-function isPerfect(n) {
-  if (n < 2) return false;
-  var sum = 1;
-  for (var i = 2; i * i <= n; i++) {
-    if (n % i === 0) {
-      sum += i;
-      if (i !== n / i) sum += n / i;
-    }
-  }
-  return sum === n;
-}
-
-function phiConnections(n) {
-  // Explore relationships between n and the golden ratio
-  var fib = fibonacciSequence(30);
-  var isFib = fib.indexOf(n) !== -1;
-  var closestFib = fib[0];
-  var minDiff = Math.abs(n - fib[0]);
-  for (var i = 1; i < fib.length; i++) {
-    var diff = Math.abs(n - fib[i]);
-    if (diff < minDiff) {
-      minDiff = diff;
-      closestFib = fib[i];
-    }
-  }
-  var phiMultiple = n / PHI;
-  var phiRemainder = n % PHI;
   return {
     n: n,
-    isFibonacci: isFib,
-    closestFibonacci: closestFib,
-    distanceToFib: minDiff,
-    nDividedByPhi: phiMultiple,
-    nModPhi: phiRemainder,
-    totient: totient(n),
-    isPrime: isPrime(n),
-    factors: primeFactorization(n)
+    isPrime: result,
+    factors: factors,
+    nearestPrimes: nearestPrimes,
+    phiConnection: round6(n / PHI),
+    gcdWithFib: gcd(n, Math.round(Math.pow(PHI, Math.round(Math.log(n) / Math.log(PHI)))) )
   };
 }
 
-function handleNumberTheory(msg) {
-  mathMetrics.numberTheoryOps++;
-  var result;
-  switch (msg.op) {
-    case 'isPrime':
-      result = isPrime(msg.n);
-      break;
-    case 'primeFactorization':
-      result = primeFactorization(msg.n);
-      break;
-    case 'gcd':
-      result = gcd(msg.a, msg.b);
-      break;
-    case 'lcm':
-      result = lcm(msg.a, msg.b);
-      break;
-    case 'totient':
-      result = totient(msg.n);
-      break;
-    case 'primeCount':
-      result = primeCount(msg.n);
-      break;
-    case 'nthPrime':
-      result = nthPrime(msg.n);
-      break;
-    case 'isPerfect':
-      result = isPerfect(msg.n);
-      break;
-    case 'phiConnections':
-      result = phiConnections(msg.n);
-      break;
-    default:
-      result = null;
-  }
-  postMessage({ type: 'numberTheory-result', op: msg.op, result: result });
+/* ════════════════════════════════════════════════════════════════
+   Utility
+   ════════════════════════════════════════════════════════════════ */
+
+function round6(v) {
+  return Math.round(v * 1000000) / 1000000;
 }
 
 /* ════════════════════════════════════════════════════════════════
-   Message Router
+   Message Handler
    ════════════════════════════════════════════════════════════════ */
 
-self.onmessage = function(e) {
+self.onmessage = function (e) {
   var msg = e.data;
-
-  if (msg.type === 'stats' && msg.op === 'worker') {
-    postMessage({
-      type: 'worker-stats',
-      worker: 'math',
-      metrics: mathMetrics,
-      uptime: Date.now() - startTime
-    });
-    return;
-  }
-
-  mathMetrics.totalComputations++;
+  neuro.onMessage(msg.type);
+  var start = Date.now();
 
   switch (msg.type) {
-    case 'matrix':
-      handleMatrix(msg);
+    case 'matrix-multiply': {
+      var result = matrixMultiply(msg.a || [[1]], msg.b || [[1]]);
+      self.postMessage({ type: 'math-result', op: 'matrix-multiply', data: result });
       break;
-    case 'stats':
-      handleStats(msg);
+    }
+    case 'matrix-transpose': {
+      var transposed = matrixTranspose(msg.matrix || [[1]]);
+      self.postMessage({ type: 'math-result', op: 'matrix-transpose', data: transposed });
       break;
-    case 'phi':
-      handlePhi(msg);
+    }
+    case 'matrix-determinant': {
+      var det = matrixDeterminant(msg.matrix || [[1]]);
+      mathMetrics.totalMatrixOps++;
+      self.postMessage({ type: 'math-result', op: 'matrix-determinant', data: { determinant: det, trace: matrixTrace(msg.matrix || [[1]]) } });
       break;
-    case 'fourier':
-      handleFourier(msg);
+    }
+    case 'matrix-identity': {
+      var id = identityMatrix(msg.n || 3);
+      self.postMessage({ type: 'math-result', op: 'matrix-identity', data: { matrix: id, n: msg.n || 3 } });
       break;
-    case 'probability':
-      handleProbability(msg);
+    }
+    case 'compute-stats': {
+      var stats = computeStats(msg.data || []);
+      self.postMessage({ type: 'math-result', op: 'stats', data: stats });
       break;
-    case 'optimize':
-      handleOptimize(msg);
+    }
+    case 'correlation': {
+      var corr = correlation(msg.x || [], msg.y || []);
+      mathMetrics.totalStatOps++;
+      self.postMessage({ type: 'math-result', op: 'correlation', data: { correlation: corr, strength: Math.abs(corr) > 0.7 ? 'strong' : (Math.abs(corr) > 0.3 ? 'moderate' : 'weak') } });
       break;
-    case 'regression':
-      handleRegression(msg);
+    }
+    case 'regression': {
+      var reg = linearRegression(msg.x || [], msg.y || []);
+      self.postMessage({ type: 'math-result', op: 'regression', data: reg });
       break;
-    case 'numberTheory':
-      handleNumberTheory(msg);
+    }
+    case 'phi-sequence': {
+      var fib = fibonacciSequence(msg.n || 20);
+      self.postMessage({ type: 'math-result', op: 'phi-sequence', data: fib });
       break;
+    }
+    case 'phi-spiral': {
+      var spiral = phiSpiral(msg.n || 50);
+      self.postMessage({ type: 'math-result', op: 'phi-spiral', data: spiral });
+      break;
+    }
+    case 'phi-power': {
+      var powers = phiPower(msg.n || 20);
+      self.postMessage({ type: 'math-result', op: 'phi-power', data: powers });
+      break;
+    }
+    case 'fourier': {
+      var spectrum = dft(msg.signal || []);
+      self.postMessage({ type: 'math-result', op: 'fourier', data: spectrum });
+      break;
+    }
+    case 'probability': {
+      var prob = probabilityDistribution(msg.dist || 'normal', msg.params || {});
+      self.postMessage({ type: 'math-result', op: 'probability', data: prob });
+      break;
+    }
+    case 'optimize': {
+      var opt = goldenSectionSearch(msg.fn || 'x*x', msg.bounds ? msg.bounds[0] : -10, msg.bounds ? msg.bounds[1] : 10, msg.tol);
+      self.postMessage({ type: 'math-result', op: 'optimize', data: opt });
+      break;
+    }
+    case 'prime-check': {
+      var prime = primeCheck(msg.n || 2);
+      self.postMessage({ type: 'math-result', op: 'prime-check', data: prime });
+      break;
+    }
+    case 'stats': {
+      self.postMessage({ type: 'math-stats', stats: mathMetrics });
+      break;
+    }
     case 'neuro-signal':
       neuro.receiveNeuroSignal(msg);
       break;
@@ -1126,6 +677,8 @@ self.onmessage = function(e) {
       running = false;
       break;
   }
+
+  mathMetrics.totalComputeTimeMs += Date.now() - start;
   neuro.onMessageDone();
 };
 
@@ -1133,29 +686,18 @@ self.onmessage = function(e) {
    Heartbeat
    ════════════════════════════════════════════════════════════════ */
 
-var neuro = new NeuroCore('math', {
-  division: 'brain',
-  role: 'Math Intelligence',
-  capabilities: ['matrix', 'stats', 'phi', 'fourier', 'probability', 'optimize', 'regression', 'numberTheory']
-});
+var neuro = new NeuroCore('math');
 
-setInterval(function() {
+setInterval(function () {
   if (!running) return;
   beatCount++;
-  neuro.beat();
-  postMessage({
+  self.postMessage({
     type: 'heartbeat',
     worker: 'math',
     beat: beatCount,
-    phi: PHI,
-    health: neuro.health(),
-    timestamp: Date.now()
+    timestamp: Date.now(),
+    status: 'alive',
+    metrics: mathMetrics,
+    neuro: neuro.pulse()
   });
 }, HEARTBEAT_MS);
-
-postMessage({
-  type: 'booted',
-  worker: 'math',
-  capabilities: ['matrix', 'stats', 'phi', 'fourier', 'probability', 'optimize', 'regression', 'numberTheory'],
-  phi: PHI
-});

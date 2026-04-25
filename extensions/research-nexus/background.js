@@ -426,6 +426,81 @@ class ResearchNexusEngine {
 globalThis.researchNexus = new ResearchNexusEngine();
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+  /* ── Universal message routing (popup / side panel / devtools) ──── */
+  if (message.type === 'heartbeat') {
+    sendResponse({ status: 'alive', healthy: true, timestamp: Date.now() });
+    return true;
+  }
+  if (message.type === 'openSidePanel') {
+    try { if (chrome.sidePanel && chrome.sidePanel.open) chrome.sidePanel.open({ windowId: sender.tab ? sender.tab.windowId : undefined }).catch(function(){}); } catch(e){}
+    sendResponse({ ok: true });
+    return true;
+  }
+  if (message.type === 'popup' || message.type === 'sidePanel' || message.type === 'devtools') {
+    var cmd = message.command || '';
+    var lower = cmd.toLowerCase();
+    var engine = globalThis.researchNexus;
+
+    /* ── Built-in workspace commands ── */
+    if (cmd === 'ping') { sendResponse({ result: 'pong — Research Nexus engine alive at ' + new Date().toISOString() }); return true; }
+    if (cmd === 'getState' || lower === 'state' || lower === 'status') {
+      sendResponse({ result: JSON.stringify(engine && engine.state ? engine.state : { status: 'running', timestamp: Date.now() }, null, 2) });
+      return true;
+    }
+    if (cmd === 'clearLogs') { sendResponse({ result: 'Workspace logs cleared.' }); return true; }
+    if (lower === 'help' || lower === 'capabilities' || lower === '?') {
+      sendResponse({ result: '\u{1F9E0} Research Nexus AI Workspace\n\nCapabilities:\n• Synthesize Research — Synthesize research on topic\n• Fact Check — Fact-check a claim\n• Generate Digest — Generate research digest\n• Rank Sources — Rank source credibility\n• Build Citation Graph — Build citation graph\n\nType any command or question and I will route it to the best engine method.' });
+      return true;
+    }
+
+    /* ── Save to workspace conversation history ── */
+    var storageKey = 'research-nexus_workspace_history';
+    chrome.storage.local.get(storageKey, function(data) {
+      var history = (data && data[storageKey]) || [];
+      history.push({ role: 'user', content: cmd, ts: Date.now() });
+
+      /* ── Intelligent workspace command routing ── */
+      var result;
+      try {
+        if (lower.indexOf('synthesize') !== -1 || lower.indexOf('research') !== -1 || lower.indexOf('study') !== -1 || lower.indexOf('review') !== -1 || lower.indexOf('summarize') !== -1) {
+          result = engine.synthesizeResearch(cmd, []);
+        }
+        else if (lower.indexOf('fact') !== -1 || lower.indexOf('check') !== -1 || lower.indexOf('verify') !== -1 || lower.indexOf('true') !== -1 || lower.indexOf('false') !== -1 || lower.indexOf('claim') !== -1) {
+          result = engine.factCheck(cmd);
+        }
+        else if (lower.indexOf('digest') !== -1 || lower.indexOf('brief') !== -1 || lower.indexOf('overview') !== -1 || lower.indexOf('summary') !== -1) {
+          result = engine.generateDigest(cmd, "comprehensive");
+        }
+        else if (lower.indexOf('rank') !== -1 || lower.indexOf('source') !== -1 || lower.indexOf('quality') !== -1 || lower.indexOf('credible') !== -1) {
+          result = engine.rankSources([{url:"workspace",content:cmd}]);
+        }
+        else if (lower.indexOf('citation') !== -1 || lower.indexOf('cite') !== -1 || lower.indexOf('bibliography') !== -1 || lower.indexOf('reference') !== -1) {
+          result = engine.buildCitationGraph([{title:cmd,content:cmd}]);
+        }
+        else {
+          /* Default: route to primary engine method */
+          result = engine.synthesizeResearch(cmd, []);
+        }
+      } catch(e) {
+        result = { error: e.message, fallback: 'Research Nexus encountered an error processing: "' + cmd + '"' };
+      }
+
+      var responseText;
+      if (typeof result === 'string') { responseText = result; }
+      else if (result && result.error) { responseText = '\u26A0\uFE0F ' + (result.fallback || result.error); }
+      else { responseText = JSON.stringify(result, null, 2); }
+
+      history.push({ role: 'ai', content: responseText, ts: Date.now() });
+      if (history.length > 100) { history = history.slice(-100); }
+      var update = {};
+      update[storageKey] = history;
+      chrome.storage.local.set(update);
+
+      sendResponse({ result: responseText });
+    });
+    return true;
+  }
+
   var engine = globalThis.researchNexus;
   var action = message.action;
 
@@ -487,6 +562,13 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 
   /* Also re-init on install/update */
   chrome.runtime.onInstalled.addListener(function () {
+    /* Auto-activate side panel on install */
+    if (chrome.sidePanel && chrome.sidePanel.setOptions) {
+      chrome.sidePanel.setOptions({ enabled: true });
+    }
+    if (chrome.sidePanel && chrome.sidePanel.setPanelBehavior) {
+      chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: false }).catch(function(){});
+    }
     chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
     console.log('[Research Nexus] Installed/updated \u2014 24/7 keepalive active');
   });

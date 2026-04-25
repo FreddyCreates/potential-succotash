@@ -9,10 +9,10 @@
  * - Sentiment analysis (lexicon-based)
  * - Entity recognition (pattern-based NER)
  * - Text summarization (extractive, sentence-scoring)
- * - Question answering (context-based extraction with cosine similarity)
- * - Intent classification (12 intent types)
- * - Chain-of-thought reasoning (6-step decomposition with capability routing)
- * - Topic modeling (K-means clustering on sentence embeddings)
+ * - Question answering (context-based extraction)
+ * - Intent classification (multi-intent detection)
+ * - Chain-of-thought reasoning (step-by-step decomposition)
+ * - Topic modeling (LDA-like clustering)
  *
  * This worker runs ML-like inference entirely in the browser.
  * No external APIs. No network calls. Pure local intelligence.
@@ -25,10 +25,20 @@
  *   Main → Worker: { type: 'sentiment', text: '...' }
  *   Main → Worker: { type: 'entities', text: '...' }
  *   Main → Worker: { type: 'embed', text: '...' }
+ *   Main → Worker: { type: 'summarize', text: '...', sentences: N }
+ *   Main → Worker: { type: 'answer', question: '...', context: '...' }
+ *   Main → Worker: { type: 'intent', text: '...' }
+ *   Main → Worker: { type: 'chain-of-thought', question: '...' }
+ *   Main → Worker: { type: 'topics', text: '...', k: N }
  *   Main → Worker: { type: 'stats' }
  *   Worker → Main: { type: 'classification', ... }
  *   Worker → Main: { type: 'match-result', ... }
  *   Worker → Main: { type: 'similarity-result', ... }
+ *   Worker → Main: { type: 'summary', ... }
+ *   Worker → Main: { type: 'answer-result', ... }
+ *   Worker → Main: { type: 'intent-result', ... }
+ *   Worker → Main: { type: 'chain-result', ... }
+ *   Worker → Main: { type: 'topics-result', ... }
  *   Worker → Main: { type: 'heartbeat', ... }
  */
 
@@ -52,6 +62,11 @@ var inferenceMetrics = {
   totalSentiments: 0,
   totalEntities: 0,
   totalEmbeddings: 0,
+  totalSummaries: 0,
+  totalAnswers: 0,
+  totalIntents: 0,
+  totalChainOfThought: 0,
+  totalTopicModels: 0,
   totalTokensProcessed: 0
 };
 
@@ -229,354 +244,345 @@ function extractEntities(text) {
 }
 
 /* ════════════════════════════════════════════════════════════════
-   Summarization — extractive, sentence-scoring
+   Text Summarization — extractive (sentence-scoring)
    ════════════════════════════════════════════════════════════════ */
 
-function summarize(text, maxSentences) {
-  maxSentences = maxSentences || 3;
-  var sentences = text.match(/[^.!?]+[.!?]+/g);
-  if (!sentences || sentences.length === 0) return { summary: text, sentenceCount: 0, originalLength: text.length };
-  sentences = sentences.map(function (s) { return s.trim(); });
+function splitSentences(text) {
+  return (text || '').split(/(?<=[.!?])\s+/).filter(function (s) { return s.length > 5; });
+}
 
-  /* Score each sentence: word count, position bonus, keyword density */
-  var wordFreq = {};
-  var allWords = text.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(function (w) { return w.length > 3; });
-  allWords.forEach(function (w) { wordFreq[w] = (wordFreq[w] || 0) + 1; });
+function summarize(text, numSentences) {
+  numSentences = numSentences || 3;
+  var sentences = splitSentences(text);
+  if (sentences.length <= numSentences) {
+    inferenceMetrics.totalSummaries++;
+    return { summary: text, sentences: sentences, scores: [], compressionRatio: 1 };
+  }
 
-  var scored = sentences.map(function (s, i) {
-    var words = s.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(function (w) { return w.length > 3; });
-    var keywordScore = 0;
-    words.forEach(function (w) { keywordScore += (wordFreq[w] || 0); });
-    var positionBonus = i === 0 ? 2.0 : (i === sentences.length - 1 ? 1.5 : 1.0);
-    var lengthPenalty = words.length < 5 ? 0.5 : (words.length > 30 ? 0.8 : 1.0);
-    return { sentence: s, score: keywordScore * positionBonus * lengthPenalty * PHI, index: i };
-  });
+  // Score each sentence based on keyword density, position, and length
+  var allTokens = tokenize(text);
+  var docFreq = tokenFrequency(allTokens);
+  var scored = [];
 
+  for (var i = 0; i < sentences.length; i++) {
+    var sTokens = tokenize(sentences[i]).filter(function (t) { return t.length > 2 && !STOP_WORDS[t]; });
+    var score = 0;
+
+    // TF-based importance
+    for (var j = 0; j < sTokens.length; j++) {
+      if (docFreq[sTokens[j]]) score += docFreq[sTokens[j]];
+    }
+
+    // Position bonus (first and last sentences are often important)
+    if (i === 0) score *= 1.5;
+    else if (i === sentences.length - 1) score *= 1.2;
+
+    // Length normalization — prefer medium-length sentences
+    var wordCount = sTokens.length;
+    if (wordCount > 5 && wordCount < 30) score *= 1.3;
+
+    scored.push({ index: i, sentence: sentences[i], score: Math.round(score * 100) / 100 });
+  }
+
+  // Select top-N sentences by score, then reorder by position
   scored.sort(function (a, b) { return b.score - a.score; });
-  var top = scored.slice(0, maxSentences);
-  top.sort(function (a, b) { return a.index - b.index; });
-  var summary = top.map(function (t) { return t.sentence; }).join(' ');
+  var selected = scored.slice(0, numSentences);
+  selected.sort(function (a, b) { return a.index - b.index; });
 
-  inferenceMetrics.totalSummarizations = (inferenceMetrics.totalSummarizations || 0) + 1;
+  var summary = selected.map(function (s) { return s.sentence; }).join(' ');
+
+  inferenceMetrics.totalSummaries++;
+  inferenceMetrics.totalTokensProcessed += allTokens.length;
+
   return {
     summary: summary,
-    sentenceCount: top.length,
-    originalLength: text.length,
-    compressionRatio: Math.round((summary.length / text.length) * 1000) / 1000,
-    phi: PHI
+    sentences: selected.map(function (s) { return s.sentence; }),
+    scores: selected.map(function (s) { return { sentence: s.sentence.substring(0, 50), score: s.score }; }),
+    originalSentences: sentences.length,
+    selectedSentences: selected.length,
+    compressionRatio: Math.round((summary.length / text.length) * 100) / 100
   };
 }
 
 /* ════════════════════════════════════════════════════════════════
-   Question Answering — context-based extraction with cosine similarity
+   Question Answering — context-based extraction
    ════════════════════════════════════════════════════════════════ */
 
-function answerQuestion(context, question) {
-  var sentences = context.match(/[^.!?]+[.!?]+/g);
-  if (!sentences || sentences.length === 0) return { answer: '', confidence: 0, source: '' };
-  sentences = sentences.map(function (s) { return s.trim(); });
+function answerQuestion(question, context) {
+  var qTokens = tokenize(question).filter(function (t) { return !STOP_WORDS[t]; });
+  var sentences = splitSentences(context);
 
-  var questionVec = simpleEmbed(question);
-  var best = { sentence: '', score: -1, index: -1 };
+  // Score each sentence against the question
+  var qVec = simpleEmbed(question);
+  var scored = [];
 
-  sentences.forEach(function (s, i) {
-    var sentVec = simpleEmbed(s);
-    var sim = cosineSimilarity(questionVec, sentVec);
-    if (sim > best.score) {
-      best = { sentence: s, score: sim, index: i };
+  for (var i = 0; i < sentences.length; i++) {
+    var sVec = simpleEmbed(sentences[i]);
+    var sim = cosineSimilarity(qVec, sVec);
+
+    // Bonus for keyword overlap
+    var sTokens = tokenize(sentences[i]);
+    var overlap = 0;
+    for (var j = 0; j < qTokens.length; j++) {
+      if (sTokens.indexOf(qTokens[j]) !== -1) overlap++;
     }
-  });
+    var overlapBonus = qTokens.length > 0 ? overlap / qTokens.length : 0;
 
-  /* Extract the most relevant phrase within the best sentence */
-  var answer = best.sentence;
-  var questionWords = question.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/);
-  var answerWords = answer.split(/\s+/);
-
-  /* Try to find a specific span — look for noun phrases not in question */
-  var candidateSpans = [];
-  for (var i = 0; i < answerWords.length; i++) {
-    for (var len = 3; len <= Math.min(10, answerWords.length - i); len++) {
-      var span = answerWords.slice(i, i + len).join(' ');
-      var spanLower = span.toLowerCase();
-      var overlapCount = 0;
-      questionWords.forEach(function (qw) { if (spanLower.indexOf(qw) !== -1) overlapCount++; });
-      var novelty = 1 - (overlapCount / questionWords.length);
-      var spanVec = simpleEmbed(span);
-      var relevance = cosineSimilarity(questionVec, spanVec);
-      candidateSpans.push({ text: span, score: relevance * novelty * PHI });
-    }
-  }
-  if (candidateSpans.length > 0) {
-    candidateSpans.sort(function (a, b) { return b.score - a.score; });
-    answer = candidateSpans[0].text;
+    scored.push({
+      sentence: sentences[i],
+      similarity: Math.round(sim * 10000) / 10000,
+      overlapScore: Math.round(overlapBonus * 10000) / 10000,
+      combinedScore: Math.round((sim * 0.6 + overlapBonus * 0.4) * 10000) / 10000
+    });
   }
 
-  inferenceMetrics.totalAnswers = (inferenceMetrics.totalAnswers || 0) + 1;
+  scored.sort(function (a, b) { return b.combinedScore - a.combinedScore; });
+
+  inferenceMetrics.totalAnswers++;
+  inferenceMetrics.totalTokensProcessed += tokenize(context).length;
+
   return {
-    answer: answer,
-    fullSentence: best.sentence,
-    confidence: Math.round(best.score * 10000) / 10000,
-    sentenceIndex: best.index,
-    phi: PHI
+    question: question,
+    answer: scored[0] ? scored[0].sentence : 'No answer found.',
+    confidence: scored[0] ? scored[0].combinedScore : 0,
+    topCandidates: scored.slice(0, 3),
+    questionTokens: qTokens
   };
 }
 
 /* ════════════════════════════════════════════════════════════════
-   Intent Classification — 12 intent types
+   Intent Classification — multi-intent detection
    ════════════════════════════════════════════════════════════════ */
 
 var INTENT_PATTERNS = {
-  greeting:    /^(hi|hello|hey|good\s*(morning|afternoon|evening)|howdy|what'?s?\s*up)/i,
-  farewell:    /^(bye|goodbye|see\s*you|later|farewell|good\s*night)/i,
-  question:    /^(what|when|where|who|why|how|is|are|do|does|can|could|would|will|shall|did)\b/i,
-  command:     /^(open|close|start|stop|run|execute|launch|show|hide|toggle|create|delete|remove|set|enable|disable)\b/i,
-  code:        /\b(function|var |const |let |class |import |export |def |return |for\s*\(|while\s*\(|if\s*\(|switch|=>|console\.log)\b/,
-  math:        /\b(\d+\s*[\+\-\*\/\^\%]\s*\d+|calculate|compute|solve|equation|integral|derivative|matrix|factorial|fibonacci|prime|sqrt)\b/i,
-  search:      /\b(search|find|look\s*up|google|lookup|browse|navigate|go\s*to)\b/i,
-  create:      /\b(create|make|build|generate|write|compose|draft|design)\b/i,
-  analyze:     /\b(analyze|analyse|review|inspect|examine|evaluate|assess|check|audit|scan|test|debug)\b/i,
-  explain:     /\b(explain|describe|tell\s*me|what\s*is|define|clarify|elaborate|how\s*does)\b/i,
-  opinion:     /\b(think|believe|opinion|feel|prefer|recommend|suggest|should|better|best|worst)\b/i,
-  conversational: /\b(thank|please|sorry|excuse|appreciate|sure|okay|ok|right|yeah|yes|no|maybe)\b/i
+  greeting:     ['hello', 'hi', 'hey', 'greetings', 'good morning', 'good evening', 'howdy'],
+  farewell:     ['bye', 'goodbye', 'see you', 'later', 'farewell', 'take care'],
+  question:     ['what', 'how', 'why', 'when', 'where', 'who', 'which', 'can you', 'could you', 'do you'],
+  command:      ['do', 'make', 'create', 'build', 'generate', 'run', 'execute', 'start', 'stop', 'delete', 'remove'],
+  search:       ['find', 'search', 'look up', 'look for', 'locate', 'discover', 'explore'],
+  analysis:     ['analyze', 'analyse', 'examine', 'evaluate', 'assess', 'review', 'inspect', 'audit'],
+  creative:     ['write', 'compose', 'design', 'draw', 'paint', 'imagine', 'invent', 'brainstorm'],
+  code:         ['code', 'program', 'function', 'debug', 'compile', 'deploy', 'refactor', 'implement'],
+  math:         ['calculate', 'compute', 'solve', 'equation', 'formula', 'sum', 'multiply', 'divide', 'integrate'],
+  help:         ['help', 'assist', 'support', 'guide', 'explain', 'teach', 'show me', 'tutorial'],
+  opinion:      ['think', 'believe', 'feel', 'opinion', 'prefer', 'recommend', 'suggest', 'best', 'worst'],
+  comparison:   ['compare', 'versus', 'difference', 'better', 'worse', 'similar', 'contrast']
 };
 
 function classifyIntent(text) {
-  var normalized = text.trim();
-  var scores = {};
-  var maxScore = 0;
-  var topIntent = 'conversational';
+  var lower = text.toLowerCase();
+  var tokens = tokenize(text);
+  var intents = [];
 
-  Object.keys(INTENT_PATTERNS).forEach(function (intent) {
-    var pattern = INTENT_PATTERNS[intent];
-    var match = normalized.match(pattern);
-    var score = match ? (match[0].length / normalized.length) * PHI + 0.5 : 0;
-
-    /* Boost for question marks */
-    if (intent === 'question' && normalized.indexOf('?') !== -1) score += 0.3;
-    /* Boost for code blocks */
-    if (intent === 'code' && (normalized.indexOf('{') !== -1 || normalized.indexOf('(') !== -1)) score += 0.2;
-    /* Boost for math symbols */
-    if (intent === 'math' && /[\+\-\*\/\=\^]/.test(normalized)) score += 0.2;
-
-    scores[intent] = Math.round(score * 10000) / 10000;
-    if (score > maxScore) {
-      maxScore = score;
-      topIntent = intent;
+  for (var intent in INTENT_PATTERNS) {
+    var keywords = INTENT_PATTERNS[intent];
+    var matchCount = 0;
+    for (var i = 0; i < keywords.length; i++) {
+      if (lower.indexOf(keywords[i]) !== -1) matchCount++;
     }
-  });
+    if (matchCount > 0) {
+      intents.push({
+        intent: intent,
+        confidence: Math.round((matchCount / keywords.length) * 10000) / 10000,
+        matchedKeywords: matchCount
+      });
+    }
+  }
 
-  inferenceMetrics.totalIntents = (inferenceMetrics.totalIntents || 0) + 1;
+  intents.sort(function (a, b) { return b.confidence - a.confidence; });
+
+  // Detect question markers
+  var isQuestion = /[?]/.test(text) || /^(what|how|why|when|where|who|which|can|could|do|does|is|are|was|were|will|would|should)\b/i.test(text.trim());
+
+  inferenceMetrics.totalIntents++;
   return {
-    intent: topIntent,
-    confidence: Math.round(maxScore * 10000) / 10000,
-    scores: scores,
-    phi: PHI
+    text: text.substring(0, 100),
+    primaryIntent: intents[0] ? intents[0].intent : 'unknown',
+    allIntents: intents,
+    isQuestion: isQuestion,
+    complexity: tokens.length > 20 ? 'complex' : (tokens.length > 8 ? 'moderate' : 'simple'),
+    wordCount: tokens.length
   };
 }
 
 /* ════════════════════════════════════════════════════════════════
-   Chain-of-Thought Reasoning — 6-step decomposition
+   Chain-of-Thought Reasoning — step-by-step decomposition
    ════════════════════════════════════════════════════════════════ */
 
-function chainOfThought(text) {
-  var intent = classifyIntent(text);
-  var keywords = extractKeywords(text, 5);
-  var sentiment = analyzeSentiment(text);
-  var entities = extractEntities(text);
+function chainOfThought(question) {
+  var intent = classifyIntent(question);
+  var tokens = tokenize(question);
+  var entities = extractEntities(question);
+  var sentiment = analyzeSentiment(question);
+  var keywords = extractKeywords(question, 5);
 
-  /* Step 1: Input Understanding */
-  var step1 = {
+  // Correct the sub-function metric counts — chain-of-thought counts as a single operation
+  inferenceMetrics.totalIntents--;
+  inferenceMetrics.totalEntities--;
+  inferenceMetrics.totalSentiments--;
+  inferenceMetrics.totalKeywords--;
+
+  var steps = [];
+
+  // Step 1: Parse the question
+  steps.push({
     step: 1,
-    name: 'Input Understanding',
-    output: {
-      rawLength: text.length,
-      wordCount: text.split(/\s+/).length,
-      intent: intent.intent,
-      intentConfidence: intent.confidence
-    }
-  };
+    action: 'Parse Input',
+    result: 'Identified ' + tokens.length + ' tokens, ' + entities.length + ' entities',
+    detail: { wordCount: tokens.length, entityCount: entities.length }
+  });
 
-  /* Step 2: Key Concept Extraction */
-  var step2 = {
+  // Step 2: Intent detection
+  steps.push({
     step: 2,
-    name: 'Key Concept Extraction',
-    output: {
-      keywords: keywords.map(function (k) { return k.word || k; }),
-      entities: entities.map(function (e) { return { type: e.type, value: e.value }; }),
-      conceptCount: keywords.length + entities.length
-    }
-  };
+    action: 'Detect Intent',
+    result: 'Primary intent: ' + intent.primaryIntent + ' (complexity: ' + intent.complexity + ')',
+    detail: { intent: intent.primaryIntent, isQuestion: intent.isQuestion }
+  });
 
-  /* Step 3: Context Analysis */
-  var contextSignals = [];
-  if (intent.intent === 'question') contextSignals.push('interrogative');
-  if (intent.intent === 'command') contextSignals.push('imperative');
-  if (intent.intent === 'code') contextSignals.push('technical');
-  if (intent.intent === 'math') contextSignals.push('quantitative');
-  if (sentiment.score > 0.3) contextSignals.push('positive-tone');
-  if (sentiment.score < -0.3) contextSignals.push('negative-tone');
-  contextSignals.push(text.length > 200 ? 'verbose' : 'concise');
-
-  var step3 = {
+  // Step 3: Keyword extraction
+  steps.push({
     step: 3,
-    name: 'Context Analysis',
-    output: {
-      sentiment: sentiment,
-      contextSignals: contextSignals,
-      complexity: text.split(/\s+/).length > 20 ? 'complex' : 'simple'
-    }
-  };
+    action: 'Extract Key Concepts',
+    result: 'Key concepts: ' + keywords.map(function (k) { return k.word; }).join(', '),
+    detail: { keywords: keywords }
+  });
 
-  /* Step 4: Capability Routing */
-  var capabilities = ['classify'];
-  if (intent.intent === 'question') capabilities.push('answer');
-  if (intent.intent === 'math') capabilities.push('math-worker');
-  if (intent.intent === 'code') capabilities.push('embed');
-  if (intent.intent === 'analyze') capabilities.push('keywords', 'entities');
-  if (text.length > 100) capabilities.push('summarize');
-  capabilities.push('sentiment');
-
-  var step4 = {
+  // Step 4: Sentiment context
+  steps.push({
     step: 4,
-    name: 'Capability Routing',
-    output: {
-      recommendedCapabilities: capabilities,
-      primaryCapability: capabilities[0],
-      routingConfidence: intent.confidence
-    }
-  };
+    action: 'Assess Sentiment',
+    result: 'Sentiment: ' + sentiment.label + ' (score: ' + sentiment.score + ')',
+    detail: { sentiment: sentiment }
+  });
 
-  /* Step 5: Reasoning Synthesis */
-  var reasoning = 'The input is a ' + step3.output.complexity + ' ' + intent.intent;
-  reasoning += ' with ' + step2.output.conceptCount + ' key concepts';
-  reasoning += ' and ' + step3.output.contextSignals.join(', ') + ' signals.';
-  reasoning += ' Recommended processing: ' + capabilities.join(' → ') + '.';
+  // Step 5: Route recommendation
+  var recommendedCapability = 'Multi-modal reasoning';
+  if (intent.primaryIntent === 'code') recommendedCapability = 'Code generation';
+  else if (intent.primaryIntent === 'creative') recommendedCapability = 'Image generation';
+  else if (intent.primaryIntent === 'math') recommendedCapability = 'Mathematical proof';
+  else if (intent.primaryIntent === 'search') recommendedCapability = 'Research search';
+  else if (intent.primaryIntent === 'analysis') recommendedCapability = 'Long-context reasoning';
 
-  var step5 = {
+  steps.push({
     step: 5,
-    name: 'Reasoning Synthesis',
-    output: {
-      reasoning: reasoning,
-      processingPipeline: capabilities
-    }
-  };
+    action: 'Route Recommendation',
+    result: 'Best capability: ' + recommendedCapability,
+    detail: { capability: recommendedCapability, confidence: intent.allIntents[0] ? intent.allIntents[0].confidence : 0 }
+  });
 
-  /* Step 6: Confidence Assessment */
-  var overallConfidence = (intent.confidence * 0.4 + (keywords.length > 0 ? 0.3 : 0.1) + (entities.length > 0 ? 0.2 : 0.1) + 0.1) * PHI / PHI;
-
-  var step6 = {
+  // Step 6: Synthesize
+  steps.push({
     step: 6,
-    name: 'Confidence Assessment',
-    output: {
-      overallConfidence: Math.round(overallConfidence * 10000) / 10000,
-      reliabilityFactors: {
-        intentClarity: intent.confidence > 0.5 ? 'high' : 'low',
-        conceptRichness: keywords.length >= 3 ? 'high' : 'low',
-        entityPresence: entities.length > 0 ? 'yes' : 'no'
-      }
-    }
-  };
+    action: 'Synthesize',
+    result: 'Ready to dispatch via ' + recommendedCapability + ' pipeline',
+    detail: { readyToDispatch: true, recommendedCapability: recommendedCapability }
+  });
 
-  inferenceMetrics.totalChainOfThought = (inferenceMetrics.totalChainOfThought || 0) + 1;
+  inferenceMetrics.totalChainOfThought++;
   return {
-    steps: [step1, step2, step3, step4, step5, step6],
-    conclusion: reasoning,
-    recommendedAction: capabilities[0],
-    confidence: overallConfidence,
-    phi: PHI
+    question: question.substring(0, 200),
+    steps: steps,
+    totalSteps: steps.length,
+    recommendedCapability: recommendedCapability,
+    reasoning: steps.map(function (s) { return 'Step ' + s.step + ': ' + s.result; }).join(' → ')
   };
 }
 
 /* ════════════════════════════════════════════════════════════════
-   Topic Modeling — K-means clustering on sentence embeddings
+   Topic Modeling — LDA-like clustering
    ════════════════════════════════════════════════════════════════ */
 
 function modelTopics(text, k) {
   k = k || 3;
-  var sentences = text.match(/[^.!?]+[.!?]+/g);
-  if (!sentences || sentences.length < 2) {
-    return { topics: [{ id: 0, keywords: extractKeywords(text, 5).map(function (kw) { return kw.word || kw; }), sentences: [text] }], k: 1 };
+  var sentences = splitSentences(text);
+  if (sentences.length === 0) return { error: 'No text to model' };
+
+  // Build vocabulary from non-stop words
+  var allTokens = [];
+  var sentenceTokens = [];
+  for (var i = 0; i < sentences.length; i++) {
+    var st = tokenize(sentences[i]).filter(function (t) { return t.length > 2 && !STOP_WORDS[t]; });
+    sentenceTokens.push(st);
+    for (var j = 0; j < st.length; j++) {
+      if (allTokens.indexOf(st[j]) === -1) allTokens.push(st[j]);
+    }
   }
-  sentences = sentences.map(function (s) { return s.trim(); }).filter(function (s) { return s.length > 10; });
-  k = Math.min(k, sentences.length);
 
-  /* Embed each sentence */
+  // Simple clustering: group sentences by embedding similarity
   var embeddings = sentences.map(function (s) { return simpleEmbed(s); });
-  var dims = embeddings[0].length;
 
-  /* Initialize centroids: pick k sentences spread out */
+  // Initialize k centroids using first k embeddings (or evenly spaced)
   var centroids = [];
-  var step = Math.max(1, Math.floor(sentences.length / k));
-  for (var c = 0; c < k; c++) {
-    var idx = Math.min(c * step, embeddings.length - 1);
+  for (var c = 0; c < k && c < embeddings.length; c++) {
+    var idx = Math.floor(c * embeddings.length / k);
     centroids.push(embeddings[idx].slice());
   }
 
-  /* K-means iterations */
+  // K-means iteration (3 rounds)
   var assignments = new Array(sentences.length);
-  for (var iter = 0; iter < 20; iter++) {
-    /* Assign each sentence to nearest centroid */
-    var changed = false;
-    for (var i = 0; i < sentences.length; i++) {
+  for (var iter = 0; iter < 3; iter++) {
+    // Assign
+    for (var si = 0; si < embeddings.length; si++) {
       var bestCluster = 0;
       var bestSim = -1;
-      for (var j = 0; j < k; j++) {
-        var sim = cosineSimilarity(embeddings[i], centroids[j]);
-        if (sim > bestSim) {
-          bestSim = sim;
-          bestCluster = j;
+      for (var ci = 0; ci < centroids.length; ci++) {
+        var sim = cosineSimilarity(embeddings[si], centroids[ci]);
+        if (sim > bestSim) { bestSim = sim; bestCluster = ci; }
+      }
+      assignments[si] = bestCluster;
+    }
+
+    // Update centroids
+    for (var uc = 0; uc < centroids.length; uc++) {
+      var count = 0;
+      var newCentroid = new Float32Array(64);
+      for (var ui = 0; ui < assignments.length; ui++) {
+        if (assignments[ui] === uc) {
+          count++;
+          for (var d = 0; d < 64; d++) newCentroid[d] += embeddings[ui][d];
         }
       }
-      if (assignments[i] !== bestCluster) {
-        assignments[i] = bestCluster;
-        changed = true;
+      if (count > 0) {
+        for (var nd = 0; nd < 64; nd++) newCentroid[nd] /= count;
+        centroids[uc] = newCentroid;
       }
-    }
-    if (!changed) break;
-
-    /* Update centroids */
-    for (var ci = 0; ci < k; ci++) {
-      var members = [];
-      for (var mi = 0; mi < sentences.length; mi++) {
-        if (assignments[mi] === ci) members.push(mi);
-      }
-      if (members.length === 0) continue;
-      var newCentroid = new Array(dims);
-      for (var d = 0; d < dims; d++) newCentroid[d] = 0;
-      members.forEach(function (m) {
-        for (var d = 0; d < dims; d++) newCentroid[d] += embeddings[m][d];
-      });
-      for (var d = 0; d < dims; d++) newCentroid[d] /= members.length;
-      centroids[ci] = newCentroid;
     }
   }
 
-  /* Build topic objects */
+  // Extract topic keywords per cluster
   var topics = [];
-  for (var ti = 0; ti < k; ti++) {
+  for (var tc = 0; tc < k && tc < centroids.length; tc++) {
+    var clusterTokens = [];
     var clusterSentences = [];
-    for (var si = 0; si < sentences.length; si++) {
-      if (assignments[si] === ti) clusterSentences.push(sentences[si]);
+    for (var ti = 0; ti < assignments.length; ti++) {
+      if (assignments[ti] === tc) {
+        clusterSentences.push(sentences[ti]);
+        for (var tk = 0; tk < sentenceTokens[ti].length; tk++) {
+          clusterTokens.push(sentenceTokens[ti][tk]);
+        }
+      }
     }
-    if (clusterSentences.length === 0) continue;
-    var clusterText = clusterSentences.join(' ');
-    var clusterKeywords = extractKeywords(clusterText, 5).map(function (kw) { return kw.word || kw; });
+    var freq = tokenFrequency(clusterTokens);
+    var topWords = Object.keys(freq).sort(function (a, b) { return freq[b] - freq[a]; }).slice(0, 5);
+
     topics.push({
-      id: ti,
-      keywords: clusterKeywords,
-      sentences: clusterSentences,
-      size: clusterSentences.length
+      id: tc,
+      label: 'Topic ' + (tc + 1) + ': ' + topWords.slice(0, 3).join(', '),
+      keywords: topWords,
+      sentenceCount: clusterSentences.length,
+      sampleSentence: clusterSentences[0] ? clusterSentences[0].substring(0, 80) : ''
     });
   }
 
-  topics.sort(function (a, b) { return b.size - a.size; });
+  inferenceMetrics.totalTopicModels++;
+  inferenceMetrics.totalTokensProcessed += allTokens.length;
 
-  inferenceMetrics.totalTopics = (inferenceMetrics.totalTopics || 0) + 1;
   return {
     topics: topics,
-    k: topics.length,
+    totalTopics: topics.length,
     totalSentences: sentences.length,
-    phi: PHI
+    vocabularySize: allTokens.length
   };
 }
 
@@ -630,28 +636,28 @@ self.onmessage = function (e) {
       break;
     }
     case 'summarize': {
-      var summaryResult = summarize(msg.text || '', msg.maxSentences);
-      self.postMessage({ type: 'summary-result', data: summaryResult });
+      var summary = summarize(msg.text || '', msg.sentences || 3);
+      self.postMessage({ type: 'summary', data: summary });
       break;
     }
     case 'answer': {
-      var answerResult = answerQuestion(msg.context || msg.text || '', msg.question || '');
-      self.postMessage({ type: 'answer-result', data: answerResult });
+      var answer = answerQuestion(msg.question || '', msg.context || '');
+      self.postMessage({ type: 'answer-result', data: answer });
       break;
     }
     case 'intent': {
-      var intentResult = classifyIntent(msg.text || '');
-      self.postMessage({ type: 'intent-result', data: intentResult });
+      var intent = classifyIntent(msg.text || '');
+      self.postMessage({ type: 'intent-result', data: intent });
       break;
     }
     case 'chain-of-thought': {
-      var cotResult = chainOfThought(msg.text || '');
-      self.postMessage({ type: 'chain-of-thought-result', data: cotResult });
+      var chain = chainOfThought(msg.question || msg.text || '');
+      self.postMessage({ type: 'chain-result', data: chain });
       break;
     }
     case 'topics': {
-      var topicResult = modelTopics(msg.text || '', msg.k);
-      self.postMessage({ type: 'topics-result', data: topicResult });
+      var topics = modelTopics(msg.text || '', msg.k || 3);
+      self.postMessage({ type: 'topics-result', data: topics });
       break;
     }
     case 'stats': {

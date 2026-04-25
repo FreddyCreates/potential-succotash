@@ -267,6 +267,81 @@ class PatternForgeEngine {
 globalThis.patternForge = new PatternForgeEngine();
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+  /* ── Universal message routing (popup / side panel / devtools) ──── */
+  if (message.type === 'heartbeat') {
+    sendResponse({ status: 'alive', healthy: true, timestamp: Date.now() });
+    return true;
+  }
+  if (message.type === 'openSidePanel') {
+    try { if (chrome.sidePanel && chrome.sidePanel.open) chrome.sidePanel.open({ windowId: sender.tab ? sender.tab.windowId : undefined }).catch(function(){}); } catch(e){}
+    sendResponse({ ok: true });
+    return true;
+  }
+  if (message.type === 'popup' || message.type === 'sidePanel' || message.type === 'devtools') {
+    var cmd = message.command || '';
+    var lower = cmd.toLowerCase();
+    var engine = globalThis.patternForge;
+
+    /* ── Built-in workspace commands ── */
+    if (cmd === 'ping') { sendResponse({ result: 'pong — Pattern Forge engine alive at ' + new Date().toISOString() }); return true; }
+    if (cmd === 'getState' || lower === 'state' || lower === 'status') {
+      sendResponse({ result: JSON.stringify(engine && engine.state ? engine.state : { status: 'running', timestamp: Date.now() }, null, 2) });
+      return true;
+    }
+    if (cmd === 'clearLogs') { sendResponse({ result: 'Workspace logs cleared.' }); return true; }
+    if (lower === 'help' || lower === 'capabilities' || lower === '?') {
+      sendResponse({ result: '\u{1F9E0} Pattern Forge AI Workspace\n\nCapabilities:\n• Xray Depth — X-ray depth analysis on values\n• Spectral Decompose — Spectral decomposition\n• Cross Correlation — Cross-correlation analysis\n• Mean Reversion — Mean reversion detection\n• Detect Anomalies — Detect anomalies in data\n\nType any command or question and I will route it to the best engine method.' });
+      return true;
+    }
+
+    /* ── Save to workspace conversation history ── */
+    var storageKey = 'pattern-forge_workspace_history';
+    chrome.storage.local.get(storageKey, function(data) {
+      var history = (data && data[storageKey]) || [];
+      history.push({ role: 'user', content: cmd, ts: Date.now() });
+
+      /* ── Intelligent workspace command routing ── */
+      var result;
+      try {
+        if (lower.indexOf('xray') !== -1 || lower.indexOf('depth') !== -1 || lower.indexOf('deep') !== -1 || lower.indexOf('analyze') !== -1) {
+          result = engine.xrayDepth(cmd.split(",").map(Number).filter(function(n){return!isNaN(n)}));
+        }
+        else if (lower.indexOf('spectral') !== -1 || lower.indexOf('decompose') !== -1 || lower.indexOf('frequency') !== -1 || lower.indexOf('fft') !== -1) {
+          result = engine.spectralDecompose(cmd.split(",").map(Number).filter(function(n){return!isNaN(n)}));
+        }
+        else if (lower.indexOf('correlat') !== -1 || lower.indexOf('cross') !== -1 || lower.indexOf('compare') !== -1) {
+          result = engine.crossCorrelation({a:cmd.split(",").map(Number).filter(function(n){return!isNaN(n)})});
+        }
+        else if (lower.indexOf('mean') !== -1 || lower.indexOf('reversion') !== -1 || lower.indexOf('revert') !== -1 || lower.indexOf('average') !== -1) {
+          result = engine.meanReversion(cmd.split(",").map(Number).filter(function(n){return!isNaN(n)}), 5);
+        }
+        else if (lower.indexOf('anomal') !== -1 || lower.indexOf('outlier') !== -1 || lower.indexOf('unusual') !== -1 || lower.indexOf('detect') !== -1) {
+          result = engine.detectAnomalies(cmd.split(",").map(Number).filter(function(n){return!isNaN(n)}));
+        }
+        else {
+          /* Default: route to primary engine method */
+          result = engine.xrayDepth(cmd.split(",").map(Number).filter(function(n){return!isNaN(n)}));
+        }
+      } catch(e) {
+        result = { error: e.message, fallback: 'Pattern Forge encountered an error processing: "' + cmd + '"' };
+      }
+
+      var responseText;
+      if (typeof result === 'string') { responseText = result; }
+      else if (result && result.error) { responseText = '\u26A0\uFE0F ' + (result.fallback || result.error); }
+      else { responseText = JSON.stringify(result, null, 2); }
+
+      history.push({ role: 'ai', content: responseText, ts: Date.now() });
+      if (history.length > 100) { history = history.slice(-100); }
+      var update = {};
+      update[storageKey] = history;
+      chrome.storage.local.set(update);
+
+      sendResponse({ result: responseText });
+    });
+    return true;
+  }
+
   var engine = globalThis.patternForge;
   switch (message.action) {
     case 'xrayDepth':
@@ -311,6 +386,13 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     }
   });
   chrome.runtime.onInstalled.addListener(function () {
+    /* Auto-activate side panel on install */
+    if (chrome.sidePanel && chrome.sidePanel.setOptions) {
+      chrome.sidePanel.setOptions({ enabled: true });
+    }
+    if (chrome.sidePanel && chrome.sidePanel.setPanelBehavior) {
+      chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: false }).catch(function(){});
+    }
     chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
     console.log('[Pattern Forge] 24/7 keepalive active');
   });

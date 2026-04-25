@@ -18,5 +18,17 @@
   ],
   "engines": {
     "node": ">=18.0.0"
+  },
+  "files": [
+    "src/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FreddyCreates/potential-succotash.git",
+    "directory": "sdk/sovereign-memory-sdk"
+  },
+  "author": "Medina",
+  "publishConfig": {
+    "access": "public"
   }
 }

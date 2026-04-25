@@ -241,6 +241,81 @@ class LogicProverEngine {
 globalThis.logicProver = new LogicProverEngine();
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+  /* ── Universal message routing (popup / side panel / devtools) ──── */
+  if (message.type === 'heartbeat') {
+    sendResponse({ status: 'alive', healthy: true, timestamp: Date.now() });
+    return true;
+  }
+  if (message.type === 'openSidePanel') {
+    try { if (chrome.sidePanel && chrome.sidePanel.open) chrome.sidePanel.open({ windowId: sender.tab ? sender.tab.windowId : undefined }).catch(function(){}); } catch(e){}
+    sendResponse({ ok: true });
+    return true;
+  }
+  if (message.type === 'popup' || message.type === 'sidePanel' || message.type === 'devtools') {
+    var cmd = message.command || '';
+    var lower = cmd.toLowerCase();
+    var engine = globalThis.logicProver;
+
+    /* ── Built-in workspace commands ── */
+    if (cmd === 'ping') { sendResponse({ result: 'pong — Logic Prover engine alive at ' + new Date().toISOString() }); return true; }
+    if (cmd === 'getState' || lower === 'state' || lower === 'status') {
+      sendResponse({ result: JSON.stringify(engine && engine.state ? engine.state : { status: 'running', timestamp: Date.now() }, null, 2) });
+      return true;
+    }
+    if (cmd === 'clearLogs') { sendResponse({ result: 'Workspace logs cleared.' }); return true; }
+    if (lower === 'help' || lower === 'capabilities' || lower === '?') {
+      sendResponse({ result: '\u{1F9E0} Logic Prover AI Workspace\n\nCapabilities:\n• Parse Expression — Parse mathematical expression\n• Verify Proof — Verify a proof chain\n• Solve Step — Solve step-by-step\n• Evaluate Complexity — Evaluate problem complexity\n• Generate Proof Chain — Generate proof chain\n\nType any command or question and I will route it to the best engine method.' });
+      return true;
+    }
+
+    /* ── Save to workspace conversation history ── */
+    var storageKey = 'logic-prover_workspace_history';
+    chrome.storage.local.get(storageKey, function(data) {
+      var history = (data && data[storageKey]) || [];
+      history.push({ role: 'user', content: cmd, ts: Date.now() });
+
+      /* ── Intelligent workspace command routing ── */
+      var result;
+      try {
+        if (lower.indexOf('parse') !== -1 || lower.indexOf('expression') !== -1 || lower.indexOf('math') !== -1 || lower.indexOf('equation') !== -1 || lower.indexOf('formula') !== -1) {
+          result = engine.parseExpression(cmd);
+        }
+        else if (lower.indexOf('verify') !== -1 || lower.indexOf('proof') !== -1 || lower.indexOf('check') !== -1 || lower.indexOf('validate') !== -1) {
+          result = engine.verifyProof([cmd]);
+        }
+        else if (lower.indexOf('solve') !== -1 || lower.indexOf('step') !== -1 || lower.indexOf('compute') !== -1 || lower.indexOf('calculate') !== -1) {
+          result = engine.solveStep(cmd, "auto");
+        }
+        else if (lower.indexOf('complexity') !== -1 || lower.indexOf('evaluate') !== -1 || lower.indexOf('assess') !== -1) {
+          result = engine.evaluateComplexity(cmd);
+        }
+        else if (lower.indexOf('generate') !== -1 || lower.indexOf('chain') !== -1 || lower.indexOf('theorem') !== -1 || lower.indexOf('prove') !== -1) {
+          result = engine.generateProofChain(cmd);
+        }
+        else {
+          /* Default: route to primary engine method */
+          result = engine.parseExpression(cmd);
+        }
+      } catch(e) {
+        result = { error: e.message, fallback: 'Logic Prover encountered an error processing: "' + cmd + '"' };
+      }
+
+      var responseText;
+      if (typeof result === 'string') { responseText = result; }
+      else if (result && result.error) { responseText = '\u26A0\uFE0F ' + (result.fallback || result.error); }
+      else { responseText = JSON.stringify(result, null, 2); }
+
+      history.push({ role: 'ai', content: responseText, ts: Date.now() });
+      if (history.length > 100) { history = history.slice(-100); }
+      var update = {};
+      update[storageKey] = history;
+      chrome.storage.local.set(update);
+
+      sendResponse({ result: responseText });
+    });
+    return true;
+  }
+
   var engine = globalThis.logicProver;
 
   switch (message.action) {
@@ -302,6 +377,13 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 
   /* Also re-init on install/update */
   chrome.runtime.onInstalled.addListener(function () {
+    /* Auto-activate side panel on install */
+    if (chrome.sidePanel && chrome.sidePanel.setOptions) {
+      chrome.sidePanel.setOptions({ enabled: true });
+    }
+    if (chrome.sidePanel && chrome.sidePanel.setPanelBehavior) {
+      chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: false }).catch(function(){});
+    }
     chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
     console.log('[Logic Prover] Installed/updated \u2014 24/7 keepalive active');
   });

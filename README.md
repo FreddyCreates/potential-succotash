@@ -1,45 +1,3 @@
-# Sovereign Organism — 35 AI Browser Extensions
-
-> **These are working AI apps.** Every extension is a real Chrome/Edge Manifest V3 app with a background AI engine and interactive UI. Install them and they run. No API keys. No setup. No bullshit.
-
-## 🚀 Open Now
-
-| | |
-|---|---|
-| **[🌐 itsnotAilabs.com](https://itsnotAilabs.com)** | The website — launch the organism, download extensions, see everything |
-| **[🧬 Launch Live Organism](https://itsnotAilabs.com/organism/web/index.html)** | Open the organism runtime — 873ms heartbeat, 4-register state, live vitals — right in your browser |
-| **[📦 Download Extensions](https://itsnotAilabs.com/download.html)** | Browse all 36 extensions, download individually or all at once, with native in-browser zip builds |
-
-No install needed. Click → it opens. The organism is alive in the browser.
-
----
-
-## ⚡ Install Now (One Click)
-
-### Windows (Recommended)
-
-**[📥 Download install-organism.bat](https://github.com/FreddyCreates/potential-succotash/raw/main/install-organism.bat)** → double-click → Edge opens with all 35 AI extensions live.
-
-That's it. The bat file clones the repo, scans all 36 extensions, finds Edge/Chrome/Brave, and launches with every extension attached. If Edge is installed, it uses Edge. Working app, one click.
-
-### Any Platform
-
-```bash
-git clone https://github.com/FreddyCreates/potential-succotash.git
-cd potential-succotash
-node organism-cli
-```
-
-### Manual Install
-
-1. Clone or [download the repo as ZIP](https://github.com/FreddyCreates/potential-succotash/archive/refs/heads/main.zip)
-2. Open `edge://extensions` or `chrome://extensions`
-3. Enable **Developer Mode** (top right toggle)
-4. Click **Load unpacked** → select any folder inside `extensions/`
-5. Each extension shows its AI panel on every page you visit
-
----
-
 # It's All Intelligence
 
 There is no separation between the AI and the architecture. The architecture IS the intelligence. Every SDK is a brain region. Every protocol adapts and self-heals. Every extension is an AI experience a user touches with their hands. Every tool is callable, routable, permissioned. Every model engine is wired in. The organism doesn't use AI — the organism IS AI. All of it. Top to bottom.
@@ -60,61 +18,141 @@ There are no dumb pipes. No static configs. No passive layers. Everything in thi
 
 ## How It's Built
 
-Eight sovereign SDKs form the brain. Spatial memory with phi-encoded 5-axis coordinates. Enterprise integration with 8 connectors that onboard companies in sovereign mode. Intelligence routing that scores 40 AI model families and picks the best engine for any task by capability, priority, and cost. A runtime with a heartbeat, kernel execution, and edge sensing. A document absorption engine that turns raw content into living knowledge graphs. A model engine layer that wraps GPT, Claude, Gemini, Llama, Mistral, Whisper, DALL-E, Sora, and 32 more families into callable, routable engines. A frontend intelligence layer with 30 technology models running as 24-hour autonomous organisms. And a marketplace SDK with 60 always-on callable tools organized into 5 families — Crawling, Context, Commander, Sentry, Builder — each with schema, registry, invocation, routing, and settlement.
+Eight sovereign SDKs form the brain. Spatial memory with phi-encoded 5-axis coordinates. Enterprise integration with 8 connectors that onboard companies in sovereign mode. Intelligence routing that scores 40 AI model families and picks the best engine for any task by capability, priority, and cost. A runtime with a heartbeat, kernel execution, and edge sensing. A document absorption engine that turns raw content into living knowledge graphs. A model engine layer that wraps GPT, Claude, Gemini, Llama, Mistral, Whisper, DALL-E, Sora, and 32 more families into callable, routable engines. A frontend intelligence layer with 30 technology models running as 24-hour autonomous organisms. And a marketplace SDK with 24 always-on callable tools organized into 4 families — Crawling, Context, Commander, Sentry — each with schema, registry, invocation, routing, and settlement.
 
-250 protocols carry intelligence between all of these. Sovereign routing learns optimal model selection from outcome feedback. Encrypted transport adapts encryption strength by content sensitivity. Phi-resonance sync uses Kuramoto coupling to keep distributed endpoints locked to the 873ms heartbeat. Knowledge absorption evolves its extraction patterns. Multi-model fusion weights outputs with phi-decay scoring. Contract verification learns clause patterns from verified agreements. Edge mesh redistributes workload by real-time node capacity. Organism lifecycle self-heals by restarting failed kernels. Plus 170 additional protocols covering consensus/BFT, AI hierarchy governance, cross-model communication, zero-knowledge security, marketplace settlement, observer intelligence, web worker orchestration, autonomous agent planning, cross-substrate bridging, signal processing, emergence detection, resonance coupling, goal decomposition, hallucination detection, adversarial robustness, federated learning, explainability, data lineage, swarm coordination, quantum-ready encryption, cross-chain bridging, sovereign identity, emotion-aware interaction, digital twin sync, zero-knowledge proofs, autonomous code review, predictive maintenance, content authenticity, distributed consensus, spatial computing, neuromorphic compute, chaos engineering, cross-organism interoperability, autonomous debugging, autonomous test generation, autonomous refactoring, autonomous performance profiling, autonomous CI/CD, neuromorphic spike timing, neuromorphic reservoir computing, multi-agent debate, multi-agent swarm intelligence, multi-agent consensus, multi-agent negotiation, privacy-preserving analytics, ethical guardrails, secure enclaves, intelligent caching, multi-tenant isolation, federated inference, self-documenting code, knowledge graph evolution, semantic code search, real-time collaboration, digital watermarks, predictive resource allocation, autonomous optimization, terminal autonomy, AGI orchestration, blueprint discovery, and sovereign division management. Research papers for all 250 protocols at research/protocol-papers.html. Licenses for all 250 protocols at research/protocol-licenses.html.
+Eleven protocols carry intelligence between all of these. Sovereign routing learns optimal model selection from outcome feedback. Encrypted transport adapts encryption strength by content sensitivity. Phi-resonance sync uses Kuramoto coupling to keep distributed endpoints locked to the 873ms heartbeat. Knowledge absorption evolves its extraction patterns. Multi-model fusion weights outputs with phi-decay scoring. Contract verification learns clause patterns from verified agreements. Edge mesh redistributes workload by real-time node capacity. And the organism lifecycle protocol self-heals by restarting failed kernels and rebalancing registers autonomously.
 
-60 architectural laws govern everything. Semantic containment. Unidirectional state flow. Heartbeat sovereignty. Register integrity. Wire encryption. Kernel isolation. Anti-collapse. Continuous edge sensing. Cross-organism resonance. The four meta-laws: fracture recognition, primitive reduction, sovereign rebuild, organism reintegration. Plus 20 new laws covering AI safety (prompt injection prevention, hallucination detection, toxicity filtering), agent autonomy boundaries, multi-model governance (sunset, capability scoring, bias detection), protocol versioning, marketplace integrity (tool attestation, settlement finality), observer intelligence lifecycle, web worker containment, cross-substrate migration safety, phase lock enforcement, and entity uniqueness. Every wire, every tool, every extension, every protocol obeys all 60.
+40 architectural laws govern everything. Semantic containment. Unidirectional state flow. Heartbeat sovereignty. Register integrity. Wire encryption. Kernel isolation. Anti-collapse. Continuous edge sensing. Cross-organism resonance. And the four meta-laws: fracture recognition, primitive reduction, sovereign rebuild, organism reintegration. Every wire, every tool, every extension, every protocol obeys all 40.
 
 ---
 
-## The Extensions Are AI For User Experiences
+## ⬇️ Get JARVIS — One Intelligence, One Click
 
-This is the part that matters for people who actually use the thing.
+JARVIS is the browser extension. One mind. Five thinking architectures. A Phantom AI that structures every thought before it speaks. It thinks, reasons, and reflects before answering — every time.
 
-Every extension is a Chrome Manifest V3 app with a background service worker running an AI engine and a content script rendering an interactive UI. They are not internal plumbing. They are the user's interface to the intelligence. 21 of them.
+👉 **[⬇️ Download JARVIS AI](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/jarvis.zip)** — the sovereign intelligence, one extension
 
-**Sovereign Mind** — you ask a question, three sovereign engines (FusionCore, AlphaRouter, PhiScorer) reason from your own data, the organism fuses their outputs with phi-weighted confidence scoring, and you get one sovereign answer. That's the user experience. No GPT. No Claude. No Gemini. Your mind, your data, one panel floating on your page.
+👉 **[⬇️ Download ALL 27 Extensions](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip)** — JARVIS + all 26 specialized thinking architectures
 
-**Cipher Shield** — every page you visit gets real-time content encryption and prompt injection detection. The AI is watching your browsing and protecting you before threats reach your eyes. Guards + GPT + Claude working in concert behind one quiet shield icon.
+### How to install
 
-**Polyglot Oracle** — browse any page in any language. The organism translates it live with context awareness across Qwen, Gemini, and Llama. Not word-by-word — the AI understands the page and rebuilds it in your language.
+1. **Click the ⬇️ link above** → save the `.zip`
+2. **Unzip it** → right-click → Extract All
+3. **Open Chrome** → go to `chrome://extensions` (or `edge://extensions` / `brave://extensions`)
+4. **Turn on Developer mode** → toggle in the top-right
+5. **Click "Load unpacked"** → pick the unzipped folder
+6. **Done** — the JARVIS icon appears in your toolbar. Click it.
 
-**Vision Weaver** — describe what you want to see. DALL-E, Stable Diffusion, Midjourney, and SAM generate it side-by-side in your browser. You compare, edit, composite. The AI competes to give you the best image.
+---
 
-**Code Sovereign** — highlight any code on any page. Codex, CodeLlama, and DeepSeek generate improvements, refactors, and verified alternatives. The output comes with contract verification. AI-generated code that proves itself correct.
+## 🧠 JARVIS — The Sovereign Intelligence (EXT-027)
 
-**Memory Palace** — sovereign bookmarking. Every page you save gets phi-encoded spatial coordinates in a 5-axis memory space. Embeddings, Command R, and rerankers make every memory searchable by meaning and resonance simultaneously.
+JARVIS is not a wrapper around other people's AI. JARVIS is its own intelligence. It has a **Phantom AI** — an internal thinking layer that structures every thought before it produces a response. When you ask JARVIS something, it doesn't just answer. It thinks.
 
-**Sentinel Watch** — real-time phishing, malware, and social engineering detection. Guards, GPT, and Claude scan every page before you interact with it. The AI is your immune system for the web.
+**7 Thinking Patterns** run on every query, in order:
 
-**Research Nexus** — multi-source research synthesis. Ask a question, Perplexity searches, Claude reasons, embeddings find context, and you get a cited, sourced, reasoned answer. Not a search result — a research paper.
+1. **Decompose** — breaks your question into atomic sub-questions
+2. **Classify** — identifies which thinking architecture(s) your question needs
+3. **Recall** — searches its memory for related context from past conversations
+4. **Reason** — runs chain-of-thought reasoning through each sub-question
+5. **Synthesize** — fuses the sub-answers into one coherent response
+6. **Score** — phi-weights candidate responses and picks the best one
+7. **Reflect** — validates the answer against your original intent
 
-**Voice Forge** — speak and the organism listens (Whisper). Ask it to speak and it generates voice (ElevenLabs). Ask it to make music and it composes (Suno). Audio intelligence in your browser — input, output, and creation.
+**5 Thinking Architectures** — JARVIS routes your question to the right way of thinking:
 
-**Data Alchemist** — any webpage, auto-absorbed into your sovereign knowledge graph. GPT and Claude extract entities and relationships. Embeddings and rerankers index it. The page becomes living knowledge you own.
+| | Architecture | What it thinks about | Extensions that specialize in this |
+|---|---|---|---|
+| 🧠 | **Reasoning & Fusion** | Logic, analysis, comparison, proof, inference, synthesis | Sovereign Mind, Logic Prover, Research Nexus, Edge Runner |
+| 🎨 | **Creation & Generation** | Writing, code, images, video, music, design, composition | Vision Weaver, Video Architect, Voice Forge, Code Sovereign, Creative Muse |
+| 📊 | **Perception & Analysis** | Pattern recognition, data extraction, signal/noise, spreads | Data Alchemist, Knowledge Cartographer, Polyglot Oracle, Spread Scanner, Data Oracle, Pattern Forge, Social Cortex |
+| 🛡 | **Protection & Memory** | Encryption, threat detection, spatial memory, contracts | Cipher Shield, Sentinel Watch, Memory Palace, Contract Forge |
+| 🌀 | **Command & Control** | Screen control, system health, orchestration, building | Sovereign Nexus, Organism Dashboard, Protocol Bridge, Marketplace Hub, Screen Commander, Register |
 
-**Video Architect** — describe a scene. Sora, Runway, Pika, and Kling generate video. Multiple models, one prompt, the best output wins. Text-to-video generation right in your browser.
+Every query shows you: which architecture was used, the confidence score, the full thinking trace, and the time it took to think.
 
-**Logic Prover** — paste a math problem. Minerva, Llemma, GPT, and AlphaCode generate step-by-step formal proofs with verification. The AI doesn't just solve — it proves.
+**[⬇️ Download JARVIS AI](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/jarvis.zip)**
 
-**Social Cortex** — AI-powered social intelligence. Grok reads the room. Inflection feels the tone. GPT drafts the response. Sentiment analysis, empathy detection, and response generation for any social context.
+---
 
-**Edge Runner** — offline AI. Phi, Gemma, and DBRX run inference locally on your device. Zero cloud. Zero latency. Full privacy. The organism works without the internet.
+## The 26 Specialized Extensions
 
-**Contract Forge** — draft and verify intelligence contracts. GPT writes. Claude reviews. Guards validate. Legal-grade AI contract authoring with cryptographic proof of compliance.
+Each extension is a deep specialist in one thinking architecture. JARVIS holds all five architectures in one mind. These 26 go deeper into each one. They are all sovereign intelligence — not wrappers around external APIs. External model providers can be connected optionally, but the thinking is ours.
 
-**Organism Dashboard** — see the organism alive. The 873ms heartbeat pulsing. The 4 state registers updating. Vitality scores. Edge sensor readings. The organism's vital signs rendered in real-time on your screen.
+<details>
+<summary><strong>🧠 Reasoning & Fusion</strong> — sovereign thinking from your data (4 extensions)</summary>
 
-**Knowledge Cartographer** — browse the web and watch your knowledge graph grow. Embeddings capture meaning. Command R links entities. Florence understands images. Every page you visit adds nodes and edges to a visual graph that maps everything you know.
+| | Extension | What it thinks about | Download |
+|---|---|---|---|
+| 🧠 | Sovereign Mind | Fuses 3 sovereign engines into one answer from your own data | **[⬇️ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-mind.zip)** |
+| 📐 | Logic Prover | Formal proofs — step-by-step mathematical verification | **[⬇️ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/logic-prover.zip)** |
+| 🔬 | Research Nexus | Multi-source synthesis — searches, reasons, cites, produces research output | **[⬇️ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/research-nexus.zip)** |
+| ⚡ | Edge Runner | Offline reasoning — runs locally, zero cloud, full privacy | **[⬇️ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-runner.zip)** |
 
-**Protocol Bridge** — bridge between AI protocols. Encrypted relay between different intelligence systems. All 40 foundation models available through one unified protocol surface.
+</details>
 
-**Creative Muse** — multi-modal creative generation. Stable Diffusion for images. DALL-E for compositions. MusicGen for audio. Suno for songs. One creative studio, multiple AI engines, fused output.
+<details>
+<summary><strong>🎨 Creation & Generation</strong> — sovereign creation of artifacts (5 extensions)</summary>
 
-**Sovereign Nexus** — the master hub. All 20 extensions unified into one sovereign intelligence interface. Every model, every wire, every tool, one panel. The organism's control center.
+| | Extension | What it creates | Download |
+|---|---|---|---|
+| 🎨 | Vision Weaver | Images — multi-engine generation side-by-side, best output wins | **[⬇️ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/vision-weaver.zip)** |
+| 🎬 | Video Architect | Video — text-to-video generation, multi-engine quality routing | **[⬇️ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/video-architect.zip)** |
+| 🎤 | Voice Forge | Audio — speech recognition, voice generation, music composition | **[⬇️ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/voice-forge.zip)** |
+| 💻 | Code Sovereign | Code — generation with contract-verified output | **[⬇️ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/code-sovereign.zip)** |
+| 🎭 | Creative Muse | Multi-modal studio — images + compositions + audio, fused output | **[⬇️ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/creative-muse.zip)** |
 
-**Marketplace Hub** — browse, search, and invoke 24 callable tools with natural language. Family-tabbed browsing across Crawling, Context, Commander, and Sentry. One-click invocation. Live results. The tool marketplace made visual.
+</details>
+
+<details>
+<summary><strong>📊 Perception & Analysis</strong> — sovereign vision into data (7 extensions)</summary>
+
+| | Extension | What it perceives | Download |
+|---|---|---|---|
+| ⚗️ | Data Alchemist | Absorbs any page into your knowledge graph — entities, relationships, embeddings | **[⬇️ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/data-alchemist.zip)** |
+| 🗺 | Knowledge Cartographer | Builds a visual knowledge graph as you browse — nodes, edges, meaning | **[⬇️ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/knowledge-cartographer.zip)** |
+| 🌐 | Polyglot Oracle | Translates any page live with context awareness in your language | **[⬇️ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/polyglot-oracle.zip)** |
+| 📈 | Spread Scanner | Financial X-ray — pairwise spreads, phi-weighted z-scores, arbitrage grades A-F | **[⬇️ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/spread-scanner.zip)** |
+| 🔮 | Data Oracle | Depth analysis — √N normalization, φ-threshold signal separation, X-ray through noise | **[⬇️ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/data-oracle.zip)** |
+| 🔷 | Pattern Forge | DFT spectral decomposition, φ-harmonic detection, mean reversion, anomaly detection | **[⬇️ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/pattern-forge.zip)** |
+| 💬 | Social Cortex | Social intelligence — reads the room, feels tone, drafts response | **[⬇️ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/social-cortex.zip)** |
+
+</details>
+
+<details>
+<summary><strong>🛡 Protection & Memory</strong> — sovereign guarding and remembering (4 extensions)</summary>
+
+| | Extension | What it protects / remembers | Download |
+|---|---|---|---|
+| 🛡 | Cipher Shield | Real-time encryption + prompt injection detection on every page | **[⬇️ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/cipher-shield.zip)** |
+| 🔒 | Sentinel Watch | Phishing, malware, social engineering detection before you click | **[⬇️ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sentinel-watch.zip)** |
+| 📚 | Memory Palace | Phi-encoded spatial bookmarking — 5-axis memory, searchable by meaning | **[⬇️ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/memory-palace.zip)** |
+| 📝 | Contract Forge | Sovereign contract authoring with cryptographic proof of compliance | **[⬇️ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/contract-forge.zip)** |
+
+</details>
+
+<details>
+<summary><strong>🌀 Command & Control</strong> — sovereign nervous system (6 extensions)</summary>
+
+| | Extension | What it controls | Download |
+|---|---|---|---|
+| 🌀 | Sovereign Nexus | Master hub — all extensions unified in one sovereign control center | **[⬇️ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-nexus.zip)** |
+| 📊 | Organism Dashboard | Vital signs — 873ms heartbeat, 4 registers, vitality, edge sensors, live | **[⬇️ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/organism-dashboard.zip)** |
+| 🔗 | Protocol Bridge | Unified protocol relay — all model families through one encrypted surface | **[⬇️ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/protocol-bridge.zip)** |
+| 🏪 | Marketplace Hub | Browse + invoke callable tools with natural language, one-click | **[⬇️ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/marketplace-hub.zip)** |
+| 🖥 | Screen Commander | Natural language browser control — "scroll down", "read #main", "summarize" | **[⬇️ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/screen-commander.zip)** |
+| 🏗 | Register | Builder AI — scans, validates, loads, verifies, monitors all extensions | **[⬇️ zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/register.zip)** |
+
+</details>
+
+### Windows — double-click install
+
+- **install-organism.bat** — double-click, all 27 extensions install and Chrome opens
+- **install-extensions.ps1** — right-click → Run with PowerShell
+
+### Download page (works offline)
+
+Open **[dist/download.html](dist/download.html)** in any browser — works from USB, local folder, `file://` URL, no internet needed.
 
 ---
 
@@ -124,7 +162,7 @@ AIs don't "just know" what tools exist. That's the biggest misconception. They n
 
 The marketplace provides all four. `ToolSchemaBuilder` defines the interface. `ToolRegistry` makes it discoverable. `MarketplaceRouter` handles the routing with phi-scored intent matching. `ToolInvoker` enforces permissions and returns structured results. And `MarketplaceSettlement` tracks usage, billing, and rewards.
 
-60 tools run always-on across 5 families. Context tools know what the organism is (heartbeat, state, cycles, context, memory, lineage, capability scoring, resonance coordination). Commander tools direct what the organism does (sync, inference routing, attention, resources, connections, task orchestration, worker orchestration, autonomous planning, multi-model consensus). Crawling tools see the organism's own structure (flow, patterns, anomalies, cache, logs, topology, observer scanning, emergence detection, entity deduplication). Sentry tools protect the organism from itself and others (security, integrity, boundaries, seals, queues, doctrine auditing, prompt shields, PII detection, bias auditing, law enforcement). Builder tools construct and manage the infrastructure (12 worker engines, marketplace registry, settlement, rewards, rollout gates, tool attestation).
+24 tools run always-on across 4 families. Context tools know what the organism is (heartbeat, state, cycles, context, memory, lineage). Commander tools direct what the organism does (sync, inference routing, attention, resources, connections, task orchestration). Crawling tools see the organism's own structure (flow, patterns, anomalies, cache, logs, topology). Sentry tools protect the organism from itself and others (security, integrity, boundaries, seals, queues, doctrine auditing).
 
 Exposure starts internal, then partner, then enterprise, then public. You don't open a marketplace to the world before your own organisms use it fluently.
 
@@ -143,78 +181,11 @@ The organism isn't conceptual. It's compiled. It's running. The 873ms heartbeat 
 
 ---
 
-## Download & Install Extensions
-
-### ⚡ Quick Install
-
-| Method | What to Do |
-|---|---|
-| **Windows (1-click)** | **[📥 Download install-organism.bat](https://github.com/FreddyCreates/potential-succotash/raw/main/install-organism.bat)** → double-click → done |
-| **Windows (PowerShell)** | **[📥 Download install-extensions.ps1](https://github.com/FreddyCreates/potential-succotash/raw/main/install-extensions.ps1)** → right-click → Run with PowerShell |
-| **Any platform (terminal)** | `git clone https://github.com/FreddyCreates/potential-succotash.git && node potential-succotash/organism-cli` |
-| **Manual** | Clone repo → `edge://extensions` → Developer Mode → Load unpacked → select extension folder |
-
-The bat and ps1 files auto-clone the repo if needed. They scan all 36 extensions from source, find Edge (or Chrome/Brave), and launch with every extension attached. No zip needed. Edge-first on Windows.
-
-### 📦 Individual Extension Downloads
-
-Every link below downloads the real `.zip` file. Click → get the extension.
-
-| | Extension | Download |
-|---|---|---|
-| 🧠 | Sovereign Mind | **[sovereign-mind.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-mind.zip)** |
-| 🛡 | Cipher Shield | **[cipher-shield.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/cipher-shield.zip)** |
-| 🌐 | Polyglot Oracle | **[polyglot-oracle.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/polyglot-oracle.zip)** |
-| 🎨 | Vision Weaver | **[vision-weaver.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/vision-weaver.zip)** |
-| 💻 | Code Sovereign | **[code-sovereign.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/code-sovereign.zip)** |
-| 📚 | Memory Palace | **[memory-palace.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/memory-palace.zip)** |
-| 🔒 | Sentinel Watch | **[sentinel-watch.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sentinel-watch.zip)** |
-| 🔬 | Research Nexus | **[research-nexus.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/research-nexus.zip)** |
-| 🎤 | Voice Forge | **[voice-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/voice-forge.zip)** |
-| ⚗️ | Data Alchemist | **[data-alchemist.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/data-alchemist.zip)** |
-| 🎬 | Video Architect | **[video-architect.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/video-architect.zip)** |
-| 📐 | Logic Prover | **[logic-prover.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/logic-prover.zip)** |
-| 💬 | Social Cortex | **[social-cortex.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/social-cortex.zip)** |
-| ⚡ | Edge Runner | **[edge-runner.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-runner.zip)** |
-| 📝 | Contract Forge | **[contract-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/contract-forge.zip)** |
-| 📊 | Organism Dashboard | **[organism-dashboard.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/organism-dashboard.zip)** |
-| 🗺 | Knowledge Cartographer | **[knowledge-cartographer.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/knowledge-cartographer.zip)** |
-| 🔗 | Protocol Bridge | **[protocol-bridge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/protocol-bridge.zip)** |
-| 🎭 | Creative Muse | **[creative-muse.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/creative-muse.zip)** |
-| 🌀 | Sovereign Nexus | **[sovereign-nexus.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-nexus.zip)** |
-| 🏪 | Marketplace Hub | **[marketplace-hub.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/marketplace-hub.zip)** |
-| 📈 | Spread Scanner | **[spread-scanner.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/spread-scanner.zip)** |
-| 🔮 | Data Oracle | **[data-oracle.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/data-oracle.zip)** |
-| 🖥 | Screen Commander | **[screen-commander.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/screen-commander.zip)** |
-| 🔷 | Pattern Forge | **[pattern-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/pattern-forge.zip)** |
-| 🏗 | Register | **[register.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/register.zip)** |
-| 🤖 | Windows Copilot Hub | **[windows-copilot-hub.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/windows-copilot-hub.zip)** |
-| 📂 | Windows File Oracle | **[windows-file-oracle.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/windows-file-oracle.zip)** |
-| 🔔 | Windows Notification Cortex | **[windows-notification-cortex.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/windows-notification-cortex.zip)** |
-| 🐚 | Windows Shell Intelligence | **[windows-shell-intelligence.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/windows-shell-intelligence.zip)** |
-| ⌨️ | Windows Terminal Forge | **[windows-terminal-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/windows-terminal-forge.zip)** |
-| 🤖 | Edge AI Assistant | **[edge-ai-assistant.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-ai-assistant.zip)** |
-| 📊 | Edge Tab Analyzer | **[edge-tab-analyzer.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-tab-analyzer.zip)** |
-| 🧪 | Edge Prompt Lab | **[edge-prompt-lab.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-prompt-lab.zip)** |
-| 🔥 | Edge Context Engine | **[edge-context-engine.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-context-engine.zip)** |
-
-**[📦 Download ALL 35 Extensions (single zip)](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip)**
-
-### Build From Source
-
-```bash
-bash build-extensions.sh
-# Output: dist/extensions/<name>.zip (one per extension)
-# Output: dist/extensions/all-extensions.zip (all 35 bundled)
-```
-
----
-
 ## Register AI — The Builder (EXT-026)
 
 The Register AI is the organism's native builder. It's the 5th tool family (Builder) alongside Crawling, Context, Commander, and Sentry. It runs as both a **terminal CLI** (`organism-cli`) and a **browser extension** (EXT-026). Steps 1–7 run automatically:
 
-1. **Scan** — discovers all 36 extensions in `extensions/`
+1. **Scan** — discovers all 27 extensions in `extensions/`
 2. **Validate** — checks every manifest for Manifest V3 compliance
 3. **Detect Browser** — finds Chrome, Edge, or Brave on any OS
 4. **Load Extensions** — launches browser with `--load-extension` (direct from source, no zip)
@@ -225,7 +196,7 @@ The Register AI is the organism's native builder. It's the 5th tool family (Buil
 ### Terminal AI (organism-cli)
 
 ```bash
-node organism-cli               # 1-click install — all 36 extensions live in Edge/Chrome
+node organism-cli               # 1-click install — all 27 extensions live in Chrome
 node organism-cli validate      # check all manifests
 node organism-cli list          # show all extensions with status
 node organism-cli status        # Register AI health report
@@ -245,101 +216,24 @@ Builder Family Tools: Register (TOOL-025), Packager (TOOL-026), Validator (TOOL-
 
 ## JARVIS Intelligence Suite (5 Autonomous Agents)
 
-Five extensions that act as autonomous AI agents. They read, write, move on screen, and see through data noise to find what's real. Pre-loaded with X-ray mathematics — square-root normalization, spectral decomposition, cross-system correlation, z-depth analysis. Pattern recognition for spreads where there is free lunch.
+Five extensions that act as one autonomous intelligence suite. They read, write, move on screen, and see through data noise to find what's real. Pre-loaded with X-ray mathematics — square-root normalization, spectral decomposition, cross-system correlation, z-depth analysis. JARVIS is the mind that holds them together.
 
-**Jarvis AI** (EXT-036) — The ultimate JARVIS autonomous AI assistant. Voice commands, screen control, task automation, memory system, page analysis, scheduled tasks. 18 command intents with phi-weighted task queue. Arc reactor status indicator. Ctrl+Shift+J to summon.
+**Jarvis AI** (EXT-027) — The sovereign intelligence. Phantom AI structures every thought through 7 thinking patterns and 5 thinking architectures before responding. One mind that reasons, creates, perceives, protects, and commands.
 
-**Spread Scanner** (EXT-022) — Scans any page for financial data. Computes pairwise spreads, phi-weighted z-scores, correlation matrices. Grades arbitrage opportunities A through F. Finds the free lunch.
+**Spread Scanner** (EXT-022) — Scans any page for financial data. Computes pairwise spreads, phi-weighted z-scores, correlation matrices. Grades arbitrage opportunities A through F.
 
 **Data Oracle** (EXT-023) — Ingests everything — text, tables, meta tags, structured data. Runs X-ray depth analysis with √N normalization. Separates fundamental signals from noise using φ as the threshold.
 
-**Screen Commander** (EXT-024) — JARVIS for your browser. Type natural language: "scroll down", "read #main", "find 'revenue'", "summarize this page". The AI operates the screen for you.
+**Screen Commander** (EXT-024) — Type natural language: "scroll down", "read #main", "find 'revenue'", "summarize this page". The AI operates the screen for you.
 
-**Pattern Forge** (EXT-025) — The math brain underneath. DFT spectral decomposition with φ-harmonic detection. Pearson cross-correlation with free-lunch divergence detection (correlation drift → mean reversion). Rolling mean reversion scanner. IQR×φ anomaly detection. Sees through noise to fundamentals.
-
----
-
-## Windows + Microsoft Edge Native Extensions (5 New)
-
-Five extensions built for Windows and Microsoft Edge. One-click native install — Edge-first on Windows. Each is a Manifest V3 extension with a background service worker (AI engine) and content script (interactive UI) that runs directly in Edge.
-
-**Windows Copilot Hub** (EXT-027) — Unified Copilot Intelligence. GPT + Claude + Gemini + Llama multi-model fusion with phi-weighted reasoning. Alpha routing picks the best model for any task. Side-panel copilot experience native to Edge on Windows.
-
-**Windows File Oracle** (EXT-028) — File System Intelligence. Embeddings + Florence + CLIP power semantic file indexing, visual search, and duplicate detection. Understands your files by content, not just name.
-
-**Windows Notification Cortex** (EXT-029) — Smart Notification Intelligence. GPT drafts, Claude refines, Inflection adds empathy. Urgency scoring and notification composing with phi-weighted analysis.
-
-**Windows Shell Intelligence** (EXT-030) — Shell & Explorer AI. Codex + CodeLlama + DeepSeek power context-menu intelligence for batch file operations, script generation, code analysis, and shell commands.
-
-**Windows Terminal Forge** (EXT-031) — Terminal & PowerShell AI. Codex + DeepSeek + Phi generate, explain, and autocomplete commands for PowerShell, CMD, and WSL. Intelligent terminal assistance in your browser.
-
----
-
-## Edge Side Panel AI Extensions (4 New)
-
-Four side panel AI extensions built for Microsoft Edge using the `sidePanel` API. Each opens as a native Edge sidebar — click the extension icon and the AI panel slides open alongside your page. Real side panel, not a floating overlay. Manifest V3 with `side_panel` config, `minimum_chrome_version: 114`. Every description ≤ 132 characters for Chrome/Edge store compliance.
-
-**Edge AI Assistant** (EXT-032) — General-purpose AI side panel. GPT + Claude + Gemini + Phi fused through phi-weighted scoring. Type any question, the engine routes to the best model, fuses all responses, and returns one sovereign answer in the Edge sidebar. Multi-model reasoning from your side panel.
-
-**Edge Tab Analyzer** (EXT-033) — Tab content analysis side panel. Embeddings + Claude + Rerankers analyze the active tab's content — word count, readability score, key entities, semantic extraction, and AI-generated summary. Open the sidebar and instantly understand any page.
-
-**Edge Prompt Lab** (EXT-034) — Prompt engineering side panel. GPT + Claude + Llama + DeepSeek power a template library, prompt testing workspace, and response comparison view. Write a prompt, test it against 4 models simultaneously, compare outputs side-by-side in the Edge sidebar.
-
-**Edge Context Engine** (EXT-035) — Browsing session context side panel. Embeddings + GPT + Command R + Florence track your browsing context across tabs — running topic summary, entity extraction, context timeline, and knowledge accumulation. The sidebar shows what you've been researching and connects the dots.
+**Pattern Forge** (EXT-025) — DFT spectral decomposition with φ-harmonic detection. Pearson cross-correlation with divergence detection. Rolling mean reversion scanner. IQR×φ anomaly detection.
 
 ---
 
 ## The Numbers
 
-8 SDKs. 36 extensions. 250 protocols. 400 tools. 20 tool families. 40 model families. 10 multimodal families. 30 frontend intelligence models. 100 frontier model species. 60 architectural laws. 9 organism rings. 6 implementation languages. 4 browser observers. 4 Edge side panels. 22 Builder AIs. 66 engines. 1344+ auto-generated calls. 1 heartbeat at 873ms.
+8 SDKs. 27 extensions. 11 protocols. 30 tools. 5 tool families. 40 model families. 10 multimodal families. 30 frontend intelligence models. 100 frontier model species. 40 architectural laws. 9 organism rings. 6 implementation languages. 4 browser observers. 5 thinking architectures. 7 thinking patterns. 1 Phantom AI. 1 heartbeat at 873ms.
 
 All of it is AI. All of it is intelligence. All of it is wired together. All of it is downloadable. And all of it is inside this repo.
 
 As above, so below.
-
----
-
-## AutoGenerateCallsEngine.mo — MOTOR AUTO-GENERATIONIS VOCATIONUM
-
-22 Web Worker Builder AIs (OPERARII AEDIFICATORES), each Latin-named with 3 dedicated engines (Generator + Router + Builder). 66 engines total. 1344+ auto-generated calls across every domain in the organism including 200+ multi-power cross-domain calls and 200 new creative AI tools (blueprints, recipes, lenses, hooks, triggers, adapters, sensors, shields). Full routing table — every call auto-routed to its correct target module. All AI, AGI, 24/7, user-facing, cross-substrate. Call Marketplace Spec v1 defines registry schema, tool metadata, call contracts, permission tiers, pricing classes, and rollout gates (INTERNAL → PARTNER → ENTERPRISE → PUBLIC).
-
-| # | Name | Latin Name | Domain | Calls | Engines |
-|---|------|-----------|--------|-------|---------|
-| 1 | PROTOCOLLUM | OPERARIUS PROTOCOLLORUM | Protocols, Consensus, BFT | 164 | Generator / Router / Builder |
-| 2 | TERMINALIS | OPERARIUS TERMINALIUM | Terminals, AI/AGI Hierarchy | 70 | Generator / Router / Builder |
-| 3 | ORGANISMUS | OPERARIUS ORGANISMORUM | SDK Organisms, Emergence | 195 | Generator / Router / Builder |
-| 4 | MERCATOR | OPERARIUS MERCATUS | Marketplace, Tools, Tiers | 89 | Generator / Router / Builder |
-| 5 | ORCHESTRATOR | OPERARIUS ORCHESTRATORUM | Houses, Models, Families | 67 | Generator / Router / Builder |
-| 6 | MATHEMATICUS | OPERARIUS MATHEMATICORUM | Math Formulas, Constants | 60 | Generator / Router / Builder |
-| 7 | SYNAPTICUS | OPERARIUS SYNAPSIUM | Synapses, Chaos, Connections | 35 | Generator / Router / Builder |
-| 8 | SUBSTRATUM | OPERARIUS SUBSTRATI | Blockchain, Nodes, Layers | 55 | Generator / Router / Builder |
-| 9 | UNIVERSUM | OPERARIUS UNIVERSORUM | Domains, Ecosystems, Councils | 130 | Generator / Router / Builder |
-| 10 | CANISTRUM | OPERARIUS CANISTRORUM | Canister Tech, Factory | 23 | Generator / Router / Builder |
-| 11 | LICENTIATOR | OPERARIUS LICENTIARUM | Licenses, Documents, Rights | 39 | Generator / Router / Builder |
-| 12 | DEFENSOR | OPERARIUS DEFENSIONIS ET CURAE | Defense, Care, Arsenal | 49 | Generator / Router / Builder |
-| 13 | FABRICATOR | OPERARIUS FABRICATIONIS | Forgeworks, Software Engineering | 20 | Generator / Router / Builder |
-| 14 | NEURONICUS | OPERARIUS NEUROMORPHICORUM | Neuromorphic Compute | 15 | Generator / Router / Builder |
-| 15 | AGENTICUS | OPERARIUS AGENTIUM | Multi-Agent Coordination | 15 | Generator / Router / Builder |
-| 16 | PRIVATICUS | OPERARIUS PRIVATORUM | Privacy-Preserving Analytics | 15 | Generator / Router / Builder |
-| 17 | CACHEXIUS | OPERARIUS CACHEORUM | Intelligent Caching | 15 | Generator / Router / Builder |
-| 18 | TENANTIUS | OPERARIUS TENANTIUM | Multi-Tenant Management | 18 | Generator / Router / Builder |
-| 19 | CHAOTICUS | OPERARIUS CHAOTICUM | Chaos Engineering, Scaling | 15 | Generator / Router / Builder |
-| 20 | EXTERNALIS | OPERARIUS EXTERNORUM | External SDK, API Gateway | 20 | Generator / Router / Builder |
-| 21 | BLUEPRINTUS | OPERARIUS BLUEPRINTORUM | Blueprint, Hook Discovery | 15 | Generator / Router / Builder |
-| 22 | JARVISIUS | OPERARIUS JARVISII | Jarvis AI Command, Orchestration | 20 | Generator / Router / Builder |
-
-**Architecture:**
-- **66 engines** total (3 per worker: Generator + Router + Builder)
-- **1344+ auto-generated calls** across all domains (776 base + 200 multi-power cross-domain + 200 creative AI tools)
-- Full routing table — every call auto-routed to correct target module
-- Phi-weighted priority scoring on every call
-- Self-healing workers with keepalive monitoring
-- Call Marketplace Spec v1 (`CallMarketplaceSpec_v1.json`) — registry schema, call contracts, permission tiers, pricing classes, rollout gates
-- All calls registered in `Organism_Marketplace_Register.csv` (60 tools)
-- 250 protocols in `AI_Protocols_Register.csv` — used by workers, observers, and AIs. Licenses at `research/protocol-licenses.html`
-- 60 architectural laws in `Architectural_Laws_Register.csv` — wired to every call
-- Runs as ICP canister (`organism/motoko/src/AutoGenerateCallsEngine.mo`)
-
-**Endpoints:**
-- 6 `main.mo` endpoints — `getWorkers`, `getSnapshot`, `routeCall`, `generateAllCalls`, `getWorkerById`, `healthCheck`
-- 2 `IntelligenceWire.ts` endpoints — `wireAutoGenerate`, `wireRouteCall`

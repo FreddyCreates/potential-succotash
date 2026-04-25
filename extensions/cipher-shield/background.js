@@ -306,6 +306,78 @@ class CipherShieldEngine {
 globalThis.cipherShield = new CipherShieldEngine();
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+  /* ── Universal message routing (popup / side panel / devtools) ──── */
+  if (message.type === 'heartbeat') {
+    sendResponse({ status: 'alive', healthy: true, timestamp: Date.now() });
+    return true;
+  }
+  if (message.type === 'openSidePanel') {
+    try { if (chrome.sidePanel && chrome.sidePanel.open) chrome.sidePanel.open({ windowId: sender.tab ? sender.tab.windowId : undefined }).catch(function(){}); } catch(e){}
+    sendResponse({ ok: true });
+    return true;
+  }
+  if (message.type === 'popup' || message.type === 'sidePanel' || message.type === 'devtools') {
+    var cmd = message.command || '';
+    var lower = cmd.toLowerCase();
+    var engine = globalThis.cipherShield;
+
+    /* ── Built-in workspace commands ── */
+    if (cmd === 'ping') { sendResponse({ result: 'pong — Cipher Shield engine alive at ' + new Date().toISOString() }); return true; }
+    if (cmd === 'getState' || lower === 'state' || lower === 'status') {
+      sendResponse({ result: JSON.stringify(engine && engine.state ? engine.state : { status: 'running', timestamp: Date.now() }, null, 2) });
+      return true;
+    }
+    if (cmd === 'clearLogs') { sendResponse({ result: 'Workspace logs cleared.' }); return true; }
+    if (lower === 'help' || lower === 'capabilities' || lower === '?') {
+      sendResponse({ result: '\u{1F9E0} Cipher Shield AI Workspace\n\nCapabilities:\n• Encrypt Payload — Encrypt data with phi-weighted cipher\n• Detect Injection — Detect injection attacks in text\n• Classify Sensitivity — Classify data sensitivity level\n• Guard Response — Guard/sanitize AI response output\n\nType any command or question and I will route it to the best engine method.' });
+      return true;
+    }
+
+    /* ── Save to workspace conversation history ── */
+    var storageKey = 'cipher-shield_workspace_history';
+    chrome.storage.local.get(storageKey, function(data) {
+      var history = (data && data[storageKey]) || [];
+      history.push({ role: 'user', content: cmd, ts: Date.now() });
+
+      /* ── Intelligent workspace command routing ── */
+      var result;
+      try {
+        if (lower.indexOf('encrypt') !== -1 || lower.indexOf('cipher') !== -1 || lower.indexOf('lock') !== -1 || lower.indexOf('protect') !== -1 || lower.indexOf('secure') !== -1) {
+          result = engine.encryptPayload(cmd, "auto");
+        }
+        else if (lower.indexOf('detect') !== -1 || lower.indexOf('injection') !== -1 || lower.indexOf('sqli') !== -1 || lower.indexOf('xss') !== -1 || lower.indexOf('attack') !== -1) {
+          result = engine.detectInjection(cmd);
+        }
+        else if (lower.indexOf('classify') !== -1 || lower.indexOf('sensitivity') !== -1 || lower.indexOf('sensitive') !== -1 || lower.indexOf('pii') !== -1 || lower.indexOf('private') !== -1) {
+          result = engine.classifySensitivity(cmd);
+        }
+        else if (lower.indexOf('guard') !== -1 || lower.indexOf('filter') !== -1 || lower.indexOf('safe') !== -1 || lower.indexOf('sanitize') !== -1) {
+          result = engine.guardResponse(cmd);
+        }
+        else {
+          /* Default: route to primary engine method */
+          result = engine.encryptPayload(cmd, "auto");
+        }
+      } catch(e) {
+        result = { error: e.message, fallback: 'Cipher Shield encountered an error processing: "' + cmd + '"' };
+      }
+
+      var responseText;
+      if (typeof result === 'string') { responseText = result; }
+      else if (result && result.error) { responseText = '\u26A0\uFE0F ' + (result.fallback || result.error); }
+      else { responseText = JSON.stringify(result, null, 2); }
+
+      history.push({ role: 'ai', content: responseText, ts: Date.now() });
+      if (history.length > 100) { history = history.slice(-100); }
+      var update = {};
+      update[storageKey] = history;
+      chrome.storage.local.set(update);
+
+      sendResponse({ result: responseText });
+    });
+    return true;
+  }
+
   var engine = globalThis.cipherShield;
 
   switch (message.action) {
@@ -364,6 +436,13 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 
   /* Also re-init on install/update */
   chrome.runtime.onInstalled.addListener(function () {
+    /* Auto-activate side panel on install */
+    if (chrome.sidePanel && chrome.sidePanel.setOptions) {
+      chrome.sidePanel.setOptions({ enabled: true });
+    }
+    if (chrome.sidePanel && chrome.sidePanel.setPanelBehavior) {
+      chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: false }).catch(function(){});
+    }
     chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
     console.log('[Cipher Shield] Installed/updated \u2014 24/7 keepalive active');
   });

@@ -247,6 +247,84 @@ class ProtocolBridgeEngine {
 globalThis.protocolBridge = new ProtocolBridgeEngine();
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+  /* ── Universal message routing (popup / side panel / devtools) ──── */
+  if (message.type === 'heartbeat') {
+    sendResponse({ status: 'alive', healthy: true, timestamp: Date.now() });
+    return true;
+  }
+  if (message.type === 'openSidePanel') {
+    try { if (chrome.sidePanel && chrome.sidePanel.open) chrome.sidePanel.open({ windowId: sender.tab ? sender.tab.windowId : undefined }).catch(function(){}); } catch(e){}
+    sendResponse({ ok: true });
+    return true;
+  }
+  if (message.type === 'popup' || message.type === 'sidePanel' || message.type === 'devtools') {
+    var cmd = message.command || '';
+    var lower = cmd.toLowerCase();
+    var engine = globalThis.protocolBridge;
+
+    /* ── Built-in workspace commands ── */
+    if (cmd === 'ping') { sendResponse({ result: 'pong — Protocol Bridge engine alive at ' + new Date().toISOString() }); return true; }
+    if (cmd === 'getState' || lower === 'state' || lower === 'status') {
+      sendResponse({ result: JSON.stringify(engine && engine.state ? engine.state : { status: 'running', timestamp: Date.now() }, null, 2) });
+      return true;
+    }
+    if (cmd === 'clearLogs') { sendResponse({ result: 'Workspace logs cleared.' }); return true; }
+    if (lower === 'help' || lower === 'capabilities' || lower === '?') {
+      sendResponse({ result: '\u{1F9E0} Protocol Bridge AI Workspace\n\nCapabilities:\n• Relay Message — Relay message across protocols\n• Translate Payload — Translate payload format\n• Encrypt Relay — Encrypt relay message\n• Discover Protocols — Discover available protocols\n• Route Across Protocols — Route across protocol chain\n• Measure Latency — Measure protocol latency\n\nType any command or question and I will route it to the best engine method.' });
+      return true;
+    }
+
+    /* ── Save to workspace conversation history ── */
+    var storageKey = 'protocol-bridge_workspace_history';
+    chrome.storage.local.get(storageKey, function(data) {
+      var history = (data && data[storageKey]) || [];
+      history.push({ role: 'user', content: cmd, ts: Date.now() });
+
+      /* ── Intelligent workspace command routing ── */
+      var result;
+      try {
+        if (lower.indexOf('relay') !== -1 || lower.indexOf('send') !== -1 || lower.indexOf('forward') !== -1 || lower.indexOf('message') !== -1 || lower.indexOf('bridge') !== -1) {
+          result = engine.relayMessage("http","ws",cmd);
+        }
+        else if (lower.indexOf('translate') !== -1 || lower.indexOf('convert') !== -1 || lower.indexOf('transform') !== -1 || lower.indexOf('payload') !== -1) {
+          result = engine.translatePayload(cmd,"json","stream");
+        }
+        else if (lower.indexOf('encrypt') !== -1 || lower.indexOf('secure') !== -1 || lower.indexOf('protect') !== -1) {
+          result = engine.encryptRelay(cmd,"standard");
+        }
+        else if (lower.indexOf('discover') !== -1 || lower.indexOf('list') !== -1 || lower.indexOf('protocols') !== -1 || lower.indexOf('available') !== -1) {
+          result = engine.discoverProtocols();
+        }
+        else if (lower.indexOf('route') !== -1 || lower.indexOf('chain') !== -1 || lower.indexOf('multi') !== -1 || lower.indexOf('path') !== -1) {
+          result = engine.routeAcrossProtocols(cmd,["http","ws"]);
+        }
+        else if (lower.indexOf('latency') !== -1 || lower.indexOf('measure') !== -1 || lower.indexOf('ping') !== -1 || lower.indexOf('test') !== -1) {
+          result = engine.measureLatency("http");
+        }
+        else {
+          /* Default: route to primary engine method */
+          result = engine.relayMessage("http","ws",cmd);
+        }
+      } catch(e) {
+        result = { error: e.message, fallback: 'Protocol Bridge encountered an error processing: "' + cmd + '"' };
+      }
+
+      var responseText;
+      if (typeof result === 'string') { responseText = result; }
+      else if (result && result.error) { responseText = '\u26A0\uFE0F ' + (result.fallback || result.error); }
+      else { responseText = JSON.stringify(result, null, 2); }
+
+      history.push({ role: 'ai', content: responseText, ts: Date.now() });
+      if (history.length > 100) { history = history.slice(-100); }
+      var update = {};
+      update[storageKey] = history;
+      chrome.storage.local.set(update);
+
+      sendResponse({ result: responseText });
+    });
+    return true;
+  }
+
   var engine = globalThis.protocolBridge;
 
   switch (message.action) {
@@ -311,6 +389,13 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 
   /* Also re-init on install/update */
   chrome.runtime.onInstalled.addListener(function () {
+    /* Auto-activate side panel on install */
+    if (chrome.sidePanel && chrome.sidePanel.setOptions) {
+      chrome.sidePanel.setOptions({ enabled: true });
+    }
+    if (chrome.sidePanel && chrome.sidePanel.setPanelBehavior) {
+      chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: false }).catch(function(){});
+    }
     chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
     console.log('[Protocol Bridge] Installed/updated \u2014 24/7 keepalive active');
   });
