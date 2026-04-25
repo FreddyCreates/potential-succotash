@@ -26,53 +26,82 @@ Eleven protocols carry intelligence between all of these. Sovereign routing lear
 
 ---
 
-## The Extensions Are AI For User Experiences
+## ⬇️ Get The Extensions — Click, Unzip, Done
 
-This is the part that matters for people who actually use the thing.
+Every extension is a Chrome/Edge/Brave extension. Download the zip, unzip, load it. No account, no terminal, no store.
 
-Every extension is a Chrome Manifest V3 app with a background service worker running an AI engine and a content script rendering an interactive UI. They are not internal plumbing. They are the user's interface to the intelligence. 21 of them.
+👉 **[Download ALL 26 Extensions (single zip)](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip)** — one click, everything
 
-**Sovereign Mind** — you ask a question, three sovereign engines (FusionCore, AlphaRouter, PhiScorer) reason from your own data, the organism fuses their outputs with phi-weighted confidence scoring, and you get one sovereign answer. That's the user experience. No GPT. No Claude. No Gemini. Your mind, your data, one panel floating on your page.
+Or install by thinking architecture:
 
-**Cipher Shield** — every page you visit gets real-time content encryption and prompt injection detection. The AI is watching your browsing and protecting you before threats reach your eyes. Guards + GPT + Claude working in concert behind one quiet shield icon.
+### 🧠 Reasoning & Fusion (sovereign thinking — the organism reasons from your data)
 
-**Polyglot Oracle** — browse any page in any language. The organism translates it live with context awareness across Qwen, Gemini, and Llama. Not word-by-word — the AI understands the page and rebuilds it in your language.
+| | Extension | What it thinks about | Download |
+|---|---|---|---|
+| 🧠 | Sovereign Mind | Fuses 3 engines (FusionCore, AlphaRouter, PhiScorer) into one sovereign answer from your own data | **[⬇️ sovereign-mind.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-mind.zip)** |
+| 📐 | Logic Prover | Formal proofs — Minerva, Llemma, AlphaCode verify step-by-step. Doesn't just solve, proves. | **[⬇️ logic-prover.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/logic-prover.zip)** |
+| 🔬 | Research Nexus | Multi-source synthesis — Perplexity searches, Claude reasons, embeddings find context, cited output | **[⬇️ research-nexus.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/research-nexus.zip)** |
+| ⚡ | Edge Runner | Offline reasoning — Phi, Gemma, DBRX run locally. Zero cloud. Full privacy. | **[⬇️ edge-runner.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-runner.zip)** |
 
-**Vision Weaver** — describe what you want to see. DALL-E, Stable Diffusion, Midjourney, and SAM generate it side-by-side in your browser. You compare, edit, composite. The AI competes to give you the best image.
+### 🎨 Creation & Generation (the organism creates — images, video, voice, music, code)
 
-**Code Sovereign** — highlight any code on any page. Codex, CodeLlama, and DeepSeek generate improvements, refactors, and verified alternatives. The output comes with contract verification. AI-generated code that proves itself correct.
+| | Extension | What it creates | Download |
+|---|---|---|---|
+| 🎨 | Vision Weaver | Images — DALL-E, Stable Diffusion, Midjourney, SAM generate side-by-side | **[⬇️ vision-weaver.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/vision-weaver.zip)** |
+| 🎬 | Video Architect | Video — Sora, Runway, Pika, Kling. Text-to-video, best output wins. | **[⬇️ video-architect.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/video-architect.zip)** |
+| 🎤 | Voice Forge | Audio — Whisper listens, ElevenLabs speaks, Suno composes music | **[⬇️ voice-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/voice-forge.zip)** |
+| 💻 | Code Sovereign | Code — Codex, CodeLlama, DeepSeek generate + verify improvements | **[⬇️ code-sovereign.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/code-sovereign.zip)** |
+| 🎭 | Creative Muse | Multi-modal studio — images + compositions + audio + songs, fused output | **[⬇️ creative-muse.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/creative-muse.zip)** |
 
-**Memory Palace** — sovereign bookmarking. Every page you save gets phi-encoded spatial coordinates in a 5-axis memory space. Embeddings, Command R, and rerankers make every memory searchable by meaning and resonance simultaneously.
+### 📊 Perception & Analysis (the organism sees — scans pages, extracts data, reads patterns)
 
-**Sentinel Watch** — real-time phishing, malware, and social engineering detection. Guards, GPT, and Claude scan every page before you interact with it. The AI is your immune system for the web.
+| | Extension | What it perceives | Download |
+|---|---|---|---|
+| ⚗️ | Data Alchemist | Absorbs any page into your knowledge graph — entities, relationships, embeddings | **[⬇️ data-alchemist.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/data-alchemist.zip)** |
+| 🗺 | Knowledge Cartographer | Builds a visual knowledge graph as you browse — nodes, edges, meaning | **[⬇️ knowledge-cartographer.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/knowledge-cartographer.zip)** |
+| 🌐 | Polyglot Oracle | Translates any page live — Qwen, Gemini, Llama rebuild it in your language | **[⬇️ polyglot-oracle.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/polyglot-oracle.zip)** |
+| 📈 | Spread Scanner | Financial X-ray — pairwise spreads, phi-weighted z-scores, arbitrage grades A-F | **[⬇️ spread-scanner.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/spread-scanner.zip)** |
+| 🔮 | Data Oracle | Depth analysis — √N normalization, φ-threshold signal separation, X-ray through noise | **[⬇️ data-oracle.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/data-oracle.zip)** |
+| 🔷 | Pattern Forge | DFT spectral decomposition, φ-harmonic detection, mean reversion, anomaly detection | **[⬇️ pattern-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/pattern-forge.zip)** |
+| 💬 | Social Cortex | Social intelligence — Grok reads the room, Inflection feels tone, GPT drafts response | **[⬇️ social-cortex.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/social-cortex.zip)** |
 
-**Research Nexus** — multi-source research synthesis. Ask a question, Perplexity searches, Claude reasons, embeddings find context, and you get a cited, sourced, reasoned answer. Not a search result — a research paper.
+### 🛡 Protection & Memory (the organism guards and remembers)
 
-**Voice Forge** — speak and the organism listens (Whisper). Ask it to speak and it generates voice (ElevenLabs). Ask it to make music and it composes (Suno). Audio intelligence in your browser — input, output, and creation.
+| | Extension | What it protects / remembers | Download |
+|---|---|---|---|
+| 🛡 | Cipher Shield | Real-time encryption + prompt injection detection on every page | **[⬇️ cipher-shield.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/cipher-shield.zip)** |
+| 🔒 | Sentinel Watch | Phishing, malware, social engineering detection before you click | **[⬇️ sentinel-watch.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sentinel-watch.zip)** |
+| 📚 | Memory Palace | Phi-encoded spatial bookmarking — 5-axis memory, searchable by meaning | **[⬇️ memory-palace.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/memory-palace.zip)** |
+| 📝 | Contract Forge | Legal AI — GPT writes, Claude reviews, Guards validate with crypto proof | **[⬇️ contract-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/contract-forge.zip)** |
 
-**Data Alchemist** — any webpage, auto-absorbed into your sovereign knowledge graph. GPT and Claude extract entities and relationships. Embeddings and rerankers index it. The page becomes living knowledge you own.
+### 🌀 Command & Control (the organism's nervous system — dashboard, hub, bridge, builder)
 
-**Video Architect** — describe a scene. Sora, Runway, Pika, and Kling generate video. Multiple models, one prompt, the best output wins. Text-to-video generation right in your browser.
+| | Extension | What it controls | Download |
+|---|---|---|---|
+| 🌀 | Sovereign Nexus | Master hub — all extensions unified in one sovereign control center | **[⬇️ sovereign-nexus.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-nexus.zip)** |
+| 📊 | Organism Dashboard | Vital signs — 873ms heartbeat, 4 registers, vitality, edge sensors, live | **[⬇️ organism-dashboard.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/organism-dashboard.zip)** |
+| 🔗 | Protocol Bridge | Unified protocol relay — all 40 model families through one encrypted surface | **[⬇️ protocol-bridge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/protocol-bridge.zip)** |
+| 🏪 | Marketplace Hub | Browse + invoke 24 callable tools with natural language, one-click | **[⬇️ marketplace-hub.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/marketplace-hub.zip)** |
+| 🖥 | Screen Commander | Natural language browser control — "scroll down", "read #main", "summarize" | **[⬇️ screen-commander.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/screen-commander.zip)** |
+| 🏗 | Register | Builder AI — scans, validates, loads, verifies, monitors all extensions | **[⬇️ register.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/register.zip)** |
 
-**Logic Prover** — paste a math problem. Minerva, Llemma, GPT, and AlphaCode generate step-by-step formal proofs with verification. The AI doesn't just solve — it proves.
+### How to install (any extension, any browser)
 
-**Social Cortex** — AI-powered social intelligence. Grok reads the room. Inflection feels the tone. GPT drafts the response. Sentiment analysis, empathy detection, and response generation for any social context.
+1. **Click any ⬇️ link above** → save the `.zip`
+2. **Unzip it** → right-click → Extract All
+3. **Open your browser** → `chrome://extensions` (or `edge://extensions` or `brave://extensions`)
+4. **Turn on Developer mode** → toggle in the top-right
+5. **Click "Load unpacked"** → pick the unzipped folder
+6. **Done** — the extension icon appears in your toolbar, click it to open
 
-**Edge Runner** — offline AI. Phi, Gemma, and DBRX run inference locally on your device. Zero cloud. Zero latency. Full privacy. The organism works without the internet.
+### Windows — double-click install
 
-**Contract Forge** — draft and verify intelligence contracts. GPT writes. Claude reviews. Guards validate. Legal-grade AI contract authoring with cryptographic proof of compliance.
+- **install-organism.bat** — double-click, all 26 extensions install and Chrome opens with everything attached
+- **install-extensions.ps1** — right-click → Run with PowerShell (same thing)
 
-**Organism Dashboard** — see the organism alive. The 873ms heartbeat pulsing. The 4 state registers updating. Vitality scores. Edge sensor readings. The organism's vital signs rendered in real-time on your screen.
+### Download page (works offline)
 
-**Knowledge Cartographer** — browse the web and watch your knowledge graph grow. Embeddings capture meaning. Command R links entities. Florence understands images. Every page you visit adds nodes and edges to a visual graph that maps everything you know.
-
-**Protocol Bridge** — bridge between AI protocols. Encrypted relay between different intelligence systems. All 40 foundation models available through one unified protocol surface.
-
-**Creative Muse** — multi-modal creative generation. Stable Diffusion for images. DALL-E for compositions. MusicGen for audio. Suno for songs. One creative studio, multiple AI engines, fused output.
-
-**Sovereign Nexus** — the master hub. All 20 extensions unified into one sovereign intelligence interface. Every model, every wire, every tool, one panel. The organism's control center.
-
-**Marketplace Hub** — browse, search, and invoke 24 callable tools with natural language. Family-tabbed browsing across Crawling, Context, Commander, and Sentry. One-click invocation. Live results. The tool marketplace made visual.
+Open **[dist/download.html](dist/download.html)** in any browser — works from USB, local folder, `file://` URL, no internet needed.
 
 ---
 
@@ -98,67 +127,6 @@ The organism isn't conceptual. It's compiled. It's running. The 873ms heartbeat 
 - **Java** (`organism/java/`) — `ScheduledExecutorService` heartbeat, `CompletableFuture` kernels, Maven build
 - **HTML + Web Workers** (`organism/web/`) — Open `index.html` in any browser. The organism is alive. No server needed.
 - **Python** (`organism/python/`) — `python -m organism` — stdlib-only, threading, graceful SIGINT shutdown
-
----
-
-## Download & Install Extensions
-
-No terminal. No commands. No GitHub account. Download a zip, unzip it, load it into Chrome. That's it.
-
-### Download Page (works offline)
-
-Open **[dist/download.html](dist/download.html)** in any browser. Every extension has a download link pointing to the zip file right next to that page. Works from a USB drive, a download folder, a local server, a `file://` URL — no internet needed.
-
-### Direct Downloads
-
-Every link below downloads the real `.zip` file. Click → save → unzip → load into Chrome.
-
-**[Download ALL 26 Extensions (single zip)](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip)**
-
-| | Extension | Download |
-|---|---|---|
-| 🧠 | Sovereign Mind | **[sovereign-mind.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-mind.zip)** |
-| 🛡 | Cipher Shield | **[cipher-shield.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/cipher-shield.zip)** |
-| 🌐 | Polyglot Oracle | **[polyglot-oracle.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/polyglot-oracle.zip)** |
-| 🎨 | Vision Weaver | **[vision-weaver.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/vision-weaver.zip)** |
-| 💻 | Code Sovereign | **[code-sovereign.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/code-sovereign.zip)** |
-| 📚 | Memory Palace | **[memory-palace.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/memory-palace.zip)** |
-| 🔒 | Sentinel Watch | **[sentinel-watch.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sentinel-watch.zip)** |
-| 🔬 | Research Nexus | **[research-nexus.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/research-nexus.zip)** |
-| 🎤 | Voice Forge | **[voice-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/voice-forge.zip)** |
-| ⚗️ | Data Alchemist | **[data-alchemist.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/data-alchemist.zip)** |
-| 🎬 | Video Architect | **[video-architect.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/video-architect.zip)** |
-| 📐 | Logic Prover | **[logic-prover.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/logic-prover.zip)** |
-| 💬 | Social Cortex | **[social-cortex.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/social-cortex.zip)** |
-| ⚡ | Edge Runner | **[edge-runner.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-runner.zip)** |
-| 📝 | Contract Forge | **[contract-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/contract-forge.zip)** |
-| 📊 | Organism Dashboard | **[organism-dashboard.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/organism-dashboard.zip)** |
-| 🗺 | Knowledge Cartographer | **[knowledge-cartographer.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/knowledge-cartographer.zip)** |
-| 🔗 | Protocol Bridge | **[protocol-bridge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/protocol-bridge.zip)** |
-| 🎭 | Creative Muse | **[creative-muse.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/creative-muse.zip)** |
-| 🌀 | Sovereign Nexus | **[sovereign-nexus.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-nexus.zip)** |
-| 🏪 | Marketplace Hub | **[marketplace-hub.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/marketplace-hub.zip)** |
-| 📈 | Spread Scanner | **[spread-scanner.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/spread-scanner.zip)** |
-| 🔮 | Data Oracle | **[data-oracle.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/data-oracle.zip)** |
-| 🖥 | Screen Commander | **[screen-commander.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/screen-commander.zip)** |
-| 🔷 | Pattern Forge | **[pattern-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/pattern-forge.zip)** |
-| 🏗 | Register | **[register.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/register.zip)** |
-
-### How to install a downloaded .zip
-
-1. Download any `.zip` from above (or the all-in-one bundle)
-2. **Unzip it** (right-click → Extract All)
-3. Open Chrome and go to `chrome://extensions`
-4. Turn on **Developer mode** (toggle in the top-right corner)
-5. Click **Load unpacked** → pick the unzipped folder
-6. Done — the extension is live and running
-
-Same steps for Edge (`edge://extensions`) and Brave (`brave://extensions`).
-
-### Windows — double-click install
-
-- **install-organism.bat** — double-click it, extensions install and Chrome opens with everything attached
-- **install-extensions.ps1** — right-click → Run with PowerShell (same thing)
 
 ---
 
