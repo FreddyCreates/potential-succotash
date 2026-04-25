@@ -1,0 +1,63 @@
+import { create } from 'zustand';
+
+interface Message {
+  role: 'user' | 'jarvis';
+  text: string;
+  ts: number;
+}
+
+interface JarvisState {
+  messages: Message[];
+  isTyping: boolean;
+  activePanel: string;
+  heartbeatCount: number;
+  uptime: number;
+  commandCount: number;
+  mood: string;
+  awareness: number;
+  memTurns: number;
+  micListening: boolean;
+  workspaceText: string;
+  notes: any[];
+  docs: any[];
+  openTabs: any[];
+}
+
+interface JarvisActions {
+  addMessage: (msg: Message) => void;
+  setTyping: (typing: boolean) => void;
+  setActivePanel: (panel: string) => void;
+  setStatus: (status: { heartbeatCount?: number; uptime?: number; commandCount?: number; mood?: string; awareness?: number; memTurns?: number }) => void;
+  setMicListening: (listening: boolean) => void;
+  setWorkspaceText: (text: string) => void;
+  setNotes: (notes: any[]) => void;
+  setDocs: (docs: any[]) => void;
+  setOpenTabs: (tabs: any[]) => void;
+}
+
+export const useJarvisStore = create<JarvisState & JarvisActions>()((set) => ({
+  messages: [],
+  isTyping: false,
+  activePanel: 'chat',
+  heartbeatCount: 0,
+  uptime: 0,
+  commandCount: 0,
+  mood: 'focused',
+  awareness: 0,
+  memTurns: 0,
+  micListening: false,
+  workspaceText: '',
+  notes: [],
+  docs: [],
+  openTabs: [],
+
+  addMessage: (msg) => set((state) => ({ messages: [...state.messages, msg] })),
+  setTyping: (typing) => set({ isTyping: typing }),
+  setActivePanel: (panel) => set({ activePanel: panel }),
+  setStatus: (status) => set((state) => ({ ...state, ...status })),
+  setMicListening: (listening) => set({ micListening: listening }),
+  setWorkspaceText: (text) => set({ workspaceText: text }),
+  setNotes: (notes) => set({ notes }),
+  setDocs: (docs) => set({ docs }),
+  setOpenTabs: (tabs) => set({ openTabs: tabs }),
+}));

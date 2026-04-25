@@ -1,0 +1,47 @@
+{
+  "manifest_version": 3,
+  "name": "Jarvis AI",
+  "version": "4.0.0",
+  "description": "JARVIS v4 — React+TypeScript AI sovereign assistant. NeuroCore brain, PhantomAI cognition, jsPDF reports, Excel generation, voice input, Workspace, Dexie memory, Transformers.js NLP",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "alarms",
+    "tabs",
+    "scripting",
+    "sidePanel",
+    "downloads",
+    "notifications",
+    "tabCapture",
+    "desktopCapture"
+  ],
+  "host_permissions": [
+    "https://raw.githubusercontent.com/*"
+  ],
+  "side_panel": {
+    "default_path": "src/sidepanel/sidepanel.html"
+  },
+  "background": {
+    "service_worker": "src/background/index.ts",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content/index.ts"]
+    }
+  ],
+  "action": {
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+    },
+    "default_title": "Open JARVIS"
+  },
+  "minimum_chrome_version": "116",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
