@@ -181,11 +181,84 @@ The organism isn't conceptual. It's compiled. It's running. The 873ms heartbeat 
 
 ---
 
+## Download & Install Extensions
+
+No terminal. No commands. No GitHub account. Download a zip, unzip it, load it into Chrome. That's it.
+
+### Download Page (works offline)
+
+Open **[dist/download.html](dist/download.html)** in any browser. Every extension has a download link pointing to the zip file right next to that page. Works from a USB drive, a download folder, a local server, a `file://` URL — no internet needed.
+
+### Direct Downloads
+
+Every link below downloads the real `.zip` file. Click → save → unzip → load into Chrome.
+
+**[Download ALL 37 Extensions (single zip)](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip)**
+
+| | Extension | Download |
+|---|---|---|
+| 🧠 | Sovereign Mind | **[sovereign-mind.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-mind.zip)** |
+| 🛡 | Cipher Shield | **[cipher-shield.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/cipher-shield.zip)** |
+| 🌐 | Polyglot Oracle | **[polyglot-oracle.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/polyglot-oracle.zip)** |
+| 🎨 | Vision Weaver | **[vision-weaver.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/vision-weaver.zip)** |
+| 💻 | Code Sovereign | **[code-sovereign.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/code-sovereign.zip)** |
+| 📚 | Memory Palace | **[memory-palace.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/memory-palace.zip)** |
+| 🔒 | Sentinel Watch | **[sentinel-watch.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sentinel-watch.zip)** |
+| 🔬 | Research Nexus | **[research-nexus.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/research-nexus.zip)** |
+| 🎤 | Voice Forge | **[voice-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/voice-forge.zip)** |
+| ⚗️ | Data Alchemist | **[data-alchemist.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/data-alchemist.zip)** |
+| 🎬 | Video Architect | **[video-architect.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/video-architect.zip)** |
+| 📐 | Logic Prover | **[logic-prover.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/logic-prover.zip)** |
+| 💬 | Social Cortex | **[social-cortex.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/social-cortex.zip)** |
+| ⚡ | Edge Runner | **[edge-runner.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-runner.zip)** |
+| 📝 | Contract Forge | **[contract-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/contract-forge.zip)** |
+| 📊 | Organism Dashboard | **[organism-dashboard.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/organism-dashboard.zip)** |
+| 🗺 | Knowledge Cartographer | **[knowledge-cartographer.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/knowledge-cartographer.zip)** |
+| 🔗 | Protocol Bridge | **[protocol-bridge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/protocol-bridge.zip)** |
+| 🎭 | Creative Muse | **[creative-muse.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/creative-muse.zip)** |
+| 🌀 | Sovereign Nexus | **[sovereign-nexus.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-nexus.zip)** |
+| 🏪 | Marketplace Hub | **[marketplace-hub.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/marketplace-hub.zip)** |
+| 📈 | Spread Scanner | **[spread-scanner.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/spread-scanner.zip)** |
+| 🔮 | Data Oracle | **[data-oracle.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/data-oracle.zip)** |
+| 🖥 | Screen Commander | **[screen-commander.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/screen-commander.zip)** |
+| 🔷 | Pattern Forge | **[pattern-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/pattern-forge.zip)** |
+| 🏗 | Register | **[register.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/register.zip)** |
+| 🤖 | Jarvis AI | **[jarvis.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/jarvis.zip)** |
+| 🖥 | Windows Copilot Hub | **[windows-copilot-hub.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/windows-copilot-hub.zip)** |
+| 📂 | Windows File Oracle | **[windows-file-oracle.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/windows-file-oracle.zip)** |
+| 🔔 | Windows Notification Cortex | **[windows-notification-cortex.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/windows-notification-cortex.zip)** |
+| 🔧 | Windows Shell Intelligence | **[windows-shell-intelligence.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/windows-shell-intelligence.zip)** |
+| 💻 | Windows Terminal Forge | **[windows-terminal-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/windows-terminal-forge.zip)** |
+| 🤖 | Edge AI Assistant | **[edge-ai-assistant.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-ai-assistant.zip)** |
+| 🔍 | Edge Tab Analyzer | **[edge-tab-analyzer.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-tab-analyzer.zip)** |
+| 🧪 | Edge Prompt Lab | **[edge-prompt-lab.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-prompt-lab.zip)** |
+| 🧠 | Edge Context Engine | **[edge-context-engine.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-context-engine.zip)** |
+| 🦾 | Sovereign Alpha ⭐ | **[sovereign-alpha.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-alpha.zip)** |
+
+### How to install a downloaded .zip
+
+1. Download any `.zip` from above (or the all-in-one bundle)
+2. **Unzip it** (right-click → Extract All)
+3. Open Chrome and go to `chrome://extensions`
+4. Turn on **Developer mode** (toggle in the top-right corner)
+5. Click **Load unpacked** → pick the unzipped folder
+6. Done — the extension is live and running
+
+Same steps for Edge (`edge://extensions`) and Brave (`brave://extensions`).
+
+### Windows — double-click install
+
+- **install-organism.bat** — double-click it, extensions install and Chrome opens with everything attached
+- **install-extensions.ps1** — right-click → Run with PowerShell (same thing)
+
+---
+
+
 ## Register AI — The Builder (EXT-026)
 
 The Register AI is the organism's native builder. It's the 5th tool family (Builder) alongside Crawling, Context, Commander, and Sentry. It runs as both a **terminal CLI** (`organism-cli`) and a **browser extension** (EXT-026). Steps 1–7 run automatically:
 
-1. **Scan** — discovers all 27 extensions in `extensions/`
+1. **Scan** — discovers all 37 extensions in `extensions/`
 2. **Validate** — checks every manifest for Manifest V3 compliance
 3. **Detect Browser** — finds Chrome, Edge, or Brave on any OS
 4. **Load Extensions** — launches browser with `--load-extension` (direct from source, no zip)
@@ -196,7 +269,7 @@ The Register AI is the organism's native builder. It's the 5th tool family (Buil
 ### Terminal AI (organism-cli)
 
 ```bash
-node organism-cli               # 1-click install — all 27 extensions live in Chrome
+node organism-cli               # 1-click install — all 37 extensions live in Chrome
 node organism-cli validate      # check all manifests
 node organism-cli list          # show all extensions with status
 node organism-cli status        # Register AI health report
@@ -230,9 +303,37 @@ Five extensions that act as one autonomous intelligence suite. They read, write,
 
 ---
 
+## ⭐ Production Extensions (Download & Use Right Now)
+
+These 4 extensions are **full production-ready tools** with complete sidebar workbook UIs (sidepanel.html), popup quick-access, and real functionality. Download the zip, unzip, load into Edge (edge://extensions → Developer mode → Load unpacked).
+
+**Workbook AI** (EXT-027) — Full notes/workbook app in your Edge sidebar. Rich text editor (bold, italic, headings, code blocks, lists), categories (General/Work/Personal/Ideas/Code Snippets + custom), real-time search, auto-save every 5s, export as Markdown/TXT/JSON, import from JSON backup, keyboard shortcuts (Ctrl+N/S/F). Right-click any page → "Save to Workbook".
+
+**Page Intelligence** (EXT-028) — Analyzes the actual page DOM and gives you real data. Word count, reading time, heading structure with validation, link inventory (internal/external/broken), image audit (missing alt text), SEO analysis (title, meta, OG, Twitter Cards, canonical), accessibility checks, Performance API metrics. 7-tab dashboard in sidebar.
+
+**Secure Clipboard** (EXT-029) — Clipboard manager with encrypted vault. Auto-captures copies, auto-categorizes (URLs, code, emails, numbers), searchable history (500 items). Vault uses **real Web Crypto API**: PBKDF2 (100K iterations, SHA-256) → AES-256-GCM (random IV per item). PIN never stored. Auto-locks after 5 min.
+
+**Command Bar** (EXT-030) — Spotlight/Alfred-style command palette. Press Ctrl+Shift+K → floating command bar appears. 25 real commands: scroll, find, click, read, navigate, extract links/images/headings/emails/numbers, summarize, word count, highlight, dark mode, zoom, bookmark, copy, tabs. Full sidebar workbook with command history and saved macros.
+
+---
+
+## Private Repo — What You Can Do
+
+Yes, even with a private repo you have full capabilities:
+
+- **Download extensions directly** — Every .zip in dist/extensions/ works. Download → unzip → load into Edge/Chrome/Brave. No account needed to use them once downloaded.
+- **Clone the repo** — `git clone` to your machine gives you everything. Run `node organism-cli` to auto-install all 30 extensions.
+- **GitHub Releases** — Create tagged releases (v1.0.0) with compiled zip assets. Share release links with anyone — they can download without repo access.
+- **GitHub Pages** — With GitHub Pro/Team/Enterprise, enable Pages even on private repos to host the download page as a live website.
+- **Share compiled extensions** — Download all-extensions.zip and share via email, Drive, USB. Extensions are self-contained and don't need the repo.
+- **Windows installer** — Double-click install-organism.bat to launch your browser with all extensions pre-loaded.
+- **Copilot** — GitHub Copilot works on private repos. You can use Copilot agents to build, test, and deploy from this repo.
+
+---
+
 ## The Numbers
 
-8 SDKs. 27 extensions. 11 protocols. 30 tools. 5 tool families. 40 model families. 10 multimodal families. 30 frontend intelligence models. 100 frontier model species. 40 architectural laws. 9 organism rings. 6 implementation languages. 4 browser observers. 5 thinking architectures. 7 thinking patterns. 1 Phantom AI. 1 heartbeat at 873ms.
+8 SDKs. 37 extensions (26 browser + 5 Windows + 4 Edge + 1 Jarvis + 1 Sovereign Alpha). 11 protocols. 30 tools. 5 tool families. 40 model families. 10 multimodal families. 30 frontend intelligence models. 100 frontier model species. 40 architectural laws. 9 organism rings. 6 implementation languages. 4 browser observers. 5 thinking architectures. 7 thinking patterns. 1 Phantom AI. 1 heartbeat at 873ms.
 
 All of it is AI. All of it is intelligence. All of it is wired together. All of it is downloadable. And all of it is inside this repo.
 

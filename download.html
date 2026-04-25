@@ -94,14 +94,14 @@
 </section>
 
 <div class="status-bar" id="status-bar">
-  <div class="status-item"><span class="status-dot ready" id="worker-dot"></span> <span id="worker-status">35 extensions ready</span></div>
-  <div class="status-item">📦 <span id="built-count">35</span> / <span id="total-count">35</span> ready</div>
+  <div class="status-item"><span class="status-dot ready" id="worker-dot"></span> <span id="worker-status">37 extensions ready</span></div>
+  <div class="status-item">📦 <span id="built-count">37</span> / <span id="total-count">37</span> ready</div>
   <div class="status-item">💓 <span id="beat-counter">0</span></div>
 </div>
 
 <div class="dl-all" id="dl-all-section">
-  <a id="dl-all-btn" href="https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip" download="all-extensions.zip">📦 Download All 35 Extensions</a>
-  <div class="sub">Single zip containing all 35 extensions (including 5 Windows native + 4 Edge side panel AI). Click — instant download.</div>
+  <a id="dl-all-btn" href="https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip" download="all-extensions.zip">📦 Download All 37 Extensions</a>
+  <div class="sub">Single zip — 26 browser + 5 Windows + 4 Edge + Jarvis + Sovereign Alpha. Click → instant download.</div>
 </div>
 
 <div class="ext-grid" id="ext-grid"></div>
@@ -112,7 +112,7 @@
     <code>git clone https://github.com/FreddyCreates/potential-succotash.git<br>
 node potential-succotash/organism-cli</code>
   </div>
-  <p style="color:var(--muted);font-size:.9em;margin-top:8px">Register AI auto-detects Edge/Chrome → loads all 35 extensions directly from source. No zip needed. Edge-first on Windows.</p>
+  <p style="color:var(--muted);font-size:.9em;margin-top:8px">Register AI auto-detects Edge/Chrome → loads all 37 extensions directly from source. No zip needed. Edge-first on Windows.</p>
 </section>
 
 <footer>
@@ -174,6 +174,7 @@ const EXTENSIONS = [
   { id:'EXT-034', slug:'edge-prompt-lab', name:'Edge Prompt Lab', initials:'PL', color:'#107c10', engines:['GPT','Claude','Llama','DeepSeek'], ring:'Build Ring', desc:'Edge side panel prompt lab — template library and model comparison' },
   { id:'EXT-035', slug:'edge-context-engine', name:'Edge Context Engine', initials:'CE', color:'#ff8c00', engines:['Embeddings','GPT','Command R','Florence'], ring:'Memory Ring', desc:'Edge side panel context engine — session knowledge builder' },
   { id:'EXT-036', slug:'jarvis', name:'Jarvis AI', initials:'JA', color:'#d4af37', engines:['JarvisEngine','GPT','Claude','Gemini','ModelRouter','SpatialMemoryStore'], ring:'Sovereign Ring', desc:'JARVIS autonomous AI — voice commands, screen control, task automation, memory, page analysis' },
+  { id:'EXT-037', slug:'sovereign-alpha', name:'Sovereign Alpha', initials:'SA', color:'#89b4fa', engines:['Workbook','PageIntelligence','SecureVault','CommandBar'], ring:'Sovereign Ring', desc:'φ-compression: Workbook AI + Page Intelligence + Secure Vault + Command Bar — one install, four modules' },
 ];
 
 /* ─── Fallback URLs: if local fetch fails, use GitHub raw ── */
@@ -181,7 +182,7 @@ const GH_RAW = 'https://raw.githubusercontent.com/FreddyCreates/potential-succot
 const GH_DL  = 'https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/';
 
 /* ─── State ────────────────────────────────────────────────── */
-let builtCount = 35; // Links work immediately via GitHub raw
+let builtCount = 37; // Links work immediately via GitHub raw
 let blobURLs = {};  // slug → blob URL (upgraded by Worker if available)
 let worker = null;
 let useWorkerBuild = true;
@@ -336,7 +337,7 @@ function handleWorkerMessage(e) {
 
 /* ─── Fallback: Worker unavailable, links already work via GitHub raw ─ */
 function fallbackToPrebuilt() {
-  document.getElementById('worker-status').textContent = '35 extensions ready — direct download';
+  document.getElementById('worker-status').textContent = '37 extensions ready — direct download';
   document.getElementById('worker-dot').className = 'status-dot ready';
   // Links are already set to GH_DL URLs in the card render — nothing else needed
 }
