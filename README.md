@@ -46,14 +46,22 @@ Everything is downloadable. Everything runs locally. Everything is open.
 **Who it's for.** Product teams who need a command layer on top of their browser. Analysts who want to capture and organize web research without switching tools. Developers who want an AI assistant that doesn't phone home.
 
 **Install JARVIS right now:**
+
+**[⬇ Download jarvis.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/jarvis.zip)** — click, it downloads directly. Then unzip and load.
+
+macOS / Linux:
 ```bash
-# Download and unzip
 curl -L https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/jarvis.zip -o jarvis.zip
 unzip jarvis.zip -d jarvis-extension
-# Then: chrome://extensions → Developer mode → Load unpacked → select jarvis-extension/
 ```
 
-Or **[download jarvis.zip directly](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/jarvis.zip)**.
+Windows PowerShell:
+```powershell
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/jarvis.zip" -OutFile jarvis.zip
+Expand-Archive -Path jarvis.zip -DestinationPath jarvis-extension
+```
+
+Then: `chrome://extensions` → **Developer mode** → **Load unpacked** → select the folder.
 
 ---
 
@@ -72,12 +80,20 @@ Or **[download jarvis.zip directly](https://raw.githubusercontent.com/FreddyCrea
 **Who it's for.** Organizations that can't send data to third-party AI providers. Security teams. Legal teams. Research labs. Anyone who needs AI reasoning without data leaving the device.
 
 **Install:**
+
+**[⬇ Download sovereign-mind.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/sovereign-mind.zip)**
+
+macOS / Linux:
 ```bash
 curl -L https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/sovereign-mind.zip -o sovereign-mind.zip
 unzip sovereign-mind.zip -d sovereign-mind-ext
 ```
 
-Or **[download sovereign-mind.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/sovereign-mind.zip)**.
+Windows PowerShell:
+```powershell
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/sovereign-mind.zip" -OutFile sovereign-mind.zip
+Expand-Archive -Path sovereign-mind.zip -DestinationPath sovereign-mind-ext
+```
 
 ---
 
@@ -95,12 +111,20 @@ Or **[download sovereign-mind.zip](https://raw.githubusercontent.com/FreddyCreat
 **Who it's for.** Field teams with intermittent connectivity. Classified environments. Privacy-first applications. Anyone who needs AI where the internet doesn't reach.
 
 **Install:**
+
+**[⬇ Download edge-runner.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/edge-runner.zip)**
+
+macOS / Linux:
 ```bash
 curl -L https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/edge-runner.zip -o edge-runner.zip
 unzip edge-runner.zip -d edge-runner-ext
 ```
 
-Or **[download edge-runner.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/edge-runner.zip)**.
+Windows PowerShell:
+```powershell
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/edge-runner.zip" -OutFile edge-runner.zip
+Expand-Archive -Path edge-runner.zip -DestinationPath edge-runner-ext
+```
 
 ---
 
@@ -139,13 +163,21 @@ node organism-cli status        # health report
 
 ### Manual — Any Single Extension
 
-1. Download any `.zip` from [dist/extensions/](https://github.com/FreddyCreates/potential-succotash/tree/main/dist/extensions)
-2. Unzip it
-3. Open `chrome://extensions` → enable **Developer mode**
-4. Click **Load unpacked** → select the unzipped folder
-5. Done — works on Chrome, Edge, and Brave
+**[⬇ Download ALL 27 Extensions — one zip, click to download](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/all-extensions.zip)**
 
-**[Download ALL 27 Extensions (single zip)](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/all-extensions.zip)**
+macOS / Linux:
+```bash
+curl -L https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/all-extensions.zip -o organism-ai.zip
+unzip organism-ai.zip -d organism-ai
+```
+
+Windows PowerShell:
+```powershell
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/all-extensions.zip" -OutFile organism-ai.zip
+Expand-Archive -Path organism-ai.zip -DestinationPath organism-ai
+```
+
+Then for each extension folder: `chrome://extensions` → **Developer mode** → **Load unpacked** → select the folder. Works on Chrome, Edge, and Brave.
 
 ---
 
