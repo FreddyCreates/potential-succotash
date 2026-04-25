@@ -119,4 +119,59 @@ module {
     reasoning      : Text;
     alternates     : [Text];
   };
+
+  // ── JARVISIUS Types ──────────────────────────────────────────────────
+
+  /// A note stored in the JARVISIUS sovereign canister.
+  public type JarvisNote = {
+    id          : Nat;
+    content     : Text;
+    tags        : [Text];
+    source      : Text;   // "extension" | "dashboard" | "voice" | "auto"
+    timestampNs : Int;
+  };
+
+  /// A command executed through JARVIS.
+  public type JarvisCommand = {
+    id          : Nat;
+    intent      : Text;   // "open_tab" | "close_tab" | "switch_tab" | "navigate" | "screenshot" | "create_pdf" | "take_note" | "search" | "chat" | "alpha_ai"
+    payload     : Text;   // URL, tab ID, search query, etc.
+    status      : Text;   // "pending" | "executed" | "failed"
+    result      : Text;
+    alphaAi     : Text;   // which Alpha Script AI handled it (if any)
+    timestampNs : Int;
+  };
+
+  /// A document (PDF, text) generated or captured by JARVIS.
+  public type JarvisDocument = {
+    id          : Nat;
+    title       : Text;
+    docType     : Text;   // "pdf" | "text" | "html" | "screenshot"
+    contentHash : Text;   // SHA-256 of the content
+    sizeBytes   : Nat;
+    source      : Text;   // "generated" | "captured" | "imported"
+    timestampNs : Int;
+  };
+
+  /// A tab action logged by the JARVIS extension.
+  public type JarvisTabAction = {
+    id          : Nat;
+    action      : Text;   // "opened" | "closed" | "switched" | "navigated" | "captured"
+    tabTitle    : Text;
+    tabUrl      : Text;
+    timestampNs : Int;
+  };
+
+  /// Full JARVISIUS canister snapshot.
+  public type JarvisSnapshot = {
+    owner       : Text;
+    tier        : Text;
+    beatCount   : Nat;
+    totalNotes  : Nat;
+    totalCmds   : Nat;
+    totalDocs   : Nat;
+    totalTabs   : Nat;
+    uptimeNs    : Int;
+    timestampNs : Int;
+  };
 };

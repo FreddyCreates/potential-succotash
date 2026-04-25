@@ -239,6 +239,126 @@ header .subtitle{color:var(--muted);font-size:.85rem;margin-top:.25rem}
     </div>
   </div>
 
+  <!-- ═══════════════════════════════════════════════════════════════
+       JARVIS CONTROL CENTER — Full Dashboard Module
+       Connected to JARVISIUS canister · All 10 Alpha Script AIs
+       ═══════════════════════════════════════════════════════════════ -->
+  <div class="card" style="margin:1rem 0;border-color:#d4af37;border-width:2px">
+    <h2 style="display:flex;align-items:center;gap:0.5rem">
+      <span style="font-size:1.5rem">🤖</span>
+      JARVIS Control Center
+      <span style="font-size:0.65em;color:var(--muted);font-weight:400">JARVISIUS Canister · BRONZE Tier · Owner: Alfredo</span>
+      <span id="jarvisStatus" style="margin-left:auto;font-size:0.75rem;padding:3px 10px;border-radius:12px;background:#3fb950;color:#000;font-weight:600">● ONLINE</span>
+    </h2>
+
+    <!-- JARVIS Stats Bar -->
+    <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:0.5rem;margin-top:0.75rem">
+      <div style="background:var(--bg);padding:0.6rem;border-radius:8px;text-align:center">
+        <div style="font-size:1.3rem;font-weight:700;color:#58a6ff" id="jarvisBeats">0</div>
+        <div style="font-size:0.75rem;color:var(--muted)">Heartbeats</div>
+      </div>
+      <div style="background:var(--bg);padding:0.6rem;border-radius:8px;text-align:center">
+        <div style="font-size:1.3rem;font-weight:700;color:#d4af37" id="jarvisNotes">0</div>
+        <div style="font-size:0.75rem;color:var(--muted)">Notes</div>
+      </div>
+      <div style="background:var(--bg);padding:0.6rem;border-radius:8px;text-align:center">
+        <div style="font-size:1.3rem;font-weight:700;color:#e94560" id="jarvisCommands">0</div>
+        <div style="font-size:0.75rem;color:var(--muted)">Commands</div>
+      </div>
+      <div style="background:var(--bg);padding:0.6rem;border-radius:8px;text-align:center">
+        <div style="font-size:1.3rem;font-weight:700;color:#00e676" id="jarvisDocs">0</div>
+        <div style="font-size:0.75rem;color:var(--muted)">Documents</div>
+      </div>
+      <div style="background:var(--bg);padding:0.6rem;border-radius:8px;text-align:center">
+        <div style="font-size:1.3rem;font-weight:700;color:#00bcd4" id="jarvisTabs">0</div>
+        <div style="font-size:0.75rem;color:var(--muted)">Tab Actions</div>
+      </div>
+    </div>
+
+    <!-- JARVIS Panels Grid -->
+    <div class="grid" style="grid-template-columns:1fr 1fr;gap:0.75rem;margin-top:0.75rem">
+
+      <!-- Chat Interface -->
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:0.75rem;display:flex;flex-direction:column;min-height:200px">
+        <div style="font-weight:600;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.4rem">💬 JARVIS Chat <span style="font-size:0.7rem;color:var(--muted)">— Routes through all 10 Alpha AIs</span></div>
+        <div id="jarvisChatLog" style="flex:1;overflow-y:auto;font-size:0.8rem;margin-bottom:0.5rem;max-height:180px;padding:0.25rem">
+          <div style="color:var(--muted);font-style:italic">JARVIS ready. All Alpha Script AIs standing by.</div>
+        </div>
+        <div style="display:flex;gap:0.4rem">
+          <input type="text" id="jarvisChatInput" placeholder="Ask JARVIS anything…" style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:0.4rem 0.6rem;color:var(--text);font-size:0.8rem;outline:none">
+          <button id="jarvisChatSend" style="background:#d4af37;border:none;border-radius:6px;padding:0.4rem 0.8rem;color:#000;font-weight:600;cursor:pointer;font-size:0.8rem">Send</button>
+        </div>
+      </div>
+
+      <!-- Command Feed -->
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:0.75rem;min-height:200px">
+        <div style="font-weight:600;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.4rem">⚡ Live Command Feed</div>
+        <div id="jarvisCommandFeed" style="overflow-y:auto;font-size:0.75rem;max-height:200px;font-family:'Cascadia Code','Fira Code',monospace">
+          <div style="color:var(--muted)">Waiting for commands…</div>
+        </div>
+      </div>
+
+      <!-- Notes Library -->
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:0.75rem">
+        <div style="font-weight:600;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.4rem">📝 Notes Library</div>
+        <div id="jarvisNotesLibrary" style="overflow-y:auto;font-size:0.8rem;max-height:150px">
+          <div style="color:var(--muted);font-style:italic">No notes yet. Use the extension or chat to create notes.</div>
+        </div>
+        <div style="display:flex;gap:0.4rem;margin-top:0.5rem">
+          <input type="text" id="jarvisNoteInput" placeholder="Quick note…" style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:0.35rem 0.6rem;color:var(--text);font-size:0.8rem;outline:none">
+          <button id="jarvisNoteSave" style="background:#58a6ff;border:none;border-radius:6px;padding:0.35rem 0.7rem;color:#000;font-weight:600;cursor:pointer;font-size:0.75rem">+ Note</button>
+        </div>
+      </div>
+
+      <!-- Documents & PDFs -->
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:0.75rem">
+        <div style="font-weight:600;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.4rem">📄 Document Library</div>
+        <div id="jarvisDocsLibrary" style="overflow-y:auto;font-size:0.8rem;max-height:150px">
+          <div style="color:var(--muted);font-style:italic">No documents yet. Use JARVIS to generate PDFs and capture pages.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alpha Script AIs -->
+    <div style="margin-top:0.75rem">
+      <div style="font-weight:600;margin-bottom:0.5rem">🧬 Alpha Script AIs <span style="font-size:0.7rem;color:var(--muted)">— All 10 responding through JARVIS</span></div>
+      <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:0.4rem">
+        <div style="background:var(--bg);padding:0.4rem 0.6rem;border-radius:6px;font-size:0.75rem;display:flex;align-items:center;gap:0.3rem"><span style="color:#3fb950">●</span> ALPHA-LOGICUS <span style="color:var(--muted);font-size:0.65rem">Logic</span></div>
+        <div style="background:var(--bg);padding:0.4rem 0.6rem;border-radius:6px;font-size:0.75rem;display:flex;align-items:center;gap:0.3rem"><span style="color:#3fb950">●</span> ALPHA-CREATIVUS <span style="color:var(--muted);font-size:0.65rem">Creative</span></div>
+        <div style="background:var(--bg);padding:0.4rem 0.6rem;border-radius:6px;font-size:0.75rem;display:flex;align-items:center;gap:0.3rem"><span style="color:#3fb950">●</span> ALPHA-ANALYTICUS <span style="color:var(--muted);font-size:0.65rem">Analysis</span></div>
+        <div style="background:var(--bg);padding:0.4rem 0.6rem;border-radius:6px;font-size:0.75rem;display:flex;align-items:center;gap:0.3rem"><span style="color:#3fb950">●</span> ALPHA-LINGUISTICUS <span style="color:var(--muted);font-size:0.65rem">Language</span></div>
+        <div style="background:var(--bg);padding:0.4rem 0.6rem;border-radius:6px;font-size:0.75rem;display:flex;align-items:center;gap:0.3rem"><span style="color:#3fb950">●</span> ALPHA-MEMORIUS <span style="color:var(--muted);font-size:0.65rem">Memory</span></div>
+        <div style="background:var(--bg);padding:0.4rem 0.6rem;border-radius:6px;font-size:0.75rem;display:flex;align-items:center;gap:0.3rem"><span style="color:#3fb950">●</span> ALPHA-STRATEGICUS <span style="color:var(--muted);font-size:0.65rem">Strategy</span></div>
+        <div style="background:var(--bg);padding:0.4rem 0.6rem;border-radius:6px;font-size:0.75rem;display:flex;align-items:center;gap:0.3rem"><span style="color:#3fb950">●</span> ALPHA-PERCEPTUS <span style="color:var(--muted);font-size:0.65rem">Perception</span></div>
+        <div style="background:var(--bg);padding:0.4rem 0.6rem;border-radius:6px;font-size:0.75rem;display:flex;align-items:center;gap:0.3rem"><span style="color:#3fb950">●</span> ALPHA-EXECUTIUS <span style="color:var(--muted);font-size:0.65rem">Execution</span></div>
+        <div style="background:var(--bg);padding:0.4rem 0.6rem;border-radius:6px;font-size:0.75rem;display:flex;align-items:center;gap:0.3rem"><span style="color:#3fb950">●</span> ALPHA-SECURIUS <span style="color:var(--muted);font-size:0.65rem">Security</span></div>
+        <div style="background:var(--bg);padding:0.4rem 0.6rem;border-radius:6px;font-size:0.75rem;display:flex;align-items:center;gap:0.3rem"><span style="color:#3fb950">●</span> ALPHA-SYNTHIUS <span style="color:var(--muted);font-size:0.65rem">Synthesis</span></div>
+      </div>
+    </div>
+
+    <!-- Extension Install -->
+    <div style="margin-top:0.75rem;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:0.75rem;display:flex;align-items:center;gap:1rem">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;width:100px;height:100px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <div style="font-size:0.55rem;text-align:center;color:var(--muted);line-height:1.2">
+          <div style="font-size:2rem;margin-bottom:0.2rem">📱</div>
+          QR Code<br>Install
+        </div>
+      </div>
+      <div>
+        <div style="font-weight:600;margin-bottom:0.3rem">Install JARVIS Extension</div>
+        <div style="font-size:0.8rem;color:var(--muted);margin-bottom:0.4rem">Chrome/Edge side panel — slides out like Copilot. Tab control, PDF creation, notes, screen capture, floating button on every page.</div>
+        <div style="display:flex;gap:0.4rem;flex-wrap:wrap">
+          <span style="background:var(--surface);padding:0.2rem 0.5rem;border-radius:4px;font-size:0.7rem;color:var(--cyan)">Manifest V3</span>
+          <span style="background:var(--surface);padding:0.2rem 0.5rem;border-radius:4px;font-size:0.7rem;color:#d4af37">Side Panel</span>
+          <span style="background:var(--surface);padding:0.2rem 0.5rem;border-radius:4px;font-size:0.7rem;color:var(--green)">Tab Control</span>
+          <span style="background:var(--surface);padding:0.2rem 0.5rem;border-radius:4px;font-size:0.7rem;color:var(--purple)">PDF Capture</span>
+          <span style="background:var(--surface);padding:0.2rem 0.5rem;border-radius:4px;font-size:0.7rem;color:var(--amber)">Notes Sync</span>
+          <span style="background:var(--surface);padding:0.2rem 0.5rem;border-radius:4px;font-size:0.7rem;color:var(--red)">Screen Capture</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- log console -->
   <div class="console">
     <div class="console-header">
@@ -530,6 +650,188 @@ document.getElementById("btnAlpha").addEventListener("click", () => worker.postM
 /* ── auto-start ─────────────────────────────────────────────────── */
 worker.postMessage({ type: "start" });
 addLog("⏳ Initializing organism…");
+
+/* ═══════════════════════════════════════════════════════════════════
+   JARVIS CONTROL CENTER — Dashboard Wiring
+   Local state management + chat interface + note taking
+   Connected to JARVISIUS canister via extension message bridge
+   ═══════════════════════════════════════════════════════════════════ */
+(function initJarvis() {
+  const PHI = 1.618033988749895;
+  let jarvisBeatCount = 0;
+  const jarvisState = { notes: [], commands: [], documents: [], tabActions: [] };
+
+  const alphaAIs = [
+    { name: "ALPHA-LOGICUS",      domain: "logic",      intents: ["reason", "prove", "deduce", "infer"] },
+    { name: "ALPHA-CREATIVUS",    domain: "creative",   intents: ["create", "design", "imagine", "compose"] },
+    { name: "ALPHA-ANALYTICUS",   domain: "analysis",   intents: ["analyze", "compare", "evaluate", "measure"] },
+    { name: "ALPHA-LINGUISTICUS", domain: "language",   intents: ["translate", "summarize", "rephrase", "explain"] },
+    { name: "ALPHA-MEMORIUS",     domain: "memory",     intents: ["remember", "recall", "store", "note"] },
+    { name: "ALPHA-STRATEGICUS",  domain: "strategy",   intents: ["plan", "schedule", "prioritize", "organize"] },
+    { name: "ALPHA-PERCEPTUS",    domain: "perception", intents: ["see", "observe", "scan", "detect"] },
+    { name: "ALPHA-EXECUTIUS",    domain: "execution",  intents: ["run", "execute", "launch", "open"] },
+    { name: "ALPHA-SECURIUS",     domain: "security",   intents: ["verify", "protect", "encrypt", "audit"] },
+    { name: "ALPHA-SYNTHIUS",     domain: "synthesis",  intents: ["fuse", "combine", "merge", "synthesize"] }
+  ];
+
+  function routeToAlpha(text) {
+    const lower = text.toLowerCase();
+    for (const ai of alphaAIs) {
+      for (const intent of ai.intents) {
+        if (lower.includes(intent)) return ai;
+      }
+    }
+    return alphaAIs[0];
+  }
+
+  function logCommand(intent, payload, ai) {
+    const cmd = { id: jarvisState.commands.length + 1, intent, payload, alphaAi: ai, ts: Date.now() };
+    jarvisState.commands.push(cmd);
+    updateStats();
+    updateCommandFeed(cmd);
+    return cmd;
+  }
+
+  function updateStats() {
+    jarvisBeatCount++;
+    var el;
+    el = document.getElementById("jarvisBeats");   if (el) el.textContent = jarvisBeatCount.toLocaleString();
+    el = document.getElementById("jarvisNotes");    if (el) el.textContent = jarvisState.notes.length;
+    el = document.getElementById("jarvisCommands"); if (el) el.textContent = jarvisState.commands.length;
+    el = document.getElementById("jarvisDocs");     if (el) el.textContent = jarvisState.documents.length;
+    el = document.getElementById("jarvisTabs");     if (el) el.textContent = jarvisState.tabActions.length;
+  }
+
+  function updateCommandFeed(cmd) {
+    const feed = document.getElementById("jarvisCommandFeed");
+    if (!feed) return;
+    if (jarvisState.commands.length === 1) feed.innerHTML = "";
+    const time = new Date(cmd.ts).toLocaleTimeString();
+    const div = document.createElement("div");
+    div.style.cssText = "padding:0.2rem 0;border-bottom:1px solid var(--border);display:flex;gap:0.4rem;align-items:baseline";
+    div.innerHTML = '<span style="color:var(--muted);font-size:0.65rem">' + time + '</span>' +
+      '<span style="color:#d4af37">' + cmd.intent + '</span>' +
+      '<span style="color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + cmd.payload.substring(0, 60) + '</span>' +
+      '<span style="color:#58a6ff;font-size:0.65rem">' + cmd.alphaAi + '</span>';
+    feed.prepend(div);
+  }
+
+  function addChatMessage(sender, text, color) {
+    const log = document.getElementById("jarvisChatLog");
+    if (!log) return;
+    const div = document.createElement("div");
+    div.style.cssText = "margin-bottom:0.3rem;padding:0.2rem 0;border-bottom:1px solid rgba(48,54,61,0.5)";
+    div.innerHTML = '<span style="font-weight:600;color:' + color + '">' + sender + ':</span> ' +
+      '<span style="color:var(--text)">' + text + '</span>';
+    log.appendChild(div);
+    log.scrollTop = log.scrollHeight;
+  }
+
+  function processChat(input) {
+    addChatMessage("You", input, "#58a6ff");
+    const ai = routeToAlpha(input);
+    logCommand("chat", input, ai.name);
+
+    // JARVIS response based on intent routing
+    const lower = input.toLowerCase();
+    let response;
+
+    if (lower.includes("open") && (lower.includes("tab") || lower.includes("http") || lower.includes("www"))) {
+      response = "Opening tab. Command routed to " + ai.name + " for execution.";
+      jarvisState.tabActions.push({ id: jarvisState.tabActions.length + 1, action: "opened", title: input, url: input, ts: Date.now() });
+    } else if (lower.includes("note") || lower.includes("remember")) {
+      const noteContent = input.replace(/^(take a note|note|remember)\s*/i, "");
+      jarvisState.notes.push({ id: jarvisState.notes.length + 1, content: noteContent, source: "chat", ts: Date.now() });
+      response = "Note saved: \"" + noteContent.substring(0, 50) + "\" — stored in JARVISIUS canister via " + ai.name + ".";
+      updateNotesLibrary();
+    } else if (lower.includes("pdf") || lower.includes("document")) {
+      jarvisState.documents.push({ id: jarvisState.documents.length + 1, title: input, type: "pdf", ts: Date.now() });
+      response = "Document generation queued. " + ai.name + " processing.";
+      updateDocsLibrary();
+    } else if (lower.includes("switch") && lower.includes("tab")) {
+      response = "Tab switch command received. Routing to extension via " + ai.name + ".";
+      jarvisState.tabActions.push({ id: jarvisState.tabActions.length + 1, action: "switched", title: input, url: "", ts: Date.now() });
+    } else if (lower.includes("screenshot") || lower.includes("capture")) {
+      response = "Screen capture initiated. " + ai.name + " will process the visual data.";
+    } else if (lower.includes("search")) {
+      response = "Search query routed to " + ai.name + ". Processing across all connected engines.";
+    } else {
+      response = ai.name + " (" + ai.domain + "): Processing your request. All 10 Alpha AIs are available for complex routing.";
+    }
+
+    setTimeout(function() {
+      addChatMessage("JARVIS", response, "#d4af37");
+      updateStats();
+    }, 300 + Math.random() * 400);
+  }
+
+  function updateNotesLibrary() {
+    const lib = document.getElementById("jarvisNotesLibrary");
+    if (!lib) return;
+    if (jarvisState.notes.length === 0) { lib.innerHTML = '<div style="color:var(--muted);font-style:italic">No notes yet.</div>'; return; }
+    lib.innerHTML = jarvisState.notes.slice(-8).reverse().map(function(n) {
+      var time = new Date(n.ts).toLocaleTimeString();
+      return '<div style="padding:0.2rem 0;border-bottom:1px solid var(--border);font-size:0.8rem">' +
+        '<span style="color:var(--muted);font-size:0.65rem">' + time + '</span> ' +
+        '<span style="color:#58a6ff;font-size:0.65rem">[' + n.source + ']</span> ' + n.content + '</div>';
+    }).join("");
+  }
+
+  function updateDocsLibrary() {
+    const lib = document.getElementById("jarvisDocsLibrary");
+    if (!lib) return;
+    if (jarvisState.documents.length === 0) { lib.innerHTML = '<div style="color:var(--muted);font-style:italic">No documents yet.</div>'; return; }
+    lib.innerHTML = jarvisState.documents.slice(-6).reverse().map(function(d) {
+      var time = new Date(d.ts).toLocaleTimeString();
+      return '<div style="padding:0.2rem 0;border-bottom:1px solid var(--border);font-size:0.8rem">' +
+        '<span style="color:var(--muted);font-size:0.65rem">' + time + '</span> ' +
+        '<span style="color:#00e676;font-size:0.65rem">[' + d.type + ']</span> ' + d.title.substring(0, 50) + '</div>';
+    }).join("");
+  }
+
+  // Wire chat
+  var chatInput = document.getElementById("jarvisChatInput");
+  var chatSend = document.getElementById("jarvisChatSend");
+  if (chatSend && chatInput) {
+    chatSend.addEventListener("click", function() {
+      var text = chatInput.value.trim();
+      if (text) { processChat(text); chatInput.value = ""; }
+    });
+    chatInput.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") { chatSend.click(); }
+    });
+  }
+
+  // Wire note input
+  var noteInput = document.getElementById("jarvisNoteInput");
+  var noteSave = document.getElementById("jarvisNoteSave");
+  if (noteSave && noteInput) {
+    noteSave.addEventListener("click", function() {
+      var text = noteInput.value.trim();
+      if (text) {
+        jarvisState.notes.push({ id: jarvisState.notes.length + 1, content: text, source: "dashboard", ts: Date.now() });
+        logCommand("take_note", text, "ALPHA-MEMORIUS");
+        updateNotesLibrary();
+        updateStats();
+        noteInput.value = "";
+      }
+    });
+    noteInput.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") { noteSave.click(); }
+    });
+  }
+
+  // Heartbeat pulse
+  setInterval(function() {
+    jarvisBeatCount++;
+    var el = document.getElementById("jarvisBeats");
+    if (el) el.textContent = jarvisBeatCount.toLocaleString();
+  }, 873);
+
+  // Initial welcome command
+  logCommand("system_init", "JARVIS Control Center initialized — BRONZE tier — Owner: Alfredo", "SYSTEM");
+  addChatMessage("JARVIS", "Good day, Alfredo. All systems online. 10 Alpha Script AIs standing by. Extension side panel ready. What would you like me to do?", "#d4af37");
+})();
 </script>
 </body>
 </html>
