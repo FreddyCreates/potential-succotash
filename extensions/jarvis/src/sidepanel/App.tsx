@@ -132,7 +132,8 @@ export default function App() {
         <span>⏱ {uptimeStr}</span>
         <span>💓 {heartbeatCount}</span>
         <span>⚡ {commandCount} cmds</span>
-        <span className="capitalize">{mood}</span>
+        <span>🧠 {awareness}%</span>
+        <span>📖 {memTurns}t</span>
       </div>
     </div>
   );

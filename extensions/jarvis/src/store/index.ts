@@ -33,6 +33,7 @@ interface JarvisActions {
   setNotes: (notes: any[]) => void;
   setDocs: (docs: any[]) => void;
   setOpenTabs: (tabs: any[]) => void;
+  clearMessages: () => void;
 }
 
 export const useJarvisStore = create<JarvisState & JarvisActions>()((set) => ({
@@ -60,4 +61,5 @@ export const useJarvisStore = create<JarvisState & JarvisActions>()((set) => ({
   setNotes: (notes) => set({ notes }),
   setDocs: (docs) => set({ docs }),
   setOpenTabs: (tabs) => set({ openTabs: tabs }),
+  clearMessages: () => set({ messages: [] }),
 }));

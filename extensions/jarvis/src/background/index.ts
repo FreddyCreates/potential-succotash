@@ -1039,6 +1039,34 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       sendResponse({ success: true, message: 'Opening email draft' + (to ? ' to ' + to : '') + '.' });
       break;
     }
+    case 'clearChat': engine.conversationMemory = []; sendResponse({ success: true }); break;
+    case 'analyzeCurrentPage': {
+      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+        if (!tabs[0]?.id) { sendResponse({ success: false, message: 'No active tab' }); return; }
+        engine.executeReadPage(tabs[0].id, (r) => sendResponse(r));
+      });
+      break;
+    }
+    case 'searchWeb': {
+      const swQuery = ((message.query as string) || '').trim();
+      if (!swQuery) { sendResponse({ success: false, message: 'No query provided' }); break; }
+      const swUrl = 'https://www.bing.com/search?q=' + encodeURIComponent(swQuery);
+      chrome.tabs.create({ url: swUrl }, (tab) => sendResponse({ success: true, message: 'Opened Bing search for "' + swQuery + '"', tabId: tab?.id }));
+      break;
+    }
+    case 'extractLinks': {
+      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+        if (!tabs[0]?.id) { sendResponse({ success: false, message: 'No active tab' }); return; }
+        chrome.scripting.executeScript({
+          target: { tabId: tabs[0].id },
+          func: () => Array.from(document.querySelectorAll('a[href]')).map(a => ({ text: (a as HTMLAnchorElement).textContent?.trim().substring(0, 80) || '', href: (a as HTMLAnchorElement).href })).filter(l => l.href.startsWith('http')).slice(0, 50),
+        }, results => {
+          if (chrome.runtime.lastError) { sendResponse({ success: false, message: chrome.runtime.lastError.message }); return; }
+          sendResponse({ success: true, links: results?.[0]?.result || [] });
+        });
+      });
+      break;
+    }
     default: sendResponse({ success: false, error: 'Unknown action: ' + (message.action as string) });
   }
 
