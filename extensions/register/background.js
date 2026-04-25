@@ -305,3 +305,17 @@ if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.onMessage)
     return true;
   });
 }
+
+/* -- Auto-activate on install: open side panel for user -- */
+chrome.runtime.onInstalled.addListener(function(details) {
+  if (details.reason === 'install') {
+    console.log('[Register] Installed — AI activated 24/7');
+    /* Auto-activate side panel on install */
+    if (chrome.sidePanel && chrome.sidePanel.setOptions) {
+      chrome.sidePanel.setOptions({ enabled: true });
+    }
+    if (chrome.sidePanel && chrome.sidePanel.setPanelBehavior) {
+      chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: false }).catch(function(){});
+    }
+  }
+});

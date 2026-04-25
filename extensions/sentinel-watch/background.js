@@ -550,6 +550,13 @@ chrome.webNavigation.onCompleted.addListener(function(details) {
 
   /* Also re-init on install/update */
   chrome.runtime.onInstalled.addListener(function () {
+    /* Auto-activate side panel on install */
+    if (chrome.sidePanel && chrome.sidePanel.setOptions) {
+      chrome.sidePanel.setOptions({ enabled: true });
+    }
+    if (chrome.sidePanel && chrome.sidePanel.setPanelBehavior) {
+      chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: false }).catch(function(){});
+    }
     chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
     console.log('[Sentinel Watch] Installed/updated \u2014 24/7 keepalive active');
   });
