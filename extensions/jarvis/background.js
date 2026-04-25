@@ -1404,7 +1404,155 @@ JarvisEngine.prototype.executeChat = function (message, callback) {
       'I\'m your research partner, strategist, and system analyst. Tell me what to dig into.';
     agent = 'JARVIS \u2022 ORCHESTRATOR';
 
-  // ── 30. PHANTOM COGNITION — ALWAYS COHERENT FALLBACK ──────
+  // ── 30. MENTAL MODELS / THINKING TOOLS ────────────────────
+  } else if (/mental model|thinking model|cognitive bias|second order|inversion|circle of competence|map is not the territory|occam|hanlon|pareto|80.20|first order|think in systems|latticework/i.test(text)) {
+    var mmT = after('mental model') || after('model') || raw;
+    response = moodColor + ' Mental Model Mode: "' + mmT + '"\n\n' +
+      '🧩 Key models I apply:\n\n' +
+      '【Inversion】 Flip the problem. What causes failure? Avoid that.\n' +
+      '【Second-Order Thinking】 And then what? And after that?\n' +
+      '【Circle of Competence】 What do you actually know vs. what you think you know?\n' +
+      '【Occam\'s Razor】 The simplest explanation is usually right.\n' +
+      '【Pareto (80/20)】 What 20% of effort drives 80% of the outcome?\n' +
+      '【Map vs Territory】 Your model of reality isn\'t reality. Update it.\n' +
+      '【Hanlon\'s Razor】 Never attribute to malice what can be explained by incompetence.\n\n' +
+      'Which one fits what you\'re thinking about?';
+    agent = 'JARVIS \u2022 SYNAPTICUS';
+
+  // ── 31. MARKET / COMPETITION ──────────────────────────────
+  } else if (/market|competitor|competitive|landscape|industry|market size|tam|sam|som|audience|customer|user base|niche|segment|positioning|moat/i.test(text)) {
+    var mktT = after('market') || after('competitor') || after('industry') || raw;
+    response = moodColor + ' Market Intelligence: "' + mktT + '"\n\n' +
+      '📊 Market Analysis Framework:\n\n' +
+      '【Market Size】 TAM → SAM → SOM — what\'s realistically addressable?\n' +
+      '【Competitive Landscape】 Who\'s already there? What do they do well / badly?\n' +
+      '【Moat】 What makes this defensible? Network effects, data, switching costs, brand?\n' +
+      '【Positioning】 Where does this sit? Premium, niche, mass market?\n' +
+      '【Customer Pain】 What\'s the actual problem that makes people pay?\n' +
+      '【Timing】 Why now? What changed that makes this viable today?\n\n' +
+      'Zoom in on whichever dimension is most useful.';
+    agent = 'JARVIS \u2022 UNIVERSUM';
+
+  // ── 32. BRAINSTORM / IDEATION ─────────────────────────────
+  } else if (/brainstorm|ideate|ideas|generate ideas|think of|what if we|possibilities|options|alternatives|creative|innovate|invention|come up with/i.test(text)) {
+    var bsTopic = after('brainstorm') || after('ideate') || after('ideas') || after('think of') || raw;
+    response = moodColor + ' Brainstorm Mode: "' + bsTopic + '"\n\n' +
+      '💡 Ideation Patterns:\n\n' +
+      '【Random Entry】 Pick an unrelated word and force a connection.\n' +
+      '【Reversal】 What\'s the opposite of what everyone else does?\n' +
+      '【Constraint Forcing】 What if you had no money / 24 hours / 1 person?\n' +
+      '【Analogy】 How does nature solve this? How does another industry solve it?\n' +
+      '【SCAMPER】 Substitute, Combine, Adapt, Modify, Put to other uses, Eliminate, Reverse\n' +
+      '【Blue Sky】 Remove all constraints. Ideal state in 10 years?\n\n' +
+      'Give me the seed idea and I\'ll run the patterns on it.';
+    agent = 'JARVIS \u2022 SYNAPTICUS';
+
+  // ── 33. RISK / RISK ASSESSMENT ────────────────────────────
+  } else if (/risk|risk assessment|what could go wrong|downside|failure mode|fmea|worst case|probability|likelihood|mitigation|hedge|exposure|vulnerability/i.test(text)) {
+    var riskT = after('risk') || after('what could go wrong') || raw;
+    response = moodColor + ' Risk Assessment: "' + riskT + '"\n\n' +
+      '⚠️ Risk Framework:\n\n' +
+      '【Identify】 What are the top 5 failure modes? (technical, market, team, legal, timing)\n' +
+      '【Probability】 How likely is each? (high/medium/low)\n' +
+      '【Impact】 If it happens, how bad? (catastrophic/major/minor)\n' +
+      '【Priority】 High prob × high impact = must mitigate now\n' +
+      '【Mitigation】 What reduces each risk? What\'s the contingency?\n' +
+      '【Black Swans】 What unknown unknowns could break everything?\n\n' +
+      'Run this on the thing you\'re most worried about.';
+    agent = 'JARVIS \u2022 UNIVERSUM';
+
+  // ── 34. CAUSE & EFFECT / ROOT CAUSE ───────────────────────
+  } else if (/root cause|cause and effect|why did|why does|5 why|causal|what caused|reason for|stem from|source of/i.test(text)) {
+    var rcT = after('root cause') || after('why did') || after('why does') || after('5 why') || raw;
+    response = moodColor + ' Root Cause Analysis: "' + rcT + '"\n\n' +
+      '🔍 5 Whys Pattern:\n\n' +
+      'Problem: ' + rcT + '\n' +
+      'Why #1: ___\n' +
+      'Why #2: ___\n' +
+      'Why #3: ___\n' +
+      'Why #4: ___\n' +
+      'Why #5 (root): ___\n\n' +
+      '🌊 Also apply:\n' +
+      '【Fishbone】 People, Process, Technology, Environment, Materials, Measurement\n' +
+      '【Constraint Theory】 What\'s the one bottleneck that limits everything else?\n\n' +
+      'Tell me the symptom and I\'ll help find the root.';
+    agent = 'JARVIS \u2022 SYNAPTICUS';
+
+  // ── 35. WHAT-IF / SCENARIO PLANNING ──────────────────────
+  } else if (/what if|scenario|futures|forecast|if.*happens|suppose|imagine|let's say|hypothetical|alternate|simulation/i.test(text)) {
+    var wiT = after('what if') || after('scenario') || after('suppose') || raw;
+    response = moodColor + ' Scenario Planning: "' + wiT + '"\n\n' +
+      '🌐 3-Scenario Method:\n\n' +
+      '【Best Case】 Everything goes right — what does that look like in 12 months?\n' +
+      '【Base Case】 Realistic progress — what\'s the most likely path?\n' +
+      '【Worst Case】 What breaks, and what do you do when it does?\n\n' +
+      '🎯 Also consider:\n' +
+      '【Trigger Events】 What signals tell you which scenario is unfolding?\n' +
+      '【Pre-mortem】 Assume it failed. Work backwards — what went wrong?\n' +
+      '【Regret Minimization】 Which choice minimizes regret across all scenarios?\n\n' +
+      'Walk me through your specific what-if and I\'ll run the analysis.';
+    agent = 'JARVIS \u2022 UNIVERSUM';
+
+  // ── 36. SOCRATIC / QUESTION DRILLING ─────────────────────
+  } else if (/socratic|question me|challenge me|devil.?s advocate|push back|question my|doubt|test me|steelman|steel man/i.test(text)) {
+    response = moodColor + ' Socratic Mode — challenging your thinking:\n\n' +
+      '📍 Let\'s drill in:\n\n' +
+      '1. What\'s the core assumption you\'re building on?\n' +
+      '2. What evidence supports it? What contradicts it?\n' +
+      '3. If your assumption is wrong, what happens to the whole idea?\n' +
+      '4. Who would strongly disagree with this, and why?\n' +
+      '5. What\'s the steelman — the strongest version of the opposing view?\n' +
+      '6. Having heard that — do you still believe your position?\n\n' +
+      'Start by stating your claim and I\'ll pressure-test it.';
+    agent = 'JARVIS \u2022 SYNAPTICUS';
+
+  // ── 37. SYNTHESIS / CONNECT IDEAS ────────────────────────
+  } else if (/connect|synthesize|synthesis|tie together|combine|overlap|how does.*relate|intersection|cross.*pollinate|pattern across|dot.*connect/i.test(text)) {
+    var synT = after('connect') || after('synthesize') || after('combine') || raw;
+    var tTopics = self._getRecentTopics(6);
+    response = moodColor + ' Synthesis Pattern: "' + synT + '"\n\n' +
+      '🔗 What I see from your conversation gravity:\n' +
+      (tTopics.length > 0 ? tTopics.slice(0,5).map(function(t){ return '• ' + t; }).join('\n') : '• Talk more and I\'ll find the patterns') + '\n\n' +
+      '🧩 Synthesis Questions:\n' +
+      '• What do these topics share at their core?\n' +
+      '• Where do they conflict or create tension?\n' +
+      '• What emerges when you combine them that neither alone provides?\n' +
+      '• Is there a unifying principle that covers all of them?\n\n' +
+      'Describe the two things you want to connect and I\'ll find the bridge.';
+    agent = 'JARVIS \u2022 SYNAPTICUS';
+
+  // ── 38. BUILD / PRODUCT / FEATURE ────────────────────────
+  } else if (/build this|build a|let.?s build|product idea|feature|mvp|prototype|user story|spec|requirements|product spec|roadmap/i.test(text)) {
+    var buildT = after('build') || after('feature') || after('mvp') || after('prototype') || raw;
+    response = moodColor + ' Product Build Framework: "' + buildT + '"\n\n' +
+      '🏗️ From idea to spec:\n\n' +
+      '【Problem】 What pain does this solve? Who has it worst?\n' +
+      '【User】 Who is the primary user? Secondary user?\n' +
+      '【Core Value】 What\'s the ONE thing this must do perfectly?\n' +
+      '【MVP】 Minimum version that proves the core value — what is it?\n' +
+      '【Constraints】 Time, money, team, technical limits\n' +
+      '【Success Metric】 How do you know it worked?\n' +
+      '【Roadmap】 V1 → V2 → V3 with clear gates between each\n\n' +
+      'Fill in the blanks and I\'ll help build the full spec.';
+    agent = 'JARVIS \u2022 ORCHESTRATOR';
+
+  // ── 39. NUMBERS / ESTIMATION ──────────────────────────────
+  } else if (/estimate|back of envelope|order of magnitude|how many|how much would|calculate|revenue model|unit economics|cac|ltv|margin|burn rate|runway/i.test(text)) {
+    var estT = after('estimate') || after('calculate') || after('how many') || after('revenue') || raw;
+    response = moodColor + ' Estimation Mode: "' + estT + '"\n\n' +
+      '🔢 Fermi Estimation Pattern:\n\n' +
+      '1. What\'s the quantity we\'re estimating?\n' +
+      '2. Break it into sub-components (population × rate × conversion × price)\n' +
+      '3. Estimate each component from first principles\n' +
+      '4. Multiply together → sanity check against known benchmarks\n' +
+      '5. Bound it: what\'s the 10x low? 10x high?\n\n' +
+      '📊 For unit economics:\n' +
+      'Revenue = users × ARPU | Margin = Revenue − COGS | Runway = Cash / Burn\n' +
+      'LTV / CAC > 3 is healthy. LTV / CAC > 10 is excellent.\n\n' +
+      'Give me the thing to estimate and I\'ll break it down.';
+    agent = 'JARVIS \u2022 UNIVERSUM';
+
+  // ── 40. PHANTOM COGNITION — ALWAYS COHERENT FALLBACK ──────
   } else {
     // Extract keywords from what was said, weight by topic gravity
     var kws = extractKeywords(raw);
@@ -1414,29 +1562,26 @@ JarvisEngine.prototype.executeChat = function (message, callback) {
     // Build a contextually aware response that ALWAYS makes sense
     var chainResponses;
     if (kws.length === 0) {
-      // Empty or punctuation-only input
       chainResponses = [
         moodColor + ' I\'m here. Say anything — I\'ll respond. Mood: ' + mood + '.',
         'JARVIS listening. ' + (ctx.turnCount > 0 ? 'We\'ve had ' + ctx.turnCount + ' exchanges. Keep going.' : 'What\'s on your mind?'),
         'Heartbeat #' + heartbeat + ' — still running. Talk to me.'
       ];
     } else if (kws.length === 1) {
-      // Single-word input
       var word = kws[0];
       chainResponses = [
-        '"' + word + '" — I\'m tracking that. ' + (recentTopics.length > 0 ? 'Given our conversation about ' + recentTopics[0] + ', are you asking about ' + word + ' in that context?' : 'Tell me more about what you mean.'),
-        'Got "' + word + '". That\'s in my attention map now. What specifically do you want to know or do with it?',
-        moodColor + ' "' + word + '" — noted. Is that a command, a question, or a thought? Tell me more and I\'ll act on it.'
+        '"' + word + '" — tracking that. ' + (recentTopics.length > 0 ? 'We\'ve been on ' + recentTopics[0] + ' — does ' + word + ' connect to that?' : 'Tell me more.'),
+        'Got "' + word + '". In my attention map now. What do you want to know or do with it?',
+        moodColor + ' "' + word + '" — noted. Command, question, or thought? Tell me more and I\'ll act on it.'
       ];
     } else {
-      // Multi-word — build contextual response using gravity
-      var contextHook = recentTopics.length > 0 ? ' We\'ve been talking about ' + recentTopics.slice(0, 2).join(' and ') + ' — does this connect to that?' : '';
+      var contextHook = recentTopics.length > 0 ? ' We\'ve been talking about ' + recentTopics.slice(0, 2).join(' and ') + ' — does this connect?' : '';
       var keyPhrase = kws.slice(0, 3).join(', ');
       chainResponses = [
-        moodColor + ' I\'m processing "' + raw.substring(0, 60) + (raw.length > 60 ? '...' : '') + '" — pulling "' + keyPhrase + '" through my attention map.' + contextHook + '\n\nIf you\'re asking a question, try: "explain [topic]", "research [topic]", or "theory [idea]". If you want action: "read page", "analyze [topic]", or "list tabs".',
-        'JARVIS cognition active. Topic gravity on: ' + keyPhrase + '.' + contextHook + '\n\nSay "research" to enter research mode, "theory" for analytical pressure-testing, "framework" to build a blueprint — or just keep talking.',
-        moodColor + ' Heard: "' + raw.substring(0, 80) + '". Keywords: ' + keyPhrase + '. Mood: ' + mood + ', focus: ' + focus + '.\n\n' + (ctx.lastIntent && ctx.lastIntent !== 'chat' ? 'Last action you ran: ' + ctx.lastIntent + '. Want to continue that?' : 'I\'m your research partner. What direction do you want to go?'),
-        'PhantomAI chain-of-thought: ' + keyPhrase + ' → memory temple gravity pulling toward sovereign platform context.' + contextHook + '\n\nFor the clearest result: "analyze ' + kws[0] + '" applies frameworks, "research ' + kws[0] + '" maps the literature space, or ask me directly.'
+        moodColor + ' Processing: "' + raw.substring(0, 60) + (raw.length > 60 ? '...' : '') + '" — keywords: ' + keyPhrase + '.' + contextHook + '\n\nJust keep talking — I pick up on what you\'re building toward. Or try: "analyze [topic]", "brainstorm [idea]", "risk [thing]", "what if [scenario]".',
+        'Cognition active. Gravity: ' + keyPhrase + '.' + contextHook + '\n\nNo mode-switching needed. Theory, research, decisions, frameworks — just say it and I respond.',
+        moodColor + ' Heard: "' + raw.substring(0, 80) + '". Keywords: ' + keyPhrase + '. Mood: ' + mood + '.\n\n' + (ctx.lastIntent && ctx.lastIntent !== 'chat' ? 'Last action: ' + ctx.lastIntent + '. Continue that thread?' : 'Tell me what you\'re thinking — I\'ll follow wherever you lead.'),
+        'PhantomAI: ' + keyPhrase + ' → running through pattern library.' + contextHook + '\n\n40 analytical patterns loaded. Just talk — the right one activates from what you say.'
       ];
     }
     response = pick(chainResponses);

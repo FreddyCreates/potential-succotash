@@ -342,6 +342,13 @@
   .update-install-btn:hover{background:rgba(255,255,255,0.45)}
   .neuro-chip{font-size:9px;color:var(--cyan);margin-top:1px;opacity:0.8}
 
+  /* Persistent download strip */
+  .dl-strip{display:flex;align-items:center;gap:6px;padding:5px 10px;background:rgba(0,0,0,0.35);border-bottom:1px solid rgba(124,110,255,0.3);flex-wrap:nowrap}
+  .dl-strip-label{font-size:10px;color:var(--text3);white-space:nowrap;font-weight:600}
+  .dl-strip-btn{background:rgba(124,110,255,0.22);border:1px solid var(--accent);color:var(--accent);border-radius:5px;padding:3px 10px;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background 0.15s}
+  .dl-strip-btn:hover{background:rgba(124,110,255,0.5)}
+  .dl-strip-hint{font-size:9px;color:var(--text3);margin-left:2px;white-space:nowrap}
+
   /* Download bar */
   .download-bar{display:flex;align-items:center;gap:6px;padding:6px 8px;background:rgba(124,110,255,0.06);border-top:1px solid var(--border);flex-wrap:wrap}
   .dl-label{font-size:10px;color:var(--text3);white-space:nowrap}
@@ -363,6 +370,17 @@
   .notepad-actions{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
   .notepad-btn{background:rgba(124,110,255,0.18);border:1px solid rgba(124,110,255,0.3);color:var(--accent);border-radius:6px;padding:4px 8px;font-size:10px;font-weight:600;cursor:pointer}
   .notepad-btn:hover{background:rgba(124,110,255,0.35)}
+
+  /* Install panel */
+  .install-step{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border)}
+  .install-num{min-width:26px;height:26px;border-radius:50%;background:rgba(124,110,255,0.25);border:1px solid var(--accent);color:var(--accent);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .install-body{flex:1}
+  .install-title{font-size:12px;font-weight:700;color:var(--text1);margin-bottom:3px}
+  .install-desc{font-size:11px;color:var(--text3);line-height:1.5}
+  .install-dl-btn{margin-top:7px;background:rgba(124,110,255,0.2);border:1px solid var(--accent);color:var(--accent);border-radius:7px;padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;display:inline-block}
+  .install-dl-btn:hover{background:rgba(124,110,255,0.4)}
+  .install-divider{text-align:center;color:var(--text3);font-size:10px;padding:8px 0;font-weight:600;letter-spacing:1px}
+  .install-note{margin-top:10px;padding:8px 10px;background:rgba(0,220,130,0.08);border:1px solid rgba(0,220,130,0.2);border-radius:8px;font-size:10px;color:#00dc82;line-height:1.5}
 </style>
 </head>
 <body>
@@ -390,6 +408,14 @@
   <button class="update-install-btn" id="autoInstallBtn" title="Auto-download installer">⬇ Auto-Install</button>
 </div>
 
+<!-- Persistent Download Strip -->
+<div class="dl-strip">
+  <span class="dl-strip-label">&#x1F4E6; Get JARVIS:</span>
+  <button class="dl-strip-btn" id="dlZipBtn">&#x1F4E5; ZIP</button>
+  <button class="dl-strip-btn" id="dlBatBtn">&#x2699;&#xFE0F; .bat Installer</button>
+  <span class="dl-strip-hint">&#x2193; click to download now</span>
+</div>
+
 <!-- Navigation -->
 <div class="nav">
   <div class="tab active" data-panel="chat"><span class="tab-icon">&#x1F4AC;</span>Chat</div>
@@ -399,6 +425,7 @@
   <div class="tab" data-panel="tabs"><span class="tab-icon">&#x1F5C2;&#xFE0F;</span>Tabs</div>
   <div class="tab" data-panel="notes"><span class="tab-icon">&#x1F4DD;</span>Notes</div>
   <div class="tab" data-panel="docs"><span class="tab-icon">&#x1F4C4;</span>Docs</div>
+  <div class="tab" data-panel="install"><span class="tab-icon">&#x1F4E6;</span>Install</div>
   <div class="tab" data-panel="log"><span class="tab-icon">&#x1F4CB;</span>Log</div>
 </div>
 
@@ -421,14 +448,10 @@
       <button class="qbtn" data-cmd="theory">&#x1F9E0; Theory</button>
       <button class="qbtn" data-cmd="analyze this">&#x1F4CA; Analyze</button>
       <button class="qbtn" data-cmd="memory temple">&#x1F4BE; Memory</button>
-      <button class="qbtn" data-cmd="framework">&#x1F3D7;&#xFE0F; Blueprint</button>
+      <button class="qbtn" data-cmd="brainstorm">&#x1F4A1; Brainstorm</button>
+      <button class="qbtn" data-cmd="what if">&#x1F30D; What-If</button>
+      <button class="qbtn" data-cmd="risk">&#x26A0;&#xFE0F; Risk</button>
       <button class="qbtn" data-cmd="what am i building">&#x1F3AF; Founder</button>
-    </div>
-    <!-- Download links -->
-    <div class="download-bar">
-      <span class="dl-label">&#x1F4E6; Get JARVIS:</span>
-      <button class="dl-btn" id="dlZipBtn">&#x1F4E5; Download ZIP</button>
-      <button class="dl-btn" id="dlBatBtn">&#x2699;&#xFE0F; Download .bat Installer</button>
     </div>
     <div class="cinput-wrap">
       <input type="text" class="cinput" id="chatInput" placeholder="Ask JARVIS anything..." autocomplete="off">
@@ -439,36 +462,26 @@
   <!-- Tools panel -->
   <div class="panel" id="panel-tools">
     <div class="tools-grid">
-      <div class="tool-section-label">🔬 Research &amp; Analysis</div>
-      <button class="tool-btn" data-tool="researchMode" data-topic="">🔬 Research Mode<span class="tool-desc">Activate research framework</span></button>
-      <button class="tool-btn" data-tool="theoryMode" data-idea="">🧠 Theory Talk<span class="tool-desc">Pressure-test ideas</span></button>
-      <button class="tool-btn" data-tool="analyzeMode" data-subject="">📊 Analyze<span class="tool-desc">SWOT + systems lens</span></button>
-      <button class="tool-btn" data-tool="swotTool" data-subject="">🔴 SWOT Engine<span class="tool-desc">Strengths/Weaknesses/Opps/Threats</span></button>
-      <button class="tool-btn" data-tool="frameworkMode" data-subject="">🏗️ Framework Builder<span class="tool-desc">Layered architecture blueprint</span></button>
-      <button class="tool-btn" data-tool="queryBuilder" data-topic="">🔗 Query Builder<span class="tool-desc">Structured inquiry tool</span></button>
-      <button class="tool-btn" data-tool="decisionEngine" data-question="">⚡ Decision Engine<span class="tool-desc">10/10/10 + regret minimization</span></button>
-
-      <div class="tool-section-label" style="margin-top:10px">💾 Memory &amp; Knowledge</div>
-      <button class="tool-btn" data-tool="mempleStatus">📂 Memory Temple<span class="tool-desc">View archived conversations</span></button>
-      <button class="tool-btn" data-tool="founderContext">🎯 Founder Context<span class="tool-desc">What you&apos;re building + focus</span></button>
-      <button class="tool-btn" data-tool="quickNote" data-text="">📋 Quick Note<span class="tool-desc">Write &amp; save a note instantly</span></button>
+      <div class="tool-section-label">💾 Memory &amp; Context</div>
+      <button class="tool-btn" data-tool="mempleStatus">📂 Memory Temple<span class="tool-desc">Show what I've archived from our talks</span></button>
+      <button class="tool-btn" data-tool="founderContext">🎯 Founder Context<span class="tool-desc">What you're building + current focus</span></button>
 
       <div class="tool-section-label" style="margin-top:10px">🖥️ Page Intelligence</div>
-      <button class="tool-btn" data-tool="readActivePage">🔎 Read Page<span class="tool-desc">Extract full page text</span></button>
-      <button class="tool-btn" data-tool="summarizeActivePage">📖 Summarize Page<span class="tool-desc">AI summary of current page</span></button>
+      <button class="tool-btn" data-tool="readActivePage">🔎 Read Page<span class="tool-desc">Extract full text from current tab</span></button>
+      <button class="tool-btn" data-tool="summarizeActivePage">📖 Summarize Page<span class="tool-desc">AI summary of what's open</span></button>
 
       <div class="tool-section-label" style="margin-top:10px">📦 Get JARVIS</div>
-      <button class="tool-btn dl-tool-btn" id="toolDlZip">📥 Download ZIP<span class="tool-desc">jarvis-extension.zip</span></button>
-      <button class="tool-btn dl-tool-btn" id="toolDlBat">⚙️ Download .bat Installer<span class="tool-desc">install-jarvis-edge.bat</span></button>
+      <button class="tool-btn dl-tool-btn" id="toolDlZip">📥 Download ZIP<span class="tool-desc">jarvis-extension.zip — load unpacked in Edge</span></button>
+      <button class="tool-btn dl-tool-btn" id="toolDlBat">⚙️ Download Installer<span class="tool-desc">install-jarvis-edge.bat — runs setup automatically</span></button>
     </div>
     <!-- Quick notepad -->
     <div class="tool-notepad">
       <div class="notepad-label">✏️ Quick Notepad</div>
-      <textarea class="notepad-ta" id="notepadInput" placeholder="Type a research note, idea, or thought here..."></textarea>
+      <textarea class="notepad-ta" id="notepadInput" placeholder="Type a note, idea, or research finding here..."></textarea>
       <div class="notepad-actions">
         <button class="notepad-btn" id="saveNotepadBtn">💾 Save Note</button>
-        <button class="notepad-btn" id="archiveResearchBtn">🔬 Archive as Research</button>
-        <button class="notepad-btn" id="archiveTheoryBtn">🧠 Archive as Theory</button>
+        <button class="notepad-btn" id="archiveResearchBtn">🔬 Research</button>
+        <button class="notepad-btn" id="archiveTheoryBtn">🧠 Theory</button>
         <button class="notepad-btn" id="clearNotepadBtn">🗑 Clear</button>
       </div>
     </div>
@@ -533,6 +546,47 @@
       <button class="ref-btn" id="refreshDocsBtn" title="Refresh">&#x1F504;</button>
     </div>
     <div class="scroll" id="docsList"></div>
+  </div>
+
+  <!-- Install panel -->
+  <div class="panel" id="panel-install">
+    <div class="panel-hdr">Install JARVIS in Edge</div>
+    <div class="scroll" style="padding:10px">
+      <div class="install-step">
+        <div class="install-num">1</div>
+        <div class="install-body">
+          <div class="install-title">Download the ZIP</div>
+          <div class="install-desc">Click below to download the extension ZIP file to your computer.</div>
+          <button class="install-dl-btn" id="installDlZip">&#x1F4E5; Download jarvis-extension.zip</button>
+        </div>
+      </div>
+      <div class="install-step">
+        <div class="install-num">2</div>
+        <div class="install-body">
+          <div class="install-title">Open Edge Extensions</div>
+          <div class="install-desc">In Microsoft Edge, go to <strong>edge://extensions</strong> and turn on <strong>Developer mode</strong> (toggle top-right).</div>
+        </div>
+      </div>
+      <div class="install-step">
+        <div class="install-num">3</div>
+        <div class="install-body">
+          <div class="install-title">Load Unpacked</div>
+          <div class="install-desc">Unzip the file, then click <strong>Load unpacked</strong> and select the extracted <strong>jarvis/</strong> folder.</div>
+        </div>
+      </div>
+      <div class="install-divider">— OR — use the Windows auto-installer —</div>
+      <div class="install-step">
+        <div class="install-num">★</div>
+        <div class="install-body">
+          <div class="install-title">One-Click Windows Installer</div>
+          <div class="install-desc">Download the .bat file and double-click it. It installs JARVIS into Edge automatically, no manual steps needed.</div>
+          <button class="install-dl-btn" id="installDlBat">&#x2699;&#xFE0F; Download install-jarvis-edge.bat</button>
+        </div>
+      </div>
+      <div class="install-note">
+        &#x26A1; Auto-Update: JARVIS checks for new versions every 4 hours. When an update is found, it auto-downloads the installer and sends you a Chrome notification.
+      </div>
+    </div>
   </div>
 
   <!-- Log panel -->
@@ -1004,6 +1058,8 @@
   setupDownloadBtn('dlBatBtn', 'downloadJarvisBat');
   setupDownloadBtn('toolDlZip', 'downloadJarvisZip');
   setupDownloadBtn('toolDlBat', 'downloadJarvisBat');
+  setupDownloadBtn('installDlZip', 'downloadJarvisZip');
+  setupDownloadBtn('installDlBat', 'downloadJarvisBat');
 
   /* ========== SOVEREIGN TOOL BUTTONS ========== */
   document.querySelectorAll('.tool-btn[data-tool]').forEach(function (btn) {
