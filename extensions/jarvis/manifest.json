@@ -2,12 +2,13 @@
   "manifest_version": 3,
   "name": "Jarvis AI",
   "version": "1.0.0",
-  "description": "Sovereign intelligence that thinks before it speaks. Phantom AI structures every thought. One mind, five thinking architectures.",
+  "description": "AI User Experience — JARVIS autonomous intelligence. Voice commands, screen control, task automation, memory",
   "permissions": [
     "activeTab",
     "storage",
-    "identity",
     "alarms",
+    "tabs",
+    "scripting",
     "sidePanel"
   ],
   "background": {
@@ -23,12 +24,19 @@
       ]
     }
   ],
+  "devtools_page": "devtools.html",
+  "web_accessible_resources": [
+    {
+      "resources": ["jarvisius-engine.wasm"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "minimum_chrome_version": "114",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
-  "minimum_chrome_version": "114",
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
@@ -36,8 +44,8 @@
       "48": "icons/icon48.png"
     }
   },
-  "devtools_page": "devtools.html",
   "side_panel": {
     "default_path": "sidepanel.html"
   }
 }
+
