@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secure Clipboard</title>
+<style>
+/* ── Reset & Base ──────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #1a1a2e;
+  --bg2: #16213e;
+  --bg3: #0f3460;
+  --text: #e0e0e0;
+  --text2: #a0a0b0;
+  --accent: #4fc3f7;
+  --accent2: #29b6f6;
+  --danger: #ef5350;
+  --success: #66bb6a;
+  --warning: #ffa726;
+  --radius: 8px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+html, body {
+  width: 100%; height: 100%;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  background: var(--bg);
+  overflow: hidden;
+}
+input, button, select, textarea {
+  font-family: inherit; font-size: inherit; color: inherit;
+}
+button { cursor: pointer; border: none; background: none; color: var(--text); }
+button:hover { opacity: 0.85; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bg3); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ── Layout ────────────────────────────────────────────────────────── */
+#app { display: flex; flex-direction: column; height: 100vh; }
+#topbar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 10px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--bg3);
+  flex-shrink: 0;
+}
+#search {
+  flex: 1; padding: 6px 10px; border-radius: var(--radius);
+  border: 1px solid var(--bg3); background: var(--bg);
+  color: var(--text); outline: none;
+}
+#search:focus { border-color: var(--accent); }
+#filter {
+  padding: 6px 8px; border-radius: var(--radius);
+  border: 1px solid var(--bg3); background: var(--bg);
+  color: var(--text); outline: none;
+}
+.icon-btn {
+  width: 32px; height: 32px; border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg3); font-size: 16px; flex-shrink: 0;
+}
+.icon-btn:hover { background: var(--accent); color: var(--bg); }
+
+/* ── Main Content ──────────────────────────────────────────────────── */
+#content { flex: 1; overflow-y: auto; padding: 8px; }
+
+/* ── Clip Card ─────────────────────────────────────────────────────── */
+.clip {
+  background: var(--bg2); border-radius: var(--radius);
+  padding: 10px 12px; margin-bottom: 6px;
+  border: 1px solid transparent; transition: border-color 0.15s;
+}
+.clip:hover { border-color: var(--bg3); }
+.clip-header { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+.badge {
+  font-size: 10px; padding: 2px 6px; border-radius: 10px;
+  background: var(--bg3); color: var(--accent); font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.3px;
+}
+.badge.URLs { background: #1b3a4b; color: #4fc3f7; }
+.badge.Code { background: #1b4332; color: #66bb6a; }
+.badge.Email { background: #3e2723; color: #ffa726; }
+.badge.Numbers { background: #311b92; color: #b39ddb; }
+.badge.General { background: #263238; color: #90a4ae; }
+.clip-meta { font-size: 11px; color: var(--text2); margin-left: auto; white-space: nowrap; }
+.clip-preview {
+  font-size: 12px; color: var(--text2); line-height: 1.5;
+  word-break: break-word; margin-bottom: 6px;
+  max-height: 80px; overflow: hidden;
+  white-space: pre-wrap;
+}
+.clip-actions { display: flex; gap: 4px; flex-wrap: wrap; }
+.clip-actions button {
+  padding: 4px 10px; border-radius: var(--radius);
+  font-size: 11px; background: var(--bg3); color: var(--text2);
+  transition: all 0.15s;
+}
+.clip-actions button:hover { background: var(--accent); color: var(--bg); }
+.clip-actions .btn-danger:hover { background: var(--danger); }
+.clip.pinned { border-left: 3px solid var(--warning); }
+
+/* ── Vault ─────────────────────────────────────────────────────────── */
+#vault-overlay {
+  display: none; position: absolute; inset: 0;
+  background: var(--bg); z-index: 100;
+  flex-direction: column; align-items: center; justify-content: center;
+  padding: 20px;
+}
+#vault-overlay.active { display: flex; }
+.vault-card {
+  background: var(--bg2); border-radius: 12px; padding: 24px;
+  width: 100%; max-width: 320px; text-align: center;
+  box-shadow: var(--shadow);
+}
+.vault-card h2 { margin-bottom: 16px; color: var(--accent); font-size: 18px; }
+.vault-card p { color: var(--text2); margin-bottom: 12px; font-size: 12px; }
+.pin-input {
+  width: 100%; padding: 12px; border-radius: var(--radius);
+  border: 2px solid var(--bg3); background: var(--bg);
+  color: var(--accent); font-size: 24px; text-align: center;
+  letter-spacing: 8px; outline: none;
+}
+.pin-input:focus { border-color: var(--accent); }
+.vault-btn {
+  width: 100%; padding: 10px; border-radius: var(--radius);
+  background: var(--accent); color: var(--bg); font-weight: 700;
+  margin-top: 12px; font-size: 14px;
+}
+.vault-btn:hover { background: var(--accent2); }
+.vault-error { color: var(--danger); font-size: 12px; margin-top: 8px; display: none; }
+
+/* ── Vault Item List ───────────────────────────────────────────────── */
+.vault-item {
+  background: var(--bg2); border-radius: var(--radius);
+  padding: 10px 12px; margin-bottom: 6px;
+  border-left: 3px solid var(--accent);
+}
+.vault-item .clip-actions button { background: var(--bg3); }
+
+/* ── Settings Panel ────────────────────────────────────────────────── */
+#settings-panel {
+  display: none; position: absolute; inset: 0;
+  background: var(--bg); z-index: 90;
+  flex-direction: column; overflow-y: auto;
+  padding: 16px;
+}
+#settings-panel.active { display: flex; }
+#settings-panel h2 { color: var(--accent); margin-bottom: 16px; font-size: 16px; }
+.setting-group {
+  margin-bottom: 16px; padding: 12px;
+  background: var(--bg2); border-radius: var(--radius);
+}
+.setting-group label {
+  display: block; font-size: 12px; color: var(--text2); margin-bottom: 6px;
+}
+.setting-group select, .setting-group input[type="number"] {
+  width: 100%; padding: 8px; border-radius: var(--radius);
+  border: 1px solid var(--bg3); background: var(--bg);
+  color: var(--text); outline: none;
+}
+.setting-group input[type="number"]:focus,
+.setting-group select:focus { border-color: var(--accent); }
+.toggle-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 0;
+}
+.toggle {
+  width: 40px; height: 22px; border-radius: 11px;
+  background: var(--bg3); position: relative; cursor: pointer;
+  transition: background 0.2s;
+}
+.toggle.on { background: var(--accent); }
+.toggle::after {
+  content: ''; position: absolute; top: 3px; left: 3px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--text); transition: transform 0.2s;
+}
+.toggle.on::after { transform: translateX(18px); }
+.settings-btn {
+  width: 100%; padding: 10px; border-radius: var(--radius);
+  font-weight: 600; margin-bottom: 8px; font-size: 13px;
+}
+.settings-btn.primary { background: var(--accent); color: var(--bg); }
+.settings-btn.danger { background: var(--danger); color: #fff; }
+.settings-btn.secondary { background: var(--bg3); color: var(--text); }
+
+/* ── Empty State ───────────────────────────────────────────────────── */
+.empty-state {
+  text-align: center; padding: 40px 20px; color: var(--text2);
+}
+.empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+.empty-state p { font-size: 13px; }
+
+/* ── Status bar ────────────────────────────────────────────────────── */
+#statusbar {
+  padding: 4px 10px; font-size: 11px; color: var(--text2);
+  background: var(--bg2); border-top: 1px solid var(--bg3);
+  display: flex; justify-content: space-between; flex-shrink: 0;
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <!-- Top Bar -->
+  <div id="topbar">
+    <input type="text" id="search" placeholder="Search clips..." autocomplete="off">
+    <select id="filter">
+      <option value="All">All</option>
+      <option value="General">General</option>
+      <option value="Code">Code</option>
+      <option value="URLs">URLs</option>
+      <option value="Email">Email</option>
+      <option value="Numbers">Numbers</option>
+      <option value="Vault">Vault</option>
+    </select>
+    <button class="icon-btn" id="btn-settings" title="Settings">⚙</button>
+  </div>
+
+  <!-- Main Content -->
+  <div id="content"></div>
+
+  <!-- Status Bar -->
+  <div id="statusbar">
+    <span id="status-count">0 items</span>
+    <span id="status-vault">🔒 Vault locked</span>
+  </div>
+
+  <!-- Vault Overlay -->
+  <div id="vault-overlay">
+    <div class="vault-card" id="vault-setup" style="display:none;">
+      <h2>🔐 Set Vault PIN</h2>
+      <p>Create a 4–8 digit PIN to encrypt your vault. This PIN cannot be recovered.</p>
+      <input type="password" class="pin-input" id="pin-setup" maxlength="8" inputmode="numeric" pattern="[0-9]*" placeholder="••••">
+      <input type="password" class="pin-input" id="pin-confirm" maxlength="8" inputmode="numeric" pattern="[0-9]*" placeholder="Confirm" style="margin-top:8px;">
+      <button class="vault-btn" id="btn-create-vault">Create Vault</button>
+      <div class="vault-error" id="setup-error"></div>
+    </div>
+    <div class="vault-card" id="vault-unlock" style="display:none;">
+      <h2>🔓 Unlock Vault</h2>
+      <p>Enter your PIN to access encrypted items.</p>
+      <input type="password" class="pin-input" id="pin-unlock" maxlength="8" inputmode="numeric" pattern="[0-9]*" placeholder="••••">
+      <button class="vault-btn" id="btn-unlock-vault">Unlock</button>
+      <button class="vault-btn" style="background:var(--bg3);color:var(--text);margin-top:4px;" id="btn-vault-back">Back</button>
+      <div class="vault-error" id="unlock-error"></div>
+    </div>
+  </div>
+
+  <!-- Settings Panel -->
+  <div id="settings-panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <h2 style="color:var(--accent);margin:0;">⚙ Settings</h2>
+      <button class="icon-btn" id="btn-close-settings" title="Close">✕</button>
+    </div>
+    <div class="setting-group">
+      <label>Max History Size</label>
+      <input type="number" id="set-max-history" min="10" max="2000" value="500">
+    </div>
+    <div class="setting-group">
+      <label>Auto-Clear Timer</label>
+      <select id="set-auto-clear">
+        <option value="never">Never</option>
+        <option value="1hr">1 Hour</option>
+        <option value="4hr">4 Hours</option>
+        <option value="24hr">24 Hours</option>
+      </select>
+    </div>
+    <div class="setting-group">
+      <div class="toggle-row">
+        <span>Auto-capture clipboard</span>
+        <div class="toggle on" id="toggle-capture"></div>
+      </div>
+    </div>
+    <div class="setting-group">
+      <div class="toggle-row">
+        <span>Show notifications</span>
+        <div class="toggle on" id="toggle-notify"></div>
+      </div>
+    </div>
+    <button class="settings-btn primary" id="btn-export">📥 Export Clips (JSON)</button>
+    <button class="settings-btn secondary" id="btn-import">📤 Import Clips (JSON)</button>
+    <input type="file" id="import-file" accept=".json" style="display:none;">
+    <button class="settings-btn danger" id="btn-clear-all">🗑 Clear All History</button>
+    <button class="settings-btn danger" id="btn-reset-vault">🔒 Reset Vault</button>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   Secure Clipboard — Side Panel Application
+   ══════════════════════════════════════════════════════════════════════ */
+'use strict';
+
+// ── Globals ───────────────────────────────────────────────────────────
+let clipHistory = [];
+let vaultState = { unlocked: false, key: null, data: null };
+let lastActivity = Date.now();
+const VAULT_LOCK_MS = 5 * 60 * 1000; // 5 min
+
+// ── Utility: HTML Escaping ────────────────────────────────────────────
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+}
+
+// ── Utility: Relative Time ────────────────────────────────────────────
+function relativeTime(ts) {
+  const diff = Date.now() - ts;
+  if (diff < 60000) return 'just now';
+  if (diff < 3600000) return Math.floor(diff / 60000) + 'm ago';
+  if (diff < 86400000) return Math.floor(diff / 3600000) + 'h ago';
+  if (diff < 604800000) return Math.floor(diff / 86400000) + 'd ago';
+  return new Date(ts).toLocaleDateString();
+}
+
+// ── Utility: Format Size ──────────────────────────────────────────────
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / 1048576).toFixed(1) + ' MB';
+}
+
+// ── Load History ──────────────────────────────────────────────────────
+async function loadHistory() {
+  return new Promise((resolve) => {
+    chrome.runtime.sendMessage({ type: 'GET_HISTORY' }, (res) => {
+      clipHistory = res?.history || [];
+      resolve();
+    });
+  });
+}
+
+async function saveHistory() {
+  return new Promise((resolve) => {
+    chrome.runtime.sendMessage({ type: 'SAVE_HISTORY', history: clipHistory }, () => resolve());
+  });
+}
+
+// ── Render Clipboard List ─────────────────────────────────────────────
+function renderClips() {
+  const container = document.getElementById('content');
+  const searchTerm = document.getElementById('search').value.toLowerCase();
+  const filterCat = document.getElementById('filter').value;
+
+  if (filterCat === 'Vault') {
+    renderVaultView();
+    return;
+  }
+
+  let items = clipHistory.filter((item) => {
+    if (filterCat !== 'All' && item.category !== filterCat) return false;
+    if (searchTerm && !item.text.toLowerCase().includes(searchTerm)) return false;
+    return true;
+  });
+
+  // Pinned first
+  items.sort((a, b) => {
+    if (a.pinned && !b.pinned) return -1;
+    if (!a.pinned && b.pinned) return 1;
+    return b.timestamp - a.timestamp;
+  });
+
+  if (items.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="icon">📋</div>
+        <p>${searchTerm ? 'No clips match your search.' : 'No clips yet. Copy something to get started!'}</p>
+      </div>`;
+    updateStatusBar();
+    return;
+  }
+
+  let html = '';
+  for (const item of items) {
+    const preview = escapeHtml(item.text.substring(0, 200));
+    const pinnedClass = item.pinned ? ' pinned' : '';
+    html += `
+      <div class="clip${pinnedClass}" data-id="${escapeHtml(item.id)}">
+        <div class="clip-header">
+          <span class="badge ${escapeHtml(item.category)}">${escapeHtml(item.category)}</span>
+          <span class="clip-meta">${escapeHtml(relativeTime(item.timestamp))} · ${escapeHtml(formatSize(item.size))}</span>
+        </div>
+        <div class="clip-preview">${preview}${item.text.length > 200 ? '…' : ''}</div>
+        <div class="clip-actions">
+          <button onclick="copyClip('${escapeHtml(item.id)}')">📋 Copy</button>
+          <button onclick="pinClip('${escapeHtml(item.id)}')">${item.pinned ? '📌 Unpin' : '📌 Pin'}</button>
+          <button onclick="vaultClip('${escapeHtml(item.id)}')">🔒 Vault</button>
+          <button class="btn-danger" onclick="deleteClip('${escapeHtml(item.id)}')">✕</button>
+        </div>
+      </div>`;
+  }
+  container.innerHTML = html;
+  updateStatusBar();
+}
+
+function updateStatusBar() {
+  document.getElementById('status-count').textContent = clipHistory.length + ' items';
+  document.getElementById('status-vault').textContent =
+    vaultState.unlocked ? '🔓 Vault unlocked' : '🔒 Vault locked';
+}
+
+// ── Clip Actions ──────────────────────────────────────────────────────
+async function copyClip(id) {
+  const item = clipHistory.find(i => i.id === id);
+  if (!item) return;
+  try {
+    await navigator.clipboard.writeText(item.text);
+    showInlineToast('Copied!');
+  } catch {
+    showInlineToast('Copy failed');
+  }
+}
+
+async function pinClip(id) {
+  const item = clipHistory.find(i => i.id === id);
+  if (!item) return;
+  item.pinned = !item.pinned;
+  await saveHistory();
+  renderClips();
+}
+
+async function deleteClip(id) {
+  clipHistory = clipHistory.filter(i => i.id !== id);
+  await saveHistory();
+  renderClips();
+}
+
+async function vaultClip(id) {
+  const item = clipHistory.find(i => i.id === id);
+  if (!item) return;
+
+  if (!vaultState.unlocked) {
+    showInlineToast('Unlock the vault first');
+    document.getElementById('filter').value = 'Vault';
+    renderVaultView();
+    return;
+  }
+
+  try {
+    const encrypted = await encryptText(item.text, vaultState.key);
+    vaultState.data.items.push({
+      id: item.id,
+      encrypted: encrypted.ciphertext,
+      iv: encrypted.iv,
+      category: item.category,
+      timestamp: item.timestamp,
+      size: item.size
+    });
+    await saveVaultData();
+    clipHistory = clipHistory.filter(i => i.id !== id);
+    await saveHistory();
+    renderClips();
+    showInlineToast('Moved to vault');
+  } catch (e) {
+    showInlineToast('Encryption failed');
+  }
+}
+
+// ── Inline Toast ──────────────────────────────────────────────────────
+let toastTimer = null;
+function showInlineToast(msg) {
+  const sb = document.getElementById('status-count');
+  const original = sb.textContent;
+  sb.textContent = msg;
+  sb.style.color = 'var(--accent)';
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    sb.textContent = clipHistory.length + ' items';
+    sb.style.color = '';
+  }, 1500);
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// VAULT — Web Crypto API (PBKDF2 + AES-GCM)
+// ══════════════════════════════════════════════════════════════════════
+
+async function deriveKey(pin, salt) {
+  const enc = new TextEncoder();
+  const keyMaterial = await crypto.subtle.importKey(
+    'raw', enc.encode(pin), 'PBKDF2', false, ['deriveKey']
+  );
+  return crypto.subtle.deriveKey(
+    { name: 'PBKDF2', salt: salt, iterations: 100000, hash: 'SHA-256' },
+    keyMaterial,
+    { name: 'AES-GCM', length: 256 },
+    false,
+    ['encrypt', 'decrypt']
+  );
+}
+
+async function encryptText(plaintext, key) {
+  const enc = new TextEncoder();
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const ciphertext = await crypto.subtle.encrypt(
+    { name: 'AES-GCM', iv: iv },
+    key,
+    enc.encode(plaintext)
+  );
+  return {
+    ciphertext: arrayToBase64(new Uint8Array(ciphertext)),
+    iv: arrayToBase64(iv)
+  };
+}
+
+async function decryptText(ciphertextB64, ivB64, key) {
+  const ciphertext = base64ToArray(ciphertextB64);
+  const iv = base64ToArray(ivB64);
+  const decrypted = await crypto.subtle.decrypt(
+    { name: 'AES-GCM', iv: iv },
+    key,
+    ciphertext
+  );
+  return new TextDecoder().decode(decrypted);
+}
+
+function arrayToBase64(arr) {
+  let binary = '';
+  for (let i = 0; i < arr.length; i++) binary += String.fromCharCode(arr[i]);
+  return btoa(binary);
+}
+
+function base64ToArray(b64) {
+  const binary = atob(b64);
+  const arr = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) arr[i] = binary.charCodeAt(i);
+  return arr;
+}
+
+// ── Vault Storage ─────────────────────────────────────────────────────
+
+async function getVaultStorage() {
+  return new Promise((resolve) => {
+    chrome.runtime.sendMessage({ type: 'GET_VAULT' }, (res) => {
+      resolve(res?.vault || null);
+    });
+  });
+}
+
+async function saveVaultStorage(data) {
+  return new Promise((resolve) => {
+    chrome.runtime.sendMessage({ type: 'SAVE_VAULT', vault: data }, () => resolve());
+  });
+}
+
+async function clearVaultStorage() {
+  return new Promise((resolve) => {
+    chrome.runtime.sendMessage({ type: 'CLEAR_VAULT' }, () => resolve());
+  });
+}
+
+async function saveVaultData() {
+  const stored = await getVaultStorage();
+  if (!stored) return;
+  stored.items = vaultState.data.items.map(item => ({
+    id: item.id,
+    encrypted: item.encrypted,
+    iv: item.iv,
+    category: item.category,
+    timestamp: item.timestamp,
+    size: item.size
+  }));
+  await saveVaultStorage(stored);
+}
+
+// ── Vault Setup ───────────────────────────────────────────────────────
+
+async function initVault() {
+  const stored = await getVaultStorage();
+  const overlay = document.getElementById('vault-overlay');
+  overlay.classList.add('active');
+
+  if (!stored) {
+    document.getElementById('vault-setup').style.display = 'block';
+    document.getElementById('vault-unlock').style.display = 'none';
+  } else {
+    document.getElementById('vault-setup').style.display = 'none';
+    document.getElementById('vault-unlock').style.display = 'block';
+  }
+}
+
+document.getElementById('btn-create-vault').addEventListener('click', async () => {
+  const pin = document.getElementById('pin-setup').value;
+  const confirm = document.getElementById('pin-confirm').value;
+  const errEl = document.getElementById('setup-error');
+
+  if (pin.length < 4 || pin.length > 8 || !/^\d+$/.test(pin)) {
+    errEl.textContent = 'PIN must be 4–8 digits.';
+    errEl.style.display = 'block';
+    return;
+  }
+  if (pin !== confirm) {
+    errEl.textContent = 'PINs do not match.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  errEl.style.display = 'none';
+
+  try {
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    const key = await deriveKey(pin, salt);
+    const testToken = await encryptText('__vault_test_token__', key);
+
+    const vaultStorage = {
+      salt: arrayToBase64(salt),
+      testToken: testToken.ciphertext,
+      testIv: testToken.iv,
+      items: []
+    };
+
+    await saveVaultStorage(vaultStorage);
+
+    vaultState.unlocked = true;
+    vaultState.key = key;
+    vaultState.data = { items: [] };
+    lastActivity = Date.now();
+
+    document.getElementById('vault-overlay').classList.remove('active');
+    document.getElementById('pin-setup').value = '';
+    document.getElementById('pin-confirm').value = '';
+    showInlineToast('Vault created!');
+    updateStatusBar();
+    renderVaultItems();
+  } catch (e) {
+    errEl.textContent = 'Failed to create vault: ' + e.message;
+    errEl.style.display = 'block';
+  }
+});
+
+document.getElementById('btn-unlock-vault').addEventListener('click', async () => {
+  const pin = document.getElementById('pin-unlock').value;
+  const errEl = document.getElementById('unlock-error');
+
+  if (!pin) {
+    errEl.textContent = 'Enter your PIN.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  try {
+    const stored = await getVaultStorage();
+    if (!stored) throw new Error('No vault found');
+
+    const salt = base64ToArray(stored.salt);
+    const key = await deriveKey(pin, salt);
+
+    // Verify PIN by decrypting test token
+    const result = await decryptText(stored.testToken, stored.testIv, key);
+    if (result !== '__vault_test_token__') throw new Error('Invalid PIN');
+
+    vaultState.unlocked = true;
+    vaultState.key = key;
+    vaultState.data = { items: stored.items || [] };
+    lastActivity = Date.now();
+
+    document.getElementById('vault-overlay').classList.remove('active');
+    document.getElementById('pin-unlock').value = '';
+    errEl.style.display = 'none';
+    showInlineToast('Vault unlocked');
+    updateStatusBar();
+    renderVaultItems();
+  } catch (e) {
+    errEl.textContent = 'Invalid PIN or vault corrupted.';
+    errEl.style.display = 'block';
+    document.getElementById('pin-unlock').value = '';
+  }
+});
+
+document.getElementById('btn-vault-back').addEventListener('click', () => {
+  document.getElementById('vault-overlay').classList.remove('active');
+  document.getElementById('filter').value = 'All';
+  renderClips();
+});
+
+// ── Vault Auto-Lock ───────────────────────────────────────────────────
+
+function resetVaultActivity() { lastActivity = Date.now(); }
+document.addEventListener('click', resetVaultActivity);
+document.addEventListener('keydown', resetVaultActivity);
+
+setInterval(() => {
+  if (vaultState.unlocked && (Date.now() - lastActivity) > VAULT_LOCK_MS) {
+    lockVault();
+  }
+}, 15000);
+
+function lockVault() {
+  vaultState.unlocked = false;
+  vaultState.key = null;
+  vaultState.data = null;
+  updateStatusBar();
+  showInlineToast('Vault auto-locked');
+  if (document.getElementById('filter').value === 'Vault') {
+    renderVaultView();
+  }
+}
+
+// ── Vault View ────────────────────────────────────────────────────────
+
+function renderVaultView() {
+  if (!vaultState.unlocked) {
+    initVault();
+    return;
+  }
+  renderVaultItems();
+}
+
+async function renderVaultItems() {
+  const container = document.getElementById('content');
+  if (!vaultState.data || vaultState.data.items.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="icon">🔐</div>
+        <p>Vault is empty. Move items here for encrypted storage.</p>
+      </div>`;
+    updateStatusBar();
+    return;
+  }
+
+  const searchTerm = document.getElementById('search').value.toLowerCase();
+  let html = '';
+
+  for (const item of vaultState.data.items) {
+    try {
+      const plain = await decryptText(item.encrypted, item.iv, vaultState.key);
+      if (searchTerm && !plain.toLowerCase().includes(searchTerm)) continue;
+      const preview = escapeHtml(plain.substring(0, 200));
+      html += `
+        <div class="vault-item" data-id="${escapeHtml(item.id)}">
+          <div class="clip-header">
+            <span class="badge ${escapeHtml(item.category)}">${escapeHtml(item.category)}</span>
+            <span class="clip-meta">${escapeHtml(relativeTime(item.timestamp))} · ${escapeHtml(formatSize(item.size))}</span>
+          </div>
+          <div class="clip-preview">${preview}${plain.length > 200 ? '…' : ''}</div>
+          <div class="clip-actions">
+            <button onclick="copyVaultItem('${escapeHtml(item.id)}')">📋 Copy</button>
+            <button onclick="restoreVaultItem('${escapeHtml(item.id)}')">📤 Restore</button>
+            <button class="btn-danger" onclick="deleteVaultItem('${escapeHtml(item.id)}')">✕</button>
+          </div>
+        </div>`;
+    } catch {
+      html += `
+        <div class="vault-item">
+          <div class="clip-preview" style="color:var(--danger);">⚠ Decryption failed for item</div>
+        </div>`;
+    }
+  }
+
+  container.innerHTML = html || `
+    <div class="empty-state">
+      <div class="icon">🔍</div>
+      <p>No vault items match your search.</p>
+    </div>`;
+  updateStatusBar();
+}
+
+async function copyVaultItem(id) {
+  const item = vaultState.data.items.find(i => i.id === id);
+  if (!item) return;
+  try {
+    const plain = await decryptText(item.encrypted, item.iv, vaultState.key);
+    await navigator.clipboard.writeText(plain);
+    showInlineToast('Copied from vault!');
+  } catch {
+    showInlineToast('Decryption failed');
+  }
+}
+
+async function restoreVaultItem(id) {
+  const item = vaultState.data.items.find(i => i.id === id);
+  if (!item) return;
+  try {
+    const plain = await decryptText(item.encrypted, item.iv, vaultState.key);
+    clipHistory.unshift({
+      id: item.id,
+      text: plain,
+      timestamp: item.timestamp,
+      category: item.category,
+      pinned: false,
+      size: item.size
+    });
+    await saveHistory();
+    vaultState.data.items = vaultState.data.items.filter(i => i.id !== id);
+    await saveVaultData();
+    renderVaultItems();
+    showInlineToast('Restored from vault');
+  } catch {
+    showInlineToast('Decryption failed');
+  }
+}
+
+async function deleteVaultItem(id) {
+  vaultState.data.items = vaultState.data.items.filter(i => i.id !== id);
+  await saveVaultData();
+  renderVaultItems();
+  showInlineToast('Deleted from vault');
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// SETTINGS
+// ══════════════════════════════════════════════════════════════════════
+
+let currentSettings = {};
+
+async function loadSettings() {
+  return new Promise((resolve) => {
+    chrome.runtime.sendMessage({ type: 'GET_SETTINGS' }, (res) => {
+      currentSettings = res?.settings || {
+        maxHistory: 500,
+        autoClearTimer: 'never',
+        autoCapture: true,
+        notifications: true
+      };
+      resolve();
+    });
+  });
+}
+
+async function saveSettings() {
+  return new Promise((resolve) => {
+    chrome.runtime.sendMessage({ type: 'SAVE_SETTINGS', settings: currentSettings }, () => resolve());
+  });
+}
+
+function applySettingsUI() {
+  document.getElementById('set-max-history').value = currentSettings.maxHistory || 500;
+  document.getElementById('set-auto-clear').value = currentSettings.autoClearTimer || 'never';
+  document.getElementById('toggle-capture').classList.toggle('on', currentSettings.autoCapture !== false);
+  document.getElementById('toggle-notify').classList.toggle('on', currentSettings.notifications !== false);
+}
+
+document.getElementById('btn-settings').addEventListener('click', () => {
+  applySettingsUI();
+  document.getElementById('settings-panel').classList.add('active');
+});
+
+document.getElementById('btn-close-settings').addEventListener('click', async () => {
+  currentSettings.maxHistory = parseInt(document.getElementById('set-max-history').value) || 500;
+  currentSettings.autoClearTimer = document.getElementById('set-auto-clear').value;
+  await saveSettings();
+  document.getElementById('settings-panel').classList.remove('active');
+  showInlineToast('Settings saved');
+});
+
+document.getElementById('toggle-capture').addEventListener('click', function () {
+  this.classList.toggle('on');
+  currentSettings.autoCapture = this.classList.contains('on');
+  saveSettings();
+});
+
+document.getElementById('toggle-notify').addEventListener('click', function () {
+  this.classList.toggle('on');
+  currentSettings.notifications = this.classList.contains('on');
+  saveSettings();
+});
+
+// ── Export / Import ───────────────────────────────────────────────────
+
+document.getElementById('btn-export').addEventListener('click', () => {
+  const data = JSON.stringify(clipHistory, null, 2);
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'secure-clipboard-export-' + new Date().toISOString().slice(0, 10) + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showInlineToast('Exported!');
+});
+
+document.getElementById('btn-import').addEventListener('click', () => {
+  document.getElementById('import-file').click();
+});
+
+document.getElementById('import-file').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    const text = await file.text();
+    const imported = JSON.parse(text);
+    if (!Array.isArray(imported)) throw new Error('Invalid format');
+    // Merge, avoiding duplicates
+    const existingIds = new Set(clipHistory.map(i => i.id));
+    for (const item of imported) {
+      if (item.id && item.text && !existingIds.has(item.id)) {
+        clipHistory.push(item);
+      }
+    }
+    clipHistory.sort((a, b) => b.timestamp - a.timestamp);
+    await saveHistory();
+    renderClips();
+    showInlineToast('Imported ' + imported.length + ' items');
+  } catch {
+    showInlineToast('Import failed — invalid JSON');
+  }
+  e.target.value = '';
+});
+
+// ── Clear All ─────────────────────────────────────────────────────────
+
+document.getElementById('btn-clear-all').addEventListener('click', async () => {
+  if (!confirm('Delete ALL clipboard history? This cannot be undone.')) return;
+  clipHistory = [];
+  await saveHistory();
+  renderClips();
+  showInlineToast('History cleared');
+});
+
+document.getElementById('btn-reset-vault').addEventListener('click', async () => {
+  if (!confirm('Reset the vault? All encrypted items will be permanently deleted.')) return;
+  await clearVaultStorage();
+  vaultState = { unlocked: false, key: null, data: null };
+  updateStatusBar();
+  if (document.getElementById('filter').value === 'Vault') {
+    document.getElementById('filter').value = 'All';
+  }
+  renderClips();
+  showInlineToast('Vault reset');
+});
+
+// ══════════════════════════════════════════════════════════════════════
+// EVENT LISTENERS & INIT
+// ══════════════════════════════════════════════════════════════════════
+
+document.getElementById('search').addEventListener('input', () => {
+  if (document.getElementById('filter').value === 'Vault' && vaultState.unlocked) {
+    renderVaultItems();
+  } else {
+    renderClips();
+  }
+});
+
+document.getElementById('filter').addEventListener('change', () => {
+  renderClips();
+});
+
+// Listen for background updates
+chrome.runtime.onMessage.addListener((msg) => {
+  if (msg.type === 'HISTORY_UPDATED') {
+    loadHistory().then(renderClips);
+  }
+});
+
+// ── Init ──────────────────────────────────────────────────────────────
+(async () => {
+  await loadSettings();
+  await loadHistory();
+  renderClips();
+})();
+</script>
+</body>
+</html>
