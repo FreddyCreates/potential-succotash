@@ -195,9 +195,11 @@ Builder Family Tools: Register (TOOL-025), Packager (TOOL-026), Validator (TOOL-
 
 ---
 
-## JARVIS Intelligence Suite (4 Autonomous Agents)
+## JARVIS Intelligence Suite (5 Autonomous Agents)
 
-Four new extensions that act as autonomous AI agents. They read, write, move on screen, and see through data noise to find what's real. Pre-loaded with X-ray mathematics — square-root normalization, spectral decomposition, cross-system correlation, z-depth analysis. Pattern recognition for spreads where there is free lunch.
+Five extensions that act as autonomous AI agents. They read, write, move on screen, and see through data noise to find what's real. Pre-loaded with X-ray mathematics — square-root normalization, spectral decomposition, cross-system correlation, z-depth analysis. Pattern recognition for spreads where there is free lunch.
+
+**Jarvis AI** (EXT-036) — The sovereign command center. Copilot-style side panel that slides out on click — tab switching, URL opening, PDF creation, note-taking, screen capture, page summarization, text search and highlight. Chat interface routes through all 10 Alpha Script AIs. Floating arc-reactor FAB on every page. Notes stored forever, attributed to Alfredo. Backed by the JARVISIUS canister (873ms heartbeat, stable memory on the Internet Computer).
 
 **Spread Scanner** (EXT-022) — Scans any page for financial data. Computes pairwise spreads, phi-weighted z-scores, correlation matrices. Grades arbitrage opportunities A through F. Finds the free lunch.
 
@@ -211,7 +213,7 @@ Four new extensions that act as autonomous AI agents. They read, write, move on 
 
 ## The Numbers
 
-8 SDKs. 26 extensions. 11 protocols. 30 tools. 5 tool families. 40 model families. 10 multimodal families. 30 frontend intelligence models. 100 frontier model species. 40 architectural laws. 9 organism rings. 6 implementation languages. 4 browser observers. 1 heartbeat at 873ms.
+8 SDKs. 27 extensions. 11 protocols. 30 tools. 5 tool families. 40 model families. 10 multimodal families. 30 frontend intelligence models. 100 frontier model species. 40 architectural laws. 9 organism rings. 6 implementation languages. 4 browser observers. 1 heartbeat at 873ms. 1 JARVISIUS canister — permanent sovereign storage for Alfredo.
 
 All of it is AI. All of it is intelligence. All of it is wired together. All of it is downloadable. And all of it is inside this repo.
 

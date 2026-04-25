@@ -86,18 +86,18 @@
 
 <section class="hero">
   <h1>🧬 Sovereign Organism Extensions</h1>
-  <p>26 AI extensions for Chrome, Edge, and Brave — each powered by named engines and models. Every link is a real download. Click → get the .zip. The Register AI Web Worker upgrades to native blob builds when running on your device.</p>
+  <p>27 AI extensions for Chrome, Edge, and Brave — each powered by named engines and models. Every link is a real download. Click → get the .zip. The Register AI Web Worker upgrades to native blob builds when running on your device.</p>
 </section>
 
 <div class="status-bar" id="status-bar">
-  <div class="status-item"><span class="status-dot ready" id="worker-dot"></span> <span id="worker-status">26 extensions ready</span></div>
-  <div class="status-item">📦 <span id="built-count">26</span> / <span id="total-count">26</span> ready</div>
+  <div class="status-item"><span class="status-dot ready" id="worker-dot"></span> <span id="worker-status">27 extensions ready</span></div>
+  <div class="status-item">📦 <span id="built-count">27</span> / <span id="total-count">27</span> ready</div>
   <div class="status-item">💓 <span id="beat-counter">0</span></div>
 </div>
 
 <div class="dl-all" id="dl-all-section">
-  <a id="dl-all-btn" href="https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip" download="all-extensions.zip">📦 Download All 26 Extensions</a>
-  <div class="sub">Single zip containing all 26 extensions. Click — instant download.</div>
+  <a id="dl-all-btn" href="https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip" download="all-extensions.zip">📦 Download All 27 Extensions</a>
+  <div class="sub">Single zip containing all 27 extensions. Click — instant download.</div>
 </div>
 
 <div class="ext-grid" id="ext-grid"></div>
@@ -108,7 +108,7 @@
     <code>git clone https://github.com/FreddyCreates/potential-succotash.git<br>
 node potential-succotash/organism-cli</code>
   </div>
-  <p style="color:var(--muted);font-size:.9em;margin-top:8px">Register AI auto-detects Chrome → loads all 26 extensions directly from source. No zip needed.</p>
+  <p style="color:var(--muted);font-size:.9em;margin-top:8px">Register AI auto-detects Chrome → loads all 27 extensions directly from source. No zip needed.</p>
 </section>
 
 <footer>
@@ -121,7 +121,7 @@ node potential-succotash/organism-cli</code>
 /* ═══════════════════════════════════════════════════════════════
    Register AI — Native Download Page Controller
    
-   1. Reads all 26 extension source files via fetch()
+   1. Reads all 27 extension source files via fetch()
    2. Sends them to download-worker.js (Web Worker)
    3. Worker builds real .zip Blobs
    4. Page creates blob: URLs → click = instant real download
@@ -160,6 +160,7 @@ const EXTENSIONS = [
   { id:'EXT-024', slug:'screen-commander', name:'Screen Commander', initials:'RC', color:'#58a6ff', engines:['DOMControl','NLCommands','AutoNavigate','ScreenRead'], ring:'Interface Ring', desc:'Autonomous screen agent with NL commands' },
   { id:'EXT-025', slug:'pattern-forge', name:'Pattern Forge', initials:'PF', color:'#f778ba', engines:['SpectralDFT','CrossCorrelation','MeanReversion','AnomalyIQR'], ring:'Proof Ring', desc:'Spectral decomposition and cross-system correlation' },
   { id:'EXT-026', slug:'register', name:'Register', initials:'RG', color:'#ffb300', engines:['RegisterWorker','MutationObserver','IntersectionObserver','PerformanceObserver','ResizeObserver'], ring:'Build Ring', desc:'Builder AI — scans, validates, packages, deploys all extensions' },
+  { id:'EXT-036', slug:'jarvis', name:'Jarvis AI', initials:'JA', color:'#6c63ff', engines:['All 10 Alpha AIs','JARVISIUS Canister','SidePanel','TabControl'], ring:'Sovereign Ring', desc:'Copilot-style side panel — tab control, notes, PDFs, screen capture, chat' },
 ];
 
 /* ─── Fallback URLs: if local fetch fails, use GitHub raw ── */
@@ -167,7 +168,7 @@ const GH_RAW = 'https://raw.githubusercontent.com/FreddyCreates/potential-succot
 const GH_DL  = 'https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/';
 
 /* ─── State ────────────────────────────────────────────────── */
-let builtCount = 26; // Links work immediately via GitHub raw
+let builtCount = 27; // Links work immediately via GitHub raw
 let blobURLs = {};  // slug → blob URL (upgraded by Worker if available)
 let worker = null;
 let useWorkerBuild = true;
@@ -322,7 +323,7 @@ function handleWorkerMessage(e) {
 
 /* ─── Fallback: Worker unavailable, links already work via GitHub raw ─ */
 function fallbackToPrebuilt() {
-  document.getElementById('worker-status').textContent = '26 extensions ready — direct download';
+  document.getElementById('worker-status').textContent = '27 extensions ready — direct download';
   document.getElementById('worker-dot').className = 'status-dot ready';
   // Links are already set to GH_DL URLs in the card render — nothing else needed
 }
