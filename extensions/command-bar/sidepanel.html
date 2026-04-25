@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Command Bar — Workbook</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  :root{--bg:#1e1e2e;--surface:#181825;--surface2:#313244;--text:#cdd6f4;--subtext:#a6adc8;--muted:#6c7086;--accent:#89b4fa;--green:#a6e3a1;--red:#f38ba8;--yellow:#f9e2af;--border:#45475a;--radius:8px;}
+  html,body{height:100%;overflow:hidden;}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;display:flex;flex-direction:column;}
+  ::-webkit-scrollbar{width:6px;}
+  ::-webkit-scrollbar-track{background:var(--surface);}
+  ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+  .sections{flex:1;overflow-y:auto;padding:12px;}
+  /* Section styling */
+  .section{background:var(--surface);border-radius:var(--radius);margin-bottom:12px;overflow:hidden;}
+  .section-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;cursor:pointer;user-select:none;border-bottom:1px solid var(--surface2);}
+  .section-header:hover{background:var(--surface2);}
+  .section-header h2{font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;}
+  .section-header .chevron{transition:transform .2s;font-size:10px;color:var(--muted);}
+  .section-header .chevron.open{transform:rotate(90deg);}
+  .section-body{display:none;padding:12px 14px;}
+  .section-body.open{display:block;}
+  /* Console */
+  .cmd-row{display:flex;gap:8px;margin-bottom:10px;}
+  .cmd-input{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;color:var(--text);font-size:14px;outline:none;font-family:inherit;}
+  .cmd-input:focus{border-color:var(--accent);}
+  .cmd-input::placeholder{color:var(--muted);}
+  .btn{background:var(--accent);color:var(--bg);border:none;border-radius:var(--radius);padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;}
+  .btn:hover{opacity:.85;}
+  .btn-sm{padding:5px 10px;font-size:11px;border-radius:6px;}
+  .btn-ghost{background:none;color:var(--muted);border:1px solid var(--border);}
+  .btn-ghost:hover{color:var(--text);border-color:var(--text);}
+  .btn-danger{background:var(--red);color:var(--bg);}
+  .result-box{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;min-height:60px;max-height:260px;overflow-y:auto;white-space:pre-wrap;word-break:break-word;font-size:12px;line-height:1.6;color:var(--green);}
+  .result-box.error{color:var(--red);}
+  .result-box.empty{color:var(--muted);font-style:italic;}
+  /* History */
+  .history-list{max-height:300px;overflow-y:auto;}
+  .history-item{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--surface2);gap:8px;}
+  .history-item:last-child{border:none;}
+  .history-cmd{flex:1;cursor:pointer;color:var(--subtext);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .history-cmd:hover{color:var(--accent);}
+  .history-time{font-size:10px;color:var(--muted);flex-shrink:0;}
+  .history-star{cursor:pointer;font-size:14px;flex-shrink:0;color:var(--muted);}
+  .history-star:hover,.history-star.starred{color:var(--yellow);}
+  .history-actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;}
+  /* Saved Actions */
+  .action-item{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--surface2);}
+  .action-item:last-child{border:none;}
+  .action-name{font-weight:600;color:var(--text);cursor:pointer;flex:1;}
+  .action-name:hover{color:var(--accent);}
+  .action-cmd{font-size:11px;color:var(--muted);margin-top:2px;}
+  .action-btns{display:flex;gap:4px;flex-shrink:0;}
+  .action-add{margin-top:10px;}
+  .action-add input{width:100%;margin-bottom:6px;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-size:12px;outline:none;}
+  .action-add input:focus{border-color:var(--accent);}
+  /* Quick Ref */
+  .ref-item{padding:6px 0;border-bottom:1px solid var(--surface2);display:flex;justify-content:space-between;}
+  .ref-item:last-child{border:none;}
+  .ref-syntax{font-family:'SF Mono','Cascadia Code',Consolas,monospace;font-size:12px;color:var(--accent);}
+  .ref-desc{font-size:11px;color:var(--muted);text-align:right;max-width:50%;}
+  /* Tag */
+  .tag{display:inline-block;background:var(--surface2);color:var(--subtext);padding:2px 8px;border-radius:10px;font-size:10px;margin-right:4px;}
+</style>
+</head>
+<body>
+<div class="sections" id="app">
+
+  <!-- Section 1: Command Console -->
+  <div class="section" id="sec-console">
+    <div class="section-header" data-section="console">
+      <h2><span>⌨️</span> Command Console</h2>
+      <span class="chevron open">▶</span>
+    </div>
+    <div class="section-body open" id="body-console">
+      <div class="cmd-row">
+        <input class="cmd-input" id="cmdInput" placeholder="Type a command..." autofocus autocomplete="off" spellcheck="false"/>
+        <button class="btn" id="cmdRun">Run</button>
+      </div>
+      <div class="result-box empty" id="cmdResult">Results will appear here…</div>
+    </div>
+  </div>
+
+  <!-- Section 2: Command History -->
+  <div class="section" id="sec-history">
+    <div class="section-header" data-section="history">
+      <h2><span>🕑</span> Command History</h2>
+      <span class="chevron open">▶</span>
+    </div>
+    <div class="section-body open" id="body-history">
+      <div class="history-list" id="historyList"></div>
+      <div class="history-actions">
+        <button class="btn btn-sm btn-ghost" id="histClear">Clear</button>
+        <button class="btn btn-sm btn-ghost" id="histExport">Export JSON</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 3: Saved Actions -->
+  <div class="section" id="sec-actions">
+    <div class="section-header" data-section="actions">
+      <h2><span>⚡</span> Saved Actions</h2>
+      <span class="chevron open">▶</span>
+    </div>
+    <div class="section-body open" id="body-actions">
+      <div id="actionsList"></div>
+      <div class="action-add">
+        <input id="newActionName" placeholder="Action name"/>
+        <input id="newActionCmd" placeholder="Command to run"/>
+        <button class="btn btn-sm" id="addAction">Add Action</button>
+        <button class="btn btn-sm btn-ghost" id="importActions" style="margin-left:4px;">Import</button>
+        <button class="btn btn-sm btn-ghost" id="exportActions" style="margin-left:4px;">Export</button>
+      </div>
+      <input type="file" id="importFile" accept=".json" style="display:none"/>
+    </div>
+  </div>
+
+  <!-- Section 4: Quick Reference -->
+  <div class="section" id="sec-ref">
+    <div class="section-header" data-section="ref">
+      <h2><span>📖</span> Quick Reference</h2>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="section-body" id="body-ref">
+      <div id="refList"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+"use strict";
+
+/* ── Utilities ───────────────────────────────────────────── */
+
+function escapeHtml(str) {
+  const d = document.createElement("div");
+  d.appendChild(document.createTextNode(str));
+  return d.innerHTML;
+}
+
+function formatTime(ts) {
+  const d = new Date(ts);
+  const pad = (n) => String(n).padStart(2, "0");
+  return `${pad(d.getHours())}:${pad(d.getMinutes())} ${pad(d.getMonth()+1)}/${pad(d.getDate())}`;
+}
+
+/* ── Section collapse/expand ─────────────────────────────── */
+
+document.querySelectorAll(".section-header").forEach((hdr) => {
+  hdr.addEventListener("click", () => {
+    const body = hdr.nextElementSibling;
+    const chev = hdr.querySelector(".chevron");
+    body.classList.toggle("open");
+    chev.classList.toggle("open");
+  });
+});
+
+/* ── Command Console ─────────────────────────────────────── */
+
+const cmdInput = document.getElementById("cmdInput");
+const cmdResult = document.getElementById("cmdResult");
+const cmdRun = document.getElementById("cmdRun");
+
+async function runCommand(cmd) {
+  if (!cmd) return;
+  cmdResult.className = "result-box";
+  cmdResult.textContent = "Running…";
+  try {
+    const res = await chrome.runtime.sendMessage({ type: "execute-command", command: cmd });
+    if (res && res.ok) {
+      cmdResult.className = "result-box";
+      cmdResult.textContent = res.result;
+    } else {
+      cmdResult.className = "result-box error";
+      cmdResult.textContent = res ? res.result : "No response.";
+    }
+  } catch (e) {
+    cmdResult.className = "result-box error";
+    cmdResult.textContent = "Error: " + e.message;
+  }
+  loadHistory();
+}
+
+cmdRun.addEventListener("click", () => runCommand(cmdInput.value.trim()));
+cmdInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") { e.preventDefault(); runCommand(cmdInput.value.trim()); }
+});
+
+/* ── Command History ─────────────────────────────────────── */
+
+const historyList = document.getElementById("historyList");
+let starredCmds = new Set();
+
+async function loadStarred() {
+  const { starredCommands = [] } = await chrome.storage.local.get("starredCommands");
+  starredCmds = new Set(starredCommands);
+}
+
+async function saveStarred() {
+  await chrome.storage.local.set({ starredCommands: [...starredCmds] });
+}
+
+async function loadHistory() {
+  const history = await chrome.runtime.sendMessage({ type: "get-history" });
+  renderHistory(history || []);
+}
+
+function renderHistory(items) {
+  if (!items.length) {
+    historyList.innerHTML = '<div style="color:var(--muted);font-style:italic;padding:8px 0;">No commands yet.</div>';
+    return;
+  }
+  historyList.innerHTML = items.slice(0, 50).map((h, i) => `
+    <div class="history-item" data-idx="${i}">
+      <span class="history-star ${starredCmds.has(h.command) ? "starred" : ""}" data-cmd="${escapeHtml(h.command)}" title="Star / Unstar">★</span>
+      <span class="history-cmd" data-cmd="${escapeHtml(h.command)}" title="${escapeHtml(h.command)}">${escapeHtml(h.command)}</span>
+      <span class="history-time">${formatTime(h.timestamp)}</span>
+    </div>
+  `).join("");
+
+  historyList.querySelectorAll(".history-cmd").forEach((el) => {
+    el.addEventListener("click", () => {
+      cmdInput.value = el.dataset.cmd;
+      runCommand(el.dataset.cmd);
+    });
+  });
+
+  historyList.querySelectorAll(".history-star").forEach((el) => {
+    el.addEventListener("click", async () => {
+      const cmd = el.dataset.cmd;
+      if (starredCmds.has(cmd)) {
+        starredCmds.delete(cmd);
+        el.classList.remove("starred");
+      } else {
+        starredCmds.add(cmd);
+        el.classList.add("starred");
+        /* Auto-add to saved actions */
+        await addSavedAction(cmd, cmd);
+      }
+      await saveStarred();
+    });
+  });
+}
+
+document.getElementById("histClear").addEventListener("click", async () => {
+  await chrome.runtime.sendMessage({ type: "clear-history" });
+  loadHistory();
+});
+
+document.getElementById("histExport").addEventListener("click", async () => {
+  const history = await chrome.runtime.sendMessage({ type: "get-history" });
+  downloadJSON("command-bar-history.json", history);
+});
+
+/* ── Saved Actions ───────────────────────────────────────── */
+
+const actionsList = document.getElementById("actionsList");
+let savedActions = [];
+
+async function loadActions() {
+  savedActions = await chrome.runtime.sendMessage({ type: "get-saved-actions" });
+  renderActions();
+}
+
+function renderActions() {
+  if (!savedActions.length) {
+    actionsList.innerHTML = '<div style="color:var(--muted);font-style:italic;padding:8px 0;">No saved actions.</div>';
+    return;
+  }
+  actionsList.innerHTML = savedActions.map((a, i) => `
+    <div class="action-item" data-idx="${i}">
+      <div style="flex:1;min-width:0;">
+        <div class="action-name" data-cmd="${escapeHtml(a.command)}">${escapeHtml(a.name)}</div>
+        <div class="action-cmd">${escapeHtml(a.command)}</div>
+      </div>
+      <div class="action-btns">
+        <button class="btn btn-sm btn-ghost action-edit" data-idx="${i}" title="Edit">✎</button>
+        <button class="btn btn-sm btn-ghost btn-danger action-del" data-idx="${i}" title="Delete">✕</button>
+      </div>
+    </div>
+  `).join("");
+
+  actionsList.querySelectorAll(".action-name").forEach((el) => {
+    el.addEventListener("click", () => {
+      cmdInput.value = el.dataset.cmd;
+      runCommand(el.dataset.cmd);
+    });
+  });
+
+  actionsList.querySelectorAll(".action-edit").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const idx = parseInt(btn.dataset.idx, 10);
+      const a = savedActions[idx];
+      const newName = prompt("Action name:", a.name);
+      if (newName === null) return;
+      const newCmd = prompt("Command:", a.command);
+      if (newCmd === null) return;
+      savedActions[idx] = { name: newName || a.name, command: newCmd || a.command };
+      persistActions();
+    });
+  });
+
+  actionsList.querySelectorAll(".action-del").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const idx = parseInt(btn.dataset.idx, 10);
+      savedActions.splice(idx, 1);
+      persistActions();
+    });
+  });
+}
+
+async function persistActions() {
+  await chrome.runtime.sendMessage({ type: "save-actions", actions: savedActions });
+  renderActions();
+}
+
+async function addSavedAction(name, command) {
+  if (savedActions.some((a) => a.command === command)) return;
+  savedActions.push({ name, command });
+  await persistActions();
+}
+
+document.getElementById("addAction").addEventListener("click", () => {
+  const name = document.getElementById("newActionName").value.trim();
+  const cmd = document.getElementById("newActionCmd").value.trim();
+  if (!name || !cmd) return;
+  savedActions.push({ name, command: cmd });
+  persistActions();
+  document.getElementById("newActionName").value = "";
+  document.getElementById("newActionCmd").value = "";
+});
+
+document.getElementById("exportActions").addEventListener("click", () => {
+  downloadJSON("command-bar-actions.json", savedActions);
+});
+
+document.getElementById("importActions").addEventListener("click", () => {
+  document.getElementById("importFile").click();
+});
+
+document.getElementById("importFile").addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async () => {
+    try {
+      const data = JSON.parse(reader.result);
+      if (Array.isArray(data)) {
+        savedActions = data.filter((a) => a.name && a.command);
+        await persistActions();
+      }
+    } catch { /* ignore bad JSON */ }
+  };
+  reader.readAsText(file);
+  e.target.value = "";
+});
+
+/* ── Quick Reference ─────────────────────────────────────── */
+
+const REFERENCE = [
+  { syntax: "scroll up",             desc: "Scroll the page up" },
+  { syntax: "scroll down",           desc: "Scroll the page down" },
+  { syntax: "scroll top",            desc: "Scroll to top" },
+  { syntax: "scroll bottom",         desc: "Scroll to bottom" },
+  { syntax: 'find "text"',           desc: "Find text on page" },
+  { syntax: "click <selector>",      desc: "Click a CSS element" },
+  { syntax: "read <selector>",       desc: "Read element text" },
+  { syntax: "goto <url>",            desc: "Navigate to URL" },
+  { syntax: "summarize",             desc: "Summarize page text" },
+  { syntax: "extract links",         desc: "List all links" },
+  { syntax: "extract images",        desc: "List all images" },
+  { syntax: "extract headings",      desc: "List all headings" },
+  { syntax: "extract emails",        desc: "Find email addresses" },
+  { syntax: "extract numbers",       desc: "Find numbers on page" },
+  { syntax: "word count",            desc: "Count words & chars" },
+  { syntax: 'highlight "text"',      desc: "Highlight occurrences" },
+  { syntax: "dark mode",             desc: "Toggle dark mode" },
+  { syntax: "zoom in",               desc: "Increase zoom" },
+  { syntax: "zoom out",              desc: "Decrease zoom" },
+  { syntax: "bookmark",              desc: "Bookmark current page" },
+  { syntax: "copy title",            desc: "Copy page title" },
+  { syntax: "copy url",              desc: "Copy page URL" },
+  { syntax: "tabs",                  desc: "List open tabs" },
+  { syntax: "close tab",             desc: "Close current tab" },
+  { syntax: "history",               desc: "Show command history" }
+];
+
+document.getElementById("refList").innerHTML = REFERENCE.map((r) => `
+  <div class="ref-item">
+    <span class="ref-syntax">${escapeHtml(r.syntax)}</span>
+    <span class="ref-desc">${escapeHtml(r.desc)}</span>
+  </div>
+`).join("");
+
+/* ── Download helper ─────────────────────────────────────── */
+
+function downloadJSON(filename, data) {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ── Boot ─────────────────────────────────────────────────── */
+
+(async () => {
+  await loadStarred();
+  await loadHistory();
+  await loadActions();
+})();
+</script>
+</body>
+</html>

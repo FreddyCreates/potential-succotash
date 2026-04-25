@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Command Bar</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{width:320px;background:#1e1e2e;color:#cdd6f4;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;padding:16px;}
+  .header{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+  .header h1{font-size:15px;font-weight:700;color:#89b4fa;}
+  .cmd-row{display:flex;gap:6px;margin-bottom:12px;}
+  .cmd-input{flex:1;background:#181825;border:1px solid #45475a;border-radius:8px;padding:9px 10px;color:#cdd6f4;font-size:13px;outline:none;font-family:inherit;}
+  .cmd-input:focus{border-color:#89b4fa;}
+  .cmd-input::placeholder{color:#6c7086;}
+  .btn{background:#89b4fa;color:#1e1e2e;border:none;border-radius:8px;padding:9px 14px;font-size:12px;font-weight:600;cursor:pointer;}
+  .btn:hover{opacity:.85;}
+  .btn-ghost{background:none;color:#6c7086;border:1px solid #45475a;padding:7px 12px;}
+  .btn-ghost:hover{color:#cdd6f4;border-color:#cdd6f4;}
+  .result-box{background:#181825;border:1px solid #45475a;border-radius:8px;padding:10px;min-height:40px;max-height:160px;overflow-y:auto;white-space:pre-wrap;word-break:break-word;font-size:11px;line-height:1.5;color:#a6e3a1;margin-bottom:14px;}
+  .result-box.error{color:#f38ba8;}
+  .result-box.empty{color:#6c7086;font-style:italic;}
+  .divider{height:1px;background:#313244;margin:12px 0;}
+  .section-title{font-size:11px;color:#6c7086;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+  .recent-item{padding:5px 0;cursor:pointer;color:#a6adc8;font-size:12px;border-bottom:1px solid #313244;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .recent-item:hover{color:#89b4fa;}
+  .recent-item:last-child{border:none;}
+  .footer{margin-top:14px;display:flex;flex-direction:column;gap:8px;align-items:center;}
+  .shortcut{font-size:11px;color:#45475a;display:flex;align-items:center;gap:6px;}
+  .kbd{background:#313244;color:#a6adc8;padding:2px 6px;border-radius:4px;font-size:10px;font-family:'SF Mono',Consolas,monospace;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span style="font-size:20px;">⌘</span>
+  <h1>Command Bar</h1>
+</div>
+
+<div class="cmd-row">
+  <input class="cmd-input" id="cmdInput" placeholder="Type a command..." autofocus autocomplete="off" spellcheck="false"/>
+  <button class="btn" id="cmdRun">Run</button>
+</div>
+
+<div class="result-box empty" id="cmdResult">Results appear here…</div>
+
+<div class="divider"></div>
+<div class="section-title">Recent Commands</div>
+<div id="recentList"></div>
+
+<div class="footer">
+  <button class="btn btn-ghost" id="openWorkbook" style="width:100%;">Open Workbook ↗</button>
+  <div class="shortcut">
+    <span>Shortcut:</span>
+    <span class="kbd">Ctrl</span>+<span class="kbd">Shift</span>+<span class="kbd">K</span>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+function escapeHtml(str) {
+  const d = document.createElement("div");
+  d.appendChild(document.createTextNode(str));
+  return d.innerHTML;
+}
+
+const cmdInput = document.getElementById("cmdInput");
+const cmdResult = document.getElementById("cmdResult");
+const cmdRun = document.getElementById("cmdRun");
+const recentList = document.getElementById("recentList");
+
+async function runCommand(cmd) {
+  if (!cmd) return;
+  cmdResult.className = "result-box";
+  cmdResult.textContent = "Running…";
+  try {
+    const res = await chrome.runtime.sendMessage({ type: "execute-command", command: cmd });
+    if (res && res.ok) {
+      cmdResult.className = "result-box";
+      cmdResult.textContent = res.result;
+    } else {
+      cmdResult.className = "result-box error";
+      cmdResult.textContent = res ? res.result : "No response.";
+    }
+  } catch (e) {
+    cmdResult.className = "result-box error";
+    cmdResult.textContent = "Error: " + e.message;
+  }
+  loadRecent();
+}
+
+cmdRun.addEventListener("click", () => runCommand(cmdInput.value.trim()));
+cmdInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") { e.preventDefault(); runCommand(cmdInput.value.trim()); }
+});
+
+async function loadRecent() {
+  const history = await chrome.runtime.sendMessage({ type: "get-history" });
+  const recent = (history || []).slice(0, 5);
+  if (!recent.length) {
+    recentList.innerHTML = '<div style="color:#6c7086;font-style:italic;padding:6px 0;">No commands yet.</div>';
+    return;
+  }
+  recentList.innerHTML = recent.map((h) =>
+    `<div class="recent-item" data-cmd="${escapeHtml(h.command)}" title="${escapeHtml(h.command)}">${escapeHtml(h.command)}</div>`
+  ).join("");
+  recentList.querySelectorAll(".recent-item").forEach((el) => {
+    el.addEventListener("click", () => {
+      cmdInput.value = el.dataset.cmd;
+      runCommand(el.dataset.cmd);
+    });
+  });
+}
+
+document.getElementById("openWorkbook").addEventListener("click", () => {
+  chrome.tabs.query({ active: true, currentWindow: true }).then(([tab]) => {
+    if (tab) {
+      chrome.sidePanel.open({ tabId: tab.id }).catch(() => {
+        chrome.tabs.create({ url: chrome.runtime.getURL("sidepanel.html") });
+      });
+    }
+  });
+});
+
+loadRecent();
+</script>
+</body>
+</html>
