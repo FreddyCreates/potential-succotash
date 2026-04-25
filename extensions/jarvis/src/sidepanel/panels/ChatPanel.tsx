@@ -4,7 +4,7 @@ import { useJarvisStore } from '../../store';
 const QUICK_ACTIONS = [
   { label: 'Brief me', text: '__brief__' },
   { label: 'Status', text: 'what is your status' },
-  { label: 'Timer', text: 'set a timer for ' },
+  { label: 'Timer', text: 'set a timer for ', prefill: true },
   { label: 'Timers', text: '__listtimers__' },
   { label: 'Summarize', text: 'summarize this page' },
   { label: 'Help', text: 'what can you do' },

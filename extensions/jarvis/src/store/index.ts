@@ -49,7 +49,7 @@ export const useJarvisStore = create<JarvisState & JarvisActions>()((set) => ({
   awareness: 0,
   memTurns: 0,
   micListening: false,
-  ttsEnabled: false,
+  ttsEnabled: true,
   workspaceText: '',
   notes: [],
   docs: [],

@@ -79,7 +79,7 @@ export default function App() {
           <span className="animate-heartbeat text-cyan-400 text-lg">⚡</span>
           <div>
             <span className="font-bold text-white tracking-widest text-sm">J.A.R.V.I.S</span>
-            <span className="ml-2 text-xs text-purple-400">v4.0.0</span>
+            <span className="ml-2 text-xs text-purple-400">v4.1.0</span>
           </div>
         </div>
         <div className="flex items-center gap-2">
