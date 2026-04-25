@@ -123,6 +123,98 @@ html, body {
   border-radius: 8px; font-size: 10px;
 }
 
+/* ── Chat Panel ────────────────────────────────────────────── */
+.chat-tab-bar {
+  display: flex; background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 0 8px; gap: 2px; flex-shrink: 0;
+}
+.chat-tab {
+  padding: 6px 12px; font-size: 12px; cursor: pointer;
+  border-bottom: 2px solid transparent; color: var(--muted);
+  transition: color 0.2s, border-color 0.2s; user-select: none;
+}
+.chat-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+.chat-tab:hover:not(.active) { color: var(--text); }
+.chat-panel {
+  display: flex; flex-direction: column;
+  height: 340px; border-bottom: 1px solid var(--border); overflow: hidden;
+}
+.chat-messages {
+  flex: 1; overflow-y: auto; padding: 10px 12px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.chat-bubble {
+  max-width: 86%; padding: 7px 11px; border-radius: 12px;
+  font-size: 12px; line-height: 1.5; word-break: break-word;
+  animation: bubblePop 0.18s ease-out;
+}
+@keyframes bubblePop {
+  from { transform: scale(0.95); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+.bubble-user {
+  align-self: flex-end; background: var(--accent);
+  color: #000; border-bottom-right-radius: 4px;
+}
+.bubble-jarvis {
+  align-self: flex-start; background: var(--bg3);
+  color: var(--text); border-bottom-left-radius: 4px;
+  border: 1px solid var(--border);
+}
+.bubble-name {
+  font-size: 10px; font-weight: 700; color: var(--gold);
+  display: block; margin-bottom: 3px; letter-spacing: 0.5px;
+}
+.thinking-row {
+  display: flex; align-items: center; gap: 6px;
+  padding: 0 12px 4px; font-size: 11px; color: var(--muted);
+}
+.thinking-dots { display: flex; gap: 3px; }
+.thinking-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--gold); opacity: 0.3;
+  animation: thinkPulse 1.2s ease-in-out infinite;
+}
+.thinking-dot:nth-child(2) { animation-delay: 0.2s; }
+.thinking-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes thinkPulse {
+  0%,100% { opacity: 0.3; transform: scale(0.8); }
+  50%      { opacity: 1;   transform: scale(1.1); }
+}
+.chat-input-row {
+  display: flex; gap: 6px; padding: 7px 10px; flex-shrink: 0;
+  background: var(--bg2); border-top: 1px solid var(--border);
+  align-items: center;
+}
+.chat-input {
+  flex: 1; background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 18px; padding: 6px 12px; color: var(--text);
+  font-size: 12px; outline: none; transition: border-color 0.2s;
+  font-family: inherit; resize: none; height: 30px; max-height: 80px;
+}
+.chat-input:focus { border-color: var(--gold); }
+.chat-input::placeholder { color: var(--muted); }
+.chat-send-btn {
+  background: var(--gold); border: none; border-radius: 50%;
+  width: 28px; height: 28px; cursor: pointer; font-size: 13px;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.2s; flex-shrink: 0; color: #000;
+}
+.chat-send-btn:hover { opacity: 0.85; }
+.chat-send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.chat-toolbar {
+  display: flex; align-items: center; padding: 4px 12px; gap: 6px;
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.chat-mood { font-size: 10px; color: var(--muted); flex: 1; }
+.chat-clear {
+  font-size: 10px; padding: 2px 8px; border-radius: 8px;
+  background: transparent; border: 1px solid var(--border);
+  color: var(--muted); cursor: pointer; transition: all 0.2s;
+}
+.chat-clear:hover { border-color: var(--error); color: var(--error); }
+
 /* ── Tab Intelligence ──────────────────────────────────────── */
 .tab-info { padding: 0 14px 8px; }
 .tab-row {
@@ -182,6 +274,52 @@ html, body {
 <!-- ── Main Content (collapsible via minimize) ─────────────── -->
 <div id="mainContent">
 
+  <!-- ══════════════════════════════════════════════════════════
+       CHAT PANEL — JARVIS Human-Like Conversation
+       Powered by PhantomAI · 7 thinking patterns · Personality
+       ══════════════════════════════════════════════════════════ -->
+
+  <!-- Tab bar: Chat | Commands -->
+  <div class="chat-tab-bar">
+    <div class="chat-tab active" id="tabChat">💬 Chat</div>
+    <div class="chat-tab" id="tabCommands">⚡ Commands</div>
+  </div>
+
+  <!-- Chat Panel -->
+  <div class="chat-panel" id="chatPanel">
+    <!-- Mood / toolbar -->
+    <div class="chat-toolbar">
+      <span class="chat-mood" id="chatMood">🤖 JARVIS — Thinking engine: <strong>PhantomAI</strong></span>
+      <button class="chat-clear" id="chatClear" title="Clear conversation">Clear</button>
+    </div>
+    <!-- Messages -->
+    <div class="chat-messages" id="chatMessages">
+      <!-- Welcome bubble -->
+      <div class="chat-bubble bubble-jarvis">
+        <span class="bubble-name">JARVIS</span>
+        Hey Alfredo! I'm ready — what's on your mind? You can just talk to me naturally. ✨
+      </div>
+    </div>
+    <!-- Thinking indicator (hidden by default) -->
+    <div class="thinking-row" id="thinkingRow" style="display:none">
+      <div class="thinking-dots">
+        <div class="thinking-dot"></div>
+        <div class="thinking-dot"></div>
+        <div class="thinking-dot"></div>
+      </div>
+      <span id="thinkingLabel">JARVIS is thinking…</span>
+    </div>
+    <!-- Input row -->
+    <div class="chat-input-row">
+      <input type="text" class="chat-input" id="chatInput"
+             placeholder="Talk to JARVIS…" autocomplete="off">
+      <button class="chat-send-btn" id="chatSend" title="Send">➤</button>
+    </div>
+  </div>
+
+  <!-- Commands Panel (hidden initially) -->
+  <div id="commandsPanel" style="display:none">
+
   <!-- Command Input -->
   <div class="command-section">
     <input class="command-input" id="cmdInput" type="text"
@@ -230,6 +368,8 @@ html, body {
   <div class="collapse-body" id="settingsBody">
     <div id="settingsContainer" style="padding:0 14px 8px;"></div>
   </div>
+
+  </div><!-- /commandsPanel -->
 
 </div><!-- /mainContent -->
 
@@ -681,6 +821,159 @@ function init() {
 }
 
 init();
+
+/* ═══════════════════════════════════════════════════════════════
+   CHAT PANEL — PhantomAI Human-Like Conversation
+   ═══════════════════════════════════════════════════════════════ */
+(function initChat() {
+  var elChat        = $('chatPanel');
+  var elCmdPanel    = $('commandsPanel');
+  var elTabChat     = $('tabChat');
+  var elTabCmds     = $('tabCommands');
+  var elMessages    = $('chatMessages');
+  var elChatInput   = $('chatInput');
+  var elChatSend    = $('chatSend');
+  var elThinking    = $('thinkingRow');
+  var elThinkLabel  = $('thinkingLabel');
+  var elMood        = $('chatMood');
+  var elChatClear   = $('chatClear');
+
+  var MOOD_ICONS = {
+    neutral:    '🤖',
+    curious:    '🔍',
+    playful:    '😄',
+    focused:    '🎯',
+    empathetic: '🤝',
+    proud:      '💪'
+  };
+
+  /* ── Tab switching ──────────────────────────────────────────── */
+  function showChatTab() {
+    elChat.style.display = 'flex';
+    elCmdPanel.style.display = 'none';
+    elTabChat.classList.add('active');
+    elTabCmds.classList.remove('active');
+  }
+  function showCmdTab() {
+    elChat.style.display = 'none';
+    elCmdPanel.style.display = 'block';
+    elTabChat.classList.remove('active');
+    elTabCmds.classList.add('active');
+  }
+  elTabChat.addEventListener('click', showChatTab);
+  elTabCmds.addEventListener('click', showCmdTab);
+
+  /* ── Add message bubble ─────────────────────────────────────── */
+  function addBubble(role, text, thinking) {
+    var div = document.createElement('div');
+    div.className = 'chat-bubble ' + (role === 'user' ? 'bubble-user' : 'bubble-jarvis');
+    if (role === 'jarvis') {
+      var nameSpan = document.createElement('span');
+      nameSpan.className = 'bubble-name';
+      nameSpan.textContent = 'JARVIS';
+      div.appendChild(nameSpan);
+    }
+    var textNode = document.createTextNode(text);
+    div.appendChild(textNode);
+
+    /* Thinking log tooltip on JARVIS bubbles */
+    if (role === 'jarvis' && thinking && thinking.length) {
+      var log = document.createElement('div');
+      log.style.cssText = 'font-size:10px;color:#8b949e;margin-top:5px;border-top:1px solid #30363d;padding-top:4px;display:none';
+      log.textContent = '🧠 ' + thinking.join(' · ');
+      div.appendChild(log);
+      div.addEventListener('mouseenter', function() { log.style.display = 'block'; });
+      div.addEventListener('mouseleave', function() { log.style.display = 'none'; });
+    }
+
+    elMessages.appendChild(div);
+    elMessages.scrollTop = elMessages.scrollHeight;
+    return div;
+  }
+
+  /* ── Thinking states ────────────────────────────────────────── */
+  var thinkingPhrases = [
+    'JARVIS is thinking…',
+    'Processing…',
+    'Hmm, let me think…',
+    'One moment…',
+    'Working through that…',
+    'Reasoning…'
+  ];
+  function showThinking() {
+    elThinkLabel.textContent = thinkingPhrases[Math.floor(Math.random() * thinkingPhrases.length)];
+    elThinking.style.display = 'flex';
+    elChatSend.disabled = true;
+    elMessages.scrollTop = elMessages.scrollHeight;
+  }
+  function hideThinking() {
+    elThinking.style.display = 'none';
+    elChatSend.disabled = false;
+  }
+
+  /* ── Update mood display ────────────────────────────────────── */
+  function updateMood(mood) {
+    var icon = MOOD_ICONS[mood] || '🤖';
+    elMood.innerHTML = icon + ' JARVIS · mood: <strong>' + (mood || 'neutral') + '</strong>';
+  }
+
+  /* ── Send message ───────────────────────────────────────────── */
+  function sendMessage() {
+    var text = elChatInput.value.trim();
+    if (!text) return;
+
+    addBubble('user', text, null);
+    elChatInput.value = '';
+
+    /* Thinking delay = feels more human (600-1400ms) */
+    var delay = 600 + Math.random() * 800;
+    showThinking();
+
+    setTimeout(function() {
+      try {
+        chrome.runtime.sendMessage(
+          { action: 'chat', input: text },
+          function (res) {
+            hideThinking();
+            if (chrome.runtime.lastError) {
+              addBubble('jarvis', "Hmm — looks like my thinking engine is warming up. Try again in a second.", null);
+              return;
+            }
+            if (res && res.success && res.data) {
+              addBubble('jarvis', res.data.response, res.data.thinking);
+              updateMood(res.data.mood);
+            } else {
+              addBubble('jarvis', "Something went sideways on my end. Want to try that again?", null);
+            }
+          }
+        );
+      } catch (e) {
+        hideThinking();
+        addBubble('jarvis', "Had a hiccup — let's try again. What did you want to say?", null);
+      }
+    }, delay);
+  }
+
+  /* ── Clear conversation ─────────────────────────────────────── */
+  function clearChat() {
+    elMessages.innerHTML = '';
+    addBubble('jarvis', "Fresh start — what's on your mind?", null);
+    try {
+      chrome.runtime.sendMessage({ action: 'clearChat' }, function() {});
+    } catch (e) {}
+    updateMood('neutral');
+  }
+
+  /* ── Event listeners ────────────────────────────────────────── */
+  elChatSend.addEventListener('click', sendMessage);
+  elChatInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+  elChatClear.addEventListener('click', clearChat);
+})();
 </script>
 </body>
 </html>

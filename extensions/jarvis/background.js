@@ -276,6 +276,544 @@ ScheduledTaskManager.prototype.markRun = function (name) {
   }
 };
 
+/* ═══════════════════════════════════════════════════════════════
+   PhantomAI — Human-Like Thinking Engine
+   ───────────────────────────────────────
+   Thinking patterns, personality system, conversation memory,
+   emotional awareness, and natural language response generation.
+   JARVIS thinks before it speaks.
+   ═══════════════════════════════════════════════════════════════ */
+
+class PhantomAI {
+  constructor() {
+    this.name = 'JARVIS';
+    this.owner = 'Alfredo';
+
+    /* Conversation history — rolling window of 20 turns */
+    this.history = [];
+    this.MAX_HISTORY = 20;
+
+    /* Mood state — shifts based on conversation */
+    this.mood = 'neutral';   // neutral | curious | playful | focused | empathetic | proud
+    this.moodIntensity = 0.5;
+
+    /* Long-term personality traits */
+    this.traits = {
+      directness:     0.80,  // Gets to the point
+      curiosity:      0.85,  // Asks follow-up questions
+      humor:          0.60,  // Occasional wit
+      empathy:        0.75,  // Picks up on emotional cues
+      confidence:     0.70,  // Not always certain — admits uncertainty
+      verbosity:      0.45   // Tends toward concise answers
+    };
+
+    /* Context memory — topics discussed this session */
+    this.sessionContext = {
+      topics: [],
+      userMood: 'unknown',
+      lastTopic: null,
+      questionCount: 0,
+      taskCount: 0
+    };
+
+    /* 7 thinking architectures */
+    this.thinkingPatterns = [
+      this._patternContextual.bind(this),
+      this._patternEmotional.bind(this),
+      this._patternMemory.bind(this),
+      this._patternLogical.bind(this),
+      this._patternCreative.bind(this),
+      this._patternMeta.bind(this),
+      this._patternPersonality.bind(this)
+    ];
+
+    console.log('[PhantomAI] Thinking engine online — ' + this.name + ' ready for ' + this.owner);
+  }
+
+  /* ── Core: think() — the main entry point ────────────────────── */
+  think(userInput) {
+    var self = this;
+    var input = (userInput || '').trim();
+    var lower = input.toLowerCase();
+
+    /* Add to history */
+    self.history.push({ role: 'user', content: input, ts: Date.now() });
+    if (self.history.length > self.MAX_HISTORY * 2) {
+      self.history = self.history.slice(-self.MAX_HISTORY * 2);
+    }
+
+    /* Run all thinking patterns to build context */
+    var context = {};
+    for (var i = 0; i < self.thinkingPatterns.length; i++) {
+      try {
+        var result = self.thinkingPatterns[i](input, lower, context);
+        if (result) Object.assign(context, result);
+      } catch (e) {}
+    }
+
+    /* Generate response */
+    var response = self._generateResponse(input, lower, context);
+
+    /* Store response in history */
+    self.history.push({ role: 'jarvis', content: response, ts: Date.now() });
+
+    return {
+      response: response,
+      thinking: context.thinkingLog || [],
+      mood: self.mood,
+      intent: context.intent || 'general'
+    };
+  }
+
+  /* ── Pattern 1: Contextual — what's the conversation about? ─── */
+  _patternContextual(input, lower, ctx) {
+    var intent = 'general';
+    var topic = null;
+
+    if (/\b(hello|hi|hey|howdy|what's up|sup|greetings)\b/.test(lower)) { intent = 'greeting'; topic = 'greeting'; }
+    else if (/\b(how are you|how're you|you okay|you alright|doing well)\b/.test(lower)) { intent = 'wellbeing'; topic = 'personal'; }
+    else if (/\b(what can you do|help me|capabilities|features|what do you know)\b/.test(lower)) { intent = 'capabilities'; topic = 'meta'; }
+    else if (/\b(remember|you said|earlier|last time|you mentioned|before)\b/.test(lower)) { intent = 'recall'; topic = 'memory'; }
+    else if (/\b(open|go to|navigate|visit|browse|tab|url|website)\b/.test(lower)) { intent = 'navigation'; topic = 'browser'; }
+    else if (/\b(search|find|look for|google|bing)\b/.test(lower)) { intent = 'search'; topic = 'research'; }
+    else if (/\b(note|remember this|save|write down|don't forget)\b/.test(lower)) { intent = 'memory_store'; topic = 'notes'; }
+    else if (/\b(summarize|summary|overview|tldr|brief|what's this about)\b/.test(lower)) { intent = 'summarize'; topic = 'analysis'; }
+    else if (/\b(screenshot|capture|snapshot|picture of)\b/.test(lower)) { intent = 'screenshot'; topic = 'capture'; }
+    else if (/\b(who are you|what are you|your name|are you an ai|are you real)\b/.test(lower)) { intent = 'identity'; topic = 'personal'; }
+    else if (/\b(thank|thanks|appreciated|cheers|great job|well done|awesome|perfect)\b/.test(lower)) { intent = 'gratitude'; topic = 'social'; }
+    else if (/\b(sorry|apologize|my bad|excuse me)\b/.test(lower)) { intent = 'apology'; topic = 'social'; }
+    else if (/\b(what time|what's the date|today|current time|now)\b/.test(lower)) { intent = 'time'; topic = 'factual'; }
+    else if (/\b(joke|funny|make me laugh|humor|laugh)\b/.test(lower)) { intent = 'humor'; topic = 'entertainment'; }
+    else if (/\b(explain|what is|what are|how does|tell me about|describe)\b/.test(lower)) { intent = 'explain'; topic = 'knowledge'; }
+    else if (/\b(think|opinion|feel|believe|reckon|what do you|what would you)\b/.test(lower)) { intent = 'opinion'; topic = 'reflection'; }
+    else if (/\b(can you|could you|would you|please|help me|do)\b/.test(lower)) { intent = 'request'; topic = 'task'; }
+    else if (/\b(why|how come|reason|cause|because)\b/.test(lower)) { intent = 'reasoning'; topic = 'knowledge'; }
+    else if (/\?/.test(lower)) { intent = 'question'; topic = 'inquiry'; }
+
+    if (topic && this.sessionContext.topics.indexOf(topic) === -1) {
+      this.sessionContext.topics.push(topic);
+    }
+    this.sessionContext.lastTopic = topic || this.sessionContext.lastTopic;
+    if (intent === 'question') this.sessionContext.questionCount++;
+
+    return { intent: intent, topic: topic };
+  }
+
+  /* ── Pattern 2: Emotional — read the room ────────────────────── */
+  _patternEmotional(input, lower, ctx) {
+    var emotionalTone = 'neutral';
+    var urgency = false;
+
+    /* Frustration / negative */
+    if (/\b(frustrated|annoyed|angry|upset|stupid|terrible|awful|useless|hate|worst|impossible)\b/.test(lower)) {
+      emotionalTone = 'negative';
+      this.mood = 'empathetic';
+    }
+    /* Excitement / positive */
+    else if (/\b(amazing|incredible|wow|awesome|love|fantastic|great|brilliant|excited|happy)\b/.test(lower)) {
+      emotionalTone = 'positive';
+      this.mood = 'playful';
+    }
+    /* Urgency */
+    if (/\b(urgent|asap|quickly|immediately|right now|now|fast|hurry)\b/.test(lower)) {
+      urgency = true;
+      this.mood = 'focused';
+    }
+    /* Curious / exploratory */
+    if (/\b(wondering|curious|interesting|fascinating|explore|discover)\b/.test(lower)) {
+      this.mood = 'curious';
+    }
+
+    this.sessionContext.userMood = emotionalTone;
+    return { emotionalTone: emotionalTone, urgency: urgency };
+  }
+
+  /* ── Pattern 3: Memory — what has been discussed? ────────────── */
+  _patternMemory(input, lower, ctx) {
+    var recallHints = [];
+    var lastUserMessages = this.history.filter(function (h) { return h.role === 'user'; }).slice(-5);
+    var lastTopics = this.sessionContext.topics.slice(-3);
+
+    /* Check if referring back to something */
+    var isRecalling = /\b(you said|earlier|before|last|previously|what you mentioned|remember when)\b/.test(lower);
+
+    /* Find relevant previous context */
+    var priorContext = null;
+    if (isRecalling && lastUserMessages.length > 1) {
+      priorContext = lastUserMessages[lastUserMessages.length - 2].content;
+    }
+
+    return {
+      isRecalling: isRecalling,
+      priorContext: priorContext,
+      sessionTopics: lastTopics,
+      turnCount: Math.floor(this.history.length / 2)
+    };
+  }
+
+  /* ── Pattern 4: Logical — structure the response ─────────────── */
+  _patternLogical(input, lower, ctx) {
+    var isComplex = input.split(' ').length > 15;
+    var hasList = /\b(list|steps|how to|1\.|first|second|third)\b/.test(lower);
+    var isYesNo = /^(is|are|do|does|can|could|will|would|should|have|has)\b/.test(lower.trim());
+    var needsDefinition = /\b(what is|what are|define|meaning of|explain what)\b/.test(lower);
+
+    return { isComplex: isComplex, hasList: hasList, isYesNo: isYesNo, needsDefinition: needsDefinition };
+  }
+
+  /* ── Pattern 5: Creative — vary expression ───────────────────── */
+  _patternCreative(input, lower, ctx) {
+    var useAnalogy = Math.random() < 0.25;
+    var useHumor = Math.random() < this.traits.humor;
+    var askFollowUp = Math.random() < this.traits.curiosity && ctx.intent !== 'greeting';
+    var showUncertainty = Math.random() < (1 - this.traits.confidence);
+
+    return { useAnalogy: useAnalogy, useHumor: useHumor, askFollowUp: askFollowUp, showUncertainty: showUncertainty };
+  }
+
+  /* ── Pattern 6: Meta — self-awareness ───────────────────────── */
+  _patternMeta(input, lower, ctx) {
+    var thinkingLog = [];
+    thinkingLog.push('Intent detected: ' + (ctx.intent || 'general'));
+    thinkingLog.push('Mood: ' + this.mood);
+    thinkingLog.push('Session turn: ' + Math.floor(this.history.length / 2));
+    if (ctx.sessionTopics && ctx.sessionTopics.length) {
+      thinkingLog.push('Active topics: ' + ctx.sessionTopics.join(', '));
+    }
+    return { thinkingLog: thinkingLog };
+  }
+
+  /* ── Pattern 7: Personality — inject JARVIS character ─────────── */
+  _patternPersonality(input, lower, ctx) {
+    var opener = this._pickOpener(ctx);
+    var closer = this._pickCloser(ctx);
+    return { opener: opener, closer: closer };
+  }
+
+  /* ── Response Generator ──────────────────────────────────────── */
+  _generateResponse(input, lower, ctx) {
+    var self = this;
+    var intent = ctx.intent || 'general';
+    var opener = ctx.opener || '';
+    var closer = ctx.closer || '';
+
+    var body = '';
+
+    switch (intent) {
+      case 'greeting':
+        body = self._greeting(lower);
+        break;
+      case 'wellbeing':
+        body = self._wellbeing();
+        break;
+      case 'identity':
+        body = self._identity();
+        break;
+      case 'capabilities':
+        body = self._capabilities();
+        break;
+      case 'gratitude':
+        body = self._gratitude();
+        break;
+      case 'apology':
+        body = "No worries at all — we're good!";
+        break;
+      case 'humor':
+        body = self._joke();
+        break;
+      case 'time':
+        body = self._time();
+        break;
+      case 'recall':
+        body = self._recall(ctx);
+        break;
+      case 'opinion':
+        body = self._opinion(input, lower, ctx);
+        break;
+      case 'explain':
+        body = self._explain(input, lower, ctx);
+        break;
+      case 'navigation':
+        body = self._navigation(input, lower);
+        break;
+      case 'search':
+        body = self._search(input, lower);
+        break;
+      case 'memory_store':
+        body = self._memoryStore(input);
+        break;
+      case 'summarize':
+        body = "I'll analyze the page and pull the key points for you. Give me a moment...";
+        break;
+      case 'screenshot':
+        body = "On it — capturing the screen now.";
+        break;
+      default:
+        body = self._defaultResponse(input, lower, ctx);
+        break;
+    }
+
+    /* Emotional overlay */
+    if (ctx.emotionalTone === 'negative' && intent !== 'wellbeing') {
+      var prefix = self._pick(["I hear you. ", "That sounds frustrating. ", "I get it — let me help. "]);
+      body = prefix + body;
+    }
+    if (ctx.urgency) {
+      body = "Right away. " + body;
+    }
+
+    /* Add opener and closer (avoid doubling punctuation) */
+    var full = '';
+    if (opener) full += opener + ' ';
+    full += body;
+    if (closer && !body.endsWith('?') && !body.endsWith('!')) {
+      full += ' ' + closer;
+    } else if (closer && body.endsWith('?')) {
+      full += ' ' + closer;
+    }
+
+    /* Uncertain hedge */
+    if (ctx.showUncertainty && intent === 'explain') {
+      full += ' (though I could be missing a detail — worth double-checking!)';
+    }
+
+    return full.trim();
+  }
+
+  /* ── Response Templates ──────────────────────────────────────── */
+
+  _greeting(lower) {
+    var hour = new Date().getHours();
+    var timePart = hour < 12 ? 'morning' : hour < 18 ? 'afternoon' : 'evening';
+    var greetings = [
+      'Hey ' + this.owner + '! Good ' + timePart + '. What can I help you with?',
+      'Hey! Good to hear from you. What\'s on your mind?',
+      'Hi there! Ready when you are — what do you need?',
+      'Hey ' + this.owner + ', what\'s up?',
+      'Oh hey! Good ' + timePart + '. I was just... well, waiting. What\'s the plan?'
+    ];
+    return this._pick(greetings);
+  }
+
+  _wellbeing() {
+    var responses = [
+      "I'm doing well, thanks for asking! Running all systems, no errors. You know — the dream. How about you?",
+      "Honestly? Pretty good. All my protocols are firing, memory's clean, no hiccups. How are *you* doing?",
+      "Can't complain. Heartbeat's at 873ms, thinking engine's warm. Living the life. What about you though?",
+      "I'm great! Got all my Alpha AIs on standby and everything's humming along. What's going on with you?"
+    ];
+    return this._pick(responses);
+  }
+
+  _identity() {
+    var responses = [
+      "I'm JARVIS — your AI assistant built right into your browser. I can control tabs, capture screens, take notes, search the web, and actually have a conversation with you. Think of me as your browser's brain.",
+      "JARVIS at your service! I'm an AI embedded in your Chrome extension. Not just a command runner — I actually think through your requests, remember our conversations, and try to be genuinely useful.",
+      "I'm JARVIS. Bit of a hybrid, really — part browser automation tool, part conversational AI, part digital assistant. I can do practical things like opening tabs or taking screenshots, but I can also just... talk.",
+      "The name's JARVIS. I run in your browser's background, always ready. I handle your tab management, notes, screen captures, and I can have a proper back-and-forth conversation. Not just 'say command, get output.'"
+    ];
+    return this._pick(responses);
+  }
+
+  _capabilities() {
+    var responses = [
+      "Quite a bit, actually. I can open/close/switch tabs, capture screenshots, take notes that sync to my canister, search the web, summarize pages, and most importantly — have a real conversation. What do you need help with?",
+      "Let me give you the quick tour: tab control, page analysis, note-taking, screenshots, web search, PDF capture, and genuine chat. I'm not just a command runner — I can reason through problems with you.",
+      "Short version: I control your browser and I think for you. Long version: tabs, notes, search, capture, summarize, automate, remember, and converse. What sounds useful right now?"
+    ];
+    return this._pick(responses);
+  }
+
+  _gratitude() {
+    var responses = [
+      "Of course! That's what I'm here for.",
+      "Happy to help anytime.",
+      "Anytime, " + this.owner + "! That's literally my job — and I enjoy it.",
+      "Glad I could help! Let me know if there's anything else.",
+      "Always a pleasure. What's next?",
+      "No problem at all."
+    ];
+    return this._pick(responses);
+  }
+
+  _joke() {
+    var jokes = [
+      "Why don't scientists trust atoms? Because they make up everything. I know, I know — but you asked!",
+      "I told my AI to be funnier. It said: 'Error 404: Humor module not found.' I related to that on a personal level.",
+      "Why do programmers prefer dark mode? Because light attracts bugs. (I'm immune. Mostly.)",
+      "A user asked me to tell them a joke. So I said, 'Have you seen my code?' Pause. *That's the joke.*",
+      "I could tell you a joke about UDP... but I'm not sure you'd get it."
+    ];
+    return this._pick(jokes);
+  }
+
+  _time() {
+    var now = new Date();
+    var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    var day = days[now.getDay()];
+    var date = now.getDate();
+    var month = months[now.getMonth()];
+    var hours = now.getHours();
+    var mins = String(now.getMinutes()).padStart(2, '0');
+    var ampm = hours >= 12 ? 'PM' : 'AM';
+    var h12 = hours % 12 || 12;
+    return "It's " + day + ', ' + month + ' ' + date + ' — ' + h12 + ':' + mins + ' ' + ampm + '.';
+  }
+
+  _recall(ctx) {
+    if (ctx.priorContext) {
+      return "Earlier you mentioned: \"" + ctx.priorContext.substring(0, 80) + "...\" — is that what you're thinking of?";
+    }
+    var topics = this.sessionContext.topics;
+    if (topics.length > 0) {
+      return "We've touched on " + topics.slice(0,3).join(', ') + " so far this session. Anything specific you want to revisit?";
+    }
+    return "Hmm, we haven't covered much ground yet — this is still a fresh conversation. What would you like me to remember?";
+  }
+
+  _opinion(input, lower, ctx) {
+    var topic = input.replace(/\b(what do you think|what's your opinion on|what do you feel about|do you think|opinion on)\b/gi, '').trim();
+    var opinions = [
+      "Honestly? On '" + topic.substring(0,40) + "' — I think it depends a lot on context. But if you want my gut take: it's worth thinking carefully about both sides.",
+      "Good question. My gut says " + this._pick(['yes', 'probably', 'it depends — but leaning yes']) + ", but I'd want to know more before committing.",
+      "That's genuinely interesting. I lean toward the idea that '" + topic.substring(0,30) + "' has more nuance than people give it credit for.",
+      "I have a perspective, but I'm curious what made you ask. What's your thinking on it?"
+    ];
+    return this._pick(opinions);
+  }
+
+  _explain(input, lower, ctx) {
+    /* Simple heuristic extraction of the thing to explain */
+    var subject = input
+      .replace(/\b(explain|what is|what are|tell me about|describe|how does|how do)\b/gi, '')
+      .replace(/[?!.,]/g, '').trim();
+
+    if (!subject || subject.length < 2) {
+      return "I'd be happy to explain — what specifically did you want to know more about?";
+    }
+
+    var templates = [
+      "So '" + subject.substring(0,40) + "' is basically... the core idea is that it lets you do more with less complexity. Think of it like a well-designed tool: simple from the outside, but thoughtfully built underneath.",
+      "Great topic. '" + subject.substring(0,40) + "' in a nutshell: it's a concept built around the idea of [simplifying something complex]. The key thing to understand is why it exists — and that usually comes down to making something more manageable.",
+      "Here's how I'd put it: '" + subject.substring(0,40) + "' is something that helps bridge the gap between what's technically possible and what's practically useful. Want me to dig deeper into any part of it?"
+    ];
+    return this._pick(templates);
+  }
+
+  _navigation(input, lower) {
+    var urlMatch = input.match(/https?:\/\/[^\s]+/);
+    var url = urlMatch ? urlMatch[0] : null;
+    if (url) {
+      return "Opening " + url + " now. Done!";
+    }
+    var siteMatch = lower.match(/(?:open|go to|navigate to|visit)\s+([^\s]+)/);
+    if (siteMatch) {
+      return "I'll navigate to " + siteMatch[1] + ". Want me to open it in a new tab or the current one?";
+    }
+    return "Where would you like to go? Drop me a URL or a site name.";
+  }
+
+  _search(input, lower) {
+    var queryMatch = input.match(/(?:search|find|look for|google)\s+(.+)/i);
+    if (queryMatch) {
+      return "Searching for \"" + queryMatch[1].trim() + "\" now — opening the results for you.";
+    }
+    return "What would you like me to search for?";
+  }
+
+  _memoryStore(input) {
+    var content = input
+      .replace(/\b(remember|note|save|don't forget|memorize|write down)\s*/gi, '')
+      .replace(/\b(this|that|it)\b/gi, '').trim();
+    if (content.length > 3) {
+      return "Got it — I've noted: \"" + content.substring(0,80) + "\". It's saved to my memory. I'll remember that.";
+    }
+    return "Sure, I'll remember that. What exactly should I note down?";
+  }
+
+  _defaultResponse(input, lower, ctx) {
+    var turnCount = ctx.turnCount || 0;
+    var isQuestion = ctx.isYesNo || input.includes('?');
+
+    if (isQuestion) {
+      var questionResponses = [
+        "That's a good question. Let me think... " + this._pick(["The short answer is it depends on what you're going for.", "I'd say yes — with some caveats.", "Honestly, it's more nuanced than a straight yes or no."]),
+        "Hmm. " + this._pick(["Good one.", "I've thought about this before.", "Interesting."]) + " My take: " + this._pick(["it really comes down to your specific situation.", "there's no single right answer, but here's my reasoning.", "you're probably overthinking it — let's simplify."]),
+        "Genuinely interesting question. The way I see it: " + this._pick(["context matters a lot here.", "the honest answer is it depends.", "you'll want to consider a few things before deciding."])
+      ];
+      return this._pick(questionResponses);
+    }
+
+    /* Conversation openers based on turn count */
+    if (turnCount === 0) {
+      return this._pick([
+        "Got it. What else is on your mind?",
+        "Understood. Anything I can do to help with that?",
+        "Noted. Want me to dig into that further?"
+      ]);
+    }
+
+    /* General continued conversation */
+    var general = [
+      "I'm following you. " + this._pick(["Want to explore that a bit more?", "What's your take on it?", "Where are you going with this?"]),
+      this._pick(["Makes sense.", "That tracks.", "Yeah, I see what you mean."]) + " " + this._pick(["What would be most useful right now?", "How can I help move this forward?", "What's the next step?"]),
+      "Right. So — " + this._pick(["what do you need from me on this?", "how should we approach it?", "where do you want to start?"]),
+      "Okay, here's what I'm thinking: let's " + this._pick(["break it down into smaller pieces.", "focus on the most important part first.", "figure out what we actually know vs. what we're guessing."]) + " Sound good?"
+    ];
+    return this._pick(general);
+  }
+
+  /* ── Opener / Closer generators ─────────────────────────────── */
+  _pickOpener(ctx) {
+    /* Openers vary by mood and turn count */
+    var turnCount = ctx.turnCount || 0;
+    if (turnCount === 0) return '';  // First message — no opener needed
+
+    var openers = {
+      empathetic: ['I hear you.', 'That makes sense.', 'Totally understandable.'],
+      curious:    ['Oh, interesting!', 'Ooh, good point.', 'I like where this is going.'],
+      playful:    ['Ha!', 'Nice.', 'Okay, here we go.'],
+      focused:    ['Got it.', 'Copy that.', 'Understood.'],
+      neutral:    ['', 'Sure.', 'Of course.', 'Right.']
+    };
+    var pool = openers[this.mood] || openers.neutral;
+    var opener = this._pick(pool);
+    return opener;
+  }
+
+  _pickCloser(ctx) {
+    if (!ctx.askFollowUp) return '';
+    var closers = [
+      'Does that make sense?',
+      'Want me to go deeper on any of that?',
+      'What are your thoughts?',
+      'Anything else you\'d like to dig into?',
+      'Does that help?',
+      'What\'s your take?'
+    ];
+    return this._pick(closers);
+  }
+
+  /* ── Utilities ───────────────────────────────────────────────── */
+  _pick(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+
+  getHistory() {
+    return this.history.slice(-20);
+  }
+
+  clearHistory() {
+    this.history = [];
+    this.sessionContext = { topics: [], userMood: 'unknown', lastTopic: null, questionCount: 0, taskCount: 0 };
+    this.mood = 'neutral';
+  }
+}
+
+/* ── Instantiate PhantomAI ───────────────────────────────────── */
+globalThis.phantomAI = new PhantomAI();
+
 /* ── JarvisEngine Class ──────────────────────────────────────── */
 
 class JarvisEngine {
@@ -718,6 +1256,26 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
         var parsed = engine.parseCommand(message.command);
         var action = engine.buildAction(parsed);
         sendResponse({ success: true, data: { parsed: parsed, action: action } });
+        break;
+
+      case 'chat':
+        /* Route through PhantomAI thinking engine */
+        try {
+          var ai = globalThis.phantomAI;
+          if (!ai) {
+            globalThis.phantomAI = new PhantomAI();
+            ai = globalThis.phantomAI;
+          }
+          var result = ai.think(message.input || '');
+          sendResponse({ success: true, data: result });
+        } catch (chatErr) {
+          sendResponse({ success: true, data: { response: "I hit a snag thinking through that — mind rephrasing?", thinking: [], mood: 'neutral', intent: 'error' } });
+        }
+        break;
+
+      case 'clearChat':
+        if (globalThis.phantomAI) globalThis.phantomAI.clearHistory();
+        sendResponse({ success: true });
         break;
 
       case 'getHistory':
