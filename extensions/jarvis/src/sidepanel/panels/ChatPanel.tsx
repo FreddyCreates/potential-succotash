@@ -1,26 +1,87 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useJarvisStore } from '../../store';
 
 const QUICK_ACTIONS = [
+  { label: 'Brief me', text: '__brief__' },
   { label: 'Status', text: 'what is your status' },
   { label: 'Summarize', text: 'summarize this page' },
   { label: 'Note', text: 'take note: ' },
-  { label: 'Memory', text: 'memory temple' },
   { label: 'Help', text: 'what can you do' },
 ];
 
+/** Strip emoji and symbols so TTS sounds clean */
+function stripForTTS(text: string): string {
+  return text
+    .replace(/[^\x00-\x7F]/g, ' ')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+}
+
+/** Speak text via Web Speech API */
+function speak(text: string) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(stripForTTS(text));
+  utterance.rate = 0.92;
+  utterance.pitch = 0.78;
+  utterance.volume = 1;
+  // prefer a deep male voice if available
+  const voices = window.speechSynthesis.getVoices();
+  const preferred = voices.find(v =>
+    /google uk english male|david|mark|daniel|alex/i.test(v.name)
+  ) || voices.find(v => v.lang.startsWith('en'));
+  if (preferred) utterance.voice = preferred;
+  window.speechSynthesis.speak(utterance);
+}
+
 export default function ChatPanel() {
-  const { messages, isTyping, micListening, addMessage, setTyping, setMicListening, clearMessages } = useJarvisStore();
+  const {
+    messages, isTyping, micListening, ttsEnabled,
+    addMessage, setTyping, setMicListening, setTtsEnabled, clearMessages,
+  } = useJarvisStore();
+
   const [input, setInput] = useState('');
   const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
+  const [greeted, setGreeted] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
 
+  /** Deliver a JARVIS response from background */
+  const deliverResponse = useCallback((text: string, opts?: { skipTts?: boolean }) => {
+    addMessage({ role: 'jarvis', text, ts: Date.now() });
+    if (ttsEnabled && !opts?.skipTts) speak(text);
+  }, [addMessage, ttsEnabled]);
+
+  /** Trigger background greeting on first open */
+  useEffect(() => {
+    if (greeted) return;
+    setGreeted(true);
+    chrome.runtime.sendMessage({ action: 'brief' }, (resp) => {
+      if (chrome.runtime.lastError || !resp?.success) return;
+      const greeting = resp.message as string;
+      addMessage({ role: 'jarvis', text: greeting, ts: Date.now() });
+      // speak greeting if voices are ready — wait a tick for voice list
+      setTimeout(() => {
+        if (ttsEnabled) speak(greeting);
+      }, 800);
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const sendMessage = (text: string) => {
     if (!text.trim()) return;
+    // "Brief me" special action
+    if (text === '__brief__') {
+      chrome.runtime.sendMessage({ action: 'brief' }, (resp) => {
+        if (chrome.runtime.lastError || !resp?.success) return;
+        deliverResponse(resp.message as string);
+      });
+      return;
+    }
+
     const userMsg = { role: 'user' as const, text: text.trim(), ts: Date.now() };
     addMessage(userMsg);
     setInput('');
@@ -29,19 +90,16 @@ export default function ChatPanel() {
     chrome.runtime.sendMessage({ action: 'chat', text: text.trim() }, (resp) => {
       setTyping(false);
       if (chrome.runtime.lastError) {
-        addMessage({ role: 'jarvis', text: '[Error: ' + chrome.runtime.lastError.message + ']', ts: Date.now() });
+        deliverResponse('[Error: ' + chrome.runtime.lastError.message + ']', { skipTts: true });
         return;
       }
-      const reply = resp?.message || resp?.data?.message || 'No response.';
-      addMessage({ role: 'jarvis', text: reply, ts: Date.now() });
+      const reply: string = resp?.message || resp?.data?.message || 'No response.';
+      deliverResponse(reply);
     });
   };
 
-  const handleQuickAction = (qa: { label: string; text: string }) => {
-    if (qa.text.endsWith(': ')) {
-      setInput(qa.text);
-      return;
-    }
+  const handleQuickAction = (qa: typeof QUICK_ACTIONS[number]) => {
+    if (qa.text.endsWith(': ')) { setInput(qa.text); return; }
     sendMessage(qa.text);
   };
 
@@ -57,16 +115,19 @@ export default function ChatPanel() {
     chrome.runtime.sendMessage({ action: 'clearChat' }, () => {});
   };
 
+  const toggleTts = () => {
+    const next = !ttsEnabled;
+    setTtsEnabled(next);
+    if (!next) window.speechSynthesis?.cancel();
+  };
+
   const toggleMic = () => {
     const SpeechRec = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SpeechRec) {
-      addMessage({ role: 'jarvis', text: 'Speech recognition not available in this browser.', ts: Date.now() });
+      addMessage({ role: 'jarvis', text: 'Speech recognition not available in this browser, sir.', ts: Date.now() });
       return;
     }
-    if (micListening) {
-      setMicListening(false);
-      return;
-    }
+    if (micListening) { setMicListening(false); return; }
     const rec = new SpeechRec();
     rec.continuous = false;
     rec.interimResults = false;
@@ -98,9 +159,20 @@ export default function ChatPanel() {
           ))}
         </div>
         <button
+          onClick={toggleTts}
+          title={ttsEnabled ? 'Voice output ON — click to mute' : 'Voice output OFF — click to enable'}
+          className={`text-xs px-2 py-0.5 rounded transition-colors flex-shrink-0 ${
+            ttsEnabled
+              ? 'bg-cyan-800 text-cyan-200 border border-cyan-600'
+              : 'bg-gray-800 text-gray-500 hover:text-gray-300'
+          }`}
+        >
+          {ttsEnabled ? '🔊' : '🔇'}
+        </button>
+        <button
           onClick={handleClearChat}
           title="Clear chat"
-          className="text-xs px-2 py-0.5 bg-gray-800 hover:bg-red-900/60 rounded text-gray-500 hover:text-red-400 transition-colors ml-1 flex-shrink-0"
+          className="text-xs px-2 py-0.5 bg-gray-800 hover:bg-red-900/60 rounded text-gray-500 hover:text-red-400 transition-colors ml-0.5 flex-shrink-0"
         >
           🗑
         </button>
@@ -110,8 +182,9 @@ export default function ChatPanel() {
       <div className="flex-1 overflow-y-auto px-2 py-2 space-y-2">
         {messages.length === 0 && (
           <div className="text-center text-gray-600 text-xs mt-8 space-y-1">
-            <div>⚡ JARVIS online</div>
-            <div className="text-gray-700">Ask anything or use a quick action above</div>
+            <div className="text-cyan-600 text-lg">⚡</div>
+            <div>JARVIS standing by</div>
+            <div className="text-gray-700">Use "Brief me" for a situational report</div>
           </div>
         )}
         {messages.map((msg, i) => (
@@ -119,6 +192,15 @@ export default function ChatPanel() {
             key={i}
             className={`animate-fade-in flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
+            {msg.role === 'jarvis' && (
+              <button
+                onClick={() => speak(msg.text)}
+                title="Speak"
+                className="self-end mb-1 mr-1 text-xs text-gray-700 hover:text-cyan-400 transition-colors flex-shrink-0"
+              >
+                🔊
+              </button>
+            )}
             <div
               onClick={() => copyMessage(msg.text, i)}
               title={new Date(msg.ts).toLocaleTimeString() + ' — click to copy'}
@@ -138,10 +220,11 @@ export default function ChatPanel() {
         {isTyping && (
           <div className="flex justify-start">
             <div className="bg-gray-800/80 border border-gray-700/40 rounded-lg px-3 py-2">
-              <div className="flex gap-1">
+              <div className="flex gap-1 items-center">
                 <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
                 <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
                 <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                <span className="ml-1 text-xs text-gray-600">Processing…</span>
               </div>
             </div>
           </div>
@@ -167,7 +250,7 @@ export default function ChatPanel() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(input); } }}
-          placeholder="Talk to JARVIS…"
+          placeholder="Speak your command, sir…"
           className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-3 py-1.5 text-xs text-gray-100 placeholder-gray-600 outline-none focus:border-cyan-700 transition-colors"
         />
         <button

@@ -624,16 +624,22 @@ class JarvisEngine {
 
     // 1. Greetings
     } else if (/^(hi|hello|hey|yo|sup|what'?s up|good (morning|afternoon|evening)|howdy|hola|what up|whaddup)/i.test(text)) {
-      response = pick([moodColor + ' JARVIS v4.0 online — React+TypeScript, NeuroCore active, mood: ' + mood + ', awareness: ' + awareness + '%. What do you need?', 'Hey — heartbeat #' + heartbeat + '. All 10 Alpha Script AIs standing by. What\'s the move?', moodColor + ' I\'m here. ' + (ctx.turnCount > 0 ? 'We\'ve spoken ' + ctx.turnCount + ' times this session.' : 'First message this session — let\'s build something.') + ' What do you need?']);
+      const hour = new Date().getHours();
+      const tod = hour < 12 ? 'morning' : hour < 17 ? 'afternoon' : 'evening';
+      response = pick([
+        'Good ' + tod + ', sir. All systems operational. Heartbeat #' + heartbeat + '. How may I assist you?',
+        moodColor + ' Online and at your service, sir. Mood: ' + mood + ', awareness: ' + awareness + '%. What do you need?',
+        'JARVIS v4.0 — standing by, sir. ' + (ctx.turnCount > 0 ? ctx.turnCount + ' commands this session.' : 'First contact this session.') + ' State your orders.',
+      ]);
 
     // 2. Status
     } else if (/how are you|how('?re| are) (you|things)|you good|you ok|status|what'?s your status/i.test(text)) {
       const vitals = this.neuro.heart.getVitals();
-      response = moodColor + ' Mood: ' + mood + '. Health: ' + vitals.health + '/100. Heartbeat: #' + heartbeat + '. Awareness: ' + awareness + '%. ' + (vitals.degraded ? 'Running heavy.' : 'All systems green.') + '\n\nv4.0 stack: React 18 + TypeScript + Vite + Zustand + Dexie + jsPDF + ExcelJS + Transformers.js\nCommands this session: ' + this.commandCount;
+      response = moodColor + ' All systems operational, sir.\n\nDiagnostics:\n• Health: ' + vitals.health + '/100 — ' + (vitals.degraded ? 'elevated load, monitoring' : 'nominal') + '\n• Heartbeat: #' + heartbeat + ' · Avg latency: ' + vitals.avgLatencyMs + 'ms\n• Mood: ' + mood + ' · Awareness: ' + awareness + '%\n• Session commands: ' + this.commandCount + '\n\nv4.0 stack: React 18 · TypeScript · Vite · Zustand · Dexie · jsPDF · ExcelJS · Transformers.js';
 
     // 3. Who/What
     } else if (/who are you|what are you|what is jarvis|tell me about yourself|introduce yourself/i.test(text)) {
-      response = moodColor + ' I\'m JARVIS v4.0 — upgraded to React + TypeScript + Vite architecture.\n\nSkills: jsPDF reports, Excel generation, email drafting, Transformers.js NLP, Dexie IndexedDB memory, Web Speech API voice.\n\nNeuroCore: MiniHeart + MiniBrain + MetaCardiacModel + MetaThoughtModel.\nNo cloud. No GPT. No waiting. Mood: ' + mood + '. Focus: ' + focus + '. Awareness: ' + awareness + '%.';
+      response = 'I am JARVIS — Just A Rather Very Intelligent System, sir. Version 4.0.\n\nArchitecture: React 18 · TypeScript · Vite · NeuroCore v4.0\nCapabilities: PDF generation · Excel workbooks · Email drafting · Web Speech · Dexie memory · Transformers.js NLP\n\nNo cloud dependency. No API keys. No data leaving your machine. I run 24/7 in your browser at 873ms intervals.\n\nMood: ' + mood + '. Focus: ' + focus + '. Awareness: ' + awareness + '%. At your service, sir.';
 
     // 4. Capabilities
     } else if (/what can you do|your (features|capabilities|abilities)|help me|how can you help|what do you (do|know)/i.test(text)) {
@@ -677,7 +683,19 @@ class JarvisEngine {
     // 12. Time/Date
     } else if (/what time|what('?s| is) the (time|date|day)|current (time|date)/i.test(text)) {
       const now = new Date();
-      response = 'Right now: ' + now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + ' at ' + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) + '.';
+      response = 'The time is ' + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) + ', sir. ' + now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + '.';
+
+    // 12b. Brief / Briefing
+    } else if (/^(brief|briefing|situational|status report|what'?s (going on|happening)|morning briefing)/i.test(text)) {
+      const hour = new Date().getHours();
+      const tod = hour < 12 ? 'morning' : hour < 17 ? 'afternoon' : 'evening';
+      const now = new Date();
+      const vitals2 = this.neuro.heart.getVitals();
+      chrome.tabs.query({}, tabs2 => {
+        const brief2 = 'Good ' + tod + ', sir. Current time: ' + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) + '.\n\nSituational report:\n• System health: ' + vitals2.health + '/100 — ' + (vitals2.degraded ? 'elevated load' : 'all systems nominal') + '\n• Heartbeat: #' + heartbeat + ' · Mood: ' + mood + ' · Awareness: ' + awareness + '%\n• Open tabs: ' + tabs2.length + '\n• Memory turns: ' + this.conversationMemory.length + '/100\n• Session commands: ' + this.commandCount + '\n\nAll 10 Alpha AIs standing by. What are your orders, sir?';
+        callback({ success: true, message: brief2, agent: 'JARVIS • ORCHESTRATOR', mood, awareness });
+      });
+      return;
 
     // 13. Joke
     } else if (/joke|make me (laugh|smile)|funny|humor/i.test(text)) {
@@ -685,7 +703,11 @@ class JarvisEngine {
 
     // 14. Motivation
     } else if (/motivat|focus|i need (help|motivation|energy)|i'?m (tired|stuck|lost|overwhelmed)|can'?t do/i.test(text)) {
-      response = pick(['You built a 27-extension AI platform. You\'re not stuck — you\'re loading. Keep going.', 'JARVIS is now on React+TypeScript because you keep pushing it further. That\'s exactly the energy needed.', 'Tired means you\'re working. Keep the heartbeat running — both yours and mine.']); agent = 'JARVIS • ORCHESTRATOR';
+      response = pick([
+        'Shall I remind you what you\'ve built, sir? 27 extensions, 250 protocols, 400 tools. You\'re not stuck — you\'re loading.',
+        'I\'ve seen you push through harder problems, sir. Keep the heartbeat running — both yours and mine.',
+        'JARVIS is on React+TypeScript because you kept pushing it further. That\'s exactly the energy required right now, sir.',
+      ]); agent = 'JARVIS • ORCHESTRATOR';
 
     // 15. Heartbeat
     } else if (/heartbeat|873|phi|golden/i.test(text)) {
@@ -714,11 +736,11 @@ class JarvisEngine {
 
     // 20. Thanks
     } else if (/thank|thanks|good job|nice|great|perfect|awesome|love (it|you)|appreciate/i.test(text)) {
-      response = pick(['That\'s what I\'m here for.', 'Anytime. What else?', moodColor + ' Running at PHI efficiency. What\'s next?', 'Always. The Sovereign Organism never sleeps.']);
+      response = pick(['My pleasure, sir.', 'At your service, sir. What else do you require?', 'Of course, sir. Always.', moodColor + ' Anytime. Running at PHI efficiency. What\'s next, sir?']);
 
     // 21. Goodbye
     } else if (/bye|goodbye|see you|later|peace|close|shut down/i.test(text)) {
-      response = pick(['JARVIS standing by. The heartbeat keeps running.', 'I\'ll be here. 873ms keepalive — I don\'t go anywhere.', 'The side panel stays ready. Come back whenever.']);
+      response = pick(['Understood, sir. JARVIS standing by — the 873ms heartbeat never stops.', 'Very well, sir. I\'ll be here when you need me.', 'Acknowledged. Maintaining 24/7 keepalive. Come back whenever, sir.']);
 
     // 22. Page
     } else if (/this page|current page|what('?s| is) (on|here|this)|analyze/i.test(text)) {
@@ -830,14 +852,14 @@ class JarvisEngine {
       const topGravity = this._getRecentTopics(3);
       const recentTopics = ctx.topics.length > 0 ? ctx.topics : topGravity;
       if (kws.length === 0) {
-        response = pick([moodColor + ' I\'m here. Say anything — I\'ll respond. Mood: ' + mood + '.', 'JARVIS listening. ' + (ctx.turnCount > 0 ? 'We\'ve had ' + ctx.turnCount + ' exchanges.' : 'What\'s on your mind?'), 'Heartbeat #' + heartbeat + ' — still running. Talk to me.']);
+        response = pick(['Standing by, sir. I\'m here — say anything. Mood: ' + mood + '.', 'JARVIS online. ' + (ctx.turnCount > 0 ? 'We\'ve had ' + ctx.turnCount + ' exchanges this session.' : 'What\'s on your mind, sir?'), 'Heartbeat #' + heartbeat + ' — all systems running. Talk to me, sir.']);
       } else {
         const contextHook = recentTopics.length > 0 ? ' We\'ve been on ' + recentTopics.slice(0, 2).join(' and ') + ' — does this connect?' : '';
         const keyPhrase = kws.slice(0, 3).join(', ');
         response = pick([
-          moodColor + ' Processing: "' + raw.substring(0, 60) + (raw.length > 60 ? '...' : '') + '" — keywords: ' + keyPhrase + '.' + contextHook + '\n\nTry: "analyze [topic]", "brainstorm [idea]", "risk [thing]", "what if [scenario]", "generate pdf report", "generate excel".',
-          'PhantomAI: ' + keyPhrase + ' → running through 40 analytical patterns.' + contextHook + '\n\nv4.0 skills: PDF, Excel, Email, Voice, Workspace. Just say it.',
-          moodColor + ' Heard: "' + raw.substring(0, 80) + '". Keywords: ' + keyPhrase + '. Mood: ' + mood + '.\n\n' + (ctx.lastIntent && ctx.lastIntent !== 'chat' ? 'Last action: ' + ctx.lastIntent + '. Continue?' : 'Tell me what you\'re thinking.'),
+          moodColor + ' Understood, sir. Processing: "' + raw.substring(0, 60) + (raw.length > 60 ? '...' : '') + '" — keywords: ' + keyPhrase + '.' + contextHook + '\n\nCommands: "analyze [topic]" · "brainstorm [idea]" · "risk [thing]" · "generate pdf report" · "generate excel".',
+          'Running "' + keyPhrase + '" through 40 analytical patterns, sir.' + contextHook + '\n\nv4.0 capabilities: PDF · Excel · Email · Voice · Workspace. State the command.',
+          moodColor + ' Received, sir. "' + raw.substring(0, 80) + '". Keywords: ' + keyPhrase + '. Mood: ' + mood + '.\n\n' + (ctx.lastIntent && ctx.lastIntent !== 'chat' ? 'Last action: ' + ctx.lastIntent + '. Shall I continue?' : 'Clarify your objective and I\'ll engage the appropriate Alpha AI.'),
         ]);
       }
       agent = 'JARVIS • ORCHESTRATOR';
@@ -1040,6 +1062,24 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       break;
     }
     case 'clearChat': engine.conversationMemory = []; sendResponse({ success: true }); break;
+    case 'brief': {
+      const now = new Date();
+      const hour = now.getHours();
+      const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+      const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+      const mood = engine.neuro.getMood();
+      const awareness = engine.neuro.brain.awarenessLevel;
+      const vitals = engine.neuro.heart.getVitals();
+      const systemStatus = vitals.degraded ? 'running heavy — monitoring closely' : 'all systems green';
+      chrome.tabs.query({}, tabs => {
+        const tabCount = tabs.length;
+        const activeTab = tabs.find(t => t.active);
+        const pageTitle = activeTab?.title ? '"' + activeTab.title.substring(0, 50) + '"' : 'no active page detected';
+        const brief = `${greeting}, sir. The time is ${timeStr}.\n\nSituational report:\n• System status: ${systemStatus}\n• Heartbeat: #${engine.state.heartbeatCount} — NeuroCore online\n• Mood: ${mood} · Awareness: ${awareness}%\n• Open tabs: ${tabCount} — current page: ${pageTitle}\n• Session commands: ${engine.commandCount}\n• Memory turns: ${engine.conversationMemory.length}/100\n\nAll 10 Alpha AIs standing by. What are your orders?`;
+        sendResponse({ success: true, message: brief });
+      });
+      break;
+    }
     case 'analyzeCurrentPage': {
       chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
         if (!tabs[0]?.id) { sendResponse({ success: false, message: 'No active tab' }); return; }

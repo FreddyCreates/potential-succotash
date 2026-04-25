@@ -17,6 +17,7 @@ interface JarvisState {
   awareness: number;
   memTurns: number;
   micListening: boolean;
+  ttsEnabled: boolean;
   workspaceText: string;
   notes: any[];
   docs: any[];
@@ -29,6 +30,7 @@ interface JarvisActions {
   setActivePanel: (panel: string) => void;
   setStatus: (status: { heartbeatCount?: number; uptime?: number; commandCount?: number; mood?: string; awareness?: number; memTurns?: number }) => void;
   setMicListening: (listening: boolean) => void;
+  setTtsEnabled: (enabled: boolean) => void;
   setWorkspaceText: (text: string) => void;
   setNotes: (notes: any[]) => void;
   setDocs: (docs: any[]) => void;
@@ -47,6 +49,7 @@ export const useJarvisStore = create<JarvisState & JarvisActions>()((set) => ({
   awareness: 0,
   memTurns: 0,
   micListening: false,
+  ttsEnabled: false,
   workspaceText: '',
   notes: [],
   docs: [],
@@ -57,6 +60,7 @@ export const useJarvisStore = create<JarvisState & JarvisActions>()((set) => ({
   setActivePanel: (panel) => set({ activePanel: panel }),
   setStatus: (status) => set((state) => ({ ...state, ...status })),
   setMicListening: (listening) => set({ micListening: listening }),
+  setTtsEnabled: (enabled) => set({ ttsEnabled: enabled }),
   setWorkspaceText: (text) => set({ workspaceText: text }),
   setNotes: (notes) => set({ notes }),
   setDocs: (docs) => set({ docs }),

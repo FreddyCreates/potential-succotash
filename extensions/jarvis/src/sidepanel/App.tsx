@@ -74,13 +74,18 @@ export default function App() {
   return (
     <div className="flex flex-col h-screen bg-gray-950 text-gray-100 text-sm overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between px-3 py-2 bg-gray-900 border-b border-purple-800/40">
+      <div className="flex items-center justify-between px-3 py-2 bg-gray-900 border-b border-cyan-900/40">
         <div className="flex items-center gap-2">
           <span className="animate-heartbeat text-cyan-400 text-lg">⚡</span>
-          <span className="font-bold text-white tracking-wide">JARVIS</span>
-          <span className="text-xs text-purple-400">v4.0.0</span>
+          <div>
+            <span className="font-bold text-white tracking-widest text-sm">J.A.R.V.I.S</span>
+            <span className="ml-2 text-xs text-purple-400">v4.0.0</span>
+          </div>
         </div>
-        <span className="text-xs text-gray-500 capitalize">{mood}</span>
+        <div className="flex items-center gap-2">
+          <span className={`inline-block w-2 h-2 rounded-full ${mood === 'energized' ? 'bg-yellow-400' : mood === 'reflective' ? 'bg-purple-400' : mood === 'calm' ? 'bg-blue-400' : 'bg-cyan-400'} animate-pulse`} title={'Mood: ' + mood} />
+          <span className="text-xs text-gray-500 capitalize">{mood}</span>
+        </div>
       </div>
 
       {/* Nav tabs — scrollable */}
