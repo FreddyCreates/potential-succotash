@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Jarvis AI",
   "version": "4.0.0",
-  "description": "JARVIS v4 — React+TypeScript AI sovereign assistant. NeuroCore brain, PhantomAI cognition, jsPDF reports, Excel generation, voice input, Workspace, Dexie memory, Transformers.js NLP",
+  "description": "JARVIS v4 — React+TypeScript sovereign AI. PDF/Excel generation, voice input, Dexie memory, Transformers.js NLP, 40-category brain.",
   "permissions": [
     "activeTab",
     "storage",
