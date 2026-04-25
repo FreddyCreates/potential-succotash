@@ -371,6 +371,24 @@
   .notepad-btn{background:rgba(124,110,255,0.18);border:1px solid rgba(124,110,255,0.3);color:var(--accent);border-radius:6px;padding:4px 8px;font-size:10px;font-weight:600;cursor:pointer}
   .notepad-btn:hover{background:rgba(124,110,255,0.35)}
 
+  /* Mic button */
+  .mic-btn{background:none;border:1px solid var(--border);border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;transition:all 0.2s;flex-shrink:0;color:var(--text2)}
+  .mic-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .mic-btn.listening{border-color:#ff4060;color:#ff4060;animation:micpulse 0.8s ease-in-out infinite}
+  @keyframes micpulse{0%,100%{box-shadow:0 0 0 0 rgba(255,64,96,0.5)}50%{box-shadow:0 0 0 6px rgba(255,64,96,0)}}
+
+  /* Workspace panel */
+  .ws-toolbar{display:flex;gap:6px;padding:8px;border-bottom:1px solid var(--border);flex-wrap:wrap;align-items:center}
+  .ws-tool{background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text2);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;transition:background 0.15s}
+  .ws-tool:hover,.ws-tool.active{background:rgba(124,110,255,0.2);border-color:var(--accent);color:var(--accent)}
+  .ws-area{flex:1;display:flex;flex-direction:column;overflow:hidden}
+  .ws-canvas{flex:1;width:100%;box-sizing:border-box;background:rgba(255,255,255,0.03);border:none;border-radius:0;color:var(--text1);font-size:12px;padding:12px;resize:none;font-family:'Courier New',monospace;line-height:1.7;outline:none}
+  .ws-canvas:focus{outline:none}
+  .ws-actions{display:flex;gap:6px;padding:8px;border-top:1px solid var(--border);flex-wrap:wrap}
+  .ws-action-btn{background:rgba(124,110,255,0.15);border:1px solid rgba(124,110,255,0.3);color:var(--accent);border-radius:6px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer}
+  .ws-action-btn:hover{background:rgba(124,110,255,0.35)}
+  .ws-label{font-size:9px;color:var(--text3);font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:6px 12px 2px}
+
   /* Install panel */
   .install-step{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border)}
   .install-num{min-width:26px;height:26px;border-radius:50%;background:rgba(124,110,255,0.25);border:1px solid var(--accent);color:var(--accent);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -420,6 +438,7 @@
 <div class="nav">
   <div class="tab active" data-panel="chat"><span class="tab-icon">&#x1F4AC;</span>Chat</div>
   <div class="tab" data-panel="tools"><span class="tab-icon">&#x1F9F0;</span>Tools</div>
+  <div class="tab" data-panel="workspace"><span class="tab-icon">&#x1F5C3;&#xFE0F;</span>Workspace</div>
   <div class="tab" data-panel="search"><span class="tab-icon">&#x1F50D;</span>Search</div>
   <div class="tab" data-panel="screen"><span class="tab-icon">&#x1F5A5;&#xFE0F;</span>Screen</div>
   <div class="tab" data-panel="tabs"><span class="tab-icon">&#x1F5C2;&#xFE0F;</span>Tabs</div>
@@ -435,7 +454,7 @@
   <div class="panel active" id="panel-chat">
     <div class="chat-msgs" id="chatMsgs">
       <div class="msg bot" data-agent="JARVIS &#x2022; ORCHESTRATOR">
-        Good day. I am JARVIS v3.1 &mdash; your AI sovereign assistant. NeuroCore active, Memory Temple online (100-turn + categorized), PhantomAI research frameworks loaded. I&apos;m your research partner, theory pressure-tester, and strategic analyst. I run 24/7 in Edge, update myself when new versions drop, and archive our conversations for future context. What are we working on?
+        JARVIS v3.2 online. NeuroCore active, Memory Temple live, 40+ analytical patterns loaded, skills engaged. I run 24/7 — no modes, no clicking. Just talk. I can research, analyze, build frameworks, draft emails, generate reports, organize your workspace, and more. What are we working on?
         <span class="msg-time">just now</span>
       </div>
     </div>
@@ -455,6 +474,7 @@
     </div>
     <div class="cinput-wrap">
       <input type="text" class="cinput" id="chatInput" placeholder="Ask JARVIS anything..." autocomplete="off">
+      <button class="mic-btn" id="micBtn" title="Voice input — click to speak">&#x1F3A4;</button>
       <button class="sbtn" id="sendBtn">&#x26A1; Send</button>
     </div>
   </div>
