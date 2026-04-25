@@ -113,7 +113,7 @@ Open **[dist/download.html](dist/download.html)** in any browser. Every extensio
 
 Every link below downloads the real `.zip` file. Click → save → unzip → load into Chrome.
 
-**[Download ALL 26 Extensions (single zip)](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip)**
+**[Download ALL 30 Extensions (single zip)](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip)**
 
 | | Extension | Download |
 |---|---|---|
@@ -143,6 +143,10 @@ Every link below downloads the real `.zip` file. Click → save → unzip → lo
 | 🖥 | Screen Commander | **[screen-commander.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/screen-commander.zip)** |
 | 🔷 | Pattern Forge | **[pattern-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/pattern-forge.zip)** |
 | 🏗 | Register | **[register.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/register.zip)** |
+| 📓 | Workbook AI ⭐ | **[workbook-ai.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/workbook-ai.zip)** |
+| 📊 | Page Intelligence ⭐ | **[page-intelligence.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/page-intelligence.zip)** |
+| 🔐 | Secure Clipboard ⭐ | **[secure-clipboard.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/secure-clipboard.zip)** |
+| ⌨️ | Command Bar ⭐ | **[command-bar.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/command-bar.zip)** |
 
 ### How to install a downloaded .zip
 
@@ -166,7 +170,7 @@ Same steps for Edge (`edge://extensions`) and Brave (`brave://extensions`).
 
 The Register AI is the organism's native builder. It's the 5th tool family (Builder) alongside Crawling, Context, Commander, and Sentry. It runs as both a **terminal CLI** (`organism-cli`) and a **browser extension** (EXT-026). Steps 1–7 run automatically:
 
-1. **Scan** — discovers all 26 extensions in `extensions/`
+1. **Scan** — discovers all 30 extensions in `extensions/`
 2. **Validate** — checks every manifest for Manifest V3 compliance
 3. **Detect Browser** — finds Chrome, Edge, or Brave on any OS
 4. **Load Extensions** — launches browser with `--load-extension` (direct from source, no zip)
@@ -177,7 +181,7 @@ The Register AI is the organism's native builder. It's the 5th tool family (Buil
 ### Terminal AI (organism-cli)
 
 ```bash
-node organism-cli               # 1-click install — all 26 extensions live in Chrome
+node organism-cli               # 1-click install — all 30 extensions live in Chrome
 node organism-cli validate      # check all manifests
 node organism-cli list          # show all extensions with status
 node organism-cli status        # Register AI health report
@@ -209,9 +213,37 @@ Four new extensions that act as autonomous AI agents. They read, write, move on 
 
 ---
 
+## ⭐ Production Extensions (Download & Use Right Now)
+
+These 4 extensions are **full production-ready tools** with complete sidebar workbook UIs (sidepanel.html), popup quick-access, and real functionality. Download the zip, unzip, load into Edge (edge://extensions → Developer mode → Load unpacked).
+
+**Workbook AI** (EXT-027) — Full notes/workbook app in your Edge sidebar. Rich text editor (bold, italic, headings, code blocks, lists), categories (General/Work/Personal/Ideas/Code Snippets + custom), real-time search, auto-save every 5s, export as Markdown/TXT/JSON, import from JSON backup, keyboard shortcuts (Ctrl+N/S/F). Right-click any page → "Save to Workbook".
+
+**Page Intelligence** (EXT-028) — Analyzes the actual page DOM and gives you real data. Word count, reading time, heading structure with validation, link inventory (internal/external/broken), image audit (missing alt text), SEO analysis (title, meta, OG, Twitter Cards, canonical), accessibility checks, Performance API metrics. 7-tab dashboard in sidebar.
+
+**Secure Clipboard** (EXT-029) — Clipboard manager with encrypted vault. Auto-captures copies, auto-categorizes (URLs, code, emails, numbers), searchable history (500 items). Vault uses **real Web Crypto API**: PBKDF2 (100K iterations, SHA-256) → AES-256-GCM (random IV per item). PIN never stored. Auto-locks after 5 min.
+
+**Command Bar** (EXT-030) — Spotlight/Alfred-style command palette. Press Ctrl+Shift+K → floating command bar appears. 25 real commands: scroll, find, click, read, navigate, extract links/images/headings/emails/numbers, summarize, word count, highlight, dark mode, zoom, bookmark, copy, tabs. Full sidebar workbook with command history and saved macros.
+
+---
+
+## Private Repo — What You Can Do
+
+Yes, even with a private repo you have full capabilities:
+
+- **Download extensions directly** — Every .zip in dist/extensions/ works. Download → unzip → load into Edge/Chrome/Brave. No account needed to use them once downloaded.
+- **Clone the repo** — `git clone` to your machine gives you everything. Run `node organism-cli` to auto-install all 30 extensions.
+- **GitHub Releases** — Create tagged releases (v1.0.0) with compiled zip assets. Share release links with anyone — they can download without repo access.
+- **GitHub Pages** — With GitHub Pro/Team/Enterprise, enable Pages even on private repos to host the download page as a live website.
+- **Share compiled extensions** — Download all-extensions.zip and share via email, Drive, USB. Extensions are self-contained and don't need the repo.
+- **Windows installer** — Double-click install-organism.bat to launch your browser with all extensions pre-loaded.
+- **Copilot** — GitHub Copilot works on private repos. You can use Copilot agents to build, test, and deploy from this repo.
+
+---
+
 ## The Numbers
 
-8 SDKs. 26 extensions. 11 protocols. 30 tools. 5 tool families. 40 model families. 10 multimodal families. 30 frontend intelligence models. 100 frontier model species. 40 architectural laws. 9 organism rings. 6 implementation languages. 4 browser observers. 1 heartbeat at 873ms.
+8 SDKs. 30 extensions (4 production-ready with full sidebar workbooks). 11 protocols. 30 tools. 5 tool families. 40 model families. 10 multimodal families. 30 frontend intelligence models. 100 frontier model species. 40 architectural laws. 9 organism rings. 6 implementation languages. 4 browser observers. 1 heartbeat at 873ms.
 
 All of it is AI. All of it is intelligence. All of it is wired together. All of it is downloadable. And all of it is inside this repo.
 
