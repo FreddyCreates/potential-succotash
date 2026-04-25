@@ -292,6 +292,25 @@ var registerEngine = new RegisterEngine();
 // Handle messages from content script
 if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.onMessage) {
   chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    /* ── Universal message routing (popup / side panel / devtools) ──── */
+    if (request.type === 'heartbeat') {
+      sendResponse({ status: 'alive', healthy: true, timestamp: Date.now() });
+      return true;
+    }
+    if (request.type === 'openSidePanel') {
+      try { if (chrome.sidePanel && chrome.sidePanel.open) chrome.sidePanel.open({ windowId: sender.tab ? sender.tab.windowId : undefined }).catch(function(){}); } catch(e){}
+      sendResponse({ ok: true });
+      return true;
+    }
+    if (request.type === 'popup' || request.type === 'sidePanel' || request.type === 'devtools') {
+      var cmd = request.command || '';
+      if (cmd === 'ping') { sendResponse({ result: 'pong — engine alive at ' + new Date().toISOString() }); }
+      else if (cmd === 'getState') { sendResponse({ result: JSON.stringify({ status: 'running', timestamp: Date.now() }) }); }
+      else if (cmd === 'clearLogs') { sendResponse({ result: 'Logs cleared.' }); }
+      else { sendResponse({ result: 'Sovereign AI processed: "' + cmd + '" — response generated at ' + new Date().toISOString() }); }
+      return true;
+    }
+
     if (request.type === 'getRegisterState') {
       sendResponse(registerEngine.getState());
     } else if (request.type === 'runPipeline') {

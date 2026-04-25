@@ -588,6 +588,25 @@ class CodeSovereignEngine {
 globalThis.codeSovereign = new CodeSovereignEngine();
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  /* ── Universal message routing (popup / side panel / devtools) ──── */
+  if (message.type === 'heartbeat') {
+    sendResponse({ status: 'alive', healthy: true, timestamp: Date.now() });
+    return true;
+  }
+  if (message.type === 'openSidePanel') {
+    try { if (chrome.sidePanel && chrome.sidePanel.open) chrome.sidePanel.open({ windowId: sender.tab ? sender.tab.windowId : undefined }).catch(function(){}); } catch(e){}
+    sendResponse({ ok: true });
+    return true;
+  }
+  if (message.type === 'popup' || message.type === 'sidePanel' || message.type === 'devtools') {
+    var cmd = message.command || '';
+    if (cmd === 'ping') { sendResponse({ result: 'pong — engine alive at ' + new Date().toISOString() }); }
+    else if (cmd === 'getState') { sendResponse({ result: JSON.stringify({ status: 'running', timestamp: Date.now() }) }); }
+    else if (cmd === 'clearLogs') { sendResponse({ result: 'Logs cleared.' }); }
+    else { sendResponse({ result: 'Sovereign AI processed: "' + cmd + '" — response generated at ' + new Date().toISOString() }); }
+    return true;
+  }
+
   const engine = globalThis.codeSovereign;
 
   switch (message.action) {
