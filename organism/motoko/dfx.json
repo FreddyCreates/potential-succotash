@@ -4,6 +4,14 @@
     "organism": {
       "type": "motoko",
       "main": "src/Organism.mo"
+    },
+    "auto_generate_calls": {
+      "type": "motoko",
+      "main": "src/AutoGenerateCallsEngine.mo"
+    },
+    "jarvisius": {
+      "type": "motoko",
+      "main": "src/Jarvisius.mo"
     }
   },
   "defaults": {

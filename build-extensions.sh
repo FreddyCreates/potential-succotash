@@ -3,6 +3,7 @@
 # build-extensions.sh
 # Packages every extension under extensions/ into a downloadable
 # .zip file that can be sideloaded into Chrome / Edge / Brave.
+# Includes 5 Windows + Edge native extensions.
 #
 # Output: dist/extensions/<name>.zip  (one per extension)
 #         dist/extensions/all-extensions.zip (bundle of everything)
@@ -43,7 +44,8 @@ mkdir -p "$DIST"
 echo ""
 echo "═══════════════════════════════════════════"
 echo "  Organism Extension Builder"
-echo "  Building downloadable Chrome extensions"
+echo "  Building downloadable Edge/Chrome extensions"
+echo "  Includes Windows + Edge native extensions"
 echo "═══════════════════════════════════════════"
 echo ""
 
@@ -77,9 +79,17 @@ for ext_dir in "$EXT_SRC"/*/; do
     FILES_TO_ZIP="$FILES_TO_ZIP icons/"
   fi
 
-  # Include any popup, sidepanel, or options pages if present
-  for f in popup.html popup.js sidepanel.html options.html options.js styles.css; do
+  # Include any popup, options, side panel, or devtools pages if present
+  for f in popup.html popup.js options.html options.js styles.css sidepanel.html devtools.html devtools.js devtools-panel.html; do
     [ -f "$ext_dir/$f" ] && FILES_TO_ZIP="$FILES_TO_ZIP $f"
+  done
+
+  # Include Universal CPL WASM binary if present (Jarvis AI)
+  [ -f "$ext_dir/jarvisius-engine.wasm" ] && FILES_TO_ZIP="$FILES_TO_ZIP jarvisius-engine.wasm"
+
+  # Include workspace files if present
+  for f in "$ext_dir"/*.code-workspace; do
+    [ -f "$f" ] && FILES_TO_ZIP="$FILES_TO_ZIP $(basename "$f")"
   done
 
   if [ -z "$FILES_TO_ZIP" ]; then

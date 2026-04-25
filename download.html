@@ -86,18 +86,22 @@
 
 <section class="hero">
   <h1>🧬 Sovereign Organism Extensions</h1>
-  <p>26 AI extensions for Chrome, Edge, and Brave — each powered by named engines and models. Every link is a real download. Click → get the .zip. The Register AI Web Worker upgrades to native blob builds when running on your device.</p>
+  <p>35 AI extensions for Chrome, Edge, and Brave — each powered by named engines and models. 5 Windows + Edge native extensions and 4 Edge side panel AI extensions included. Every link is a real download. Click → get the .zip. The Register AI Web Worker upgrades to native blob builds when running on your device.</p>
+  <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+    <a href="organism/web/index.html" style="display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#6c63ff,#e94560);color:#fff;text-decoration:none;border-radius:10px;font-weight:800;font-size:1.1em;transition:transform .15s,box-shadow .15s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(108,99,255,.4)'" onmouseout="this.style.transform='';this.style.boxShadow=''">🧬 Launch Live Organism</a>
+    <a href="#ext-grid" style="display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#238636,#2ea043);color:#fff;text-decoration:none;border-radius:10px;font-weight:800;font-size:1.1em;transition:transform .15s,box-shadow .15s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(0,230,118,.4)'" onmouseout="this.style.transform='';this.style.boxShadow=''">⬇ Browse Extensions</a>
+  </div>
 </section>
 
 <div class="status-bar" id="status-bar">
-  <div class="status-item"><span class="status-dot ready" id="worker-dot"></span> <span id="worker-status">27 extensions ready</span></div>
-  <div class="status-item">📦 <span id="built-count">27</span> / <span id="total-count">27</span> ready</div>
+  <div class="status-item"><span class="status-dot ready" id="worker-dot"></span> <span id="worker-status">37 extensions ready</span></div>
+  <div class="status-item">📦 <span id="built-count">37</span> / <span id="total-count">37</span> ready</div>
   <div class="status-item">💓 <span id="beat-counter">0</span></div>
 </div>
 
 <div class="dl-all" id="dl-all-section">
-  <a id="dl-all-btn" href="https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip" download="all-extensions.zip">📦 Download All 27 Extensions</a>
-  <div class="sub">Single zip containing all 30 extensions. Click — instant download.</div>
+  <a id="dl-all-btn" href="https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip" download="all-extensions.zip">📦 Download All 37 Extensions</a>
+  <div class="sub">Single zip — 26 browser + 5 Windows + 4 Edge + Jarvis + Sovereign Alpha. Click → instant download.</div>
 </div>
 
 <div class="ext-grid" id="ext-grid"></div>
@@ -108,7 +112,7 @@
     <code>git clone https://github.com/FreddyCreates/potential-succotash.git<br>
 node potential-succotash/organism-cli</code>
   </div>
-  <p style="color:var(--muted);font-size:.9em;margin-top:8px">Register AI auto-detects Chrome → loads all 30 extensions directly from source. No zip needed.</p>
+  <p style="color:var(--muted);font-size:.9em;margin-top:8px">Register AI auto-detects Edge/Chrome → loads all 37 extensions directly from source. No zip needed. Edge-first on Windows.</p>
 </section>
 
 <footer>
@@ -121,7 +125,7 @@ node potential-succotash/organism-cli</code>
 /* ═══════════════════════════════════════════════════════════════
    Register AI — Native Download Page Controller
    
-   1. Reads all 26 extension source files via fetch()
+   1. Reads all 35 extension source files via fetch()
    2. Sends them to download-worker.js (Web Worker)
    3. Worker builds real .zip Blobs
    4. Page creates blob: URLs → click = instant real download
@@ -160,7 +164,17 @@ const EXTENSIONS = [
   { id:'EXT-024', slug:'screen-commander', name:'Screen Commander', initials:'RC', color:'#58a6ff', engines:['DOMControl','NLCommands','AutoNavigate','ScreenRead'], ring:'Interface Ring', desc:'Autonomous screen agent with NL commands' },
   { id:'EXT-025', slug:'pattern-forge', name:'Pattern Forge', initials:'PF', color:'#f778ba', engines:['SpectralDFT','CrossCorrelation','MeanReversion','AnomalyIQR'], ring:'Proof Ring', desc:'Spectral decomposition and cross-system correlation' },
   { id:'EXT-026', slug:'register', name:'Register', initials:'RG', color:'#ffb300', engines:['RegisterWorker','MutationObserver','IntersectionObserver','PerformanceObserver','ResizeObserver'], ring:'Build Ring', desc:'Builder AI — scans, validates, packages, deploys all extensions' },
-  { id:'EXT-027', slug:'sovereign-alpha', name:'Sovereign Alpha', initials:'SA', color:'#89b4fa', engines:['Workbook','PageIntelligence','SecureVault','CommandBar'], ring:'Sovereign Ring', desc:'φ-compression: Workbook AI + Page Intelligence + Secure Vault + Command Bar — one install, four modules' },
+  { id:'EXT-027', slug:'windows-copilot-hub', name:'Windows Copilot Hub', initials:'WC', color:'#0078d4', engines:['GPT','Claude','Gemini','Llama'], ring:'Interface Ring', desc:'Unified Windows Copilot Intelligence — multi-model fusion native to Edge' },
+  { id:'EXT-028', slug:'windows-file-oracle', name:'Windows File Oracle', initials:'WF', color:'#8764b8', engines:['Embeddings','Florence','CLIP'], ring:'Memory Ring', desc:'File System Intelligence — semantic indexing and visual search' },
+  { id:'EXT-029', slug:'windows-notification-cortex', name:'Windows Notification Cortex', initials:'WN', color:'#ff8c00', engines:['GPT','Claude','Inflection'], ring:'Interface Ring', desc:'Smart Notification Intelligence — empathic composing and urgency scoring' },
+  { id:'EXT-030', slug:'windows-shell-intelligence', name:'Windows Shell Intelligence', initials:'WS', color:'#107c10', engines:['Codex','CodeLlama','DeepSeek'], ring:'Build Ring', desc:'Shell & Explorer AI — context-menu intelligence for file operations' },
+  { id:'EXT-031', slug:'windows-terminal-forge', name:'Windows Terminal Forge', initials:'WT', color:'#61d6d6', engines:['Codex','DeepSeek','Phi'], ring:'Build Ring', desc:'Terminal & PowerShell AI — command generation and autocomplete' },
+  { id:'EXT-032', slug:'edge-ai-assistant', name:'Edge AI Assistant', initials:'EA', color:'#0078d4', engines:['GPT','Claude','Gemini','Phi'], ring:'Interface Ring', desc:'Edge side panel AI assistant — multi-model phi-weighted reasoning' },
+  { id:'EXT-033', slug:'edge-tab-analyzer', name:'Edge Tab Analyzer', initials:'TA', color:'#8764b8', engines:['Embeddings','Claude','Rerankers'], ring:'Memory Ring', desc:'Edge side panel tab analyzer — semantic extraction and scoring' },
+  { id:'EXT-034', slug:'edge-prompt-lab', name:'Edge Prompt Lab', initials:'PL', color:'#107c10', engines:['GPT','Claude','Llama','DeepSeek'], ring:'Build Ring', desc:'Edge side panel prompt lab — template library and model comparison' },
+  { id:'EXT-035', slug:'edge-context-engine', name:'Edge Context Engine', initials:'CE', color:'#ff8c00', engines:['Embeddings','GPT','Command R','Florence'], ring:'Memory Ring', desc:'Edge side panel context engine — session knowledge builder' },
+  { id:'EXT-036', slug:'jarvis', name:'Jarvis AI', initials:'JA', color:'#d4af37', engines:['JarvisEngine','GPT','Claude','Gemini','ModelRouter','SpatialMemoryStore'], ring:'Sovereign Ring', desc:'JARVIS autonomous AI — voice commands, screen control, task automation, memory, page analysis' },
+  { id:'EXT-037', slug:'sovereign-alpha', name:'Sovereign Alpha', initials:'SA', color:'#89b4fa', engines:['Workbook','PageIntelligence','SecureVault','CommandBar'], ring:'Sovereign Ring', desc:'φ-compression: Workbook AI + Page Intelligence + Secure Vault + Command Bar — one install, four modules' },
 ];
 
 /* ─── Fallback URLs: if local fetch fails, use GitHub raw ── */
@@ -168,7 +182,7 @@ const GH_RAW = 'https://raw.githubusercontent.com/FreddyCreates/potential-succot
 const GH_DL  = 'https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/';
 
 /* ─── State ────────────────────────────────────────────────── */
-let builtCount = 27; // Links work immediately via GitHub raw
+let builtCount = 37; // Links work immediately via GitHub raw
 let blobURLs = {};  // slug → blob URL (upgraded by Worker if available)
 let worker = null;
 let useWorkerBuild = true;
@@ -323,7 +337,7 @@ function handleWorkerMessage(e) {
 
 /* ─── Fallback: Worker unavailable, links already work via GitHub raw ─ */
 function fallbackToPrebuilt() {
-  document.getElementById('worker-status').textContent = '27 extensions ready — direct download';
+  document.getElementById('worker-status').textContent = '37 extensions ready — direct download';
   document.getElementById('worker-dot').className = 'status-dot ready';
   // Links are already set to GH_DL URLs in the card render — nothing else needed
 }

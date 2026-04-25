@@ -7,9 +7,10 @@
  *
  *   node organism-cli/index.js
  *
- * That's it. Register AI scans all 26 extensions, validates them,
- * finds your Chrome/Edge/Brave, and launches it with every extension
- * already attached. No zip. No extract. No developer mode. No manual steps.
+ * That's it. Register AI scans all 35 extensions, validates them,
+ * finds your Edge/Chrome/Brave, and launches it with every extension
+ * already attached. Edge-first on Windows. No zip. No extract.
+ * No developer mode. No manual steps.
  *
  * Commands:
  *   install   — (default) scan + validate + detect browser + launch with extensions
@@ -90,10 +91,10 @@ switch (command) {
     console.log(`    ${c.cyan}help${c.reset}      Show this help`);
     console.log('');
     console.log(`  ${c.bold}1-Click Install:${c.reset}`);
-    console.log(`    ${c.green}node organism-cli${c.reset}     ← that's it, extensions are live`);
+    console.log(`    ${c.green}node organism-cli${c.reset}     ← that's it, extensions are live (Edge-first on Windows)`);
     console.log('');
-    console.log(`  No zip. No extract. No manual steps.`);
-    console.log(`  Extensions load directly from ${c.cyan}extensions/${c.reset} into Chrome.`);
+    console.log(`  No zip. No extract. No manual steps. Edge-first on Windows.`);
+    console.log(`  Extensions load directly from ${c.cyan}extensions/${c.reset} into Edge/Chrome.`);
     console.log('');
     break;
 
