@@ -1,220 +1,303 @@
-# It's All Intelligence
+<p align="center">
+  <img src="extensions/jarvis/icons/icon128.png" width="80" alt="Organism AI" />
+</p>
 
-There is no separation between the AI and the architecture. The architecture IS the intelligence. Every SDK is a brain region. Every protocol adapts and self-heals. Every extension is an AI experience a user touches with their hands. Every tool is callable, routable, permissioned. Every model engine is wired in. The organism doesn't use AI — the organism IS AI. All of it. Top to bottom.
+<h1 align="center">Organism AI</h1>
 
-As above, so below.
+<p align="center">
+  <strong>Intelligence infrastructure that runs at the edge, in the browser, and on-chain.</strong><br />
+  Three production-ready AI systems. Open architecture. No cloud dependency.
+</p>
 
----
-
-## The Tech
-
-We fractured every external frontend technology into its primitive function — relation, visibility, flow, state, synchronization, projection, transformation, verification — and rebuilt each one as a sovereign intelligence module. Not wrappers. Not adapters. Sovereign replacements that think for themselves.
-
-The result is a living organism with a 873ms heartbeat, 4-register state architecture (Cognitive / Affective / Somatic / Sovereign), phi-encoded spatial memory, Kuramoto oscillator synchronization, and 40 foundation model engines wired through encrypted intelligence transport. It runs at the edge, in the browser, across devices, and between peer organisms via cross-organism resonance.
-
-There are no dumb pipes. No static configs. No passive layers. Everything in this stack is intelligent and everything is conscious of its own state.
-
----
-
-## How It's Built
-
-Eight sovereign SDKs form the brain. Spatial memory with phi-encoded 5-axis coordinates. Enterprise integration with 8 connectors that onboard companies in sovereign mode. Intelligence routing that scores 40 AI model families and picks the best engine for any task by capability, priority, and cost. A runtime with a heartbeat, kernel execution, and edge sensing. A document absorption engine that turns raw content into living knowledge graphs. A model engine layer that wraps GPT, Claude, Gemini, Llama, Mistral, Whisper, DALL-E, Sora, and 32 more families into callable, routable engines. A frontend intelligence layer with 30 technology models running as 24-hour autonomous organisms. And a marketplace SDK with 24 always-on callable tools organized into 4 families — Crawling, Context, Commander, Sentry — each with schema, registry, invocation, routing, and settlement.
-
-Eleven protocols carry intelligence between all of these. Sovereign routing learns optimal model selection from outcome feedback. Encrypted transport adapts encryption strength by content sensitivity. Phi-resonance sync uses Kuramoto coupling to keep distributed endpoints locked to the 873ms heartbeat. Knowledge absorption evolves its extraction patterns. Multi-model fusion weights outputs with phi-decay scoring. Contract verification learns clause patterns from verified agreements. Edge mesh redistributes workload by real-time node capacity. And the organism lifecycle protocol self-heals by restarting failed kernels and rebalancing registers autonomously.
-
-40 architectural laws govern everything. Semantic containment. Unidirectional state flow. Heartbeat sovereignty. Register integrity. Wire encryption. Kernel isolation. Anti-collapse. Continuous edge sensing. Cross-organism resonance. And the four meta-laws: fracture recognition, primitive reduction, sovereign rebuild, organism reintegration. Every wire, every tool, every extension, every protocol obeys all 40.
+<p align="center">
+  <a href="#install">⚡ Install</a> · <a href="#jarvis-ai">🤖 JARVIS</a> · <a href="#sovereign-mind">🧠 Sovereign Mind</a> · <a href="#edge-runner">⚡ Edge Runner</a> · <a href="#architecture">🏗 Architecture</a> · <a href="#research">📄 Research</a>
+</p>
 
 ---
 
-## The Extensions Are AI For User Experiences
+## What This Is
 
-This is the part that matters for people who actually use the thing.
+A full-stack intelligence platform with three deployable products, a living runtime with an 873ms heartbeat, and 27 browser extensions — all running without a server.
 
-Every extension is a Chrome Manifest V3 app with a background service worker running an AI engine and a content script rendering an interactive UI. They are not internal plumbing. They are the user's interface to the intelligence. 21 of them.
+The architecture isn't a wrapper around GPT. It's a sovereign system: 15 Web Workers forming a distributed brain, phi-encoded spatial memory, Kuramoto-coupled oscillator synchronization, 4-register state machine (Cognitive / Affective / Somatic / Sovereign), and a Motoko canister on the Internet Computer for permanent on-chain storage. Six language implementations. 250 callable protocols. 400 marketplace tools. 60 architectural laws governing every wire.
 
-**Sovereign Mind** — you ask a question, three sovereign engines (FusionCore, AlphaRouter, PhiScorer) reason from your own data, the organism fuses their outputs with phi-weighted confidence scoring, and you get one sovereign answer. That's the user experience. No GPT. No Claude. No Gemini. Your mind, your data, one panel floating on your page.
-
-**Cipher Shield** — every page you visit gets real-time content encryption and prompt injection detection. The AI is watching your browsing and protecting you before threats reach your eyes. Guards + GPT + Claude working in concert behind one quiet shield icon.
-
-**Polyglot Oracle** — browse any page in any language. The organism translates it live with context awareness across Qwen, Gemini, and Llama. Not word-by-word — the AI understands the page and rebuilds it in your language.
-
-**Vision Weaver** — describe what you want to see. DALL-E, Stable Diffusion, Midjourney, and SAM generate it side-by-side in your browser. You compare, edit, composite. The AI competes to give you the best image.
-
-**Code Sovereign** — highlight any code on any page. Codex, CodeLlama, and DeepSeek generate improvements, refactors, and verified alternatives. The output comes with contract verification. AI-generated code that proves itself correct.
-
-**Memory Palace** — sovereign bookmarking. Every page you save gets phi-encoded spatial coordinates in a 5-axis memory space. Embeddings, Command R, and rerankers make every memory searchable by meaning and resonance simultaneously.
-
-**Sentinel Watch** — real-time phishing, malware, and social engineering detection. Guards, GPT, and Claude scan every page before you interact with it. The AI is your immune system for the web.
-
-**Research Nexus** — multi-source research synthesis. Ask a question, Perplexity searches, Claude reasons, embeddings find context, and you get a cited, sourced, reasoned answer. Not a search result — a research paper.
-
-**Voice Forge** — speak and the organism listens (Whisper). Ask it to speak and it generates voice (ElevenLabs). Ask it to make music and it composes (Suno). Audio intelligence in your browser — input, output, and creation.
-
-**Data Alchemist** — any webpage, auto-absorbed into your sovereign knowledge graph. GPT and Claude extract entities and relationships. Embeddings and rerankers index it. The page becomes living knowledge you own.
-
-**Video Architect** — describe a scene. Sora, Runway, Pika, and Kling generate video. Multiple models, one prompt, the best output wins. Text-to-video generation right in your browser.
-
-**Logic Prover** — paste a math problem. Minerva, Llemma, GPT, and AlphaCode generate step-by-step formal proofs with verification. The AI doesn't just solve — it proves.
-
-**Social Cortex** — AI-powered social intelligence. Grok reads the room. Inflection feels the tone. GPT drafts the response. Sentiment analysis, empathy detection, and response generation for any social context.
-
-**Edge Runner** — offline AI. Phi, Gemma, and DBRX run inference locally on your device. Zero cloud. Zero latency. Full privacy. The organism works without the internet.
-
-**Contract Forge** — draft and verify intelligence contracts. GPT writes. Claude reviews. Guards validate. Legal-grade AI contract authoring with cryptographic proof of compliance.
-
-**Organism Dashboard** — see the organism alive. The 873ms heartbeat pulsing. The 4 state registers updating. Vitality scores. Edge sensor readings. The organism's vital signs rendered in real-time on your screen.
-
-**Knowledge Cartographer** — browse the web and watch your knowledge graph grow. Embeddings capture meaning. Command R links entities. Florence understands images. Every page you visit adds nodes and edges to a visual graph that maps everything you know.
-
-**Protocol Bridge** — bridge between AI protocols. Encrypted relay between different intelligence systems. All 40 foundation models available through one unified protocol surface.
-
-**Creative Muse** — multi-modal creative generation. Stable Diffusion for images. DALL-E for compositions. MusicGen for audio. Suno for songs. One creative studio, multiple AI engines, fused output.
-
-**Sovereign Nexus** — the master hub. All 20 extensions unified into one sovereign intelligence interface. Every model, every wire, every tool, one panel. The organism's control center.
-
-**Marketplace Hub** — browse, search, and invoke 24 callable tools with natural language. Family-tabbed browsing across Crawling, Context, Commander, and Sentry. One-click invocation. Live results. The tool marketplace made visual.
+Everything is downloadable. Everything runs locally. Everything is open.
 
 ---
 
-## The Marketplace Is Not A Storefront
+## The Three Products
 
-AIs don't "just know" what tools exist. That's the biggest misconception. They need four things to use a tool reliably: a clear callable interface, a registry to discover it in, routing policy that sends them there, and a structured result schema they can parse. Without those four, the AI guesses. With them, the AI executes.
+<a id="jarvis-ai"></a>
+### 🤖 JARVIS AI — Your Sovereign AI Assistant
 
-The marketplace provides all four. `ToolSchemaBuilder` defines the interface. `ToolRegistry` makes it discoverable. `MarketplaceRouter` handles the routing with phi-scored intent matching. `ToolInvoker` enforces permissions and returns structured results. And `MarketplaceSettlement` tracks usage, billing, and rewards.
+**What it does.** JARVIS is a Chrome side panel that acts as a personal AI command center. You type natural language — "open google.com", "take a note: call the team at 3pm", "summarize this page", "screenshot" — and it executes instantly. No API keys. No cloud calls. Runs entirely in your browser.
 
-24 tools run always-on across 4 families. Context tools know what the organism is (heartbeat, state, cycles, context, memory, lineage). Commander tools direct what the organism does (sync, inference routing, attention, resources, connections, task orchestration). Crawling tools see the organism's own structure (flow, patterns, anomalies, cache, logs, topology). Sentry tools protect the organism from itself and others (security, integrity, boundaries, seals, queues, doctrine auditing).
+**What's inside.**
 
-Exposure starts internal, then partner, then enterprise, then public. You don't open a marketplace to the world before your own organisms use it fluently.
+| Capability | How it works |
+|---|---|
+| **18 natural-language intents** | Tab management, URL navigation, note-taking, PDF creation, page summarization, text search, screenshot capture, document creation, and conversational chat |
+| **10 Alpha Script AIs** | PROTOCOLLUM (governance), TERMINALIS (CLI), ORGANISMUS (lifecycle), MERCATOR (marketplace), ORCHESTRATOR (coordination), MATHEMATICUS (proofs), SYNAPTICUS (neural paths), SUBSTRATUM (infrastructure), UNIVERSUM (knowledge graph), CANISTRUM (Web3) |
+| **Copilot-style side panel** | 6-tab command center — Chat, Tabs, Notes, Docs, Page Info, Command Log — with auto-refresh, status bar, and quick-action buttons |
+| **Floating arc-reactor FAB** | Appears on every page. Click to open the panel. Pulsing indicator shows JARVIS is alive. |
+| **On-chain persistence** | Every note, command, and document is stored permanently on the Internet Computer via the JARVISIUS canister (Motoko, stable memory, 873ms heartbeat) |
+| **Keyboard shortcuts** | Double-press `J` on any page to save selected text as a note |
 
----
+**Who it's for.** Product teams who need a command layer on top of their browser. Analysts who want to capture and organize web research without switching tools. Developers who want an AI assistant that doesn't phone home.
 
-## The Organism Runs In 6 Languages
-
-The organism isn't conceptual. It's compiled. It's running. The 873ms heartbeat beats in Motoko on the Internet Computer, in C++17 threads, in TypeScript strict mode, in Java 17 executors, in browser Web Workers, and in Python threading. Same organism. Same 4-register architecture. Same phi-math. Six languages. All alive.
-
-- **Motoko** (`organism/motoko/`) — ICP canister with `Timer.recurringTimer`, stable state, system heartbeat
-- **C++** (`organism/cpp/`) — `std::thread` heartbeat, mutex-protected registers, CMake build
-- **TypeScript** (`organism/typescript/`) — Strict-typed runtime, heartbeat, state, kernels, sensors, resonance
-- **Java** (`organism/java/`) — `ScheduledExecutorService` heartbeat, `CompletableFuture` kernels, Maven build
-- **HTML + Web Workers** (`organism/web/`) — Open `index.html` in any browser. The organism is alive. No server needed.
-- **Python** (`organism/python/`) — `python -m organism` — stdlib-only, threading, graceful SIGINT shutdown
-
----
-
-## Download & Install Extensions
-
-No terminal. No commands. No GitHub account. Download a zip, unzip it, load it into Chrome. That's it.
-
-### Download Page (works offline)
-
-Open **[dist/download.html](dist/download.html)** in any browser. Every extension has a download link pointing to the zip file right next to that page. Works from a USB drive, a download folder, a local server, a `file://` URL — no internet needed.
-
-### Direct Downloads
-
-Every link below downloads the real `.zip` file. Click → save → unzip → load into Chrome.
-
-**[Download ALL 26 Extensions (single zip)](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip)**
-
-| | Extension | Download |
-|---|---|---|
-| 🧠 | Sovereign Mind | **[sovereign-mind.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-mind.zip)** |
-| 🛡 | Cipher Shield | **[cipher-shield.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/cipher-shield.zip)** |
-| 🌐 | Polyglot Oracle | **[polyglot-oracle.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/polyglot-oracle.zip)** |
-| 🎨 | Vision Weaver | **[vision-weaver.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/vision-weaver.zip)** |
-| 💻 | Code Sovereign | **[code-sovereign.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/code-sovereign.zip)** |
-| 📚 | Memory Palace | **[memory-palace.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/memory-palace.zip)** |
-| 🔒 | Sentinel Watch | **[sentinel-watch.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sentinel-watch.zip)** |
-| 🔬 | Research Nexus | **[research-nexus.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/research-nexus.zip)** |
-| 🎤 | Voice Forge | **[voice-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/voice-forge.zip)** |
-| ⚗️ | Data Alchemist | **[data-alchemist.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/data-alchemist.zip)** |
-| 🎬 | Video Architect | **[video-architect.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/video-architect.zip)** |
-| 📐 | Logic Prover | **[logic-prover.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/logic-prover.zip)** |
-| 💬 | Social Cortex | **[social-cortex.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/social-cortex.zip)** |
-| ⚡ | Edge Runner | **[edge-runner.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-runner.zip)** |
-| 📝 | Contract Forge | **[contract-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/contract-forge.zip)** |
-| 📊 | Organism Dashboard | **[organism-dashboard.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/organism-dashboard.zip)** |
-| 🗺 | Knowledge Cartographer | **[knowledge-cartographer.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/knowledge-cartographer.zip)** |
-| 🔗 | Protocol Bridge | **[protocol-bridge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/protocol-bridge.zip)** |
-| 🎭 | Creative Muse | **[creative-muse.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/creative-muse.zip)** |
-| 🌀 | Sovereign Nexus | **[sovereign-nexus.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-nexus.zip)** |
-| 🏪 | Marketplace Hub | **[marketplace-hub.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/marketplace-hub.zip)** |
-| 📈 | Spread Scanner | **[spread-scanner.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/spread-scanner.zip)** |
-| 🔮 | Data Oracle | **[data-oracle.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/data-oracle.zip)** |
-| 🖥 | Screen Commander | **[screen-commander.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/screen-commander.zip)** |
-| 🔷 | Pattern Forge | **[pattern-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/pattern-forge.zip)** |
-| 🏗 | Register | **[register.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/register.zip)** |
-
-### How to install a downloaded .zip
-
-1. Download any `.zip` from above (or the all-in-one bundle)
-2. **Unzip it** (right-click → Extract All)
-3. Open Chrome and go to `chrome://extensions`
-4. Turn on **Developer mode** (toggle in the top-right corner)
-5. Click **Load unpacked** → pick the unzipped folder
-6. Done — the extension is live and running
-
-Same steps for Edge (`edge://extensions`) and Brave (`brave://extensions`).
-
-### Windows — double-click install
-
-- **install-organism.bat** — double-click it, extensions install and Chrome opens with everything attached
-- **install-extensions.ps1** — right-click → Run with PowerShell (same thing)
-
----
-
-## Register AI — The Builder (EXT-026)
-
-The Register AI is the organism's native builder. It's the 5th tool family (Builder) alongside Crawling, Context, Commander, and Sentry. It runs as both a **terminal CLI** (`organism-cli`) and a **browser extension** (EXT-026). Steps 1–7 run automatically:
-
-1. **Scan** — discovers all 26 extensions in `extensions/`
-2. **Validate** — checks every manifest for Manifest V3 compliance
-3. **Detect Browser** — finds Chrome, Edge, or Brave on any OS
-4. **Load Extensions** — launches browser with `--load-extension` (direct from source, no zip)
-5. **Verify** — confirms all extensions loaded
-6. **Report** — shows status + health in the terminal
-7. **Monitor** — 873ms heartbeat health monitoring
-
-### Terminal AI (organism-cli)
-
+**Install JARVIS right now:**
 ```bash
-node organism-cli               # 1-click install — all 26 extensions live in Chrome
-node organism-cli validate      # check all manifests
-node organism-cli list          # show all extensions with status
-node organism-cli status        # Register AI health report
+# Download and unzip
+curl -L https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/jarvis.zip -o jarvis.zip
+unzip jarvis.zip -d jarvis-extension
+# Then: chrome://extensions → Developer mode → Load unpacked → select jarvis-extension/
 ```
 
-### Browser Architecture
-- **Web Worker** (`register-worker.js`) — all build operations run off-main-thread
-- **Observer Family** (`register-observer.js`) — 4 browser Observers as AGI sensors:
-  - `MutationObserver` — watches DOM for extension state changes
-  - `IntersectionObserver` — tracks which extensions are visible
-  - `PerformanceObserver` — monitors build performance
-  - `ResizeObserver` — adapts layout intelligence
-
-Builder Family Tools: Register (TOOL-025), Packager (TOOL-026), Validator (TOOL-027), Icon Forge (TOOL-028), Deployer (TOOL-029), Monitor (TOOL-030).
+Or **[download jarvis.zip directly](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/jarvis.zip)**.
 
 ---
 
-## JARVIS Intelligence Suite (5 Autonomous Agents)
+<a id="sovereign-mind"></a>
+### 🧠 Sovereign Mind — AI Reasoning From Your Own Data
 
-Five extensions that act as autonomous AI agents. They read, write, move on screen, and see through data noise to find what's real. Pre-loaded with X-ray mathematics — square-root normalization, spectral decomposition, cross-system correlation, z-depth analysis. Pattern recognition for spreads where there is free lunch.
+**What it does.** Three sovereign engines — FusionCore, AlphaRouter, and PhiScorer — reason over your data and produce a single fused answer with phi-weighted confidence scoring. No GPT. No Claude. No Gemini. Your data, your reasoning, your answer. One panel floating on your page.
 
-**Jarvis AI** (EXT-036) — The sovereign command center. Copilot-style side panel that slides out on click — tab switching, URL opening, PDF creation, note-taking, screen capture, page summarization, text search and highlight. Chat interface routes through all 10 Alpha Script AIs. Floating arc-reactor FAB on every page. Notes stored forever, attributed to Alfredo. Backed by the JARVISIUS canister (873ms heartbeat, stable memory on the Internet Computer).
+**How it works.**
+1. You ask a question on any webpage
+2. FusionCore extracts relevant context from the page and your stored knowledge
+3. AlphaRouter evaluates multiple reasoning paths and selects the optimal chain
+4. PhiScorer weights each output using the golden ratio (φ = 1.618...) as a confidence threshold
+5. You get one sovereign answer — scored, sourced, and explainable
 
-**Spread Scanner** (EXT-022) — Scans any page for financial data. Computes pairwise spreads, phi-weighted z-scores, correlation matrices. Grades arbitrage opportunities A through F. Finds the free lunch.
+**Who it's for.** Organizations that can't send data to third-party AI providers. Security teams. Legal teams. Research labs. Anyone who needs AI reasoning without data leaving the device.
 
-**Data Oracle** (EXT-023) — Ingests everything — text, tables, meta tags, structured data. Runs X-ray depth analysis with √N normalization. Separates fundamental signals from noise using φ as the threshold.
+**Install:**
+```bash
+curl -L https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-mind.zip -o sovereign-mind.zip
+unzip sovereign-mind.zip -d sovereign-mind-ext
+```
 
-**Screen Commander** (EXT-024) — JARVIS for your browser. Type natural language: "scroll down", "read #main", "find 'revenue'", "summarize this page". The AI operates the screen for you.
+Or **[download sovereign-mind.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-mind.zip)**.
 
-**Pattern Forge** (EXT-025) — The math brain underneath. DFT spectral decomposition with φ-harmonic detection. Pearson cross-correlation with free-lunch divergence detection (correlation drift → mean reversion). Rolling mean reversion scanner. IQR×φ anomaly detection. Sees through noise to fundamentals.
+---
+
+<a id="edge-runner"></a>
+### ⚡ Edge Runner — Offline AI, Zero Cloud
+
+**What it does.** Full AI inference on your device. Phi, Gemma, and DBRX models run locally in-browser. No internet connection needed. No data transmitted. No latency. The organism works in airplane mode.
+
+**How it works.**
+- Local model inference via optimized browser runtimes
+- WebGPU acceleration when available, CPU fallback always works
+- Plugs into the Organism's 15-worker brain — gets memory, routing, telemetry, and scheduling for free
+- Edge sensing adapts model selection to device capability in real time
+
+**Who it's for.** Field teams with intermittent connectivity. Classified environments. Privacy-first applications. Anyone who needs AI where the internet doesn't reach.
+
+**Install:**
+```bash
+curl -L https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-runner.zip -o edge-runner.zip
+unzip edge-runner.zip -d edge-runner-ext
+```
+
+Or **[download edge-runner.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-runner.zip)**.
+
+---
+
+<a id="install"></a>
+## Install Everything — One Command
+
+### macOS / Linux
+
+```bash
+git clone https://github.com/FreddyCreates/potential-succotash.git
+cd potential-succotash
+bash install-organism.sh
+```
+
+That's it. Chrome opens with all 27 AI extensions loaded and running. No build step. No npm install. No Docker.
+
+### Windows — Double-Click
+
+**[Download install-organism.bat](https://github.com/FreddyCreates/potential-succotash/raw/main/install-organism.bat)** → double-click it. Extensions extract and Chrome launches with everything attached.
+
+Or use PowerShell:
+```powershell
+# Download and run
+Invoke-WebRequest -Uri "https://github.com/FreddyCreates/potential-succotash/raw/main/install-organism.bat" -OutFile install-organism.bat
+.\install-organism.bat
+```
+
+### Terminal CLI
+
+```bash
+node organism-cli               # 1-click install — all extensions live in Chrome
+node organism-cli validate      # check all manifests
+node organism-cli list          # show all extensions with status
+node organism-cli status        # health report
+```
+
+### Manual — Any Single Extension
+
+1. Download any `.zip` from [dist/extensions/](https://github.com/FreddyCreates/potential-succotash/tree/main/dist/extensions)
+2. Unzip it
+3. Open `chrome://extensions` → enable **Developer mode**
+4. Click **Load unpacked** → select the unzipped folder
+5. Done — works on Chrome, Edge, and Brave
+
+**[Download ALL 27 Extensions (single zip)](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip)**
+
+---
+
+<a id="architecture"></a>
+## Architecture
+
+### The Brain — 15 Web Workers
+
+The organism boots 15 dedicated Web Workers through `organism-bridge.js`. Each worker is a specialized brain region:
+
+| Division | Workers | Function |
+|---|---|---|
+| **Core** | Engine, Memory, Routing | Heartbeat, phi-encoded spatial memory, intelligent model routing |
+| **Perception** | Telemetry, Analytics, Guardian | Real-time sensing, behavioral analytics, threat detection |
+| **Execution** | Crypto, Contract, Scheduler | Encrypted transport, contract verification, task scheduling |
+| **Network** | Mesh, Pipeline, Orchestrator | Peer-to-peer mesh, data pipeline, multi-agent coordination |
+| **Brain** | Inference, Twin Alpha, Math | 12-capability inference engine, user-facing AI intermediary, mathematical computation |
+
+Plus 3 standalone workers: Download Worker (file operations), OrgZip Worker (compression), Autonomy (self-regulation).
+
+### State Architecture — 4 Registers
+
+Every component operates on a 4-register state machine:
+
+- **Cognitive** — what the system knows (knowledge, models, context)
+- **Affective** — what the system values (priorities, preferences, weights)
+- **Somatic** — what the system senses (inputs, telemetry, edge data)
+- **Sovereign** — what the system decides (outputs, actions, routing choices)
+
+### Synchronization — Kuramoto Oscillators
+
+Distributed components stay synchronized using Kuramoto-coupled oscillators locked to the 873ms heartbeat. This isn't a polling interval — it's a phase-coupled rhythm that allows all workers, extensions, and edge nodes to maintain coherence without a central clock.
+
+### Memory — Phi-Encoded Spatial Coordinates
+
+Every memory is stored with 5-axis spatial coordinates encoded using the golden ratio. This enables retrieval by meaning, proximity, resonance, and temporal relevance simultaneously — not just keyword matching.
+
+### On-Chain — Internet Computer Canister
+
+The JARVISIUS canister runs on the Internet Computer (Motoko). Stable memory survives upgrades. Notes, commands, documents, and tab actions persist permanently. The same 873ms heartbeat runs on-chain via `Timer.recurringTimer`.
+
+### Six Language Implementations
+
+The organism runs natively in:
+
+| Language | Location | Runtime |
+|---|---|---|
+| Motoko | `organism/motoko/` | ICP canister, Timer heartbeat, stable state |
+| C++ | `organism/cpp/` | `std::thread`, mutex-protected registers, CMake |
+| TypeScript | `organism/typescript/` | Strict-typed runtime, heartbeat, kernels |
+| Java | `organism/java/` | `ScheduledExecutorService`, `CompletableFuture`, Maven |
+| Web Workers | `organism/web/` | Open `index.html` — alive in any browser, no server |
+| Python | `organism/python/` | `python -m organism` — stdlib-only, threading, SIGINT shutdown |
+
+---
+
+## Enterprise Use Cases
+
+**Security Operations** — Deploy Sentinel Watch and Cipher Shield across your organization's browsers. Real-time phishing detection, prompt injection defense, and content encryption without routing data through external services.
+
+**Research & Analysis** — JARVIS + Research Nexus + Data Alchemist form a research pipeline: capture pages, extract entities, build knowledge graphs, and synthesize findings — all stored locally with sovereign memory.
+
+**Compliance & Legal** — Contract Forge drafts intelligence contracts with GPT, reviews with Claude, and validates with Guards. Cryptographic proof of compliance. No document leaves your network.
+
+**Offline / Field Operations** — Edge Runner provides full AI capability without connectivity. Deploy to field teams, classified environments, or air-gapped networks. The organism works where the internet doesn't.
+
+**Financial Intelligence** — Spread Scanner, Data Oracle, and Pattern Forge analyze market data with phi-weighted z-scores, spectral decomposition, cross-system correlation, and anomaly detection. The math is real — DFT harmonics, Pearson cross-correlation, IQR×φ thresholds.
+
+---
+
+## All 27 Extensions
+
+| | Extension | What It Does | Download |
+|---|---|---|---|
+| 🤖 | **Jarvis AI** | AI command center — side panel, 18 intents, 10 Alpha AIs | **[jarvis.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/jarvis.zip)** |
+| 🧠 | **Sovereign Mind** | Sovereign reasoning from your own data — phi-scored fusion | **[sovereign-mind.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-mind.zip)** |
+| ⚡ | **Edge Runner** | Offline AI — local inference, zero cloud, full privacy | **[edge-runner.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-runner.zip)** |
+| 🛡 | Cipher Shield | Real-time encryption and prompt injection detection | [cipher-shield.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/cipher-shield.zip) |
+| 🌐 | Polyglot Oracle | Live page translation with context awareness | [polyglot-oracle.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/polyglot-oracle.zip) |
+| 🎨 | Vision Weaver | Multi-model image generation — DALL-E, SD, Midjourney, SAM | [vision-weaver.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/vision-weaver.zip) |
+| 💻 | Code Sovereign | AI code review with contract verification | [code-sovereign.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/code-sovereign.zip) |
+| 📚 | Memory Palace | Phi-encoded spatial bookmarking | [memory-palace.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/memory-palace.zip) |
+| 🔒 | Sentinel Watch | Phishing, malware, and social engineering detection | [sentinel-watch.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sentinel-watch.zip) |
+| 🔬 | Research Nexus | Multi-source research synthesis with citations | [research-nexus.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/research-nexus.zip) |
+| 🎤 | Voice Forge | Speech-to-text, voice synthesis, music composition | [voice-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/voice-forge.zip) |
+| ⚗️ | Data Alchemist | Auto-absorb webpages into knowledge graphs | [data-alchemist.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/data-alchemist.zip) |
+| 🎬 | Video Architect | Text-to-video — Sora, Runway, Pika, Kling | [video-architect.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/video-architect.zip) |
+| 📐 | Logic Prover | Formal mathematical proofs with verification | [logic-prover.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/logic-prover.zip) |
+| 💬 | Social Cortex | Sentiment analysis, empathy detection, response generation | [social-cortex.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/social-cortex.zip) |
+| 📝 | Contract Forge | AI contract authoring with cryptographic compliance | [contract-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/contract-forge.zip) |
+| 📊 | Organism Dashboard | Real-time vital signs — heartbeat, registers, sensors | [organism-dashboard.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/organism-dashboard.zip) |
+| 🗺 | Knowledge Cartographer | Visual knowledge graph that grows as you browse | [knowledge-cartographer.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/knowledge-cartographer.zip) |
+| 🔗 | Protocol Bridge | Unified protocol surface for 40 foundation models | [protocol-bridge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/protocol-bridge.zip) |
+| 🎭 | Creative Muse | Multi-modal creative studio — images, music, text | [creative-muse.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/creative-muse.zip) |
+| 🌀 | Sovereign Nexus | Master hub — all extensions unified in one panel | [sovereign-nexus.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-nexus.zip) |
+| 🏪 | Marketplace Hub | Browse and invoke 400 tools with natural language | [marketplace-hub.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/marketplace-hub.zip) |
+| 📈 | Spread Scanner | Phi-weighted spread analysis and arbitrage grading | [spread-scanner.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/spread-scanner.zip) |
+| 🔮 | Data Oracle | X-ray depth analysis with √N normalization | [data-oracle.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/data-oracle.zip) |
+| 🖥 | Screen Commander | Natural-language browser automation | [screen-commander.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/screen-commander.zip) |
+| 🔷 | Pattern Forge | DFT spectral decomposition, cross-correlation, anomaly detection | [pattern-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/pattern-forge.zip) |
+| 🏗 | Register | Builder AI — scans, validates, packages, deploys extensions | [register.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/register.zip) |
+
+---
+
+<a id="research"></a>
+## Research
+
+The architecture behind this system is documented in 9 peer-style research papers, each covering a core subsystem. All papers are in `research/` and render as self-contained HTML documents.
+
+| Paper | Subject | Focus |
+|---|---|---|
+| [Neuro Core](research/neuro-paper.html) | Neuroemergent autonomy in distributed computational systems | 4-register architecture, phi-coupling, Kuramoto synchronization |
+| [Inference Engine](research/inference-paper.html) | 12-capability inference pipeline | Classification, embedding, summarization, QA, chain-of-thought |
+| [Crypto Transport](research/crypto-paper.html) | Adaptive encrypted intelligence transport | Content-sensitive encryption, wire sovereignty |
+| [Guardian System](research/guardian-paper.html) | Self-healing threat detection and immune response | Anti-collapse, boundary enforcement, doctrine auditing |
+| [Mesh Network](research/mesh-paper.html) | Peer-to-peer edge mesh intelligence | Cross-organism resonance, workload redistribution |
+| [Pipeline Architecture](research/pipeline-paper.html) | Multi-stage data pipeline with phi-weighted flow | Knowledge absorption, entity extraction, graph construction |
+| [Scheduler](research/scheduler-paper.html) | Distributed task scheduling with golden-ratio intervals | 873ms heartbeat, kernel isolation, register integrity |
+| [Twin Alpha](research/twin-alpha-paper.html) | User-facing AI intermediary | Memory search, task routing, autonomous suggestions |
+| [Autonomy Engine](research/autonomy-paper.html) | Self-regulating autonomous intelligence | Goal formation, self-monitoring, graceful degradation |
 
 ---
 
 ## The Numbers
 
-8 SDKs. 27 extensions. 11 protocols. 30 tools. 5 tool families. 40 model families. 10 multimodal families. 30 frontend intelligence models. 100 frontier model species. 40 architectural laws. 9 organism rings. 6 implementation languages. 4 browser observers. 1 heartbeat at 873ms. 1 JARVISIUS canister — permanent sovereign storage for Alfredo.
+- **250** AI protocols (`AI_Protocols_Register.csv`)
+- **400** marketplace tools across 20 families (`Organism_Marketplace_Register.csv`)
+- **60** architectural laws (`Architectural_Laws_Register.csv`)
+- **27** browser extensions + 5 Windows utilities
+- **15** core Web Workers forming the distributed brain
+- **9** research papers
+- **6** language implementations (Motoko, C++, TypeScript, Java, Web Workers, Python)
+- **1** heartbeat at **873ms** — everywhere
 
-All of it is AI. All of it is intelligence. All of it is wired together. All of it is downloadable. And all of it is inside this repo.
+---
 
-As above, so below.
+## About
+
+We're not a company. We're a research lab that ships.
+
+Organism AI is an independent engineering effort building sovereign intelligence infrastructure — systems that run on your hardware, keep your data local, and don't depend on anyone's API. The work started as a question: what happens when you treat every layer of a software stack as an intelligence problem? Not "add AI to X" — make X intelligent by nature.
+
+The codebase is the answer. SDKs that think. Protocols that adapt. Extensions that reason. A runtime with a heartbeat. Memory that remembers spatially. Workers that synchronize without a clock. An on-chain canister that never forgets.
+
+We publish the research because the architecture matters more than the product. If the ideas are right, anyone can rebuild this. If they're wrong, we want to know.
+
+Everything here is open. Use it, fork it, break it, build on it.
+
+*As above, so below.*
+
+---
+
+## License
+
+[MIT](LICENSE)
