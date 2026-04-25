@@ -787,7 +787,62 @@ class JarvisEngine {
 
     // 19. Commands list
     } else if (/what commands|show commands|list commands|commands (available|you know|can you)/i.test(text)) {
-      response = 'v4.0 commands:\n\n"list tabs" / "switch tab 2" / "close tab 3" / "new tab"\n"go to [url]"\n"take note: [text]" / "list notes" / "delete note"\n"screenshot"\n"read page" / "summarize"\n"generate pdf report" → PDF download\n"generate excel" → .xlsx download\n"draft email to [address]"\n"search for [topic]"\n"find [text]" / "highlight [text]"\n"research [topic]" / "theory [idea]" / "framework [system]"\n"brainstorm [topic]" / "risk [thing]" / "what if [scenario]"';
+      response = 'v4.2 commands:\n\n"list tabs" / "switch tab 2" / "close tab 3" / "new tab"\n"go to [url]"\n"take note: [text]" / "list notes" / "delete note"\n"screenshot"\n"read page" / "summarize"\n"generate pdf report" → PDF download\n"generate excel" → .xlsx download\n"draft email to [address]"\n"search for [topic]"\n"research [topic]" / "theory [idea]" / "framework [system]"\n"brainstorm [topic]" / "risk [thing]" / "what if [scenario]"\n\n🤖 SOVEREIGN AGENTS:\n"deploy agent: research [topic]" → agent browses web + reports\n"deploy agent: monitor [url]" → agent watches a site\n"deploy agent: sweep [url1], [url2]" → agent reads multiple pages\n"list agents" / "recall agent" / "recall all agents"';
+
+    // 19b. Sovereign Agent — deploy researcher
+    } else if (/deploy agent.*research|agent.*research|research agent|send agent.*research/i.test(text)) {
+      const topic = after('research') || after('deploy agent') || after('agent') || raw;
+      const cleanTopic = topic.replace(/agent|deploy|research/gi, '').trim() || raw;
+      chrome.runtime.sendMessage({ action: 'deployAgent', agentType: 'researcher', mission: 'Research: ' + cleanTopic, target: cleanTopic }, (resp) => {
+        callback({ success: true, message: resp?.message || ('🤖 Deploying research agent for "' + cleanTopic + '", sir. Switch to the Agents tab to watch progress.'), agent: 'JARVIS • ORCHESTRATOR', mood, awareness });
+      });
+      return;
+
+    // 19c. Sovereign Agent — deploy monitor
+    } else if (/deploy agent.*monitor|monitor agent|agent.*monitor|watch (this |the )?site|watch (this |the )?page/i.test(text)) {
+      const urlMatch = raw.match(/https?:\/\/[^\s]+/) || raw.match(/(?:monitor|watch)\s+(\S+\.\S+)/i);
+      const target = urlMatch?.[1] || urlMatch?.[0] || 'https://example.com';
+      const url = target.startsWith('http') ? target : 'https://' + target;
+      chrome.runtime.sendMessage({ action: 'deployAgent', agentType: 'monitor', mission: 'Monitor: ' + url, target: url }, (resp) => {
+        callback({ success: true, message: resp?.message || ('🤖 Monitor agent deployed for ' + url + ', sir.'), agent: 'JARVIS • ORCHESTRATOR', mood, awareness });
+      });
+      return;
+
+    // 19d. Sovereign Agent — sweep multiple URLs
+    } else if (/deploy agent.*sweep|sweep agent|agent.*sweep|send agent.*visit/i.test(text)) {
+      const urlMatches = raw.match(/https?:\/\/[^\s,]+/g) || [];
+      if (urlMatches.length === 0) {
+        response = 'Specify URLs to sweep, sir. Example: "deploy agent: sweep https://site1.com, https://site2.com"';
+      } else {
+        chrome.runtime.sendMessage({ action: 'deployAgent', agentType: 'sweep', mission: 'Sweep ' + urlMatches.length + ' sites', target: urlMatches }, (resp) => {
+          callback({ success: true, message: resp?.message || ('🤖 Sweep agent deployed for ' + urlMatches.length + ' sites, sir.'), agent: 'JARVIS • ORCHESTRATOR', mood, awareness });
+        });
+        return;
+      }
+
+    // 19e. List agents
+    } else if (/list agents|show agents|agent status|active agents|my agents/i.test(text)) {
+      chrome.runtime.sendMessage({ action: 'listAgents' }, (resp) => {
+        const agents: import('./index').SovereignAgentData[] = resp?.agents || [];
+        if (agents.length === 0) {
+          callback({ success: true, message: '🤖 No agents deployed, sir. Say "deploy agent: research [topic]" to send one out.', agent: 'JARVIS • ORCHESTRATOR', mood, awareness });
+          return;
+        }
+        const lines = agents.map(a => {
+          const icon = a.status === 'running' ? '🟢' : a.status === 'complete' ? '✅' : a.status === 'recalled' ? '⚡' : '❌';
+          const step = a.status === 'running' ? ' [' + (a.currentStep + 1) + '/' + a.steps.length + ']' : '';
+          return icon + ' ' + a.name + step + ' — ' + a.mission.substring(0, 60);
+        }).join('\n');
+        callback({ success: true, message: '🤖 Sovereign Agents, sir:\n\n' + lines + '\n\nSay "recall agent" to abort or check the Agents tab.', agent: 'JARVIS • ORCHESTRATOR', mood, awareness });
+      });
+      return;
+
+    // 19f. Recall agents
+    } else if (/recall all agents|abort all agents|stop all agents/i.test(text)) {
+      chrome.runtime.sendMessage({ action: 'recallAllAgents' }, (resp) => {
+        callback({ success: true, message: resp?.message || 'All agents recalled, sir.', agent: 'JARVIS • ORCHESTRATOR', mood, awareness });
+      });
+      return;
 
     // 20. Thanks
     } else if (/thank|thanks|good job|nice|great|perfect|awesome|love (it|you)|appreciate/i.test(text)) {
@@ -990,13 +1045,320 @@ class JarvisEngine {
 }
 
 /* ----------------------------------------------------------
+ *  Sovereign Agent System
+ *  Autonomous web agents deployed from JARVIS chat.
+ *  Each agent opens background tabs, navigates URLs, extracts
+ *  data via chrome.scripting, and reports back when done.
+ * ---------------------------------------------------------- */
+
+type AgentType = 'researcher' | 'monitor' | 'analyst' | 'sweep';
+type AgentStatus = 'queued' | 'running' | 'complete' | 'recalled' | 'failed';
+
+interface AgentStep {
+  url: string;
+  label: string;
+  status: 'pending' | 'running' | 'done' | 'failed';
+  extract: string;
+  visitedAt?: number;
+}
+
+export interface SovereignAgentData {
+  id: string;
+  name: string;
+  mission: string;
+  type: AgentType;
+  status: AgentStatus;
+  steps: AgentStep[];
+  currentStep: number;
+  report: string;
+  tabId?: number;
+  startedAt: number;
+  completedAt?: number;
+  error?: string;
+}
+
+class SovereignAgent {
+  data: SovereignAgentData;
+  private onComplete: (agent: SovereignAgentData) => void;
+  private onProgress: (agent: SovereignAgentData) => void;
+
+  constructor(
+    id: string,
+    name: string,
+    mission: string,
+    type: AgentType,
+    steps: AgentStep[],
+    onProgress: (a: SovereignAgentData) => void,
+    onComplete: (a: SovereignAgentData) => void,
+  ) {
+    this.data = { id, name, mission, type, status: 'queued', steps, currentStep: 0, report: '', startedAt: Date.now() };
+    this.onProgress = onProgress;
+    this.onComplete = onComplete;
+  }
+
+  async run() {
+    this.data.status = 'running';
+    this.onProgress(this.data);
+
+    // Create a persistent background tab
+    let tab: chrome.tabs.Tab | null = null;
+    try {
+      tab = await new Promise<chrome.tabs.Tab>(res =>
+        chrome.tabs.create({ url: 'about:blank', active: false }, res)
+      );
+      this.data.tabId = tab.id;
+    } catch {
+      this._fail('Could not open background tab.'); return;
+    }
+
+    const tabId = tab.id!;
+
+    for (let i = 0; i < this.data.steps.length; i++) {
+      if (this.data.status === 'recalled') break;
+      this.data.currentStep = i;
+      const step = this.data.steps[i];
+      step.status = 'running';
+      this.onProgress(this.data);
+
+      try {
+        const text = await this._visitAndExtract(tabId, step.url);
+        step.extract = this._summarize(text, step.label, 600);
+        step.status = 'done';
+        step.visitedAt = Date.now();
+      } catch (e) {
+        step.extract = '(extraction failed)';
+        step.status = 'failed';
+      }
+      this.onProgress(this.data);
+    }
+
+    // Close the background tab
+    try { chrome.tabs.remove(tabId); } catch { /* ignore */ }
+    this.data.tabId = undefined;
+
+    if (this.data.status === 'recalled') {
+      this.data.report = '⚡ Agent recalled by JARVIS before completion.\n\nPartial findings:\n\n' + this._buildReport();
+      this.data.completedAt = Date.now();
+      this.onComplete(this.data);
+      return;
+    }
+
+    this.data.status = 'complete';
+    this.data.report = this._buildReport();
+    this.data.completedAt = Date.now();
+    this.onComplete(this.data);
+  }
+
+  recall() {
+    this.data.status = 'recalled';
+    if (this.data.tabId) {
+      try { chrome.tabs.remove(this.data.tabId); } catch { /* ignore */ }
+      this.data.tabId = undefined;
+    }
+  }
+
+  private _fail(reason: string) {
+    this.data.status = 'failed';
+    this.data.error = reason;
+    this.data.report = '❌ Agent failed: ' + reason;
+    this.data.completedAt = Date.now();
+    this.onComplete(this.data);
+  }
+
+  private _visitAndExtract(tabId: number, url: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      // Navigate the background tab to the URL
+      chrome.tabs.update(tabId, { url }, () => {
+        if (chrome.runtime.lastError) { reject(chrome.runtime.lastError.message); return; }
+        // Wait for the tab to finish loading
+        const listener = (updatedId: number, info: chrome.tabs.TabChangeInfo) => {
+          if (updatedId !== tabId || info.status !== 'complete') return;
+          chrome.tabs.onUpdated.removeListener(listener);
+          // Give page JS 500ms to hydrate, then extract
+          setTimeout(() => {
+            chrome.scripting.executeScript(
+              {
+                target: { tabId },
+                func: () => {
+                  const main = document.querySelector('main, article, [role="main"], #content, #bodyContent, .post-content, .entry-content');
+                  const src = main || document.body;
+                  if (!src) return '';
+                  // Remove nav/footer/script/style/ads
+                  const clone = src.cloneNode(true) as HTMLElement;
+                  clone.querySelectorAll('nav,footer,script,style,noscript,aside,.ad,.advertisement,[aria-hidden="true"]').forEach(el => el.remove());
+                  return (clone.innerText || clone.textContent || '').replace(/\s{3,}/g, '\n\n').substring(0, 12000);
+                },
+              },
+              (results) => {
+                if (chrome.runtime.lastError) { reject(chrome.runtime.lastError.message); return; }
+                resolve((results?.[0]?.result as string) || '');
+              }
+            );
+          }, 800);
+        };
+        // Timeout guard — 30s
+        const timeout = setTimeout(() => {
+          chrome.tabs.onUpdated.removeListener(listener);
+          reject('Tab load timeout (30s)');
+        }, 30000);
+        chrome.tabs.onUpdated.addListener(listener);
+        // If tab already complete (from:about:blank navigate)
+        chrome.tabs.get(tabId, (t) => {
+          if (t?.status === 'complete') {
+            clearTimeout(timeout);
+            chrome.tabs.onUpdated.removeListener(listener);
+            setTimeout(() => {
+              chrome.scripting.executeScript({ target: { tabId }, func: () => (document.body?.innerText || '').substring(0, 12000) }, (r) => {
+                resolve((r?.[0]?.result as string) || '');
+              });
+            }, 500);
+          }
+        });
+      });
+    });
+  }
+
+  private _summarize(text: string, focus: string, maxLen: number): string {
+    if (!text || text.length < 50) return '(no readable content found)';
+    const focusLow = focus.toLowerCase();
+    // Split into paragraphs, score by relevance to focus keyword
+    const paras = text.split(/\n\n+/).map(p => p.trim()).filter(p => p.length > 40);
+    const scored = paras.map(p => ({
+      p,
+      score: focusLow.split(' ').reduce((s, kw) => s + (p.toLowerCase().includes(kw) ? 1 : 0), 0)
+    }));
+    scored.sort((a, b) => b.score - a.score);
+    let result = '';
+    for (const { p } of scored) {
+      if ((result + p).length > maxLen) break;
+      result += p + '\n\n';
+    }
+    return result.trim() || paras.slice(0, 3).join('\n\n').substring(0, maxLen);
+  }
+
+  private _buildReport(): string {
+    const done = this.data.steps.filter(s => s.status === 'done');
+    if (done.length === 0) return '(no data extracted)';
+    let report = '📋 SOVEREIGN AGENT REPORT\n';
+    report += '🤖 ' + this.data.name + ' — Mission: ' + this.data.mission + '\n';
+    report += '⏱ Completed: ' + new Date(this.data.completedAt || Date.now()).toLocaleTimeString() + '\n\n';
+    report += '━━━━━━━━━━━━━━━━━━━━━\n\n';
+    for (const step of this.data.steps) {
+      if (step.status !== 'done' || !step.extract) continue;
+      report += '🌐 ' + step.label + '\n' + step.url + '\n\n' + step.extract + '\n\n━━━━━━━━━━━━━━━━━━━━━\n\n';
+    }
+    return report.trim();
+  }
+}
+
+/* -- Agent Dispatcher ---------------------------------------- */
+
+const MAX_AGENTS = 5;
+const AGENT_NAMES = ['ALPHA-1', 'ALPHA-2', 'ALPHA-3', 'BETA-1', 'BETA-2', 'GAMMA-1', 'SIGMA-1'];
+
+declare const globalThis: {
+  jarvisEngine?: JarvisEngine;
+  agentDispatcher?: AgentDispatcher;
+};
+
+class AgentDispatcher {
+  agents: Map<string, SovereignAgent> = new Map();
+  history: SovereignAgentData[] = [];
+
+  /** Generate mission steps for a research topic */
+  private _buildResearchSteps(topic: string): AgentStep[] {
+    const enc = encodeURIComponent(topic);
+    const steps: AgentStep[] = [
+      { url: 'https://en.wikipedia.org/wiki/' + enc, label: 'Wikipedia: ' + topic, status: 'pending', extract: '' },
+      { url: 'https://en.wikipedia.org/w/index.php?search=' + enc + '&ns0=1', label: 'Wikipedia Search', status: 'pending', extract: '' },
+    ];
+    // Add domain-specific URLs based on keywords
+    const t = topic.toLowerCase();
+    if (/tech|code|software|api|framework|ai|ml|language|model/i.test(t))
+      steps.push({ url: 'https://dev.to/search?q=' + enc, label: 'DEV.to: ' + topic, status: 'pending', extract: '' });
+    if (/stock|market|finance|company|invest|crypto|price/i.test(t))
+      steps.push({ url: 'https://finance.yahoo.com/search?p=' + enc, label: 'Yahoo Finance: ' + topic, status: 'pending', extract: '' });
+    if (/health|medical|disease|treatment|symptom|drug/i.test(t))
+      steps.push({ url: 'https://www.mayoclinic.org/search/search-results?q=' + enc, label: 'Mayo Clinic: ' + topic, status: 'pending', extract: '' });
+    if (/science|research|study|paper|journal/i.test(t))
+      steps.push({ url: 'https://www.sciencedaily.com/search/?keyword=' + enc, label: 'ScienceDaily: ' + topic, status: 'pending', extract: '' });
+    // Always add a news source
+    steps.push({ url: 'https://www.bbc.com/search?q=' + enc, label: 'BBC News: ' + topic, status: 'pending', extract: '' });
+    return steps.slice(0, 4); // cap at 4 pages for speed
+  }
+
+  /** Generate steps for monitoring a URL */
+  private _buildMonitorSteps(url: string, term: string): AgentStep[] {
+    return [
+      { url, label: 'Initial check: ' + new URL(url.startsWith('http') ? url : 'https://' + url).hostname, status: 'pending', extract: '' },
+      { url, label: 'Second pass (verify)', status: 'pending', extract: '' },
+    ];
+  }
+
+  /** Generate steps for a URL sweep / analyst mission */
+  private _buildSweepSteps(urls: string[]): AgentStep[] {
+    return urls.slice(0, 5).map(u => ({
+      url: u.startsWith('http') ? u : 'https://' + u,
+      label: (() => { try { return new URL(u.startsWith('http') ? u : 'https://' + u).hostname; } catch { return u; } })(),
+      status: 'pending' as const,
+      extract: '',
+    }));
+  }
+
+  deploy(
+    type: AgentType,
+    mission: string,
+    urlsOrTopic: string | string[],
+    onProgress: (data: SovereignAgentData) => void,
+    onComplete: (data: SovereignAgentData) => void,
+  ): SovereignAgentData | { error: string } {
+    const running = [...this.agents.values()].filter(a => a.data.status === 'running').length;
+    if (running >= MAX_AGENTS) return { error: 'Maximum ' + MAX_AGENTS + ' agents already deployed, sir. Recall one first.' };
+
+    const id = 'agent-' + Date.now();
+    const name = AGENT_NAMES[this.agents.size % AGENT_NAMES.length];
+    let steps: AgentStep[];
+    if (type === 'researcher') steps = this._buildResearchSteps(urlsOrTopic as string);
+    else if (type === 'monitor') steps = this._buildMonitorSteps(urlsOrTopic as string, mission);
+    else steps = this._buildSweepSteps(Array.isArray(urlsOrTopic) ? urlsOrTopic : [urlsOrTopic as string]);
+
+    const agent = new SovereignAgent(id, name, mission, type, steps,
+      (d) => { this.agents.set(id, agent); onProgress(d); },
+      (d) => { this.history.unshift(d); this.agents.delete(id); onComplete(d); }
+    );
+    this.agents.set(id, agent);
+    // Run asynchronously — don't await so message listener returns immediately
+    agent.run().catch(() => {});
+    return agent.data;
+  }
+
+  recall(id: string): boolean {
+    const agent = this.agents.get(id);
+    if (!agent) return false;
+    agent.recall();
+    return true;
+  }
+
+  recallAll() {
+    for (const agent of this.agents.values()) agent.recall();
+  }
+
+  list(): SovereignAgentData[] {
+    return [
+      ...[...this.agents.values()].map(a => a.data),
+      ...this.history.slice(0, 10),
+    ];
+  }
+}
+
+/* ----------------------------------------------------------
  *  Initialization
  * ---------------------------------------------------------- */
 
 chrome.action.onClicked.addListener((tab) => { chrome.sidePanel.open({ windowId: tab.windowId }); });
 
-declare const globalThis: { jarvisEngine?: JarvisEngine };
 globalThis.jarvisEngine = new JarvisEngine();
+globalThis.agentDispatcher = new AgentDispatcher();
 
 /* ----------------------------------------------------------
  *  Message Listener
@@ -1213,6 +1575,55 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       });
       break;
     }
+
+    /* -- Sovereign Agent handlers -------------------------------- */
+    case 'deployAgent': {
+      const dispatcher = globalThis.agentDispatcher!;
+      const type = (message.agentType as AgentType) || 'researcher';
+      const mission = (message.mission as string) || 'Unknown mission';
+      const target = (message.target as string | string[]) || mission;
+      const notify = (data: SovereignAgentData) => {
+        // Progress ping → sidepanel
+        chrome.runtime.sendMessage({ action: '_agentProgress', agent: data }).catch(() => {});
+      };
+      const complete = (data: SovereignAgentData) => {
+        // Completion notification
+        try {
+          chrome.notifications.create('jarvis-agent-' + Date.now(), {
+            type: 'basic',
+            iconUrl: 'icons/icon128.png',
+            title: 'JARVIS — ' + data.name + ' Complete',
+            message: data.status === 'complete' ? 'Mission "' + data.mission.substring(0, 60) + '" complete, sir.' : 'Agent ' + data.name + ' status: ' + data.status,
+            priority: 1,
+          });
+        } catch { /* ignore */ }
+        chrome.runtime.sendMessage({ action: '_agentComplete', agent: data }).catch(() => {});
+      };
+      const result = dispatcher.deploy(type, mission, target, notify, complete);
+      if ('error' in result) {
+        sendResponse({ success: false, message: result.error });
+      } else {
+        sendResponse({ success: true, message: '🤖 Deploying ' + result.name + ', sir. Mission: "' + mission + '". ' + result.steps.length + ' targets queued. I\'ll report back when complete.', agent: result });
+      }
+      break;
+    }
+    case 'listAgents': {
+      const dispatcher = globalThis.agentDispatcher!;
+      sendResponse({ success: true, agents: dispatcher.list() });
+      break;
+    }
+    case 'recallAgent': {
+      const dispatcher = globalThis.agentDispatcher!;
+      const recalled = dispatcher.recall(message.agentId as string);
+      sendResponse({ success: recalled, message: recalled ? 'Agent recalled, sir.' : 'Agent not found.' });
+      break;
+    }
+    case 'recallAllAgents': {
+      globalThis.agentDispatcher!.recallAll();
+      sendResponse({ success: true, message: 'All agents recalled, sir.' });
+      break;
+    }
+
     default: sendResponse({ success: false, error: 'Unknown action: ' + (message.action as string) });
   }
 

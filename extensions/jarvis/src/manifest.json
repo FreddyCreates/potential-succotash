@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Jarvis AI",
-  "version": "4.0.0",
-  "description": "JARVIS v4 — React+TypeScript sovereign AI. PDF/Excel generation, voice input, Dexie memory, Transformers.js NLP, 40-category brain.",
+  "version": "4.2.0",
+  "description": "JARVIS v4.2 — Sovereign AI with autonomous web agents. Deploy agents to research and monitor the web.",
   "permissions": [
     "activeTab",
     "storage",
@@ -13,10 +13,12 @@
     "downloads",
     "notifications",
     "tabCapture",
-    "desktopCapture"
+    "desktopCapture",
+    "bookmarks",
+    "history"
   ],
   "host_permissions": [
-    "https://raw.githubusercontent.com/*"
+    "<all_urls>"
   ],
   "side_panel": {
     "default_path": "src/sidepanel/sidepanel.html"

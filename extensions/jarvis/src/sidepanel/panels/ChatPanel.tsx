@@ -4,8 +4,9 @@ import { useJarvisStore } from '../../store';
 const QUICK_ACTIONS = [
   { label: 'Brief me', text: '__brief__' },
   { label: 'Status', text: 'what is your status' },
+  { label: '🤖 Research agent', text: '__agent_research__', prefill: true },
+  { label: '🤖 Agents', text: '__listagents__' },
   { label: 'Timer', text: 'set a timer for ', prefill: true },
-  { label: 'Timers', text: '__listtimers__' },
   { label: 'Summarize', text: 'summarize this page' },
   { label: 'Help', text: 'what can you do' },
 ];
@@ -72,7 +73,7 @@ export default function ChatPanel() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /** Listen for proactive background messages (_timerDone, _tabChanged) */
+  /** Listen for proactive background messages (_timerDone, _tabChanged, _agentComplete) */
   useEffect(() => {
     const listener = (msg: Record<string, unknown>) => {
       if (msg.action === '_timerDone') {
@@ -85,13 +86,21 @@ export default function ChatPanel() {
         const context = (msg.context as string) || '';
         const note = '🌐 Active page: "' + title + '".' + (context ? '\n' + context : '');
         addMessage({ role: 'jarvis', text: note, ts: Date.now() });
-        // Only speak tab changes if TTS enabled — don't speak context automatically to avoid spam
+      } else if (msg.action === '_agentComplete') {
+        const agent = msg.agent as { name: string; mission: string; status: string; steps: { status: string }[] };
+        if (!agent) return;
+        const done = agent.steps.filter(s => s.status === 'done').length;
+        const announcement = agent.status === 'complete'
+          ? '🤖 ' + agent.name + ' has completed its mission, sir.\n\n"' + agent.mission.substring(0, 80) + '"\n\n' + done + '/' + agent.steps.length + ' sources extracted. Full report available in the 🤖 Agents tab.'
+          : '🤖 ' + agent.name + ' — status: ' + agent.status + '. Check the Agents tab, sir.';
+        addMessage({ role: 'jarvis', text: announcement, ts: Date.now() });
+        if (ttsEnabled) speak(agent.name + ' mission complete, sir.');
       }
     };
     chrome.runtime.onMessage.addListener(listener);
     return () => { chrome.runtime.onMessage.removeListener(listener); };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [addMessage]);
+  }, [addMessage, ttsEnabled]);
 
   const sendMessage = (text: string) => {
     if (!text.trim()) return;
@@ -108,6 +117,25 @@ export default function ChatPanel() {
         if (chrome.runtime.lastError || !resp?.success) return;
         deliverResponse(resp.message as string);
       });
+      return;
+    }
+    if (text === '__listagents__') {
+      chrome.runtime.sendMessage({ action: 'listAgents' }, (resp) => {
+        if (chrome.runtime.lastError || !resp?.success) return;
+        const agents: Array<{ name: string; status: string; mission: string; currentStep: number; steps: unknown[] }> = resp?.agents || [];
+        if (agents.length === 0) {
+          deliverResponse('🤖 No agents deployed, sir. Click "🤖 Research agent" or say "deploy agent: research [topic]" to send one out.');
+          return;
+        }
+        const icon: Record<string, string> = { running: '🟢', complete: '✅', recalled: '⚡', failed: '❌', queued: '⏳' };
+        const lines = agents.map(a => (icon[a.status] || '○') + ' ' + a.name + (a.status === 'running' ? ' [' + (a.currentStep + 1) + '/' + a.steps.length + ']' : '') + ' — ' + a.mission.substring(0, 60)).join('\n');
+        deliverResponse('🤖 Sovereign Agents, sir:\n\n' + lines + '\n\nCheck the 🤖 Agents tab for full reports and controls.');
+      });
+      return;
+    }
+    if (text === '__agent_research__') {
+      addMessage({ role: 'jarvis', text: '🤖 What topic shall I research, sir? Type your topic and I\'ll dispatch an agent immediately.', ts: Date.now() });
+      setInput('deploy agent: research ');
       return;
     }
 
@@ -128,7 +156,7 @@ export default function ChatPanel() {
   };
 
   const handleQuickAction = (qa: typeof QUICK_ACTIONS[number]) => {
-    if (qa.text.endsWith(': ')) { setInput(qa.text); return; }
+    if (qa.prefill || qa.text.endsWith(': ') || qa.text.endsWith(' ')) { setInput(qa.text); return; }
     sendMessage(qa.text);
   };
 

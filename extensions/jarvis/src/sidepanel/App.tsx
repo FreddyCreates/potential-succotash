@@ -10,9 +10,11 @@ import NotesPanel from './panels/NotesPanel';
 import DocsPanel from './panels/DocsPanel';
 import InstallPanel from './panels/InstallPanel';
 import LogPanel from './panels/LogPanel';
+import AgentsPanel from './panels/AgentsPanel';
 
 const TABS = [
   { id: 'chat', label: '💬 Chat' },
+  { id: 'agents', label: '🤖 Agents' },
   { id: 'workspace', label: '📝 Workspace' },
   { id: 'tools', label: '🔧 Tools' },
   { id: 'search', label: '🔍 Search' },
@@ -50,6 +52,7 @@ export default function App() {
   const renderPanel = () => {
     switch (activePanel) {
       case 'chat': return <ChatPanel />;
+      case 'agents': return <AgentsPanel />;
       case 'workspace': return <WorkspacePanel />;
       case 'tools': return <ToolsPanel />;
       case 'search': return <SearchPanel />;
@@ -79,7 +82,7 @@ export default function App() {
           <span className="animate-heartbeat text-cyan-400 text-lg">⚡</span>
           <div>
             <span className="font-bold text-white tracking-widest text-sm">J.A.R.V.I.S</span>
-            <span className="ml-2 text-xs text-purple-400">v4.1.0</span>
+            <span className="ml-2 text-xs text-purple-400">v4.2.0</span>
           </div>
         </div>
         <div className="flex items-center gap-2">
