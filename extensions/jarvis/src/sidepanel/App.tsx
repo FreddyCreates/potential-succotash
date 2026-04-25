@@ -11,10 +11,12 @@ import DocsPanel from './panels/DocsPanel';
 import InstallPanel from './panels/InstallPanel';
 import LogPanel from './panels/LogPanel';
 import AgentsPanel from './panels/AgentsPanel';
+import AGIToolsPanel from './panels/AGIToolsPanel';
 
 const TABS = [
   { id: 'chat', label: '💬 Chat' },
   { id: 'agents', label: '🤖 Agents' },
+  { id: 'agi', label: '⚗️ AGI Tools' },
   { id: 'workspace', label: '📝 Workspace' },
   { id: 'tools', label: '🔧 Tools' },
   { id: 'search', label: '🔍 Search' },
@@ -27,7 +29,7 @@ const TABS = [
 ];
 
 export default function App() {
-  const { activePanel, setActivePanel, heartbeatCount, uptime, commandCount, mood, setStatus } = useJarvisStore();
+  const { activePanel, setActivePanel, heartbeatCount, uptime, commandCount, mood, awareness, memTurns, setStatus } = useJarvisStore();
 
   useEffect(() => {
     const poll = () => {
@@ -53,6 +55,7 @@ export default function App() {
     switch (activePanel) {
       case 'chat': return <ChatPanel />;
       case 'agents': return <AgentsPanel />;
+      case 'agi': return <AGIToolsPanel />;
       case 'workspace': return <WorkspacePanel />;
       case 'tools': return <ToolsPanel />;
       case 'search': return <SearchPanel />;
@@ -82,7 +85,7 @@ export default function App() {
           <span className="animate-heartbeat text-cyan-400 text-lg">⚡</span>
           <div>
             <span className="font-bold text-white tracking-widest text-sm">J.A.R.V.I.S</span>
-            <span className="ml-2 text-xs text-purple-400">v4.2.0</span>
+            <span className="ml-2 text-xs text-purple-400">v7.0</span>
           </div>
         </div>
         <div className="flex items-center gap-2">

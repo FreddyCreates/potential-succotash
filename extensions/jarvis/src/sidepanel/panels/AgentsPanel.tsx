@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 type AgentStatus = 'queued' | 'running' | 'complete' | 'recalled' | 'failed';
-type AgentType = 'researcher' | 'monitor' | 'analyst' | 'sweep';
+type AgentType = 'researcher' | 'monitor' | 'sweep' | 'crawler' | 'scraper' | 'watcher' | 'digest' | 'analyst' | 'scout';
 
 interface AgentStep {
   url: string;
@@ -112,9 +112,17 @@ export default function AgentsPanel() {
     setDeploying(true);
     setDeployMsg('');
     const urls = deployTarget.split(',').map(s => s.trim()).filter(Boolean);
-    const target = (deployType === 'sweep') ? urls : urls[0] || deployTarget;
-    const mission = deployType === 'researcher' ? 'Research: ' + deployTarget
+    const isMulti = ['sweep', 'digest', 'analyst'].includes(deployType);
+    const target = isMulti ? urls : urls[0] || deployTarget;
+    const mission =
+      deployType === 'researcher' ? 'Research: ' + deployTarget
       : deployType === 'monitor' ? 'Monitor: ' + deployTarget
+      : deployType === 'crawler' ? 'Crawl: ' + deployTarget
+      : deployType === 'scraper' ? 'Scrape: ' + deployTarget
+      : deployType === 'watcher' ? 'Watch: ' + deployTarget
+      : deployType === 'digest' ? 'Digest: ' + urls.join(', ')
+      : deployType === 'analyst' ? 'Analyze ' + urls.length + ' sites'
+      : deployType === 'scout' ? 'Scout: ' + deployTarget
       : 'Sweep: ' + urls.length + ' sites';
     chrome.runtime.sendMessage({ action: 'deployAgent', agentType: deployType, mission, target }, (resp) => {
       setDeploying(false);
@@ -165,16 +173,27 @@ export default function AgentsPanel() {
       {/* Deploy form */}
       {deployOpen && (
         <div className="border-b border-gray-800 bg-gray-900/80 px-3 py-2 space-y-2">
-          <div className="flex gap-1.5">
-            {(['researcher', 'monitor', 'sweep'] as AgentType[]).map(t => (
+          <div className="grid grid-cols-3 gap-1">
+            {(['researcher', 'crawler', 'scraper', 'monitor', 'watcher', 'scout', 'digest', 'analyst', 'sweep'] as AgentType[]).map(t => (
               <button
                 key={t}
                 onClick={() => setDeployType(t)}
-                className={`flex-1 text-xs py-1 rounded transition-colors ${deployType === t ? 'bg-cyan-800 text-white' : 'bg-gray-800 text-gray-400 hover:text-gray-200'}`}
+                className={`text-xs py-1 rounded transition-colors ${deployType === t ? 'bg-cyan-800 text-white' : 'bg-gray-800 text-gray-400 hover:text-gray-200'}`}
               >
-                {t === 'researcher' ? '🔬 Research' : t === 'monitor' ? '👁 Monitor' : '🌐 Sweep'}
+                {t === 'researcher' ? '🔬 Research' : t === 'crawler' ? '🕷 Crawler' : t === 'scraper' ? '📋 Scraper' : t === 'monitor' ? '👁 Monitor' : t === 'watcher' ? '⏰ Watcher' : t === 'scout' ? '🔭 Scout' : t === 'digest' ? '⚗️ Digest' : t === 'analyst' ? '📊 Analyst' : '🌐 Sweep'}
               </button>
             ))}
+          </div>
+          <div className="text-xs text-gray-500">
+            {deployType === 'researcher' ? 'Topic to research (Wikipedia + news sources)'
+              : deployType === 'crawler' ? 'Seed URL — spider follows links (parallel fetch)'
+              : deployType === 'scraper' ? 'URL to extract structured data, tables, lists'
+              : deployType === 'monitor' ? 'URL to check twice for changes'
+              : deployType === 'watcher' ? 'URL to watch every 30min (alarm-based)'
+              : deployType === 'scout' ? 'URL for quick deep scan + link map'
+              : deployType === 'digest' ? 'Topics or URLs (comma-separated) — parallel synthesis'
+              : deployType === 'analyst' ? 'URLs (comma-separated) — parallel analysis'
+              : 'URLs (comma-separated) to sweep'}
           </div>
           <input
             type="text"
@@ -182,9 +201,10 @@ export default function AgentsPanel() {
             onChange={e => setDeployTarget(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && deploy()}
             placeholder={
-              deployType === 'researcher' ? 'Topic to research…'
-              : deployType === 'monitor' ? 'URL to monitor…'
-              : 'URLs (comma-separated)…'
+              deployType === 'researcher' ? 'artificial intelligence, quantum computing…'
+              : deployType === 'digest' ? 'blockchain, AI, climate, space…'
+              : deployType === 'analyst' || deployType === 'sweep' ? 'https://site1.com, https://site2.com…'
+              : 'https://example.com'
             }
             className="w-full bg-gray-800 border border-gray-700 rounded px-2 py-1.5 text-xs text-gray-100 placeholder-gray-600 outline-none focus:border-cyan-700"
           />

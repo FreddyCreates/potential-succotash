@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Jarvis AI",
-  "version": "4.2.0",
-  "description": "JARVIS v4.2 — Sovereign AI with autonomous web agents. Deploy agents to research and monitor the web.",
+  "version": "7.0.0",
+  "description": "JARVIS v7 — AGI-class sovereign AI with parallel web workers, 9 agent types, and deep web crawling.",
   "permissions": [
     "activeTab",
     "storage",
@@ -15,7 +15,8 @@
     "tabCapture",
     "desktopCapture",
     "bookmarks",
-    "history"
+    "history",
+    "offscreen"
   ],
   "host_permissions": [
     "<all_urls>"

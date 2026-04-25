@@ -787,7 +787,7 @@ class JarvisEngine {
 
     // 19. Commands list
     } else if (/what commands|show commands|list commands|commands (available|you know|can you)/i.test(text)) {
-      response = 'v4.2 commands:\n\n"list tabs" / "switch tab 2" / "close tab 3" / "new tab"\n"go to [url]"\n"take note: [text]" / "list notes" / "delete note"\n"screenshot"\n"read page" / "summarize"\n"generate pdf report" → PDF download\n"generate excel" → .xlsx download\n"draft email to [address]"\n"search for [topic]"\n"research [topic]" / "theory [idea]" / "framework [system]"\n"brainstorm [topic]" / "risk [thing]" / "what if [scenario]"\n\n🤖 SOVEREIGN AGENTS:\n"deploy agent: research [topic]" → agent browses web + reports\n"deploy agent: monitor [url]" → agent watches a site\n"deploy agent: sweep [url1], [url2]" → agent reads multiple pages\n"list agents" / "recall agent" / "recall all agents"';
+      response = 'JARVIS v7 commands:\n\n"list tabs" / "switch tab 2" / "close tab 3" / "new tab"\n"go to [url]"\n"take note: [text]" / "list notes" / "delete note"\n"screenshot"\n"read page" / "summarize"\n"generate pdf report" → PDF download\n"generate excel" → .xlsx download\n"draft email to [address]"\n"search for [topic]"\n"research [topic]" / "theory [idea]" / "framework [system]"\n"brainstorm [topic]" / "risk [thing]" / "what if [scenario]"\n\n🤖 SOVEREIGN AGENTS (9 types):\n"research [topic]" → researcher agent (Wikipedia + news)\n"crawl [url]" → spider agent (follows links, parallel fetch)\n"scrape [url]" → structured data extractor (tables, prices)\n"scout [url]" → quick deep scan + link map\n"digest: topic1, topic2…" → parallel multi-topic synthesis\n"deploy agent: monitor [url]" → tab-based site watcher\n"deploy agent: sweep [url1], [url2]" → multi-site sweep\n"list agents" / "recall agent" / "recall all agents"\n\n⚗️ AGI TOOLS (open AGI Tools tab):\n"summarize [url]" → fetch + extract any page\n"forge report" → compile all agent findings\nUse the ⚗️ AGI Tools tab for table extraction + source diff';
 
     // 19b. Sovereign Agent — deploy researcher
     } else if (/deploy agent.*research|agent.*research|research agent|send agent.*research/i.test(text)) {
@@ -795,6 +795,86 @@ class JarvisEngine {
       const cleanTopic = topic.replace(/agent|deploy|research/gi, '').trim() || raw;
       chrome.runtime.sendMessage({ action: 'deployAgent', agentType: 'researcher', mission: 'Research: ' + cleanTopic, target: cleanTopic }, (resp) => {
         callback({ success: true, message: resp?.message || ('🤖 Deploying research agent for "' + cleanTopic + '", sir. Switch to the Agents tab to watch progress.'), agent: 'JARVIS • ORCHESTRATOR', mood, awareness });
+      });
+      return;
+
+    // 19b2. Crawler agent
+    } else if (/crawl|spider|deploy.*crawl|crawl agent|send agent.*crawl/i.test(text)) {
+      const urlMatch = raw.match(/https?:\/\/[^\s]+/) || raw.match(/crawl\s+(\S+\.\S+)/i);
+      const target = urlMatch?.[1] || urlMatch?.[0] || '';
+      if (!target) { response = 'Specify a URL to crawl, sir. Example: "crawl https://example.com"'; }
+      else {
+        const url = target.startsWith('http') ? target : 'https://' + target;
+        chrome.runtime.sendMessage({ action: 'deployAgent', agentType: 'crawler', mission: 'Crawl: ' + url, target: url }, (resp) => {
+          callback({ success: true, message: resp?.message || ('🕷 Crawler deployed for ' + url + ', sir. It will spider the domain and report all discovered pages.'), agent: 'JARVIS • ORCHESTRATOR', mood, awareness });
+        });
+        return;
+      }
+
+    // 19b3. Scraper agent
+    } else if (/scrape|extract data|deploy.*scrap|scraper agent/i.test(text)) {
+      const urlMatch = raw.match(/https?:\/\/[^\s]+/) || raw.match(/scrape\s+(\S+\.\S+)/i);
+      const target = urlMatch?.[1] || urlMatch?.[0] || '';
+      if (!target) { response = 'Specify a URL to scrape, sir. Example: "scrape https://example.com"'; }
+      else {
+        const url = target.startsWith('http') ? target : 'https://' + target;
+        chrome.runtime.sendMessage({ action: 'deployAgent', agentType: 'scraper', mission: 'Scrape: ' + url, target: url }, (resp) => {
+          callback({ success: true, message: resp?.message || ('📋 Scraper deployed for ' + url + ', sir. Extracting tables, lists, prices, and structured data.'), agent: 'JARVIS • ORCHESTRATOR', mood, awareness });
+        });
+        return;
+      }
+
+    // 19b4. Scout agent
+    } else if (/scout|quick scan|inspect url|deploy.*scout|scout agent/i.test(text)) {
+      const urlMatch = raw.match(/https?:\/\/[^\s]+/) || raw.match(/scout\s+(\S+\.\S+)/i);
+      const target = urlMatch?.[1] || urlMatch?.[0] || '';
+      if (!target) { response = 'Specify a URL to scout, sir. Example: "scout https://example.com"'; }
+      else {
+        const url = target.startsWith('http') ? target : 'https://' + target;
+        chrome.runtime.sendMessage({ action: 'deployAgent', agentType: 'scout', mission: 'Scout: ' + url, target: url }, (resp) => {
+          callback({ success: true, message: resp?.message || ('🔭 Scout deployed to ' + url + ', sir. Quick deep scan + link map incoming.'), agent: 'JARVIS • ORCHESTRATOR', mood, awareness });
+        });
+        return;
+      }
+
+    // 19b5. Digest agent
+    } else if (/digest|synthesize topics|multi.?topic|deploy.*digest|digest agent/i.test(text)) {
+      const topicsRaw = raw.replace(/digest|synthesize|deploy|agent/gi, '').replace(/[:,]/g, ',').trim();
+      const topics = topicsRaw.split(',').map(s => s.trim()).filter(Boolean);
+      if (topics.length < 2) { response = 'Specify multiple topics to digest, sir. Example: "digest: blockchain, AI, climate"'; }
+      else {
+        chrome.runtime.sendMessage({ action: 'deployAgent', agentType: 'digest', mission: 'Digest: ' + topics.join(', '), target: topics }, (resp) => {
+          callback({ success: true, message: resp?.message || ('⚗️ Digest agent deployed for ' + topics.length + ' topics, sir. Parallel synthesis in progress.'), agent: 'JARVIS • ORCHESTRATOR', mood, awareness });
+        });
+        return;
+      }
+
+    // 19b6. AGI Tool — summarize URL
+    } else if (/summarize\s+(https?:\/\/\S+|this url|a url)|agi summarize/i.test(text)) {
+      const urlMatch = raw.match(/https?:\/\/[^\s]+/);
+      if (!urlMatch) { response = 'Provide a URL to summarize, sir. Example: "summarize https://example.com"'; }
+      else {
+        chrome.runtime.sendMessage({ action: 'agiSummarize', url: urlMatch[0] }, (resp) => {
+          callback({ success: true, message: resp?.message || '(no result)', agent: 'JARVIS • AGI ENGINE', mood, awareness });
+        });
+        return;
+      }
+
+    // 19b7. AGI Tool — scout URL
+    } else if (/scout (https?:\/\/\S+)|\bagi scout\b/i.test(text)) {
+      const urlMatch = raw.match(/https?:\/\/[^\s]+/);
+      if (!urlMatch) { response = 'Provide a URL to scout, sir.'; }
+      else {
+        chrome.runtime.sendMessage({ action: 'agiScout', url: urlMatch[0] }, (resp) => {
+          callback({ success: true, message: resp?.message || '(no result)', agent: 'JARVIS • AGI ENGINE', mood, awareness });
+        });
+        return;
+      }
+
+    // 19b8. AGI Tool — forge report
+    } else if (/forge report|knowledge forge|compile (all )?reports|synthesize (agent |all )?findings/i.test(text)) {
+      chrome.runtime.sendMessage({ action: 'agiForgeReport' }, (resp) => {
+        callback({ success: true, message: resp?.message || '(no agent reports yet)', agent: 'JARVIS • AGI ENGINE', mood, awareness });
       });
       return;
 
@@ -1045,13 +1125,137 @@ class JarvisEngine {
 }
 
 /* ----------------------------------------------------------
- *  Sovereign Agent System
- *  Autonomous web agents deployed from JARVIS chat.
- *  Each agent opens background tabs, navigates URLs, extracts
- *  data via chrome.scripting, and reports back when done.
+ *  V7 Sovereign Agent System
+ *  9 agent types: researcher, monitor, sweep, crawler,
+ *  scraper, watcher, digest, analyst, scout
+ *  Parallel fetch engine — no tab overhead for fetch-capable agents
+ *  Up to 10 concurrent agents
  * ---------------------------------------------------------- */
 
-type AgentType = 'researcher' | 'monitor' | 'analyst' | 'sweep';
+/* -- Parallel Fetch Engine (no tabs, CORS-exempt via host_permissions) -- */
+
+class CrawlFetcher {
+  static async fetchText(url: string, timeoutMs = 20000): Promise<string> {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), timeoutMs);
+    try {
+      const resp = await fetch(url, {
+        signal: ctrl.signal,
+        headers: { 'Accept': 'text/html,application/xhtml+xml,*/*', 'Accept-Language': 'en-US,en;q=0.9' },
+      });
+      clearTimeout(t);
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      const html = await resp.text();
+      return CrawlFetcher.stripHtml(html);
+    } catch (e) {
+      clearTimeout(t);
+      throw e;
+    }
+  }
+
+  static async fetchRaw(url: string, timeoutMs = 20000): Promise<string> {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), timeoutMs);
+    try {
+      const resp = await fetch(url, { signal: ctrl.signal });
+      clearTimeout(t);
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      return await resp.text();
+    } catch (e) { clearTimeout(t); throw e; }
+  }
+
+  static stripHtml(html: string): string {
+    return html
+      .replace(/<script[\s\S]*?<\/script>/gi, '')
+      .replace(/<style[\s\S]*?<\/style>/gi, '')
+      .replace(/<nav[\s\S]*?<\/nav>/gi, '')
+      .replace(/<footer[\s\S]*?<\/footer>/gi, '')
+      .replace(/<header[\s\S]*?<\/header>/gi, '')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"')
+      .replace(/\s{3,}/g, '\n\n').trim().substring(0, 14000);
+  }
+
+  static extractLinks(html: string, baseUrl: string): string[] {
+    const base = (() => { try { return new URL(baseUrl); } catch { return null; } })();
+    if (!base) return [];
+    const links: string[] = [];
+    const re = /href=["']([^"'#?][^"']*?)["']/gi;
+    let m;
+    while ((m = re.exec(html)) !== null) {
+      try {
+        const abs = new URL(m[1], baseUrl);
+        if ((abs.protocol === 'http:' || abs.protocol === 'https:') && abs.hostname === base.hostname && abs.href !== baseUrl) links.push(abs.href);
+      } catch { /* skip */ }
+    }
+    return [...new Set(links)].slice(0, 15);
+  }
+
+  static extractTables(html: string): string {
+    const tables: string[] = [];
+    const tableRe = /<table[\s\S]*?<\/table>/gi;
+    let match;
+    while ((match = tableRe.exec(html)) !== null) {
+      const rows = (match[0].match(/<tr[\s\S]*?<\/tr>/gi) || []).map(row =>
+        (row.match(/<t[dh][^>]*>([\s\S]*?)<\/t[dh]>/gi) || []).map(c => c.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim()).filter(Boolean).join('\t')
+      ).filter(Boolean);
+      if (rows.length > 0) tables.push(rows.join('\n'));
+    }
+    return tables.length > 0 ? tables.join('\n\n---TABLE---\n\n') : '(no tables found)';
+  }
+
+  static extractStructured(html: string): string {
+    const lines: string[] = [];
+    // Headings
+    (html.match(/<h[1-4][^>]*>([\s\S]*?)<\/h[1-4]>/gi) || []).slice(0, 10).forEach(h => {
+      const text = h.replace(/<[^>]+>/g, '').trim();
+      if (text) lines.push('## ' + text);
+    });
+    // Lists
+    const listRe = /<li[^>]*>([\s\S]*?)<\/li>/gi;
+    let lm;
+    let listCount = 0;
+    while ((lm = listRe.exec(html)) !== null && listCount < 20) {
+      const t = lm[1].replace(/<[^>]+>/g, '').trim();
+      if (t) { lines.push('• ' + t); listCount++; }
+    }
+    // Prices / numbers
+    const prices = html.match(/\$[\d,]+(?:\.\d{2})?/g) || [];
+    if (prices.length > 0) lines.push('\n💰 Prices found: ' + [...new Set(prices)].slice(0, 8).join(', '));
+    // Dates
+    const dates = html.match(/\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]* \d{1,2},? \d{4}\b/g) || [];
+    if (dates.length > 0) lines.push('📅 Dates: ' + [...new Set(dates)].slice(0, 6).join(', '));
+    return lines.join('\n').substring(0, 4000);
+  }
+
+  static contentHash(text: string): string {
+    let h = 0;
+    for (let i = 0; i < Math.min(text.length, 4000); i++) h = ((h << 5) - h + text.charCodeAt(i)) | 0;
+    return h.toString(16);
+  }
+
+  static diffText(oldText: string, newText: string): string {
+    const oldLines = new Set(oldText.split('\n').map(l => l.trim()).filter(Boolean));
+    const newLines = newText.split('\n').map(l => l.trim()).filter(Boolean);
+    const added = newLines.filter(l => !oldLines.has(l)).slice(0, 20);
+    const removed = [...oldLines].filter(l => !newLines.includes(l)).slice(0, 20);
+    if (added.length === 0 && removed.length === 0) return '(no significant changes detected)';
+    let result = '';
+    if (added.length > 0) result += '➕ Added:\n' + added.map(l => '  + ' + l).join('\n') + '\n\n';
+    if (removed.length > 0) result += '➖ Removed:\n' + removed.map(l => '  - ' + l).join('\n');
+    return result.trim();
+  }
+
+  static async fetchParallel(urls: string[]): Promise<{ url: string; text: string; ok: boolean }[]> {
+    return Promise.all(urls.map(async url => {
+      try { return { url, text: await CrawlFetcher.fetchText(url), ok: true }; }
+      catch (e) { return { url, text: '(failed: ' + (e as Error).message + ')', ok: false }; }
+    }));
+  }
+}
+
+type AgentType = 'researcher' | 'monitor' | 'sweep' | 'crawler' | 'scraper' | 'watcher' | 'digest' | 'analyst' | 'scout';
 type AgentStatus = 'queued' | 'running' | 'complete' | 'recalled' | 'failed';
 
 interface AgentStep {
@@ -1075,7 +1279,11 @@ export interface SovereignAgentData {
   startedAt: number;
   completedAt?: number;
   error?: string;
+  watchAlarmName?: string;
 }
+
+/* -- Use fetch() for these types (no tab overhead, parallel) -- */
+const FETCH_AGENT_TYPES: AgentType[] = ['crawler', 'scraper', 'digest', 'analyst', 'scout'];
 
 class SovereignAgent {
   data: SovereignAgentData;
@@ -1083,15 +1291,12 @@ class SovereignAgent {
   private onProgress: (agent: SovereignAgentData) => void;
 
   constructor(
-    id: string,
-    name: string,
-    mission: string,
-    type: AgentType,
-    steps: AgentStep[],
+    id: string, name: string, mission: string, type: AgentType, steps: AgentStep[],
     onProgress: (a: SovereignAgentData) => void,
     onComplete: (a: SovereignAgentData) => void,
+    watchAlarmName?: string,
   ) {
-    this.data = { id, name, mission, type, status: 'queued', steps, currentStep: 0, report: '', startedAt: Date.now() };
+    this.data = { id, name, mission, type, status: 'queued', steps, currentStep: 0, report: '', startedAt: Date.now(), watchAlarmName };
     this.onProgress = onProgress;
     this.onComplete = onComplete;
   }
@@ -1099,62 +1304,179 @@ class SovereignAgent {
   async run() {
     this.data.status = 'running';
     this.onProgress(this.data);
+    if (FETCH_AGENT_TYPES.includes(this.data.type)) {
+      await this._runFetch();
+    } else {
+      await this._runTabs();
+    }
+  }
 
-    // Create a persistent background tab
-    let tab: chrome.tabs.Tab | null = null;
+  /* -- Fetch-based runner (parallel, no tabs) -- */
+  private async _runFetch() {
+    if (this.data.type === 'crawler') {
+      await this._runCrawler();
+    } else if (this.data.type === 'scraper') {
+      await this._runScraper();
+    } else if (this.data.type === 'digest') {
+      await this._runDigest();
+    } else {
+      // analyst, scout — parallel fetch
+      for (let i = 0; i < this.data.steps.length; i++) {
+        if (this.data.status === 'recalled') break;
+        this.data.currentStep = i;
+        const step = this.data.steps[i];
+        step.status = 'running';
+        this.onProgress(this.data);
+        try {
+          step.extract = this._summarize(await CrawlFetcher.fetchText(step.url), step.label, 700);
+          step.status = 'done';
+          step.visitedAt = Date.now();
+        } catch (e) {
+          step.extract = '(failed: ' + (e as Error).message + ')';
+          step.status = 'failed';
+        }
+        this.onProgress(this.data);
+      }
+      this._finish();
+    }
+  }
+
+  /* -- Crawler: fetch seed → extract links → crawl links in parallel -- */
+  private async _runCrawler() {
+    const seed = this.data.steps[0];
+    if (!seed) { this._fail('No seed URL'); return; }
+    seed.status = 'running';
+    this.data.currentStep = 0;
+    this.onProgress(this.data);
+
+    let rawHtml = '';
     try {
-      tab = await new Promise<chrome.tabs.Tab>(res =>
-        chrome.tabs.create({ url: 'about:blank', active: false }, res)
-      );
-      this.data.tabId = tab.id;
-    } catch {
-      this._fail('Could not open background tab.'); return;
+      rawHtml = await CrawlFetcher.fetchRaw(seed.url);
+      seed.extract = this._summarize(CrawlFetcher.stripHtml(rawHtml), seed.label, 600);
+      seed.status = 'done';
+      seed.visitedAt = Date.now();
+    } catch (e) {
+      seed.extract = '(failed: ' + (e as Error).message + ')';
+      seed.status = 'failed';
+    }
+    this.onProgress(this.data);
+
+    // Discover links from seed
+    const links = CrawlFetcher.extractLinks(rawHtml, seed.url).slice(0, 8);
+    const discovered = links.map((url, i) => ({
+      url, label: 'Discovered page ' + (i + 1) + ': ' + (() => { try { return new URL(url).pathname; } catch { return url; } })(),
+      status: 'pending' as const, extract: '',
+    }));
+    this.data.steps.push(...discovered);
+    this.onProgress(this.data);
+
+    // Crawl discovered links in parallel batches of 4
+    if (this.data.status !== 'recalled') {
+      const batches: AgentStep[][] = [];
+      for (let i = 0; i < discovered.length; i += 4) batches.push(discovered.slice(i, i + 4));
+      for (const batch of batches) {
+        if (this.data.status === 'recalled') break;
+        batch.forEach(s => { s.status = 'running'; this.data.currentStep = this.data.steps.indexOf(s); });
+        this.onProgress(this.data);
+        const results = await CrawlFetcher.fetchParallel(batch.map(s => s.url));
+        results.forEach((r, j) => {
+          batch[j].extract = r.ok ? this._summarize(r.text, batch[j].label, 400) : r.text;
+          batch[j].status = r.ok ? 'done' : 'failed';
+          batch[j].visitedAt = Date.now();
+        });
+        this.onProgress(this.data);
+      }
     }
 
-    const tabId = tab.id!;
+    this._finish();
+  }
 
+  /* -- Scraper: fetch URL, extract structured data (tables, lists, prices) -- */
+  private async _runScraper() {
     for (let i = 0; i < this.data.steps.length; i++) {
       if (this.data.status === 'recalled') break;
       this.data.currentStep = i;
       const step = this.data.steps[i];
       step.status = 'running';
       this.onProgress(this.data);
+      try {
+        const raw = await CrawlFetcher.fetchRaw(step.url);
+        const tables = CrawlFetcher.extractTables(raw);
+        const structured = CrawlFetcher.extractStructured(raw);
+        step.extract = '📋 STRUCTURED DATA:\n\n' + structured + '\n\n📊 TABLES:\n' + tables.substring(0, 1500);
+        step.status = 'done';
+        step.visitedAt = Date.now();
+      } catch (e) {
+        step.extract = '(failed: ' + (e as Error).message + ')';
+        step.status = 'failed';
+      }
+      this.onProgress(this.data);
+    }
+    this._finish();
+  }
 
+  /* -- Digest: parallel fetch all URLs, synthesize across sources -- */
+  private async _runDigest() {
+    const urls = this.data.steps.map(s => s.url);
+    this.data.steps.forEach(s => { s.status = 'running'; });
+    this.onProgress(this.data);
+    const results = await CrawlFetcher.fetchParallel(urls);
+    results.forEach((r, i) => {
+      this.data.steps[i].extract = r.ok ? this._summarize(r.text, this.data.steps[i].label, 500) : r.text;
+      this.data.steps[i].status = r.ok ? 'done' : 'failed';
+      this.data.steps[i].visitedAt = Date.now();
+    });
+    this.data.currentStep = this.data.steps.length - 1;
+    this.onProgress(this.data);
+    this._finish();
+  }
+
+  /* -- Tab-based runner (researcher, monitor, sweep, watcher) -- */
+  private async _runTabs() {
+    let tab: chrome.tabs.Tab | null = null;
+    try {
+      tab = await new Promise<chrome.tabs.Tab>(res => chrome.tabs.create({ url: 'about:blank', active: false }, res));
+      this.data.tabId = tab.id;
+    } catch { this._fail('Could not open background tab.'); return; }
+
+    const tabId = tab.id!;
+    for (let i = 0; i < this.data.steps.length; i++) {
+      if (this.data.status === 'recalled') break;
+      this.data.currentStep = i;
+      const step = this.data.steps[i];
+      step.status = 'running';
+      this.onProgress(this.data);
       try {
         const text = await this._visitAndExtract(tabId, step.url);
         step.extract = this._summarize(text, step.label, 600);
         step.status = 'done';
         step.visitedAt = Date.now();
-      } catch (e) {
+      } catch {
         step.extract = '(extraction failed)';
         step.status = 'failed';
       }
       this.onProgress(this.data);
     }
-
-    // Close the background tab
     try { chrome.tabs.remove(tabId); } catch { /* ignore */ }
     this.data.tabId = undefined;
+    this._finish();
+  }
 
+  private _finish() {
     if (this.data.status === 'recalled') {
-      this.data.report = '⚡ Agent recalled by JARVIS before completion.\n\nPartial findings:\n\n' + this._buildReport();
-      this.data.completedAt = Date.now();
-      this.onComplete(this.data);
-      return;
+      this.data.report = '⚡ Agent recalled.\n\nPartial findings:\n\n' + this._buildReport();
+    } else {
+      this.data.status = 'complete';
+      this.data.report = this._buildReport();
     }
-
-    this.data.status = 'complete';
-    this.data.report = this._buildReport();
     this.data.completedAt = Date.now();
     this.onComplete(this.data);
   }
 
   recall() {
     this.data.status = 'recalled';
-    if (this.data.tabId) {
-      try { chrome.tabs.remove(this.data.tabId); } catch { /* ignore */ }
-      this.data.tabId = undefined;
-    }
+    if (this.data.tabId) { try { chrome.tabs.remove(this.data.tabId); } catch { /* ignore */ } this.data.tabId = undefined; }
+    if (this.data.watchAlarmName) { chrome.alarms.clear(this.data.watchAlarmName); }
   }
 
   private _fail(reason: string) {
@@ -1167,94 +1489,64 @@ class SovereignAgent {
 
   private _visitAndExtract(tabId: number, url: string): Promise<string> {
     return new Promise((resolve, reject) => {
-      // Navigate the background tab to the URL
       chrome.tabs.update(tabId, { url }, () => {
         if (chrome.runtime.lastError) { reject(chrome.runtime.lastError.message); return; }
-        // Wait for the tab to finish loading
-        const listener = (updatedId: number, info: chrome.tabs.TabChangeInfo) => {
-          if (updatedId !== tabId || info.status !== 'complete') return;
+        const timeout = setTimeout(() => { chrome.tabs.onUpdated.removeListener(listener); reject('Timeout'); }, 30000);
+        const listener = (id: number, info: chrome.tabs.TabChangeInfo) => {
+          if (id !== tabId || info.status !== 'complete') return;
           chrome.tabs.onUpdated.removeListener(listener);
-          // Give page JS 500ms to hydrate, then extract
+          clearTimeout(timeout);
           setTimeout(() => {
-            chrome.scripting.executeScript(
-              {
-                target: { tabId },
-                func: () => {
-                  const main = document.querySelector('main, article, [role="main"], #content, #bodyContent, .post-content, .entry-content');
-                  const src = main || document.body;
-                  if (!src) return '';
-                  // Remove nav/footer/script/style/ads
-                  const clone = src.cloneNode(true) as HTMLElement;
-                  clone.querySelectorAll('nav,footer,script,style,noscript,aside,.ad,.advertisement,[aria-hidden="true"]').forEach(el => el.remove());
-                  return (clone.innerText || clone.textContent || '').replace(/\s{3,}/g, '\n\n').substring(0, 12000);
-                },
+            chrome.scripting.executeScript({
+              target: { tabId },
+              func: () => {
+                const main = document.querySelector('main,article,[role="main"],#content,#bodyContent,.post-content,.entry-content');
+                const src = main || document.body;
+                if (!src) return '';
+                const clone = src.cloneNode(true) as HTMLElement;
+                clone.querySelectorAll('nav,footer,script,style,noscript,aside,.ad,.advertisement').forEach(el => el.remove());
+                return (clone.innerText || clone.textContent || '').replace(/\s{3,}/g, '\n\n').substring(0, 12000);
               },
-              (results) => {
-                if (chrome.runtime.lastError) { reject(chrome.runtime.lastError.message); return; }
-                resolve((results?.[0]?.result as string) || '');
-              }
-            );
-          }, 800);
+            }, (r) => {
+              if (chrome.runtime.lastError) { reject(chrome.runtime.lastError.message); return; }
+              resolve((r?.[0]?.result as string) || '');
+            });
+          }, 600);
         };
-        // Timeout guard — 30s
-        const timeout = setTimeout(() => {
-          chrome.tabs.onUpdated.removeListener(listener);
-          reject('Tab load timeout (30s)');
-        }, 30000);
         chrome.tabs.onUpdated.addListener(listener);
-        // If tab already complete (from:about:blank navigate)
-        chrome.tabs.get(tabId, (t) => {
-          if (t?.status === 'complete') {
-            clearTimeout(timeout);
-            chrome.tabs.onUpdated.removeListener(listener);
-            setTimeout(() => {
-              chrome.scripting.executeScript({ target: { tabId }, func: () => (document.body?.innerText || '').substring(0, 12000) }, (r) => {
-                resolve((r?.[0]?.result as string) || '');
-              });
-            }, 500);
-          }
-        });
       });
     });
   }
 
   private _summarize(text: string, focus: string, maxLen: number): string {
-    if (!text || text.length < 50) return '(no readable content found)';
+    if (!text || text.length < 50) return '(no readable content)';
     const focusLow = focus.toLowerCase();
-    // Split into paragraphs, score by relevance to focus keyword
     const paras = text.split(/\n\n+/).map(p => p.trim()).filter(p => p.length > 40);
-    const scored = paras.map(p => ({
-      p,
-      score: focusLow.split(' ').reduce((s, kw) => s + (p.toLowerCase().includes(kw) ? 1 : 0), 0)
-    }));
+    const scored = paras.map(p => ({ p, score: focusLow.split(' ').reduce((s, kw) => s + (p.toLowerCase().includes(kw) ? 1 : 0), 0) }));
     scored.sort((a, b) => b.score - a.score);
     let result = '';
-    for (const { p } of scored) {
-      if ((result + p).length > maxLen) break;
-      result += p + '\n\n';
-    }
+    for (const { p } of scored) { if ((result + p).length > maxLen) break; result += p + '\n\n'; }
     return result.trim() || paras.slice(0, 3).join('\n\n').substring(0, maxLen);
   }
 
   private _buildReport(): string {
     const done = this.data.steps.filter(s => s.status === 'done');
     if (done.length === 0) return '(no data extracted)';
-    let report = '📋 SOVEREIGN AGENT REPORT\n';
-    report += '🤖 ' + this.data.name + ' — Mission: ' + this.data.mission + '\n';
-    report += '⏱ Completed: ' + new Date(this.data.completedAt || Date.now()).toLocaleTimeString() + '\n\n';
-    report += '━━━━━━━━━━━━━━━━━━━━━\n\n';
-    for (const step of this.data.steps) {
-      if (step.status !== 'done' || !step.extract) continue;
-      report += '🌐 ' + step.label + '\n' + step.url + '\n\n' + step.extract + '\n\n━━━━━━━━━━━━━━━━━━━━━\n\n';
+    let r = '📋 JARVIS v7 SOVEREIGN AGENT REPORT\n';
+    r += '🤖 ' + this.data.name + ' [' + this.data.type.toUpperCase() + '] — ' + this.data.mission + '\n';
+    r += '⏱ ' + new Date(this.data.completedAt || Date.now()).toLocaleTimeString() + ' · ' + done.length + '/' + this.data.steps.length + ' sources\n\n━━━━━━━━━━━━━━━━━━━━━\n\n';
+    for (const s of this.data.steps) {
+      if (s.status !== 'done' || !s.extract) continue;
+      r += '🌐 ' + s.label + '\n' + s.url + '\n\n' + s.extract + '\n\n━━━━━━━━━━━━━━━━━━━━━\n\n';
     }
-    return report.trim();
+    return r.trim();
   }
 }
 
-/* -- Agent Dispatcher ---------------------------------------- */
+/* -- Agent Dispatcher (V7: 10 concurrent, 9 types) -- */
 
-const MAX_AGENTS = 5;
-const AGENT_NAMES = ['ALPHA-1', 'ALPHA-2', 'ALPHA-3', 'BETA-1', 'BETA-2', 'GAMMA-1', 'SIGMA-1'];
+const MAX_AGENTS = 10;
+const AGENT_NAMES = ['ALPHA-1', 'ALPHA-2', 'ALPHA-3', 'BETA-1', 'BETA-2', 'GAMMA-1', 'SIGMA-1', 'DELTA-1', 'OMEGA-1', 'ZETA-1'];
 
 declare const globalThis: {
   jarvisEngine?: JarvisEngine;
@@ -1265,89 +1557,177 @@ class AgentDispatcher {
   agents: Map<string, SovereignAgent> = new Map();
   history: SovereignAgentData[] = [];
 
-  /** Generate mission steps for a research topic */
-  private _buildResearchSteps(topic: string): AgentStep[] {
+  private _researchSteps(topic: string): AgentStep[] {
     const enc = encodeURIComponent(topic);
+    const t = topic.toLowerCase();
     const steps: AgentStep[] = [
       { url: 'https://en.wikipedia.org/wiki/' + enc, label: 'Wikipedia: ' + topic, status: 'pending', extract: '' },
-      { url: 'https://en.wikipedia.org/w/index.php?search=' + enc + '&ns0=1', label: 'Wikipedia Search', status: 'pending', extract: '' },
+      { url: 'https://en.wikipedia.org/w/index.php?search=' + enc, label: 'Wikipedia Search', status: 'pending', extract: '' },
     ];
-    // Add domain-specific URLs based on keywords
-    const t = topic.toLowerCase();
-    if (/tech|code|software|api|framework|ai|ml|language|model/i.test(t))
-      steps.push({ url: 'https://dev.to/search?q=' + enc, label: 'DEV.to: ' + topic, status: 'pending', extract: '' });
-    if (/stock|market|finance|company|invest|crypto|price/i.test(t))
-      steps.push({ url: 'https://finance.yahoo.com/search?p=' + enc, label: 'Yahoo Finance: ' + topic, status: 'pending', extract: '' });
-    if (/health|medical|disease|treatment|symptom|drug/i.test(t))
-      steps.push({ url: 'https://www.mayoclinic.org/search/search-results?q=' + enc, label: 'Mayo Clinic: ' + topic, status: 'pending', extract: '' });
-    if (/science|research|study|paper|journal/i.test(t))
-      steps.push({ url: 'https://www.sciencedaily.com/search/?keyword=' + enc, label: 'ScienceDaily: ' + topic, status: 'pending', extract: '' });
-    // Always add a news source
-    steps.push({ url: 'https://www.bbc.com/search?q=' + enc, label: 'BBC News: ' + topic, status: 'pending', extract: '' });
-    return steps.slice(0, 4); // cap at 4 pages for speed
+    if (/tech|code|software|api|ai|ml|model|framework/i.test(t)) steps.push({ url: 'https://dev.to/search?q=' + enc, label: 'DEV.to', status: 'pending', extract: '' });
+    if (/stock|market|finance|crypto|invest/i.test(t)) steps.push({ url: 'https://finance.yahoo.com/search?p=' + enc, label: 'Yahoo Finance', status: 'pending', extract: '' });
+    if (/health|medical|disease|drug/i.test(t)) steps.push({ url: 'https://www.mayoclinic.org/search/search-results?q=' + enc, label: 'Mayo Clinic', status: 'pending', extract: '' });
+    if (/science|research|study|paper/i.test(t)) steps.push({ url: 'https://www.sciencedaily.com/search/?keyword=' + enc, label: 'ScienceDaily', status: 'pending', extract: '' });
+    steps.push({ url: 'https://www.bbc.com/search?q=' + enc, label: 'BBC News', status: 'pending', extract: '' });
+    return steps.slice(0, 4);
   }
 
-  /** Generate steps for monitoring a URL */
-  private _buildMonitorSteps(url: string, term: string): AgentStep[] {
+  private _crawlerSteps(url: string): AgentStep[] {
+    const safe = url.startsWith('http') ? url : 'https://' + url;
+    return [{ url: safe, label: 'Seed: ' + (() => { try { return new URL(safe).hostname; } catch { return safe; } })(), status: 'pending', extract: '' }];
+  }
+
+  private _scraperSteps(url: string): AgentStep[] {
+    const safe = url.startsWith('http') ? url : 'https://' + url;
+    return [{ url: safe, label: 'Scrape: ' + safe, status: 'pending', extract: '' }];
+  }
+
+  private _monitorSteps(url: string): AgentStep[] {
+    const safe = url.startsWith('http') ? url : 'https://' + url;
     return [
-      { url, label: 'Initial check: ' + new URL(url.startsWith('http') ? url : 'https://' + url).hostname, status: 'pending', extract: '' },
-      { url, label: 'Second pass (verify)', status: 'pending', extract: '' },
+      { url: safe, label: 'Initial: ' + (() => { try { return new URL(safe).hostname; } catch { return safe; } })(), status: 'pending', extract: '' },
+      { url: safe, label: 'Verification pass', status: 'pending', extract: '' },
     ];
   }
 
-  /** Generate steps for a URL sweep / analyst mission */
-  private _buildSweepSteps(urls: string[]): AgentStep[] {
-    return urls.slice(0, 5).map(u => ({
-      url: u.startsWith('http') ? u : 'https://' + u,
-      label: (() => { try { return new URL(u.startsWith('http') ? u : 'https://' + u).hostname; } catch { return u; } })(),
-      status: 'pending' as const,
-      extract: '',
+  private _digestSteps(topics: string[]): AgentStep[] {
+    return topics.slice(0, 6).map(t => ({
+      url: 'https://en.wikipedia.org/wiki/' + encodeURIComponent(t),
+      label: 'Digest: ' + t, status: 'pending' as const, extract: '',
     }));
+  }
+
+  private _analystSteps(urls: string[]): AgentStep[] {
+    return urls.slice(0, 8).map(u => {
+      const safe = u.startsWith('http') ? u : 'https://' + u;
+      return { url: safe, label: (() => { try { return new URL(safe).hostname; } catch { return safe; } })(), status: 'pending' as const, extract: '' };
+    });
+  }
+
+  private _scoutSteps(url: string): AgentStep[] {
+    const safe = url.startsWith('http') ? url : 'https://' + url;
+    return [{ url: safe, label: 'Scout: ' + safe, status: 'pending', extract: '' }];
+  }
+
+  private _watcherSteps(url: string): AgentStep[] {
+    const safe = url.startsWith('http') ? url : 'https://' + url;
+    return [{ url: safe, label: 'Watch: ' + safe, status: 'pending', extract: '' }];
   }
 
   deploy(
     type: AgentType,
     mission: string,
-    urlsOrTopic: string | string[],
-    onProgress: (data: SovereignAgentData) => void,
-    onComplete: (data: SovereignAgentData) => void,
+    target: string | string[],
+    onProgress: (d: SovereignAgentData) => void,
+    onComplete: (d: SovereignAgentData) => void,
   ): SovereignAgentData | { error: string } {
     const running = [...this.agents.values()].filter(a => a.data.status === 'running').length;
-    if (running >= MAX_AGENTS) return { error: 'Maximum ' + MAX_AGENTS + ' agents already deployed, sir. Recall one first.' };
+    if (running >= MAX_AGENTS) return { error: 'Maximum ' + MAX_AGENTS + ' agents deployed. Recall one first, sir.' };
 
     const id = 'agent-' + Date.now();
     const name = AGENT_NAMES[this.agents.size % AGENT_NAMES.length];
     let steps: AgentStep[];
-    if (type === 'researcher') steps = this._buildResearchSteps(urlsOrTopic as string);
-    else if (type === 'monitor') steps = this._buildMonitorSteps(urlsOrTopic as string, mission);
-    else steps = this._buildSweepSteps(Array.isArray(urlsOrTopic) ? urlsOrTopic : [urlsOrTopic as string]);
+    let watchAlarmName: string | undefined;
+
+    const single = Array.isArray(target) ? target[0] : target;
+    const multi = Array.isArray(target) ? target : [target];
+
+    switch (type) {
+      case 'researcher': steps = this._researchSteps(single); break;
+      case 'crawler': steps = this._crawlerSteps(single); break;
+      case 'scraper': steps = this._scraperSteps(single); break;
+      case 'monitor': steps = this._monitorSteps(single); break;
+      case 'watcher': {
+        steps = this._watcherSteps(single);
+        watchAlarmName = 'jarvis-watcher-' + id;
+        chrome.alarms.create(watchAlarmName, { delayInMinutes: 30, periodInMinutes: 30 });
+        break;
+      }
+      case 'digest': steps = this._digestSteps(multi); break;
+      case 'analyst': steps = this._analystSteps(multi); break;
+      case 'scout': steps = this._scoutSteps(single); break;
+      default: steps = this._researchSteps(single);
+    }
 
     const agent = new SovereignAgent(id, name, mission, type, steps,
-      (d) => { this.agents.set(id, agent); onProgress(d); },
-      (d) => { this.history.unshift(d); this.agents.delete(id); onComplete(d); }
+      (d) => { onProgress(d); },
+      (d) => { this.history.unshift(d); this.agents.delete(id); onComplete(d); },
+      watchAlarmName,
     );
     this.agents.set(id, agent);
-    // Run asynchronously — don't await so message listener returns immediately
     agent.run().catch(() => {});
     return agent.data;
   }
 
   recall(id: string): boolean {
-    const agent = this.agents.get(id);
-    if (!agent) return false;
-    agent.recall();
+    const a = this.agents.get(id);
+    if (!a) return false;
+    a.recall();
     return true;
   }
 
-  recallAll() {
-    for (const agent of this.agents.values()) agent.recall();
-  }
+  recallAll() { for (const a of this.agents.values()) a.recall(); }
 
   list(): SovereignAgentData[] {
-    return [
-      ...[...this.agents.values()].map(a => a.data),
-      ...this.history.slice(0, 10),
-    ];
+    return [...[...this.agents.values()].map(a => a.data), ...this.history.slice(0, 15)];
+  }
+
+  /* AGI Tool: Summarize any URL */
+  async agiSummarize(url: string): Promise<string> {
+    const safe = url.startsWith('http') ? url : 'https://' + url;
+    try {
+      const text = await CrawlFetcher.fetchText(safe);
+      if (!text || text.length < 50) return '(no readable content at ' + safe + ')';
+      const paras = text.split(/\n\n+/).filter(p => p.length > 60).slice(0, 10);
+      return '📄 Summary of ' + safe + '\n\n' + paras.slice(0, 5).join('\n\n') + '\n\n[' + Math.round(text.length / 1000) + 'KB extracted]';
+    } catch (e) { return '❌ Could not fetch ' + safe + ': ' + (e as Error).message; }
+  }
+
+  /* AGI Tool: Extract tables from URL */
+  async agiExtractTables(url: string): Promise<string> {
+    const safe = url.startsWith('http') ? url : 'https://' + url;
+    try {
+      const raw = await CrawlFetcher.fetchRaw(safe);
+      return '📊 Tables from ' + safe + '\n\n' + CrawlFetcher.extractTables(raw);
+    } catch (e) { return '❌ ' + (e as Error).message; }
+  }
+
+  /* AGI Tool: Diff two URLs */
+  async agiDiff(url1: string, url2: string): Promise<string> {
+    const [r1, r2] = await CrawlFetcher.fetchParallel([
+      url1.startsWith('http') ? url1 : 'https://' + url1,
+      url2.startsWith('http') ? url2 : 'https://' + url2,
+    ]);
+    if (!r1.ok) return '❌ Could not fetch URL 1: ' + r1.text;
+    if (!r2.ok) return '❌ Could not fetch URL 2: ' + r2.text;
+    return '🔍 Diff: ' + url1 + ' vs ' + url2 + '\n\n' + CrawlFetcher.diffText(r1.text, r2.text);
+  }
+
+  /* AGI Tool: Compile all completed agent findings */
+  agiForgeReport(): string {
+    const done = [...this.history, ...[...this.agents.values()].map(a => a.data)].filter(a => a.report && a.report.length > 50);
+    if (done.length === 0) return '(no agent reports to synthesize yet, sir)';
+    let report = '⚗️ JARVIS v7 KNOWLEDGE FORGE\nSynthesized from ' + done.length + ' agent reports\n' + new Date().toLocaleString() + '\n\n' + '═'.repeat(40) + '\n\n';
+    for (const a of done.slice(0, 8)) {
+      report += '▶ ' + a.name + ' — ' + a.mission + '\n';
+      report += a.report.substring(0, 800) + '\n\n' + '─'.repeat(40) + '\n\n';
+    }
+    return report.trim();
+  }
+
+  /* AGI Tool: Quick scout — fetch + structured extract */
+  async agiScout(url: string): Promise<string> {
+    const safe = url.startsWith('http') ? url : 'https://' + url;
+    try {
+      const raw = await CrawlFetcher.fetchRaw(safe);
+      const text = CrawlFetcher.stripHtml(raw);
+      const structured = CrawlFetcher.extractStructured(raw);
+      const links = CrawlFetcher.extractLinks(raw, safe);
+      return '🔭 Scout Report: ' + safe + '\n\n'
+        + '📝 Content preview:\n' + text.substring(0, 500) + '\n\n'
+        + '🏗️ Structure:\n' + structured.substring(0, 600) + '\n\n'
+        + '🔗 Links found: ' + links.length + '\n' + links.slice(0, 5).join('\n');
+    } catch (e) { return '❌ Scout failed: ' + (e as Error).message; }
   }
 }
 
@@ -1621,6 +2001,37 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     case 'recallAllAgents': {
       globalThis.agentDispatcher!.recallAll();
       sendResponse({ success: true, message: 'All agents recalled, sir.' });
+      break;
+    }
+
+    /* -- V7 AGI Tool handlers ------------------------------------ */
+    case 'agiSummarize': {
+      const url = (message.url as string) || '';
+      if (!url) { sendResponse({ success: false, message: 'No URL provided, sir.' }); break; }
+      globalThis.agentDispatcher!.agiSummarize(url).then(result => sendResponse({ success: true, message: result })).catch(e => sendResponse({ success: false, message: '❌ ' + (e as Error).message }));
+      break;
+    }
+    case 'agiExtractTables': {
+      const url = (message.url as string) || '';
+      if (!url) { sendResponse({ success: false, message: 'No URL provided, sir.' }); break; }
+      globalThis.agentDispatcher!.agiExtractTables(url).then(result => sendResponse({ success: true, message: result })).catch(e => sendResponse({ success: false, message: '❌ ' + (e as Error).message }));
+      break;
+    }
+    case 'agiDiff': {
+      const url1 = (message.url1 as string) || '';
+      const url2 = (message.url2 as string) || '';
+      if (!url1 || !url2) { sendResponse({ success: false, message: 'Two URLs required, sir.' }); break; }
+      globalThis.agentDispatcher!.agiDiff(url1, url2).then(result => sendResponse({ success: true, message: result })).catch(e => sendResponse({ success: false, message: '❌ ' + (e as Error).message }));
+      break;
+    }
+    case 'agiForgeReport': {
+      sendResponse({ success: true, message: globalThis.agentDispatcher!.agiForgeReport() });
+      break;
+    }
+    case 'agiScout': {
+      const url = (message.url as string) || '';
+      if (!url) { sendResponse({ success: false, message: 'No URL provided, sir.' }); break; }
+      globalThis.agentDispatcher!.agiScout(url).then(result => sendResponse({ success: true, message: result })).catch(e => sendResponse({ success: false, message: '❌ ' + (e as Error).message }));
       break;
     }
 
