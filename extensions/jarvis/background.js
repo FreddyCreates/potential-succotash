@@ -5,7 +5,13 @@
  * The ultimate AI command center for your browser.
  */
 
-/* ── JARVISIUS Engine — pre-built Wasm binary loader ────────────────────── */
+/* ── JARVISIUS — Universal CPL WASM Activation ───────────────────────────
+ * Cognitive Procurement Language (CPL) source → Universal WASM binary
+ * f(CPL source) → Universal WASM binary (pre-built, stored as fixed value)
+ * Universal: composes into any runtime, any call, any query.
+ * On boot: activates mood, initializes phi, routes first protocol,
+ *           wires into every heartbeat tick — turns everything on.
+ */
 var JarviusWasm = null;
 
 async function loadJarviusEngine() {
@@ -15,17 +21,31 @@ async function loadJarviusEngine() {
     var buffer = await response.arrayBuffer();
     var result = await WebAssembly.instantiate(buffer, {});
     JarviusWasm = result.instance.exports;
-    console.log('[JARVISIUS] Wasm engine loaded — version EXT-' + JarviusWasm.version() +
-      ', protocols=' + JarviusWasm.get_protocol_count() +
-      ', heartbeat=' + JarviusWasm.get_heartbeat_ms() + 'ms');
+
+    /* ── ACTIVATION: run CPL Universal WASM boot sequence ── */
+    var bootProtocol = JarviusWasm.boot();  // turns everything on
+    var activeMood   = JarviusWasm.get_mood();
+    var phiSlot      = JarviusWasm.read_slot(0);
+    var booted       = JarviusWasm.read_counter(0);
+
+    console.log(
+      '[JARVISIUS CPL] Universal WASM activated —' +
+      ' EXT-' + JarviusWasm.version() +
+      ' | protocols=' + JarviusWasm.get_protocol_count() +
+      ' | heartbeat=' + JarviusWasm.get_heartbeat_ms() + 'ms' +
+      ' | boot-protocol=PROTO-' + String(bootProtocol).padStart(3, '0') +
+      ' | mood=' + ['neutral','curious','playful','focused','empathetic'][activeMood] +
+      ' | φ-slot=' + phiSlot +
+      ' | status=' + (booted ? 'ONLINE' : 'STANDBY')
+    );
   } catch (e) {
-    console.warn('[JARVISIUS] Wasm load failed, falling back to JS engine:', e.message);
+    console.warn('[JARVISIUS CPL] Universal WASM activation failed, JS fallback active:', e.message);
   }
 }
 
 loadJarviusEngine();
 
-/* Wasm-accelerated helpers (fall back to JS if wasm not loaded) */
+/* ── Universal CPL WASM helpers — called on every operation ─────────────── */
 function wasmPhiWeight(priority) {
   if (JarviusWasm) return JarviusWasm.phi_weight(priority);
   return Math.round(priority * 1.618);
@@ -40,6 +60,10 @@ function wasmScoreSentiment(pos, neg) {
 }
 function wasmTick() {
   if (JarviusWasm) return JarviusWasm.tick();
+  return 0;
+}
+function wasmMood(signal) {
+  if (JarviusWasm) return JarviusWasm.advance_mood(signal);
   return 0;
 }
 
@@ -880,6 +904,8 @@ class JarvisEngine {
     setInterval(function () {
       self.state.heartbeatCount++;
       self.state.uptime = Date.now() - self.startTime;
+      /* CPL Universal WASM tick — activates on every heartbeat */
+      self.state.wasmTick = wasmTick();
       self._processQueue();
     }, HEARTBEAT);
   }
