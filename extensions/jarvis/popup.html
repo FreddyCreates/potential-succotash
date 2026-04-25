@@ -223,7 +223,7 @@
       <span class="header-title">JARVIS</span>
       <span class="arc-reactor"></span>
     </div>
-    <span class="version">v1.0.0</span>
+    <span class="version">v4.0.0</span>
   </div>
 
   <!-- Status Bar -->
@@ -314,7 +314,7 @@
 
   function sendCommand(intent, payload) {
     chrome.runtime.sendMessage(
-      { type: 'jarvis-command', intent: intent, payload: payload || {} },
+      { action: 'parseCommand', command: intent, payload: payload || {} },
       function(response) {
         if (chrome.runtime.lastError) {
           showResponse('Error: ' + chrome.runtime.lastError.message);
@@ -331,10 +331,11 @@
 
   function fetchStatus() {
     chrome.runtime.sendMessage(
-      { type: 'jarvis-status' },
+      { action: 'getStatus' },
       function(response) {
-        if (response && response.tasks !== undefined) {
-          taskCountEl.textContent = response.tasks;
+        if (chrome.runtime.lastError) return;
+        if (response && response.success && response.data && response.data.taskStats) {
+          taskCountEl.textContent = response.data.taskStats.queued || 0;
         }
       }
     );
@@ -361,9 +362,11 @@
   }
 
   openPanelBtn.addEventListener('click', function() {
-    if (chrome.sidePanel) {
-      chrome.sidePanel.open({ windowId: undefined });
-    }
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+      if (tabs && tabs[0] && chrome.sidePanel) {
+        chrome.sidePanel.open({ windowId: tabs[0].windowId }, function() {});
+      }
+    });
   });
 
   startHeartbeat();

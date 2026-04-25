@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Edge Tab Analyzer",
   "version": "1.0.0",
-  "description": "AI User Experience — Edge side panel that analyzes open tab content with semantic extraction and scoring",
+  "description": "AI User Experience \u2014 Edge side panel that analyzes open tab content with semantic extraction and scoring",
   "permissions": [
     "sidePanel",
     "activeTab",
@@ -35,6 +35,8 @@
     "default_icon": {
       "16": "icons/icon16.png",
       "48": "icons/icon48.png"
-    }
-  }
+    },
+    "default_popup": "popup.html"
+  },
+  "devtools_page": "devtools.html"
 }

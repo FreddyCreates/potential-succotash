@@ -258,7 +258,7 @@ html, body {
 <div class="header">
   <div class="arc-reactor" id="arcReactor"></div>
   <span class="header-title">JARVIS AI</span>
-  <span class="header-version">v1.0.0</span>
+  <span class="header-version">v4.0.0</span>
   <button class="header-btn" id="btnMinimize" title="Minimize">—</button>
   <button class="header-btn" id="btnClose" title="Close">✕</button>
 </div>
@@ -279,10 +279,11 @@ html, body {
        Powered by PhantomAI · 7 thinking patterns · Personality
        ══════════════════════════════════════════════════════════ -->
 
-  <!-- Tab bar: Chat | Commands -->
+  <!-- Tab bar: Chat | Commands | Memory -->
   <div class="chat-tab-bar">
     <div class="chat-tab active" id="tabChat">💬 Chat</div>
     <div class="chat-tab" id="tabCommands">⚡ Commands</div>
+    <div class="chat-tab" id="tabMemory">🧠 Memory</div>
   </div>
 
   <!-- Chat Panel -->
@@ -297,7 +298,7 @@ html, body {
       <!-- Welcome bubble -->
       <div class="chat-bubble bubble-jarvis">
         <span class="bubble-name">JARVIS</span>
-        Hey Alfredo! I'm ready — what's on your mind? You can just talk to me naturally. ✨
+        Hey Alfredo! JARVIS v4.0 online — 40-category brain, 250 protocols, Universal CPL WASM. What's on your mind? ✦
       </div>
     </div>
     <!-- Thinking indicator (hidden by default) -->
@@ -370,6 +371,25 @@ html, body {
   </div>
 
   </div><!-- /commandsPanel -->
+
+  <!-- Memory Panel (hidden initially) -->
+  <div id="memoryPanel" style="display:none">
+
+  <div class="command-section" style="padding:8px 14px 6px;">
+    <input class="command-input" id="memSearchInput" type="text"
+           placeholder="Search memory…" autocomplete="off">
+  </div>
+
+  <div class="section-label" style="display:flex;justify-content:space-between;align-items:center;padding-right:14px;">
+    <span>📦 Stored Memories</span>
+    <button id="memClearBtn" style="font-size:10px;padding:2px 8px;border-radius:8px;background:transparent;border:1px solid var(--border);color:var(--muted);cursor:pointer;">Clear All</button>
+  </div>
+  <div id="memoryList" style="max-height:400px;overflow-y:auto;padding:0 14px 10px;"></div>
+  <div style="padding:4px 14px 8px;font-size:10px;color:var(--muted);">
+    Total: <span id="memoryTotalCount">0</span> items · Click any item to copy value
+  </div>
+
+  </div><!-- /memoryPanel -->
 
 </div><!-- /mainContent -->
 
@@ -516,7 +536,7 @@ function fetchStatus() {
       if (chrome.runtime.lastError) { setConnectionStatus(false); return; }
       if (response && response.success && response.data) {
         elMemory.textContent = response.data.memoryCount || 0;
-        elTasks.textContent = response.data.queuedTasks || 0;
+        elTasks.textContent = (response.data.taskStats && response.data.taskStats.queued) || 0;
         setConnectionStatus(true);
       }
     });
@@ -973,6 +993,117 @@ init();
     }
   });
   elChatClear.addEventListener('click', clearChat);
+})();
+
+/* ═══════════════════════════════════════════════════════════════
+   MEMORY TAB — View, search, and clear stored memories
+   ═══════════════════════════════════════════════════════════════ */
+(function initMemoryTab() {
+  var elTabMemory    = $('tabMemory');
+  var elMemPanel     = $('memoryPanel');
+  var elChat         = $('chatPanel');
+  var elCmdPanel     = $('commandsPanel');
+  var elTabChat      = $('tabChat');
+  var elTabCmds      = $('tabCommands');
+  var elMemList      = $('memoryList');
+  var elMemTotal     = $('memoryTotalCount');
+  var elMemSearch    = $('memSearchInput');
+  var elMemClear     = $('memClearBtn');
+
+  var memoryItems = [];
+
+  function showMemTab() {
+    elChat.style.display     = 'none';
+    elCmdPanel.style.display = 'none';
+    elMemPanel.style.display = 'block';
+    elTabChat.classList.remove('active');
+    elTabCmds.classList.remove('active');
+    elTabMemory.classList.add('active');
+    loadMemories();
+  }
+
+  elTabMemory.addEventListener('click', showMemTab);
+
+  /* Also patch the other tab buttons to hide memPanel */
+  elTabChat.addEventListener('click', function() {
+    elMemPanel.style.display = 'none';
+    elTabMemory.classList.remove('active');
+  });
+  elTabCmds.addEventListener('click', function() {
+    elMemPanel.style.display = 'none';
+    elTabMemory.classList.remove('active');
+  });
+
+  function renderMemories(items) {
+    var html = '';
+    if (!items || items.length === 0) {
+      html = '<div style="color:var(--muted);font-size:11px;padding:10px 0;">No memories stored yet. Use "remember" commands or the chat to save things.</div>';
+    } else {
+      for (var i = 0; i < items.length; i++) {
+        var m = items[i];
+        var catColor = { research: '#58a6ff', theory: '#a371f7', decisions: '#f0883e', frameworks: '#3fb950', insights: '#d4af37', general: '#8b949e' }[m.category] || '#8b949e';
+        var val = typeof m.value === 'string' ? m.value : JSON.stringify(m.value || '');
+        html += '<div class="history-entry" style="cursor:pointer;padding:5px 0;" title="Click to copy value" data-val="' + escapeHtml(val) + '">'
+          + '<span style="width:56px;flex-shrink:0;font-family:monospace;font-size:10px;color:var(--muted);">' + formatTime(m.storedAt) + '</span>'
+          + '<span style="flex:1;overflow:hidden;">'
+          + '<span style="color:' + catColor + ';font-size:10px;font-weight:700;margin-right:4px;">[' + escapeHtml(m.category || 'general') + ']</span>'
+          + '<span style="color:var(--accent);font-size:11px;">' + escapeHtml(String(m.key || '').substring(0, 30)) + '</span>'
+          + '<span style="color:var(--muted);font-size:10px;"> — ' + escapeHtml(val.substring(0, 60)) + (val.length > 60 ? '…' : '') + '</span>'
+          + '</span>'
+          + '</div>';
+      }
+    }
+    elMemList.innerHTML = html;
+    elMemTotal.textContent = items ? items.length : 0;
+
+    /* Copy on click */
+    var rows = elMemList.querySelectorAll('[data-val]');
+    for (var j = 0; j < rows.length; j++) {
+      rows[j].addEventListener('click', function() {
+        try {
+          navigator.clipboard.writeText(this.getAttribute('data-val'));
+          this.style.background = 'var(--bg3)';
+          var self = this;
+          setTimeout(function() { self.style.background = ''; }, 600);
+        } catch(e) {}
+      });
+    }
+  }
+
+  function loadMemories() {
+    try {
+      chrome.runtime.sendMessage({ action: 'getAllMemories' }, function(resp) {
+        if (chrome.runtime.lastError) return;
+        if (resp && resp.success) {
+          memoryItems = resp.data || [];
+          renderMemories(memoryItems);
+        }
+      });
+    } catch(e) {}
+  }
+
+  /* Search */
+  elMemSearch.addEventListener('input', function() {
+    var q = this.value.toLowerCase().trim();
+    if (!q) { renderMemories(memoryItems); return; }
+    var filtered = memoryItems.filter(function(m) {
+      return (String(m.key || '').toLowerCase().indexOf(q) !== -1 ||
+              String(m.value || '').toLowerCase().indexOf(q) !== -1 ||
+              String(m.category || '').toLowerCase().indexOf(q) !== -1);
+    });
+    renderMemories(filtered);
+  });
+
+  /* Clear all */
+  elMemClear.addEventListener('click', function() {
+    try {
+      chrome.runtime.sendMessage({ action: 'clearMemory' }, function(resp) {
+        memoryItems = [];
+        renderMemories([]);
+        addHistory('🧠 Memory cleared');
+      });
+    } catch(e) {}
+  });
 })();
 </script>
 </body>
