@@ -592,10 +592,63 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   }
   if (message.type === 'popup' || message.type === 'sidePanel' || message.type === 'devtools') {
     var cmd = message.command || '';
-    if (cmd === 'ping') { sendResponse({ result: 'pong — engine alive at ' + new Date().toISOString() }); }
-    else if (cmd === 'getState') { sendResponse({ result: JSON.stringify({ status: 'running', timestamp: Date.now() }) }); }
-    else if (cmd === 'clearLogs') { sendResponse({ result: 'Logs cleared.' }); }
-    else { sendResponse({ result: 'Sovereign AI processed: "' + cmd + '" — response generated at ' + new Date().toISOString() }); }
+    var lower = cmd.toLowerCase();
+    var engine = globalThis.dataAlchemist;
+
+    /* ── Built-in workspace commands ── */
+    if (cmd === 'ping') { sendResponse({ result: 'pong — Data Alchemist engine alive at ' + new Date().toISOString() }); return true; }
+    if (cmd === 'getState' || lower === 'state' || lower === 'status') {
+      sendResponse({ result: JSON.stringify(engine && engine.state ? engine.state : { status: 'running', timestamp: Date.now() }, null, 2) });
+      return true;
+    }
+    if (cmd === 'clearLogs') { sendResponse({ result: 'Workspace logs cleared.' }); return true; }
+    if (lower === 'help' || lower === 'capabilities' || lower === '?') {
+      sendResponse({ result: '\u{1F9E0} Data Alchemist AI Workspace\n\nCapabilities:\n• Absorb Page — Absorb and process page data\n• Extract Entities — Extract entities from text\n• Build Knowledge Graph — Build knowledge graph\n• Query Graph — Query the knowledge graph\n\nType any command or question and I will route it to the best engine method.' });
+      return true;
+    }
+
+    /* ── Save to workspace conversation history ── */
+    var storageKey = 'data-alchemist_workspace_history';
+    chrome.storage.local.get(storageKey, function(data) {
+      var history = (data && data[storageKey]) || [];
+      history.push({ role: 'user', content: cmd, ts: Date.now() });
+
+      /* ── Intelligent workspace command routing ── */
+      var result;
+      try {
+        if (lower.indexOf('absorb') !== -1 || lower.indexOf('ingest') !== -1 || lower.indexOf('import') !== -1 || lower.indexOf('load') !== -1 || lower.indexOf('page') !== -1) {
+          result = engine.absorbPage("workspace", cmd);
+        }
+        else if (lower.indexOf('extract') !== -1 || lower.indexOf('entity') !== -1 || lower.indexOf('entities') !== -1 || lower.indexOf('find') !== -1 || lower.indexOf('discover') !== -1) {
+          result = engine.extractEntities(cmd);
+        }
+        else if (lower.indexOf('graph') !== -1 || lower.indexOf('knowledge') !== -1 || lower.indexOf('build') !== -1 || lower.indexOf('connect') !== -1 || lower.indexOf('relate') !== -1) {
+          result = engine.buildKnowledgeGraph([], []);
+        }
+        else if (lower.indexOf('query') !== -1 || lower.indexOf('search') !== -1 || lower.indexOf('ask') !== -1 || lower.indexOf('find') !== -1) {
+          result = engine.queryGraph(cmd);
+        }
+        else {
+          /* Default: route to primary engine method */
+          result = engine.absorbPage("workspace", cmd);
+        }
+      } catch(e) {
+        result = { error: e.message, fallback: 'Data Alchemist encountered an error processing: "' + cmd + '"' };
+      }
+
+      var responseText;
+      if (typeof result === 'string') { responseText = result; }
+      else if (result && result.error) { responseText = '\u26A0\uFE0F ' + (result.fallback || result.error); }
+      else { responseText = JSON.stringify(result, null, 2); }
+
+      history.push({ role: 'ai', content: responseText, ts: Date.now() });
+      if (history.length > 100) { history = history.slice(-100); }
+      var update = {};
+      update[storageKey] = history;
+      chrome.storage.local.set(update);
+
+      sendResponse({ result: responseText });
+    });
     return true;
   }
 

@@ -285,10 +285,66 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   }
   if (message.type === 'popup' || message.type === 'sidePanel' || message.type === 'devtools') {
     var cmd = message.command || '';
-    if (cmd === 'ping') { sendResponse({ result: 'pong — engine alive at ' + new Date().toISOString() }); }
-    else if (cmd === 'getState') { sendResponse({ result: JSON.stringify({ status: 'running', timestamp: Date.now() }) }); }
-    else if (cmd === 'clearLogs') { sendResponse({ result: 'Logs cleared.' }); }
-    else { sendResponse({ result: 'Sovereign AI processed: "' + cmd + '" — response generated at ' + new Date().toISOString() }); }
+    var lower = cmd.toLowerCase();
+    var engine = globalThis.contractForge;
+
+    /* ── Built-in workspace commands ── */
+    if (cmd === 'ping') { sendResponse({ result: 'pong — Contract Forge engine alive at ' + new Date().toISOString() }); return true; }
+    if (cmd === 'getState' || lower === 'state' || lower === 'status') {
+      sendResponse({ result: JSON.stringify(engine && engine.state ? engine.state : { status: 'running', timestamp: Date.now() }, null, 2) });
+      return true;
+    }
+    if (cmd === 'clearLogs') { sendResponse({ result: 'Workspace logs cleared.' }); return true; }
+    if (lower === 'help' || lower === 'capabilities' || lower === '?') {
+      sendResponse({ result: '\u{1F9E0} Contract Forge AI Workspace\n\nCapabilities:\n• Draft Contract — Draft a new smart contract\n• Analyze Contract — Analyze contract for risks/clauses\n• Verify Compliance — Verify regulatory compliance\n• Sign Contract — Sign/execute contract\n• Track Obligations — Track contract obligations\n\nType any command or question and I will route it to the best engine method.' });
+      return true;
+    }
+
+    /* ── Save to workspace conversation history ── */
+    var storageKey = 'contract-forge_workspace_history';
+    chrome.storage.local.get(storageKey, function(data) {
+      var history = (data && data[storageKey]) || [];
+      history.push({ role: 'user', content: cmd, ts: Date.now() });
+
+      /* ── Intelligent workspace command routing ── */
+      var result;
+      try {
+        if (lower.indexOf('draft') !== -1 || lower.indexOf('create') !== -1 || lower.indexOf('new') !== -1 || lower.indexOf('write') !== -1 || lower.indexOf('contract') !== -1) {
+          result = engine.draftContract(cmd, "standard");
+        }
+        else if (lower.indexOf('analyze') !== -1 || lower.indexOf('review') !== -1 || lower.indexOf('check') !== -1 || lower.indexOf('inspect') !== -1) {
+          result = engine.analyzeContract(cmd);
+        }
+        else if (lower.indexOf('comply') !== -1 || lower.indexOf('compliance') !== -1 || lower.indexOf('verify') !== -1 || lower.indexOf('legal') !== -1) {
+          result = engine.verifyCompliance(cmd, "");
+        }
+        else if (lower.indexOf('sign') !== -1 || lower.indexOf('execute') !== -1 || lower.indexOf('finalize') !== -1) {
+          result = engine.signContract(cmd, "auto");
+        }
+        else if (lower.indexOf('track') !== -1 || lower.indexOf('obligation') !== -1 || lower.indexOf('deadline') !== -1 || lower.indexOf('monitor') !== -1) {
+          result = engine.trackObligations("active");
+        }
+        else {
+          /* Default: route to primary engine method */
+          result = engine.draftContract(cmd, "standard");
+        }
+      } catch(e) {
+        result = { error: e.message, fallback: 'Contract Forge encountered an error processing: "' + cmd + '"' };
+      }
+
+      var responseText;
+      if (typeof result === 'string') { responseText = result; }
+      else if (result && result.error) { responseText = '\u26A0\uFE0F ' + (result.fallback || result.error); }
+      else { responseText = JSON.stringify(result, null, 2); }
+
+      history.push({ role: 'ai', content: responseText, ts: Date.now() });
+      if (history.length > 100) { history = history.slice(-100); }
+      var update = {};
+      update[storageKey] = history;
+      chrome.storage.local.set(update);
+
+      sendResponse({ result: responseText });
+    });
     return true;
   }
 

@@ -276,10 +276,63 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   }
   if (message.type === 'popup' || message.type === 'sidePanel' || message.type === 'devtools') {
     var cmd = message.command || '';
-    if (cmd === 'ping') { sendResponse({ result: 'pong — engine alive at ' + new Date().toISOString() }); }
-    else if (cmd === 'getState') { sendResponse({ result: JSON.stringify({ status: 'running', timestamp: Date.now() }) }); }
-    else if (cmd === 'clearLogs') { sendResponse({ result: 'Logs cleared.' }); }
-    else { sendResponse({ result: 'Sovereign AI processed: "' + cmd + '" — response generated at ' + new Date().toISOString() }); }
+    var lower = cmd.toLowerCase();
+    var engine = globalThis.edgeRunner;
+
+    /* ── Built-in workspace commands ── */
+    if (cmd === 'ping') { sendResponse({ result: 'pong — Edge Runner engine alive at ' + new Date().toISOString() }); return true; }
+    if (cmd === 'getState' || lower === 'state' || lower === 'status') {
+      sendResponse({ result: JSON.stringify(engine && engine.state ? engine.state : { status: 'running', timestamp: Date.now() }, null, 2) });
+      return true;
+    }
+    if (cmd === 'clearLogs') { sendResponse({ result: 'Workspace logs cleared.' }); return true; }
+    if (lower === 'help' || lower === 'capabilities' || lower === '?') {
+      sendResponse({ result: '\u{1F9E0} Edge Runner AI Workspace\n\nCapabilities:\n• Infer Local — Run local AI inference\n• Estimate Latency — Estimate inference latency\n• Select Optimal Model — Select optimal model for task\n• Benchmark Models — Benchmark available models\n\nType any command or question and I will route it to the best engine method.' });
+      return true;
+    }
+
+    /* ── Save to workspace conversation history ── */
+    var storageKey = 'edge-runner_workspace_history';
+    chrome.storage.local.get(storageKey, function(data) {
+      var history = (data && data[storageKey]) || [];
+      history.push({ role: 'user', content: cmd, ts: Date.now() });
+
+      /* ── Intelligent workspace command routing ── */
+      var result;
+      try {
+        if (lower.indexOf('infer') !== -1 || lower.indexOf('run') !== -1 || lower.indexOf('predict') !== -1 || lower.indexOf('think') !== -1 || lower.indexOf('process') !== -1 || lower.indexOf('ask') !== -1) {
+          result = engine.inferLocal(cmd, "phi-2");
+        }
+        else if (lower.indexOf('latency') !== -1 || lower.indexOf('speed') !== -1 || lower.indexOf('estimate') !== -1 || lower.indexOf('time') !== -1) {
+          result = engine.estimateLatency("7B", 512);
+        }
+        else if (lower.indexOf('model') !== -1 || lower.indexOf('select') !== -1 || lower.indexOf('optimal') !== -1 || lower.indexOf('best') !== -1 || lower.indexOf('choose') !== -1) {
+          result = engine.selectOptimalModel(cmd, 8192);
+        }
+        else if (lower.indexOf('benchmark') !== -1 || lower.indexOf('test') !== -1 || lower.indexOf('compare') !== -1 || lower.indexOf('perf') !== -1) {
+          result = engine.benchmarkModels();
+        }
+        else {
+          /* Default: route to primary engine method */
+          result = engine.inferLocal(cmd, "phi-2");
+        }
+      } catch(e) {
+        result = { error: e.message, fallback: 'Edge Runner encountered an error processing: "' + cmd + '"' };
+      }
+
+      var responseText;
+      if (typeof result === 'string') { responseText = result; }
+      else if (result && result.error) { responseText = '\u26A0\uFE0F ' + (result.fallback || result.error); }
+      else { responseText = JSON.stringify(result, null, 2); }
+
+      history.push({ role: 'ai', content: responseText, ts: Date.now() });
+      if (history.length > 100) { history = history.slice(-100); }
+      var update = {};
+      update[storageKey] = history;
+      chrome.storage.local.set(update);
+
+      sendResponse({ result: responseText });
+    });
     return true;
   }
 

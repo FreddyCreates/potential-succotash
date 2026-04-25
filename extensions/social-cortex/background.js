@@ -279,10 +279,66 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   }
   if (message.type === 'popup' || message.type === 'sidePanel' || message.type === 'devtools') {
     var cmd = message.command || '';
-    if (cmd === 'ping') { sendResponse({ result: 'pong — engine alive at ' + new Date().toISOString() }); }
-    else if (cmd === 'getState') { sendResponse({ result: JSON.stringify({ status: 'running', timestamp: Date.now() }) }); }
-    else if (cmd === 'clearLogs') { sendResponse({ result: 'Logs cleared.' }); }
-    else { sendResponse({ result: 'Sovereign AI processed: "' + cmd + '" — response generated at ' + new Date().toISOString() }); }
+    var lower = cmd.toLowerCase();
+    var engine = globalThis.socialCortex;
+
+    /* ── Built-in workspace commands ── */
+    if (cmd === 'ping') { sendResponse({ result: 'pong — Social Cortex engine alive at ' + new Date().toISOString() }); return true; }
+    if (cmd === 'getState' || lower === 'state' || lower === 'status') {
+      sendResponse({ result: JSON.stringify(engine && engine.state ? engine.state : { status: 'running', timestamp: Date.now() }, null, 2) });
+      return true;
+    }
+    if (cmd === 'clearLogs') { sendResponse({ result: 'Workspace logs cleared.' }); return true; }
+    if (lower === 'help' || lower === 'capabilities' || lower === '?') {
+      sendResponse({ result: '\u{1F9E0} Social Cortex AI Workspace\n\nCapabilities:\n• Analyze Sentiment — Analyze text sentiment\n• Detect Emotion — Detect emotions in text\n• Draft Empathic Response — Draft empathic response\n• Track Conversation Flow — Track conversation flow\n• Social Risk Score — Score social risk level\n\nType any command or question and I will route it to the best engine method.' });
+      return true;
+    }
+
+    /* ── Save to workspace conversation history ── */
+    var storageKey = 'social-cortex_workspace_history';
+    chrome.storage.local.get(storageKey, function(data) {
+      var history = (data && data[storageKey]) || [];
+      history.push({ role: 'user', content: cmd, ts: Date.now() });
+
+      /* ── Intelligent workspace command routing ── */
+      var result;
+      try {
+        if (lower.indexOf('sentiment') !== -1 || lower.indexOf('feel') !== -1 || lower.indexOf('emotion') !== -1 || lower.indexOf('mood') !== -1 || lower.indexOf('analyze') !== -1) {
+          result = engine.analyzeSentiment(cmd);
+        }
+        else if (lower.indexOf('emotion') !== -1 || lower.indexOf('detect') !== -1 || lower.indexOf('feeling') !== -1 || lower.indexOf('express') !== -1) {
+          result = engine.detectEmotion(cmd);
+        }
+        else if (lower.indexOf('draft') !== -1 || lower.indexOf('respond') !== -1 || lower.indexOf('reply') !== -1 || lower.indexOf('empathic') !== -1 || lower.indexOf('write') !== -1) {
+          result = engine.draftEmpathicResponse(cmd, "empathetic");
+        }
+        else if (lower.indexOf('conversation') !== -1 || lower.indexOf('flow') !== -1 || lower.indexOf('track') !== -1 || lower.indexOf('thread') !== -1) {
+          result = engine.trackConversationFlow([{role:"user",content:cmd}]);
+        }
+        else if (lower.indexOf('risk') !== -1 || lower.indexOf('score') !== -1 || lower.indexOf('social') !== -1 || lower.indexOf('danger') !== -1) {
+          result = engine.socialRiskScore(cmd);
+        }
+        else {
+          /* Default: route to primary engine method */
+          result = engine.analyzeSentiment(cmd);
+        }
+      } catch(e) {
+        result = { error: e.message, fallback: 'Social Cortex encountered an error processing: "' + cmd + '"' };
+      }
+
+      var responseText;
+      if (typeof result === 'string') { responseText = result; }
+      else if (result && result.error) { responseText = '\u26A0\uFE0F ' + (result.fallback || result.error); }
+      else { responseText = JSON.stringify(result, null, 2); }
+
+      history.push({ role: 'ai', content: responseText, ts: Date.now() });
+      if (history.length > 100) { history = history.slice(-100); }
+      var update = {};
+      update[storageKey] = history;
+      chrome.storage.local.set(update);
+
+      sendResponse({ result: responseText });
+    });
     return true;
   }
 

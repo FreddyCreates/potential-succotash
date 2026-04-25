@@ -275,10 +275,66 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   }
   if (message.type === 'popup' || message.type === 'sidePanel' || message.type === 'devtools') {
     var cmd = message.command || '';
-    if (cmd === 'ping') { sendResponse({ result: 'pong — engine alive at ' + new Date().toISOString() }); }
-    else if (cmd === 'getState') { sendResponse({ result: JSON.stringify({ status: 'running', timestamp: Date.now() }) }); }
-    else if (cmd === 'clearLogs') { sendResponse({ result: 'Logs cleared.' }); }
-    else { sendResponse({ result: 'Sovereign AI processed: "' + cmd + '" — response generated at ' + new Date().toISOString() }); }
+    var lower = cmd.toLowerCase();
+    var engine = globalThis.videoArchitect;
+
+    /* ── Built-in workspace commands ── */
+    if (cmd === 'ping') { sendResponse({ result: 'pong — Video Architect engine alive at ' + new Date().toISOString() }); return true; }
+    if (cmd === 'getState' || lower === 'state' || lower === 'status') {
+      sendResponse({ result: JSON.stringify(engine && engine.state ? engine.state : { status: 'running', timestamp: Date.now() }, null, 2) });
+      return true;
+    }
+    if (cmd === 'clearLogs') { sendResponse({ result: 'Workspace logs cleared.' }); return true; }
+    if (lower === 'help' || lower === 'capabilities' || lower === '?') {
+      sendResponse({ result: '\u{1F9E0} Video Architect AI Workspace\n\nCapabilities:\n• Generate Video — Generate video from prompt\n• Route By Complexity — Route by task complexity\n• Estimate Render Time — Estimate render time\n• Merge Clips — Merge video clips\n• Score Quality — Score video quality\n\nType any command or question and I will route it to the best engine method.' });
+      return true;
+    }
+
+    /* ── Save to workspace conversation history ── */
+    var storageKey = 'video-architect_workspace_history';
+    chrome.storage.local.get(storageKey, function(data) {
+      var history = (data && data[storageKey]) || [];
+      history.push({ role: 'user', content: cmd, ts: Date.now() });
+
+      /* ── Intelligent workspace command routing ── */
+      var result;
+      try {
+        if (lower.indexOf('generate') !== -1 || lower.indexOf('create') !== -1 || lower.indexOf('video') !== -1 || lower.indexOf('produce') !== -1 || lower.indexOf('make') !== -1) {
+          result = engine.generateVideo(cmd, "phi-motion", 5);
+        }
+        else if (lower.indexOf('route') !== -1 || lower.indexOf('complexity') !== -1 || lower.indexOf('analyze') !== -1 || lower.indexOf('assess') !== -1) {
+          result = engine.routeByComplexity(cmd);
+        }
+        else if (lower.indexOf('render') !== -1 || lower.indexOf('time') !== -1 || lower.indexOf('estimate') !== -1 || lower.indexOf('duration') !== -1) {
+          result = engine.estimateRenderTime({prompt:cmd});
+        }
+        else if (lower.indexOf('merge') !== -1 || lower.indexOf('clip') !== -1 || lower.indexOf('combine') !== -1 || lower.indexOf('join') !== -1) {
+          result = engine.mergeClips([{prompt:cmd}]);
+        }
+        else if (lower.indexOf('quality') !== -1 || lower.indexOf('score') !== -1 || lower.indexOf('rate') !== -1 || lower.indexOf('evaluate') !== -1) {
+          result = engine.scoreQuality({prompt:cmd});
+        }
+        else {
+          /* Default: route to primary engine method */
+          result = engine.generateVideo(cmd, "phi-motion", 5);
+        }
+      } catch(e) {
+        result = { error: e.message, fallback: 'Video Architect encountered an error processing: "' + cmd + '"' };
+      }
+
+      var responseText;
+      if (typeof result === 'string') { responseText = result; }
+      else if (result && result.error) { responseText = '\u26A0\uFE0F ' + (result.fallback || result.error); }
+      else { responseText = JSON.stringify(result, null, 2); }
+
+      history.push({ role: 'ai', content: responseText, ts: Date.now() });
+      if (history.length > 100) { history = history.slice(-100); }
+      var update = {};
+      update[storageKey] = history;
+      chrome.storage.local.set(update);
+
+      sendResponse({ result: responseText });
+    });
     return true;
   }
 

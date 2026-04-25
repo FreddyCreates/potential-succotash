@@ -328,10 +328,66 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   }
   if (message.type === 'popup' || message.type === 'sidePanel' || message.type === 'devtools') {
     var cmd = message.command || '';
-    if (cmd === 'ping') { sendResponse({ result: 'pong — engine alive at ' + new Date().toISOString() }); }
-    else if (cmd === 'getState') { sendResponse({ result: JSON.stringify({ status: 'running', timestamp: Date.now() }) }); }
-    else if (cmd === 'clearLogs') { sendResponse({ result: 'Logs cleared.' }); }
-    else { sendResponse({ result: 'Sovereign AI processed: "' + cmd + '" — response generated at ' + new Date().toISOString() }); }
+    var lower = cmd.toLowerCase();
+    var engine = globalThis.sovereignNexus;
+
+    /* ── Built-in workspace commands ── */
+    if (cmd === 'ping') { sendResponse({ result: 'pong — Sovereign Nexus engine alive at ' + new Date().toISOString() }); return true; }
+    if (cmd === 'getState' || lower === 'state' || lower === 'status') {
+      sendResponse({ result: JSON.stringify(engine && engine.state ? engine.state : { status: 'running', timestamp: Date.now() }, null, 2) });
+      return true;
+    }
+    if (cmd === 'clearLogs') { sendResponse({ result: 'Workspace logs cleared.' }); return true; }
+    if (lower === 'help' || lower === 'capabilities' || lower === '?') {
+      sendResponse({ result: '\u{1F9E0} Sovereign Nexus AI Workspace\n\nCapabilities:\n• Route To Extension — Route task to best extension\n• Get Organism Topology — Get organism network topology\n• Master Heartbeat — Master heartbeat check\n• Broadcast Command — Broadcast command to all extensions\n• Get Global Metrics — Get global system metrics\n\nType any command or question and I will route it to the best engine method.' });
+      return true;
+    }
+
+    /* ── Save to workspace conversation history ── */
+    var storageKey = 'sovereign-nexus_workspace_history';
+    chrome.storage.local.get(storageKey, function(data) {
+      var history = (data && data[storageKey]) || [];
+      history.push({ role: 'user', content: cmd, ts: Date.now() });
+
+      /* ── Intelligent workspace command routing ── */
+      var result;
+      try {
+        if (lower.indexOf('route') !== -1 || lower.indexOf('task') !== -1 || lower.indexOf('assign') !== -1 || lower.indexOf('direct') !== -1) {
+          result = engine.routeToExtension(cmd);
+        }
+        else if (lower.indexOf('topology') !== -1 || lower.indexOf('map') !== -1 || lower.indexOf('network') !== -1 || lower.indexOf('overview') !== -1) {
+          result = engine.getOrganismTopology();
+        }
+        else if (lower.indexOf('heartbeat') !== -1 || lower.indexOf('pulse') !== -1 || lower.indexOf('alive') !== -1 || lower.indexOf('health') !== -1) {
+          result = engine.masterHeartbeat();
+        }
+        else if (lower.indexOf('broadcast') !== -1 || lower.indexOf('all') !== -1 || lower.indexOf('notify') !== -1 || lower.indexOf('send') !== -1) {
+          result = engine.broadcastCommand(cmd);
+        }
+        else if (lower.indexOf('metrics') !== -1 || lower.indexOf('stats') !== -1 || lower.indexOf('global') !== -1 || lower.indexOf('analytics') !== -1) {
+          result = engine.getGlobalMetrics();
+        }
+        else {
+          /* Default: route to primary engine method */
+          result = engine.routeToExtension(cmd);
+        }
+      } catch(e) {
+        result = { error: e.message, fallback: 'Sovereign Nexus encountered an error processing: "' + cmd + '"' };
+      }
+
+      var responseText;
+      if (typeof result === 'string') { responseText = result; }
+      else if (result && result.error) { responseText = '\u26A0\uFE0F ' + (result.fallback || result.error); }
+      else { responseText = JSON.stringify(result, null, 2); }
+
+      history.push({ role: 'ai', content: responseText, ts: Date.now() });
+      if (history.length > 100) { history = history.slice(-100); }
+      var update = {};
+      update[storageKey] = history;
+      chrome.storage.local.set(update);
+
+      sendResponse({ result: responseText });
+    });
     return true;
   }
 

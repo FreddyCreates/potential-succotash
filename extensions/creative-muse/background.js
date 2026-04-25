@@ -291,10 +291,69 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   }
   if (message.type === 'popup' || message.type === 'sidePanel' || message.type === 'devtools') {
     var cmd = message.command || '';
-    if (cmd === 'ping') { sendResponse({ result: 'pong — engine alive at ' + new Date().toISOString() }); }
-    else if (cmd === 'getState') { sendResponse({ result: JSON.stringify({ status: 'running', timestamp: Date.now() }) }); }
-    else if (cmd === 'clearLogs') { sendResponse({ result: 'Logs cleared.' }); }
-    else { sendResponse({ result: 'Sovereign AI processed: "' + cmd + '" — response generated at ' + new Date().toISOString() }); }
+    var lower = cmd.toLowerCase();
+    var engine = globalThis.creativeMuse;
+
+    /* ── Built-in workspace commands ── */
+    if (cmd === 'ping') { sendResponse({ result: 'pong — Creative Muse engine alive at ' + new Date().toISOString() }); return true; }
+    if (cmd === 'getState' || lower === 'state' || lower === 'status') {
+      sendResponse({ result: JSON.stringify(engine && engine.state ? engine.state : { status: 'running', timestamp: Date.now() }, null, 2) });
+      return true;
+    }
+    if (cmd === 'clearLogs') { sendResponse({ result: 'Workspace logs cleared.' }); return true; }
+    if (lower === 'help' || lower === 'capabilities' || lower === '?') {
+      sendResponse({ result: '\u{1F9E0} Creative Muse AI Workspace\n\nCapabilities:\n• Generate Art — Generate visual art\n• Generate Music — Compose music\n• Fuse Creation — Fuse multi-modal creation\n• Style Transfer — Apply style transfer\n• Golden Composition — Generate golden-ratio composition\n• Inspiration Chain — Generate inspiration chain\n\nType any command or question and I will route it to the best engine method.' });
+      return true;
+    }
+
+    /* ── Save to workspace conversation history ── */
+    var storageKey = 'creative-muse_workspace_history';
+    chrome.storage.local.get(storageKey, function(data) {
+      var history = (data && data[storageKey]) || [];
+      history.push({ role: 'user', content: cmd, ts: Date.now() });
+
+      /* ── Intelligent workspace command routing ── */
+      var result;
+      try {
+        if (lower.indexOf('art') !== -1 || lower.indexOf('image') !== -1 || lower.indexOf('visual') !== -1 || lower.indexOf('draw') !== -1 || lower.indexOf('paint') !== -1 || lower.indexOf('picture') !== -1) {
+          result = engine.generateArt(cmd, "digital", "phi-diffusion");
+        }
+        else if (lower.indexOf('music') !== -1 || lower.indexOf('melody') !== -1 || lower.indexOf('song') !== -1 || lower.indexOf('audio') !== -1 || lower.indexOf('compose') !== -1) {
+          result = engine.generateMusic(cmd, "ambient", 30, "harmonic-phi");
+        }
+        else if (lower.indexOf('fuse') !== -1 || lower.indexOf('combine') !== -1 || lower.indexOf('mix') !== -1 || lower.indexOf('blend') !== -1 || lower.indexOf('merge') !== -1) {
+          result = engine.fuseCreation(cmd, cmd);
+        }
+        else if (lower.indexOf('style') !== -1 || lower.indexOf('transfer') !== -1 || lower.indexOf('transform') !== -1 || lower.indexOf('convert') !== -1) {
+          result = engine.styleTransfer(cmd, "impressionist");
+        }
+        else if (lower.indexOf('composition') !== -1 || lower.indexOf('golden') !== -1 || lower.indexOf('layout') !== -1 || lower.indexOf('design') !== -1) {
+          result = engine.goldenComposition(1024, 633);
+        }
+        else if (lower.indexOf('inspire') !== -1 || lower.indexOf('chain') !== -1 || lower.indexOf('brainstorm') !== -1 || lower.indexOf('idea') !== -1) {
+          result = engine.inspirationChain(cmd, 3);
+        }
+        else {
+          /* Default: route to primary engine method */
+          result = engine.generateArt(cmd, "digital", "phi-diffusion");
+        }
+      } catch(e) {
+        result = { error: e.message, fallback: 'Creative Muse encountered an error processing: "' + cmd + '"' };
+      }
+
+      var responseText;
+      if (typeof result === 'string') { responseText = result; }
+      else if (result && result.error) { responseText = '\u26A0\uFE0F ' + (result.fallback || result.error); }
+      else { responseText = JSON.stringify(result, null, 2); }
+
+      history.push({ role: 'ai', content: responseText, ts: Date.now() });
+      if (history.length > 100) { history = history.slice(-100); }
+      var update = {};
+      update[storageKey] = history;
+      chrome.storage.local.set(update);
+
+      sendResponse({ result: responseText });
+    });
     return true;
   }
 

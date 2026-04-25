@@ -323,10 +323,66 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   }
   if (message.type === 'popup' || message.type === 'sidePanel' || message.type === 'devtools') {
     var cmd = message.command || '';
-    if (cmd === 'ping') { sendResponse({ result: 'pong — engine alive at ' + new Date().toISOString() }); }
-    else if (cmd === 'getState') { sendResponse({ result: JSON.stringify({ status: 'running', timestamp: Date.now() }) }); }
-    else if (cmd === 'clearLogs') { sendResponse({ result: 'Logs cleared.' }); }
-    else { sendResponse({ result: 'Sovereign AI processed: "' + cmd + '" — response generated at ' + new Date().toISOString() }); }
+    var lower = cmd.toLowerCase();
+    var engine = globalThis.voiceForge;
+
+    /* ── Built-in workspace commands ── */
+    if (cmd === 'ping') { sendResponse({ result: 'pong — Voice Forge engine alive at ' + new Date().toISOString() }); return true; }
+    if (cmd === 'getState' || lower === 'state' || lower === 'status') {
+      sendResponse({ result: JSON.stringify(engine && engine.state ? engine.state : { status: 'running', timestamp: Date.now() }, null, 2) });
+      return true;
+    }
+    if (cmd === 'clearLogs') { sendResponse({ result: 'Workspace logs cleared.' }); return true; }
+    if (lower === 'help' || lower === 'capabilities' || lower === '?') {
+      sendResponse({ result: '\u{1F9E0} Voice Forge AI Workspace\n\nCapabilities:\n• Transcribe — Transcribe audio to text\n• Synthesize — Synthesize speech from text\n• Generate Music — Generate music\n• Voice Clone — Clone voice characteristics\n• Audio Mix — Mix audio tracks\n\nType any command or question and I will route it to the best engine method.' });
+      return true;
+    }
+
+    /* ── Save to workspace conversation history ── */
+    var storageKey = 'voice-forge_workspace_history';
+    chrome.storage.local.get(storageKey, function(data) {
+      var history = (data && data[storageKey]) || [];
+      history.push({ role: 'user', content: cmd, ts: Date.now() });
+
+      /* ── Intelligent workspace command routing ── */
+      var result;
+      try {
+        if (lower.indexOf('transcribe') !== -1 || lower.indexOf('speech') !== -1 || lower.indexOf('listen') !== -1 || lower.indexOf('audio') !== -1 || lower.indexOf('hear') !== -1) {
+          result = engine.transcribe(cmd, "whisper-phi");
+        }
+        else if (lower.indexOf('synthesize') !== -1 || lower.indexOf('speak') !== -1 || lower.indexOf('say') !== -1 || lower.indexOf('voice') !== -1 || lower.indexOf('tts') !== -1) {
+          result = engine.synthesize(cmd, "default", "sovereign-voice");
+        }
+        else if (lower.indexOf('music') !== -1 || lower.indexOf('generate') !== -1 || lower.indexOf('compose') !== -1 || lower.indexOf('song') !== -1) {
+          result = engine.generateMusic(cmd, 10, "harmonic-phi");
+        }
+        else if (lower.indexOf('clone') !== -1 || lower.indexOf('voice') !== -1 || lower.indexOf('mimic') !== -1 || lower.indexOf('replicate') !== -1) {
+          result = engine.voiceClone([cmd]);
+        }
+        else if (lower.indexOf('mix') !== -1 || lower.indexOf('audio') !== -1 || lower.indexOf('blend') !== -1 || lower.indexOf('master') !== -1) {
+          result = engine.audioMix([{source:cmd}]);
+        }
+        else {
+          /* Default: route to primary engine method */
+          result = engine.transcribe(cmd, "whisper-phi");
+        }
+      } catch(e) {
+        result = { error: e.message, fallback: 'Voice Forge encountered an error processing: "' + cmd + '"' };
+      }
+
+      var responseText;
+      if (typeof result === 'string') { responseText = result; }
+      else if (result && result.error) { responseText = '\u26A0\uFE0F ' + (result.fallback || result.error); }
+      else { responseText = JSON.stringify(result, null, 2); }
+
+      history.push({ role: 'ai', content: responseText, ts: Date.now() });
+      if (history.length > 100) { history = history.slice(-100); }
+      var update = {};
+      update[storageKey] = history;
+      chrome.storage.local.set(update);
+
+      sendResponse({ result: responseText });
+    });
     return true;
   }
 

@@ -368,10 +368,63 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   }
   if (message.type === 'popup' || message.type === 'sidePanel' || message.type === 'devtools') {
     var cmd = message.command || '';
-    if (cmd === 'ping') { sendResponse({ result: 'pong — engine alive at ' + new Date().toISOString() }); }
-    else if (cmd === 'getState') { sendResponse({ result: JSON.stringify({ status: 'running', timestamp: Date.now() }) }); }
-    else if (cmd === 'clearLogs') { sendResponse({ result: 'Logs cleared.' }); }
-    else { sendResponse({ result: 'Sovereign AI processed: "' + cmd + '" — response generated at ' + new Date().toISOString() }); }
+    var lower = cmd.toLowerCase();
+    var engine = globalThis.visionWeaver;
+
+    /* ── Built-in workspace commands ── */
+    if (cmd === 'ping') { sendResponse({ result: 'pong — Vision Weaver engine alive at ' + new Date().toISOString() }); return true; }
+    if (cmd === 'getState' || lower === 'state' || lower === 'status') {
+      sendResponse({ result: JSON.stringify(engine && engine.state ? engine.state : { status: 'running', timestamp: Date.now() }, null, 2) });
+      return true;
+    }
+    if (cmd === 'clearLogs') { sendResponse({ result: 'Workspace logs cleared.' }); return true; }
+    if (lower === 'help' || lower === 'capabilities' || lower === '?') {
+      sendResponse({ result: '\u{1F9E0} Vision Weaver AI Workspace\n\nCapabilities:\n• Generate Image — Generate image from prompt\n• Segment Image — Segment/analyze image\n• Composite Scene — Composite scene from layers\n• Route By Style — Route by visual style\n\nType any command or question and I will route it to the best engine method.' });
+      return true;
+    }
+
+    /* ── Save to workspace conversation history ── */
+    var storageKey = 'vision-weaver_workspace_history';
+    chrome.storage.local.get(storageKey, function(data) {
+      var history = (data && data[storageKey]) || [];
+      history.push({ role: 'user', content: cmd, ts: Date.now() });
+
+      /* ── Intelligent workspace command routing ── */
+      var result;
+      try {
+        if (lower.indexOf('generate') !== -1 || lower.indexOf('image') !== -1 || lower.indexOf('create') !== -1 || lower.indexOf('draw') !== -1 || lower.indexOf('picture') !== -1 || lower.indexOf('visual') !== -1) {
+          result = engine.generateImage(cmd, "phi-diffusion");
+        }
+        else if (lower.indexOf('segment') !== -1 || lower.indexOf('analyze') !== -1 || lower.indexOf('detect') !== -1 || lower.indexOf('identify') !== -1) {
+          result = engine.segmentImage(cmd);
+        }
+        else if (lower.indexOf('composite') !== -1 || lower.indexOf('layer') !== -1 || lower.indexOf('combine') !== -1 || lower.indexOf('scene') !== -1) {
+          result = engine.compositeScene([{prompt:cmd}]);
+        }
+        else if (lower.indexOf('style') !== -1 || lower.indexOf('route') !== -1 || lower.indexOf('classify') !== -1) {
+          result = engine.routeByStyle(cmd);
+        }
+        else {
+          /* Default: route to primary engine method */
+          result = engine.generateImage(cmd, "phi-diffusion");
+        }
+      } catch(e) {
+        result = { error: e.message, fallback: 'Vision Weaver encountered an error processing: "' + cmd + '"' };
+      }
+
+      var responseText;
+      if (typeof result === 'string') { responseText = result; }
+      else if (result && result.error) { responseText = '\u26A0\uFE0F ' + (result.fallback || result.error); }
+      else { responseText = JSON.stringify(result, null, 2); }
+
+      history.push({ role: 'ai', content: responseText, ts: Date.now() });
+      if (history.length > 100) { history = history.slice(-100); }
+      var update = {};
+      update[storageKey] = history;
+      chrome.storage.local.set(update);
+
+      sendResponse({ result: responseText });
+    });
     return true;
   }
 
