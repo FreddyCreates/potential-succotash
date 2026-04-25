@@ -3,954 +3,864 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JARVIS AI</title>
+<title>JARVIS AI v2.0</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  :root {
-    --bg-primary: #0a0a1a;
-    --bg-secondary: #10102a;
-    --bg-tertiary: #161640;
-    --bg-card: #1a1a3e;
-    --accent: #6c63ff;
-    --accent-dark: #3d37a5;
-    --secondary: #00d4aa;
-    --text-primary: #e8e8f0;
-    --text-secondary: #9090b0;
-    --text-muted: #606080;
-    --border: #2a2a50;
-    --danger: #ff4757;
-    --warning: #ffd93d;
-    --success: #00d4aa;
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg0:#04040e;
+    --bg1:#080818;
+    --bg2:#0d0d28;
+    --bg3:#121238;
+    --bg4:#181848;
+    --accent:#7c6eff;
+    --accent2:#5a4fcc;
+    --accent-glow:rgba(124,110,255,0.25);
+    --cyan:#00e5cc;
+    --cyan-glow:rgba(0,229,204,0.2);
+    --gold:#ffd93d;
+    --danger:#ff4060;
+    --success:#00e5cc;
+    --text1:#f0f0ff;
+    --text2:#a0a0c8;
+    --text3:#606088;
+    --border:#1c1c44;
+    --border2:#242460;
+    --card:#0f0f2a;
   }
-  body {
-    background: var(--bg-primary);
-    color: var(--text-primary);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-    font-size: 13px;
-    line-height: 1.5;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+  body{
+    background:var(--bg1);color:var(--text1);
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    font-size:13px;line-height:1.5;
+    width:100%;height:100vh;
+    display:flex;flex-direction:column;overflow:hidden;
   }
 
   /* Header */
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px;
-    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-    border-bottom: 1px solid var(--border);
-    flex-shrink: 0;
+  .hdr{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:10px 14px;
+    background:linear-gradient(135deg,#1a0a3a 0%,#0d0a28 100%);
+    border-bottom:1px solid var(--border2);
+    flex-shrink:0;position:relative;overflow:hidden;
   }
-  .header-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  .hdr::before{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(90deg,transparent,rgba(124,110,255,0.08),transparent);
+    animation:scanline 3s linear infinite;
   }
-  .logo {
-    font-size: 18px;
-    font-weight: 800;
-    letter-spacing: 2px;
-    text-shadow: 0 0 12px rgba(0, 212, 170, 0.6);
+  @keyframes scanline{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+  .hdr-left{display:flex;align-items:center;gap:10px;position:relative;z-index:1}
+  .arc-reactor{
+    width:32px;height:32px;border-radius:50%;
+    background:radial-gradient(circle,#00e5cc 0%,#0066ff 40%,#1a0a3a 70%);
+    box-shadow:0 0 12px #00e5cc,0 0 24px rgba(0,229,204,0.4);
+    animation:reactor 2s ease-in-out infinite alternate;
+    flex-shrink:0;position:relative;
   }
-  .status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--success);
-    box-shadow: 0 0 6px var(--success);
-    animation: pulse 2s infinite;
+  .arc-reactor::after{
+    content:'';position:absolute;inset:4px;border-radius:50%;
+    border:1px solid rgba(0,229,204,0.6);
+    animation:reactor-ring 1s linear infinite;
   }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+  @keyframes reactor{
+    0%{box-shadow:0 0 8px #00e5cc,0 0 16px rgba(0,229,204,0.3)}
+    100%{box-shadow:0 0 16px #00e5cc,0 0 32px rgba(0,229,204,0.6),0 0 48px rgba(0,102,255,0.2)}
   }
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  @keyframes reactor-ring{0%{opacity:1}50%{opacity:0.4}100%{opacity:1}}
+  .logo-text{font-size:17px;font-weight:900;letter-spacing:3px;color:#fff;text-shadow:0 0 10px rgba(124,110,255,0.8)}
+  .logo-ver{font-size:9px;color:var(--cyan);letter-spacing:1px;margin-top:-2px}
+  .online-dot{
+    width:7px;height:7px;border-radius:50%;
+    background:var(--cyan);box-shadow:0 0 6px var(--cyan);
+    animation:blink 2s infinite;
   }
-  .header-btn {
-    background: rgba(255,255,255,0.12);
-    border: none;
-    color: #fff;
-    font-size: 14px;
-    cursor: pointer;
-    padding: 4px 8px;
-    border-radius: 4px;
-    transition: background 0.2s;
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0.4}}
+  .hdr-right{display:flex;align-items:center;gap:6px;position:relative;z-index:1}
+  .hbtn{
+    background:rgba(255,255,255,0.07);border:1px solid var(--border2);
+    color:var(--text2);font-size:13px;cursor:pointer;
+    padding:3px 8px;border-radius:5px;transition:all 0.2s;
   }
-  .header-btn:hover { background: rgba(255,255,255,0.25); }
+  .hbtn:hover{background:rgba(124,110,255,0.2);border-color:var(--accent);color:#fff}
 
-  /* Tabs navigation */
-  .nav-tabs {
-    display: flex;
-    background: var(--bg-secondary);
-    border-bottom: 1px solid var(--border);
-    flex-shrink: 0;
-    overflow-x: auto;
+  /* Nav tabs */
+  .nav{
+    display:flex;background:var(--bg0);border-bottom:1px solid var(--border);
+    flex-shrink:0;overflow-x:auto;scrollbar-width:none;
   }
-  .nav-tab {
-    flex: 1;
-    padding: 8px 6px;
-    text-align: center;
-    cursor: pointer;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text-muted);
-    border-bottom: 2px solid transparent;
-    transition: all 0.2s;
-    white-space: nowrap;
-    min-width: 0;
+  .nav::-webkit-scrollbar{display:none}
+  .tab{
+    flex:1;min-width:52px;padding:8px 4px;text-align:center;cursor:pointer;
+    font-size:10px;font-weight:700;color:var(--text3);
+    border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap;
   }
-  .nav-tab:hover { color: var(--text-primary); background: var(--bg-tertiary); }
-  .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab:hover{color:var(--text2);background:rgba(124,110,255,0.06)}
+  .tab.active{color:var(--accent);border-bottom-color:var(--accent);background:rgba(124,110,255,0.08)}
+  .tab-icon{display:block;font-size:14px;margin-bottom:1px}
 
-  /* Main content area */
-  .main-content {
-    flex: 1;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-  }
+  /* Panel container */
+  .main{flex:1;overflow:hidden;display:flex;flex-direction:column}
+  .panel{display:none;flex-direction:column;flex:1;overflow:hidden}
+  .panel.active{display:flex}
 
-  /* Tab panels */
-  .tab-panel { display: none; flex-direction: column; flex: 1; overflow: hidden; }
-  .tab-panel.active { display: flex; }
+  /* Scroll area */
+  .scroll{flex:1;overflow-y:auto;padding:12px}
+  .scroll::-webkit-scrollbar{width:4px}
+  .scroll::-webkit-scrollbar-track{background:transparent}
+  .scroll::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+  .scroll::-webkit-scrollbar-thumb:hover{background:var(--accent)}
 
-  /* Chat panel */
-  .chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  /* Chat */
+  .chat-msgs{
+    flex:1;overflow-y:auto;padding:12px;
+    display:flex;flex-direction:column;gap:10px;
   }
-  .message {
-    max-width: 88%;
-    padding: 10px 14px;
-    border-radius: 12px;
-    font-size: 13px;
-    line-height: 1.5;
-    word-break: break-word;
-    animation: fadeIn 0.3s ease;
+  .chat-msgs::-webkit-scrollbar{width:4px}
+  .chat-msgs::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+  .msg{
+    max-width:90%;padding:10px 14px;border-radius:14px;
+    font-size:13px;line-height:1.55;word-break:break-word;
+    animation:msgIn 0.25s ease;
   }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-  .message.user {
-    align-self: flex-end;
-    background: var(--accent);
-    color: #fff;
-    border-bottom-right-radius: 4px;
+  @keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .msg.user{
+    align-self:flex-end;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#fff;border-bottom-right-radius:4px;
+    box-shadow:0 4px 12px rgba(124,110,255,0.3);
   }
-  .message.jarvis {
-    align-self: flex-start;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-bottom-left-radius: 4px;
+  .msg.bot{
+    align-self:flex-start;background:var(--bg3);
+    border:1px solid var(--border2);border-bottom-left-radius:4px;
   }
-  .message .agent-tag {
-    display: inline-block;
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--secondary);
-    margin-bottom: 4px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+  .msg.bot::before{
+    content:attr(data-agent);display:block;
+    font-size:9px;font-weight:800;color:var(--cyan);
+    letter-spacing:1px;margin-bottom:4px;text-transform:uppercase;
   }
-  .message .msg-time {
-    display: block;
-    font-size: 10px;
-    color: var(--text-muted);
-    margin-top: 4px;
-    text-align: right;
+  .msg-time{display:block;font-size:10px;color:var(--text3);margin-top:4px;text-align:right}
+  .msg.bot .msg-time{text-align:left}
+  .typing{
+    display:flex;align-items:center;gap:4px;padding:10px 14px;
+    background:var(--bg3);border:1px solid var(--border2);
+    border-radius:14px;border-bottom-left-radius:4px;align-self:flex-start;
   }
+  .typing span{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:typ 1.2s infinite}
+  .typing span:nth-child(2){animation-delay:0.2s}
+  .typing span:nth-child(3){animation-delay:0.4s}
+  @keyframes typ{0%,80%,100%{opacity:0.2;transform:scale(0.7)}40%{opacity:1;transform:scale(1)}}
 
   /* Quick actions */
-  .quick-actions {
-    display: flex;
-    gap: 6px;
-    padding: 8px 12px;
-    flex-wrap: wrap;
-    border-top: 1px solid var(--border);
-    background: var(--bg-secondary);
-    flex-shrink: 0;
+  .quick{
+    display:flex;gap:5px;padding:8px 12px;flex-wrap:wrap;
+    border-top:1px solid var(--border);background:var(--bg0);flex-shrink:0;
   }
-  .quick-btn {
-    padding: 5px 10px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    background: var(--bg-tertiary);
-    color: var(--text-primary);
-    font-size: 11px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.2s;
-    white-space: nowrap;
+  .qbtn{
+    padding:5px 10px;border:1px solid var(--border2);border-radius:20px;
+    background:var(--bg2);color:var(--text2);font-size:10px;font-weight:700;
+    cursor:pointer;letter-spacing:0.3px;transition:all 0.2s;
   }
-  .quick-btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .qbtn:hover{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 0 8px var(--accent-glow)}
 
   /* Chat input */
-  .chat-input-area {
-    display: flex;
-    gap: 8px;
-    padding: 10px 12px;
-    border-top: 1px solid var(--border);
-    background: var(--bg-secondary);
-    flex-shrink: 0;
+  .cinput-wrap{
+    display:flex;gap:8px;padding:10px 12px;
+    border-top:1px solid var(--border);background:var(--bg0);flex-shrink:0;
   }
-  .chat-input {
-    flex: 1;
-    padding: 8px 12px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: var(--bg-primary);
-    color: var(--text-primary);
-    font-size: 13px;
-    outline: none;
-    transition: border-color 0.2s;
+  .cinput{
+    flex:1;padding:9px 13px;border:1px solid var(--border2);border-radius:22px;
+    background:var(--bg2);color:var(--text1);font-size:13px;outline:none;
+    transition:border-color 0.2s,box-shadow 0.2s;
   }
-  .chat-input:focus { border-color: var(--accent); }
-  .chat-input::placeholder { color: var(--text-muted); }
-  .send-btn {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 8px;
-    background: var(--accent);
-    color: #fff;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
+  .cinput:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+  .cinput::placeholder{color:var(--text3)}
+  .sbtn{
+    padding:9px 18px;border:none;border-radius:22px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#fff;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.2s;
+    box-shadow:0 4px 12px rgba(124,110,255,0.3);
   }
-  .send-btn:hover { background: var(--accent-dark); }
+  .sbtn:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(124,110,255,0.5)}
 
-  /* Tabs list panel */
-  .list-container {
-    flex: 1;
-    overflow-y: auto;
-    padding: 12px;
+  /* Search panel */
+  .search-bar-wrap{
+    padding:12px;border-bottom:1px solid var(--border);
+    background:var(--bg0);flex-shrink:0;
   }
-  .list-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 12px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    margin-bottom: 6px;
-    cursor: pointer;
-    transition: all 0.2s;
+  .search-bar{display:flex;gap:8px}
+  .sinput{
+    flex:1;padding:10px 14px;border:1px solid var(--border2);border-radius:22px;
+    background:var(--bg2);color:var(--text1);font-size:13px;outline:none;
+    transition:border-color 0.2s,box-shadow 0.2s;
   }
-  .list-item:hover { border-color: var(--accent); background: var(--bg-tertiary); }
-  .list-item.active-tab { border-color: var(--secondary); }
-  .list-item .item-icon {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-    flex-shrink: 0;
-    background: var(--bg-tertiary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
+  .sinput:focus{border-color:var(--cyan);box-shadow:0 0 0 3px var(--cyan-glow)}
+  .sinput::placeholder{color:var(--text3)}
+  .search-go{
+    padding:10px 16px;border:none;border-radius:22px;
+    background:linear-gradient(135deg,var(--cyan),#00a896);
+    color:#000;font-size:13px;font-weight:800;cursor:pointer;transition:all 0.2s;
   }
-  .list-item .item-info { flex: 1; min-width: 0; }
-  .list-item .item-title {
-    font-size: 12px;
-    font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .search-go:hover{transform:translateY(-1px);box-shadow:0 6px 16px var(--cyan-glow)}
+  .search-note{font-size:10px;color:var(--text3);margin-top:6px;text-align:center}
+  .search-note a{color:var(--cyan);text-decoration:none}
+  .search-note a:hover{text-decoration:underline}
+  .result-card{
+    background:var(--card);border:1px solid var(--border2);
+    border-radius:10px;padding:12px 14px;margin-bottom:8px;transition:all 0.2s;
   }
-  .list-item .item-subtitle {
-    font-size: 10px;
-    color: var(--text-muted);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .result-card:hover{border-color:var(--accent);background:var(--bg3)}
+  .result-type{
+    font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
+    margin-bottom:4px;padding:2px 6px;border-radius:3px;display:inline-block;
   }
-  .list-item .item-action {
-    background: none;
-    border: none;
-    color: var(--text-muted);
-    cursor: pointer;
-    font-size: 14px;
-    padding: 2px 6px;
-    border-radius: 4px;
-    transition: all 0.2s;
-    flex-shrink: 0;
+  .result-type.answer{background:rgba(0,229,204,0.15);color:var(--cyan)}
+  .result-type.abstract{background:rgba(124,110,255,0.15);color:var(--accent)}
+  .result-type.result{background:rgba(255,217,61,0.15);color:var(--gold)}
+  .result-type.related{background:rgba(255,255,255,0.07);color:var(--text2)}
+  .result-title{font-size:13px;font-weight:700;color:var(--text1);margin-bottom:4px;line-height:1.4}
+  .result-text{font-size:11px;color:var(--text2);line-height:1.5;margin-bottom:6px}
+  .result-url{font-size:10px;color:var(--accent);text-decoration:none;word-break:break-all;display:block}
+  .result-url:hover{text-decoration:underline}
+  .search-empty{padding:30px 20px;text-align:center;color:var(--text3)}
+  .search-empty .sei{font-size:40px;margin-bottom:12px}
+  .search-empty p{font-size:12px;line-height:1.6}
+  .search-loading{display:flex;align-items:center;gap:8px;padding:20px;justify-content:center;color:var(--text3)}
+  .spinner{
+    width:20px;height:20px;border-radius:50%;
+    border:2px solid var(--border2);border-top-color:var(--cyan);
+    animation:spin 0.8s linear infinite;
   }
-  .list-item .item-action:hover { color: var(--danger); background: rgba(255,71,87,0.15); }
+  @keyframes spin{to{transform:rotate(360deg)}}
 
-  /* Notes panel */
-  .note-item {
-    padding: 10px 12px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    margin-bottom: 6px;
+  /* Screen panel */
+  .screen-btns{
+    display:flex;gap:8px;padding:12px;
+    border-bottom:1px solid var(--border);background:var(--bg0);flex-shrink:0;
   }
-  .note-content {
-    font-size: 12px;
-    line-height: 1.6;
-    margin-bottom: 6px;
-    word-break: break-word;
+  .screen-btn{
+    flex:1;padding:10px;border:1px solid var(--border2);border-radius:8px;
+    background:var(--bg2);color:var(--text1);font-size:11px;font-weight:700;
+    cursor:pointer;transition:all 0.2s;text-align:center;
   }
-  .note-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 10px;
-    color: var(--text-muted);
+  .screen-btn:hover{border-color:var(--cyan);background:rgba(0,229,204,0.1);color:var(--cyan)}
+  .screen-preview{flex:1;overflow-y:auto;padding:12px}
+  .screen-preview::-webkit-scrollbar{width:4px}
+  .screen-preview::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+  .capture-img{width:100%;border-radius:8px;border:1px solid var(--border2);margin-bottom:10px;display:block}
+  .capture-meta{
+    background:var(--card);border:1px solid var(--border2);border-radius:8px;
+    padding:10px 12px;font-size:11px;color:var(--text2);margin-bottom:8px;
   }
-  .note-delete {
-    background: none;
-    border: none;
-    color: var(--text-muted);
-    cursor: pointer;
-    font-size: 12px;
-    padding: 2px 6px;
-    border-radius: 4px;
-    transition: all 0.2s;
+  .capture-meta strong{color:var(--text1);display:block;margin-bottom:2px}
+  .page-text-block{
+    background:var(--card);border:1px solid var(--border2);border-radius:8px;
+    padding:12px;font-size:11px;color:var(--text2);line-height:1.6;
+    white-space:pre-wrap;word-break:break-word;max-height:300px;overflow-y:auto;
   }
-  .note-delete:hover { color: var(--danger); background: rgba(255,71,87,0.15); }
 
-  /* Page info panel */
-  .info-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    padding: 12px;
+  /* Panel header */
+  .panel-hdr{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:10px 14px;border-bottom:1px solid var(--border);
+    background:var(--bg0);flex-shrink:0;
+    font-size:11px;font-weight:700;color:var(--text2);letter-spacing:0.5px;text-transform:uppercase;
   }
-  .info-card {
-    padding: 10px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
+  .ref-btn{
+    background:none;border:none;color:var(--text3);cursor:pointer;
+    font-size:13px;padding:2px 6px;border-radius:4px;transition:all 0.2s;
   }
-  .info-card.full-width { grid-column: 1 / -1; }
-  .info-label {
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 4px;
-  }
-  .info-value {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-primary);
-    word-break: break-all;
-  }
-  .info-value.accent { color: var(--accent); }
-  .info-value.secondary { color: var(--secondary); }
+  .ref-btn:hover{color:var(--cyan);background:rgba(0,229,204,0.1)}
 
-  /* Command log */
-  .log-entry {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    padding: 8px 12px;
-    border-bottom: 1px solid var(--border);
-    font-size: 11px;
+  /* List items */
+  .list-item{
+    display:flex;align-items:center;gap:10px;padding:10px 12px;
+    background:var(--card);border:1px solid var(--border);border-radius:10px;
+    margin-bottom:6px;cursor:pointer;transition:all 0.2s;
   }
-  .log-time { color: var(--text-muted); white-space: nowrap; flex-shrink: 0; }
-  .log-intent {
-    font-weight: 600;
-    color: var(--accent);
-    white-space: nowrap;
-    flex-shrink: 0;
+  .list-item:hover{border-color:var(--accent);background:var(--bg3)}
+  .list-item.active-tab{border-color:var(--cyan)}
+  .item-icon{
+    width:30px;height:30px;border-radius:6px;background:var(--bg2);
+    border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:800;color:var(--accent);flex-shrink:0;
   }
-  .log-text { color: var(--text-secondary); flex: 1; word-break: break-word; }
-  .log-status { flex-shrink: 0; }
+  .item-info{flex:1;min-width:0}
+  .item-title{font-size:12px;font-weight:600;color:var(--text1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .item-sub{font-size:10px;color:var(--text3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:1px}
+  .item-action{
+    background:none;border:none;color:var(--text3);cursor:pointer;
+    font-size:13px;padding:4px 6px;border-radius:4px;transition:all 0.2s;flex-shrink:0;
+  }
+  .item-action:hover{color:var(--danger);background:rgba(255,64,96,0.1)}
+
+  /* Note cards */
+  .note-card{
+    background:var(--card);border:1px solid var(--border);border-radius:10px;
+    padding:12px 14px;margin-bottom:8px;border-left:3px solid var(--accent);transition:all 0.2s;
+  }
+  .note-card:hover{border-color:var(--accent)}
+  .note-content{font-size:12px;color:var(--text1);line-height:1.6;margin-bottom:8px;word-break:break-word}
+  .note-footer{display:flex;align-items:center;justify-content:space-between}
+  .note-meta{font-size:10px;color:var(--text3)}
+  .del-btn{
+    background:none;border:none;color:var(--text3);cursor:pointer;
+    font-size:11px;padding:2px 6px;border-radius:4px;transition:all 0.2s;
+  }
+  .del-btn:hover{color:var(--danger);background:rgba(255,64,96,0.1)}
+
+  /* Doc items */
+  .doc-item{
+    display:flex;align-items:center;gap:10px;padding:10px 12px;
+    background:var(--card);border:1px solid var(--border);border-radius:10px;
+    margin-bottom:6px;cursor:pointer;transition:all 0.2s;
+  }
+  .doc-item:hover{border-color:var(--accent);background:var(--bg3)}
+
+  /* Log */
+  .log-entry{
+    display:flex;align-items:center;gap:8px;padding:7px 10px;
+    border-radius:7px;border:1px solid var(--border);background:var(--card);
+    margin-bottom:5px;font-size:11px;
+  }
+  .log-time{color:var(--text3);font-size:10px;flex-shrink:0;font-variant-numeric:tabular-nums}
+  .log-intent{padding:2px 6px;border-radius:4px;font-size:9px;font-weight:800;background:var(--bg3);color:var(--accent);flex-shrink:0}
+  .log-raw{color:var(--text2);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .log-ok{color:var(--success);flex-shrink:0}
 
   /* Status bar */
-  .status-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 6px 12px;
-    background: var(--bg-secondary);
-    border-top: 1px solid var(--border);
-    font-size: 10px;
-    color: var(--text-muted);
-    flex-shrink: 0;
+  .sbar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:5px 14px;background:var(--bg0);border-top:1px solid var(--border);
+    flex-shrink:0;font-size:10px;color:var(--text3);
   }
-  .status-bar span { display: flex; align-items: center; gap: 4px; }
-
-  /* Section header */
-  .section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 12px;
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-bottom: 1px solid var(--border);
-    flex-shrink: 0;
-  }
-  .section-header .refresh-btn {
-    background: none;
-    border: none;
-    color: var(--text-muted);
-    cursor: pointer;
-    font-size: 14px;
-    padding: 2px 6px;
-    border-radius: 4px;
-    transition: all 0.2s;
-  }
-  .section-header .refresh-btn:hover { color: var(--accent); }
+  .sbar-item{display:flex;align-items:center;gap:4px}
+  .sv{color:var(--cyan);font-weight:700;font-variant-numeric:tabular-nums}
 
   /* Empty state */
-  .empty-state {
-    padding: 30px 20px;
-    text-align: center;
-    color: var(--text-muted);
-    font-size: 12px;
-  }
-  .empty-state .empty-icon { font-size: 32px; margin-bottom: 10px; }
-
-  /* Scrollbar */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+  .empty{padding:40px 20px;text-align:center;color:var(--text3)}
+  .empty .ei{font-size:36px;margin-bottom:10px}
+  .empty p{font-size:11px;line-height:1.6}
 </style>
 </head>
 <body>
 
-  <!-- Header -->
-  <div class="header">
-    <div class="header-left">
-      <span class="logo">⚡ JARVIS</span>
-      <div class="status-dot" id="statusDot" title="Connected"></div>
+<!-- Header -->
+<div class="hdr">
+  <div class="hdr-left">
+    <div class="arc-reactor"></div>
+    <div>
+      <div class="logo-text">JARVIS</div>
+      <div class="logo-ver">AI v2.0 &bull; EDGE READY</div>
     </div>
-    <div class="header-right">
-      <span style="font-size:10px; opacity:0.7;" id="versionLabel">v1.0.0</span>
-      <button class="header-btn" id="minimizeBtn" title="Minimize">—</button>
-    </div>
+    <div class="online-dot" title="System online"></div>
   </div>
-
-  <!-- Navigation Tabs -->
-  <div class="nav-tabs">
-    <div class="nav-tab active" data-panel="chat">💬 Chat</div>
-    <div class="nav-tab" data-panel="tabs">🗂️ Tabs</div>
-    <div class="nav-tab" data-panel="notes">📝 Notes</div>
-    <div class="nav-tab" data-panel="docs">📄 Docs</div>
-    <div class="nav-tab" data-panel="info">🔍 Info</div>
-    <div class="nav-tab" data-panel="log">📋 Log</div>
+  <div class="hdr-right">
+    <span style="font-size:10px;color:var(--text3)" id="statusChip">READY</span>
+    <button class="hbtn" id="minimizeBtn" title="Close panel">&#x2715;</button>
   </div>
+</div>
 
-  <!-- Chat Panel -->
-  <div class="tab-panel active" id="panel-chat">
-    <div class="chat-messages" id="chatMessages">
-      <div class="message jarvis">
-        <div class="agent-tag">JARVIS • ORCHESTRATOR</div>
-        Good day. I'm JARVIS, your AI sovereign assistant. I can manage your tabs, take notes, capture screenshots, search the web, and route commands through 10 Alpha Script AIs. How may I assist you?
+<!-- Navigation -->
+<div class="nav">
+  <div class="tab active" data-panel="chat"><span class="tab-icon">&#x1F4AC;</span>Chat</div>
+  <div class="tab" data-panel="search"><span class="tab-icon">&#x1F50D;</span>Search</div>
+  <div class="tab" data-panel="screen"><span class="tab-icon">&#x1F5A5;&#xFE0F;</span>Screen</div>
+  <div class="tab" data-panel="tabs"><span class="tab-icon">&#x1F5C2;&#xFE0F;</span>Tabs</div>
+  <div class="tab" data-panel="notes"><span class="tab-icon">&#x1F4DD;</span>Notes</div>
+  <div class="tab" data-panel="docs"><span class="tab-icon">&#x1F4C4;</span>Docs</div>
+  <div class="tab" data-panel="log"><span class="tab-icon">&#x1F4CB;</span>Log</div>
+</div>
+
+<div class="main">
+
+  <!-- Chat panel -->
+  <div class="panel active" id="panel-chat">
+    <div class="chat-msgs" id="chatMsgs">
+      <div class="msg bot" data-agent="JARVIS &#x2022; ORCHESTRATOR">
+        Good day. I am JARVIS v2.0 &mdash; your AI sovereign assistant running in Microsoft Edge. I can manage your tabs, take notes, capture your screen, search the web right here in this panel without opening new tabs, and route commands through 10 Alpha Script AIs. How may I assist?
         <span class="msg-time">just now</span>
       </div>
     </div>
-    <div class="quick-actions">
-      <button class="quick-btn" data-cmd="list tabs">🗂️ Tabs</button>
-      <button class="quick-btn" data-cmd="open url">🔗 URL</button>
-      <button class="quick-btn" data-cmd="new tab">➕ Tab</button>
-      <button class="quick-btn" data-cmd="screenshot">📸 Shot</button>
-      <button class="quick-btn" data-cmd="take note">📝 Note</button>
-      <button class="quick-btn" data-cmd="create pdf">📄 PDF</button>
+    <div class="quick">
+      <button class="qbtn" data-cmd="list tabs">&#x1F5C2;&#xFE0F; Tabs</button>
+      <button class="qbtn" data-cmd="screenshot">&#x1F4F8; Shot</button>
+      <button class="qbtn" data-cmd="summarize">&#x1F4D6; Summarize</button>
+      <button class="qbtn" data-cmd="take note">&#x1F4DD; Note</button>
+      <button class="qbtn" data-cmd="create pdf">&#x1F4C4; PDF</button>
+      <button class="qbtn" data-cmd="read page">&#x1F50E; Read</button>
     </div>
-    <div class="chat-input-area">
-      <input type="text" class="chat-input" id="chatInput" placeholder="Ask JARVIS anything..." autocomplete="off">
-      <button class="send-btn" id="sendBtn">Send</button>
+    <div class="cinput-wrap">
+      <input type="text" class="cinput" id="chatInput" placeholder="Ask JARVIS anything..." autocomplete="off">
+      <button class="sbtn" id="sendBtn">&#x26A1; Send</button>
     </div>
   </div>
 
-  <!-- Tabs Panel -->
-  <div class="tab-panel" id="panel-tabs">
-    <div class="section-header">
-      <span>Open Tabs</span>
-      <button class="refresh-btn" id="refreshTabsBtn" title="Refresh">🔄</button>
+  <!-- Search sandbox panel -->
+  <div class="panel" id="panel-search">
+    <div class="search-bar-wrap">
+      <div class="search-bar">
+        <input type="text" class="sinput" id="searchInput" placeholder="Search anything &mdash; results appear here, no new tabs needed..." autocomplete="off">
+        <button class="search-go" id="searchGoBtn">Search</button>
+      </div>
+      <div class="search-note">
+        Powered by <a href="#" id="searchOpenFull">DuckDuckGo</a> &bull; Results appear right here in the panel
+      </div>
     </div>
-    <div class="list-container" id="tabsList"></div>
-  </div>
-
-  <!-- Notes Panel -->
-  <div class="tab-panel" id="panel-notes">
-    <div class="section-header">
-      <span>Saved Notes</span>
-      <button class="refresh-btn" id="refreshNotesBtn" title="Refresh">🔄</button>
-    </div>
-    <div class="list-container" id="notesList"></div>
-  </div>
-
-  <!-- Documents Panel -->
-  <div class="tab-panel" id="panel-docs">
-    <div class="section-header">
-      <span>Documents</span>
-      <button class="refresh-btn" id="refreshDocsBtn" title="Refresh">🔄</button>
-    </div>
-    <div class="list-container" id="docsList"></div>
-  </div>
-
-  <!-- Page Info Panel -->
-  <div class="tab-panel" id="panel-info">
-    <div class="section-header">
-      <span>Current Page</span>
-      <button class="refresh-btn" id="refreshInfoBtn" title="Refresh">🔄</button>
-    </div>
-    <div class="info-grid" id="pageInfoGrid">
-      <div class="empty-state full-width">
-        <div class="empty-icon">🔍</div>
-        Click refresh to analyze current page
+    <div class="scroll" id="searchResults">
+      <div class="search-empty">
+        <div class="sei">&#x1F50D;</div>
+        <p>Type anything above and hit Search.<br>Results load here &mdash; no new tabs opened.</p>
       </div>
     </div>
   </div>
 
-  <!-- Command Log Panel -->
-  <div class="tab-panel" id="panel-log">
-    <div class="section-header">
-      <span>Command History</span>
-      <button class="refresh-btn" id="refreshLogBtn" title="Refresh">🔄</button>
+  <!-- Screen reader panel -->
+  <div class="panel" id="panel-screen">
+    <div class="screen-btns">
+      <button class="screen-btn" id="captureBtn">&#x1F4F8; Capture Tab</button>
+      <button class="screen-btn" id="readPageBtn">&#x1F50E; Read Text</button>
+      <button class="screen-btn" id="summarizePageBtn">&#x1F4D6; Summarize</button>
     </div>
-    <div class="list-container" id="commandLog"></div>
+    <div class="screen-preview" id="screenPreview">
+      <div class="empty">
+        <div class="ei">&#x1F5A5;&#xFE0F;</div>
+        <p>Capture your current tab or extract page text.<br>All processing is local &mdash; nothing leaves your browser.</p>
+      </div>
+    </div>
   </div>
 
-  <!-- Status Bar -->
-  <div class="status-bar">
-    <span>💓 <span id="heartbeatCount">0</span></span>
-    <span>⏱️ <span id="uptimeDisplay">0m 0s</span></span>
-    <span>📊 <span id="commandCountDisplay">0</span> cmds</span>
+  <!-- Tabs panel -->
+  <div class="panel" id="panel-tabs">
+    <div class="panel-hdr">
+      Open Tabs
+      <button class="ref-btn" id="refreshTabsBtn" title="Refresh">&#x1F504;</button>
+    </div>
+    <div class="scroll" id="tabsList"></div>
   </div>
+
+  <!-- Notes panel -->
+  <div class="panel" id="panel-notes">
+    <div class="panel-hdr">
+      Saved Notes
+      <button class="ref-btn" id="refreshNotesBtn" title="Refresh">&#x1F504;</button>
+    </div>
+    <div class="scroll" id="notesList"></div>
+  </div>
+
+  <!-- Docs panel -->
+  <div class="panel" id="panel-docs">
+    <div class="panel-hdr">
+      Documents
+      <button class="ref-btn" id="refreshDocsBtn" title="Refresh">&#x1F504;</button>
+    </div>
+    <div class="scroll" id="docsList"></div>
+  </div>
+
+  <!-- Log panel -->
+  <div class="panel" id="panel-log">
+    <div class="panel-hdr">
+      Command History
+      <button class="ref-btn" id="refreshLogBtn" title="Refresh">&#x1F504;</button>
+    </div>
+    <div class="scroll" id="cmdLog"></div>
+  </div>
+
+</div>
+
+<!-- Status bar -->
+<div class="sbar">
+  <div class="sbar-item">&#x1F493; <span class="sv" id="hbCount">0</span></div>
+  <div class="sbar-item">&#x23F1; <span class="sv" id="uptime">0m 0s</span></div>
+  <div class="sbar-item">&#x26A1; <span class="sv" id="cmdCount">0</span> cmds</div>
+  <div class="sbar-item" style="color:var(--cyan)">EDGE</div>
+</div>
 
 <script>
 (function () {
   'use strict';
 
-  /* ---- State ---- */
-  var state = {
-    currentPanel: 'chat',
-    refreshInterval: null,
-    statusInterval: null
-  };
+  var cur = 'chat';
 
-  /* ---- DOM refs ---- */
-  var chatMessages = document.getElementById('chatMessages');
-  var chatInput = document.getElementById('chatInput');
-  var sendBtn = document.getElementById('sendBtn');
-  var heartbeatCount = document.getElementById('heartbeatCount');
-  var uptimeDisplay = document.getElementById('uptimeDisplay');
-  var commandCountDisplay = document.getElementById('commandCountDisplay');
-  var tabsList = document.getElementById('tabsList');
-  var notesList = document.getElementById('notesList');
-  var docsList = document.getElementById('docsList');
-  var pageInfoGrid = document.getElementById('pageInfoGrid');
-  var commandLog = document.getElementById('commandLog');
+  function esc(s) {
+    var d = document.createElement('div');
+    d.textContent = String(s || '');
+    return d.innerHTML;
+  }
+  function ts() {
+    var d = new Date();
+    return d.getHours().toString().padStart(2, '0') + ':' + d.getMinutes().toString().padStart(2, '0');
+  }
 
-  /* ---- Navigation ---- */
-  document.querySelectorAll('.nav-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      tab.classList.add('active');
-      var panelId = 'panel-' + tab.dataset.panel;
-      document.getElementById(panelId).classList.add('active');
-      state.currentPanel = tab.dataset.panel;
-
-      // Auto-refresh on panel switch
-      if (tab.dataset.panel === 'tabs') loadTabs();
-      if (tab.dataset.panel === 'notes') loadNotes();
-      if (tab.dataset.panel === 'docs') loadDocuments();
-      if (tab.dataset.panel === 'log') loadCommandLog();
-      if (tab.dataset.panel === 'info') loadPageInfo();
+  /* Tab navigation */
+  document.querySelectorAll('.tab').forEach(function (t) {
+    t.addEventListener('click', function () {
+      document.querySelectorAll('.tab').forEach(function (x) { x.classList.remove('active'); });
+      document.querySelectorAll('.panel').forEach(function (x) { x.classList.remove('active'); });
+      t.classList.add('active');
+      var p = document.getElementById('panel-' + t.dataset.panel);
+      if (p) p.classList.add('active');
+      cur = t.dataset.panel;
+      if (cur === 'tabs') loadTabs();
+      if (cur === 'notes') loadNotes();
+      if (cur === 'docs') loadDocs();
+      if (cur === 'log') loadLog();
     });
   });
 
-  /* ---- Minimize ---- */
-  document.getElementById('minimizeBtn').addEventListener('click', () => {
-    window.close();
-  });
+  document.getElementById('minimizeBtn').addEventListener('click', function () { window.close(); });
 
-  /* ---- Chat Functions ---- */
-  function addMessage(text, type, agentTag) {
+  /* ========== CHAT ========== */
+  var chatMsgs = document.getElementById('chatMsgs');
+  var chatInput = document.getElementById('chatInput');
+
+  function addMsg(text, type, agent) {
     var div = document.createElement('div');
-    div.className = 'message ' + type;
-    var now = new Date();
-    var timeStr = now.getHours().toString().padStart(2, '0') + ':' +
-                  now.getMinutes().toString().padStart(2, '0');
-
-    if (type === 'jarvis' && agentTag) {
-      div.innerHTML = '<div class="agent-tag">' + escapeHtml(agentTag) + '</div>' +
-                      escapeHtml(text) +
-                      '<span class="msg-time">' + timeStr + '</span>';
+    div.className = 'msg ' + type;
+    if (type === 'bot' && agent) div.setAttribute('data-agent', agent);
+    var content = document.createElement('span');
+    content.textContent = text;
+    var t = document.createElement('span');
+    t.className = 'msg-time';
+    t.textContent = ts();
+    if (type === 'user') {
+      div.innerHTML = esc(text);
+      div.appendChild(t);
     } else {
-      div.innerHTML = escapeHtml(text) + '<span class="msg-time">' + timeStr + '</span>';
+      div.appendChild(content);
+      div.appendChild(t);
     }
-    chatMessages.appendChild(div);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+    chatMsgs.appendChild(div);
+    chatMsgs.scrollTop = chatMsgs.scrollHeight;
   }
 
-  function escapeHtml(str) {
-    var div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
+  function showTyping() {
+    var t = document.createElement('div');
+    t.className = 'typing'; t.id = 'typing-ind';
+    t.innerHTML = '<span></span><span></span><span></span>';
+    chatMsgs.appendChild(t);
+    chatMsgs.scrollTop = chatMsgs.scrollHeight;
   }
+  function hideTyping() { var t = document.getElementById('typing-ind'); if (t) t.remove(); }
 
-  function sendMessage() {
+  function sendChat() {
     var text = chatInput.value.trim();
     if (!text) return;
-
-    addMessage(text, 'user');
+    addMsg(text, 'user');
     chatInput.value = '';
+    showTyping();
 
-    chrome.runtime.sendMessage({ action: 'executeCommand', command: text }, (resp) => {
+    chrome.runtime.sendMessage({ action: 'executeCommand', command: text }, function (resp) {
+      hideTyping();
       if (chrome.runtime.lastError) {
-        addMessage('Connection error: ' + chrome.runtime.lastError.message, 'jarvis', 'JARVIS • ERROR');
+        addMsg('Connection error: ' + chrome.runtime.lastError.message, 'bot', 'JARVIS \u2022 ERROR');
         return;
       }
-      if (!resp) {
-        addMessage('No response from engine.', 'jarvis', 'JARVIS • ERROR');
+      if (!resp) { addMsg('No response from engine.', 'bot', 'JARVIS \u2022 ERROR'); return; }
+
+      if (resp.sandboxQuery) {
+        addMsg('Opening sandbox search for "' + resp.sandboxQuery + '" \u2014 no new tab needed.', 'bot', 'JARVIS \u2022 UNIVERSUM');
+        setTimeout(function () {
+          document.querySelector('[data-panel="search"]').click();
+          document.getElementById('searchInput').value = resp.sandboxQuery;
+          runSearch(resp.sandboxQuery);
+        }, 300);
         return;
       }
 
-      var responseText = resp.message || JSON.stringify(resp);
-
-      // Format special responses
+      var out = resp.message || JSON.stringify(resp);
       if (resp.tabs) {
-        responseText = resp.message + '\n\n';
-        resp.tabs.forEach((t, i) => {
-          responseText += (t.active ? '▶ ' : '  ') + (i + 1) + '. ' + t.title + '\n';
-        });
+        out = resp.message + '\n\n';
+        resp.tabs.forEach(function (t, i) { out += (t.active ? '\u25B6 ' : '  ') + (i + 1) + '. ' + t.title + '\n'; });
       }
       if (resp.notes) {
-        responseText = resp.message + '\n\n';
-        resp.notes.forEach((n, i) => {
-          responseText += (i + 1) + '. ' + n.content.substring(0, 60) + '\n';
-        });
+        out = resp.message + '\n\n';
+        resp.notes.forEach(function (n, i) { out += (i + 1) + '. ' + n.content.substring(0, 60) + '\n'; });
       }
       if (resp.summary) {
         var s = resp.summary;
-        responseText = '📄 ' + s.title + '\n';
-        responseText += '📊 ' + s.wordCount + ' words | ' + s.headingCount + ' headings | ' + s.linkCount + ' links\n\n';
+        out = '\u1F4C4 ' + s.title + '\n\u1F4CA ' + s.wordCount + ' words | ' + s.headingCount + ' headings | ' + s.linkCount + ' links\n\n';
         if (s.keyPoints && s.keyPoints.length) {
-          responseText += 'Key Points:\n';
-          s.keyPoints.forEach((p, i) => { responseText += '• ' + p + '\n'; });
+          out += 'Key Points:\n';
+          s.keyPoints.forEach(function (p) { out += '\u2022 ' + p + '\n'; });
         }
       }
       if (resp.pageData) {
         var pd = resp.pageData;
-        responseText = '📖 ' + pd.title + '\n';
-        responseText += '🔗 ' + pd.url + '\n';
-        responseText += '📊 ' + pd.wordCount + ' words | ' + pd.linkCount + ' links | ' + pd.imageCount + ' images\n';
-        if (pd.headings && pd.headings.length) {
-          responseText += '\nHeadings:\n';
-          pd.headings.slice(0, 10).forEach(h => { responseText += '  ' + h.tag + ': ' + h.text + '\n'; });
-        }
+        out = pd.title + '\n' + pd.url + '\n' + pd.wordCount + ' words | ' + pd.linkCount + ' links | ' + pd.imageCount + ' images';
       }
-
-      addMessage(responseText, 'jarvis', 'JARVIS • ' + (resp.agent || 'ENGINE'));
+      addMsg(out, 'bot', 'JARVIS \u2022 ' + (resp.agent || 'ENGINE'));
     });
   }
 
-  sendBtn.addEventListener('click', sendMessage);
-  chatInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
+  document.getElementById('sendBtn').addEventListener('click', sendChat);
+  chatInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
   });
-
-  /* ---- Quick Action Buttons ---- */
-  document.querySelectorAll('.quick-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      var cmd = btn.dataset.cmd;
-      if (cmd === 'take note') {
-        chatInput.value = 'take note: ';
-        chatInput.focus();
-      } else if (cmd === 'open url') {
-        chatInput.value = 'open url ';
-        chatInput.focus();
-      } else {
-        chatInput.value = cmd;
-        sendMessage();
-      }
+  document.querySelectorAll('.qbtn').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var cmd = b.dataset.cmd;
+      if (cmd === 'take note') { chatInput.value = 'take note: '; chatInput.focus(); }
+      else { chatInput.value = cmd; sendChat(); }
     });
   });
 
-  /* ---- Load Tabs ---- */
-  function loadTabs() {
-    chrome.runtime.sendMessage({ action: 'listTabs' }, (resp) => {
-      if (chrome.runtime.lastError || !resp || !resp.success) {
-        tabsList.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div>Could not load tabs</div>';
+  /* ========== SANDBOX SEARCH ========== */
+  var searchInput = document.getElementById('searchInput');
+  var searchResults = document.getElementById('searchResults');
+
+  function runSearch(query) {
+    if (!query) return;
+    searchResults.innerHTML = '<div class="search-loading"><div class="spinner"></div>&nbsp;Searching for "' + esc(query) + '"&hellip;</div>';
+    chrome.runtime.sendMessage({ action: 'sandboxSearch', query: query }, function (resp) {
+      if (chrome.runtime.lastError || !resp || !resp.success || !resp.results || !resp.results.length) {
+        var msg = (resp && resp.message) || 'No results found.';
+        searchResults.innerHTML = '<div class="search-empty"><div class="sei">&#x1F636;</div><p>' + esc(msg) +
+          '<br><br><a href="https://duckduckgo.com/?q=' + encodeURIComponent(query) +
+          '" target="_blank" style="color:var(--cyan)">Open full search in new tab</a></p></div>';
         return;
       }
-      if (!resp.tabs || resp.tabs.length === 0) {
-        tabsList.innerHTML = '<div class="empty-state"><div class="empty-icon">🗂️</div>No tabs found</div>';
+      searchResults.innerHTML = '<div style="font-size:10px;color:var(--text3);margin-bottom:8px;padding:0 2px">' +
+        '&#x1F50D; Results for: <strong style="color:var(--text2)">' + esc(resp.query) + '</strong></div>';
+      resp.results.forEach(function (r) {
+        var card = document.createElement('div');
+        card.className = 'result-card';
+        var labels = { answer: 'Instant', abstract: 'Overview', result: 'Web', related: 'Related' };
+        var urlHtml = r.url ? '<a class="result-url" href="' + esc(r.url) + '" target="_blank">' +
+          esc(r.url.substring(0, 60)) + (r.url.length > 60 ? '&hellip;' : '') + '</a>' : '';
+        card.innerHTML = '<span class="result-type ' + r.type + '">' + esc(labels[r.type] || r.type) + '</span>' +
+          '<div class="result-title">' + esc(r.title) + '</div>' +
+          '<div class="result-text">' + esc(r.text.substring(0, 200)) + (r.text.length > 200 ? '&hellip;' : '') + '</div>' +
+          urlHtml;
+        searchResults.appendChild(card);
+      });
+      var footer = document.createElement('div');
+      footer.style.cssText = 'text-align:center;padding:12px 0;font-size:11px;color:var(--text3)';
+      footer.innerHTML = '<a href="https://duckduckgo.com/?q=' + encodeURIComponent(query) +
+        '" target="_blank" style="color:var(--accent)">Open full DuckDuckGo results in new tab &rarr;</a>';
+      searchResults.appendChild(footer);
+    });
+  }
+
+  document.getElementById('searchGoBtn').addEventListener('click', function () { runSearch(searchInput.value.trim()); });
+  searchInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); runSearch(searchInput.value.trim()); } });
+  document.getElementById('searchOpenFull').addEventListener('click', function (e) {
+    e.preventDefault();
+    var q = searchInput.value.trim() || 'duckduckgo';
+    chrome.tabs.create({ url: 'https://duckduckgo.com/?q=' + encodeURIComponent(q) });
+  });
+
+  /* ========== SCREEN READER ========== */
+  var screenPreview = document.getElementById('screenPreview');
+
+  document.getElementById('captureBtn').addEventListener('click', function () {
+    screenPreview.innerHTML = '<div class="search-loading"><div class="spinner"></div>&nbsp;Capturing tab&hellip;</div>';
+    chrome.runtime.sendMessage({ action: 'captureTab' }, function (resp) {
+      if (chrome.runtime.lastError || !resp || !resp.success) {
+        screenPreview.innerHTML = '<div class="empty"><div class="ei">&#x26A0;&#xFE0F;</div><p>' +
+          esc((resp && resp.message) || 'Capture failed') + '</p></div>';
         return;
+      }
+      screenPreview.innerHTML = '';
+      var meta = document.createElement('div');
+      meta.className = 'capture-meta';
+      var strong = document.createElement('strong');
+      strong.textContent = resp.title;
+      meta.appendChild(strong);
+      meta.appendChild(document.createTextNode(resp.url));
+      var img = document.createElement('img');
+      img.className = 'capture-img';
+      img.src = resp.dataUrl;
+      img.title = resp.title;
+      var dlBtn = document.createElement('button');
+      dlBtn.className = 'screen-btn';
+      dlBtn.style.marginTop = '8px';
+      dlBtn.textContent = '\u2B07 Save Screenshot';
+      dlBtn.addEventListener('click', function () { chrome.runtime.sendMessage({ action: 'screenshot' }); });
+      screenPreview.appendChild(meta);
+      screenPreview.appendChild(img);
+      screenPreview.appendChild(dlBtn);
+    });
+  });
+
+  document.getElementById('readPageBtn').addEventListener('click', function () {
+    screenPreview.innerHTML = '<div class="search-loading"><div class="spinner"></div>&nbsp;Reading page text&hellip;</div>';
+    chrome.runtime.sendMessage({ action: 'readPage' }, function (resp) {
+      if (chrome.runtime.lastError || !resp || !resp.success) {
+        screenPreview.innerHTML = '<div class="empty"><div class="ei">&#x26A0;&#xFE0F;</div><p>' +
+          esc((resp && resp.message) || 'Could not read page') + '</p></div>';
+        return;
+      }
+      var pd = resp.pageData;
+      screenPreview.innerHTML = '';
+      var meta = document.createElement('div');
+      meta.className = 'capture-meta';
+      meta.innerHTML = '<strong>' + esc(pd.title) + '</strong>' +
+        esc(pd.url) + ' &mdash; ' + pd.wordCount + ' words | ' + pd.linkCount + ' links | ' + pd.imageCount + ' images';
+      var tb = document.createElement('div');
+      tb.className = 'page-text-block';
+      tb.textContent = pd.text.substring(0, 3000) + (pd.text.length > 3000 ? '\n\n[...truncated]' : '');
+      screenPreview.appendChild(meta);
+      screenPreview.appendChild(tb);
+    });
+  });
+
+  document.getElementById('summarizePageBtn').addEventListener('click', function () {
+    screenPreview.innerHTML = '<div class="search-loading"><div class="spinner"></div>&nbsp;Summarizing page&hellip;</div>';
+    chrome.runtime.sendMessage({ action: 'summarize' }, function (resp) {
+      if (chrome.runtime.lastError || !resp || !resp.success) {
+        screenPreview.innerHTML = '<div class="empty"><div class="ei">&#x26A0;&#xFE0F;</div><p>' +
+          esc((resp && resp.message) || 'Could not summarize') + '</p></div>';
+        return;
+      }
+      var s = resp.summary;
+      screenPreview.innerHTML = '';
+      var meta = document.createElement('div');
+      meta.className = 'capture-meta';
+      meta.innerHTML = '<strong>' + esc(s.title) + '</strong>' +
+        esc(s.url) + ' &mdash; ' + s.wordCount + ' words | ' + s.headingCount + ' headings';
+      var tb = document.createElement('div');
+      tb.className = 'page-text-block';
+      var txt = 'SUMMARY\n\n';
+      if (s.metaDescription) txt += s.metaDescription + '\n\n';
+      if (s.keyPoints && s.keyPoints.length) {
+        txt += 'KEY POINTS:\n';
+        s.keyPoints.forEach(function (p, i) { txt += (i + 1) + '. ' + p + '\n'; });
+      }
+      tb.textContent = txt;
+      screenPreview.appendChild(meta);
+      screenPreview.appendChild(tb);
+    });
+  });
+
+  /* ========== TABS ========== */
+  var tabsList = document.getElementById('tabsList');
+  function loadTabs() {
+    chrome.runtime.sendMessage({ action: 'listTabs' }, function (resp) {
+      if (chrome.runtime.lastError || !resp || !resp.success) {
+        tabsList.innerHTML = '<div class="empty"><div class="ei">&#x26A0;&#xFE0F;</div><p>Could not load tabs</p></div>'; return;
+      }
+      if (!resp.tabs || !resp.tabs.length) {
+        tabsList.innerHTML = '<div class="empty"><div class="ei">&#x1F5C2;&#xFE0F;</div><p>No tabs open</p></div>'; return;
       }
       tabsList.innerHTML = '';
-      resp.tabs.forEach(tab => {
+      resp.tabs.forEach(function (tab) {
         var item = document.createElement('div');
         item.className = 'list-item' + (tab.active ? ' active-tab' : '');
-
-        var icon = document.createElement('div');
-        icon.className = 'item-icon';
-        icon.textContent = tab.active ? '▶' : (tab.index);
-
-        var info = document.createElement('div');
-        info.className = 'item-info';
-        var title = document.createElement('div');
-        title.className = 'item-title';
-        title.textContent = tab.title;
-        var subtitle = document.createElement('div');
-        subtitle.className = 'item-subtitle';
-        subtitle.textContent = tab.url;
-        info.appendChild(title);
-        info.appendChild(subtitle);
-
-        var closeBtn = document.createElement('button');
-        closeBtn.className = 'item-action';
-        closeBtn.textContent = '✕';
-        closeBtn.title = 'Close tab';
-        closeBtn.addEventListener('click', (e) => {
+        var icon = document.createElement('div'); icon.className = 'item-icon'; icon.textContent = tab.active ? '\u25B6' : tab.index;
+        var info = document.createElement('div'); info.className = 'item-info';
+        var ti = document.createElement('div'); ti.className = 'item-title'; ti.textContent = tab.title;
+        var su = document.createElement('div'); su.className = 'item-sub'; su.textContent = tab.url;
+        info.appendChild(ti); info.appendChild(su);
+        var cl = document.createElement('button'); cl.className = 'item-action'; cl.textContent = '\u2715'; cl.title = 'Close tab';
+        cl.addEventListener('click', function (e) {
           e.stopPropagation();
-          chrome.runtime.sendMessage({ action: 'executeCommand', command: 'close tab ' + tab.index }, () => {
-            loadTabs();
-          });
+          chrome.runtime.sendMessage({ action: 'executeCommand', command: 'close tab ' + tab.index }, function () { loadTabs(); });
         });
-
-        item.appendChild(icon);
-        item.appendChild(info);
-        item.appendChild(closeBtn);
-        item.addEventListener('click', () => {
-          chrome.runtime.sendMessage({ action: 'switchTab', tabIndex: tab.index }, () => {
-            loadTabs();
-          });
+        item.appendChild(icon); item.appendChild(info); item.appendChild(cl);
+        item.addEventListener('click', function () {
+          chrome.runtime.sendMessage({ action: 'switchTab', tabIndex: tab.index }, function () { loadTabs(); });
         });
         tabsList.appendChild(item);
       });
     });
   }
+  document.getElementById('refreshTabsBtn').addEventListener('click', loadTabs);
 
-  /* ---- Load Notes ---- */
+  /* ========== NOTES ========== */
+  var notesList = document.getElementById('notesList');
   function loadNotes() {
-    chrome.runtime.sendMessage({ action: 'listNotes' }, (resp) => {
+    chrome.runtime.sendMessage({ action: 'listNotes' }, function (resp) {
       if (chrome.runtime.lastError || !resp || !resp.success) {
-        notesList.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div>Could not load notes</div>';
-        return;
+        notesList.innerHTML = '<div class="empty"><div class="ei">&#x26A0;&#xFE0F;</div><p>Could not load notes</p></div>'; return;
       }
-      if (!resp.notes || resp.notes.length === 0) {
-        notesList.innerHTML = '<div class="empty-state"><div class="empty-icon">📝</div>No notes yet.<br>Try "take note: something important"</div>';
-        return;
+      if (!resp.notes || !resp.notes.length) {
+        notesList.innerHTML = '<div class="empty"><div class="ei">&#x1F4DD;</div><p>No notes yet.<br>Say "take note: something" in Chat.</p></div>'; return;
       }
       notesList.innerHTML = '';
-      resp.notes.forEach(note => {
-        var item = document.createElement('div');
-        item.className = 'note-item';
-
-        var content = document.createElement('div');
-        content.className = 'note-content';
-        content.textContent = note.content;
-
-        var meta = document.createElement('div');
-        meta.className = 'note-meta';
-        var metaText = document.createElement('span');
-        var dateStr = new Date(note.timestamp).toLocaleString();
-        metaText.textContent = (note.author || 'Alfredo') + ' • ' + dateStr;
-
-        var delBtn = document.createElement('button');
-        delBtn.className = 'note-delete';
-        delBtn.textContent = '🗑️ Delete';
-        delBtn.addEventListener('click', () => {
-          chrome.runtime.sendMessage({ action: 'deleteNote', noteId: note.id }, () => {
-            loadNotes();
-          });
+      resp.notes.forEach(function (note) {
+        var card = document.createElement('div'); card.className = 'note-card';
+        var c = document.createElement('div'); c.className = 'note-content'; c.textContent = note.content;
+        var footer = document.createElement('div'); footer.className = 'note-footer';
+        var m = document.createElement('span'); m.className = 'note-meta';
+        m.textContent = (note.author || 'Alfredo') + ' \u00B7 ' + new Date(note.timestamp).toLocaleString();
+        var del = document.createElement('button'); del.className = 'del-btn'; del.textContent = '\u1F5D1 Delete';
+        del.addEventListener('click', function () {
+          chrome.runtime.sendMessage({ action: 'deleteNote', noteId: note.id }, function () { loadNotes(); });
         });
-
-        meta.appendChild(metaText);
-        meta.appendChild(delBtn);
-        item.appendChild(content);
-        item.appendChild(meta);
-        notesList.appendChild(item);
+        footer.appendChild(m); footer.appendChild(del);
+        card.appendChild(c); card.appendChild(footer);
+        notesList.appendChild(card);
       });
     });
   }
+  document.getElementById('refreshNotesBtn').addEventListener('click', loadNotes);
 
-  /* ---- Load Documents ---- */
-  function loadDocuments() {
-    chrome.runtime.sendMessage({ action: 'listDocuments' }, (resp) => {
+  /* ========== DOCS ========== */
+  var docsList = document.getElementById('docsList');
+  function loadDocs() {
+    chrome.runtime.sendMessage({ action: 'listDocuments' }, function (resp) {
       if (chrome.runtime.lastError || !resp || !resp.success) {
-        docsList.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div>Could not load documents</div>';
-        return;
+        docsList.innerHTML = '<div class="empty"><div class="ei">&#x26A0;&#xFE0F;</div><p>Could not load documents</p></div>'; return;
       }
-      if (!resp.documents || resp.documents.length === 0) {
-        docsList.innerHTML = '<div class="empty-state"><div class="empty-icon">📄</div>No documents yet.<br>Try "create pdf: My Report"</div>';
-        return;
+      if (!resp.documents || !resp.documents.length) {
+        docsList.innerHTML = '<div class="empty"><div class="ei">&#x1F4C4;</div><p>No documents yet.<br>Say "create pdf: My Report" in Chat.</p></div>'; return;
       }
       docsList.innerHTML = '';
-      resp.documents.forEach(doc => {
-        var item = document.createElement('div');
-        item.className = 'list-item';
-
-        var icon = document.createElement('div');
-        icon.className = 'item-icon';
-        icon.textContent = doc.type === 'pdf' ? '📄' : '📝';
-
-        var info = document.createElement('div');
-        info.className = 'item-info';
-        var title = document.createElement('div');
-        title.className = 'item-title';
-        title.textContent = doc.title;
-        var subtitle = document.createElement('div');
-        subtitle.className = 'item-subtitle';
-        subtitle.textContent = (doc.author || 'Alfredo') + ' • ' + new Date(doc.timestamp).toLocaleString();
-        info.appendChild(title);
-        info.appendChild(subtitle);
-
-        item.appendChild(icon);
-        item.appendChild(info);
-        item.addEventListener('click', () => {
-          addMessage('Document: ' + doc.title + '\n\n' + (doc.content || 'Empty document'), 'jarvis', 'JARVIS • DOCUMENT');
-          // Switch to chat panel
+      resp.documents.forEach(function (doc) {
+        var item = document.createElement('div'); item.className = 'doc-item';
+        var icon = document.createElement('div'); icon.className = 'item-icon'; icon.textContent = doc.type === 'pdf' ? '\u1F4C4' : '\u1F4DD';
+        var info = document.createElement('div'); info.className = 'item-info';
+        var ti = document.createElement('div'); ti.className = 'item-title'; ti.textContent = doc.title;
+        var su = document.createElement('div'); su.className = 'item-sub';
+        su.textContent = (doc.author || 'Alfredo') + ' \u00B7 ' + new Date(doc.timestamp).toLocaleString();
+        info.appendChild(ti); info.appendChild(su);
+        item.appendChild(icon); item.appendChild(info);
+        item.addEventListener('click', function () {
           document.querySelector('[data-panel="chat"]').click();
+          addMsg('Document: ' + doc.title + '\n\n' + (doc.content || '(empty)'), 'bot', 'JARVIS \u2022 DOCUMENT');
         });
         docsList.appendChild(item);
       });
     });
   }
+  document.getElementById('refreshDocsBtn').addEventListener('click', loadDocs);
 
-  /* ---- Load Page Info ---- */
-  function loadPageInfo() {
-    chrome.runtime.sendMessage({ action: 'readPage' }, (resp) => {
+  /* ========== LOG ========== */
+  var cmdLog = document.getElementById('cmdLog');
+  function loadLog() {
+    chrome.runtime.sendMessage({ action: 'getHistory' }, function (resp) {
       if (chrome.runtime.lastError || !resp || !resp.success) {
-        pageInfoGrid.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div>Could not analyze page.<br>This may not work on extension pages.</div>';
-        return;
+        cmdLog.innerHTML = '<div class="empty"><div class="ei">&#x1F4CB;</div><p>No commands yet</p></div>'; return;
       }
-      var pd = resp.pageData;
-      pageInfoGrid.innerHTML = '';
-
-      var fields = [
-        { label: 'Title', value: pd.title, full: true, cls: '' },
-        { label: 'URL', value: pd.url, full: true, cls: 'accent' },
-        { label: 'Words', value: pd.wordCount.toLocaleString(), full: false, cls: 'secondary' },
-        { label: 'Headings', value: pd.headings ? pd.headings.length : 0, full: false, cls: 'secondary' },
-        { label: 'Links', value: pd.linkCount.toLocaleString(), full: false, cls: '' },
-        { label: 'Images', value: pd.imageCount.toLocaleString(), full: false, cls: '' }
-      ];
-
-      if (pd.metaDescription) {
-        fields.push({ label: 'Description', value: pd.metaDescription, full: true, cls: '' });
+      var hist = resp.data;
+      if (!hist || !hist.length) {
+        cmdLog.innerHTML = '<div class="empty"><div class="ei">&#x1F4CB;</div><p>No commands yet.<br>Start chatting to see history.</p></div>'; return;
       }
-
-      fields.forEach(f => {
-        var card = document.createElement('div');
-        card.className = 'info-card' + (f.full ? ' full-width' : '');
-        var label = document.createElement('div');
-        label.className = 'info-label';
-        label.textContent = f.label;
-        var value = document.createElement('div');
-        value.className = 'info-value' + (f.cls ? ' ' + f.cls : '');
-        value.textContent = f.value;
-        card.appendChild(label);
-        card.appendChild(value);
-        pageInfoGrid.appendChild(card);
-      });
-
-      // Show headings
-      if (pd.headings && pd.headings.length > 0) {
-        var headingCard = document.createElement('div');
-        headingCard.className = 'info-card full-width';
-        var headingLabel = document.createElement('div');
-        headingLabel.className = 'info-label';
-        headingLabel.textContent = 'Headings';
-        headingCard.appendChild(headingLabel);
-        pd.headings.slice(0, 15).forEach(h => {
-          var hDiv = document.createElement('div');
-          hDiv.style.fontSize = '11px';
-          hDiv.style.padding = '2px 0';
-          hDiv.style.color = h.tag === 'H1' ? 'var(--accent)' : 'var(--text-secondary)';
-          hDiv.textContent = h.tag + ': ' + h.text;
-          headingCard.appendChild(hDiv);
-        });
-        pageInfoGrid.appendChild(headingCard);
-      }
-    });
-  }
-
-  /* ---- Load Command Log ---- */
-  function loadCommandLog() {
-    chrome.runtime.sendMessage({ action: 'getHistory' }, (resp) => {
-      if (chrome.runtime.lastError || !resp || !resp.success) {
-        commandLog.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div>No commands yet</div>';
-        return;
-      }
-      var history = resp.data;
-      if (!history || history.length === 0) {
-        commandLog.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div>No commands yet.<br>Start chatting to see history.</div>';
-        return;
-      }
-      commandLog.innerHTML = '';
-      history.slice(0, 50).forEach(entry => {
-        var div = document.createElement('div');
-        div.className = 'log-entry';
-
-        var time = document.createElement('span');
-        time.className = 'log-time';
-        time.textContent = new Date(entry.timestamp).toLocaleTimeString();
-
-        var intent = document.createElement('span');
-        intent.className = 'log-intent';
-        intent.textContent = entry.intent;
-
-        var text = document.createElement('span');
-        text.className = 'log-text';
-        text.textContent = entry.raw;
-
-        var status = document.createElement('span');
-        status.className = 'log-status';
-        status.textContent = '✅';
-
-        div.appendChild(time);
-        div.appendChild(intent);
-        div.appendChild(text);
-        div.appendChild(status);
-        commandLog.appendChild(div);
+      cmdLog.innerHTML = '';
+      hist.slice(0, 60).forEach(function (entry) {
+        var div = document.createElement('div'); div.className = 'log-entry';
+        div.innerHTML = '<span class="log-time">' + new Date(entry.timestamp).toLocaleTimeString() + '</span>' +
+          '<span class="log-intent">' + esc(entry.intent) + '</span>' +
+          '<span class="log-raw">' + esc(entry.raw) + '</span>' +
+          '<span class="log-ok">\u2705</span>';
+        cmdLog.appendChild(div);
       });
     });
   }
+  document.getElementById('refreshLogBtn').addEventListener('click', loadLog);
 
-  /* ---- Status Updates ---- */
+  /* ========== STATUS ========== */
   function updateStatus() {
-    chrome.runtime.sendMessage({ action: 'getStatus' }, (resp) => {
+    chrome.runtime.sendMessage({ action: 'getStatus' }, function (resp) {
       if (chrome.runtime.lastError || !resp || !resp.success) return;
-      var data = resp.data;
-      heartbeatCount.textContent = data.heartbeatCount;
-      uptimeDisplay.textContent = data.uptimeFormatted;
-      commandCountDisplay.textContent = data.commandCount;
+      var d = resp.data;
+      document.getElementById('hbCount').textContent = d.heartbeatCount;
+      document.getElementById('uptime').textContent = d.uptimeFormatted;
+      document.getElementById('cmdCount').textContent = d.commandCount;
     });
   }
-
-  /* ---- Refresh Buttons ---- */
-  document.getElementById('refreshTabsBtn').addEventListener('click', loadTabs);
-  document.getElementById('refreshNotesBtn').addEventListener('click', loadNotes);
-  document.getElementById('refreshDocsBtn').addEventListener('click', loadDocuments);
-  document.getElementById('refreshInfoBtn').addEventListener('click', loadPageInfo);
-  document.getElementById('refreshLogBtn').addEventListener('click', loadCommandLog);
-
-  /* ---- Auto-refresh ---- */
-  state.statusInterval = setInterval(updateStatus, 2000);
-  state.refreshInterval = setInterval(() => {
-    if (state.currentPanel === 'tabs') loadTabs();
-  }, 5000);
-
-  /* ---- Initial load ---- */
+  setInterval(updateStatus, 2000);
+  setInterval(function () { if (cur === 'tabs') loadTabs(); }, 5000);
   updateStatus();
   chatInput.focus();
 

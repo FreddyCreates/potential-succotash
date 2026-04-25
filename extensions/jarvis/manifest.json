@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Jarvis AI",
-  "version": "1.0.0",
-  "description": "AI sovereign assistant — side panel with tab control, notes, screen capture, and command routing through Alpha Script AIs",
+  "version": "2.0.0",
+  "description": "AI sovereign assistant — side panel with tab control, notes, screen capture, sandbox search, and command routing through Alpha Script AIs",
   "permissions": [
     "activeTab",
     "storage",
@@ -10,7 +10,12 @@
     "tabs",
     "scripting",
     "sidePanel",
-    "downloads"
+    "downloads",
+    "tabCapture",
+    "desktopCapture"
+  ],
+  "host_permissions": [
+    "https://api.duckduckgo.com/*"
   ],
   "side_panel": {
     "default_path": "sidepanel.html"

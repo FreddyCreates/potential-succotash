@@ -594,10 +594,15 @@ JarvisEngine.prototype.executeNavigate = function (direction, tabId, callback) {
   }
 };
 
-// Search — opens search in new tab
-JarvisEngine.prototype.executeSearch = function (query, callback) {
+// Search — in-panel sandbox via DuckDuckGo API, or new tab fallback
+JarvisEngine.prototype.executeSearch = function (query, callback, sandboxMode) {
   if (!query) {
     callback({ success: false, message: 'No search query provided' });
+    return;
+  }
+  if (sandboxMode) {
+    // Return signal for sidepanel to switch to Search tab and run sandbox search
+    callback({ success: true, message: 'Opening sandbox search for: "' + query + '"', sandboxQuery: query });
     return;
   }
   var searchUrl = 'https://www.google.com/search?q=' + encodeURIComponent(query);
@@ -938,6 +943,52 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     case 'switchTab':
       engine.executeTabSwitch(message.tabIndex, function (result) {
         sendResponse(result);
+      });
+      break;
+
+    case 'sandboxSearch':
+      fetch('https://api.duckduckgo.com/?q=' + encodeURIComponent(message.query) + '&format=json&no_html=1&no_redirect=1&skip_disambig=1')
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          var results = [];
+          if (data.Answer) {
+            results.push({ type: 'answer', title: 'Instant Answer', text: data.Answer, url: '', source: data.AnswerType || '' });
+          }
+          if (data.AbstractText) {
+            results.push({ type: 'abstract', title: data.Heading || 'Overview', text: data.AbstractText, url: data.AbstractURL || '', source: data.AbstractSource || '' });
+          }
+          if (data.Results) {
+            data.Results.slice(0, 4).forEach(function (r) {
+              if (r.Text) results.push({ type: 'result', title: r.Text.substring(0, 80), text: r.Text, url: r.FirstURL || '', source: 'web' });
+            });
+          }
+          if (data.RelatedTopics) {
+            data.RelatedTopics.slice(0, 6).forEach(function (t) {
+              if (t.Text && t.FirstURL) {
+                results.push({ type: 'related', title: t.Text.split(' - ')[0].substring(0, 80), text: t.Text, url: t.FirstURL, source: 'duckduckgo' });
+              }
+            });
+          }
+          sendResponse({ success: true, results: results, query: message.query, definition: data.Definition || '', entity: data.Entity || '' });
+        })
+        .catch(function (e) {
+          sendResponse({ success: false, message: 'Search failed: ' + e.message });
+        });
+      break;
+
+    case 'captureTab':
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        if (!tabs[0]) {
+          sendResponse({ success: false, message: 'No active tab found' });
+          return;
+        }
+        chrome.tabs.captureVisibleTab(null, { format: 'png' }, function (dataUrl) {
+          if (chrome.runtime.lastError) {
+            sendResponse({ success: false, message: chrome.runtime.lastError.message });
+            return;
+          }
+          sendResponse({ success: true, dataUrl: dataUrl, title: tabs[0].title, url: tabs[0].url });
+        });
       });
       break;
 
