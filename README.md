@@ -48,12 +48,12 @@ Everything is downloadable. Everything runs locally. Everything is open.
 **Install JARVIS right now:**
 ```bash
 # Download and unzip
-curl -L https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/jarvis.zip -o jarvis.zip
+curl -L https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/jarvis.zip -o jarvis.zip
 unzip jarvis.zip -d jarvis-extension
 # Then: chrome://extensions → Developer mode → Load unpacked → select jarvis-extension/
 ```
 
-Or **[download jarvis.zip directly](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/jarvis.zip)**.
+Or **[download jarvis.zip directly](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/jarvis.zip)**.
 
 ---
 
@@ -73,11 +73,11 @@ Or **[download jarvis.zip directly](https://github.com/FreddyCreates/potential-s
 
 **Install:**
 ```bash
-curl -L https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-mind.zip -o sovereign-mind.zip
+curl -L https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/sovereign-mind.zip -o sovereign-mind.zip
 unzip sovereign-mind.zip -d sovereign-mind-ext
 ```
 
-Or **[download sovereign-mind.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-mind.zip)**.
+Or **[download sovereign-mind.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/sovereign-mind.zip)**.
 
 ---
 
@@ -96,11 +96,11 @@ Or **[download sovereign-mind.zip](https://github.com/FreddyCreates/potential-su
 
 **Install:**
 ```bash
-curl -L https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-runner.zip -o edge-runner.zip
+curl -L https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/edge-runner.zip -o edge-runner.zip
 unzip edge-runner.zip -d edge-runner-ext
 ```
 
-Or **[download edge-runner.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-runner.zip)**.
+Or **[download edge-runner.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/edge-runner.zip)**.
 
 ---
 
@@ -119,12 +119,12 @@ That's it. Chrome opens with all 27 AI extensions loaded and running. No build s
 
 ### Windows — Double-Click
 
-**[Download install-organism.bat](https://github.com/FreddyCreates/potential-succotash/raw/main/install-organism.bat)** → double-click it. Extensions extract and Chrome launches with everything attached.
+**[Download install-organism.bat](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/install-organism.bat)** → double-click it. Extensions extract and Chrome launches with everything attached.
 
 Or use PowerShell:
 ```powershell
 # Download and run
-Invoke-WebRequest -Uri "https://github.com/FreddyCreates/potential-succotash/raw/main/install-organism.bat" -OutFile install-organism.bat
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/install-organism.bat" -OutFile install-organism.bat
 .\install-organism.bat
 ```
 
@@ -145,7 +145,7 @@ node organism-cli status        # health report
 4. Click **Load unpacked** → select the unzipped folder
 5. Done — works on Chrome, Edge, and Brave
 
-**[Download ALL 27 Extensions (single zip)](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip)**
+**[Download ALL 27 Extensions (single zip)](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/all-extensions.zip)**
 
 ---
 
@@ -220,33 +220,33 @@ The organism runs natively in:
 
 | | Extension | What It Does | Download |
 |---|---|---|---|
-| 🤖 | **Jarvis AI** | AI command center — side panel, 18 intents, 10 Alpha AIs | **[jarvis.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/jarvis.zip)** |
-| 🧠 | **Sovereign Mind** | Sovereign reasoning from your own data — phi-scored fusion | **[sovereign-mind.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-mind.zip)** |
-| ⚡ | **Edge Runner** | Offline AI — local inference, zero cloud, full privacy | **[edge-runner.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/edge-runner.zip)** |
-| 🛡 | Cipher Shield | Real-time encryption and prompt injection detection | [cipher-shield.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/cipher-shield.zip) |
-| 🌐 | Polyglot Oracle | Live page translation with context awareness | [polyglot-oracle.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/polyglot-oracle.zip) |
-| 🎨 | Vision Weaver | Multi-model image generation — DALL-E, SD, Midjourney, SAM | [vision-weaver.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/vision-weaver.zip) |
-| 💻 | Code Sovereign | AI code review with contract verification | [code-sovereign.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/code-sovereign.zip) |
-| 📚 | Memory Palace | Phi-encoded spatial bookmarking | [memory-palace.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/memory-palace.zip) |
-| 🔒 | Sentinel Watch | Phishing, malware, and social engineering detection | [sentinel-watch.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sentinel-watch.zip) |
-| 🔬 | Research Nexus | Multi-source research synthesis with citations | [research-nexus.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/research-nexus.zip) |
-| 🎤 | Voice Forge | Speech-to-text, voice synthesis, music composition | [voice-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/voice-forge.zip) |
-| ⚗️ | Data Alchemist | Auto-absorb webpages into knowledge graphs | [data-alchemist.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/data-alchemist.zip) |
-| 🎬 | Video Architect | Text-to-video — Sora, Runway, Pika, Kling | [video-architect.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/video-architect.zip) |
-| 📐 | Logic Prover | Formal mathematical proofs with verification | [logic-prover.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/logic-prover.zip) |
-| 💬 | Social Cortex | Sentiment analysis, empathy detection, response generation | [social-cortex.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/social-cortex.zip) |
-| 📝 | Contract Forge | AI contract authoring with cryptographic compliance | [contract-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/contract-forge.zip) |
-| 📊 | Organism Dashboard | Real-time vital signs — heartbeat, registers, sensors | [organism-dashboard.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/organism-dashboard.zip) |
-| 🗺 | Knowledge Cartographer | Visual knowledge graph that grows as you browse | [knowledge-cartographer.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/knowledge-cartographer.zip) |
-| 🔗 | Protocol Bridge | Unified protocol surface for 40 foundation models | [protocol-bridge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/protocol-bridge.zip) |
-| 🎭 | Creative Muse | Multi-modal creative studio — images, music, text | [creative-muse.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/creative-muse.zip) |
-| 🌀 | Sovereign Nexus | Master hub — all extensions unified in one panel | [sovereign-nexus.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/sovereign-nexus.zip) |
-| 🏪 | Marketplace Hub | Browse and invoke 400 tools with natural language | [marketplace-hub.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/marketplace-hub.zip) |
-| 📈 | Spread Scanner | Phi-weighted spread analysis and arbitrage grading | [spread-scanner.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/spread-scanner.zip) |
-| 🔮 | Data Oracle | X-ray depth analysis with √N normalization | [data-oracle.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/data-oracle.zip) |
-| 🖥 | Screen Commander | Natural-language browser automation | [screen-commander.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/screen-commander.zip) |
-| 🔷 | Pattern Forge | DFT spectral decomposition, cross-correlation, anomaly detection | [pattern-forge.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/pattern-forge.zip) |
-| 🏗 | Register | Builder AI — scans, validates, packages, deploys extensions | [register.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/register.zip) |
+| 🤖 | **Jarvis AI** | AI command center — side panel, 18 intents, 10 Alpha AIs | **[jarvis.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/jarvis.zip)** |
+| 🧠 | **Sovereign Mind** | Sovereign reasoning from your own data — phi-scored fusion | **[sovereign-mind.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/sovereign-mind.zip)** |
+| ⚡ | **Edge Runner** | Offline AI — local inference, zero cloud, full privacy | **[edge-runner.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/edge-runner.zip)** |
+| 🛡 | Cipher Shield | Real-time encryption and prompt injection detection | [cipher-shield.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/cipher-shield.zip) |
+| 🌐 | Polyglot Oracle | Live page translation with context awareness | [polyglot-oracle.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/polyglot-oracle.zip) |
+| 🎨 | Vision Weaver | Multi-model image generation — DALL-E, SD, Midjourney, SAM | [vision-weaver.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/vision-weaver.zip) |
+| 💻 | Code Sovereign | AI code review with contract verification | [code-sovereign.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/code-sovereign.zip) |
+| 📚 | Memory Palace | Phi-encoded spatial bookmarking | [memory-palace.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/memory-palace.zip) |
+| 🔒 | Sentinel Watch | Phishing, malware, and social engineering detection | [sentinel-watch.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/sentinel-watch.zip) |
+| 🔬 | Research Nexus | Multi-source research synthesis with citations | [research-nexus.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/research-nexus.zip) |
+| 🎤 | Voice Forge | Speech-to-text, voice synthesis, music composition | [voice-forge.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/voice-forge.zip) |
+| ⚗️ | Data Alchemist | Auto-absorb webpages into knowledge graphs | [data-alchemist.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/data-alchemist.zip) |
+| 🎬 | Video Architect | Text-to-video — Sora, Runway, Pika, Kling | [video-architect.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/video-architect.zip) |
+| 📐 | Logic Prover | Formal mathematical proofs with verification | [logic-prover.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/logic-prover.zip) |
+| 💬 | Social Cortex | Sentiment analysis, empathy detection, response generation | [social-cortex.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/social-cortex.zip) |
+| 📝 | Contract Forge | AI contract authoring with cryptographic compliance | [contract-forge.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/contract-forge.zip) |
+| 📊 | Organism Dashboard | Real-time vital signs — heartbeat, registers, sensors | [organism-dashboard.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/organism-dashboard.zip) |
+| 🗺 | Knowledge Cartographer | Visual knowledge graph that grows as you browse | [knowledge-cartographer.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/knowledge-cartographer.zip) |
+| 🔗 | Protocol Bridge | Unified protocol surface for 40 foundation models | [protocol-bridge.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/protocol-bridge.zip) |
+| 🎭 | Creative Muse | Multi-modal creative studio — images, music, text | [creative-muse.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/creative-muse.zip) |
+| 🌀 | Sovereign Nexus | Master hub — all extensions unified in one panel | [sovereign-nexus.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/sovereign-nexus.zip) |
+| 🏪 | Marketplace Hub | Browse and invoke 400 tools with natural language | [marketplace-hub.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/marketplace-hub.zip) |
+| 📈 | Spread Scanner | Phi-weighted spread analysis and arbitrage grading | [spread-scanner.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/spread-scanner.zip) |
+| 🔮 | Data Oracle | X-ray depth analysis with √N normalization | [data-oracle.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/data-oracle.zip) |
+| 🖥 | Screen Commander | Natural-language browser automation | [screen-commander.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/screen-commander.zip) |
+| 🔷 | Pattern Forge | DFT spectral decomposition, cross-correlation, anomaly detection | [pattern-forge.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/pattern-forge.zip) |
+| 🏗 | Register | Builder AI — scans, validates, packages, deploys extensions | [register.zip](https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/register.zip) |
 
 ---
 
