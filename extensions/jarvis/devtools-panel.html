@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Jarvis AI — DevTools Panel</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#0a0a1a;color:#c8c8e0;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px;overflow-y:auto}
+  .panel{display:grid;grid-template-rows:auto 1fr auto;height:100vh;padding:10px;gap:8px}
+  .header{display:flex;align-items:center;gap:10px;padding:8px 12px;background:#12122a;border:1px solid #2a2a4a;border-radius:6px}
+  .status-dot{width:10px;height:10px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e80;flex-shrink:0}
+  .header h1{font-size:15px;font-weight:600;color:#e0e0ff;flex:1}
+  .header .hb-count{font-family:'Courier New',monospace;color:#6c63ff;font-size:13px}
+  .body{display:grid;grid-template-columns:1fr 1fr;gap:8px;overflow:hidden}
+  .card{background:#12122a;border:1px solid #2a2a4a;border-radius:6px;padding:10px;display:flex;flex-direction:column;overflow:hidden}
+  .card h2{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:#6c63ff;margin-bottom:8px}
+  .metrics{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .metric{background:#0e0e22;border-radius:4px;padding:8px;text-align:center}
+  .metric .val{font-size:20px;font-weight:700;color:#6c63ff;font-family:'Courier New',monospace}
+  .metric .lbl{font-size:10px;color:#888;margin-top:2px}
+  .log-viewer{flex:1;overflow-y:auto;background:#08081a;border-radius:4px;padding:6px;font-family:'Courier New',monospace;font-size:11px;line-height:1.6}
+  .cmd-row{display:flex;gap:6px}
+  .cmd-input{flex:1;background:#08081a;border:1px solid #2a2a4a;color:#e0e0ff;border-radius:4px;padding:6px 10px;font-family:'Courier New',monospace;font-size:12px;outline:none}
+  .cmd-input:focus{border-color:#6c63ff}
+  .cmd-btn{background:#6c63ff;color:#fff;border:none;border-radius:4px;padding:6px 12px;font-weight:600;cursor:pointer;font-size:11px}
+  .cmd-btn:hover{background:#5a52e0}
+</style>
+</head>
+<body>
+<div class="panel">
+  <div class="header">
+    <div class="status-dot" id="statusDot"></div>
+    <h1>JARVIS — Phantom AI DevTools</h1>
+    <span class="hb-count" id="hbCount">HB: 0</span>
+  </div>
+  <div class="body">
+    <div class="card">
+      <h2>Thinking Architectures</h2>
+      <div class="metrics" id="archMetrics">
+        <div class="metric"><div class="val" id="archReasoning">0</div><div class="lbl">Reasoning</div></div>
+        <div class="metric"><div class="val" id="archCreation">0</div><div class="lbl">Creation</div></div>
+        <div class="metric"><div class="val" id="archPerception">0</div><div class="lbl">Perception</div></div>
+        <div class="metric"><div class="val" id="archProtection">0</div><div class="lbl">Protection</div></div>
+        <div class="metric"><div class="val" id="archCommand">0</div><div class="lbl">Command</div></div>
+        <div class="metric"><div class="val" id="totalQueries">0</div><div class="lbl">Total Queries</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Engine State</h2>
+      <div class="log-viewer" id="stateView">Loading...</div>
+    </div>
+  </div>
+  <div class="cmd-row">
+    <input class="cmd-input" id="cmdInput" placeholder="Ask Jarvis from DevTools..." />
+    <button class="cmd-btn" id="cmdBtn">Send</button>
+  </div>
+</div>
+<script>
+(function(){
+  var hbCount=document.getElementById('hbCount');
+  var statusDot=document.getElementById('statusDot');
+  var stateView=document.getElementById('stateView');
+  var cmdInput=document.getElementById('cmdInput');
+  var cmdBtn=document.getElementById('cmdBtn');
+  var heartbeats=0;
+
+  function refresh(){
+    try{
+      chrome.runtime.sendMessage({type:'devtools',command:'status'},function(resp){
+        if(chrome.runtime.lastError)return;
+        if(resp&&resp.result){
+          stateView.textContent=resp.result;
+          try{
+            var st=JSON.parse(resp.result);
+            if(st.architecturesUsed){
+              document.getElementById('archReasoning').textContent=st.architecturesUsed.reasoning||0;
+              document.getElementById('archCreation').textContent=st.architecturesUsed.creation||0;
+              document.getElementById('archPerception').textContent=st.architecturesUsed.perception||0;
+              document.getElementById('archProtection').textContent=st.architecturesUsed.protection||0;
+              document.getElementById('archCommand').textContent=st.architecturesUsed.command||0;
+            }
+            document.getElementById('totalQueries').textContent=st.queriesProcessed||0;
+          }catch(e){}
+        }
+      });
+    }catch(e){}
+  }
+
+  function heartbeat(){
+    try{
+      chrome.runtime.sendMessage({type:'heartbeat'},function(resp){
+        if(chrome.runtime.lastError){statusDot.style.background='#f87171';return;}
+        heartbeats++;hbCount.textContent='HB: '+heartbeats;
+        statusDot.style.background='#22c55e';
+      });
+    }catch(e){statusDot.style.background='#f87171';}
+  }
+
+  cmdBtn.addEventListener('click',function(){
+    var v=cmdInput.value.trim();
+    if(!v)return;
+    chrome.runtime.sendMessage({type:'devtools',command:v},function(resp){
+      if(resp&&resp.result)stateView.textContent=resp.result;
+    });
+    cmdInput.value='';
+  });
+  cmdInput.addEventListener('keydown',function(e){if(e.key==='Enter')cmdBtn.click();});
+
+  refresh();heartbeat();
+  setInterval(heartbeat,5000);
+  setInterval(refresh,3000);
+})();
+</script>
+</body>
+</html>
