@@ -22,13 +22,21 @@ interface JarvisState {
   notes: any[];
   docs: any[];
   openTabs: any[];
+  // Live neurochemical state (concentrations normalized to baseline = 1.0)
+  neuroChem: {
+    DA: number; SE: number; NE: number;
+    CO: number; ACh: number; OX: number;
+  };
+  neuroMood: string;
+  neuroEnergy: number;
+  neuroState: string;
 }
 
 interface JarvisActions {
   addMessage: (msg: Message) => void;
   setTyping: (typing: boolean) => void;
   setActivePanel: (panel: string) => void;
-  setStatus: (status: { heartbeatCount?: number; uptime?: number; commandCount?: number; mood?: string; awareness?: number; memTurns?: number }) => void;
+  setStatus: (status: { heartbeatCount?: number; uptime?: number; commandCount?: number; mood?: string; awareness?: number; memTurns?: number; neuroChem?: { DA: number; SE: number; NE: number; CO: number; ACh: number; OX: number }; neuroMood?: string; neuroEnergy?: number; neuroState?: string }) => void;
   setMicListening: (listening: boolean) => void;
   setTtsEnabled: (enabled: boolean) => void;
   setWorkspaceText: (text: string) => void;
@@ -54,6 +62,10 @@ export const useJarvisStore = create<JarvisState & JarvisActions>()((set) => ({
   notes: [],
   docs: [],
   openTabs: [],
+  neuroChem: { DA: 1, SE: 1, NE: 1, CO: 1, ACh: 1, OX: 1 },
+  neuroMood: 'focused',
+  neuroEnergy: 50,
+  neuroState: 'nominal',
 
   addMessage: (msg) => set((state) => ({ messages: [...state.messages, msg] })),
   setTyping: (typing) => set({ isTyping: typing }),

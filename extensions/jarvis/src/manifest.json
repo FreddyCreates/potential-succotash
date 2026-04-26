@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Vigil AI",
-  "version": "15.0.0",
-  "description": "Vigil AI v15 CNS — Full browser control, scroll, click, navigate, agents, memory, legal AI, offline Solus, knowledge graph.",
+  "version": "16.0.0",
+  "description": "Vigil AI v16 CNS — ODE neurochemistry (DA/5HT/NE/CO/ACh/OX), real personality, agents, memory, legal AI, Solus, knowledge graph.",
   "permissions": [
     "activeTab",
     "storage",

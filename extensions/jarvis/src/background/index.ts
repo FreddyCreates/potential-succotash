@@ -1,8 +1,9 @@
 /* ============================================================
- *  VIGIL AI — Background Service Worker v14.0
+ *  VIGIL AI — Background Service Worker v16.0
  *  React + TypeScript + Vite architecture
  * ============================================================ */
 
+import { NeurochemistryEngine } from './neuro-chemistry.js';
 import { extractArticle } from './skills/readability';
 import {
   saveHighlight, getHighlights, deleteHighlight, exportHighlights,
@@ -283,8 +284,10 @@ class VigilEngine {
   commandCount = 0;
   commandHistory: unknown[] = [];
   maxHistory = 200;
-  state = { initialized: true, heartbeatCount: 0, version: '14.0.0', agent: 'VIGIL', mood: 'focused', focus: 'awareness', vitals: null as unknown };
+  state = { initialized: true, heartbeatCount: 0, version: '16.0.0', agent: 'VIGIL', mood: 'focused', focus: 'awareness', vitals: null as unknown };
   neuro = new NeuroCore('animus');
+  /** NeurochemistryEngine — ODE-based neurochemical simulation */
+  neuroChem = new NeurochemistryEngine();
   /** Pattern Synthesis Engine — the centralized cognitive knowledge corpus */
   pse = pse;
   conversationMemory: { role: string; text: string; intent: string; timestamp: number }[] = [];
@@ -296,7 +299,7 @@ class VigilEngine {
 
   constructor() {
     this._startHeartbeat();
-    console.log('[VIGIL v14.0] Engine initialized — NeuroCore online, PSE online (' + pse.primitiveCount + ' primitives, ' + pse.domains.length + ' domains), Dexie DB active, PHI=' + PHI + ' HEARTBEAT=' + HEARTBEAT + 'ms');
+    console.log('[VIGIL v16.0] Engine initialized — NeuroCore online, NeurochemistryEngine online (ODE/Hill/Jacobian), PSE online (' + pse.primitiveCount + ' primitives, ' + pse.domains.length + ' domains), Dexie DB active, PHI=' + PHI + ' HEARTBEAT=' + HEARTBEAT + 'ms');
     // Wire Solus progress to sidepanel
     onSolusProgress(p => {
       chrome.runtime.sendMessage({ action: '_solusProgress', progress: p }).catch(() => {});
@@ -309,6 +312,11 @@ class VigilEngine {
       this.state.vitals = this.neuro.pulse();
       this.state.mood = this.neuro.getMood();
       this.state.focus = this.neuro.getFocus();
+      // Advance neurochemistry ODE one tick
+      this.neuroChem.tick();
+      // Sync derived mood from neurochemistry (overrides NeuroCore cardiac model)
+      const np = this.neuroChem.getPersonality();
+      this.state.mood = np.mood;
       // Keep MissionEngine in sync with Animus heartbeat and memory
       missionEngine.tick(this.state.heartbeatCount, this.conversationMemory.length);
     }, HEARTBEAT);
@@ -326,7 +334,8 @@ class VigilEngine {
 
   getStatus() {
     const uptime = Date.now() - this.startTime;
-    return { heartbeatCount: this.state.heartbeatCount, commandCount: this.commandCount, uptime, uptimeFormatted: this._formatUptime(uptime), version: this.state.version, agentCount: ProtocolRegistry.agents.length, mood: this.state.mood, focus: this.state.focus, neuro: this.state.vitals, awarenessLevel: this.neuro.brain.awarenessLevel, memoryTempleStats: this._getTempleStats(), memoryTurns: this.conversationMemory.length };
+    const np = this.neuroChem.getPersonality();
+    return { heartbeatCount: this.state.heartbeatCount, commandCount: this.commandCount, uptime, uptimeFormatted: this._formatUptime(uptime), version: this.state.version, agentCount: ProtocolRegistry.agents.length, mood: np.mood, focus: this.state.focus, neuro: this.state.vitals, awarenessLevel: this.neuro.brain.awarenessLevel, memoryTempleStats: this._getTempleStats(), memoryTurns: this.conversationMemory.length, neuroChem: this.neuroChem.getConcentrations(), neuroPersonality: { mood: np.mood, energy: np.energy, voice: np.voice, emoticon: np.emoticon, stateSummary: np.stateSummary, oDA: np.oDA, oSE: np.oSE, oNE: np.oNE, oCO: np.oCO, oACh: np.oACh, oOX: np.oOX } };
   }
 
   _formatUptime(ms: number) {
@@ -1045,13 +1054,19 @@ class VigilEngine {
       response = 'This is your private AI platform — everything runs in your browser, nothing goes to a cloud. 27 extensions, a full reasoning engine, persistent memory. It\'s yours.';
 
     // 6b. v10 / Nexus / what\'s new
-    } else if (/v13|version 13|v14|vigil|what's new|nexus|command surface/i.test(text)) {
-      response = 'v14 VIGIL SOVEREIGN NEXUS. New this version: Readability Engine (DOM article extraction), Highlights/Annotation system, 16 primitive detectors, compound multi-action dispatch across mission, domain, PSE, and neuro primitives. What do you want to run?';
+    } else if (/v1[456]|version 1[456]|vigil|what's new|nexus|command surface/i.test(text)) {
+      response = 'v16 VIGIL CNS. New this version: NeurochemistryEngine (ODE/Hill/Jacobian — DA, 5-HT, NE, CO, ACh, OX), real personality resonance through every response, live neurochemical state in the brief, missing chat handler fixed. Say "neurochemistry" for the full live report.';
       agent = 'VIGIL • v14';
 
-    // 7. Neuro/Brain
+    // 7. Neurochemistry — explicit neuro report
+    } else if (/neurochemist|neurochemical|dopamine|serotonin|norepinephrine|cortisol|acetylcholine|oxytocin/i.test(text)) {
+      response = this.neuroChem.getReport();
+      agent = 'VIGIL • NEUROCORE';
+
+    // 7b. Neuro/Brain — quick vitals
     } else if (/brain|neuro|cognition|awareness|heart(beat)?|cardiac/i.test(text)) {
-      response = 'I\'m running at ' + awareness + '% awareness, mood is ' + mood + '. Everything\'s alive. What do you want to think through?';
+      const np = this.neuroChem.getPersonality();
+      response = 'Running at ' + awareness + '% awareness. Neurochemical state: ' + np.stateSummary + ' — mood ' + np.mood + ', energy ' + np.energy + '%. Say "neurochemistry" for the full ODE report.';
       agent = 'VIGIL • SYNAPTICUS';
 
     // 8. AI/ML
@@ -2330,20 +2345,43 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       break;
     }
     case 'clearChat': engine.conversationMemory = []; sendResponse({ success: true }); break;
+
+    /* ── Chat — primary conversational interface ────────────────
+     * This is the handler ChatPanel uses: { action: 'chat', text }.
+     * It fires the NeurochemistryEngine stimulus, runs executeChat,
+     * then applies personality coloring before responding.
+     * ─────────────────────────────────────────────────────────── */
+    case 'chat': {
+      const chatText = ((message.text as string) || '').trim();
+      if (!chatText) { sendResponse({ success: false, message: 'No message provided.' }); break; }
+      engine.neuro.onMessage('chat');
+      engine._remember('user', chatText, 'chat');
+      engine.neuroChem.onStimulus(engine.neuroChem.classifyStimulus(chatText));
+      engine.executeChat(chatText, (r) => {
+        engine.neuro.onMessageDone();
+        if (r.success && r.message) {
+          r.message = engine.neuroChem.colorResponse(r.message, 'chat');
+          r.mood = engine.neuroChem.getPersonality().mood;
+        }
+        if (r.message) engine._remember('animus', r.message, 'chat');
+        sendResponse(r);
+      });
+      break;
+    }
     case 'brief': {
       const now = new Date();
       const hour = now.getHours();
       const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
       const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-      const mood = engine.neuro.getMood();
-      const awareness = engine.neuro.brain.awarenessLevel;
       const vitals = engine.neuro.heart.getVitals();
       const systemStatus = vitals.degraded ? 'running heavy — monitoring closely' : 'all systems green';
+      const np = engine.neuroChem.getPersonality();
+      const pct1 = (v: number) => Math.round(v * 100) + '%';
       chrome.tabs.query({}, tabs => {
         const tabCount = tabs.length;
         const activeTab = tabs.find(t => t.active);
         const pageTitle = activeTab?.title ? '"' + activeTab.title.substring(0, 50) + '"' : 'no active page detected';
-        const brief = `Vigil AI v15 online. The time is ${timeStr}.\n\nI can research, write, analyze, run agents, and more.\n• System status: ${systemStatus}\n• Heartbeat: #${engine.state.heartbeatCount} — NeuroCore online\n• Mood: ${mood} · Awareness: ${awareness}%\n• Open tabs: ${tabCount} — current page: ${pageTitle}\n• Session commands: ${engine.commandCount}\n• Memory turns: ${engine.conversationMemory.length}/100\n\nWhat do you need?`;
+        const brief = `${greeting}. ${timeStr}.\n\nVIGIL v16 online.\n\n• System: ${systemStatus}\n• Heartbeat: #${engine.state.heartbeatCount} — NeuroCore + NeurochemistryEngine online\n• Neurochemistry: DA ${pct1(np.oDA)} · 5HT ${pct1(np.oSE)} · NE ${pct1(np.oNE)} · CO ${pct1(np.oCO)} · ACh ${pct1(np.oACh)} · OX ${pct1(np.oOX)}\n• State: ${np.stateSummary} (${np.mood}, energy ${np.energy}%)\n• Open tabs: ${tabCount} — current: ${pageTitle}\n• Session: ${engine.commandCount} commands · ${engine.conversationMemory.length}/100 memory turns\n\nWhat do you need?`;
         sendResponse({ success: true, message: brief });
       });
       break;
@@ -3030,18 +3068,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     // ── System ─────────────────────────────────────────────────
     case 'healthStatus': {
       const st = engine.getStatus();
+      const np2 = engine.neuroChem.getPersonality();
       sendResponse({
         success: true,
         message: [
-          '🟢 VIGIL v15 — System Health',
+          '🟢 VIGIL v16 — System Health',
           '━━━━━━━━━━━━━━━━━━━━━━━━━━',
           'Uptime:      ' + Math.floor(((st.uptime as number) || 0) / 1000) + 's',
           'Heartbeat:   ' + st.heartbeatCount,
           'Commands:    ' + st.commandCount,
-          'Mood:        ' + st.mood,
+          'Mood:        ' + np2.mood + ' · Energy: ' + np2.energy + '%',
           'Awareness:   ' + st.awarenessLevel + '%',
+          'Neuro:       ' + np2.stateSummary,
           'Mem turns:   ' + st.memoryTurns,
-          'Active agents: ' + (st.activeAgents || 0),
           'Status:      OPERATIONAL',
         ].join('\n'),
       });
@@ -3134,7 +3173,7 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 chrome.runtime.onInstalled.addListener((details) => {
   chrome.alarms.create(ALARM_NAME, { periodInMinutes: 0.4 });
   chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true }).catch(() => {});
-  console.log('[VIGIL v15.0] Installed — 24/7 keepalive active, React+TypeScript build');
+  console.log('[VIGIL v16.0] Installed — 24/7 keepalive active, React+TypeScript build');
   // Auto-open side panel on fresh install
   if (details.reason === 'install') {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -3144,7 +3183,7 @@ chrome.runtime.onInstalled.addListener((details) => {
       chrome.notifications.create('vigil-ready-' + Date.now(), {
         type: 'basic',
         iconUrl: 'icons/icon128.png',
-        title: 'Vigil AI v15 Ready',
+        title: 'Vigil AI v16 Ready',
         message: 'Vigil AI is ready — click the extension icon to open',
       });
     } catch { /* ignore */ }
@@ -3156,7 +3195,7 @@ chrome.runtime.onInstalled.addListener((details) => {
  * ---------------------------------------------------------- */
 
 const UPDATE_ALARM = 'jarvis-sovereign-update';
-const CURRENT_VERSION = '15.0.0';
+const CURRENT_VERSION = '16.0.0';
 const MANIFEST_URL = 'https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/extensions/jarvis/manifest.json';
 
 chrome.alarms.create(UPDATE_ALARM, { periodInMinutes: 240 });

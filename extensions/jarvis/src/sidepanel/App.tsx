@@ -46,6 +46,7 @@ export default function App() {
   const {
     activePanel, setActivePanel, heartbeatCount, uptime,
     commandCount, mood, awareness, memTurns, setStatus,
+    neuroChem, neuroMood, neuroEnergy, neuroState,
   } = useJarvisStore();
 
   useEffect(() => {
@@ -60,6 +61,10 @@ export default function App() {
           mood: d.mood,
           awareness: d.awarenessLevel,
           memTurns: d.memoryTurns,
+          neuroChem: d.neuroChem,
+          neuroMood: d.neuroPersonality?.mood,
+          neuroEnergy: d.neuroPersonality?.energy,
+          neuroState: d.neuroPersonality?.stateSummary,
         });
       });
     };
@@ -95,10 +100,20 @@ export default function App() {
     return (h > 0 ? h + 'h ' : '') + m + 'm ' + sec + 's';
   })();
 
-  const moodDot = mood === 'energized' ? 'bg-amber-400'
-    : mood === 'reflective' ? 'bg-emerald-300'
-    : mood === 'calm'       ? 'bg-amber-300'
+  const moodDot = neuroMood === 'energized' ? 'bg-amber-400'
+    : neuroMood === 'reflective' ? 'bg-emerald-300'
+    : neuroMood === 'calm'       ? 'bg-amber-300'
+    : neuroMood === 'alert'      ? 'bg-cyan-400'
+    : neuroMood === 'stressed'   ? 'bg-red-400'
+    : neuroMood === 'connected'  ? 'bg-purple-400'
+    : neuroMood === 'analytical' ? 'bg-blue-400'
     : 'bg-amber-400';
+
+  // Color a neurochemical level bar: deviation from baseline 1.0
+  const neuroColor = (c: number) =>
+    c > 1.15 ? '#22c55e' : c < 0.85 ? '#ef4444' : '#d4a017';
+
+  const nc = neuroChem;
 
   return (
     <div className="flex flex-col h-screen text-gray-100 text-sm overflow-hidden" style={{ background: '#0d0b08' }}>
@@ -115,8 +130,9 @@ export default function App() {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <span className={`inline-block w-2 h-2 rounded-full ${moodDot} animate-pulse`} title={'Mood: ' + mood} />
-          <span className="text-xs text-gray-500 capitalize">{mood}</span>
+          <span className={`inline-block w-2 h-2 rounded-full ${moodDot} animate-pulse`} title={'Neuro mood: ' + neuroMood} />
+          <span className="text-xs text-gray-500 capitalize">{neuroMood}</span>
+          <span className="text-[10px] text-gray-600" title={neuroState}>E:{neuroEnergy}%</span>
         </div>
       </div>
 
@@ -166,6 +182,13 @@ export default function App() {
           ⬇ Extension ZIP
         </button>
         <button
+          onClick={() => window.open('https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/install-vigil-edge.bat', '_blank')}
+          className="flex-1 text-xs py-0.5 px-1 rounded transition-colors"
+          style={{ background: 'rgba(212,160,23,0.12)', color: '#d4a017', border: '1px solid #2d2010' }}
+        >
+          ⬇ Installer
+        </button>
+        <button
           onClick={() => window.open('https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/SDK_Model_Manifest.json', '_blank')}
           className="flex-1 text-xs py-0.5 px-1 rounded transition-colors"
           style={{ background: 'rgba(212,160,23,0.12)', color: '#d4a017', border: '1px solid #2d2010' }}
@@ -181,7 +204,17 @@ export default function App() {
         </button>
       </div>
 
-      {/* Status bar */}
+      {/* Neurochemical status bar */}
+      <div className="flex items-center justify-between px-2 py-0.5 flex-shrink-0 font-mono text-[10px]" style={{ background: '#0c0a07', borderTop: '1px solid #1e1a0f' }}>
+        {(['DA','SE','NE','CO','ACh','OX'] as const).map(sp => (
+          <span key={sp} title={sp} style={{ color: neuroColor(nc[sp] ?? 1) }}>
+            {sp}:{Math.round((nc[sp] ?? 1) * 100)}
+          </span>
+        ))}
+        <span className="text-gray-700" title={neuroState ?? ''}>{neuroMood}</span>
+      </div>
+
+      {/* System status bar */}
       <div className="flex items-center justify-between px-3 py-1 text-xs text-gray-600 flex-shrink-0" style={{ background: '#0a0806', borderTop: '1px solid #2d2010' }}>
         <span>⏱ {uptimeStr}</span>
         <span>💓 {heartbeatCount}</span>
