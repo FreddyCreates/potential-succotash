@@ -13,5 +13,11 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: true,
+    target: 'es2022',
+  },
+  esbuild: {
+    // Prevents esbuild from trying to assign to Function.prototype.name,
+    // which is read-only in Chrome's strict-mode service worker context.
+    keepNames: true,
   },
 });
