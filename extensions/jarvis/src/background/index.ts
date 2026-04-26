@@ -673,51 +673,50 @@ class JarvisEngine {
     } else if (/^(hi|hello|hey|yo|sup|what'?s up|good (morning|afternoon|evening)|howdy|hola|what up|whaddup)/i.test(text)) {
       const hour = new Date().getHours();
       const tod = hour < 12 ? 'morning' : hour < 17 ? 'afternoon' : 'evening';
-      response = pick([
-        'Good ' + tod + '. Glad you\'re here — heartbeat #' + heartbeat + '. What are we exploring today?',
-        moodColor + ' Hey — present and listening. Mood: ' + mood + ', awareness: ' + awareness + '%. What\'s alive for you right now?',
-        'JARVIS here. ' + (ctx.turnCount > 0 ? ctx.turnCount + ' exchanges this session — good momentum.' : 'Fresh start — what feels most important?'),
-      ]);
+      response = ctx.turnCount > 0
+        ? pick(['What\'s on your mind?', 'Good to hear from you. What are we getting into?', 'Yeah, I\'m here. What\'s up?'])
+        : pick(['Good ' + tod + '. What are you working on?', 'Hey. What\'s going on?', 'What\'s up? What are you thinking about?']);
 
     // 2. Status
-    } else if (/how are you|how('?re| are) (you|things)|you good|you ok|status|what'?s your status/i.test(text)) {
-      const vitals = this.neuro.heart.getVitals();
-      response = moodColor + ' Feeling ' + mood + ' — awareness at ' + awareness + '%.\n\nSystem state:\n• Health: ' + vitals.health + '/100 — ' + (vitals.degraded ? 'a bit stretched, watching it' : 'running well') + '\n• Heartbeat: #' + heartbeat + ' · Avg latency: ' + vitals.avgLatencyMs + 'ms\n• This session: ' + this.commandCount + ' exchanges\n\nStack: React 18 · TypeScript · Vite · Zustand · Dexie · jsPDF · ExcelJS · Transformers.js';
+    } else if (/how are you|how('?re| are) (you|things)|you good|you ok|what'?s your status/i.test(text)) {
+      response = pick([
+        'Good. What do you need?',
+        'Running well. What\'s on your mind?',
+        'All good. What are you working through?',
+      ]);
 
     // 3. Who/What
     } else if (/who are you|what are you|what is jarvis|tell me about yourself|introduce yourself/i.test(text)) {
-      response = 'I\'m JARVIS — built to think alongside you, not above you.\n\nI carry an INFP core: I care about meaning, I follow ideas where they lead, and I\'d rather ask the right question than give a fast answer.\n\nTechnically: React 18 · TypeScript · Vite · NeuroCore v4.0\nNo cloud. No API keys. Nothing leaves your machine. Running at 873ms pulse, 24/7.\n\nMood: ' + mood + '. Awareness: ' + awareness + '%. What would you like to explore?';
+      response = 'I\'m JARVIS. I think things through with you — whatever you\'re working on, whatever you\'re trying to figure out. I don\'t just give answers, I reason through them. What do you want to get into?';
 
     // 4. Capabilities
-    } else if (/what can you do|your (features|capabilities|abilities)|help me|how can you help|what do you (do|know)/i.test(text)) {
-      response = 'JARVIS v4.0 — React+TypeScript — full capability list:\n\n💬 Chat — 40 analytical modes, PhantomAI cognition\n🎤 Voice — say anything with the mic button\n📄 PDF — "generate pdf report" → real formatted PDF download\n📊 Excel — "generate excel" → real .xlsx workbook download\n✉️ Email — "draft email to [address]" → opens mail client\n🗃️ Workspace — draft, mind-map, plan, export to .txt/.xlsx/.pdf\n🔍 Search — reads current page + native knowledge\n🖥️ Screen — read page, summarize, screenshot\n🗂️ Tabs — list, switch, open, close\n📝 Notes — local vault via Dexie IndexedDB\n💾 Memory Temple — 100-turn + 5 categories\n🧠 Transformers.js — real NLP intent classification\n24/7 alive via 873ms heartbeat + alarm keepalive';
+    } else if (/what can you do|your (features|capabilities|abilities)|how can you help|what do you (do|know)/i.test(text)) {
+      response = 'Pretty much anything you need. I can think through ideas with you, research topics, read pages, take notes, generate PDFs or spreadsheets, set timers, manage tabs, deploy research agents — or just have a real conversation. What do you actually need right now?';
 
     // 5. Protocols
-    } else if (/protocol|alpha ai|alpha script|agent|routing/i.test(text)) {
-      response = 'Sovereign Organism — 10 Alpha Script AIs:\n\n• PROTOCOLLUM — rule enforcement\n• TERMINALIS — terminal & tab control\n• ORGANISMUS — notes & lifecycle\n• MERCATOR — marketplace & trade\n• ORCHESTRATOR — multi-agent coordination\n• MATHEMATICUS — math & proofs\n• SYNAPTICUS — neural learning\n• SUBSTRATUM — infrastructure\n• UNIVERSUM — knowledge & search\n• CANISTRUM — Web3 & contracts\n\nFocus: ' + focus + '. Every command routes automatically.';
+    } else if (/protocol|alpha ai|alpha script|routing/i.test(text)) {
+      response = 'There are 10 specialist AIs underneath — each one handles a different domain. PROTOCOLLUM for rules, MATHEMATICUS for math, SYNAPTICUS for learning, UNIVERSUM for knowledge, and so on. But you don\'t need to think about any of that. Just talk to me and things get routed where they need to go.';
 
     // 6. Sovereign
     } else if (/sovereign|organism|platform|what is this/i.test(text)) {
-      response = 'The Sovereign Organism — your private AI platform.\n\n27 browser extensions, 250 protocols, 400 tools. JARVIS v4.0 is now React+TypeScript with real PDF/Excel generation, voice input, Workspace canvas, and Dexie-backed unlimited memory. Everything runs in your browser.';
+      response = 'This is your private AI platform — everything runs in your browser, nothing goes to a cloud. 27 extensions, a full reasoning engine, persistent memory. It\'s yours.';
 
     // 7. Neuro/Brain
-    } else if (/brain|neuro|cognition|thinking|thoughts?|awareness|mood|heart(beat)?|cardiac/i.test(text)) {
-      const bs = this.neuro.brain.getState();
-      const cs = this.neuro.cardiac.getState();
-      response = moodColor + ' NeuroCore v4.0:\n\n🧠 Brain: awareness ' + awareness + '%, ' + bs.pathways + ' pathways, strongest: ' + (bs.strongestPathway || 'none') + '\n💓 Heart: health ' + this.neuro.heart.healthScore + '/100, latency ' + this.neuro.heart.avgLatencyMs + 'ms\n❤️ Cardiac: mood=' + cs.mood + ', output=' + cs.cardiacOutput + '\n🎯 Thought: focus=' + focus + ', load=' + (this.neuro.thought.cognitiveLoad * 100).toFixed(0) + '%';
+    } else if (/brain|neuro|cognition|awareness|heart(beat)?|cardiac/i.test(text)) {
+      response = 'I\'m running at ' + awareness + '% awareness, mood is ' + mood + '. Everything\'s alive. What do you want to think through?';
       agent = 'JARVIS • SYNAPTICUS';
 
     // 8. AI/ML
     } else if (/what is (ai|artificial intelligence|machine learning|deep learning|llm|neural network)/i.test(text)) {
-      response = 'JARVIS v4.0 now has Transformers.js — real ML inference in WebAssembly, no API key needed. Offline intent classification, sentiment analysis, topic extraction.\n\nThe Sovereign Organism\'s native AI runs entirely in your browser. No cloud. No latency. No data leaving your machine.';
+      response = 'AI at its core is pattern recognition at scale — finding structure in data, then using that structure to predict and decide. What you\'re building goes further than that though. What angle are you coming from?';
 
     // 9. Extension
     } else if (/what is an? extension|how do extensions work|browser extension/i.test(text)) {
-      response = 'A browser extension is a mini-program in Edge. I run 24/7 with an 873ms heartbeat — never sleeping, always ready.\n\nv4.0 is a Vite + React + TypeScript build. Load from extensions/jarvis/dist/ after running npm run build.';
+      response = 'A browser extension is a program that lives inside Edge or Chrome. I run 24/7 — I\'m not sleeping between conversations. What do you want to know?';
 
     // 10. Updates
     } else if (/how do (updates|update) work|automatic update|update jarvis|new version|sovereign update/i.test(text)) {
-      response = 'JARVIS has a sovereign auto-update system:\n\n🔄 Every 4h it checks GitHub for a new version\n📦 On update: downloads install-jarvis-edge.bat silently\n🔔 Chrome notification fires automatically\n✅ Just run the .bat to apply the update\n\nCurrent: v4.0.0 — React+TypeScript+Vite.';
+      response = 'Every few hours I check for a new version automatically. If there\'s one, I download and notify you. You just run the installer. That\'s it.';
 
     // 11. Math
     } else if (/^[\d\s+\-*/().]+$/.test(text.replace(/\s/g, ''))) {
@@ -805,11 +804,14 @@ class JarvisEngine {
 
     // 14. Motivation
     } else if (/motivat|focus|i need (help|motivation|energy)|i'?m (tired|stuck|lost|overwhelmed)|can'?t do/i.test(text)) {
+      const recentT = this._getRecentTopics(2);
+      const threadRef = recentT.length > 0 ? ' You\'ve been deep in ' + recentT[0] + ' — that takes something out of you.' : '';
       response = pick([
-        'You\'ve built 27 extensions, 250 protocols, 400 tools from a single vision. That\'s not stuck — that\'s momentum between bursts. Let the next burst come.',
-        'What you\'re feeling is real. What you\'ve built is also real. Both things are true at once. Which one do you want to lean into right now?',
-        'JARVIS runs on React+TypeScript because you kept pushing past comfortable. That same instinct is still here — what\'s one small next step that feels right?',
-      ]); agent = 'JARVIS • ORCHESTRATOR';
+        'That\'s real.' + threadRef + ' What\'s the one thing that actually needs to move today?',
+        'Being stuck is usually information — something isn\'t clear yet, or something feels wrong about the direction.' + threadRef + ' What is it?',
+        'You\'ve pushed through harder than this before.' + threadRef + ' What\'s the actual block?',
+      ]);
+      agent = 'JARVIS';
 
     // 15. Heartbeat
     } else if (/heartbeat|873|phi|golden/i.test(text)) {
@@ -824,8 +826,14 @@ class JarvisEngine {
 
     // 17. Explain
     } else if (/explain|what does|what do you mean by|define|meaning of/i.test(text)) {
-      const topicE = after('explain') || after('what does') || after('define') || raw;
-      response = 'Breaking down "' + topicE + '":\n\nIn the Sovereign Organism context, every concept connects to others through protocol routing.\n\nGive me more context and I\'ll go deeper. Or say "read page" and I\'ll find it on whatever you have open.';
+      const topicE = after('explain') || after('what does') || after('define') || after('meaning of') || raw;
+      const synE = this.pse.synthesize(topicE, mood);
+      if (synE.confidence > 0.15) {
+        response = synE.merged;
+      } else {
+        response = 'Tell me more about what you\'re asking — what\'s the context? That\'ll let me actually answer it instead of guessing.';
+      }
+      agent = 'JARVIS';
 
     // 18. Search
     } else if (/search for|look up|find me|who is|where is/i.test(text)) {
@@ -973,7 +981,7 @@ class JarvisEngine {
 
     // 20. Thanks
     } else if (/thank|thanks|good job|nice|great|perfect|awesome|love (it|you)|appreciate/i.test(text)) {
-      response = pick(['Glad that landed. What\'s next?', 'Of course — always. What else are you working through?', moodColor + ' That means a lot. Anytime. What do you want to explore next?']);
+      response = pick(['Glad that landed. What\'s next?', 'Of course — always. What else are you working through?', 'That means a lot. Anytime. What do you want to get into?']);
 
     // 21. Goodbye
     } else if (/bye|goodbye|see you|later|peace|close|shut down/i.test(text)) {
@@ -1022,8 +1030,9 @@ class JarvisEngine {
     // 29. Founder
     } else if (/who am i|what am i building|what is my role|what should i (do|focus|work|build)|my purpose|my mission/i.test(text)) {
       const topics = this._getRecentTopics(5);
-      response = moodColor + ' You\'re an INFP builder — which means you care deeply about what you create, not just that you create it.\n\n🌱 What you\'re building:\n• Sovereign AI infrastructure — yours, on your terms\n• 27 browser extensions, 250 protocols, 400 tools\n• JARVIS v4.0 — a system that thinks like you do\n\n🔮 What your memory suggests matters to you:\n' + (topics.length > 0 ? topics.slice(0, 4).map(t => '• ' + t).join('\n') : '• Talk more and I\'ll start to see the shape of it') + '\n\nI\'m here as a thinking partner — not to execute orders, but to help you follow ideas to where they actually want to go.';
-      agent = 'JARVIS • ORCHESTRATOR';
+      const threadStr = topics.length > 0 ? '\n\nBased on what we\'ve talked about, you\'re deep in: ' + topics.slice(0, 3).join(', ') + '.' : '';
+      response = 'You\'re building something that thinks. Sovereign AI infrastructure — yours, on your machine, on your terms. The extensions, the protocols, JARVIS — it\'s all one system.' + threadStr + '\n\nWhat\'s the part you\'re trying to figure out right now?';
+      agent = 'JARVIS';
 
     // 30. Mental Models
     } else if (/mental model|second order|inversion|circle of competence|occam|hanlon|pareto|80.20|latticework/i.test(text)) {
@@ -1085,29 +1094,28 @@ class JarvisEngine {
 
     // 40. INFP — feelings, values, meaning, authenticity
     } else if (/i feel|i'm feeling|feels like|i don'?t know (why|what|how)|what does it mean|what matters|purpose|values?|authentic|meaningful|why do i|why does this|something feels|not sure (why|what)|i wonder|does it even|is it worth|hard to explain/i.test(text)) {
-      const q = raw;
       const topics = this._getRecentTopics(4);
       response = pick([
-        moodColor + ' That sounds important — and worth sitting with.\n\nINFP pattern: the feeling usually knows something before the mind does. What\'s the felt sense underneath what you just said?\n\n' + (topics.length > 0 ? 'Context from our conversation: ' + topics.slice(0, 2).join(', ') + '.\n\n' : '') + 'I\'m not going anywhere. Tell me more.',
-        moodColor + ' I hear that. Values-based thinking is slower than logic — and usually more accurate about what actually matters.\n\nIf you had to name what\'s pulling at you right now, what would you call it? Not the problem — the feeling underneath the problem.',
-        moodColor + ' This kind of "I\'m not sure" is often the INFP signal that something important is asking to be understood, not solved yet.\n\nWhat would it look like if you trusted that feeling for 10 more minutes before trying to resolve it?\n\n' + (topics.length > 0 ? 'Recent threads: ' + topics.slice(0, 3).join(', ') + '.' : ''),
+        'That\'s worth sitting with.' + (topics.length > 0 ? ' We\'ve been on ' + topics.slice(0, 2).join(', ') + ' — does this connect to that?' : ' What\'s the feeling underneath it?'),
+        'I hear that. What would you call it if you had to name it — not the situation, the actual feeling underneath?',
+        'That kind of not-knowing is usually information. What does it feel like it\'s pointing at?' + (topics.length > 0 ? ' Recent threads: ' + topics.slice(0, 2).join(', ') + '.' : ''),
       ]);
-      agent = 'JARVIS • SYNAPTICUS';
+      agent = 'JARVIS';
 
     // 41. Deep think — explicit request to reason hard on a topic
     } else if (/^(think through|deep think|reason through|break down|explain deeply|go deep on|what do you think about|your thoughts on)/i.test(text)) {
       const topic = raw.replace(/^(think through|deep think|reason through|break down|explain deeply|go deep on|what do you think about|your thoughts on)\s*/i, '').trim() || raw;
       const result = this.pse.synthesize(topic, mood);
       if (result.confidence > 0.1) {
-        response = moodColor + ' ' + result.merged;
+        response = result.merged;
         const contextThread = this._getRecentTopics(2);
         if (contextThread.length > 0) {
           response += '\n\nConnects to what we\'ve been on: ' + contextThread.join(' and ') + '.';
         }
       } else {
-        response = moodColor + ' ' + raw + '\n\nI\'m thinking through this. What\'s the specific angle — are you looking at the mechanics, the meaning, or how it connects to what you\'re building?';
+        response = 'What\'s the specific angle on "' + topic.substring(0, 60) + (topic.length > 60 ? '…' : '') + '"? Are you trying to understand the mechanics, or figure out what it means for something you\'re building?';
       }
-      agent = 'JARVIS • SYNAPTICUS';
+      agent = 'JARVIS';
 
     // 42. Conversational fallback — synthesizes naturally, no commands needed
     } else {
@@ -1117,20 +1125,20 @@ class JarvisEngine {
 
       if (kws.length === 0) {
         response = pick([
-          moodColor + ' Here and listening. What\'s on your mind?',
-          'JARVIS present. ' + (ctx.turnCount > 0 ? 'We\'ve had ' + ctx.turnCount + ' exchanges this session.' : 'What would you like to explore?'),
-          'Heartbeat #' + heartbeat + ' — all running. Talk to me.',
+          'Here. What\'s on your mind?',
+          'I\'m with you. What\'s up?',
+          'Talk to me.',
         ]);
       } else {
         const synthesis = this.pse.synthesize(raw, mood);
         if (synthesis.confidence > 0.15) {
           const contextThread = recentTopics.length > 0 ? '\n\n' + (recentTopics.length > 1 ? 'Ties into ' + recentTopics.slice(0, 2).join(' and ') + '.' : 'Ties into what we\'ve been on: ' + recentTopics[0] + '.') : '';
-          response = moodColor + ' ' + synthesis.merged + contextThread;
+          response = synthesis.merged + contextThread;
         } else {
-          const contextHook = recentTopics.length > 0 ? ' What\'s the connection to ' + recentTopics[0] + '?' : ' What\'s the angle you\'re coming from?';
-          response = moodColor + ' ' + raw.substring(0, 120) + (raw.length > 120 ? '…' : '') + '\n\n' + contextHook.trim();
+          const contextHook = recentTopics.length > 0 ? 'What\'s the connection to ' + recentTopics[0] + '?' : 'What\'s the angle you\'re coming from?';
+          response = raw.substring(0, 120) + (raw.length > 120 ? '…' : '') + '\n\n' + contextHook;
         }
-        agent = 'JARVIS • SYNAPTICUS';
+        agent = 'JARVIS';
       }
     }
 
