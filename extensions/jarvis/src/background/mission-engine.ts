@@ -104,7 +104,7 @@ export class MissionEngine {
 
     // Determine the domain AI
     const AI = options.domainAIOverride
-      ? DOMAIN_AIS.find(a => a.name === options.domainAIOverride) ?? classifyMission(description)
+      ? DOMAIN_AIS.find(a => a.id === options.domainAIOverride) ?? classifyMission(description)
       : classifyMission(description);
 
     const mission: DomainMission = {
@@ -120,8 +120,7 @@ export class MissionEngine {
       id: missionId,
       description,
       target: options.target,
-      domainAI: AI.name,
-      status: 'running',
+      domainAI: AI.id,
       issuedAt,
     };
     this._missions.set(missionId, record);
@@ -130,15 +129,15 @@ export class MissionEngine {
     // Execute
     let result: DomainAIResult;
     try {
-      if (AI.name === 'ContextAI') {
+      if (AI.id === 'ContextAI') {
         result = await (ContextAI as typeof ContextAI).execute(mission, this._memoryTurns, this._heartbeat);
-      } else if (AI.name === 'CommanderAI') {
+      } else if (AI.id === 'CommanderAI') {
         result = await (CommanderAI as typeof CommanderAI).execute(mission);
-      } else if (AI.name === 'WebAI') {
+      } else if (AI.id === 'WebAI') {
         result = await (WebAI as typeof WebAI).execute(mission);
-      } else if (AI.name === 'BlockchainAI') {
+      } else if (AI.id === 'BlockchainAI') {
         result = await (BlockchainAI as typeof BlockchainAI).execute(mission);
-      } else if (AI.name === 'DataAI') {
+      } else if (AI.id === 'DataAI') {
         result = await (DataAI as typeof DataAI).execute(mission);
       } else {
         result = await (SentryAI as typeof SentryAI).execute(mission);
@@ -149,9 +148,7 @@ export class MissionEngine {
       const errMsg = err instanceof Error ? err.message : String(err);
       result = {
         missionId,
-        domainAI: AI.name,
-        domainEmoji: AI.emoji,
-        status: 'failed',
+        domainAI: AI.id,
         toolsUsed: [],
         summary: 'Mission failed: ' + errMsg,
         data: { error: errMsg },
@@ -228,7 +225,7 @@ export class MissionEngine {
   /** Get all licensed domain AIs with metadata */
   getAvailableAIs(): Array<{ name: string; emoji: string; description: string; domains: string[]; toolCount: number }> {
     return DOMAIN_AIS.map(AI => ({
-      name:        AI.name,
+      name:        AI.id,
       emoji:       AI.emoji,
       description: AI.description,
       domains:     AI.domains.slice(0, 6),

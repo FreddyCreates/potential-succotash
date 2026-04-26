@@ -139,7 +139,7 @@ function analyzePatterns(text: string): Array<{ word: string; freq: number }> {
  * Tools: TOPOLOGY-CRAWLER, FLOW-MONITOR, PATTERN-SEEKER, CACHE-OPTIMIZER, LOG-STREAMER
  */
 export class WebAI {
-  static readonly name = 'WebAI';
+  static readonly id = 'WebAI';
   static readonly emoji = '🕸';
   static readonly description = 'Web topology discovery, crawling, flow monitoring, and pattern detection';
   static readonly domains = ['web', 'crawl', 'url', 'website', 'page', 'scrape', 'monitor', 'topology', 'links', 'discover'];
@@ -194,7 +194,7 @@ export class WebAI {
       ? `Crawled ${url} — ${crawlText.length} chars, ${links.length} outbound links, ${tables.length} tables. Top patterns: ${topPatterns || 'none detected'}.`
       : `WebAI scoped to mission description — no URL target. Patterns from context: ${topPatterns || 'pending input'}.`;
 
-    return { missionId: mission.id, domainAI: WebAI.name, domainEmoji: WebAI.emoji, status: 'complete', toolsUsed: invocations, summary, data, durationMs: elapsedMs(start) };
+    return { missionId: mission.id, domainAI: WebAI.id, domainEmoji: WebAI.emoji, status: 'complete', toolsUsed: invocations, summary, data, durationMs: elapsedMs(start) };
   }
 }
 
@@ -205,7 +205,7 @@ export class WebAI {
  * Tools: SEAL-VERIFIER, INTEGRITY-CHECKER, BOUNDARY-ENFORCER, DOCTRINE-AUDITOR
  */
 export class BlockchainAI {
-  static readonly name = 'BlockchainAI';
+  static readonly id = 'BlockchainAI';
   static readonly emoji = '⛓';
   static readonly description = 'Blockchain data verification, contract seal checking, and governance auditing';
   static readonly domains = ['blockchain', 'contract', 'web3', 'ethereum', 'solidity', 'nft', 'defi', 'token', 'wallet', 'transaction', 'seal', 'verify', 'crypto'];
@@ -261,7 +261,7 @@ export class BlockchainAI {
       ? `BlockchainAI — Seal: ${sealStatus}. Addresses found: ${addresses.length}. Contract integrity: ${(data['integrity'] as any).status}. Doctrine score: ${(data['doctrine'] as any).complianceScore}/100.`
       : `BlockchainAI — No Ethereum address in target. Use "blockchain: [0x address or tx hash]" for full verification.`;
 
-    return { missionId: mission.id, domainAI: BlockchainAI.name, domainEmoji: BlockchainAI.emoji, status: 'complete', toolsUsed: invocations, summary, data, durationMs: elapsedMs(start) };
+    return { missionId: mission.id, domainAI: BlockchainAI.id, domainEmoji: BlockchainAI.emoji, status: 'complete', toolsUsed: invocations, summary, data, durationMs: elapsedMs(start) };
   }
 }
 
@@ -272,7 +272,7 @@ export class BlockchainAI {
  * Tools: PATTERN-SEEKER, ANOMALY-DETECTOR, MEMORY-CONSOLIDATOR, LINEAGE-TRACER, CONTEXT-BUILDER
  */
 export class DataAI {
-  static readonly name = 'DataAI';
+  static readonly id = 'DataAI';
   static readonly emoji = '📊';
   static readonly description = 'Data pattern detection, anomaly scoring, memory lineage tracing, and context assembly';
   static readonly domains = ['data', 'pattern', 'analyze', 'anomaly', 'dataset', 'statistics', 'csv', 'metrics', 'trend', 'model', 'insight', 'memory', 'lineage'];
@@ -315,7 +315,7 @@ export class DataAI {
     const topWords = topPatterns.map(p => p.word).join(', ');
     const summary = `DataAI — ${patterns.length} patterns extracted. Top: ${topWords || 'none'}. Anomaly score: ${deviationScore}${anomalies.length > 0 ? ' ⚠' : ' ✓'}. Memory consolidated. Lineage traced.`;
 
-    return { missionId: mission.id, domainAI: DataAI.name, domainEmoji: DataAI.emoji, status: 'complete', toolsUsed: invocations, summary, data, durationMs: elapsedMs(start) };
+    return { missionId: mission.id, domainAI: DataAI.id, domainEmoji: DataAI.emoji, status: 'complete', toolsUsed: invocations, summary, data, durationMs: elapsedMs(start) };
   }
 }
 
@@ -326,7 +326,7 @@ export class DataAI {
  * Tools: SENTINEL-WATCH, INTEGRITY-CHECKER, BOUNDARY-ENFORCER, QUEUE-PROCESSOR, SEAL-VERIFIER
  */
 export class SentryAI {
-  static readonly name = 'SentryAI';
+  static readonly id = 'SentryAI';
   static readonly emoji = '🛡';
   static readonly description = 'Security monitoring, threat detection, integrity checking, and boundary enforcement';
   static readonly domains = ['security', 'threat', 'scan', 'safe', 'check', 'guard', 'protect', 'integrity', 'boundary', 'pii', 'injection', 'phishing', 'audit', 'compliance'];
@@ -371,7 +371,7 @@ export class SentryAI {
       ? `SentryAI — Input scanned. Threat level: ${threatLevel} ✓ No injection, phishing, or PII patterns. Boundaries intact.`
       : `SentryAI — ⚠ Threat level: ${threatLevel}. ${threats.length} issue(s): ${threats.map(t => t.type).join(', ')}. Review before proceeding.`;
 
-    return { missionId: mission.id, domainAI: SentryAI.name, domainEmoji: SentryAI.emoji, status: 'complete', toolsUsed: invocations, summary, data, durationMs: elapsedMs(start) };
+    return { missionId: mission.id, domainAI: SentryAI.id, domainEmoji: SentryAI.emoji, status: 'complete', toolsUsed: invocations, summary, data, durationMs: elapsedMs(start) };
   }
 }
 
@@ -382,7 +382,7 @@ export class SentryAI {
  * Tools: CONTEXT-BUILDER, STATE-GUARDIAN, PULSE-KEEPER, CYCLE-COUNTER, LINEAGE-TRACER
  */
 export class ContextAI {
-  static readonly name = 'ContextAI';
+  static readonly id = 'ContextAI';
   static readonly emoji = '🧩';
   static readonly description = 'State reading, context assembly from memory and environment, and decision lineage tracing';
   static readonly domains = ['context', 'state', 'memory', 'what do you know', 'summarize context', 'where are we', 'session', 'history', 'recall', 'previous', 'background'];
@@ -416,7 +416,7 @@ export class ContextAI {
 
     const summary = `ContextAI — Heartbeat #${heartbeat}. Memory: ${memoryTurns} turns. State: nominal. Context assembled (${(data['context'] as any).estimatedTokens} estimated tokens). Lineage root: session-start.`;
 
-    return { missionId: mission.id, domainAI: ContextAI.name, domainEmoji: ContextAI.emoji, status: 'complete', toolsUsed: invocations, summary, data, durationMs: elapsedMs(start) };
+    return { missionId: mission.id, domainAI: ContextAI.id, domainEmoji: ContextAI.emoji, status: 'complete', toolsUsed: invocations, summary, data, durationMs: elapsedMs(start) };
   }
 }
 
@@ -427,7 +427,7 @@ export class ContextAI {
  * Tools: TASK-COMMANDER, ATTENTION-ROUTER, RESOURCE-BALANCER, SYNC-WEAVER, INFER-ENGINE, CONNECTION-POOL
  */
 export class CommanderAI {
-  static readonly name = 'CommanderAI';
+  static readonly id = 'CommanderAI';
   static readonly emoji = '⚙️';
   static readonly description = 'Multi-step task orchestration, resource balancing, attention routing, and inference dispatch';
   static readonly domains = ['orchestrate', 'plan', 'dispatch', 'coordinate', 'automate', 'workflow', 'pipeline', 'multi-step', 'task', 'commander', 'execute plan', 'run sequence'];
@@ -474,7 +474,7 @@ export class CommanderAI {
 
     const summary = `CommanderAI — ${steps.length} step(s) planned. Execution ID: ${executionId}. Mode: ${(data['execution'] as any).mode}. Estimated: ${estimatedLatencyMs}ms. Resources: ${(data['resources'] as any).status}. Ready to dispatch.`;
 
-    return { missionId: mission.id, domainAI: CommanderAI.name, domainEmoji: CommanderAI.emoji, status: 'complete', toolsUsed: invocations, summary, data, durationMs: elapsedMs(start) };
+    return { missionId: mission.id, domainAI: CommanderAI.id, domainEmoji: CommanderAI.emoji, status: 'complete', toolsUsed: invocations, summary, data, durationMs: elapsedMs(start) };
   }
 }
 
