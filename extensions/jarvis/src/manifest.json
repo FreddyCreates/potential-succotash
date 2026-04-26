@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Vigil AI",
-  "version": "14.0.0",
-  "description": "Vigil AI v14 — Sovereign offline intelligence. Solus offline AI, Memory Palace, Sentry, Knowledge Graph, Agents.",
+  "version": "15.0.0",
+  "description": "Vigil AI v15 — Sovereign offline intelligence. Solus offline AI, Memory Palace, Sentry, Knowledge Graph, Agents.",
   "permissions": [
     "activeTab",
     "storage",

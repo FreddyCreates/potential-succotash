@@ -131,6 +131,29 @@ export default function InboxPanel() {
   return (
     <div className="flex flex-col h-full bg-gray-950 text-gray-200 text-xs">
 
+      {/* ── Email to self ── */}
+      <div className="flex items-center gap-2 px-3 py-2 border-b border-gray-800/60 bg-gray-900/30 flex-shrink-0">
+        <input
+          type="email"
+          placeholder="your@email.com"
+          className="flex-1 bg-gray-800 border border-gray-700 rounded px-2 py-1 text-xs text-gray-200 placeholder-gray-600 outline-none focus:border-cyan-700"
+          id="inbox-email-input"
+        />
+        <button
+          onClick={() => {
+            const inp = document.getElementById('inbox-email-input') as HTMLInputElement;
+            const addr = inp?.value?.trim();
+            if (!addr) return;
+            const subject = encodeURIComponent('Vigil AI Inbox Export — ' + new Date().toLocaleDateString());
+            const body = encodeURIComponent(items.map(i => `[${CAT_META[i.category].label}] ${i.title}\n${i.body}`).join('\n\n---\n\n'));
+            window.open(`mailto:${addr}?subject=${subject}&body=${body}`);
+          }}
+          className="text-[10px] px-2 py-1 bg-cyan-900/60 hover:bg-cyan-800/80 border border-cyan-800/50 text-cyan-300 rounded transition-colors whitespace-nowrap"
+        >
+          ✉ Email me
+        </button>
+      </div>
+
       {/* ── Header ── */}
       <div className="flex items-center justify-between px-3 py-2 border-b border-gray-800/60 bg-gray-900/50 flex-shrink-0">
         <div className="flex items-center gap-2">
@@ -249,7 +272,7 @@ export default function InboxPanel() {
                       </button>
                       <button
                         onClick={e => sendToChat(item, e)}
-                        className="text-[9px] px-2 py-0.5 bg-purple-900/40 hover:bg-purple-800/60 border border-purple-800/50 text-purple-300 rounded transition-colors"
+                        className="text-[9px] px-2 py-0.5 bg-cyan-900/40 hover:bg-cyan-800/60 border border-cyan-800/50 text-cyan-300 rounded transition-colors"
                       >
                         💬 Analyze
                       </button>

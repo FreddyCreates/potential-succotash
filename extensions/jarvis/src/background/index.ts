@@ -2336,7 +2336,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         const tabCount = tabs.length;
         const activeTab = tabs.find(t => t.active);
         const pageTitle = activeTab?.title ? '"' + activeTab.title.substring(0, 50) + '"' : 'no active page detected';
-        const brief = `${greeting}. The time is ${timeStr}.\n\nSituational report:\n• System status: ${systemStatus}\n• Heartbeat: #${engine.state.heartbeatCount} — NeuroCore online\n• Mood: ${mood} · Awareness: ${awareness}%\n• Open tabs: ${tabCount} — current page: ${pageTitle}\n• Session commands: ${engine.commandCount}\n• Memory turns: ${engine.conversationMemory.length}/100\n\nAll 10 Alpha AIs ready. What would you like to explore?`;
+        const brief = `Vigil AI v15 online. The time is ${timeStr}.\n\nI can research, write, analyze, run agents, and more.\n• System status: ${systemStatus}\n• Heartbeat: #${engine.state.heartbeatCount} — NeuroCore online\n• Mood: ${mood} · Awareness: ${awareness}%\n• Open tabs: ${tabCount} — current page: ${pageTitle}\n• Session commands: ${engine.commandCount}\n• Memory turns: ${engine.conversationMemory.length}/100\n\nWhat do you need?`;
         sendResponse({ success: true, message: brief });
       });
       break;
@@ -2825,12 +2825,20 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 chrome.runtime.onInstalled.addListener((details) => {
   chrome.alarms.create(ALARM_NAME, { periodInMinutes: 0.4 });
   chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true }).catch(() => {});
-  console.log('[VIGIL v14.0] Installed — 24/7 keepalive active, React+TypeScript build');
+  console.log('[VIGIL v15.0] Installed — 24/7 keepalive active, React+TypeScript build');
   // Auto-open side panel on fresh install
   if (details.reason === 'install') {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs?.[0]) chrome.sidePanel.open({ windowId: tabs[0].windowId }).catch(() => {});
     });
+    try {
+      chrome.notifications.create('vigil-ready-' + Date.now(), {
+        type: 'basic',
+        iconUrl: 'icons/icon128.png',
+        title: 'Vigil AI v15 Ready',
+        message: 'Vigil AI is ready — click the extension icon to open',
+      });
+    } catch { /* ignore */ }
   }
 });
 
@@ -2839,7 +2847,7 @@ chrome.runtime.onInstalled.addListener((details) => {
  * ---------------------------------------------------------- */
 
 const UPDATE_ALARM = 'jarvis-sovereign-update';
-const CURRENT_VERSION = '4.0.0';
+const CURRENT_VERSION = '15.0.0';
 const MANIFEST_URL = 'https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/extensions/jarvis/manifest.json';
 
 chrome.alarms.create(UPDATE_ALARM, { periodInMinutes: 240 });

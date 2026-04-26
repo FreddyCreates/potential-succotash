@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { useJarvisStore } from '../../store';
+import NotesPanel from './NotesPanel';
+import DocsPanel from './DocsPanel';
+import ToolsPanel from './ToolsPanel';
 
 const TEMPLATES: Record<string, string> = {
   'Meeting': `# Meeting Notes\nDate: ${new Date().toLocaleDateString()}\n\n## Attendees\n- \n\n## Agenda\n1. \n\n## Action Items\n- \n`,
@@ -10,7 +13,7 @@ const TEMPLATES: Record<string, string> = {
   'Decision': `# Decision Record\nQuestion: \nDate: ${new Date().toLocaleDateString()}\n\n## Options\n1. \n2. \n\n## Chosen\n\n## Rationale\n`,
 };
 
-export default function WorkspacePanel() {
+function WorkspaceEditor() {
   const { workspaceText, setWorkspaceText } = useJarvisStore();
   const [saveStatus, setSaveStatus] = useState<string | null>(null);
 
@@ -63,63 +66,78 @@ export default function WorkspacePanel() {
 
   return (
     <div className="flex flex-col h-full">
-      {/* Template buttons */}
-      <div className="flex flex-wrap gap-1 px-2 py-1.5 bg-gray-900/50 border-b border-gray-800/50">
+      <div className="flex flex-wrap gap-1 px-2 py-1.5 bg-[#0d1520] border-b border-[#1a3a5c]">
         {Object.keys(TEMPLATES).map((t) => (
           <button
             key={t}
             onClick={() => applyTemplate(t)}
-            className="text-xs px-2 py-0.5 bg-gray-800 hover:bg-gray-700 rounded text-gray-300 transition-colors"
+            className="text-xs px-2 py-0.5 bg-[#1a3a5c] hover:bg-[#1a4a7c] rounded text-gray-300 transition-colors"
           >
             {t}
           </button>
         ))}
       </div>
 
-      {/* Text area */}
       <textarea
-        className="flex-1 bg-gray-950 text-gray-200 font-mono text-xs p-3 outline-none resize-none border-b border-gray-800 placeholder-gray-700"
+        className="flex-1 bg-[#080d14] text-gray-200 font-mono text-xs p-3 outline-none resize-none border-b border-[#1a3a5c] placeholder-gray-700"
         placeholder="Start typing or choose a template…"
         value={workspaceText}
         onChange={(e) => setWorkspaceText(e.target.value)}
         spellCheck={false}
       />
 
-      {/* Word / char count */}
-      <div className="flex items-center justify-end px-3 py-0.5 bg-gray-900/30 border-b border-gray-800/50 text-xs text-gray-600">
+      <div className="flex items-center justify-end px-3 py-0.5 bg-[#0d1520] border-b border-[#1a3a5c] text-xs text-gray-600">
         {wordCount} word{wordCount !== 1 ? 's' : ''} · {charCount} char{charCount !== 1 ? 's' : ''}
-        {saveStatus && <span className="ml-3 text-green-400">{saveStatus}</span>}
+        {saveStatus && <span className="ml-3 text-cyan-400">{saveStatus}</span>}
       </div>
 
-      {/* Export buttons */}
-      <div className="flex gap-1 px-2 py-1.5 bg-gray-900/50">
-        <button
-          onClick={copyText}
-          className="flex-1 text-xs py-1 bg-gray-800 hover:bg-gray-700 rounded text-gray-300 transition-colors"
-        >
-          📋 Copy
-        </button>
-        <button
-          onClick={saveAsNote}
-          disabled={!workspaceText.trim()}
-          className="flex-1 text-xs py-1 bg-cyan-900/60 hover:bg-cyan-800/80 disabled:bg-gray-800 disabled:text-gray-600 rounded text-cyan-200 transition-colors"
-        >
-          📒 Save Note
-        </button>
-        <button
-          onClick={exportPdf}
-          disabled={!workspaceText.trim()}
-          className="flex-1 text-xs py-1 bg-purple-900/60 hover:bg-purple-800/80 disabled:bg-gray-800 disabled:text-gray-600 rounded text-purple-200 transition-colors"
-        >
-          📄 PDF
-        </button>
-        <button
-          onClick={exportExcel}
-          disabled={!workspaceText.trim()}
-          className="flex-1 text-xs py-1 bg-green-900/60 hover:bg-green-800/80 disabled:bg-gray-800 disabled:text-gray-600 rounded text-green-200 transition-colors"
-        >
-          📊 Excel
-        </button>
+      <div className="flex gap-1 px-2 py-1.5 bg-[#0d1520]">
+        <button onClick={copyText} className="flex-1 text-xs py-1 bg-[#1a3a5c] hover:bg-[#1a4a7c] rounded text-gray-300 transition-colors">📋 Copy</button>
+        <button onClick={saveAsNote} disabled={!workspaceText.trim()} className="flex-1 text-xs py-1 bg-cyan-900/60 hover:bg-cyan-800/80 disabled:bg-[#0d1520] disabled:text-gray-600 rounded text-cyan-200 transition-colors">📒 Note</button>
+        <button onClick={exportPdf} disabled={!workspaceText.trim()} className="flex-1 text-xs py-1 bg-[#1a3a5c] hover:bg-[#1a4a7c] disabled:bg-[#0d1520] disabled:text-gray-600 rounded text-gray-300 transition-colors">📄 PDF</button>
+        <button onClick={exportExcel} disabled={!workspaceText.trim()} className="flex-1 text-xs py-1 bg-[#1a3a5c] hover:bg-[#1a4a7c] disabled:bg-[#0d1520] disabled:text-gray-600 rounded text-gray-300 transition-colors">📊 Excel</button>
+      </div>
+    </div>
+  );
+}
+
+export default function WorkspacePanel() {
+  const [active, setActive] = useState('editor');
+
+  const renderSub = () => {
+    switch (active) {
+      case 'editor':  return <WorkspaceEditor />;
+      case 'journal': return <NotesPanel />;
+      case 'files':   return <DocsPanel />;
+      case 'tools':   return <ToolsPanel />;
+      default:        return <WorkspaceEditor />;
+    }
+  };
+
+  return (
+    <div className="flex flex-col h-full bg-[#080d14] text-gray-100">
+      <div className="flex overflow-x-auto bg-[#0d1520] border-b border-[#1a3a5c] scrollbar-hide flex-shrink-0">
+        {[
+          { id: 'editor',  label: '📝 Editor' },
+          { id: 'journal', label: '📓 Journal' },
+          { id: 'files',   label: '📁 Files' },
+          { id: 'tools',   label: '🔧 Tools' },
+        ].map(t => (
+          <button
+            key={t.id}
+            onClick={() => setActive(t.id)}
+            className={`flex-shrink-0 px-3 py-1.5 text-xs transition-colors whitespace-nowrap ${
+              active === t.id
+                ? 'text-cyan-400 border-b-2 border-[#ffd700] bg-[#080d14]'
+                : 'text-gray-500 hover:text-gray-300'
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+      <div className="flex-1 overflow-hidden">
+        {renderSub()}
       </div>
     </div>
   );
