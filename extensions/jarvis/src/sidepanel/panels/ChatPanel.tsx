@@ -24,13 +24,13 @@ function speak(text: string) {
   if (!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
   const utterance = new SpeechSynthesisUtterance(stripForTTS(text));
-  utterance.rate = 0.92;
-  utterance.pitch = 0.78;
+  utterance.rate = 0.88;
+  utterance.pitch = 1.05;
   utterance.volume = 1;
-  // prefer a deep male voice if available
+  // prefer a warm natural English voice
   const voices = window.speechSynthesis.getVoices();
   const preferred = voices.find(v =>
-    /google uk english male|david|mark|daniel|alex/i.test(v.name)
+    /google uk english|karen|samantha|victoria|moira|fiona/i.test(v.name)
   ) || voices.find(v => v.lang.startsWith('en'));
   if (preferred) utterance.voice = preferred;
   window.speechSynthesis.speak(utterance);
@@ -78,7 +78,7 @@ export default function ChatPanel() {
     const listener = (msg: Record<string, unknown>) => {
       if (msg.action === '_timerDone') {
         const label = (msg.label as string) || 'Timer';
-        const alert = '⏱ "' + label + '" complete, sir. Your timer has finished.';
+        const alert = '⏱ "' + label + '" is done.';
         addMessage({ role: 'jarvis', text: alert, ts: Date.now() });
         speak(alert);
       } else if (msg.action === '_tabChanged') {
@@ -91,10 +91,10 @@ export default function ChatPanel() {
         if (!agent) return;
         const done = agent.steps.filter(s => s.status === 'done').length;
         const announcement = agent.status === 'complete'
-          ? '🤖 ' + agent.name + ' has completed its mission, sir.\n\n"' + agent.mission.substring(0, 80) + '"\n\n' + done + '/' + agent.steps.length + ' sources extracted. Full report available in the 🤖 Agents tab.'
-          : '🤖 ' + agent.name + ' — status: ' + agent.status + '. Check the Agents tab, sir.';
+          ? '🤖 ' + agent.name + ' — mission complete.\n\n"' + agent.mission.substring(0, 80) + '"\n\n' + done + '/' + agent.steps.length + ' sources extracted. Full report in the 🤖 Agents tab.'
+          : '🤖 ' + agent.name + ' — status: ' + agent.status + '. Check the Agents tab for details.';
         addMessage({ role: 'jarvis', text: announcement, ts: Date.now() });
-        if (ttsEnabled) speak(agent.name + ' mission complete, sir.');
+        if (ttsEnabled) speak(agent.name + ' mission complete.');
       }
     };
     chrome.runtime.onMessage.addListener(listener);
@@ -124,17 +124,17 @@ export default function ChatPanel() {
         if (chrome.runtime.lastError || !resp?.success) return;
         const agents: Array<{ name: string; status: string; mission: string; currentStep: number; steps: unknown[] }> = resp?.agents || [];
         if (agents.length === 0) {
-          deliverResponse('🤖 No agents deployed, sir. Click "🤖 Research agent" or say "deploy agent: research [topic]" to send one out.');
+          deliverResponse('🤖 No agents deployed yet. Say "deploy agent: research [topic]" to send one out.');
           return;
         }
         const icon: Record<string, string> = { running: '🟢', complete: '✅', recalled: '⚡', failed: '❌', queued: '⏳' };
         const lines = agents.map(a => (icon[a.status] || '○') + ' ' + a.name + (a.status === 'running' ? ' [' + (a.currentStep + 1) + '/' + a.steps.length + ']' : '') + ' — ' + a.mission.substring(0, 60)).join('\n');
-        deliverResponse('🤖 Sovereign Agents, sir:\n\n' + lines + '\n\nCheck the 🤖 Agents tab for full reports and controls.');
+        deliverResponse('🤖 Sovereign Agents:\n\n' + lines + '\n\nCheck the 🤖 Agents tab for full reports and controls.');
       });
       return;
     }
     if (text === '__agent_research__') {
-      addMessage({ role: 'jarvis', text: '🤖 What topic shall I research, sir? Type your topic and I\'ll dispatch an agent immediately.', ts: Date.now() });
+      addMessage({ role: 'jarvis', text: '🤖 What topic would you like me to research? Type it and I\'ll dispatch an agent right away.', ts: Date.now() });
       setInput('deploy agent: research ');
       return;
     }
@@ -181,7 +181,7 @@ export default function ChatPanel() {
   const toggleMic = () => {
     const SpeechRec = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SpeechRec) {
-      addMessage({ role: 'jarvis', text: 'Speech recognition not available in this browser, sir.', ts: Date.now() });
+      addMessage({ role: 'jarvis', text: 'Speech recognition not available in this browser.', ts: Date.now() });
       return;
     }
     if (micListening) { setMicListening(false); return; }
@@ -307,7 +307,7 @@ export default function ChatPanel() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(input); } }}
-          placeholder="Speak your command, sir…"
+          placeholder="What's on your mind…"
           className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-3 py-1.5 text-xs text-gray-100 placeholder-gray-600 outline-none focus:border-cyan-700 transition-colors"
         />
         <button
