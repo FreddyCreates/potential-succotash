@@ -49,10 +49,14 @@ export default function ChatPanel() {
   const endRef = useRef<HTMLDivElement>(null);
 
   const DELEGATE_PHASES = [
-    'Thinking…',
-    'Delegating to engine…',
-    'Synthesizing response…',
-    'Streaming…',
+    '⚡ Thinking…',
+    '🔀 Delegating to engine…',
+    '🌐 Web worker active…',
+    '🤖 Agent processing…',
+    '🔬 Synthesizing response…',
+    '📡 Streaming data…',
+    '🧠 Cross-referencing memory…',
+    '✅ Compiling answer…',
   ];
 
   useEffect(() => {
@@ -219,15 +223,16 @@ export default function ChatPanel() {
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full" style={{ background: '#0d0b08' }}>
       {/* Quick actions */}
-      <div className="flex items-center gap-1 px-2 py-1.5 bg-gray-900/50 border-b border-gray-800/50">
+      <div className="flex items-center gap-1 px-2 py-1.5 border-b" style={{ background: '#13100a', borderColor: '#2d2010' }}>
         <div className="flex gap-1 flex-1 flex-wrap">
           {QUICK_ACTIONS.map((qa) => (
             <button
               key={qa.label}
               onClick={() => handleQuickAction(qa)}
-              className="text-xs px-2 py-0.5 bg-gray-800 hover:bg-gray-700 rounded text-gray-300 transition-colors"
+              className="text-xs px-2 py-0.5 rounded text-gray-300 transition-colors"
+              style={{ background: '#1e1a10', border: '1px solid #2d2010' }}
             >
               {qa.label}
             </button>
@@ -236,18 +241,16 @@ export default function ChatPanel() {
         <button
           onClick={toggleTts}
           title={ttsEnabled ? 'Voice output ON — click to mute' : 'Voice output OFF — click to enable'}
-          className={`text-xs px-2 py-0.5 rounded transition-colors flex-shrink-0 ${
-            ttsEnabled
-              ? 'bg-cyan-800 text-cyan-200 border border-cyan-600'
-              : 'bg-gray-800 text-gray-500 hover:text-gray-300'
-          }`}
+          className="text-xs px-2 py-0.5 rounded transition-colors flex-shrink-0"
+          style={ttsEnabled ? { background: '#7a5c10', color: '#f0c040', border: '1px solid #d4a017' } : { background: '#1e1a10', color: '#666', border: '1px solid #2d2010' }}
         >
           {ttsEnabled ? '🔊' : '🔇'}
         </button>
         <button
           onClick={handleClearChat}
           title="Clear chat"
-          className="text-xs px-2 py-0.5 bg-gray-800 hover:bg-red-900/60 rounded text-gray-500 hover:text-red-400 transition-colors ml-0.5 flex-shrink-0"
+          className="text-xs px-2 py-0.5 rounded transition-colors ml-0.5 flex-shrink-0 text-gray-500 hover:text-red-400"
+          style={{ background: '#1e1a10', border: '1px solid #2d2010' }}
         >
           🗑
         </button>
@@ -257,9 +260,12 @@ export default function ChatPanel() {
       <div className="flex-1 overflow-y-auto px-2 py-2 space-y-2">
         {messages.length === 0 && (
           <div className="text-center text-gray-600 text-xs mt-8 space-y-1">
-            <div className="text-cyan-600 text-lg">⚡</div>
-            <div>ANIMUS standing by</div>
-            <div className="text-gray-700">Use "Brief me" for a situational report</div>
+            <div className="text-lg" style={{ color: '#d4a017' }}>⚡</div>
+            <div className="text-gray-400">Vigil standing by</div>
+            <div className="text-gray-600 text-[10px] leading-relaxed">
+              Use <span style={{ color: '#d4a017' }}>Brief me</span> for a situational report.<br />
+              Or ask anything — Vigil delegates to the right engine automatically.
+            </div>
           </div>
         )}
         {messages.map((msg, i) => (
@@ -271,7 +277,7 @@ export default function ChatPanel() {
               <button
                 onClick={() => speak(msg.text)}
                 title="Speak"
-                className="self-end mb-1 mr-1 text-xs text-gray-700 hover:text-cyan-400 transition-colors flex-shrink-0"
+                className="self-end mb-1 mr-1 text-xs text-gray-700 hover:text-amber-400 transition-colors flex-shrink-0"
               >
                 🔊
               </button>
@@ -279,11 +285,11 @@ export default function ChatPanel() {
             <div
               onClick={() => copyMessage(msg.text, i)}
               title={new Date(msg.ts).toLocaleTimeString() + ' — click to copy'}
-              className={`group max-w-[85%] rounded-lg px-3 py-2 text-xs leading-relaxed whitespace-pre-wrap break-words cursor-pointer relative ${
-                msg.role === 'user'
-                  ? 'bg-cyan-900/60 text-cyan-100 border border-cyan-800/40 hover:border-cyan-600/60'
-                  : 'bg-gray-800/80 text-gray-200 border border-gray-700/40 hover:border-gray-600/60'
-              }`}
+              className={`group max-w-[85%] rounded-lg px-3 py-2 text-xs leading-relaxed whitespace-pre-wrap break-words cursor-pointer relative`}
+              style={msg.role === 'user'
+                ? { background: 'rgba(212,160,23,0.12)', color: '#f0d080', border: '1px solid rgba(212,160,23,0.25)' }
+                : { background: '#1a1810', color: '#d0cec0', border: '1px solid #2d2010' }
+              }
             >
               {copiedIdx === i && (
                 <span className="absolute -top-5 right-1 text-xs text-green-400 bg-gray-900 px-1 rounded">Copied!</span>
@@ -294,12 +300,12 @@ export default function ChatPanel() {
         ))}
         {isTyping && (
           <div className="flex justify-start">
-            <div className="bg-[#0d1520] border border-[#1a3a5c] rounded-lg px-3 py-2">
+            <div className="rounded-lg px-3 py-2" style={{ background: '#13100a', border: '1px solid #2d2010' }}>
               <div className="flex gap-1 items-center">
-                <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                <span className="ml-2 text-[10px] text-cyan-500 font-mono transition-all">{DELEGATE_PHASES[delegatePhase]}</span>
+                <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#d4a017', animationDelay: '0ms' }} />
+                <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#d4a017', animationDelay: '150ms' }} />
+                <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#d4a017', animationDelay: '300ms' }} />
+                <span className="ml-2 text-[10px] font-mono transition-all" style={{ color: '#a88030' }}>{DELEGATE_PHASES[delegatePhase]}</span>
               </div>
             </div>
           </div>
@@ -308,14 +314,11 @@ export default function ChatPanel() {
       </div>
 
       {/* Input */}
-      <div className="flex items-center gap-1.5 px-2 py-2 border-t border-gray-800 bg-gray-900/50">
+      <div className="flex items-center gap-1.5 px-2 py-2 border-t" style={{ background: '#13100a', borderColor: '#2d2010' }}>
         <button
           onClick={toggleMic}
-          className={`p-1.5 rounded-full text-sm transition-all ${
-            micListening
-              ? 'bg-red-600 text-white animate-pulse'
-              : 'bg-gray-800 text-gray-400 hover:text-gray-200'
-          }`}
+          className={`p-1.5 rounded-full text-sm transition-all ${micListening ? 'animate-pulse' : ''}`}
+          style={{ background: micListening ? '#7a1010' : '#1e1a10', color: micListening ? '#fff' : '#888' }}
           title={micListening ? 'Stop listening' : 'Voice input'}
         >
           🎤
@@ -326,12 +329,14 @@ export default function ChatPanel() {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(input); } }}
           placeholder="What's on your mind…"
-          className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-3 py-1.5 text-xs text-gray-100 placeholder-gray-600 outline-none focus:border-cyan-700 transition-colors"
+          className="flex-1 rounded-lg px-3 py-1.5 text-xs text-gray-100 placeholder-gray-600 outline-none transition-colors"
+          style={{ background: '#1e1a10', border: '1px solid #2d2010' }}
         />
         <button
           onClick={() => sendMessage(input)}
           disabled={!input.trim() || isTyping}
-          className="p-1.5 bg-cyan-700 hover:bg-cyan-600 disabled:bg-gray-700 disabled:text-gray-500 text-white rounded-lg text-xs transition-colors"
+          className="p-1.5 rounded-lg text-xs transition-colors"
+          style={{ background: !input.trim() || isTyping ? '#1e1a10' : '#7a5c10', color: !input.trim() || isTyping ? '#555' : '#fff' }}
         >
           ➤
         </button>

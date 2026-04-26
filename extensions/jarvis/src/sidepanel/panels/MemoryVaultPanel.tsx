@@ -31,18 +31,17 @@ export default function MemoryVaultPanel() {
   };
 
   return (
-    <div className="flex flex-col h-full bg-[#080d14] text-gray-100">
+    <div className="flex flex-col h-full text-gray-100" style={{ background: '#0d0b08' }}>
       {/* Sub-tab bar */}
-      <div className="flex overflow-x-auto bg-[#0d1520] border-b border-[#1a3a5c] scrollbar-hide flex-shrink-0">
+      <div className="flex overflow-x-auto scrollbar-hide flex-shrink-0" style={{ background: '#13100a', borderBottom: '1px solid #2d2010' }}>
         {SUB_TABS.map(t => (
           <button
             key={t.id}
             onClick={() => setActive(t.id)}
-            className={`flex-shrink-0 px-3 py-1.5 text-xs transition-colors whitespace-nowrap ${
-              active === t.id
-                ? 'text-cyan-400 border-b-2 border-[#ffd700] bg-[#080d14]'
-                : 'text-gray-500 hover:text-gray-300'
-            }`}
+            className="flex-shrink-0 px-3 py-1.5 text-xs transition-colors whitespace-nowrap"
+            style={active === t.id
+              ? { color: '#d4a017', borderBottom: '2px solid #d4a017', background: '#0d0b08' }
+              : { color: '#666' }}
           >
             {t.label}
           </button>

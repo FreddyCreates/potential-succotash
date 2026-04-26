@@ -14,15 +14,16 @@ import TabsPanel from './panels/TabsPanel';
 import InstallPanel from './panels/InstallPanel';
 import LogPanel from './panels/LogPanel';
 
+// Agents and AGI moved to front (closer to Chat/Inbox)
 const TABS = [
   { id: 'chat',      label: '💬 Chat' },
   { id: 'inbox',     label: '📥 Inbox' },
-  { id: 'solus',     label: '🔵 Solus' },
   { id: 'agents',    label: '🤖 Agents' },
   { id: 'agi',       label: '⚗️ AGI' },
+  { id: 'solus',     label: '🔵 Solus' },
   { id: 'sentry',    label: '🛡 Sentry' },
   { id: 'memory',    label: '🧠 Memory Vault' },
-  { id: 'workspace', label: '📝 Workspace' },
+  { id: 'workspace', label: '📁 Workspace' },
   { id: 'search',    label: '🔍 Search' },
   { id: 'screen',    label: '🖥️ Screen' },
   { id: 'tabs',      label: '🗂️ Tabs' },
@@ -83,23 +84,23 @@ export default function App() {
     return (h > 0 ? h + 'h ' : '') + m + 'm ' + sec + 's';
   })();
 
-  const moodDot = mood === 'energized' ? 'bg-yellow-400'
-    : mood === 'reflective' ? 'bg-cyan-300'
-    : mood === 'calm'       ? 'bg-blue-400'
-    : 'bg-cyan-400';
+  const moodDot = mood === 'energized' ? 'bg-amber-400'
+    : mood === 'reflective' ? 'bg-emerald-300'
+    : mood === 'calm'       ? 'bg-amber-300'
+    : 'bg-amber-400';
 
   return (
-    <div className="flex flex-col h-screen bg-[#080d14] text-gray-100 text-sm overflow-hidden">
+    <div className="flex flex-col h-screen text-gray-100 text-sm overflow-hidden" style={{ background: '#0d0b08' }}>
       {/* Header */}
       <div
-        className="flex items-center justify-between px-3 py-2 border-b border-[#1a3a5c] flex-shrink-0"
-        style={{ background: 'linear-gradient(135deg, #060c14 0%, #0d1a2e 100%)' }}
+        className="flex items-center justify-between px-3 py-2 border-b flex-shrink-0"
+        style={{ background: 'linear-gradient(135deg, #100d08 0%, #1a1408 100%)', borderColor: '#2d2010' }}
       >
         <div className="flex items-center gap-2">
-          <span className="animate-heartbeat text-cyan-400 text-lg">⚡</span>
+          <span className="animate-heartbeat text-amber-400 text-lg">⚡</span>
           <div className="flex items-center gap-2">
             <span className="font-bold text-white tracking-[0.25em] text-sm">V I G I L</span>
-            <span className="text-[10px] px-1.5 py-0.5 rounded border border-[#ffd700]/50 text-[#ffd700] font-bold">v15</span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded border font-bold" style={{ borderColor: '#d4a017', color: '#d4a017' }}>v15</span>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -109,16 +110,17 @@ export default function App() {
       </div>
 
       {/* Nav tabs — scrollable */}
-      <div className="flex overflow-x-auto bg-[#0d1520] border-b border-[#1a3a5c] scrollbar-hide flex-shrink-0">
+      <div className="flex overflow-x-auto scrollbar-hide flex-shrink-0" style={{ background: '#13100a', borderBottom: '1px solid #2d2010' }}>
         {TABS.map((t) => (
           <button
             key={t.id}
             onClick={() => setActivePanel(t.id)}
             className={`flex-shrink-0 px-2.5 py-1.5 text-xs transition-colors whitespace-nowrap ${
               activePanel === t.id
-                ? 'text-cyan-400 border-b-2 border-[#ffd700] bg-[#080d14]'
+                ? 'border-b-2'
                 : 'text-gray-500 hover:text-gray-300'
             }`}
+            style={activePanel === t.id ? { color: '#d4a017', borderBottomColor: '#d4a017', background: '#0d0b08' } : {}}
           >
             {t.label}
           </button>
@@ -131,29 +133,32 @@ export default function App() {
       </div>
 
       {/* Download strip */}
-      <div className="flex gap-1 px-2 py-1 bg-[#0d1520] border-t border-[#1a3a5c] flex-shrink-0">
+      <div className="flex gap-1 px-2 py-1 flex-shrink-0" style={{ background: '#13100a', borderTop: '1px solid #2d2010' }}>
         <button
           onClick={() => chrome.runtime.sendMessage({ action: 'downloadJarvisZip' })}
-          className="flex-1 text-xs py-0.5 px-1 bg-cyan-900/30 hover:bg-cyan-800/50 rounded text-cyan-400 border border-[#1a3a5c] transition-colors"
+          className="flex-1 text-xs py-0.5 px-1 rounded transition-colors"
+          style={{ background: 'rgba(212,160,23,0.12)', color: '#d4a017', border: '1px solid #2d2010' }}
         >
           ⬇ Extension ZIP
         </button>
         <button
           onClick={() => window.open('https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/SDK_Model_Manifest.json', '_blank')}
-          className="flex-1 text-xs py-0.5 px-1 bg-cyan-900/30 hover:bg-cyan-800/50 rounded text-cyan-400 border border-[#1a3a5c] transition-colors"
+          className="flex-1 text-xs py-0.5 px-1 rounded transition-colors"
+          style={{ background: 'rgba(212,160,23,0.12)', color: '#d4a017', border: '1px solid #2d2010' }}
         >
           ⬇ SDK
         </button>
         <button
           onClick={() => window.open('https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/AI_Protocols_Register.csv', '_blank')}
-          className="flex-1 text-xs py-0.5 px-1 bg-cyan-900/30 hover:bg-cyan-800/50 rounded text-cyan-400 border border-[#1a3a5c] transition-colors"
+          className="flex-1 text-xs py-0.5 px-1 rounded transition-colors"
+          style={{ background: 'rgba(212,160,23,0.12)', color: '#d4a017', border: '1px solid #2d2010' }}
         >
           ⬇ Protocols
         </button>
       </div>
 
       {/* Status bar */}
-      <div className="flex items-center justify-between px-3 py-1 bg-[#060c14] border-t border-[#1a3a5c] text-xs text-gray-600 flex-shrink-0">
+      <div className="flex items-center justify-between px-3 py-1 text-xs text-gray-600 flex-shrink-0" style={{ background: '#0a0806', borderTop: '1px solid #2d2010' }}>
         <span>⏱ {uptimeStr}</span>
         <span>💓 {heartbeatCount}</span>
         <span>⚡ {commandCount}</span>
