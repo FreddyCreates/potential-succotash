@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useJarvisStore } from '../../store';
-import NotesPanel from './NotesPanel';
 import DocsPanel from './DocsPanel';
 import ToolsPanel from './ToolsPanel';
 
@@ -106,22 +105,26 @@ export default function WorkspacePanel() {
 
   const renderSub = () => {
     switch (active) {
-      case 'editor':  return <WorkspaceEditor />;
-      case 'journal': return <NotesPanel />;
-      case 'files':   return <DocsPanel />;
-      case 'tools':   return <ToolsPanel />;
-      default:        return <WorkspaceEditor />;
+      case 'editor': return <WorkspaceEditor />;
+      case 'files':  return <DocsPanel />;
+      case 'tools':  return <ToolsPanel />;
+      default:       return <WorkspaceEditor />;
     }
   };
 
   return (
     <div className="flex flex-col h-full bg-[#080d14] text-gray-100">
+      {/* Header */}
+      <div className="px-3 py-2 bg-[#0d1520] border-b border-[#1a3a5c]">
+        <p className="text-[10px] text-gray-500 leading-relaxed">
+          Your command-line office. Write, export, and organize files, folders, and documents.
+        </p>
+      </div>
       <div className="flex overflow-x-auto bg-[#0d1520] border-b border-[#1a3a5c] scrollbar-hide flex-shrink-0">
         {[
-          { id: 'editor',  label: '📝 Editor' },
-          { id: 'journal', label: '📓 Journal' },
-          { id: 'files',   label: '📁 Files' },
-          { id: 'tools',   label: '🔧 Tools' },
+          { id: 'editor', label: '📝 Editor' },
+          { id: 'files',  label: '📁 Files' },
+          { id: 'tools',  label: '🔧 Tools' },
         ].map(t => (
           <button
             key={t.id}

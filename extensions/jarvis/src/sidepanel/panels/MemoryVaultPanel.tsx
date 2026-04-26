@@ -4,6 +4,7 @@ import VaultPanel from './VaultPanel';
 import HighlightsPanel from './HighlightsPanel';
 import MirrorPanel from './MirrorPanel';
 import GraphPanel from './GraphPanel';
+import NotesPanel from './NotesPanel';
 
 const SUB_TABS = [
   { id: 'memory',     label: '🧠 Memory' },
@@ -11,6 +12,7 @@ const SUB_TABS = [
   { id: 'highlights', label: '📌 Highlights' },
   { id: 'mirror',     label: '🪞 Mirror' },
   { id: 'graph',      label: '🗺 Graph' },
+  { id: 'journal',    label: '📓 Journal' },
 ];
 
 export default function MemoryVaultPanel() {
@@ -23,6 +25,7 @@ export default function MemoryVaultPanel() {
       case 'highlights': return <HighlightsPanel />;
       case 'mirror':     return <MirrorPanel />;
       case 'graph':      return <GraphPanel />;
+      case 'journal':    return <NotesPanel />;
       default:           return <MemoryPanel />;
     }
   };

@@ -21,7 +21,7 @@ const TABS = [
   { id: 'agents',    label: '🤖 Agents' },
   { id: 'agi',       label: '⚗️ AGI' },
   { id: 'sentry',    label: '🛡 Sentry' },
-  { id: 'memory',    label: '🧠 Memory' },
+  { id: 'memory',    label: '🧠 Memory Vault' },
   { id: 'workspace', label: '📝 Workspace' },
   { id: 'search',    label: '🔍 Search' },
   { id: 'screen',    label: '🖥️ Screen' },

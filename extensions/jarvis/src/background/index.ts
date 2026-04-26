@@ -2298,7 +2298,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       break;
     }
     case 'downloadJarvisZip': chrome.downloads.download({ url: 'https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/jarvis.zip', filename: 'jarvis-extension.zip', saveAs: false }, () => sendResponse({ success: !chrome.runtime.lastError, message: chrome.runtime.lastError ? chrome.runtime.lastError.message : 'Downloading jarvis-extension.zip...' })); break;
-    case 'downloadJarvisBat': chrome.downloads.download({ url: 'https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/install-jarvis-edge.bat', filename: 'install-jarvis-edge.bat', saveAs: false }, () => sendResponse({ success: !chrome.runtime.lastError, message: chrome.runtime.lastError ? chrome.runtime.lastError.message : 'Downloading install-jarvis-edge.bat...' })); break;
+    case 'downloadJarvisBat': chrome.downloads.download({ url: 'https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/install-vigil-edge.bat', filename: 'install-vigil-edge.bat', saveAs: false }, () => sendResponse({ success: !chrome.runtime.lastError, message: chrome.runtime.lastError ? chrome.runtime.lastError.message : 'Downloading install-vigil-edge.bat...' })); break;
+    case 'downloadExtensionZip': {
+      const extUrl = (request as { url?: string; name?: string }).url || '';
+      const extName = (request as { url?: string; name?: string }).name || 'extension';
+      if (!extUrl) { sendResponse({ success: false, message: 'No URL provided' }); break; }
+      chrome.downloads.download({ url: extUrl, filename: `${extName}.zip`, saveAs: false }, () => sendResponse({ success: !chrome.runtime.lastError, message: chrome.runtime.lastError ? chrome.runtime.lastError.message : `Downloading ${extName}.zip...` }));
+      break;
+    }
     case 'generatePdf': {
       const { title = 'Animus Report', content = '', sections, author = 'Alfredo' } = message as { title?: string; content?: string; sections?: { heading: string; body: string }[]; author?: string };
       downloadPdf({ title, content, sections, author });

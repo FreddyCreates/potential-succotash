@@ -45,11 +45,29 @@ export default function ChatPanel() {
   const [input, setInput] = useState('');
   const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
   const [greeted, setGreeted] = useState(false);
+  const [delegatePhase, setDelegatePhase] = useState(0);
   const endRef = useRef<HTMLDivElement>(null);
+
+  const DELEGATE_PHASES = [
+    'Thinking…',
+    'Delegating to engine…',
+    'Synthesizing response…',
+    'Streaming…',
+  ];
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
+
+  // Cycle through delegation phases while typing
+  useEffect(() => {
+    if (!isTyping) { setDelegatePhase(0); return; }
+    const interval = setInterval(() => {
+      setDelegatePhase(p => (p + 1) % DELEGATE_PHASES.length);
+    }, 700);
+    return () => clearInterval(interval);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isTyping]);
 
   /** Deliver an ANIMUS response from background */
   const deliverResponse = useCallback((text: string, opts?: { skipTts?: boolean }) => {
@@ -276,12 +294,12 @@ export default function ChatPanel() {
         ))}
         {isTyping && (
           <div className="flex justify-start">
-            <div className="bg-gray-800/80 border border-gray-700/40 rounded-lg px-3 py-2">
+            <div className="bg-[#0d1520] border border-[#1a3a5c] rounded-lg px-3 py-2">
               <div className="flex gap-1 items-center">
                 <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
                 <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
                 <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                <span className="ml-1 text-xs text-gray-600">Processing…</span>
+                <span className="ml-2 text-[10px] text-cyan-500 font-mono transition-all">{DELEGATE_PHASES[delegatePhase]}</span>
               </div>
             </div>
           </div>

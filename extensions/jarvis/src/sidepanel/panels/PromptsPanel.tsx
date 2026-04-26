@@ -89,6 +89,38 @@ const DEFAULTS: PromptTemplate[] = [
     id: 'def-10', name: 'Theory Test', category: 'analysis', usageCount: 0, isDefault: true, createdAt: 0,
     template: 'Test this theory: {{theory}}. What supports it? What breaks it? What would prove it wrong?',
   },
+  {
+    id: 'def-11', name: 'Deploy Research Mission', category: 'strategy', usageCount: 0, isDefault: true, createdAt: 0,
+    template: 'Deploy a researcher agent on {{topic}}. Crawl top sources, extract key findings, and synthesize a report.',
+  },
+  {
+    id: 'def-12', name: 'Build a Plan', category: 'strategy', usageCount: 0, isDefault: true, createdAt: 0,
+    template: 'Build a step-by-step execution plan for {{goal}}. Include milestones, resources needed, and potential blockers.',
+  },
+  {
+    id: 'def-13', name: 'Competitive Analysis', category: 'research', usageCount: 0, isDefault: true, createdAt: 0,
+    template: 'Run a competitive analysis on {{company_or_product}}. Who are the top 5 competitors? What are their strengths and weaknesses?',
+  },
+  {
+    id: 'def-14', name: 'Refactor Code', category: 'code', usageCount: 0, isDefault: true, createdAt: 0,
+    template: 'Refactor this code for readability, performance, and best practices:\n\n{{code}}',
+  },
+  {
+    id: 'def-15', name: 'Market Research', category: 'research', usageCount: 0, isDefault: true, createdAt: 0,
+    template: 'Research the market for {{product_or_service}}. Market size, trends, key players, and opportunities.',
+  },
+  {
+    id: 'def-16', name: 'Teach Me', category: 'chat', usageCount: 0, isDefault: true, createdAt: 0,
+    template: 'Teach me {{concept}} from first principles. Start simple, build up complexity, give real examples.',
+  },
+  {
+    id: 'def-17', name: 'Agent Multi-Mission', category: 'strategy', usageCount: 0, isDefault: true, createdAt: 0,
+    template: 'Deploy a research agent on {{topic}}, open a writing tab, and synthesize what the agent finds into a structured document.',
+  },
+  {
+    id: 'def-18', name: 'Debate Both Sides', category: 'analysis', usageCount: 0, isDefault: true, createdAt: 0,
+    template: 'Argue both sides of: {{topic}}. Give the strongest case for each position, then your conclusion.',
+  },
 ];
 
 /* ── PromptsPanel ───────────────────────────────────────────────────────────── */
