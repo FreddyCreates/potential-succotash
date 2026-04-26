@@ -1,19 +1,67 @@
 /**
- * NexusPanel — JARVIS v10 Status Dashboard
+ * NexusPanel — JARVIS v11 Status Dashboard
  *
  * A read-only control surface for things that genuinely need UI:
- *  - TTS / mic toggles (can't do these via chat)
- *  - Live agent cards with per-agent Recall (needs UI to act on live IDs)
+ *  - TTS / mic toggles (binary state that can't be expressed in chat)
+ *  - Live agent cards with per-agent Recall (needs live IDs to act on)
+ *  - Cognitive Framework — 5 thinking lenses Jarvis runs on every response
  *  - Recent notes preview with copy / delete (persistent view without tab-switching)
  *  - Session stats (uptime, memory turns, command count)
  *  - Active page awareness (contextual, proactive)
  *
- * NOT a chat-command launcher — everything Jarvis already handles via natural
+ * NOT a chat-command launcher — everything Jarvis understands via natural
  * language belongs in Chat, not here.
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useJarvisStore } from '../../store';
+
+/* ── Cognitive framework — Jarvis's 5 thinking lenses ──────────────────────── */
+// Every response Jarvis generates is simultaneously processed through these
+// thinking architectures. They are not user buttons — they are his cognition.
+
+const COGNITIVE_MODES = [
+  {
+    id: 'researcher',
+    icon: '🔬',
+    label: 'Researcher',
+    desc: 'Source-driven, factual verification',
+    cls: 'border-blue-800/60 bg-blue-900/20 text-blue-300',
+    dot: 'bg-blue-400',
+  },
+  {
+    id: 'analyst',
+    icon: '📊',
+    label: 'Analyst',
+    desc: 'Patterns, data, implications',
+    cls: 'border-purple-800/60 bg-purple-900/20 text-purple-300',
+    dot: 'bg-purple-400',
+  },
+  {
+    id: 'theorist',
+    icon: '🧠',
+    label: 'Theorist',
+    desc: 'Abstract, first-principles',
+    cls: 'border-pink-800/60 bg-pink-900/20 text-pink-300',
+    dot: 'bg-pink-400',
+  },
+  {
+    id: 'scout',
+    icon: '🔭',
+    label: 'Scout',
+    desc: 'Exploratory, opportunistic',
+    cls: 'border-cyan-800/60 bg-cyan-900/20 text-cyan-300',
+    dot: 'bg-cyan-400',
+  },
+  {
+    id: 'synthesizer',
+    icon: '⚗️',
+    label: 'Synthesizer',
+    desc: 'Cross-domain integration',
+    cls: 'border-green-800/60 bg-green-900/20 text-green-300',
+    dot: 'bg-green-400',
+  },
+];
 
 /* ── Types ──────────────────────────────────────────────────────────────────── */
 
@@ -88,6 +136,14 @@ export default function NexusPanel() {
     micListening, setMicListening,
     notes, setNotes,
   } = useJarvisStore();
+
+  // Active cognitive mode cycles through all 5 every few seconds
+  // to show they're all running simultaneously (not one at a time)
+  const [activeModeIdx, setActiveModeIdx] = useState(0);
+  useEffect(() => {
+    const iv = setInterval(() => setActiveModeIdx(i => (i + 1) % COGNITIVE_MODES.length), 1400);
+    return () => clearInterval(iv);
+  }, []);
 
   const [agents, setAgents]       = useState<AgentData[]>([]);
   const [currentPage, setCurrentPage] = useState<{ title: string; url: string } | null>(null);
@@ -243,6 +299,34 @@ export default function NexusPanel() {
         </div>
       </section>
 
+      {/* ── Cognitive Framework ── */}
+      <section className="px-3 pt-2 pb-2 border-b border-gray-800/50 flex-shrink-0">
+        <div className="text-[9px] tracking-widest uppercase text-gray-600 mb-1.5">Cognitive Framework</div>
+        <div className="grid grid-cols-5 gap-1">
+          {COGNITIVE_MODES.map((m, idx) => {
+            const isActive = idx === activeModeIdx;
+            return (
+              <div
+                key={m.id}
+                title={m.desc}
+                className={`rounded border px-1 py-1.5 text-center transition-all duration-700 ${
+                  isActive ? m.cls : 'border-gray-800/40 bg-gray-900/20'
+                }`}
+              >
+                <div className={`text-[13px] ${isActive ? '' : 'opacity-30'}`}>{m.icon}</div>
+                <div className={`text-[8px] mt-0.5 font-medium leading-tight ${isActive ? '' : 'text-gray-700'}`}>
+                  {m.label}
+                </div>
+                <div className={`w-1 h-1 rounded-full mx-auto mt-0.5 ${isActive ? m.dot + ' animate-pulse' : 'bg-gray-800'}`} />
+              </div>
+            );
+          })}
+        </div>
+        <div className="text-[8px] text-gray-700 mt-1 text-center leading-tight">
+          All 5 lenses run simultaneously on every response — this is how Jarvis thinks.
+        </div>
+      </section>
+
       {/* ── Live agents ── */}
       <section className="px-3 pt-2 pb-1.5 border-b border-gray-800/50">
         <div className="flex items-center justify-between mb-1.5">
@@ -260,6 +344,13 @@ export default function NexusPanel() {
         {liveAgents.length === 0 && doneAgents.length === 0 && (
           <div className="text-[10px] text-gray-700 italic py-0.5">
             No agents running. Ask Jarvis in Chat.
+          </div>
+        )}
+
+        {doneAgents.length > 0 && (
+          <div className="text-[9px] text-gray-700 mb-1 flex items-center gap-1">
+            <span>✅ Completed reports pushed to</span>
+            <button onClick={() => setActivePanel('mirror')} className="text-cyan-600 hover:text-cyan-400 transition-colors">🪞 Mirror</button>
           </div>
         )}
 

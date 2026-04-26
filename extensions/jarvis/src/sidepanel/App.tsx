@@ -13,19 +13,25 @@ import LogPanel from './panels/LogPanel';
 import AgentsPanel from './panels/AgentsPanel';
 import AGIToolsPanel from './panels/AGIToolsPanel';
 import NexusPanel from './panels/NexusPanel';
+import MirrorPanel from './panels/MirrorPanel';
+import VaultPanel from './panels/VaultPanel';
+import PromptsPanel from './panels/PromptsPanel';
 
 const TABS = [
   { id: 'chat',      label: '💬 Chat' },
   { id: 'nexus',     label: '⚡ Nexus' },
+  { id: 'mirror',    label: '🪞 Mirror' },
   { id: 'agents',    label: '🤖 Agents' },
   { id: 'agi',       label: '⚗️ AGI Tools' },
+  { id: 'notes',     label: '📓 Journal' },
+  { id: 'docs',      label: '📁 Files' },
+  { id: 'vault',     label: '🔐 Vault' },
+  { id: 'prompts',   label: '💡 Prompts' },
   { id: 'workspace', label: '📝 Workspace' },
   { id: 'tools',     label: '🔧 Tools' },
   { id: 'search',    label: '🔍 Search' },
   { id: 'screen',    label: '🖥️ Screen' },
   { id: 'tabs',      label: '🗂️ Tabs' },
-  { id: 'notes',     label: '📒 Notes' },
-  { id: 'docs',      label: '📄 Docs' },
   { id: 'install',   label: '⬇ Install' },
   { id: 'log',       label: '📋 Log' },
 ];
@@ -60,8 +66,11 @@ export default function App() {
     switch (activePanel) {
       case 'nexus':     return <NexusPanel />;
       case 'chat':      return <ChatPanel />;
+      case 'mirror':    return <MirrorPanel />;
       case 'agents':    return <AgentsPanel />;
       case 'agi':       return <AGIToolsPanel />;
+      case 'vault':     return <VaultPanel />;
+      case 'prompts':   return <PromptsPanel />;
       case 'workspace': return <WorkspacePanel />;
       case 'tools':     return <ToolsPanel />;
       case 'search':    return <SearchPanel />;

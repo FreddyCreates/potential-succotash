@@ -2393,6 +2393,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           });
         } catch { /* ignore */ }
         chrome.runtime.sendMessage({ action: '_agentComplete', agent: data }).catch(() => {});
+        // Auto-push completed agent report to Mirror panel
+        const reportContent = data.report ||
+          data.steps.filter(s => s.extract).map(s => s.label + ':\n' + s.extract).join('\n\n---\n\n');
+        if (reportContent) {
+          chrome.runtime.sendMessage({
+            action: '_mirrorPush',
+            content: { type: 'report', title: data.name + ' Report', data: reportContent, meta: data.mission },
+          }).catch(() => {});
+        }
       };
       const result = dispatcher.deploy(type, mission, target, notify, complete);
       if ('error' in result) {
@@ -2441,6 +2450,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
     case 'agiForgeReport': {
       sendResponse({ success: true, message: globalThis.agentDispatcher!.agiForgeReport() });
+      break;
+    }
+    case 'mirrorPush': {
+      /* Any code can ask Jarvis to push content to the Mirror panel */
+      const content = message.content as Record<string, unknown>;
+      chrome.runtime.sendMessage({ action: '_mirrorPush', content }).catch(() => {});
+      sendResponse({ success: true });
       break;
     }
     case 'agiScout': {
