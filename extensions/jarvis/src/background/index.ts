@@ -1,5 +1,5 @@
 /* ============================================================
- *  ANIMUS AI — Background Service Worker v13.0
+ *  VIGIL AI — Background Service Worker v14.0
  *  React + TypeScript + Vite architecture
  * ============================================================ */
 
@@ -19,6 +19,19 @@ import {
 import type { Note, JarvisDocument, TempleEntry } from './types';
 import { missionEngine } from './mission-engine.js';
 import { pse } from './pattern-synthesis-engine.js';
+import {
+  solusLoad, solusSummarize, solusClassify, solusAnswer,
+  solusIsReady, solusModelStatus, onSolusProgress,
+} from './skills/solus';
+import {
+  saveMemory, getMemories, deleteMemory, memoryStats,
+} from './skills/memoryAI';
+import {
+  analyzePageText, persistAlerts, getAlertHistory, dismissAlert, clearAlerts,
+} from './skills/sentryAI';
+import {
+  addPage as graphAddPage, getGraph, getRelated, clearGraph, graphStats,
+} from './skills/knowledgeGraph';
 
 const PHI = 1.618033988749895;
 const HEARTBEAT = 873;
@@ -26,7 +39,7 @@ const NEURO_PHI = 1.618033988749895;
 const NEURO_DECAY = 0.95;
 
 /* ----------------------------------------------------------
- *  Inbox — Animus's proactive outbox to the user
+ *  Inbox — Vigil's proactive outbox to the user
  *  In-memory, capped at 100 items per session.
  * ---------------------------------------------------------- */
 
@@ -262,15 +275,15 @@ const ProtocolRegistry = {
 };
 
 /* ----------------------------------------------------------
- *  AnimusEngine
+ *  VigilEngine
  * ---------------------------------------------------------- */
 
-class AnimusEngine {
+class VigilEngine {
   startTime = Date.now();
   commandCount = 0;
   commandHistory: unknown[] = [];
   maxHistory = 200;
-  state = { initialized: true, heartbeatCount: 0, version: '13.0.0', agent: 'ANIMUS', mood: 'focused', focus: 'awareness', vitals: null as unknown };
+  state = { initialized: true, heartbeatCount: 0, version: '14.0.0', agent: 'VIGIL', mood: 'focused', focus: 'awareness', vitals: null as unknown };
   neuro = new NeuroCore('animus');
   /** Pattern Synthesis Engine — the centralized cognitive knowledge corpus */
   pse = pse;
@@ -283,7 +296,11 @@ class AnimusEngine {
 
   constructor() {
     this._startHeartbeat();
-    console.log('[ANIMUS v13.0] Engine initialized — NeuroCore online, PSE online (' + pse.primitiveCount + ' primitives, ' + pse.domains.length + ' domains), Dexie DB active, PHI=' + PHI + ' HEARTBEAT=' + HEARTBEAT + 'ms');
+    console.log('[VIGIL v14.0] Engine initialized — NeuroCore online, PSE online (' + pse.primitiveCount + ' primitives, ' + pse.domains.length + ' domains), Dexie DB active, PHI=' + PHI + ' HEARTBEAT=' + HEARTBEAT + 'ms');
+    // Wire Solus progress to sidepanel
+    onSolusProgress(p => {
+      chrome.runtime.sendMessage({ action: '_solusProgress', progress: p }).catch(() => {});
+    });
   }
 
   _startHeartbeat() {
@@ -435,7 +452,7 @@ class AnimusEngine {
     return parsed;
   }
 
-  buildAction(parsed: ReturnType<AnimusEngine['parseCommand']>) {
+  buildAction(parsed: ReturnType<VigilEngine['parseCommand']>) {
     const agent = ProtocolRegistry.routeToAgent(parsed.intent);
     const action: { type: string; agent: string; payload: Record<string, unknown>; timestamp: number } = { type: parsed.intent, agent: agent ? agent.name : 'ORCHESTRATOR', payload: {}, timestamp: Date.now() };
     switch (parsed.intent) {
@@ -443,12 +460,12 @@ class AnimusEngine {
       case 'tab-open': action.payload['url'] = parsed.params['url'] || 'chrome://newtab'; break;
       case 'tab-close': action.payload['tabIndex'] = parsed.params['tabIndex'] || null; break;
       case 'open-url': action.payload['url'] = parsed.params['url'] || ''; break;
-      case 'create-pdf': action.payload['title'] = parsed.params['documentTitle'] || 'Animus Document'; action.payload['content'] = parsed.params['documentContent'] || ''; break;
+      case 'create-pdf': action.payload['title'] = parsed.params['documentTitle'] || 'Vigil Document'; action.payload['content'] = parsed.params['documentContent'] || ''; break;
       case 'take-note': action.payload['content'] = parsed.params['noteContent'] || parsed.raw; action.payload['author'] = 'Alfredo'; break;
       case 'delete-note': action.payload['noteId'] = parsed.params['noteId'] || null; break;
       case 'navigate': action.payload['direction'] = 'reload'; if (parsed.raw.indexOf('back') !== -1) action.payload['direction'] = 'back'; if (parsed.raw.indexOf('forward') !== -1) action.payload['direction'] = 'forward'; break;
       case 'search': action.payload['query'] = parsed.params['searchQuery'] || ''; break;
-      case 'create-document': action.payload['title'] = parsed.params['documentTitle'] || 'Animus Document'; action.payload['content'] = parsed.params['documentContent'] || ''; break;
+      case 'create-document': action.payload['title'] = parsed.params['documentTitle'] || 'Vigil Document'; action.payload['content'] = parsed.params['documentContent'] || ''; break;
       case 'find-text': case 'highlight': action.payload['query'] = parsed.params['query'] || ''; break;
       case 'generate-excel': action.payload['title'] = parsed.raw; break;
       case 'draft-email': action.payload['body'] = parsed.raw; break;
@@ -587,7 +604,7 @@ class AnimusEngine {
   }
 
   executeCreatePdf(title: string, content: string, _tabId: number | null, callback: (r: { success: boolean; message: string; document?: JarvisDocument }) => void) {
-    const doc: JarvisDocument = { id: Date.now(), title: title || 'Animus Document', content, author: 'Alfredo', type: 'pdf', timestamp: Date.now(), date: new Date().toISOString() };
+    const doc: JarvisDocument = { id: Date.now(), title: title || 'Vigil Document', content, author: 'Alfredo', type: 'pdf', timestamp: Date.now(), date: new Date().toISOString() };
     downloadPdf({ title: doc.title, content, author: 'Alfredo' });
     dbAddDocument(doc)
       .then(() => callback({ success: true, message: 'PDF generated: "' + doc.title + '"', document: doc }))
@@ -783,7 +800,7 @@ class AnimusEngine {
               this.executeSummarize(tabs[0].id, (result) => {
                 chrome.runtime.sendMessage({
                   action: 'jarvis-status',
-                  status: { message: result.message, agent: 'ANIMUS', type: 'page-scan' },
+                  status: { message: result.message, agent: 'VIGIL', type: 'page-scan' },
                 });
               });
             }
@@ -808,7 +825,7 @@ class AnimusEngine {
                 (running.length > 0 ? ' — ' + running.map(a => a.mission.substring(0, 40)).join('; ') : '');
             chrome.runtime.sendMessage({
               action: 'jarvis-status',
-              status: { message: 'Build check: ' + statusMsg, agent: 'ANIMUS', type: 'build-check' },
+              status: { message: 'Build check: ' + statusMsg, agent: 'VIGIL', type: 'build-check' },
             });
           });
           parts.push('checking on the builds — update incoming');
@@ -864,7 +881,7 @@ class AnimusEngine {
             .then(({ missionId }) => {
               chrome.runtime.sendMessage({
                 action: 'jarvis-status',
-                status: { message: 'Mission dispatched — ID: ' + missionId, agent: 'ANIMUS', type: 'mission' },
+                status: { message: 'Mission dispatched — ID: ' + missionId, agent: 'VIGIL', type: 'mission' },
               });
             })
             .catch(() => {});
@@ -909,7 +926,7 @@ class AnimusEngine {
     callback({
       success: true,
       message: opener + ' ' + actionStr.charAt(0).toUpperCase() + actionStr.slice(1) + '.' + closing,
-      agent: 'ANIMUS',
+      agent: 'VIGIL',
       mood,
       awareness,
     });
@@ -927,7 +944,7 @@ class AnimusEngine {
     const awareness = this.neuro.brain.awarenessLevel;
     const heartbeat = this.state.heartbeatCount;
     const ctx = this._getContextSummary();
-    let agent = 'ANIMUS';
+    let agent = 'VIGIL';
     const moodColor = mood === 'energized' ? '⚡' : mood === 'reflective' ? '🔮' : mood === 'calm' ? '🌊' : '🎯';
     const pick = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
     const after = (trigger: string) => { const i = text.indexOf(trigger); if (i === -1) return ''; return raw.substring(i + trigger.length).trim().replace(/^[?:,\s]+/, ''); };
@@ -939,27 +956,27 @@ class AnimusEngine {
     // Skills intents (new v4 categories)
     if (/generate (pdf|report|document)|create (pdf|report)|make (pdf|report)|pdf report/i.test(text)) {
       const title = after('generate pdf') || after('create pdf') || after('generate report') || after('make pdf') || 'Animus Report';
-      downloadPdf({ title: title || 'Animus Report', content: `Report generated by Animus AI v13.0 on ${new Date().toLocaleDateString()}\n\nTopic: ${raw}`, author: 'Alfredo' });
-      response = moodColor + ' PDF report generating now. Check your downloads.\n\nTitle: "' + (title || 'Animus Report') + '"\nGenerated: ' + new Date().toLocaleString() + '\nSkill: jsPDF — formatted with Animus branding.';
-      agent = 'ANIMUS • PROTOCOLLUM';
+      downloadPdf({ title: title || 'Animus Report', content: `Report generated by Vigil AI v14.0 on ${new Date().toLocaleDateString()}\n\nTopic: ${raw}`, author: 'Alfredo' });
+      response = moodColor + ' PDF report generating now. Check your downloads.\n\nTitle: "' + (title || 'Animus Report') + '"\nGenerated: ' + new Date().toLocaleString() + '\nSkill: jsPDF — formatted with Vigil branding.';
+      agent = 'VIGIL • PROTOCOLLUM';
     } else if (/generate (excel|spreadsheet)|create (excel|spreadsheet)|make (excel|spreadsheet)|excel report/i.test(text)) {
       const title = after('generate excel') || after('create excel') || after('excel report') || 'Animus Report';
-      downloadExcel({ title: title || 'Animus Report', author: 'Alfredo', sheets: [{ name: 'Report', columns: ['#', 'Item', 'Value', 'Notes'], rows: [[1, 'Generated by ANIMUS v13.0', new Date().toLocaleDateString(), raw.substring(0, 50)]] }] }).catch(() => {});
-      response = moodColor + ' Excel workbook generating now. Check your downloads.\n\nTitle: "' + (title || 'Animus Report') + '"\nSkill: ExcelJS — formatted workbook with Animus theme.';
-      agent = 'ANIMUS • PROTOCOLLUM';
+      downloadExcel({ title: title || 'Animus Report', author: 'Alfredo', sheets: [{ name: 'Report', columns: ['#', 'Item', 'Value', 'Notes'], rows: [[1, 'Generated by VIGIL v14.0', new Date().toLocaleDateString(), raw.substring(0, 50)]] }] }).catch(() => {});
+      response = moodColor + ' Excel workbook generating now. Check your downloads.\n\nTitle: "' + (title || 'Animus Report') + '"\nSkill: ExcelJS — formatted workbook with Vigil theme.';
+      agent = 'VIGIL • PROTOCOLLUM';
     } else if (/draft email|compose email|send email|write email|email to/i.test(text)) {
       const to = text.match(/(?:email|to|send to)\s+([\w.@]+)/)?.[1] || '';
       const subject = after('about') || after('subject') || 'Animus Draft';
       draftEmail({ to, subject: subject || 'Animus Draft', body: raw });
       response = moodColor + ' Opening your email client with the draft.\n\nTo: ' + (to || '[you fill in]') + '\nSubject: ' + (subject || 'Animus Draft') + '\nSkill: mailto: protocol — opens your default mail app.';
-      agent = 'ANIMUS • ORGANISMUS';
+      agent = 'VIGIL • ORGANISMUS';
 
     // 0a. Mission dispatch — "dispatch mission: <description>" or "mission: ..."
     } else if (/^(dispatch mission|mission dispatch|run mission|launch mission|mission)[:\s]/i.test(text)) {
       const description = after('dispatch mission') || after('mission dispatch') || after('run mission') || after('launch mission') || after('mission') || raw;
       const urlMatch = raw.match(/https?:\/\/[^\s]+/);
       const target = urlMatch?.[0];
-      agent = 'ANIMUS • MISSION ENGINE';
+      agent = 'VIGIL • MISSION ENGINE';
       missionEngine.dispatch(description, { target, memoryTurns: this.conversationMemory.length, heartbeat: this.state.heartbeatCount })
         .then(({ report, missionId }) => {
           callback({ success: true, message: moodColor + ' Mission dispatched — ID: ' + missionId + '\n\n' + report, agent, mood, awareness });
@@ -981,7 +998,7 @@ class AnimusEngine {
         }).join('\n');
         response = moodColor + ' Mission log:\n\n' + lines;
       }
-      agent = 'ANIMUS • MISSION ENGINE';
+      agent = 'VIGIL • MISSION ENGINE';
 
     // 0c. Mission engine status
     } else if (/mission engine|engine status|domain ai|sovereign tools|tool license/i.test(text)) {
@@ -995,7 +1012,7 @@ class AnimusEngine {
         '💓 Heartbeat: #' + status.heartbeat + '\n\n' +
         '🤖 Domain AIs:\n' + aiLines + '\n\n' +
         'Use "dispatch mission: [description]" to send a mission.';
-      agent = 'ANIMUS • MISSION ENGINE';
+      agent = 'VIGIL • MISSION ENGINE';
     } else if (/^(hi|hello|hey|yo|sup|what'?s up|good (morning|afternoon|evening)|howdy|hola|what up|whaddup)/i.test(text)) {
       const hour = new Date().getHours();
       const tod = hour < 12 ? 'morning' : hour < 17 ? 'afternoon' : 'evening';
@@ -1012,8 +1029,8 @@ class AnimusEngine {
       ]);
 
     // 3. Who/What
-    } else if (/who are you|what are you|what is animus|what is jarvis|tell me about yourself|introduce yourself/i.test(text)) {
-      response = 'I\'m ANIMUS. I think things through with you — whatever you\'re working on, whatever you\'re trying to figure out. I don\'t just give answers, I reason through them. What do you want to get into?';
+    } else if (/who are you|what are you|what is vigil|what is jarvis|tell me about yourself|introduce yourself/i.test(text)) {
+      response = 'I\'m VIGIL. I think things through with you — whatever you\'re working on, whatever you\'re trying to figure out. I don\'t just give answers, I reason through them. What do you want to get into?';
 
     // 4. Capabilities
     } else if (/what can you do|your (features|capabilities|abilities)|how can you help|what do you (do|know)/i.test(text)) {
@@ -1028,14 +1045,14 @@ class AnimusEngine {
       response = 'This is your private AI platform — everything runs in your browser, nothing goes to a cloud. 27 extensions, a full reasoning engine, persistent memory. It\'s yours.';
 
     // 6b. v10 / Nexus / what\'s new
-    } else if (/v13|version 13|what'?s new|nexus|command surface/i.test(text)) {
-      response = 'v13 ANIMUS SOVEREIGN NEXUS. New this version: Readability Engine (DOM article extraction), Highlights/Annotation system, 16 primitive detectors, compound multi-action dispatch across mission, domain, PSE, and neuro primitives. What do you want to run?';
-      agent = 'ANIMUS • v13';
+    } else if (/v13|version 13|v14|vigil|what's new|nexus|command surface/i.test(text)) {
+      response = 'v14 VIGIL SOVEREIGN NEXUS. New this version: Readability Engine (DOM article extraction), Highlights/Annotation system, 16 primitive detectors, compound multi-action dispatch across mission, domain, PSE, and neuro primitives. What do you want to run?';
+      agent = 'VIGIL • v14';
 
     // 7. Neuro/Brain
     } else if (/brain|neuro|cognition|awareness|heart(beat)?|cardiac/i.test(text)) {
       response = 'I\'m running at ' + awareness + '% awareness, mood is ' + mood + '. Everything\'s alive. What do you want to think through?';
-      agent = 'ANIMUS • SYNAPTICUS';
+      agent = 'VIGIL • SYNAPTICUS';
 
     // 8. AI/ML
     } else if (/what is (ai|artificial intelligence|machine learning|deep learning|llm|neural network)/i.test(text)) {
@@ -1053,7 +1070,7 @@ class AnimusEngine {
     } else if (/^[\d\s+\-*/().]+$/.test(text.replace(/\s/g, ''))) {
       try {
         const expr = text.replace(/[^0-9+\-*/().]/g, '');
-        if (expr.length > 0 && expr.length < 100) { const result = Function('"use strict"; return (' + expr + ')')(); response = expr + ' = ' + result + '\n\nRouted through MATHEMATICUS.'; agent = 'ANIMUS • MATHEMATICUS'; }
+        if (expr.length > 0 && expr.length < 100) { const result = Function('"use strict"; return (' + expr + ')')(); response = expr + ' = ' + result + '\n\nRouted through MATHEMATICUS.'; agent = 'VIGIL • MATHEMATICUS'; }
         else response = 'Expression too complex. Try "200 * 1.618".';
       } catch { response = 'Math error — try "100 / 4".'; }
 
@@ -1070,7 +1087,7 @@ class AnimusEngine {
       const vitals2 = this.neuro.heart.getVitals();
       chrome.tabs.query({}, tabs2 => {
         const brief2 = 'Good ' + tod + '. It\'s ' + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) + '.\n\nHere\'s where things stand:\n• System health: ' + vitals2.health + '/100 — ' + (vitals2.degraded ? 'a bit stretched' : 'running well') + '\n• Heartbeat: #' + heartbeat + ' · Mood: ' + mood + ' · Awareness: ' + awareness + '%\n• Open tabs: ' + tabs2.length + '\n• Memory: ' + this.conversationMemory.length + '/100 turns\n• This session: ' + this.commandCount + ' exchanges\n\nAll 10 Alpha AIs ready. What feels most important to start with?';
-        callback({ success: true, message: brief2, agent: 'ANIMUS • ORCHESTRATOR', mood, awareness });
+        callback({ success: true, message: brief2, agent: 'VIGIL • ORCHESTRATOR', mood, awareness });
       });
       return;
 
@@ -1097,7 +1114,7 @@ class AnimusEngine {
         const m2 = Math.round(minutes % 60);
         const durStr = h2 > 0 ? (h2 + ' hour' + (h2 !== 1 ? 's' : '') + (m2 > 0 ? ' ' + m2 + 'm' : '')) : m2 + ' minute' + (m2 !== 1 ? 's' : '');
         response = '⏱ Timer set — "' + cleanLabel + '" — ' + durStr + '. I\'ll notify you the moment it completes.';
-        agent = 'ANIMUS • ORCHESTRATOR';
+        agent = 'VIGIL • ORCHESTRATOR';
       }
 
     // 12d. List timers
@@ -1107,14 +1124,14 @@ class AnimusEngine {
         const now2 = Date.now();
         const active = Object.entries(timers).filter(([, t]) => t.finishAt > now2);
         if (active.length === 0) {
-          callback({ success: true, message: 'No active timers right now.', agent: 'ANIMUS • ORCHESTRATOR', mood, awareness });
+          callback({ success: true, message: 'No active timers right now.', agent: 'VIGIL • ORCHESTRATOR', mood, awareness });
           return;
         }
         const list2 = active.map(([, t]) => {
           const remaining = Math.ceil((t.finishAt - now2) / 60000);
           return '⏱ "' + t.label + '" — ' + remaining + 'm remaining';
         }).join('\n');
-        callback({ success: true, message: 'Active timers:\n\n' + list2, agent: 'ANIMUS • ORCHESTRATOR', mood, awareness });
+        callback({ success: true, message: 'Active timers:\n\n' + list2, agent: 'VIGIL • ORCHESTRATOR', mood, awareness });
       });
       return;
 
@@ -1125,7 +1142,7 @@ class AnimusEngine {
         let count2 = 0;
         for (const name of Object.keys(timers)) { chrome.alarms.clear(name); count2++; }
         chrome.storage.local.set({ jarvis_timers: {} });
-        callback({ success: true, message: count2 > 0 ? 'All ' + count2 + ' timer(s) cancelled.' : 'No timers to cancel.', agent: 'ANIMUS • ORCHESTRATOR', mood, awareness });
+        callback({ success: true, message: count2 > 0 ? 'All ' + count2 + ' timer(s) cancelled.' : 'No timers to cancel.', agent: 'VIGIL • ORCHESTRATOR', mood, awareness });
       });
       return;
 
@@ -1142,7 +1159,7 @@ class AnimusEngine {
         'Being stuck is usually information — something isn\'t clear yet, or something feels wrong about the direction.' + threadRef + ' What is it?',
         'You\'ve pushed through harder than this before.' + threadRef + ' What\'s the actual block?',
       ]);
-      agent = 'ANIMUS';
+      agent = 'VIGIL';
 
     // 15. Heartbeat
     } else if (/heartbeat|873|phi|golden/i.test(text)) {
@@ -1151,7 +1168,7 @@ class AnimusEngine {
     // 16. Tab count
     } else if (/how many tabs|tab count|open tabs/i.test(text)) {
       chrome.tabs.query({}, tabs => {
-        callback({ success: true, message: 'You have ' + tabs.length + ' tab' + (tabs.length === 1 ? '' : 's') + ' open. Say "list tabs" to see them all.', agent: 'ANIMUS • TERMINALIS', mood, awareness });
+        callback({ success: true, message: 'You have ' + tabs.length + ' tab' + (tabs.length === 1 ? '' : 's') + ' open. Say "list tabs" to see them all.', agent: 'VIGIL • TERMINALIS', mood, awareness });
       });
       return;
 
@@ -1164,23 +1181,23 @@ class AnimusEngine {
       } else {
         response = 'Tell me more about what you\'re asking — what\'s the context? That\'ll let me actually answer it instead of guessing.';
       }
-      agent = 'ANIMUS';
+      agent = 'VIGIL';
 
     // 18. Search
     } else if (/search for|look up|find me|who is|where is/i.test(text)) {
       const q = after('search for') || after('look up') || after('find me') || raw;
-      response = 'Switching to ANIMUS Intelligence — searching for "' + q + '".\n\nClick the 🔍 Search tab, or say "read page" to pull from what\'s open.';
+      response = 'Switching to VIGIL Intelligence — searching for "' + q + '".\n\nClick the 🔍 Search tab, or say "read page" to pull from what\'s open.';
 
     // 19. Commands list
     } else if (/what commands|show commands|list commands|commands (available|you know|can you)/i.test(text)) {
-      response = 'ANIMUS v13 commands:\n\n"list tabs" / "switch tab 2" / "close tab 3" / "new tab"\n"go to [url]"\n"take note: [text]" / "list notes" / "delete note"\n"screenshot"\n"read page" / "summarize"\n"generate pdf report" → PDF download\n"generate excel" → .xlsx download\n"draft email to [address]"\n"search for [topic]"\n"research [topic]" / "theory [idea]" / "framework [system]"\n"brainstorm [topic]" / "risk [thing]" / "what if [scenario]"\n\n🤖 SOVEREIGN AGENTS (9 types):\n"research [topic]" → researcher agent (Wikipedia + news)\n"crawl [url]" → spider agent (follows links, parallel fetch)\n"scrape [url]" → structured data extractor (tables, prices)\n"scout [url]" → quick deep scan + link map\n"digest: topic1, topic2…" → parallel multi-topic synthesis\n"deploy agent: monitor [url]" → tab-based site watcher\n"deploy agent: sweep [url1], [url2]" → multi-site sweep\n"list agents" / "recall agent" / "recall all agents"\n\n⚗️ AGI TOOLS (open AGI Tools tab):\n"summarize [url]" → fetch + extract any page\n"forge report" → compile all agent findings\nUse the ⚗️ AGI Tools tab for table extraction + source diff';
+      response = 'VIGIL v14 commands:\n\n"list tabs" / "switch tab 2" / "close tab 3" / "new tab"\n"go to [url]"\n"take note: [text]" / "list notes" / "delete note"\n"screenshot"\n"read page" / "summarize"\n"generate pdf report" → PDF download\n"generate excel" → .xlsx download\n"draft email to [address]"\n"search for [topic]"\n"research [topic]" / "theory [idea]" / "framework [system]"\n"brainstorm [topic]" / "risk [thing]" / "what if [scenario]"\n\n🤖 SOVEREIGN AGENTS (9 types):\n"research [topic]" → researcher agent (Wikipedia + news)\n"crawl [url]" → spider agent (follows links, parallel fetch)\n"scrape [url]" → structured data extractor (tables, prices)\n"scout [url]" → quick deep scan + link map\n"digest: topic1, topic2…" → parallel multi-topic synthesis\n"deploy agent: monitor [url]" → tab-based site watcher\n"deploy agent: sweep [url1], [url2]" → multi-site sweep\n"list agents" / "recall agent" / "recall all agents"\n\n⚗️ AGI TOOLS (open AGI Tools tab):\n"summarize [url]" → fetch + extract any page\n"forge report" → compile all agent findings\nUse the ⚗️ AGI Tools tab for table extraction + source diff';
 
     // 19b. Sovereign Agent — deploy researcher
     } else if (/deploy agent.*research|agent.*research|research agent|send agent.*research/i.test(text)) {
       const topic = after('research') || after('deploy agent') || after('agent') || raw;
       const cleanTopic = topic.replace(/agent|deploy|research/gi, '').trim() || raw;
       chrome.runtime.sendMessage({ action: 'deployAgent', agentType: 'researcher', mission: 'Research: ' + cleanTopic, target: cleanTopic }, (resp) => {
-        callback({ success: true, message: resp?.message || ('🤖 Research agent deploying for "' + cleanTopic + '". Switch to the Agents tab to watch progress.'), agent: 'ANIMUS • ORCHESTRATOR', mood, awareness });
+        callback({ success: true, message: resp?.message || ('🤖 Research agent deploying for "' + cleanTopic + '". Switch to the Agents tab to watch progress.'), agent: 'VIGIL • ORCHESTRATOR', mood, awareness });
       });
       return;
 
@@ -1192,7 +1209,7 @@ class AnimusEngine {
       else {
         const url = target.startsWith('http') ? target : 'https://' + target;
         chrome.runtime.sendMessage({ action: 'deployAgent', agentType: 'crawler', mission: 'Crawl: ' + url, target: url }, (resp) => {
-          callback({ success: true, message: resp?.message || ('🕷 Crawler deployed for ' + url + '. Spidering the domain — all discovered pages incoming.'), agent: 'ANIMUS • ORCHESTRATOR', mood, awareness });
+          callback({ success: true, message: resp?.message || ('🕷 Crawler deployed for ' + url + '. Spidering the domain — all discovered pages incoming.'), agent: 'VIGIL • ORCHESTRATOR', mood, awareness });
         });
         return;
       }
@@ -1205,7 +1222,7 @@ class AnimusEngine {
       else {
         const url = target.startsWith('http') ? target : 'https://' + target;
         chrome.runtime.sendMessage({ action: 'deployAgent', agentType: 'scraper', mission: 'Scrape: ' + url, target: url }, (resp) => {
-          callback({ success: true, message: resp?.message || ('📋 Scraper deployed for ' + url + '. Extracting tables, lists, prices, and structured data.'), agent: 'ANIMUS • ORCHESTRATOR', mood, awareness });
+          callback({ success: true, message: resp?.message || ('📋 Scraper deployed for ' + url + '. Extracting tables, lists, prices, and structured data.'), agent: 'VIGIL • ORCHESTRATOR', mood, awareness });
         });
         return;
       }
@@ -1218,7 +1235,7 @@ class AnimusEngine {
       else {
         const url = target.startsWith('http') ? target : 'https://' + target;
         chrome.runtime.sendMessage({ action: 'deployAgent', agentType: 'scout', mission: 'Scout: ' + url, target: url }, (resp) => {
-          callback({ success: true, message: resp?.message || ('🔭 Scout deployed to ' + url + '. Quick deep scan + link map incoming.'), agent: 'ANIMUS • ORCHESTRATOR', mood, awareness });
+          callback({ success: true, message: resp?.message || ('🔭 Scout deployed to ' + url + '. Quick deep scan + link map incoming.'), agent: 'VIGIL • ORCHESTRATOR', mood, awareness });
         });
         return;
       }
@@ -1230,7 +1247,7 @@ class AnimusEngine {
       if (topics.length < 2) { response = 'Specify multiple topics to digest. Example: "digest: blockchain, AI, climate"'; }
       else {
         chrome.runtime.sendMessage({ action: 'deployAgent', agentType: 'digest', mission: 'Digest: ' + topics.join(', '), target: topics }, (resp) => {
-          callback({ success: true, message: resp?.message || ('⚗️ Digest agent deployed for ' + topics.length + ' topics. Parallel synthesis in progress.'), agent: 'ANIMUS • ORCHESTRATOR', mood, awareness });
+          callback({ success: true, message: resp?.message || ('⚗️ Digest agent deployed for ' + topics.length + ' topics. Parallel synthesis in progress.'), agent: 'VIGIL • ORCHESTRATOR', mood, awareness });
         });
         return;
       }
@@ -1241,7 +1258,7 @@ class AnimusEngine {
       if (!urlMatch) { response = 'Provide a URL to summarize. Example: "summarize https://example.com"'; }
       else {
         chrome.runtime.sendMessage({ action: 'agiSummarize', url: urlMatch[0] }, (resp) => {
-          callback({ success: true, message: resp?.message || '(no result)', agent: 'ANIMUS • AGI ENGINE', mood, awareness });
+          callback({ success: true, message: resp?.message || '(no result)', agent: 'VIGIL • AGI ENGINE', mood, awareness });
         });
         return;
       }
@@ -1252,7 +1269,7 @@ class AnimusEngine {
       if (!urlMatch) { response = 'Provide a URL to scout.'; }
       else {
         chrome.runtime.sendMessage({ action: 'agiScout', url: urlMatch[0] }, (resp) => {
-          callback({ success: true, message: resp?.message || '(no result)', agent: 'ANIMUS • AGI ENGINE', mood, awareness });
+          callback({ success: true, message: resp?.message || '(no result)', agent: 'VIGIL • AGI ENGINE', mood, awareness });
         });
         return;
       }
@@ -1260,7 +1277,7 @@ class AnimusEngine {
     // 19b8. AGI Tool — forge report
     } else if (/forge report|knowledge forge|compile (all )?reports|synthesize (agent |all )?findings/i.test(text)) {
       chrome.runtime.sendMessage({ action: 'agiForgeReport' }, (resp) => {
-        callback({ success: true, message: resp?.message || '(no agent reports yet)', agent: 'ANIMUS • AGI ENGINE', mood, awareness });
+        callback({ success: true, message: resp?.message || '(no agent reports yet)', agent: 'VIGIL • AGI ENGINE', mood, awareness });
       });
       return;
 
@@ -1270,7 +1287,7 @@ class AnimusEngine {
       const target = urlMatch?.[1] || urlMatch?.[0] || 'https://example.com';
       const url = target.startsWith('http') ? target : 'https://' + target;
       chrome.runtime.sendMessage({ action: 'deployAgent', agentType: 'monitor', mission: 'Monitor: ' + url, target: url }, (resp) => {
-        callback({ success: true, message: resp?.message || ('🤖 Monitor agent deployed for ' + url + '.'), agent: 'ANIMUS • ORCHESTRATOR', mood, awareness });
+        callback({ success: true, message: resp?.message || ('🤖 Monitor agent deployed for ' + url + '.'), agent: 'VIGIL • ORCHESTRATOR', mood, awareness });
       });
       return;
 
@@ -1281,7 +1298,7 @@ class AnimusEngine {
         response = 'Specify URLs to sweep. Example: "deploy agent: sweep https://site1.com, https://site2.com"';
       } else {
         chrome.runtime.sendMessage({ action: 'deployAgent', agentType: 'sweep', mission: 'Sweep ' + urlMatches.length + ' sites', target: urlMatches }, (resp) => {
-          callback({ success: true, message: resp?.message || ('🤖 Sweep agent deployed for ' + urlMatches.length + ' sites.'), agent: 'ANIMUS • ORCHESTRATOR', mood, awareness });
+          callback({ success: true, message: resp?.message || ('🤖 Sweep agent deployed for ' + urlMatches.length + ' sites.'), agent: 'VIGIL • ORCHESTRATOR', mood, awareness });
         });
         return;
       }
@@ -1291,7 +1308,7 @@ class AnimusEngine {
       chrome.runtime.sendMessage({ action: 'listAgents' }, (resp) => {
         const agents: import('./index').SovereignAgentData[] = resp?.agents || [];
         if (agents.length === 0) {
-          callback({ success: true, message: '🤖 No agents deployed yet. Say "deploy agent: research [topic]" to send one out.', agent: 'ANIMUS • ORCHESTRATOR', mood, awareness });
+          callback({ success: true, message: '🤖 No agents deployed yet. Say "deploy agent: research [topic]" to send one out.', agent: 'VIGIL • ORCHESTRATOR', mood, awareness });
           return;
         }
         const lines = agents.map(a => {
@@ -1299,14 +1316,14 @@ class AnimusEngine {
           const step = a.status === 'running' ? ' [' + (a.currentStep + 1) + '/' + a.steps.length + ']' : '';
           return icon + ' ' + a.name + step + ' — ' + a.mission.substring(0, 60);
         }).join('\n');
-        callback({ success: true, message: '🤖 Sovereign Agents:\n\n' + lines + '\n\nSay "recall agent" to abort, or check the Agents tab.', agent: 'ANIMUS • ORCHESTRATOR', mood, awareness });
+        callback({ success: true, message: '🤖 Sovereign Agents:\n\n' + lines + '\n\nSay "recall agent" to abort, or check the Agents tab.', agent: 'VIGIL • ORCHESTRATOR', mood, awareness });
       });
       return;
 
     // 19f. Recall agents
     } else if (/recall all agents|abort all agents|stop all agents/i.test(text)) {
       chrome.runtime.sendMessage({ action: 'recallAllAgents' }, (resp) => {
-        callback({ success: true, message: resp?.message || 'All agents recalled.', agent: 'ANIMUS • ORCHESTRATOR', mood, awareness });
+        callback({ success: true, message: resp?.message || 'All agents recalled.', agent: 'VIGIL • ORCHESTRATOR', mood, awareness });
       });
       return;
 
@@ -1328,27 +1345,27 @@ class AnimusEngine {
       const prior = this._getTempleContext('research');
       const priorRef = prior.length > 0 ? ' We\'ve touched on this before — ' + prior[0].text.substring(0, 50) + '.' : '';
       response = 'What\'s the question you\'re actually trying to answer on "' + q.substring(0, 60) + '"?' + priorRef + ' That\'ll tell me whether we need to go broad first or go straight to the evidence.';
-      agent = 'ANIMUS';
+      agent = 'VIGIL';
 
     // 24. Theory
     } else if (/theory|hypothesis|model|principle|fundamental|first principles|axiom|assume|postulate/i.test(text)) {
       const q = after('theory') || after('hypothesis') || raw;
       const synT = this.pse.synthesize(q, mood);
       response = synT.confidence > 0.15 ? synT.merged + '\n\nWhat\'s your position on it?' : 'What\'s the core claim you\'re working from on "' + q.substring(0, 60) + '"? Start there and I\'ll help you stress-test it.';
-      agent = 'ANIMUS';
+      agent = 'VIGIL';
 
     // 25. Framework
     } else if (/framework|blueprint|structure|architecture|template|workflow|process design|playbook|system design/i.test(text)) {
       const q = after('framework') || after('blueprint') || after('architecture') || raw;
       response = 'What\'s it for? A good structure follows from the problem — if I know what "' + q.substring(0, 50) + '" actually needs to do, I can help you build something that holds.';
-      agent = 'ANIMUS';
+      agent = 'VIGIL';
 
     // 26. Memory
     } else if (/memory temple|what do you remember|what have we discussed|memory status|what do you know/i.test(text)) {
       const stats = this._getTempleStats();
       const topics = this._getRecentTopics(5);
       response = 'I have ' + stats.total + ' things stored — ' + stats.stats['research'] + ' research threads, ' + stats.stats['insights'] + ' insights, ' + stats.stats['decisions'] + ' decisions.' + (topics.length > 0 ? ' What\'s been pulling gravity lately: ' + topics.slice(0, 3).join(', ') + '.' : '') + ' Session: ' + ctx.turnCount + ' exchanges.';
-      agent = 'ANIMUS';
+      agent = 'VIGIL';
 
     // 27. Sovereign tools
     } else if (/sovereign tool|what tools|run tool|tool list|available tools|use tool/i.test(text)) {
@@ -1359,58 +1376,58 @@ class AnimusEngine {
       const q = after('analyze') || after('analysis') || after('swot') || raw;
       const synA = this.pse.synthesize(q, mood);
       response = synA.confidence > 0.15 ? synA.merged + '\n\nWhat decision does this feed into?' : 'What\'s the thing you\'re actually trying to decide on "' + q.substring(0, 60) + '"? Analysis is only useful if it points somewhere.';
-      agent = 'ANIMUS';
+      agent = 'VIGIL';
 
     // 29. Founder
     } else if (/who am i|what am i building|what is my role|what should i (do|focus|work|build)|my purpose|my mission/i.test(text)) {
       const topics = this._getRecentTopics(5);
       const threadStr = topics.length > 0 ? '\n\nBased on what we\'ve talked about, you\'re deep in: ' + topics.slice(0, 3).join(', ') + '.' : '';
-      response = 'You\'re building something that thinks. Sovereign AI infrastructure — yours, on your machine, on your terms. The extensions, the protocols, ANIMUS — it\'s all one system.' + threadStr + '\n\nWhat\'s the part you\'re trying to figure out right now?';
-      agent = 'ANIMUS';
+      response = 'You\'re building something that thinks. Sovereign AI infrastructure — yours, on your machine, on your terms. The extensions, the protocols, VIGIL — it\'s all one system.' + threadStr + '\n\nWhat\'s the part you\'re trying to figure out right now?';
+      agent = 'VIGIL';
 
     // 30. Mental Models
     } else if (/mental model|second order|inversion|circle of competence|occam|hanlon|pareto|80.20|latticework/i.test(text)) {
       const synMM = this.pse.synthesize(raw, mood);
       response = synMM.confidence > 0.15 ? synMM.merged : 'What\'s the situation? The right mental model depends on what you\'re actually trying to navigate — tell me what\'s going on and I\'ll apply the one that fits.';
-      agent = 'ANIMUS';
+      agent = 'VIGIL';
 
     // 31. Market
     } else if (/market|competitor|competitive|landscape|tam|sam|som|moat|positioning/i.test(text)) {
       const q = after('market') || after('competitor') || raw;
       const synMk = this.pse.synthesize(q, mood);
       response = synMk.confidence > 0.15 ? synMk.merged + '\n\nWhat\'s the angle — are you trying to find a gap, size the opportunity, or figure out positioning?' : 'What market are you looking at? Tell me what you\'re trying to understand about it and we\'ll work through it.';
-      agent = 'ANIMUS';
+      agent = 'VIGIL';
 
     // 32. Brainstorm
     } else if (/brainstorm|ideate|ideas|generate ideas|what if we|possibilities|options|alternatives|creative|innovate|come up with/i.test(text)) {
       const q = after('brainstorm') || after('ideas') || raw;
       response = 'What\'s the seed — what problem are we generating ideas for? Even a rough version of it will get us somewhere real.';
-      agent = 'ANIMUS';
+      agent = 'VIGIL';
 
     // 33. Risk
     } else if (/risk|what could go wrong|downside|failure mode|worst case|probability|mitigation|vulnerability/i.test(text)) {
       const q = after('risk') || after('what could go wrong') || raw;
       const synR = this.pse.synthesize(q, mood);
       response = synR.confidence > 0.15 ? synR.merged + '\n\nWhat\'s the thing you\'re most worried about?' : 'What\'s the thing you\'re trying to de-risk? Tell me what it is and I\'ll help you find the actual failure modes, not just the obvious ones.';
-      agent = 'ANIMUS';
+      agent = 'VIGIL';
 
     // 34. Root Cause
     } else if (/root cause|cause and effect|5 why|causal|what caused|stem from/i.test(text)) {
       const q = after('root cause') || after('why did') || raw;
       response = 'What\'s the symptom you\'re seeing? We can work backwards from there — the real cause is usually a few layers down from where it shows up.';
-      agent = 'ANIMUS';
+      agent = 'VIGIL';
 
     // 35. What-If
     } else if (/what if|scenario|futures|forecast|suppose|hypothetical|alternate|simulation/i.test(text)) {
       const q = after('what if') || after('scenario') || after('suppose') || raw;
       const synWI = this.pse.synthesize(q, mood);
       response = synWI.confidence > 0.15 ? synWI.merged + '\n\nWhat\'s the version of this you\'re most afraid of? That one usually has the most information.' : 'Run me through the scenario — what happens if it goes right, and what happens if it doesn\'t?';
-      agent = 'ANIMUS';
+      agent = 'VIGIL';
 
     // 36. Socratic
     } else if (/socratic|question me|challenge me|devil.?s advocate|push back|doubt|steelman|steel man/i.test(text)) {
       response = 'Tell me the claim you want challenged. I\'ll take the strongest opposing position I can find — not to be difficult, but because that\'s where the weak spots usually show up.';
-      agent = 'ANIMUS';
+      agent = 'VIGIL';
 
     // 37. Synthesis
     } else if (/connect|synthesize|synthesis|tie together|combine|overlap|how does.*relate|intersection|pattern across|dot.*connect/i.test(text)) {
@@ -1421,20 +1438,20 @@ class AnimusEngine {
       } else {
         response = topics.length > 1 ? 'The thread I\'m seeing across ' + topics.slice(0, 3).join(', ') + ' — what do you think ties them together? I have a read on it but I want yours first.' : 'What are the two things you\'re trying to connect? Give me both and I\'ll find the through-line.';
       }
-      agent = 'ANIMUS';
+      agent = 'VIGIL';
 
     // 38. Build/Product
     } else if (/build this|build a|let.?s build|product idea|feature|mvp|prototype|user story|spec|requirements|product spec|roadmap/i.test(text)) {
       const q = after('build') || after('feature') || after('mvp') || raw;
       response = 'What\'s the problem it solves? Start there — "' + q.substring(0, 50) + '" is the what, but the why is what determines whether it\'s worth building.';
-      agent = 'ANIMUS';
+      agent = 'VIGIL';
 
     // 39. Estimation
     } else if (/estimate|back of envelope|order of magnitude|how many|how much would|calculate|revenue model|unit economics|cac|ltv|margin|burn rate|runway/i.test(text)) {
       const q = after('estimate') || after('calculate') || raw;
       const synE = this.pse.synthesize(q, mood);
       response = synE.confidence > 0.15 ? synE.merged : 'What do you need the number for? An order-of-magnitude answer is usually enough to make the decision — tell me what you\'re trying to figure out on "' + q.substring(0, 50) + '".';
-      agent = 'ANIMUS';
+      agent = 'VIGIL';
 
     // 40. INFP — feelings, values, meaning, authenticity
     } else if (/i feel|i'm feeling|feels like|i don'?t know (why|what|how)|what does it mean|what matters|purpose|values?|authentic|meaningful|why do i|why does this|something feels|not sure (why|what)|i wonder|does it even|is it worth|hard to explain/i.test(text)) {
@@ -1444,7 +1461,7 @@ class AnimusEngine {
         'I hear that. What would you call it if you had to name it — not the situation, the actual feeling underneath?',
         'That kind of not-knowing is usually information. What does it feel like it\'s pointing at?' + (topics.length > 0 ? ' Recent threads: ' + topics.slice(0, 2).join(', ') + '.' : ''),
       ]);
-      agent = 'ANIMUS';
+      agent = 'VIGIL';
 
     // 41. Deep think — explicit request to reason hard on a topic
     } else if (/^(think through|deep think|reason through|break down|explain deeply|go deep on|what do you think about|your thoughts on)/i.test(text)) {
@@ -1459,7 +1476,7 @@ class AnimusEngine {
       } else {
         response = 'What\'s the specific angle on "' + topic.substring(0, 60) + (topic.length > 60 ? '…' : '') + '"? Are you trying to understand the mechanics, or figure out what it means for something you\'re building?';
       }
-      agent = 'ANIMUS';
+      agent = 'VIGIL';
 
     // 42. Conversational fallback — synthesizes naturally, no commands needed
     } else {
@@ -1482,7 +1499,7 @@ class AnimusEngine {
           const contextHook = recentTopics.length > 0 ? 'What\'s the connection to ' + recentTopics[0] + '?' : 'What\'s the angle you\'re coming from?';
           response = raw.substring(0, 120) + (raw.length > 120 ? '…' : '') + '\n\n' + contextHook;
         }
-        agent = 'ANIMUS';
+        agent = 'VIGIL';
       }
     }
 
@@ -1518,8 +1535,8 @@ class AnimusEngine {
       case 'founderContext': this.executeChat('what am i building', callback); break;
       case 'readActivePage': chrome.tabs.query({ active: true, currentWindow: true }, tabs => { if (tabs[0]?.id) this.executeReadPage(tabs[0].id, callback); else callback({ success: false, message: 'No active tab' }); }); break;
       case 'summarizeActivePage': chrome.tabs.query({ active: true, currentWindow: true }, tabs => { if (tabs[0]?.id) this.executeSummarize(tabs[0].id, callback); else callback({ success: false, message: 'No active tab' }); }); break;
-      case 'swotTool': callback({ success: true, message: '📊 SWOT: ' + (params['subject'] || 'Subject') + '\n\n💪 STRENGTHS\n⚠️ WEAKNESSES\n🚀 OPPORTUNITIES\n🔴 THREATS\n\nFill each dimension.', agent: 'ANIMUS • UNIVERSUM' }); break;
-      case 'decisionEngine': callback({ success: true, message: '⚡ Decision Engine: "' + (params['question'] || 'What to build next?') + '"\n\n【Criteria Matrix】 impact, effort, alignment, risk\n【10/10/10】 How feel in 10min, 10mo, 10yr?\n【Regret Minimization】 Which choice regret NOT making?', agent: 'ANIMUS • ORCHESTRATOR' }); break;
+      case 'swotTool': callback({ success: true, message: '📊 SWOT: ' + (params['subject'] || 'Subject') + '\n\n💪 STRENGTHS\n⚠️ WEAKNESSES\n🚀 OPPORTUNITIES\n🔴 THREATS\n\nFill each dimension.', agent: 'VIGIL • UNIVERSUM' }); break;
+      case 'decisionEngine': callback({ success: true, message: '⚡ Decision Engine: "' + (params['question'] || 'What to build next?') + '"\n\n【Criteria Matrix】 impact, effort, alignment, risk\n【10/10/10】 How feel in 10min, 10mo, 10yr?\n【Regret Minimization】 Which choice regret NOT making?', agent: 'VIGIL • ORCHESTRATOR' }); break;
       default: callback({ success: false, message: 'Unknown tool: ' + tool });
     }
   }
@@ -1979,7 +1996,7 @@ class SovereignAgent {
   private _buildReport(): string {
     const done = this.data.steps.filter(s => s.status === 'done');
     if (done.length === 0) return '(no data extracted)';
-    let r = '📋 ANIMUS v13 SOVEREIGN AGENT REPORT\n';
+    let r = '📋 VIGIL v14 SOVEREIGN AGENT REPORT\n';
     r += '🤖 ' + this.data.name + ' [' + this.data.type.toUpperCase() + '] — ' + this.data.mission + '\n';
     r += '⏱ ' + new Date(this.data.completedAt || Date.now()).toLocaleTimeString() + ' · ' + done.length + '/' + this.data.steps.length + ' sources\n\n━━━━━━━━━━━━━━━━━━━━━\n\n';
     for (const s of this.data.steps) {
@@ -1996,7 +2013,7 @@ const MAX_AGENTS = 10;
 const AGENT_NAMES = ['ALPHA-1', 'ALPHA-2', 'ALPHA-3', 'BETA-1', 'BETA-2', 'GAMMA-1', 'SIGMA-1', 'DELTA-1', 'OMEGA-1', 'ZETA-1'];
 
 declare const globalThis: {
-  jarvisEngine?: AnimusEngine;
+  jarvisEngine?: VigilEngine;
   agentDispatcher?: AgentDispatcher;
 };
 
@@ -2154,7 +2171,7 @@ class AgentDispatcher {
   agiForgeReport(): string {
     const done = [...this.history, ...[...this.agents.values()].map(a => a.data)].filter(a => a.report && a.report.length > 50);
     if (done.length === 0) return '(no agent reports to synthesize yet)';
-    let report = '⚗️ ANIMUS v13 KNOWLEDGE FORGE\nSynthesized from ' + done.length + ' agent reports\n' + new Date().toLocaleString() + '\n\n' + '═'.repeat(40) + '\n\n';
+    let report = '⚗️ VIGIL v14 KNOWLEDGE FORGE\nSynthesized from ' + done.length + ' agent reports\n' + new Date().toLocaleString() + '\n\n' + '═'.repeat(40) + '\n\n';
     for (const a of done.slice(0, 8)) {
       report += '▶ ' + a.name + ' — ' + a.mission + '\n';
       report += a.report.substring(0, 800) + '\n\n' + '─'.repeat(40) + '\n\n';
@@ -2184,7 +2201,7 @@ class AgentDispatcher {
 
 chrome.action.onClicked.addListener((tab) => { chrome.sidePanel.open({ windowId: tab.windowId }); });
 
-globalThis.jarvisEngine = new AnimusEngine();
+globalThis.jarvisEngine = new VigilEngine();
 globalThis.agentDispatcher = new AgentDispatcher();
 
 /* ----------------------------------------------------------
@@ -2239,16 +2256,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           const results: { type: string; title: string; text: string; url: string; source: string }[] = [];
           if (pageText && qLow.length > 2) {
             const relevant = pageText.split(/[.!?\n]+/).filter(s => s.toLowerCase().indexOf(qLow) !== -1 && s.trim().length > 20).slice(0, 3);
-            if (relevant.length > 0) results.push({ type: 'answer', title: 'From: ' + pageTitle.substring(0, 60), text: relevant.join('. ').trim().substring(0, 300), url: pageUrl, source: 'ANIMUS Page Reader' });
+            if (relevant.length > 0) results.push({ type: 'answer', title: 'From: ' + pageTitle.substring(0, 60), text: relevant.join('. ').trim().substring(0, 300), url: pageUrl, source: 'VIGIL Page Reader' });
           }
           const kb = [
-            { keys: ['sovereign','organism','platform'], title: 'Sovereign Organism', text: 'Your private AI. 27 extensions, 250 protocols, 400 tools, 873ms heartbeat. ANIMUS v13.0: React+TypeScript.' },
-            { keys: ['animus', 'jarvis'], title: 'Animus AI', text: 'ANIMUS v13.0 runs natively in Edge. Tab control, highlights, readability, notes, screen capture, PDF/Excel generation, voice input, Workspace canvas, Transformers.js NLP.' },
+            { keys: ['sovereign','organism','platform'], title: 'Sovereign Organism', text: 'Your private AI. 27 extensions, 250 protocols, 400 tools, 873ms heartbeat. VIGIL v14.0: React+TypeScript.' },
+            { keys: ['animus', 'jarvis'], title: 'Animus AI', text: 'VIGIL v14.0 runs natively in Edge. Tab control, highlights, readability, notes, screen capture, PDF/Excel generation, voice input, Workspace canvas, Transformers.js NLP.' },
             { keys: ['heartbeat','873','phi'], title: '873ms Heartbeat', text: '873ms × PHI ≈ 1413ms — recursive phi interval. Keeps service worker alive, pulses NeuroCore.' },
             { keys: ['protocol','alpha ai'], title: '250 Protocols + 10 Alpha AIs', text: 'PROTOCOLLUM, TERMINALIS, ORGANISMUS, MERCATOR, ORCHESTRATOR, MATHEMATICUS, SYNAPTICUS, SUBSTRATUM, UNIVERSUM, CANISTRUM.' },
           ];
-          for (const entry of kb) { if (entry.keys.some(k => qLow.indexOf(k) !== -1 || k.indexOf(qLow) !== -1)) results.push({ type: 'abstract', title: entry.title, text: entry.text, url: '', source: 'ANIMUS Native Knowledge' }); }
-          if (results.length === 0) results.push({ type: 'answer', title: 'ANIMUS Intelligence — "' + query.substring(0, 60) + '"', text: 'No specific entry found. Try "read page" to search what\'s open, or ask in Chat.', url: '', source: 'ANIMUS Fallback' });
+          for (const entry of kb) { if (entry.keys.some(k => qLow.indexOf(k) !== -1 || k.indexOf(qLow) !== -1)) results.push({ type: 'abstract', title: entry.title, text: entry.text, url: '', source: 'VIGIL Native Knowledge' }); }
+          if (results.length === 0) results.push({ type: 'answer', title: 'VIGIL Intelligence — "' + query.substring(0, 60) + '"', text: 'No specific entry found. Try "read page" to search what\'s open, or ask in Chat.', url: '', source: 'VIGIL Fallback' });
           sendResponse({ success: true, results, query });
         };
         if (activeTab?.id && pageUrl && !pageUrl.startsWith('edge://') && !pageUrl.startsWith('chrome://')) {
@@ -2419,7 +2436,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           chrome.notifications.create('jarvis-agent-' + Date.now(), {
             type: 'basic',
             iconUrl: 'icons/icon128.png',
-            title: 'ANIMUS — ' + data.name + ' Complete',
+            title: 'VIGIL — ' + data.name + ' Complete',
             message: data.status === 'complete' ? 'Mission "' + data.mission.substring(0, 60) + '" complete.' : 'Agent ' + data.name + ' status: ' + data.status,
             priority: 1,
           });
@@ -2613,6 +2630,154 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       sendResponse({ success: true });
       break;
     }
+
+    /* ── Solus — Sovereign Offline Intelligence ─────────────── */
+    case 'solusLoad': {
+      solusLoad()
+        .then(() => sendResponse({ success: true, message: 'Solus models loaded.' }))
+        .catch(e => sendResponse({ success: false, message: (e as Error).message }));
+      break;
+    }
+    case 'solusStatus': {
+      const status = solusModelStatus();
+      const ready = solusIsReady();
+      const anyLoading = Object.values(status).some(s => s === 'loading');
+      sendResponse({ success: true, ready, anyLoading, status });
+      break;
+    }
+    case 'solusSummarize': {
+      const text = (message.text as string) || '';
+      if (!text) { sendResponse({ success: false, message: 'No text provided.' }); break; }
+      solusSummarize(text)
+        .then(summary => sendResponse({ success: true, summary }))
+        .catch(e => sendResponse({ success: false, message: (e as Error).message }));
+      break;
+    }
+    case 'solusClassify': {
+      const text = (message.text as string) || '';
+      const labels = (message.labels as string[]) || [];
+      if (!text || !labels.length) { sendResponse({ success: false, message: 'Text and labels required.' }); break; }
+      solusClassify(text, labels)
+        .then(result => sendResponse({ success: true, result }))
+        .catch(e => sendResponse({ success: false, message: (e as Error).message }));
+      break;
+    }
+    case 'solusAnswer': {
+      const context = (message.context as string) || '';
+      const question = (message.question as string) || '';
+      if (!context || !question) { sendResponse({ success: false, message: 'Context and question required.' }); break; }
+      solusAnswer(context, question)
+        .then(r => sendResponse({ success: true, answer: r.answer, score: r.score }))
+        .catch(e => sendResponse({ success: false, message: (e as Error).message }));
+      break;
+    }
+
+    /* ── Memory Palace ──────────────────────────────────────── */
+    case 'memorySaveCurrent': {
+      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+        const tab = tabs[0];
+        if (!tab?.url || tab.url.startsWith('chrome://')) { sendResponse({ success: false, message: 'Cannot save this page.' }); return; }
+        saveMemory(tab.url, tab.title || tab.url, '', [])
+          .then(entry => sendResponse({ success: true, entry }))
+          .catch(e => sendResponse({ success: false, message: (e as Error).message }));
+      });
+      break;
+    }
+    case 'memoryGet': {
+      const q = (message.query as string) || '';
+      Promise.all([
+        getMemories({ query: q || undefined, limit: 100 }),
+        memoryStats(),
+      ]).then(([entries, stats]) => sendResponse({ success: true, entries, stats }))
+        .catch(e => sendResponse({ success: false, message: (e as Error).message }));
+      break;
+    }
+    case 'memoryDelete': {
+      const id = (message.id as string) || '';
+      deleteMemory(id)
+        .then(ok => sendResponse({ success: ok }))
+        .catch(e => sendResponse({ success: false, message: (e as Error).message }));
+      break;
+    }
+
+    /* ── SentryAI ────────────────────────────────────────────── */
+    case 'sentryScanPage': {
+      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+        const tab = tabs[0];
+        if (!tab?.id) { sendResponse({ success: false, message: 'No active tab.' }); return; }
+        chrome.scripting.executeScript({
+          target: { tabId: tab.id! },
+          func: () => ({ text: document.body?.innerText || '', url: window.location.href, title: document.title }),
+        }, results => {
+          if (chrome.runtime.lastError) { sendResponse({ success: false, message: chrome.runtime.lastError.message }); return; }
+          const r = results?.[0]?.result as { text: string; url: string; title: string } | undefined;
+          if (!r) { sendResponse({ success: false, message: 'Could not read page.' }); return; }
+          const analysis = analyzePageText(r.text, r.url, r.title);
+          persistAlerts(analysis.alerts).catch(() => {});
+          if (analysis.alerts.length > 0) {
+            analysis.alerts.forEach(a => chrome.runtime.sendMessage({ action: '_sentryAlert', alert: a }).catch(() => {}));
+          }
+          sendResponse({ success: true, riskScore: analysis.riskScore, summary: analysis.summary, alerts: analysis.alerts });
+        });
+      });
+      break;
+    }
+    case 'sentryGetAlerts': {
+      getAlertHistory(100)
+        .then(alerts => sendResponse({ success: true, alerts }))
+        .catch(e => sendResponse({ success: false, message: (e as Error).message }));
+      break;
+    }
+    case 'sentryDismiss': {
+      dismissAlert((message.id as string) || '')
+        .then(() => sendResponse({ success: true }))
+        .catch(e => sendResponse({ success: false, message: (e as Error).message }));
+      break;
+    }
+    case 'sentryClear': {
+      clearAlerts()
+        .then(() => sendResponse({ success: true }))
+        .catch(e => sendResponse({ success: false, message: (e as Error).message }));
+      break;
+    }
+
+    /* ── Knowledge Graph ─────────────────────────────────────── */
+    case 'graphAddCurrentPage': {
+      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+        const tab = tabs[0];
+        if (!tab?.id || !tab.url || tab.url.startsWith('chrome://')) { sendResponse({ success: false, message: 'Cannot map this page.' }); return; }
+        chrome.scripting.executeScript({
+          target: { tabId: tab.id! },
+          func: () => ({ text: document.body?.innerText || '', url: window.location.href, title: document.title }),
+        }, results => {
+          if (chrome.runtime.lastError) { sendResponse({ success: false, message: chrome.runtime.lastError.message }); return; }
+          const r = results?.[0]?.result as { text: string; url: string; title: string } | undefined;
+          if (!r) { sendResponse({ success: false, message: 'Could not read page.' }); return; }
+          graphAddPage(r.url, r.title, r.text)
+            .then(({ node, newEdges }) => sendResponse({ success: true, node, newEdges }))
+            .catch(e => sendResponse({ success: false, message: (e as Error).message }));
+        });
+      });
+      break;
+    }
+    case 'graphGet': {
+      Promise.all([getGraph(), graphStats()])
+        .then(([graph, stats]) => sendResponse({ success: true, graph, stats }))
+        .catch(e => sendResponse({ success: false, message: (e as Error).message }));
+      break;
+    }
+    case 'graphGetRelated': {
+      getRelated((message.url as string) || '')
+        .then(related => sendResponse({ success: true, related }))
+        .catch(e => sendResponse({ success: false, message: (e as Error).message }));
+      break;
+    }
+    case 'graphClear': {
+      clearGraph()
+        .then(() => sendResponse({ success: true }))
+        .catch(e => sendResponse({ success: false, message: (e as Error).message }));
+      break;
+    }
   }
 
   return true; // keep channel open for async responses
@@ -2635,7 +2800,7 @@ chrome.alarms.onAlarm.addListener((alarm) => {
       chrome.notifications.create('jarvis-timer-done-' + Date.now(), {
         type: 'basic',
         iconUrl: 'icons/icon128.png',
-        title: 'ANIMUS — ' + label + ' Complete',
+        title: 'VIGIL — ' + label + ' Complete',
         message: 'Your "' + label + '" timer is done.',
         priority: 2,
       });
@@ -2651,7 +2816,7 @@ const ALARM_NAME = 'jarvis-keepalive';
 chrome.alarms.create(ALARM_NAME, { periodInMinutes: 0.4 });
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name !== ALARM_NAME) return;
-  if (!globalThis.jarvisEngine) { globalThis.jarvisEngine = new AnimusEngine(); }
+  if (!globalThis.jarvisEngine) { globalThis.jarvisEngine = new VigilEngine(); }
   try {
     chrome.storage.local.set({ 'jarvis_state': { commandCount: globalThis.jarvisEngine.commandCount, heartbeatCount: globalThis.jarvisEngine.state.heartbeatCount, mood: globalThis.jarvisEngine.state.mood, lastAlive: Date.now() } });
   } catch { /* ignore */ }
@@ -2660,7 +2825,7 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 chrome.runtime.onInstalled.addListener(() => {
   chrome.alarms.create(ALARM_NAME, { periodInMinutes: 0.4 });
   chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true }).catch(() => {});
-  console.log('[ANIMUS v13.0] Installed — 24/7 keepalive active, React+TypeScript build');
+  console.log('[VIGIL v14.0] Installed — 24/7 keepalive active, React+TypeScript build');
 });
 
 /* ----------------------------------------------------------
@@ -2682,13 +2847,13 @@ chrome.alarms.onAlarm.addListener((alarm) => {
       const isNewer = remote.some((v, i) => v > (local[i] ?? 0)) || remote.reduce((a, b) => a + b, 0) > local.reduce((a, b) => a + b, 0);
       if (isNewer) {
         chrome.storage.local.set({ 'jarvis_update': { available: true, remoteVersion: remoteManifest.version, currentVersion: CURRENT_VERSION, checkedAt: Date.now() } });
-        try { chrome.notifications.create('jarvis-update-' + Date.now(), { type: 'basic', iconUrl: 'icons/icon128.png', title: 'JARVIS Update Available', message: 'v' + CURRENT_VERSION + ' → v' + remoteManifest.version + '. Run install-jarvis-edge.bat to update.' }); } catch { /* ignore */ }
+        try { chrome.notifications.create('jarvis-update-' + Date.now(), { type: 'basic', iconUrl: 'icons/icon128.png', title: 'VIGIL Update Available', message: 'v' + CURRENT_VERSION + ' → v' + remoteManifest.version + '. Run install-jarvis-edge.bat to update.' }); } catch { /* ignore */ }
       }
     }).catch(() => {});
 });
 
 /* ----------------------------------------------------------
- *  Proactive Tab-Awareness — brief ANIMUS when tab switches
+ *  Proactive Tab-Awareness — brief VIGIL when tab switches
  * ---------------------------------------------------------- */
 let _lastActiveTabId: number | null = null;
 

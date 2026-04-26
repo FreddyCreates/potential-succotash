@@ -2,24 +2,24 @@
  * SOVEREIGN TOOL LICENSE
  * ─────────────────────────────────────────────────────────────────────────────
  * Licensor  : Sovereign Organism  /  @medina/organism-marketplace
- * Licensee  : JARVIS AI  (extensions/jarvis)
+ * Licensee  : VIGIL AI  (extensions/jarvis)
  * Owner     : Alfredo
  * License   : INTERNAL_SOVEREIGN — full internal access across all 24 tools
  * Issued    : 2026-04-25T00:00:00Z
  * Version   : 1.0.0
  *
  * Grant:
- *   JARVIS is hereby licensed to invoke all 24 tools in the Sovereign
+ *   VIGIL is hereby licensed to invoke all 24 tools in the Sovereign
  *   Organism Marketplace for internal mission-dispatch purposes. This license
  *   covers all four tool families: Context, Commander, Crawling, and Sentry.
- *   JARVIS may use these tools to build, route, and execute missions across
+ *   VIGIL may use these tools to build, route, and execute missions across
  *   web, blockchain, data, governance, and infrastructure domains.
  *
  * Conditions:
  *   1. Tools must be invoked through the MissionEngine dispatch layer.
  *   2. INTERNAL_SOVEREIGN tools (INFER-ENGINE, CONTEXT-BUILDER, SEAL-VERIFIER,
  *      DOCTRINE-AUDITOR, TASK-COMMANDER) are metered — usage is logged.
- *   3. JARVIS must not expose tool internals or schemas externally.
+ *   3. VIGIL must not expose tool internals or schemas externally.
  *   4. All tool output belongs to the Sovereign Organism and its owner.
  *   5. The 873ms heartbeat cadence is sacred — tool latency must not block it.
  *
@@ -91,7 +91,7 @@ export function isToolLicensed(callId: string): boolean {
 
 /** The full license manifest — Jarvis carries this at runtime */
 export const SOVEREIGN_LICENSE = {
-  licensee:    'JARVIS_AI',
+  licensee:    'VIGIL_AI',
   licensor:    'SOVEREIGN_ORGANISM',
   owner:       'Alfredo',
   licenseType: 'INTERNAL_SOVEREIGN',
@@ -103,7 +103,7 @@ export const SOVEREIGN_LICENSE = {
   conditions: [
     'Tools must be invoked through the MissionEngine dispatch layer.',
     'INTERNAL_SOVEREIGN tools are metered — usage is logged.',
-    'JARVIS must not expose tool internals or schemas externally.',
+    'VIGIL must not expose tool internals or schemas externally.',
     'All tool output belongs to the Sovereign Organism and its owner.',
     'The 873ms heartbeat cadence is sacred — tool latency must not block it.',
   ],

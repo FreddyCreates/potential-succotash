@@ -19,13 +19,21 @@ import PromptsPanel from './panels/PromptsPanel';
 import InboxPanel from './panels/InboxPanel';
 
 import HighlightsPanel from './panels/HighlightsPanel';
+import SolusPanel from './panels/SolusPanel';
+import MemoryPanel from './panels/MemoryPanel';
+import SentryPanel from './panels/SentryPanel';
+import GraphPanel from './panels/GraphPanel';
 
 const TABS = [
   { id: 'chat',       label: '💬 Chat' },
   { id: 'nexus',      label: '⚡ Nexus' },
+  { id: 'solus',      label: '🔵 Solus' },
   { id: 'inbox',      label: '📥 Inbox' },
   { id: 'highlights', label: '📌 Highlights' },
   { id: 'mirror',     label: '🪞 Mirror' },
+  { id: 'memory',     label: '🏛 Memory' },
+  { id: 'sentry',     label: '🛡 Sentry' },
+  { id: 'graph',      label: '🗺 Graph' },
   { id: 'agents',     label: '🤖 Agents' },
   { id: 'agi',        label: '⚗️ AGI Tools' },
   { id: 'notes',      label: '📓 Journal' },
@@ -72,8 +80,12 @@ export default function App() {
       case 'highlights':  return <HighlightsPanel />;
       case 'nexus':     return <NexusPanel />;
       case 'chat':      return <ChatPanel />;
+      case 'solus':     return <SolusPanel />;
       case 'inbox':     return <InboxPanel />;
       case 'mirror':    return <MirrorPanel />;
+      case 'memory':    return <MemoryPanel />;
+      case 'sentry':    return <SentryPanel />;
+      case 'graph':     return <GraphPanel />;
       case 'agents':    return <AgentsPanel />;
       case 'agi':       return <AGIToolsPanel />;
       case 'vault':     return <VaultPanel />;
@@ -111,8 +123,8 @@ export default function App() {
         <div className="flex items-center gap-2">
           <span className="animate-heartbeat text-cyan-400 text-lg">⚡</span>
           <div>
-            <span className="font-bold text-white tracking-widest text-sm">A.N.I.M.U.S</span>
-            <span className="ml-2 text-xs text-purple-400">v13.0</span>
+            <span className="font-bold text-white tracking-widest text-sm">V.I.G.I.L</span>
+            <span className="ml-2 text-xs text-purple-400">v14.0</span>
           </div>
         </div>
         <div className="flex items-center gap-2">
