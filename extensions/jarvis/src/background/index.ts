@@ -13,6 +13,7 @@ import {
 } from './db';
 import type { Note, JarvisDocument, TempleEntry } from './types';
 import { missionEngine } from './mission-engine.js';
+import { pse } from './pattern-synthesis-engine.js';
 
 const PHI = 1.618033988749895;
 const HEARTBEAT = 873;
@@ -239,6 +240,8 @@ class JarvisEngine {
   maxHistory = 200;
   state = { initialized: true, heartbeatCount: 0, version: '4.0.0', agent: 'JARVIS', mood: 'focused', focus: 'awareness', vitals: null as unknown };
   neuro = new NeuroCore('jarvis');
+  /** Pattern Synthesis Engine — the centralized cognitive knowledge corpus */
+  pse = pse;
   conversationMemory: { role: string; text: string; intent: string; timestamp: number }[] = [];
   maxMemory = 100;
   memoryTemple: Record<string, TempleEntry[]> = { research: [], theory: [], decisions: [], frameworks: [], insights: [] };
@@ -248,7 +251,7 @@ class JarvisEngine {
 
   constructor() {
     this._startHeartbeat();
-    console.log('[JARVIS v4.0] Engine initialized — NeuroCore online, Dexie DB active, React+TS, PHI=' + PHI + ' HEARTBEAT=' + HEARTBEAT + 'ms');
+    console.log('[JARVIS v7.0] Engine initialized — NeuroCore online, PSE online (' + pse.primitiveCount + ' primitives, ' + pse.domains.length + ' domains), Dexie DB active, PHI=' + PHI + ' HEARTBEAT=' + HEARTBEAT + 'ms');
   }
 
   _startHeartbeat() {
@@ -1091,23 +1094,71 @@ class JarvisEngine {
       ]);
       agent = 'JARVIS • SYNAPTICUS';
 
-    // 41. Phantom fallback
+    // 41. PSE — explicit synthesis request
+    } else if (/^(synthesize|pse|pattern synthesis|run synthesis|synthesize through|think through|deep think|run patterns?( on| through)?|what does the pse|pse status|pse stats)/i.test(text)) {
+      const topic = raw.replace(/^(synthesize|pse|pattern synthesis|run synthesis|synthesize through|think through|deep think|run patterns? ?(on|through)?|what does the pse|pse status|pse stats)\s*/i, '').trim() || raw;
+      if (/status|stats|health|info/i.test(topic) || topic === raw) {
+        const stats = this.pse.getStats();
+        response = moodColor + ' 🧬 Pattern Synthesis Engine (PSE) — Cognitive Knowledge Core\n\n' +
+          '📚 Corpus: ' + stats.totalPrimitives + ' primitives across ' + stats.domains.length + ' domains\n' +
+          '🌐 Domains: ' + stats.domains.join(' · ') + '\n' +
+          '🔄 Synthesis runs: ' + stats.synthesisCount + '\n' +
+          '🔥 Active domains: ' + (stats.activatedDomains.length > 0 ? stats.activatedDomains.join(', ') : 'none yet — feed me a topic') + '\n' +
+          '⏱ Uptime: ' + Math.round(stats.uptimeMs / 1000) + 's\n\n' +
+          'Say "synthesize [topic]" to run pattern recognition through the corpus.\n' +
+          'All knowledge domains: ' + stats.domains.map(d => d.toUpperCase()).join(' | ');
+        agent = 'JARVIS • PSE';
+      } else {
+        const result = this.pse.synthesize(topic, mood);
+        if (result.confidence > 0.1) {
+          response = moodColor + ' 🧬 PSE Synthesis: "' + topic.substring(0, 60) + (topic.length > 60 ? '…' : '') + '"\n\n' +
+            result.merged + '\n\n' +
+            '─────────────────────────\n' +
+            '🔗 Activated: ' + result.concepts.join(' · ') + '\n' +
+            '🌐 Domains: ' + result.domains.join(' × ') + '\n' +
+            '📊 Confidence: ' + Math.round(result.confidence * 100) + '% · ' + result.primitiveCount + ' primitives fired';
+        } else {
+          response = moodColor + ' 🧬 PSE: Low activation for "' + topic.substring(0, 40) + '". Try a concept from: physics, math, chemistry, linguistics, social, philosophy, systems, neuroscience.';
+        }
+        agent = 'JARVIS • PSE';
+      }
+
+    // 42. Phantom fallback — PSE-powered intelligent response
     } else {
       const kws = extractKeywords(raw);
       const topGravity = this._getRecentTopics(3);
       const recentTopics = ctx.topics.length > 0 ? ctx.topics : topGravity;
+
+      // Run PSE synthesis on any non-trivial input
+      const synthesis = kws.length > 0 ? this.pse.synthesize(raw, mood) : null;
+
       if (kws.length === 0) {
         response = pick([moodColor + ' Here and listening. What\'s on your mind?', 'JARVIS present. ' + (ctx.turnCount > 0 ? 'We\'ve had ' + ctx.turnCount + ' exchanges this session.' : 'What would you like to explore?'), 'Heartbeat #' + heartbeat + ' — all running. Say anything.']);
+      } else if (synthesis && synthesis.confidence > 0.25) {
+        // High-confidence PSE synthesis — return real insight
+        const contextHook = recentTopics.length > 0 ? '\n\n🔗 Current conversation gravity: ' + recentTopics.slice(0, 2).join(', ') + '.' : '';
+        response = moodColor + ' 🧬 ' + synthesis.merged + contextHook + '\n\n' +
+          '── ' + synthesis.domains.join(' × ') + ' · ' + Math.round(synthesis.confidence * 100) + '% synthesis confidence';
+        agent = 'JARVIS • PSE • SYNAPTICUS';
+      } else if (synthesis && synthesis.confidence > 0.1) {
+        // Medium confidence — blend PSE partial with contextual hook
+        const contextHook = recentTopics.length > 0 ? ' We\'ve been touching on ' + recentTopics.slice(0, 2).join(' and ') + ' — does this connect?' : '';
+        const keyPhrase = kws.slice(0, 3).join(', ');
+        const topConcept = synthesis.concepts[0] ?? keyPhrase;
+        response = moodColor + ' Pulling on "' + topConcept + '":\n\n' +
+          synthesis.merged + contextHook + '\n\nSay "synthesize ' + kws[0] + '" for a full pattern synthesis.';
+        agent = 'JARVIS • PSE';
       } else {
+        // Low PSE signal — contextual fallback
         const contextHook = recentTopics.length > 0 ? ' We\'ve been touching on ' + recentTopics.slice(0, 2).join(' and ') + ' — does this connect?' : '';
         const keyPhrase = kws.slice(0, 3).join(', ');
         response = pick([
-          moodColor + ' Got it. Processing: "' + raw.substring(0, 60) + (raw.length > 60 ? '...' : '') + '" — keywords: ' + keyPhrase + '.' + contextHook + '\n\nTry: "analyze [topic]" · "brainstorm [idea]" · "risk [thing]" · "generate pdf report".',
-          'Running "' + keyPhrase + '" through 40 analytical patterns.' + contextHook + '\n\nCapabilities: PDF · Excel · Email · Voice · Workspace.',
-          moodColor + ' Received — "' + raw.substring(0, 80) + '". Keywords: ' + keyPhrase + '. Mood: ' + mood + '.\n\n' + (ctx.lastIntent && ctx.lastIntent !== 'chat' ? 'Last thread: ' + ctx.lastIntent + '. Want to continue?' : 'Tell me more or name a direction — I\'ll follow.'),
+          moodColor + ' Got it. Processing "' + raw.substring(0, 60) + (raw.length > 60 ? '…' : '') + '" — keywords: ' + keyPhrase + '.' + contextHook + '\n\nTry: "analyze [topic]" · "brainstorm [idea]" · "synthesize [concept]".',
+          'Running "' + keyPhrase + '" through the PSE corpus and 42 analytical patterns.' + contextHook,
+          moodColor + ' Received — "' + raw.substring(0, 80) + '". Mood: ' + mood + '. Keywords: ' + keyPhrase + '.\n\n' + (ctx.lastIntent && ctx.lastIntent !== 'chat' ? 'Last thread: ' + ctx.lastIntent + '. Continue?' : 'Tell me more — I\'ll follow the thread.'),
         ]);
+        agent = 'JARVIS • ORCHESTRATOR';
       }
-      agent = 'JARVIS • ORCHESTRATOR';
     }
 
     callback({ success: true, message: response, agent, mood, awareness });
