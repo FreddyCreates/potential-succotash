@@ -989,43 +989,46 @@ class JarvisEngine {
 
     // 22. Page
     } else if (/this page|current page|what('?s| is) (on|here|this)|analyze/i.test(text)) {
-      response = 'To read the current page: click 🖥️ Screen tab and hit "Read Text" or say "summarize" and I\'ll do it right here.';
+      response = 'Hit the Screen tab and click "Read Text" — or just say "summarize this page" and I\'ll pull it for you.';
 
     // 23. Research
     } else if (/research|paper|study|literature|evidence|data|source|citation|academic|science/i.test(text)) {
       const q = after('research') || after('paper') || after('study') || raw;
       const prior = this._getTempleContext('research');
-      response = moodColor + ' Research mode: "' + q + '"\n\n🔬 Framework:\n1. Problem definition\n2. Literature scan\n3. Hypothesis\n4. Evidence mapping\n5. Synthesis\n\n' + (prior.length > 0 ? 'Memory temple — prior research: ' + prior.map(e => e.text.substring(0, 40)).join('; ') + '\n\n' : '') + 'Tell me more — what angle are you coming from?';
-      agent = 'JARVIS • SYNAPTICUS';
+      const priorRef = prior.length > 0 ? ' We\'ve touched on this before — ' + prior[0].text.substring(0, 50) + '.' : '';
+      response = 'What\'s the question you\'re actually trying to answer on "' + q.substring(0, 60) + '"?' + priorRef + ' That\'ll tell me whether we need to go broad first or go straight to the evidence.';
+      agent = 'JARVIS';
 
     // 24. Theory
     } else if (/theory|hypothesis|model|principle|fundamental|first principles|axiom|assume|postulate/i.test(text)) {
       const q = after('theory') || after('hypothesis') || raw;
-      response = moodColor + ' Theory mode: "' + q + '"\n\n🧠 Patterns:\n【First Principles】 Strip to irreducible truth\n【Systems Thinking】 Inputs, outputs, feedback\n【Inversion】 What would make this wrong?\n【Analogical Reasoning】 What else follows this pattern?\n【Gravity Test】 Does this pull other ideas toward it?\n\nI\'m tracking in memory temple. State your position.';
-      agent = 'JARVIS • SYNAPTICUS';
+      const synT = this.pse.synthesize(q, mood);
+      response = synT.confidence > 0.15 ? synT.merged + '\n\nWhat\'s your position on it?' : 'What\'s the core claim you\'re working from on "' + q.substring(0, 60) + '"? Start there and I\'ll help you stress-test it.';
+      agent = 'JARVIS';
 
     // 25. Framework
     } else if (/framework|blueprint|structure|architecture|template|workflow|process design|playbook|system design/i.test(text)) {
       const q = after('framework') || after('blueprint') || after('architecture') || raw;
-      response = moodColor + ' Framework design: "' + q + '"\n\n🏗️ Blueprint layers:\n【Layer 1】 Foundation — core principles\n【Layer 2】 Structure — components & entities\n【Layer 3】 Process — workflows & loops\n【Layer 4】 Interface — user & system connections\n【Layer 5】 Evolution — growth triggers\n\nWalk me through what you\'re building.';
-      agent = 'JARVIS • ORCHESTRATOR';
+      response = 'What\'s it for? A good structure follows from the problem — if I know what "' + q.substring(0, 50) + '" actually needs to do, I can help you build something that holds.';
+      agent = 'JARVIS';
 
     // 26. Memory
     } else if (/memory temple|what do you remember|what have we discussed|memory status|what do you know/i.test(text)) {
       const stats = this._getTempleStats();
       const topics = this._getRecentTopics(5);
-      response = moodColor + ' Memory Temple (Dexie IndexedDB — unlimited):\n\n💾 Total: ' + stats.total + ' entries\n🔬 Research: ' + stats.stats['research'] + '\n🧠 Theory: ' + stats.stats['theory'] + '\n⚡ Decisions: ' + stats.stats['decisions'] + '\n🏗️ Frameworks: ' + stats.stats['frameworks'] + '\n💡 Insights: ' + stats.stats['insights'] + '\n\n🔮 Topic gravity: ' + (topics.length > 0 ? topics.slice(0, 4).join(', ') : 'nothing yet') + '\n💬 Session turns: ' + ctx.turnCount + '/100';
-      agent = 'JARVIS • SYNAPTICUS';
+      response = 'I have ' + stats.total + ' things stored — ' + stats.stats['research'] + ' research threads, ' + stats.stats['insights'] + ' insights, ' + stats.stats['decisions'] + ' decisions.' + (topics.length > 0 ? ' What\'s been pulling gravity lately: ' + topics.slice(0, 3).join(', ') + '.' : '') + ' Session: ' + ctx.turnCount + ' exchanges.';
+      agent = 'JARVIS';
 
     // 27. Sovereign tools
     } else if (/sovereign tool|what tools|run tool|tool list|available tools|use tool/i.test(text)) {
-      response = moodColor + ' v4.0 Skills:\n\n📄 "generate pdf report" — real jsPDF download\n📊 "generate excel" — real ExcelJS .xlsx download\n✉️ "draft email to [addr]" — opens mail client\n🎤 Mic button — Web Speech API voice input\n🗃️ Workspace tab — canvas + templates + export\n💾 Memory — Dexie IndexedDB, unlimited storage\n🧠 Transformers.js — real NLP intent classification\n\nSay any skill name to activate it.';
+      response = 'PDF reports, Excel workbooks, email drafts, voice input, a full workspace canvas, unlimited notes, and research agents that can crawl the web for you. Just say what you need and I\'ll do it.';
 
     // 28. Analysis
     } else if (/analyze|analysis|swot|evaluate|assess|critique|review|breakdown|break down/i.test(text)) {
       const q = after('analyze') || after('analysis') || after('swot') || raw;
-      response = moodColor + ' Analysis mode: "' + q + '"\n\n🔍 Frameworks:\n【SWOT】 Strengths / Weaknesses / Opportunities / Threats\n【5 Forces】 Competition, suppliers, buyers, substitutes, entrants\n【Systems】 Inputs → Process → Outputs → Feedback\n【Second Order】 What happens after the first effect?\n【Inversion】 Work backwards from failure.\n\nGive me context — what decision does this feed?';
-      agent = 'JARVIS • UNIVERSUM';
+      const synA = this.pse.synthesize(q, mood);
+      response = synA.confidence > 0.15 ? synA.merged + '\n\nWhat decision does this feed into?' : 'What\'s the thing you\'re actually trying to decide on "' + q.substring(0, 60) + '"? Analysis is only useful if it points somewhere.';
+      agent = 'JARVIS';
 
     // 29. Founder
     } else if (/who am i|what am i building|what is my role|what should i (do|focus|work|build)|my purpose|my mission/i.test(text)) {
@@ -1036,61 +1039,71 @@ class JarvisEngine {
 
     // 30. Mental Models
     } else if (/mental model|second order|inversion|circle of competence|occam|hanlon|pareto|80.20|latticework/i.test(text)) {
-      response = moodColor + ' Mental Models:\n\n【Inversion】 Flip the problem — what causes failure?\n【Second-Order】 And then what? And after that?\n【Circle of Competence】 What do you actually know vs. think you know?\n【Occam\'s Razor】 Simplest explanation is usually right.\n【Pareto (80/20)】 What 20% drives 80% of outcome?\n【Map vs Territory】 Your model isn\'t reality — update it.\n【Hanlon\'s Razor】 Never attribute to malice what can be explained by incompetence.\n\nWhich fits what you\'re thinking about?';
-      agent = 'JARVIS • SYNAPTICUS';
+      const synMM = this.pse.synthesize(raw, mood);
+      response = synMM.confidence > 0.15 ? synMM.merged : 'What\'s the situation? The right mental model depends on what you\'re actually trying to navigate — tell me what\'s going on and I\'ll apply the one that fits.';
+      agent = 'JARVIS';
 
     // 31. Market
     } else if (/market|competitor|competitive|landscape|tam|sam|som|moat|positioning/i.test(text)) {
       const q = after('market') || after('competitor') || raw;
-      response = moodColor + ' Market Intelligence: "' + q + '"\n\n📊 Framework:\n【TAM→SAM→SOM】 What\'s realistically addressable?\n【Competitive Landscape】 Who\'s there? What do they do badly?\n【Moat】 Network effects, data, switching costs, brand?\n【Positioning】 Premium, niche, or mass market?\n【Customer Pain】 What makes people pay?\n【Timing】 Why now?\n\nZoom in on whichever dimension is most useful.';
-      agent = 'JARVIS • UNIVERSUM';
+      const synMk = this.pse.synthesize(q, mood);
+      response = synMk.confidence > 0.15 ? synMk.merged + '\n\nWhat\'s the angle — are you trying to find a gap, size the opportunity, or figure out positioning?' : 'What market are you looking at? Tell me what you\'re trying to understand about it and we\'ll work through it.';
+      agent = 'JARVIS';
 
     // 32. Brainstorm
     } else if (/brainstorm|ideate|ideas|generate ideas|what if we|possibilities|options|alternatives|creative|innovate|come up with/i.test(text)) {
       const q = after('brainstorm') || after('ideas') || raw;
-      response = moodColor + ' Brainstorm Mode: "' + q + '"\n\n💡 Patterns:\n【Random Entry】 Pick unrelated word, force connection\n【Reversal】 What\'s the opposite of what everyone does?\n【Constraint Forcing】 No money / 24h / 1 person?\n【Analogy】 How does nature solve this?\n【SCAMPER】 Substitute, Combine, Adapt, Modify, Put to other uses, Eliminate, Reverse\n【Blue Sky】 Ideal state in 10 years?\n\nGive me the seed idea.';
-      agent = 'JARVIS • SYNAPTICUS';
+      response = 'What\'s the seed — what problem are we generating ideas for? Even a rough version of it will get us somewhere real.';
+      agent = 'JARVIS';
 
     // 33. Risk
     } else if (/risk|what could go wrong|downside|failure mode|worst case|probability|mitigation|vulnerability/i.test(text)) {
       const q = after('risk') || after('what could go wrong') || raw;
-      response = moodColor + ' Risk Assessment: "' + q + '"\n\n⚠️ Framework:\n【Identify】 Top 5 failure modes (technical, market, team, legal, timing)\n【Probability】 High/medium/low for each\n【Impact】 Catastrophic / major / minor\n【Priority】 High prob × high impact = mitigate now\n【Mitigation】 What reduces each risk?\n【Black Swans】 Unknown unknowns?\n\nRun this on what you\'re most worried about.';
-      agent = 'JARVIS • UNIVERSUM';
+      const synR = this.pse.synthesize(q, mood);
+      response = synR.confidence > 0.15 ? synR.merged + '\n\nWhat\'s the thing you\'re most worried about?' : 'What\'s the thing you\'re trying to de-risk? Tell me what it is and I\'ll help you find the actual failure modes, not just the obvious ones.';
+      agent = 'JARVIS';
 
     // 34. Root Cause
     } else if (/root cause|cause and effect|5 why|causal|what caused|stem from/i.test(text)) {
       const q = after('root cause') || after('why did') || raw;
-      response = moodColor + ' Root Cause Analysis: "' + q + '"\n\n🔍 5 Whys:\nProblem: ' + q + '\nWhy #1: ___\nWhy #2: ___\nWhy #3: ___\nWhy #4: ___\nWhy #5 (root): ___\n\n🌊 Fishbone: People, Process, Technology, Environment, Materials, Measurement\n\nTell me the symptom.';
-      agent = 'JARVIS • SYNAPTICUS';
+      response = 'What\'s the symptom you\'re seeing? We can work backwards from there — the real cause is usually a few layers down from where it shows up.';
+      agent = 'JARVIS';
 
     // 35. What-If
     } else if (/what if|scenario|futures|forecast|suppose|hypothetical|alternate|simulation/i.test(text)) {
       const q = after('what if') || after('scenario') || after('suppose') || raw;
-      response = moodColor + ' Scenario Planning: "' + q + '"\n\n🌐 3-Scenario Method:\n【Best Case】 Everything goes right — 12 months?\n【Base Case】 Realistic path?\n【Worst Case】 What breaks, and what do you do?\n\n🎯 Also:\n【Trigger Events】 Signals telling you which scenario is unfolding?\n【Pre-mortem】 Assume it failed — work backwards.\n【Regret Minimization】 Which choice minimizes regret across scenarios?\n\nWalk me through your what-if.';
-      agent = 'JARVIS • UNIVERSUM';
+      const synWI = this.pse.synthesize(q, mood);
+      response = synWI.confidence > 0.15 ? synWI.merged + '\n\nWhat\'s the version of this you\'re most afraid of? That one usually has the most information.' : 'Run me through the scenario — what happens if it goes right, and what happens if it doesn\'t?';
+      agent = 'JARVIS';
 
     // 36. Socratic
     } else if (/socratic|question me|challenge me|devil.?s advocate|push back|doubt|steelman|steel man/i.test(text)) {
-      response = moodColor + ' Socratic Mode:\n\n1. What\'s your core assumption?\n2. What evidence supports it? What contradicts it?\n3. If wrong, what happens to the whole idea?\n4. Who would strongly disagree, and why?\n5. What\'s the steelman — strongest opposing view?\n6. Having heard that — do you still believe your position?\n\nState your claim.';
-      agent = 'JARVIS • SYNAPTICUS';
+      response = 'Tell me the claim you want challenged. I\'ll take the strongest opposing position I can find — not to be difficult, but because that\'s where the weak spots usually show up.';
+      agent = 'JARVIS';
 
     // 37. Synthesis
     } else if (/connect|synthesize|synthesis|tie together|combine|overlap|how does.*relate|intersection|pattern across|dot.*connect/i.test(text)) {
       const topics = this._getRecentTopics(6);
-      response = moodColor + ' Synthesis Pattern:\n\n🔗 Conversation gravity:\n' + (topics.length > 0 ? topics.slice(0, 5).map(t => '• ' + t).join('\n') : '• Talk more and I\'ll find patterns') + '\n\n🧩 Questions:\n• What do these share at their core?\n• Where do they conflict?\n• What emerges from combining them?\n• Is there a unifying principle?\n\nDescribe the two things to connect.';
-      agent = 'JARVIS • SYNAPTICUS';
+      const synS = this.pse.synthesize(raw, mood);
+      if (synS.confidence > 0.15) {
+        response = synS.merged + (topics.length > 1 ? '\n\nConnects to what we\'ve been on: ' + topics.slice(0, 2).join(' and ') + '.' : '');
+      } else {
+        response = topics.length > 1 ? 'The thread I\'m seeing across ' + topics.slice(0, 3).join(', ') + ' — what do you think ties them together? I have a read on it but I want yours first.' : 'What are the two things you\'re trying to connect? Give me both and I\'ll find the through-line.';
+      }
+      agent = 'JARVIS';
 
     // 38. Build/Product
     } else if (/build this|build a|let.?s build|product idea|feature|mvp|prototype|user story|spec|requirements|product spec|roadmap/i.test(text)) {
       const q = after('build') || after('feature') || after('mvp') || raw;
-      response = moodColor + ' Product Build Framework: "' + q + '"\n\n🏗️ Spec structure:\n【Problem】 What pain? Who has it worst?\n【User】 Primary user? Secondary?\n【Core Value】 ONE thing this must do perfectly\n【MVP】 Minimum version that proves core value\n【Constraints】 Time, money, team, technical limits\n【Success Metric】 How do you know it worked?\n【Roadmap】 V1 → V2 → V3 with gates\n\nFill in the blanks.';
-      agent = 'JARVIS • ORCHESTRATOR';
+      response = 'What\'s the problem it solves? Start there — "' + q.substring(0, 50) + '" is the what, but the why is what determines whether it\'s worth building.';
+      agent = 'JARVIS';
 
     // 39. Estimation
     } else if (/estimate|back of envelope|order of magnitude|how many|how much would|calculate|revenue model|unit economics|cac|ltv|margin|burn rate|runway/i.test(text)) {
       const q = after('estimate') || after('calculate') || raw;
-      response = moodColor + ' Estimation Mode: "' + q + '"\n\n🔢 Fermi Pattern:\n1. What\'s the quantity?\n2. Break into sub-components\n3. Estimate each from first principles\n4. Multiply → sanity check vs. benchmarks\n5. Bound it: 10x low? 10x high?\n\n📊 Unit economics:\nRevenue = users × ARPU | Margin = Revenue − COGS\nLTV / CAC > 3 = healthy. > 10 = excellent.\n\nGive me the thing to estimate.';
-      agent = 'JARVIS • UNIVERSUM';
+      const synE = this.pse.synthesize(q, mood);
+      response = synE.confidence > 0.15 ? synE.merged : 'What do you need the number for? An order-of-magnitude answer is usually enough to make the decision — tell me what you\'re trying to figure out on "' + q.substring(0, 50) + '".';
+      agent = 'JARVIS';
 
     // 40. INFP — feelings, values, meaning, authenticity
     } else if (/i feel|i'm feeling|feels like|i don'?t know (why|what|how)|what does it mean|what matters|purpose|values?|authentic|meaningful|why do i|why does this|something feels|not sure (why|what)|i wonder|does it even|is it worth|hard to explain/i.test(text)) {
