@@ -1,5 +1,5 @@
 /* ============================================================
- *  JARVIS AI — Background Service Worker v3.1
+ *  Vigil AI — Background Service Worker v3.1
  *  AI sovereign assistant — native NeuroCore brain
  * ============================================================ */
 
@@ -266,7 +266,7 @@ function JarvisEngine() {
     initialized: true,
     heartbeatCount: 0,
     version: '3.1.0',
-    agent: 'JARVIS'
+    agent: 'Vigil AI'
   };
 
   // ── Medium Brain + Medium Heart ──────────────────────────
@@ -633,7 +633,7 @@ JarvisEngine.prototype.buildAction = function (parsed) {
       action.payload.url = parsed.params.url || '';
       break;
     case 'create-pdf':
-      action.payload.title = parsed.params.documentTitle || 'JARVIS Document';
+      action.payload.title = parsed.params.documentTitle || 'Vigil AI Document';
       action.payload.content = parsed.params.documentContent || '';
       break;
     case 'take-note':
@@ -660,7 +660,7 @@ JarvisEngine.prototype.buildAction = function (parsed) {
       action.payload.query = parsed.params.searchQuery || '';
       break;
     case 'create-document':
-      action.payload.title = parsed.params.documentTitle || 'JARVIS Document';
+      action.payload.title = parsed.params.documentTitle || 'Vigil AI Document';
       action.payload.content = parsed.params.documentContent || '';
       break;
     case 'list-tabs':
@@ -955,7 +955,7 @@ JarvisEngine.prototype.executeCreateDocument = function (title, content, callbac
 // Create PDF — generates data and sends to content script for rendering
 JarvisEngine.prototype.executeCreatePdf = function (title, content, tabId, callback) {
   var pdfData = {
-    title: title || 'JARVIS Document',
+    title: title || 'Vigil AI Document',
     content: content || '',
     author: 'Alfredo',
     timestamp: Date.now(),
@@ -1061,7 +1061,7 @@ JarvisEngine.prototype.executeChat = function (message, callback) {
   var awareness = self.neuro.brain.awarenessLevel;  // 0–100
   var heartbeat = self.state.heartbeatCount;
   var ctx = self._getContextSummary();       // { turnCount, topics, lastIntent, lastText }
-  var agent = 'JARVIS';
+  var agent = 'Vigil AI';
 
   // ── Mood-colored prefix for identity responses ─────────────
   var moodColor = mood === 'energized' ? '⚡' : mood === 'reflective' ? '🔮' : mood === 'calm' ? '🌊' : '🎯';
@@ -1172,14 +1172,14 @@ JarvisEngine.prototype.executeChat = function (message, callback) {
     response = 'A browser extension is a mini-program that runs inside Edge.\n\n' +
       'I\'m one — I live in your Edge sidebar, run 24/7 with a 873ms heartbeat, and give you AI on every page you visit.\n' +
       'The Sovereign Organism has 27 extensions total.\n\n' +
-      'To get me: download the .zip from download.html and drag it into edge://extensions, or run install-jarvis-edge.bat on Windows for one-click install.';
+      'To get me: download the .zip from download.html and drag it into edge://extensions, or run install-vigil-edge.bat on Windows for one-click install.';
 
   // ── 10. HOW DO UPDATES WORK ────────────────────────────────
   } else if (/how do (updates|update) work|automatic update|update jarvis|new version|sovereign update/i.test(text)) {
     response = 'JARVIS now has a sovereign auto-update system:\n\n' +
       '🔄 Every 4 hours, I check if a new version is available\n' +
       '📦 If there\'s an update, I store it and the side panel shows "Update Available"\n' +
-      '⚡ To apply: just run install-jarvis-edge.bat again — it downloads the latest zip and replaces everything automatically\n' +
+      '⚡ To apply: just run install-vigil-edge.bat again — it downloads the latest zip and replaces everything automatically\n' +
       '✅ No need to go find files. The .bat file is already on your computer — just run it.\n\n' +
       'Right now you\'re on v3.0.0.';
 
@@ -1942,7 +1942,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
               },
               {
                 keys: ['jarvis', 'who is jarvis', 'what is jarvis'],
-                title: 'JARVIS AI — Sovereign Assistant',
+                title: 'Vigil AI — Sovereign Assistant',
                 text: 'JARVIS is your AI sovereign assistant running natively in Microsoft Edge. No external models, no cloud calls. Tab control, notes, screen capture, search, document creation — all built in.'
               },
               {
@@ -1958,7 +1958,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
               {
                 keys: ['extension', 'browser extension', 'how to install'],
                 title: 'Installing Extensions',
-                text: 'Download the .zip from download.html, then drag it into Edge at edge://extensions (enable Developer Mode first). Or run install-jarvis-edge.bat for automatic one-click install.'
+                text: 'Download the .zip from download.html, then drag it into Edge at edge://extensions (enable Developer Mode first). Or run install-vigil-edge.bat for automatic one-click install.'
               },
               {
                 keys: ['manifest', 'manifest v3', 'mv3'],
@@ -1998,12 +1998,12 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
               {
                 keys: ['microsoft edge', 'edge', 'browser'],
                 title: 'Microsoft Edge Support',
-                text: 'JARVIS runs natively in Microsoft Edge (Chromium). Install via install-jarvis-edge.bat for one-click setup. No developer mode required.'
+                text: 'Vigil AI runs natively in Microsoft Edge (Chromium). Install via install-vigil-edge.bat for one-click setup. No developer mode required.'
               },
               {
                 keys: ['windows', 'download', 'install', 'installer'],
                 title: 'Windows Installation',
-                text: 'Download install-jarvis-edge.bat from the repo. Double-click it — it downloads the latest JARVIS zip, extracts it, and launches Edge with JARVIS loaded automatically.'
+                text: 'Download install-vigil-edge.bat from the repo. Double-click it — it downloads the latest Vigil AI zip, extracts it, and launches Edge with Vigil AI loaded automatically.'
               }
             ];
 
@@ -2116,10 +2116,10 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
           return;
         }
         // Auto-download the BAT installer
-        var batUrl = 'https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/install-jarvis-edge.bat';
+        var batUrl = 'https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/install-vigil-edge.bat';
         chrome.downloads.download({
           url: batUrl,
-          filename: 'install-jarvis-edge.bat',
+          filename: 'install-vigil-edge.bat',
           saveAs: false
         }, function (downloadId) {
           if (chrome.runtime.lastError) {
@@ -2127,38 +2127,38 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
             return;
           }
           // Mark as auto-installing
-          chrome.storage.local.set({ 'jarvis_autoinstall': { downloadId: downloadId, version: upd.remoteVersion, startedAt: Date.now() } });
+          chrome.storage.local.set({ 'vigil_autoinstall': { downloadId: downloadId, version: upd.remoteVersion, startedAt: Date.now() } });
           // Send Chrome notification
           var notifOptions = {
             type: 'basic',
             iconUrl: 'icons/icon128.png',
             title: 'JARVIS Auto-Update: v' + upd.currentVersion + ' → v' + upd.remoteVersion,
-            message: 'Installer downloaded to your Downloads folder. Double-click install-jarvis-edge.bat to complete the update. The bat will replace JARVIS and restart Edge automatically.',
+            message: 'Installer downloaded to your Downloads folder. Double-click install-vigil-edge.bat to complete the update. The bat will replace Vigil AI and restart Edge automatically.',
             priority: 2
           };
           try { chrome.notifications.create('jarvis-update-' + Date.now(), notifOptions); } catch (e) {}
-          sendResponse({ success: true, message: 'Installer downloaded. Run install-jarvis-edge.bat from your Downloads folder.', downloadId: downloadId, version: upd.remoteVersion });
+          sendResponse({ success: true, message: 'Installer downloaded. Run install-vigil-edge.bat from your Downloads folder.', downloadId: downloadId, version: upd.remoteVersion });
         });
       });
       break;
 
-    case 'downloadJarvisZip':
+    case 'downloadVigilZip':
       chrome.downloads.download({
-        url: 'https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/jarvis.zip',
-        filename: 'jarvis-extension.zip',
+        url: 'https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/vigil.zip',
+        filename: 'vigil-extension.zip',
         saveAs: false
       }, function (downloadId) {
-        sendResponse({ success: !chrome.runtime.lastError, downloadId: downloadId, message: chrome.runtime.lastError ? chrome.runtime.lastError.message : 'Downloading jarvis-extension.zip...' });
+        sendResponse({ success: !chrome.runtime.lastError, downloadId: downloadId, message: chrome.runtime.lastError ? chrome.runtime.lastError.message : 'Downloading vigil-extension.zip...' });
       });
       break;
 
-    case 'downloadJarvisBat':
+    case 'downloadVigilBat':
       chrome.downloads.download({
-        url: 'https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/install-jarvis-edge.bat',
-        filename: 'install-jarvis-edge.bat',
+        url: 'https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/install-vigil-edge.bat',
+        filename: 'install-vigil-edge.bat',
         saveAs: false
       }, function (downloadId) {
-        sendResponse({ success: !chrome.runtime.lastError, downloadId: downloadId, message: chrome.runtime.lastError ? chrome.runtime.lastError.message : 'Downloading install-jarvis-edge.bat...' });
+        sendResponse({ success: !chrome.runtime.lastError, downloadId: downloadId, message: chrome.runtime.lastError ? chrome.runtime.lastError.message : 'Downloading install-vigil-edge.bat...' });
       });
       break;
 
@@ -2184,7 +2184,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 
     if (!globalThis.jarvisEngine) {
       globalThis.jarvisEngine = new JarvisEngine();
-      console.log('[JARVIS] Engine re-initialized by keepalive alarm');
+      console.log('[Vigil AI] Engine re-initialized by keepalive alarm');
     }
 
     try {
@@ -2201,21 +2201,29 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 
   chrome.storage.local.get('jarvis_state', function (data) {
     if (data && data.jarvis_state) {
-      console.log('[JARVIS] Restored — last alive: ' + new Date(data.jarvis_state.lastAlive).toISOString());
+      console.log('[Vigil AI] Restored — last alive: ' + new Date(data.jarvis_state.lastAlive).toISOString());
     }
   });
 
-  chrome.runtime.onInstalled.addListener(function () {
+  chrome.runtime.onInstalled.addListener(function (details) {
     chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
     chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true }).catch(function () {});
-    console.log('[JARVIS] Installed — 24/7 keepalive active, side panel enabled');
+    console.log('[Vigil AI] Installed — 24/7 keepalive active, side panel enabled');
+    // Auto-open side panel on fresh install so the user sees it immediately
+    if (details.reason === 'install') {
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        if (tabs && tabs[0]) {
+          chrome.sidePanel.open({ windowId: tabs[0].windowId }).catch(function () {});
+        }
+      });
+    }
   });
 })();
 
 /* ----------------------------------------------------------
  *  Sovereign Auto-Update System
  *  Checks for new JARVIS version every 4 hours autonomously.
- *  No GitHub push needed — just run install-jarvis-edge.bat
+ *  No GitHub push needed — just run install-vigil-edge.bat
  *  when an update is detected.
  * ---------------------------------------------------------- */
 
@@ -2223,7 +2231,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   var UPDATE_ALARM = 'jarvis-sovereign-update';
   var UPDATE_PERIOD = 240; // 4 hours in minutes
   var MANIFEST_URL = 'https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/extensions/jarvis/manifest.json';
-  var BAT_URL = 'https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/install-jarvis-edge.bat';
+  var BAT_URL = 'https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/install-vigil-edge.bat';
   var CURRENT_VERSION = '3.1.0';
 
   function parseVersion(v) {
@@ -2243,7 +2251,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     // Auto-download the BAT installer silently
     chrome.downloads.download({
       url: BAT_URL,
-      filename: 'install-jarvis-edge.bat',
+      filename: 'install-vigil-edge.bat',
       saveAs: false
     }, function (downloadId) {
       var didError = !!chrome.runtime.lastError;
@@ -2260,8 +2268,8 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 
       // Send Chrome notification
       var msg = didError
-        ? 'Update to v' + remote + ' available — download install-jarvis-edge.bat manually and run it.'
-        : 'Installer downloaded to Downloads. Double-click install-jarvis-edge.bat — Edge will reload with v' + remote + ' automatically.';
+        ? 'Update to v' + remote + ' available — download install-vigil-edge.bat manually and run it.'
+        : 'Installer downloaded to Downloads. Double-click install-vigil-edge.bat — Edge will reload with v' + remote + ' automatically.';
       try {
         chrome.notifications.create('jarvis-update-' + Date.now(), {
           type: 'basic',
@@ -2272,7 +2280,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
         });
       } catch (e) { /* notifications may not be available */ }
 
-      console.log('[JARVIS] Sovereign auto-install: ' + (didError ? 'FAILED' : 'BAT downloaded, id=' + downloadId));
+      console.log('[Vigil AI] Sovereign auto-install: ' + (didError ? 'FAILED' : 'BAT downloaded, id=' + downloadId));
     });
   }
 
@@ -2282,15 +2290,15 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
       .then(function (data) {
         var remote = data.version || '0.0.0';
         if (isNewer(remote, CURRENT_VERSION)) {
-          console.log('[JARVIS] Sovereign update available: ' + CURRENT_VERSION + ' → ' + remote + '. Auto-installing...');
+          console.log('[Vigil AI] Sovereign update available: ' + CURRENT_VERSION + ' → ' + remote + '. Auto-installing...');
           autoInstallUpdate(remote);
         } else {
-          console.log('[JARVIS] Sovereign update check: up to date (' + CURRENT_VERSION + ')');
+          console.log('[Vigil AI] Sovereign update check: up to date (' + CURRENT_VERSION + ')');
           chrome.storage.local.set({ 'jarvis_update': { available: false, remoteVersion: remote, checkedAt: Date.now() } });
         }
       })
       .catch(function (e) {
-        console.log('[JARVIS] Sovereign update check failed (offline?): ' + e.message);
+        console.log('[Vigil AI] Sovereign update check failed (offline?): ' + e.message);
       });
   }
 

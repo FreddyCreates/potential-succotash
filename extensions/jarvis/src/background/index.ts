@@ -2822,10 +2822,16 @@ chrome.alarms.onAlarm.addListener((alarm) => {
   } catch { /* ignore */ }
 });
 
-chrome.runtime.onInstalled.addListener(() => {
+chrome.runtime.onInstalled.addListener((details) => {
   chrome.alarms.create(ALARM_NAME, { periodInMinutes: 0.4 });
   chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true }).catch(() => {});
   console.log('[VIGIL v14.0] Installed — 24/7 keepalive active, React+TypeScript build');
+  // Auto-open side panel on fresh install
+  if (details.reason === 'install') {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs?.[0]) chrome.sidePanel.open({ windowId: tabs[0].windowId }).catch(() => {});
+    });
+  }
 });
 
 /* ----------------------------------------------------------

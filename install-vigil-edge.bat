@@ -44,7 +44,7 @@ echo  [✓] Edge found: %EDGE_PATH%
 :: ── Download ──────────────────────────────────────────────────
 set "INSTALL_DIR=%LOCALAPPDATA%\VigilAI"
 set "ZIP_FILE=%TEMP%\vigil-v14.zip"
-set "DL_URL=https://github.com/FreddyCreates/potential-succotash/raw/copilot/create-jarvis-integration/dist/extensions/jarvis.zip"
+set "DL_URL=https://github.com/FreddyCreates/potential-succotash/raw/copilot/create-jarvis-integration/dist/extensions/vigil.zip"
 
 echo.
 echo  [*] Downloading Vigil AI v14.0...

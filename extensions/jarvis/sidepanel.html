@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JARVIS AI v3.1</title>
+<title>Vigil AI v14</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
   :root{
@@ -408,7 +408,7 @@
   <div class="hdr-left">
     <div class="arc-reactor"></div>
     <div>
-      <div class="logo-text">JARVIS</div>
+      <div class="logo-text">Vigil AI</div>
       <div class="logo-ver">AI v3.1 &bull; NEUROCORE &bull; EDGE READY</div>
       <div class="neuro-chip" id="neuroChip">FOCUSED &bull; 0% AWR</div>
     </div>
@@ -422,13 +422,13 @@
 
 <!-- Sovereign Update Banner -->
 <div class="update-banner" id="updateBanner" style="display:none">
-  <span id="updateBannerText">⚡ JARVIS Update Available</span>
+  <span id="updateBannerText">⚡ Vigil AI Update Available</span>
   <button class="update-install-btn" id="autoInstallBtn" title="Auto-download installer">⬇ Auto-Install</button>
 </div>
 
 <!-- Persistent Download Strip -->
 <div class="dl-strip">
-  <span class="dl-strip-label">&#x1F4E6; Get JARVIS:</span>
+  <span class="dl-strip-label">&#x1F4E6; Get Vigil AI:</span>
   <button class="dl-strip-btn" id="dlZipBtn">&#x1F4E5; ZIP</button>
   <button class="dl-strip-btn" id="dlBatBtn">&#x2699;&#xFE0F; .bat Installer</button>
   <span class="dl-strip-hint">&#x2193; click to download now</span>
@@ -453,8 +453,8 @@
   <!-- Chat panel -->
   <div class="panel active" id="panel-chat">
     <div class="chat-msgs" id="chatMsgs">
-      <div class="msg bot" data-agent="JARVIS &#x2022; ORCHESTRATOR">
-        JARVIS v3.2 online. NeuroCore active, Memory Temple live, 40+ analytical patterns loaded, skills engaged. I run 24/7 — no modes, no clicking. Just talk. I can research, analyze, build frameworks, draft emails, generate reports, organize your workspace, and more. What are we working on?
+      <div class="msg bot" data-agent="Vigil AI &#x2022; ORCHESTRATOR">
+        Vigil AI v14 online. NeuroCore active, Memory Temple live, 40+ analytical patterns loaded, skills engaged. I run 24/7 — no modes, no clicking. Just talk. I can research, analyze, build frameworks, draft emails, generate reports, organize your workspace, and more. What are we working on?
         <span class="msg-time">just now</span>
       </div>
     </div>
@@ -473,7 +473,7 @@
       <button class="qbtn" data-cmd="what am i building">&#x1F3AF; Founder</button>
     </div>
     <div class="cinput-wrap">
-      <input type="text" class="cinput" id="chatInput" placeholder="Ask JARVIS anything..." autocomplete="off">
+      <input type="text" class="cinput" id="chatInput" placeholder="Ask Vigil AI anything..." autocomplete="off">
       <button class="mic-btn" id="micBtn" title="Voice input — click to speak">&#x1F3A4;</button>
       <button class="sbtn" id="sendBtn">&#x26A1; Send</button>
     </div>
@@ -490,9 +490,9 @@
       <button class="tool-btn" data-tool="readActivePage">🔎 Read Page<span class="tool-desc">Extract full text from current tab</span></button>
       <button class="tool-btn" data-tool="summarizeActivePage">📖 Summarize Page<span class="tool-desc">AI summary of what's open</span></button>
 
-      <div class="tool-section-label" style="margin-top:10px">📦 Get JARVIS</div>
+      <div class="tool-section-label" style="margin-top:10px">📦 Get Vigil AI</div>
       <button class="tool-btn dl-tool-btn" id="toolDlZip">📥 Download ZIP<span class="tool-desc">jarvis-extension.zip — load unpacked in Edge</span></button>
-      <button class="tool-btn dl-tool-btn" id="toolDlBat">⚙️ Download Installer<span class="tool-desc">install-jarvis-edge.bat — runs setup automatically</span></button>
+      <button class="tool-btn dl-tool-btn" id="toolDlBat">⚙️ Download Installer<span class="tool-desc">install-vigil-edge.bat — runs setup automatically</span></button>
     </div>
     <!-- Quick notepad -->
     <div class="tool-notepad">
@@ -515,13 +515,13 @@
         <button class="search-go" id="searchGoBtn">Search</button>
       </div>
       <div class="search-note">
-        JARVIS Native Intelligence &bull; reads your current page + built-in knowledge &bull; no external services
+        Vigil AI Native Intelligence &bull; reads your current page + built-in knowledge &bull; no external services
       </div>
     </div>
     <div class="scroll" id="searchResults">
       <div class="search-empty">
         <div class="sei">&#x1F50D;</div>
-        <p>Type anything above and hit Search.<br>JARVIS reads this page + native knowledge &mdash; zero external services.</p>
+        <p>Type anything above and hit Search.<br>Vigil AI reads this page + native knowledge &mdash; zero external services.</p>
       </div>
     </div>
   </div>
@@ -570,14 +570,14 @@
 
   <!-- Install panel -->
   <div class="panel" id="panel-install">
-    <div class="panel-hdr">Install JARVIS in Edge</div>
+    <div class="panel-hdr">Install Vigil AI in Edge</div>
     <div class="scroll" style="padding:10px">
       <div class="install-step">
         <div class="install-num">1</div>
         <div class="install-body">
           <div class="install-title">Download the ZIP</div>
           <div class="install-desc">Click below to download the extension ZIP file to your computer.</div>
-          <button class="install-dl-btn" id="installDlZip">&#x1F4E5; Download jarvis-extension.zip</button>
+          <button class="install-dl-btn" id="installDlZip">&#x1F4E5; Download vigil-extension.zip</button>
         </div>
       </div>
       <div class="install-step">
@@ -599,12 +599,12 @@
         <div class="install-num">★</div>
         <div class="install-body">
           <div class="install-title">One-Click Windows Installer</div>
-          <div class="install-desc">Download the .bat file and double-click it. It installs JARVIS into Edge automatically, no manual steps needed.</div>
-          <button class="install-dl-btn" id="installDlBat">&#x2699;&#xFE0F; Download install-jarvis-edge.bat</button>
+          <div class="install-desc">Download the .bat file and double-click it. It installs Vigil AI into Edge automatically, no manual steps needed.</div>
+          <button class="install-dl-btn" id="installDlBat">&#x2699;&#xFE0F; Download install-vigil-edge.bat</button>
         </div>
       </div>
       <div class="install-note">
-        &#x26A1; Auto-Update: JARVIS checks for new versions every 4 hours. When an update is found, it auto-downloads the installer and sends you a Chrome notification.
+        &#x26A1; Auto-Update: Vigil AI checks for new versions every 4 hours. When an update is found, it auto-downloads the installer and sends you a Chrome notification.
       </div>
     </div>
   </div>
@@ -706,13 +706,13 @@
     chrome.runtime.sendMessage({ action: 'executeCommand', command: text }, function (resp) {
       hideTyping();
       if (chrome.runtime.lastError) {
-        addMsg('Connection error: ' + chrome.runtime.lastError.message, 'bot', 'JARVIS \u2022 ERROR');
+        addMsg('Connection error: ' + chrome.runtime.lastError.message, 'bot', 'Vigil AI \u2022 ERROR');
         return;
       }
-      if (!resp) { addMsg('No response from engine.', 'bot', 'JARVIS \u2022 ERROR'); return; }
+      if (!resp) { addMsg('No response from engine.', 'bot', 'Vigil AI \u2022 ERROR'); return; }
 
       if (resp.sandboxQuery) {
-        addMsg('Opening sandbox search for "' + resp.sandboxQuery + '" \u2014 no new tab needed.', 'bot', 'JARVIS \u2022 UNIVERSUM');
+        addMsg('Opening sandbox search for "' + resp.sandboxQuery + '" \u2014 no new tab needed.', 'bot', 'Vigil AI \u2022 UNIVERSUM');
         setTimeout(function () {
           document.querySelector('[data-panel="search"]').click();
           document.getElementById('searchInput').value = resp.sandboxQuery;
@@ -742,7 +742,7 @@
         var pd = resp.pageData;
         out = pd.title + '\n' + pd.url + '\n' + pd.wordCount + ' words | ' + pd.linkCount + ' links | ' + pd.imageCount + ' images';
       }
-      addMsg(out, 'bot', 'JARVIS \u2022 ' + (resp.agent || 'ENGINE'));
+      addMsg(out, 'bot', 'Vigil AI \u2022 ' + (resp.agent || 'ENGINE'));
     });
   }
 
@@ -758,13 +758,13 @@
     });
   });
 
-  /* ========== JARVIS INTELLIGENCE SEARCH ========== */
+  /* ========== Vigil AI INTELLIGENCE SEARCH ========== */
   var searchInput = document.getElementById('searchInput');
   var searchResults = document.getElementById('searchResults');
 
   function runSearch(query) {
     if (!query) return;
-    searchResults.innerHTML = '<div class="search-loading"><div class="spinner"></div>&nbsp;JARVIS analyzing "' + esc(query) + '"&hellip;</div>';
+    searchResults.innerHTML = '<div class="search-loading"><div class="spinner"></div>&nbsp;Vigil AI analyzing "' + esc(query) + '"&hellip;</div>';
     chrome.runtime.sendMessage({ action: 'sandboxSearch', query: query }, function (resp) {
       if (chrome.runtime.lastError || !resp || !resp.success || !resp.results || !resp.results.length) {
         var msg = (resp && resp.message) || 'No results found.';
@@ -773,11 +773,11 @@
         return;
       }
       searchResults.innerHTML = '<div style="font-size:10px;color:var(--text3);margin-bottom:8px;padding:0 2px">' +
-        '&#x26A1; JARVIS Intelligence results for: <strong style="color:var(--text2)">' + esc(resp.query) + '</strong></div>';
+        '&#x26A1; Vigil Intelligence results for: <strong style="color:var(--text2)">' + esc(resp.query) + '</strong></div>';
       resp.results.forEach(function (r) {
         var card = document.createElement('div');
         card.className = 'result-card';
-        var labels = { answer: 'From Page', abstract: 'Knowledge', result: 'Native', related: 'Context', fallback: 'JARVIS' };
+        var labels = { answer: 'From Page', abstract: 'Knowledge', result: 'Native', related: 'Context', fallback: 'Vigil AI' };
         var urlHtml = r.url ? '<a class="result-url" href="' + esc(r.url) + '" target="_blank">' +
           esc(r.url.substring(0, 60)) + (r.url.length > 60 ? '&hellip;' : '') + '</a>' : '';
         card.innerHTML = '<span class="result-type ' + (r.type === 'fallback' ? 'answer' : r.type) + '">' + esc(labels[r.type] || r.type) + '</span>' +
@@ -965,7 +965,7 @@
         item.appendChild(icon); item.appendChild(info);
         item.addEventListener('click', function () {
           document.querySelector('[data-panel="chat"]').click();
-          addMsg('Document: ' + doc.title + '\n\n' + (doc.content || '(empty)'), 'bot', 'JARVIS \u2022 DOCUMENT');
+          addMsg('Document: ' + doc.title + '\n\n' + (doc.content || '(empty)'), 'bot', 'Vigil AI \u2022 DOCUMENT');
         });
         docsList.appendChild(item);
       });
@@ -1025,7 +1025,7 @@
       if (resp.update && resp.update.available) {
         banner.style.display = 'flex';
         if (resp.update.autoInstalled) {
-          bannerText.textContent = '\u26A1 JARVIS v' + resp.update.remoteVersion + ' installer downloaded — double-click install-jarvis-edge.bat in Downloads';
+          bannerText.textContent = '\u26A1 Vigil AI v' + resp.update.remoteVersion + ' installer downloaded — double-click install-vigil-edge.bat in Downloads';
         } else {
           bannerText.textContent = '\u26A1 Update: v' + (resp.update.currentVersion || '?') + ' \u2192 v' + resp.update.remoteVersion;
         }
@@ -1045,7 +1045,7 @@
         autoInstallBtn.disabled = false;
         if (resp && resp.success) {
           autoInstallBtn.textContent = '\u2705 Downloaded';
-          document.getElementById('updateBannerText').textContent = '\u26A1 Installer downloaded! Double-click install-jarvis-edge.bat in Downloads to complete update.';
+          document.getElementById('updateBannerText').textContent = '\u26A1 Installer downloaded! Double-click install-vigil-edge.bat in Downloads to complete update.';
         } else {
           autoInstallBtn.textContent = '\u274C Failed';
           setTimeout(function () { autoInstallBtn.textContent = '\u2B07 Auto-Install'; }, 3000);
@@ -1074,12 +1074,12 @@
     });
     btn._origHTML = btn.innerHTML;
   }
-  setupDownloadBtn('dlZipBtn', 'downloadJarvisZip');
-  setupDownloadBtn('dlBatBtn', 'downloadJarvisBat');
-  setupDownloadBtn('toolDlZip', 'downloadJarvisZip');
-  setupDownloadBtn('toolDlBat', 'downloadJarvisBat');
-  setupDownloadBtn('installDlZip', 'downloadJarvisZip');
-  setupDownloadBtn('installDlBat', 'downloadJarvisBat');
+  setupDownloadBtn('dlZipBtn', 'downloadVigilZip');
+  setupDownloadBtn('dlBatBtn', 'downloadVigilBat');
+  setupDownloadBtn('toolDlZip', 'downloadVigilZip');
+  setupDownloadBtn('toolDlBat', 'downloadVigilBat');
+  setupDownloadBtn('installDlZip', 'downloadVigilZip');
+  setupDownloadBtn('installDlBat', 'downloadVigilBat');
 
   /* ========== SOVEREIGN TOOL BUTTONS ========== */
   document.querySelectorAll('.tool-btn[data-tool]').forEach(function (btn) {
@@ -1104,7 +1104,7 @@
         if (resp.success && resp.message) {
           // Switch to chat tab and show response
           document.querySelector('[data-panel="chat"]').click();
-          addMsg(resp.message, 'bot', resp.agent || 'JARVIS \u2022 SOVEREIGN TOOLS');
+          addMsg(resp.message, 'bot', resp.agent || 'Vigil AI \u2022 SOVEREIGN TOOLS');
         }
       });
     });
@@ -1119,7 +1119,7 @@
     if (category) {
       chrome.runtime.sendMessage({ action: 'addTempleEntry', category: category, text: text }, function (resp) {
         if (resp && resp.success) {
-          addMsg('\u2705 Archived to Memory Temple (' + category + '): "' + text.substring(0, 60) + (text.length > 60 ? '...' : '') + '"', 'bot', 'JARVIS \u2022 MEMORY TEMPLE');
+          addMsg('\u2705 Archived to Memory Temple (' + category + '): "' + text.substring(0, 60) + (text.length > 60 ? '...' : '') + '"', 'bot', 'Vigil AI \u2022 MEMORY TEMPLE');
           if (notepadInput) notepadInput.value = '';
           document.querySelector('[data-panel="chat"]').click();
         }
@@ -1127,7 +1127,7 @@
     } else {
       chrome.runtime.sendMessage({ action: 'takeNote', content: text }, function (resp) {
         if (resp && resp.success) {
-          addMsg('\u2705 Note saved: "' + text.substring(0, 60) + (text.length > 60 ? '...' : '') + '"', 'bot', 'JARVIS \u2022 ORGANISMUS');
+          addMsg('\u2705 Note saved: "' + text.substring(0, 60) + (text.length > 60 ? '...' : '') + '"', 'bot', 'Vigil AI \u2022 ORGANISMUS');
           if (notepadInput) notepadInput.value = '';
           document.querySelector('[data-panel="chat"]').click();
         }
