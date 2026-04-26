@@ -594,54 +594,106 @@ class JarvisEngine {
   }
 
   /* ── Compound multi-action parser ────────────────────────── */
-  // When someone says "deploy agents on X, open a writing tab, and let's start working" in one breath,
-  // Jarvis detects every action, fires them all at once, and returns one flowing response.
-  // Falls back to the single-intent chain if fewer than 2 distinct action types are found.
+  // Detects every action-verb-object sequence in a single message and fires them all at once.
+  // Detection is table-driven: adding a new primitive = one new row, nothing else.
+  // Falls back to the single-intent chain if fewer than 2 distinct primitives are found.
 
   private _tryCompoundActions(
     raw: string, text: string, mood: string, awareness: number,
     callback: (r: { success: boolean; message: string; agent: string; mood: string; awareness: number }) => void
   ): boolean {
 
-    type ActionItem = { type: string; topic?: string; url?: string };
+    type ActionItem = { type: string; topic?: string };
+
+    // ── Primitive detection table ─────────────────────────────
+    // Each entry: { type, match: verb+object RegExp, topicHint?: capture group RegExp }
+    // The last non-empty capture group of topicHint becomes the topic.
+    const PRIMITIVES: { type: string; match: RegExp; topicHint?: RegExp }[] = [
+      // Agent / worker deployment
+      {
+        type: 'agent',
+        match: /\b(deploy|send\s*out|launch|fire\s*off|dispatch|spin\s*up|get)\b.{0,40}\b(agent|worker|researcher|scout|crawler|bot)\b|research\s*agent|web\s*worker/i,
+        topicHint: /\b(?:research(?:ing)?|on|about|for)\s+(?:the\s+latest\s+)?(.+?)(?:\s+and\b|\s+while\b|\s+then\b|\s*[,.]|$)/i,
+      },
+      // Open a new tab/window
+      {
+        type: 'open_tab',
+        match: /\b(open|create|pull\s*up)\b.{0,20}\b(new\s+)?(tab|window)\b|\bnew\s+(tab|window)\b/i,
+      },
+      // Write / draft / compose
+      {
+        type: 'write',
+        match: /\b(write\s*up|start\s*writing|let'?s\s*write|writing\s*tab|start\s*working\s*on|work\s*on|new\s*(?:doc|document|note|research)|draft|compose)\b/i,
+        topicHint: /\b(?:on|about|for|working\s*on)\s+(.+?)(?:\s+and\b|\s+while\b|\s+then\b|\s*[,.]|$)/i,
+      },
+      // Scan / read / analyze current page
+      {
+        type: 'read_page',
+        match: /\b(scan|read|look\s*at|check|analyze|pull\s*up)\b.{0,25}\b(this|the)\b.{0,20}\b(page|site|url|link|webpage)\b|\bthis\s+webpage\b|\brun\s+this\s+theory\b/i,
+      },
+      // Canister / ICP / Spinner
+      {
+        type: 'canister',
+        match: /\b(canister|canisters|icp|internet\s*computer|spinner)\b|\bspin.{0,20}cryptograph/i,
+      },
+      // Check builds / agent status
+      {
+        type: 'build_check',
+        match: /\b(check|inspect|look\s*at)\b.{0,25}\b(build|builds|status|progress)\b|build\s*status|check\s*on\s*(these|them|the\s*builds?)|report\s*back\b/i,
+      },
+      // Search for information
+      {
+        type: 'search',
+        match: /\b(search\s*for|find\s*(?:info|information|results)\s*(?:on|about|for)?|look\s*up|pull\s*up\s*(?:info|results))\b/i,
+        topicHint: /\b(?:search(?:ing)?\s*(?:for)?|look\s*up|find)\s+(.+?)(?:\s+and\b|\s+while\b|\s+then\b|\s*[,.]|$)/i,
+      },
+      // Navigate to a URL
+      {
+        type: 'navigate',
+        match: /\b(go\s*to|navigate\s*to|open)\s+https?:\/\/\S+|\b(go\s*to|navigate\s*to)\b.{0,25}\b(site|page|url|link)\b/i,
+        topicHint: /(https?:\/\/\S+)/i,
+      },
+      // Set a timer / reminder
+      {
+        type: 'timer',
+        match: /\b(set\s*(?:a\s*)?timer|remind\s*me|set\s*an?\s*alarm)\b.{0,30}\b(\d+\s*(?:min|minute|hour|sec|second))/i,
+        topicHint: /(\d+\s*(?:min|minute|hour|sec|second)[a-z]*)/i,
+      },
+      // Screenshot
+      {
+        type: 'screenshot',
+        match: /\b(screenshot|capture\s*(?:the\s*)?screen|grab\s*(?:a\s*)?screenshot|snap\s*(?:a\s*)?screenshot)\b/i,
+      },
+      // Quick note
+      {
+        type: 'note',
+        match: /\b(note\s*that|save\s*this|remember\s*this|jot\s*(?:this\s*)?down|take\s*a\s*note)\b/i,
+        topicHint: /\b(?:note\s*that|save\s*this[:\s]+|jot\s*down[:\s]+)\s*(.+?)(?:\s+and\b|\s*[,.]|$)/i,
+      },
+      // Run / test a theory / hypothesis
+      {
+        type: 'theory',
+        match: /\b(run\s*(?:this\s*)?theory|test\s*(?:this\s*)?hypothesis|explore\s*(?:this\s*)?idea|work\s*(?:on|through)\s*(?:a\s*)?theory)\b/i,
+        topicHint: /\b(?:theory|hypothesis|idea)\s+(?:about\s+)?(.+?)(?:\s+and\b|\s*[,.]|$)/i,
+      },
+    ];
+
+    // Run every primitive against the input
     const detected: ActionItem[] = [];
-
-    // Agent / worker deploy
-    if (/\b(deploy|spin up|send|launch|fire off|dispatch)\b.{0,25}\b(agent|worker|researcher|scout|crawler)\b|research agent|web worker/i.test(text)) {
-      const topicM = text.match(/research(?:ing)?\s+(?:on\s+)?(.+?)(?:\s+and\b|\s+while\b|\s*,|\s*\.|$)/i);
-      detected.push({ type: 'agent', topic: topicM?.[1]?.trim() || 'latest AI developments' });
-    }
-
-    // Open tab / writing tab (only if not already 'write' which opens its own tab)
-    if (/open\s+(up\s+)?(a\s+)?(new\s+)?(tab|window)|new\s+tab/i.test(text)) {
-      detected.push({ type: 'open_tab' });
-    }
-
-    // Start writing / new doc / write up something
-    if (/start\s+(writing|working|building|drafting)|write\s+up|let'?s\s+(write|start|work\s+on)|new\s+research|writing\s+tab|new\s+(doc|document|note)/i.test(text)) {
-      const topicM = text.match(/(?:on|about|for)\s+(.+?)(?:\s+and\b|\s+while\b|\s*,|\s*\.|$)/i);
-      detected.push({ type: 'write', topic: topicM?.[1]?.trim() });
-    }
-
-    // Scan / read / look at the current page
-    if (/scan\s+this|read\s+(this|the)\s+page|look\s+at\s+this|check\s+(this\s+)?page|run\s+this\s+theory|this\s+webpage/i.test(text)) {
-      detected.push({ type: 'read_page' });
-    }
-
-    // Canister / ICP / Spinner
-    if (/canister|internet\s+computer|spinner|cryptograph|spin.*into|icp\b/i.test(text)) {
-      detected.push({ type: 'canister' });
-    }
-
-    // Check builds / build status
-    if (/check\s+(on\s+)?(these\s+|the\s+)?build|build\s+status|report\s+back|check\s+on\s+(these|them)/i.test(text)) {
-      detected.push({ type: 'build_check' });
+    const seenTypes = new Set<string>();
+    for (const p of PRIMITIVES) {
+      if (p.match.test(text) && !seenTypes.has(p.type)) {
+        seenTypes.add(p.type);
+        const topicM = p.topicHint ? text.match(p.topicHint) : null;
+        const topic = topicM ? topicM.slice(1).filter(Boolean).pop()?.trim() : undefined;
+        detected.push({ type: p.type, topic });
+      }
     }
 
     // Not compound — let the single-intent chain handle it
     if (detected.length < 2) return false;
 
-    // ── Fire every action ─────────────────────────────────────
+    // ── Execute every detected action ─────────────────────────
     const parts: string[] = [];
 
     for (const action of detected) {
@@ -652,7 +704,7 @@ class JarvisEngine {
           chrome.runtime.sendMessage({
             action: 'deployAgent', agentType: 'researcher',
             mission: 'Research: ' + topic, target: topic,
-          }, () => { /* completion handled by _agentComplete push */ });
+          }, () => {});
           parts.push('sent a research agent out on "' + topic + '"');
           break;
         }
@@ -664,11 +716,8 @@ class JarvisEngine {
         }
 
         case 'write': {
-          // Open a blank tab as a writing space
           chrome.tabs.create({ url: 'chrome://newtab/' });
-          if (action.topic) {
-            this.executeTakeNote('# ' + action.topic + '\n\n', () => {});
-          }
+          if (action.topic) this.executeTakeNote('# ' + action.topic + '\n\n', () => {});
           parts.push('opened a writing space' + (action.topic ? ' for "' + action.topic + '"' : ''));
           break;
         }
@@ -677,7 +726,6 @@ class JarvisEngine {
           chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             if (tabs[0]?.id) {
               this.executeSummarize(tabs[0].id, (result) => {
-                // Push scan result back to the chat panel as a follow-up
                 chrome.runtime.sendMessage({
                   action: 'jarvis-status',
                   status: { message: result.message, agent: 'JARVIS', type: 'page-scan' },
@@ -685,7 +733,7 @@ class JarvisEngine {
               });
             }
           });
-          parts.push('scanning this page — will report back what I find');
+          parts.push('scanning this page — will report back');
           break;
         }
 
@@ -700,7 +748,7 @@ class JarvisEngine {
             const running = agents.filter(a => a.status === 'running');
             const complete = agents.filter(a => a.status === 'complete');
             const statusMsg = agents.length === 0
-              ? 'everything\'s idle right now'
+              ? 'everything\'s idle'
               : running.length + ' running, ' + complete.length + ' done' +
                 (running.length > 0 ? ' — ' + running.map(a => a.mission.substring(0, 40)).join('; ') : '');
             chrome.runtime.sendMessage({
@@ -711,18 +759,61 @@ class JarvisEngine {
           parts.push('checking on the builds — update incoming');
           break;
         }
+
+        case 'search': {
+          const q = action.topic || 'latest developments';
+          this.executeSearch(q, () => {});
+          parts.push('searching for "' + q + '"');
+          break;
+        }
+
+        case 'navigate': {
+          const url = action.topic || '';
+          if (url.startsWith('http')) {
+            chrome.tabs.create({ url });
+            parts.push('opening ' + url);
+          }
+          break;
+        }
+
+        case 'timer': {
+          const dur = action.topic || '5 minutes';
+          this.executeChat('set timer ' + dur, () => {});
+          parts.push('timer set for ' + dur);
+          break;
+        }
+
+        case 'screenshot': {
+          this.executeScreenshot(() => {});
+          parts.push('capturing a screenshot');
+          break;
+        }
+
+        case 'note': {
+          const noteText = action.topic || raw;
+          this.executeTakeNote(noteText, () => {});
+          parts.push('saved a note');
+          break;
+        }
+
+        case 'theory': {
+          const t = action.topic || raw;
+          this.executeChat('theory ' + t, () => {});
+          parts.push('running that theory');
+          break;
+        }
       }
     }
 
-    // ── Build one flowing sentence ────────────────────────────
-    const openers = ['On it.', 'Already moving.', 'Done.', 'Got it.'];
+    // ── One flowing response ──────────────────────────────────
+    const openers = ['On it.', 'Already moving.', 'Done.', 'Got it.', 'Moving.'];
     const opener = openers[Math.floor(Math.random() * openers.length)];
     const actionStr = parts.length === 1
       ? parts[0]
       : parts.slice(0, -1).join(', ') + ', and ' + parts[parts.length - 1];
     const closing = /you and me|me and you|\bus\b|together/i.test(text)
-      ? ' Talk to me — what are we building first?'
-      : ' What\'s on your mind?';
+      ? ' Talk to me.'
+      : '';
 
     callback({
       success: true,

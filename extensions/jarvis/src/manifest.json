@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Jarvis AI",
-  "version": "7.0.0",
-  "description": "JARVIS v7 — AGI-class sovereign AI with parallel web workers, 9 agent types, and deep web crawling.",
+  "version": "9.0.0",
+  "description": "JARVIS v9 — sovereign AI with compound multi-action dispatch, 12 primitive detectors, PSE synthesis, and 40-category brain.",
   "permissions": [
     "activeTab",
     "storage",
