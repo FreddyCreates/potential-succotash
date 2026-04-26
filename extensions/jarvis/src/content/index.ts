@@ -395,6 +395,36 @@
   }
 
   /* ----------------------------------------------------------
+   *  Clipboard Intelligence — copy event → Jarvis analysis
+   *  Every time the user copies text on a page, Jarvis captures it
+   *  and pushes analysis to Inbox + stages raw content in Mirror.
+   * ---------------------------------------------------------- */
+
+  let _lastClipText = '';
+  let _clipThrottle = 0;
+
+  document.addEventListener('copy', function () {
+    // Throttle: don't fire if same text was just sent within 2s
+    const now = Date.now();
+    if (now - _clipThrottle < 2000) return;
+
+    // Get selected text (available right after copy event fires)
+    const selected = (window.getSelection()?.toString() || '').trim();
+    if (!selected || selected.length < 5) return;
+    if (selected === _lastClipText) return;
+
+    _lastClipText  = selected;
+    _clipThrottle  = now;
+
+    chrome.runtime.sendMessage({
+      action: 'clipboardCopy',
+      text:   selected.substring(0, 2000),
+      url:    window.location.href,
+      title:  document.title || window.location.hostname,
+    });
+  });
+
+  /* ----------------------------------------------------------
    *  Message Listener
    * ---------------------------------------------------------- */
 

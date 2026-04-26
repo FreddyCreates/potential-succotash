@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Jarvis AI",
-  "version": "10.0.0",
-  "description": "JARVIS v10 - 16 primitives, Command Surface, live agent feed, one-tap actions, page awareness, mission dispatch for Windows Edge.",
+  "version": "12.0.0",
+  "description": "JARVIS v12 — Inbox proactive briefs, clipboard intel, smart Mirror, real fetch+analyze, Journal, Files, Vault, Prompts.",
   "permissions": [
     "activeTab",
     "storage",

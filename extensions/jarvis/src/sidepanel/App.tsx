@@ -16,10 +16,12 @@ import NexusPanel from './panels/NexusPanel';
 import MirrorPanel from './panels/MirrorPanel';
 import VaultPanel from './panels/VaultPanel';
 import PromptsPanel from './panels/PromptsPanel';
+import InboxPanel from './panels/InboxPanel';
 
 const TABS = [
   { id: 'chat',      label: '💬 Chat' },
   { id: 'nexus',     label: '⚡ Nexus' },
+  { id: 'inbox',     label: '📥 Inbox' },
   { id: 'mirror',    label: '🪞 Mirror' },
   { id: 'agents',    label: '🤖 Agents' },
   { id: 'agi',       label: '⚗️ AGI Tools' },
@@ -66,6 +68,7 @@ export default function App() {
     switch (activePanel) {
       case 'nexus':     return <NexusPanel />;
       case 'chat':      return <ChatPanel />;
+      case 'inbox':     return <InboxPanel />;
       case 'mirror':    return <MirrorPanel />;
       case 'agents':    return <AgentsPanel />;
       case 'agi':       return <AGIToolsPanel />;
@@ -105,7 +108,7 @@ export default function App() {
           <span className="animate-heartbeat text-cyan-400 text-lg">⚡</span>
           <div>
             <span className="font-bold text-white tracking-widest text-sm">J.A.R.V.I.S</span>
-            <span className="ml-2 text-xs text-purple-400">v10.0</span>
+            <span className="ml-2 text-xs text-purple-400">v12.0</span>
           </div>
         </div>
         <div className="flex items-center gap-2">

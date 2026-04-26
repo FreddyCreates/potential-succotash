@@ -1,5 +1,5 @@
 /**
- * MirrorPanel — JARVIS v11
+ * MirrorPanel — JARVIS v12
  *
  * Jarvis's virtual display canvas. He can push any content here —
  * agent reports, text summaries, image URLs, web URLs — for the user
@@ -8,11 +8,20 @@
  *
  * Content sources:
  *  - Auto: every completed agent pushes its report here (_agentComplete)
+ *  - Auto: clipboard copy on any page → pushed here immediately
  *  - Auto: background sends _mirrorPush for any explicit show request
+ *  - Manual: user can "Fetch & Analyze" — Jarvis actually fetches + parses the URL
  *  - Manual: user can load any URL into the iframe canvas
+ *
+ * Smart actions on any item:
+ *  → Research  deploy a researcher agent on this content
+ *  → Analyze   send to Chat for deep analysis
+ *  → Expand    ask Jarvis to go deeper
+ *  → Note      save to Journal with context
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { useJarvisStore } from '../../store';
 
 /* ── Types ─────────────────────────────────────────────────────────────────── */
 
@@ -31,11 +40,14 @@ interface MirrorItem {
 /* ── MirrorPanel ────────────────────────────────────────────────────────────── */
 
 export default function MirrorPanel() {
+  const { setActivePanel } = useJarvisStore();
+
   const [items, setItems]         = useState<MirrorItem[]>([]);
   const [cursor, setCursor]       = useState(0);
   const [urlInput, setUrlInput]   = useState('');
   const [copyDone, setCopyDone]   = useState(false);
   const [noteSaved, setNoteSaved] = useState(false);
+  const [fetching, setFetching]   = useState(false);
 
   /* ── Push a new item to the front of the stack ── */
   const push = useCallback((item: MirrorItem) => {
@@ -85,13 +97,47 @@ export default function MirrorPanel() {
     return () => chrome.runtime.onMessage.removeListener(listener);
   }, [push]);
 
-  /* ── Load a URL into the canvas ── */
+  /* ── Load a URL into the canvas (iframe) ── */
   const loadUrl = () => {
     const raw = urlInput.trim();
     if (!raw) return;
     const url = raw.startsWith('http') ? raw : 'https://' + raw;
     push({ id: 'url-' + Date.now(), type: 'url', title: url, content: url, pushedAt: Date.now(), author: 'User' });
     setUrlInput('');
+  };
+
+  /* ── Fetch & analyze a URL using Jarvis's real scraper ── */
+  const fetchAndAnalyze = () => {
+    const raw = urlInput.trim();
+    if (!raw || fetching) return;
+    const url = raw.startsWith('http') ? raw : 'https://' + raw;
+    setFetching(true);
+    setUrlInput('');
+    push({
+      id: 'fetch-' + Date.now(), type: 'text',
+      title: '⏳ Fetching ' + url.substring(0, 50) + '…',
+      content: 'Jarvis is fetching and analyzing this URL. Report will appear here when ready.',
+      pushedAt: Date.now(), author: 'JARVIS',
+    });
+    chrome.runtime.sendMessage({ action: 'agiSummarize', url }, (resp) => {
+      setFetching(false);
+      const result = resp?.success ? resp.message : ('Fetch failed: ' + (resp?.message || 'Unknown error'));
+      // Replace the spinner item with the real result
+      setItems(prev => {
+        const updated = [...prev];
+        const spinnerIdx = updated.findIndex(i => i.title.startsWith('⏳ Fetching'));
+        if (spinnerIdx !== -1) {
+          updated[spinnerIdx] = {
+            ...updated[spinnerIdx],
+            id: 'fetched-' + Date.now(),
+            title: '📄 ' + url.split('/')[2],
+            content: result,
+            meta: url,
+          };
+        }
+        return updated;
+      });
+    });
   };
 
   /* ── Save current item to notes ── */
@@ -120,6 +166,40 @@ export default function MirrorPanel() {
       if (cursor >= next.length && cursor > 0) setCursor(cursor - 1);
       return next;
     });
+  };
+
+  /* ── Smart actions — send content to Jarvis for work ── */
+  const smartResearch = () => {
+    const item = items[cursor];
+    if (!item) return;
+    const topic = item.title.replace(/^[📄📋🤖⏳✅🌐💡⚡]\s*/, '').substring(0, 80);
+    chrome.runtime.sendMessage({
+      action: 'deployAgent',
+      agentType: 'researcher',
+      mission: 'Research: ' + topic,
+      target: item.meta || topic,
+    });
+    setActivePanel('agents');
+  };
+
+  const smartAnalyze = () => {
+    const item = items[cursor];
+    if (!item) return;
+    chrome.runtime.sendMessage({
+      action: 'executeCommand',
+      command: 'analyze: ' + item.title + '\n\n' + item.content.substring(0, 600),
+    });
+    setActivePanel('chat');
+  };
+
+  const smartExpand = () => {
+    const item = items[cursor];
+    if (!item) return;
+    chrome.runtime.sendMessage({
+      action: 'executeCommand',
+      command: 'expand and go deeper on: ' + item.title + '\n\n' + item.content.substring(0, 400),
+    });
+    setActivePanel('chat');
   };
 
   const current = items[cursor];
@@ -156,22 +236,34 @@ export default function MirrorPanel() {
       </div>
 
       {/* ── URL loader ── */}
-      <div className="flex gap-1.5 px-3 py-1.5 border-b border-gray-800/40 bg-gray-900/20 flex-shrink-0">
-        <input
-          type="text"
-          value={urlInput}
-          onChange={e => setUrlInput(e.target.value)}
-          onKeyDown={e => e.key === 'Enter' && loadUrl()}
-          placeholder="Load URL in canvas…"
-          className="flex-1 bg-gray-800 border border-gray-700 rounded px-2 py-1 text-xs text-gray-200 placeholder-gray-600 outline-none focus:border-cyan-700 transition-colors"
-        />
-        <button
-          onClick={loadUrl}
-          disabled={!urlInput.trim()}
-          className="px-2 py-1 bg-cyan-800 hover:bg-cyan-700 disabled:bg-gray-700 disabled:text-gray-500 text-white rounded transition-colors text-[10px]"
-        >
-          Go
-        </button>
+      <div className="flex flex-col gap-1 px-3 py-1.5 border-b border-gray-800/40 bg-gray-900/20 flex-shrink-0">
+        <div className="flex gap-1.5">
+          <input
+            type="text"
+            value={urlInput}
+            onChange={e => setUrlInput(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && fetchAndAnalyze()}
+            placeholder="URL to fetch & analyze…"
+            className="flex-1 bg-gray-800 border border-gray-700 rounded px-2 py-1 text-xs text-gray-200 placeholder-gray-600 outline-none focus:border-cyan-700 transition-colors"
+          />
+          <button
+            onClick={fetchAndAnalyze}
+            disabled={!urlInput.trim() || fetching}
+            title="Jarvis fetches, reads, and summarizes the URL"
+            className="px-2 py-1 bg-cyan-800 hover:bg-cyan-700 disabled:bg-gray-700 disabled:text-gray-500 text-white rounded transition-colors text-[10px] whitespace-nowrap"
+          >
+            {fetching ? '⏳' : '⚡ Fetch'}
+          </button>
+          <button
+            onClick={loadUrl}
+            disabled={!urlInput.trim() || fetching}
+            title="Load URL in iframe canvas"
+            className="px-2 py-1 bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 disabled:text-gray-600 text-gray-300 rounded transition-colors text-[10px]"
+          >
+            🖼
+          </button>
+        </div>
+        <p className="text-[9px] text-gray-700">⚡ Fetch = Jarvis reads + summarizes. 🖼 = iframe canvas.</p>
       </div>
 
       {/* ── Main canvas ── */}
@@ -249,31 +341,60 @@ export default function MirrorPanel() {
 
       {/* ── Actions bar ── */}
       {current && (
-        <div className="flex gap-1.5 px-3 py-1.5 border-t border-gray-800/60 bg-gray-900/30 flex-shrink-0">
-          <button
-            onClick={copyContent}
-            className={`flex-1 text-[10px] py-1 rounded transition-colors ${
-              copyDone ? 'bg-green-800/60 text-green-300' : 'bg-gray-800 hover:bg-gray-700 text-gray-300'
-            }`}
-          >
-            {copyDone ? '✓ Copied' : '📋 Copy'}
-          </button>
-          {current.type !== 'url' && (
+        <div className="border-t border-gray-800/60 bg-gray-900/30 flex-shrink-0">
+          {/* Smart actions row */}
+          {(current.type === 'text' || current.type === 'report') && (
+            <div className="flex gap-1 px-3 py-1 border-b border-gray-800/30">
+              <button
+                onClick={smartResearch}
+                title="Deploy a researcher agent on this content"
+                className="flex-1 text-[9px] py-0.5 bg-blue-900/30 hover:bg-blue-900/50 text-blue-300 rounded transition-colors"
+              >
+                🔬 Research
+              </button>
+              <button
+                onClick={smartAnalyze}
+                title="Send to Chat for deep analysis"
+                className="flex-1 text-[9px] py-0.5 bg-purple-900/30 hover:bg-purple-900/50 text-purple-300 rounded transition-colors"
+              >
+                📊 Analyze
+              </button>
+              <button
+                onClick={smartExpand}
+                title="Ask Jarvis to expand and go deeper"
+                className="flex-1 text-[9px] py-0.5 bg-green-900/30 hover:bg-green-900/50 text-green-300 rounded transition-colors"
+              >
+                🔭 Expand
+              </button>
+            </div>
+          )}
+          {/* Standard actions row */}
+          <div className="flex gap-1.5 px-3 py-1.5">
             <button
-              onClick={saveToNotes}
+              onClick={copyContent}
               className={`flex-1 text-[10px] py-1 rounded transition-colors ${
-                noteSaved ? 'bg-green-800/60 text-green-300' : 'bg-gray-800 hover:bg-gray-700 text-gray-300'
+                copyDone ? 'bg-green-800/60 text-green-300' : 'bg-gray-800 hover:bg-gray-700 text-gray-300'
               }`}
             >
-              {noteSaved ? '✓ Saved' : '📒 Save to Notes'}
+              {copyDone ? '✓ Copied' : '📋 Copy'}
             </button>
-          )}
-          <button
-            onClick={removeItem}
-            className="text-[10px] py-1 px-2 bg-red-900/30 hover:bg-red-900/50 text-red-400 rounded transition-colors"
-          >
-            🗑
-          </button>
+            {current.type !== 'url' && (
+              <button
+                onClick={saveToNotes}
+                className={`flex-1 text-[10px] py-1 rounded transition-colors ${
+                  noteSaved ? 'bg-green-800/60 text-green-300' : 'bg-gray-800 hover:bg-gray-700 text-gray-300'
+                }`}
+              >
+                {noteSaved ? '✓ Saved' : '📓 Journal'}
+              </button>
+            )}
+            <button
+              onClick={removeItem}
+              className="text-[10px] py-1 px-2 bg-red-900/30 hover:bg-red-900/50 text-red-400 rounded transition-colors"
+            >
+              🗑
+            </button>
+          </div>
         </div>
       )}
     </div>

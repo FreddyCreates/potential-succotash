@@ -1,5 +1,5 @@
 /* ============================================================
- *  JARVIS AI — Background Service Worker v10.0
+ *  JARVIS AI — Background Service Worker v12.0
  *  React + TypeScript + Vite architecture
  * ============================================================ */
 
@@ -19,6 +19,33 @@ const PHI = 1.618033988749895;
 const HEARTBEAT = 873;
 const NEURO_PHI = 1.618033988749895;
 const NEURO_DECAY = 0.95;
+
+/* ----------------------------------------------------------
+ *  Inbox — Jarvis's proactive outbox to the user
+ *  In-memory, capped at 100 items per session.
+ * ---------------------------------------------------------- */
+
+type InboxCategory = 'tab' | 'agent' | 'clipboard' | 'insight' | 'alert';
+
+interface InboxItem {
+  id: string;
+  category: InboxCategory;
+  title: string;
+  body: string;
+  meta?: string;
+  timestamp: number;
+  read: boolean;
+}
+
+const _inbox: InboxItem[] = [];
+const MAX_INBOX = 100;
+
+function pushToInbox(item: Omit<InboxItem, 'id' | 'read'>) {
+  const entry: InboxItem = { ...item, id: 'i-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6), read: false };
+  _inbox.unshift(entry);
+  if (_inbox.length > MAX_INBOX) _inbox.pop();
+  chrome.runtime.sendMessage({ action: '_inboxPush', item: entry }).catch(() => {});
+}
 
 /* ----------------------------------------------------------
  *  NeuroCore — MiniHeart + MiniBrain + MetaCardiacModel + MetaThoughtModel
@@ -2402,6 +2429,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             content: { type: 'report', title: data.name + ' Report', data: reportContent, meta: data.mission },
           }).catch(() => {});
         }
+        // Also push to Inbox so user sees it in the feed
+        pushToInbox({
+          category: 'agent',
+          title: '🤖 ' + data.name + ' — ' + (data.status === 'complete' ? 'Mission Complete' : data.status),
+          body: data.mission + (reportContent ? '\n\n' + reportContent.substring(0, 400) + (reportContent.length > 400 ? '…' : '') : ''),
+          meta: 'Report staged in Mirror',
+          timestamp: Date.now(),
+        });
       };
       const result = dispatcher.deploy(type, mission, target, notify, complete);
       if ('error' in result) {
@@ -2466,7 +2501,63 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       break;
     }
 
-    default: sendResponse({ success: false, error: 'Unknown action: ' + (message.action as string) });
+    /* -- v12 Inbox + Clipboard intelligence ---------------------- */
+    case 'listInbox':
+      sendResponse({ success: true, items: _inbox });
+      break;
+    case 'clearInbox':
+      _inbox.length = 0;
+      sendResponse({ success: true });
+      break;
+    case 'markInboxRead': {
+      const target = _inbox.find(i => i.id === (message.id as string));
+      if (target) target.read = true;
+      sendResponse({ success: true });
+      break;
+    }
+    case 'dismissInbox': {
+      const idx = _inbox.findIndex(i => i.id === (message.id as string));
+      if (idx !== -1) _inbox.splice(idx, 1);
+      sendResponse({ success: true });
+      break;
+    }
+    case 'clipboardCopy': {
+      /* Content script fires this when user copies text on any page */
+      const clipText  = (message.text as string) || '';
+      const clipUrl   = (message.url as string) || '';
+      const clipTitle = (message.title as string) || 'Unknown page';
+      if (!clipText.trim() || clipText.length < 5) { sendResponse({ success: true }); break; }
+
+      /* Classify the clipboard content */
+      const isUrl  = /^https?:\/\//i.test(clipText.trim());
+      const isCode = /function\s*\(|const\s+\w|=>|import\s+|class\s+\w|\bdef\s+\w|\bpublic\s+class/i.test(clipText);
+      const wordCount = clipText.trim().split(/\s+/).length;
+      let hint = '';
+      if (isUrl)        hint = '🔗 URL detected — say "fetch this" in Chat or use ⚡ Fetch in Mirror.';
+      else if (isCode)  hint = '💻 Code detected — say "review this code" or "explain this" in Chat.';
+      else if (wordCount > 100) hint = `📄 ${wordCount} words captured — say "summarize this" or "analyze this" in Chat.`;
+      else              hint = '💬 Text captured — say "research this", "expand this", or "what does this mean?" in Chat.';
+
+      const body = clipText.substring(0, 300) + (clipText.length > 300 ? '…' : '') + '\n\n' + hint;
+
+      /* Push to Inbox */
+      pushToInbox({
+        category: 'clipboard',
+        title: '📋 Clipboard — ' + clipTitle.substring(0, 50),
+        body,
+        meta: clipUrl,
+        timestamp: Date.now(),
+      });
+
+      /* Stage in Mirror */
+      chrome.runtime.sendMessage({
+        action: '_mirrorPush',
+        content: { type: 'text', title: '📋 Clipboard from ' + (clipUrl ? clipUrl.split('/')[2] : clipTitle), data: clipText, meta: clipUrl },
+      }).catch(() => {});
+
+      sendResponse({ success: true });
+      break;
+    }
   }
 
   return true; // keep channel open for async responses
@@ -2559,8 +2650,21 @@ chrome.tabs.onActivated.addListener(({ tabId }) => {
     if (isSearch) context = 'Detecting a search query — want me to assist with research?';
     else if (isGitHub) context = 'GitHub repository detected — I can read the page or generate a code summary.';
     else if (isYouTube) context = 'Video content detected — I can summarize the description if you need it.';
-    // Push tab-change awareness to sidepanel
+    // Push tab-change awareness to sidepanel (ChatPanel etc.)
     chrome.runtime.sendMessage({ action: '_tabChanged', title, url: tab.url, context }).catch(() => {});
+    // Also push a brief to Inbox — Jarvis auto-briefs on every tab switch
+    const domain = tab.url.split('/')[2] || tab.url;
+    const bodyLines = [
+      'You navigated to: ' + title,
+      context || 'Say "read this page" or "summarize this" to get Jarvis working on it.',
+    ];
+    pushToInbox({
+      category: 'tab',
+      title: '🌐 ' + domain,
+      body: bodyLines.join('\n\n'),
+      meta: tab.url,
+      timestamp: Date.now(),
+    });
   });
 });
 
