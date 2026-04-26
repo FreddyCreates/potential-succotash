@@ -12,24 +12,29 @@ import InstallPanel from './panels/InstallPanel';
 import LogPanel from './panels/LogPanel';
 import AgentsPanel from './panels/AgentsPanel';
 import AGIToolsPanel from './panels/AGIToolsPanel';
+import NexusPanel from './panels/NexusPanel';
 
 const TABS = [
-  { id: 'chat', label: '💬 Chat' },
-  { id: 'agents', label: '🤖 Agents' },
-  { id: 'agi', label: '⚗️ AGI Tools' },
+  { id: 'chat',      label: '💬 Chat' },
+  { id: 'nexus',     label: '⚡ Nexus' },
+  { id: 'agents',    label: '🤖 Agents' },
+  { id: 'agi',       label: '⚗️ AGI Tools' },
   { id: 'workspace', label: '📝 Workspace' },
-  { id: 'tools', label: '🔧 Tools' },
-  { id: 'search', label: '🔍 Search' },
-  { id: 'screen', label: '🖥️ Screen' },
-  { id: 'tabs', label: '🗂️ Tabs' },
-  { id: 'notes', label: '📒 Notes' },
-  { id: 'docs', label: '📄 Docs' },
-  { id: 'install', label: '⬇ Install' },
-  { id: 'log', label: '📋 Log' },
+  { id: 'tools',     label: '🔧 Tools' },
+  { id: 'search',    label: '🔍 Search' },
+  { id: 'screen',    label: '🖥️ Screen' },
+  { id: 'tabs',      label: '🗂️ Tabs' },
+  { id: 'notes',     label: '📒 Notes' },
+  { id: 'docs',      label: '📄 Docs' },
+  { id: 'install',   label: '⬇ Install' },
+  { id: 'log',       label: '📋 Log' },
 ];
 
 export default function App() {
-  const { activePanel, setActivePanel, heartbeatCount, uptime, commandCount, mood, awareness, memTurns, setStatus } = useJarvisStore();
+  const {
+    activePanel, setActivePanel, heartbeatCount, uptime,
+    commandCount, mood, awareness, memTurns, setStatus,
+  } = useJarvisStore();
 
   useEffect(() => {
     const poll = () => {
@@ -53,19 +58,20 @@ export default function App() {
 
   const renderPanel = () => {
     switch (activePanel) {
-      case 'chat': return <ChatPanel />;
-      case 'agents': return <AgentsPanel />;
-      case 'agi': return <AGIToolsPanel />;
+      case 'nexus':     return <NexusPanel />;
+      case 'chat':      return <ChatPanel />;
+      case 'agents':    return <AgentsPanel />;
+      case 'agi':       return <AGIToolsPanel />;
       case 'workspace': return <WorkspacePanel />;
-      case 'tools': return <ToolsPanel />;
-      case 'search': return <SearchPanel />;
-      case 'screen': return <ScreenPanel />;
-      case 'tabs': return <TabsPanel />;
-      case 'notes': return <NotesPanel />;
-      case 'docs': return <DocsPanel />;
-      case 'install': return <InstallPanel />;
-      case 'log': return <LogPanel />;
-      default: return <ChatPanel />;
+      case 'tools':     return <ToolsPanel />;
+      case 'search':    return <SearchPanel />;
+      case 'screen':    return <ScreenPanel />;
+      case 'tabs':      return <TabsPanel />;
+      case 'notes':     return <NotesPanel />;
+      case 'docs':      return <DocsPanel />;
+      case 'install':   return <InstallPanel />;
+      case 'log':       return <LogPanel />;
+      default:          return <ChatPanel />;
     }
   };
 
@@ -77,6 +83,11 @@ export default function App() {
     return (h > 0 ? h + 'h ' : '') + m + 'm ' + sec + 's';
   })();
 
+  const moodDot = mood === 'energized' ? 'bg-yellow-400'
+    : mood === 'reflective' ? 'bg-purple-400'
+    : mood === 'calm'       ? 'bg-blue-400'
+    : 'bg-cyan-400';
+
   return (
     <div className="flex flex-col h-screen bg-gray-950 text-gray-100 text-sm overflow-hidden">
       {/* Header */}
@@ -85,11 +96,11 @@ export default function App() {
           <span className="animate-heartbeat text-cyan-400 text-lg">⚡</span>
           <div>
             <span className="font-bold text-white tracking-widest text-sm">J.A.R.V.I.S</span>
-            <span className="ml-2 text-xs text-purple-400">v7.0</span>
+            <span className="ml-2 text-xs text-purple-400">v10.0</span>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <span className={`inline-block w-2 h-2 rounded-full ${mood === 'energized' ? 'bg-yellow-400' : mood === 'reflective' ? 'bg-purple-400' : mood === 'calm' ? 'bg-blue-400' : 'bg-cyan-400'} animate-pulse`} title={'Mood: ' + mood} />
+          <span className={`inline-block w-2 h-2 rounded-full ${moodDot} animate-pulse`} title={'Mood: ' + mood} />
           <span className="text-xs text-gray-500 capitalize">{mood}</span>
         </div>
       </div>

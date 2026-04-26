@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Jarvis AI",
-  "version": "9.0.0",
-  "description": "JARVIS v9 — sovereign AI with compound multi-action dispatch, 12 primitive detectors, PSE synthesis, and 40-category brain.",
+  "version": "10.0.0",
+  "description": "JARVIS v10 - 16 primitives, Command Surface, live agent feed, one-tap actions, page awareness, mission dispatch for Windows Edge.",
   "permissions": [
     "activeTab",
     "storage",

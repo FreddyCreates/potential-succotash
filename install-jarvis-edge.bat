@@ -1,5 +1,5 @@
 @echo off
-title JARVIS AI v9.0 - Windows Edge Installer
+title JARVIS AI v10.0 - Windows Edge Installer
 color 0B
 cls
 
@@ -9,9 +9,9 @@ echo  ║                                                              ║
 echo  ║      ░░░░░░░  J.A.R.V.I.S  ░░░░░░░                         ║
 echo  ║      Just A Rather Very Intelligent System                   ║
 echo  ║                                                              ║
-echo  ║      VERSION  9.0  ──  SOVEREIGN EDGE EDITION               ║
-echo  ║      Compound dispatch · 12 primitives · PSE synthesis       ║
-echo  ║      40-category brain · Full side panel · Iron Man          ║
+echo  ║      VERSION  10.0  ──  SOVEREIGN NEXUS EDITION             ║
+echo  ║      16 primitives · Command Surface · Live agent feed       ║
+echo  ║      One-tap actions · Page awareness · Full side panel      ║
 echo  ║                                                              ║
 echo  ╚══════════════════════════════════════════════════════════════╝
 echo.
@@ -43,11 +43,11 @@ echo  [✓] Edge found: %EDGE_PATH%
 
 :: ── Download ──────────────────────────────────────────────────
 set "INSTALL_DIR=%LOCALAPPDATA%\JarvisAI"
-set "ZIP_FILE=%TEMP%\jarvis-v9.zip"
+set "ZIP_FILE=%TEMP%\jarvis-v10.zip"
 set "DL_URL=https://github.com/FreddyCreates/potential-succotash/raw/copilot/create-jarvis-integration/dist/extensions/jarvis.zip"
 
 echo.
-echo  [*] Downloading JARVIS v9.0...
+echo  [*] Downloading JARVIS v10.0...
 
 powershell -NoProfile -ExecutionPolicy Bypass -Command ^
   "try { Invoke-WebRequest -Uri '%DL_URL%' -OutFile '%ZIP_FILE%' -UseBasicParsing; Write-Host '  [OK] Download complete.' } catch { Write-Host '  [ERR] ' + $_.Exception.Message; exit 1 }"
@@ -88,9 +88,10 @@ cls
 echo.
 echo  ╔══════════════════════════════════════════════════════════════╗
 echo  ║                                                              ║
-echo  ║   JARVIS AI v9.0  ──  ONLINE                                ║
+echo  ║   JARVIS AI v10.0  ──  ONLINE                               ║
 echo  ║                                                              ║
-echo  ║   Compound dispatch · Talk naturally · He does the rest      ║
+echo  ║   Command Surface · Live agents · One-tap actions           ║
+echo  ║   Talk naturally · He does the rest                         ║
 echo  ║                                                              ║
 echo  ╚══════════════════════════════════════════════════════════════╝
 echo.
@@ -100,13 +101,21 @@ echo    1. Look for the puzzle-piece icon in the Edge toolbar
 echo    2. Find "Jarvis AI" — click the pin icon
 echo    3. Or: press  Ctrl+Shift+Y  to open the side panel
 echo.
+echo  THE NEXUS COMMAND SURFACE (tap the "Nexus" tab):
+echo.
+echo    - 12 one-tap action tiles: research, read page, note, PDF, search...
+echo    - Live agent feed showing what's running right now
+echo    - Active page awareness — see the current tab, hit "Read it"
+echo    - Type a topic and fire any action in one tap
+echo.
 echo  TALKING TO JARVIS (examples):
 echo.
-echo    "Deploy researchers on AI, open a writing tab, and scan this page"
+echo    "Deploy a researcher on AI, open a writing tab, and scan this page"
 echo    "Set a 10-minute timer, take a note on this theory, check builds"
-echo    "Hey Jarvis — spin up canisters and start working on architecture"
+echo    "Dispatch mission: crawl this site and synthesize the findings"
+echo    "Hey — domain AI report, pse stats, and screenshot"
 echo.
-echo  He hears everything. No commands. No rules. Just talk.
+echo  He hears everything. No commands needed. Just talk.
 echo.
 echo  Extension installed at:  %INSTALL_DIR%
 echo.
