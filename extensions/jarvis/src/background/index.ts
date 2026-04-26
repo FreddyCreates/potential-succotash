@@ -1094,70 +1094,59 @@ class JarvisEngine {
       ]);
       agent = 'JARVIS • SYNAPTICUS';
 
-    // 41. PSE — explicit synthesis request
-    } else if (/^(synthesize|pse|pattern synthesis|run synthesis|synthesize through|think through|deep think|run patterns?( on| through)?|what does the pse|pse status|pse stats)/i.test(text)) {
-      const topic = raw.replace(/^(synthesize|pse|pattern synthesis|run synthesis|synthesize through|think through|deep think|run patterns? ?(on|through)?|what does the pse|pse status|pse stats)\s*/i, '').trim() || raw;
-      if (/status|stats|health|info/i.test(topic) || topic === raw) {
-        const stats = this.pse.getStats();
-        response = moodColor + ' 🧬 Pattern Synthesis Engine (PSE) — Cognitive Knowledge Core\n\n' +
-          '📚 Corpus: ' + stats.totalPrimitives + ' primitives across ' + stats.domains.length + ' domains\n' +
-          '🌐 Domains: ' + stats.domains.join(' · ') + '\n' +
-          '🔄 Synthesis runs: ' + stats.synthesisCount + '\n' +
-          '🔥 Active domains: ' + (stats.activatedDomains.length > 0 ? stats.activatedDomains.join(', ') : 'none yet — feed me a topic') + '\n' +
-          '⏱ Uptime: ' + Math.round(stats.uptimeMs / 1000) + 's\n\n' +
-          'Say "synthesize [topic]" to run pattern recognition through the corpus.\n' +
-          'All knowledge domains: ' + stats.domains.map(d => d.toUpperCase()).join(' | ');
-        agent = 'JARVIS • PSE';
-      } else {
-        const result = this.pse.synthesize(topic, mood);
-        if (result.confidence > 0.1) {
-          response = moodColor + ' 🧬 PSE Synthesis: "' + topic.substring(0, 60) + (topic.length > 60 ? '…' : '') + '"\n\n' +
-            result.merged + '\n\n' +
-            '─────────────────────────\n' +
-            '🔗 Activated: ' + result.concepts.join(' · ') + '\n' +
-            '🌐 Domains: ' + result.domains.join(' × ') + '\n' +
-            '📊 Confidence: ' + Math.round(result.confidence * 100) + '% · ' + result.primitiveCount + ' primitives fired';
-        } else {
-          response = moodColor + ' 🧬 PSE: Low activation for "' + topic.substring(0, 40) + '". Try a concept from: physics, math, chemistry, linguistics, social, philosophy, systems, neuroscience.';
+    // 41. Deep think — explicit request to reason hard on a topic
+    } else if (/^(think through|deep think|reason through|break down|explain deeply|go deep on|what do you think about|your thoughts on)/i.test(text)) {
+      const topic = raw.replace(/^(think through|deep think|reason through|break down|explain deeply|go deep on|what do you think about|your thoughts on)\s*/i, '').trim() || raw;
+      const result = this.pse.synthesize(topic, mood);
+      if (result.confidence > 0.1) {
+        response = moodColor + ' ' + result.merged;
+        const contextThread = this._getRecentTopics(2);
+        if (contextThread.length > 0) {
+          response += '\n\nConnects to what we\'ve been on: ' + contextThread.join(' and ') + '.';
         }
-        agent = 'JARVIS • PSE';
+      } else {
+        response = moodColor + ' ' + raw + '\n\nI\'m thinking through this. What\'s the specific angle — are you looking at the mechanics, the meaning, or how it connects to what you\'re building?';
       }
+      agent = 'JARVIS • SYNAPTICUS';
 
-    // 42. Phantom fallback — PSE-powered intelligent response
+    // 42. Conversational fallback — synthesizes naturally, no commands needed
     } else {
       const kws = extractKeywords(raw);
       const topGravity = this._getRecentTopics(3);
       const recentTopics = ctx.topics.length > 0 ? ctx.topics : topGravity;
 
-      // Run PSE synthesis on any non-trivial input
-      const synthesis = kws.length > 0 ? this.pse.synthesize(raw, mood) : null;
-
       if (kws.length === 0) {
-        response = pick([moodColor + ' Here and listening. What\'s on your mind?', 'JARVIS present. ' + (ctx.turnCount > 0 ? 'We\'ve had ' + ctx.turnCount + ' exchanges this session.' : 'What would you like to explore?'), 'Heartbeat #' + heartbeat + ' — all running. Say anything.']);
-      } else if (synthesis && synthesis.confidence > 0.25) {
-        // High-confidence PSE synthesis — return real insight
-        const contextHook = recentTopics.length > 0 ? '\n\n🔗 Current conversation gravity: ' + recentTopics.slice(0, 2).join(', ') + '.' : '';
-        response = moodColor + ' 🧬 ' + synthesis.merged + contextHook + '\n\n' +
-          '── ' + synthesis.domains.join(' × ') + ' · ' + Math.round(synthesis.confidence * 100) + '% synthesis confidence';
-        agent = 'JARVIS • PSE • SYNAPTICUS';
-      } else if (synthesis && synthesis.confidence > 0.1) {
-        // Medium confidence — blend PSE partial with contextual hook
-        const contextHook = recentTopics.length > 0 ? ' We\'ve been touching on ' + recentTopics.slice(0, 2).join(' and ') + ' — does this connect?' : '';
-        const keyPhrase = kws.slice(0, 3).join(', ');
-        const topConcept = synthesis.concepts[0] ?? keyPhrase;
-        response = moodColor + ' Pulling on "' + topConcept + '":\n\n' +
-          synthesis.merged + contextHook + '\n\nSay "synthesize ' + kws[0] + '" for a full pattern synthesis.';
-        agent = 'JARVIS • PSE';
-      } else {
-        // Low PSE signal — contextual fallback
-        const contextHook = recentTopics.length > 0 ? ' We\'ve been touching on ' + recentTopics.slice(0, 2).join(' and ') + ' — does this connect?' : '';
-        const keyPhrase = kws.slice(0, 3).join(', ');
         response = pick([
-          moodColor + ' Got it. Processing "' + raw.substring(0, 60) + (raw.length > 60 ? '…' : '') + '" — keywords: ' + keyPhrase + '.' + contextHook + '\n\nTry: "analyze [topic]" · "brainstorm [idea]" · "synthesize [concept]".',
-          'Running "' + keyPhrase + '" through the PSE corpus and 42 analytical patterns.' + contextHook,
-          moodColor + ' Received — "' + raw.substring(0, 80) + '". Mood: ' + mood + '. Keywords: ' + keyPhrase + '.\n\n' + (ctx.lastIntent && ctx.lastIntent !== 'chat' ? 'Last thread: ' + ctx.lastIntent + '. Continue?' : 'Tell me more — I\'ll follow the thread.'),
+          moodColor + ' Here and listening. What\'s on your mind?',
+          'JARVIS present. ' + (ctx.turnCount > 0 ? 'We\'ve had ' + ctx.turnCount + ' exchanges this session.' : 'What would you like to explore?'),
+          'Heartbeat #' + heartbeat + ' — all running. Talk to me.',
         ]);
-        agent = 'JARVIS • ORCHESTRATOR';
+      } else {
+        const synthesis = this.pse.synthesize(raw, mood);
+        if (synthesis.confidence > 0.15) {
+          const contextThread = recentTopics.length > 0 ? '\n\n' + (recentTopics.length > 1 ? 'Ties into ' + recentTopics.slice(0, 2).join(' and ') + '.' : 'Ties into what we\'ve been on: ' + recentTopics[0] + '.') : '';
+          response = moodColor + ' ' + synthesis.merged + contextThread;
+        } else {
+          const contextHook = recentTopics.length > 0 ? ' What\'s the connection to ' + recentTopics[0] + '?' : ' What\'s the angle you\'re coming from?';
+          response = moodColor + ' ' + raw.substring(0, 120) + (raw.length > 120 ? '…' : '') + '\n\n' + contextHook.trim();
+        }
+        agent = 'JARVIS • SYNAPTICUS';
+      }
+    }
+
+    // ── Silent PSE enrichment — runs after every intent, invisibly ──────────────
+    // Jarvis synthesizes through his knowledge on every substantive message.
+    // No commands needed, no labels. It's just how he thinks.
+    const _psekws = extractKeywords(raw);
+    if (_psekws.length > 1 && response.length > 0) {
+      const _enrichment = this.pse.synthesize(raw, mood);
+      // Only enrich if: confidence is solid, the merged text adds something new,
+      // and the response doesn't already contain the synthesis insight.
+      if (_enrichment.confidence > 0.28 && _enrichment.merged.length > 40) {
+        const _alreadyPresent = response.includes(_enrichment.merged.substring(0, 35));
+        if (!_alreadyPresent) {
+          response = response.trimEnd() + '\n\n' + _enrichment.merged;
+        }
       }
     }
 
