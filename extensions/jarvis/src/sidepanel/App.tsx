@@ -14,21 +14,32 @@ import TabsPanel from './panels/TabsPanel';
 import InstallPanel from './panels/InstallPanel';
 import LogPanel from './panels/LogPanel';
 
-// Agents and AGI moved to front (closer to Chat/Inbox)
-const TABS = [
+// CNS sections — each group is a logical nervous-system layer
+type TabDef = { id: string; label: string; section?: string };
+const TABS: TabDef[] = [
+  // ── COMMAND ─ primary operator surface ──────────────────────
+  { id: '_cmd',      label: '── COMMAND',  section: 'divider' },
   { id: 'chat',      label: '💬 Chat' },
   { id: 'inbox',     label: '📥 Inbox' },
+  { id: 'screen',    label: '🖥️ Control' },
+  { id: 'tabs',      label: '🗂️ Tabs' },
+  // ── INTELLIGENCE ─ agents, search, AGI ──────────────────────
+  { id: '_intel',    label: '── INTEL',    section: 'divider' },
   { id: 'agents',    label: '🤖 Agents' },
   { id: 'agi',       label: '⚗️ AGI' },
+  { id: 'search',    label: '🔍 Search' },
+  // ── MIND ─ memory, learning, monitoring ─────────────────────
+  { id: '_mind',     label: '── MIND',     section: 'divider' },
+  { id: 'memory',    label: '🧠 Memory' },
   { id: 'solus',     label: '🔵 Solus' },
   { id: 'sentry',    label: '🛡 Sentry' },
-  { id: 'memory',    label: '🧠 Memory Vault' },
+  // ── ARCHIVE ─ documents, workspace ──────────────────────────
+  { id: '_archive',  label: '── ARCHIVE',  section: 'divider' },
   { id: 'workspace', label: '📁 Workspace' },
-  { id: 'search',    label: '🔍 Search' },
-  { id: 'screen',    label: '🖥️ Screen' },
-  { id: 'tabs',      label: '🗂️ Tabs' },
-  { id: 'install',   label: '⬇ Install' },
+  // ── SYSTEM ──────────────────────────────────────────────────
+  { id: '_sys',      label: '── SYS',      section: 'divider' },
   { id: 'log',       label: '📋 Log' },
+  { id: 'install',   label: '⬇ Install' },
 ];
 
 export default function App() {
@@ -100,7 +111,7 @@ export default function App() {
           <span className="animate-heartbeat text-amber-400 text-lg">⚡</span>
           <div className="flex items-center gap-2">
             <span className="font-bold text-white tracking-[0.25em] text-sm">V I G I L</span>
-            <span className="text-[10px] px-1.5 py-0.5 rounded border font-bold" style={{ borderColor: '#d4a017', color: '#d4a017' }}>v15</span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded border font-bold" style={{ borderColor: '#d4a017', color: '#d4a017' }}>CNS</span>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -109,22 +120,35 @@ export default function App() {
         </div>
       </div>
 
-      {/* Nav tabs — scrollable */}
+      {/* Nav tabs — scrollable with CNS section labels */}
       <div className="flex overflow-x-auto scrollbar-hide flex-shrink-0" style={{ background: '#13100a', borderBottom: '1px solid #2d2010' }}>
-        {TABS.map((t) => (
-          <button
-            key={t.id}
-            onClick={() => setActivePanel(t.id)}
-            className={`flex-shrink-0 px-2.5 py-1.5 text-xs transition-colors whitespace-nowrap ${
-              activePanel === t.id
-                ? 'border-b-2'
-                : 'text-gray-500 hover:text-gray-300'
-            }`}
-            style={activePanel === t.id ? { color: '#d4a017', borderBottomColor: '#d4a017', background: '#0d0b08' } : {}}
-          >
-            {t.label}
-          </button>
-        ))}
+        {TABS.map((t) => {
+          if (t.section === 'divider') {
+            return (
+              <span
+                key={t.id}
+                className="flex-shrink-0 px-2 py-1.5 text-[9px] font-bold tracking-widest select-none"
+                style={{ color: '#5a4a20', borderRight: '1px solid #2d2010', whiteSpace: 'nowrap' }}
+              >
+                {t.label}
+              </span>
+            );
+          }
+          return (
+            <button
+              key={t.id}
+              onClick={() => setActivePanel(t.id)}
+              className={`flex-shrink-0 px-2.5 py-1.5 text-xs transition-colors whitespace-nowrap ${
+                activePanel === t.id
+                  ? 'border-b-2'
+                  : 'text-gray-500 hover:text-gray-300'
+              }`}
+              style={activePanel === t.id ? { color: '#d4a017', borderBottomColor: '#d4a017', background: '#0d0b08' } : {}}
+            >
+              {t.label}
+            </button>
+          );
+        })}
       </div>
 
       {/* Main panel */}

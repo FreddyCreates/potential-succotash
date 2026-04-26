@@ -2785,6 +2785,308 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         .catch(e => sendResponse({ success: false, message: (e as Error).message }));
       break;
     }
+
+    /* ═══════════════════════════════════════════════════════════
+     *  VIGIL CNS — Screen Control Mode command handlers
+     *  All commands dispatched from ScreenPanel Control Mode
+     * ═══════════════════════════════════════════════════════════ */
+
+    // ── Tab Control ────────────────────────────────────────────
+    case 'openTab':
+      engine.executeTabOpen((message.value as string) || 'chrome://newtab', r => sendResponse(r));
+      break;
+    case 'closeTab':
+      engine.executeTabClose(null, r => sendResponse(r));
+      break;
+    case 'reloadTab':
+      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+        if (tabs[0]?.id) chrome.tabs.reload(tabs[0].id, () => sendResponse({ success: true, message: 'Reloaded: ' + tabs[0].title }));
+        else sendResponse({ success: false, message: 'No active tab' });
+      });
+      break;
+    case 'duplicateTab':
+      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+        if (tabs[0]?.id) chrome.tabs.duplicate(tabs[0].id, t => sendResponse({ success: true, message: 'Duplicated: ' + (t?.title || '') }));
+        else sendResponse({ success: false, message: 'No active tab' });
+      });
+      break;
+    case 'pinTab':
+      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+        if (tabs[0]?.id) chrome.tabs.update(tabs[0].id, { pinned: !tabs[0].pinned }, t => sendResponse({ success: true, message: (t?.pinned ? 'Pinned' : 'Unpinned') + ': ' + (t?.title || '') }));
+        else sendResponse({ success: false, message: 'No active tab' });
+      });
+      break;
+    case 'muteTab':
+      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+        if (tabs[0]?.id) chrome.tabs.update(tabs[0].id, { muted: !tabs[0].mutedInfo?.muted }, t => sendResponse({ success: true, message: (t?.mutedInfo?.muted ? 'Muted' : 'Unmuted') + ': ' + (t?.title || '') }));
+        else sendResponse({ success: false, message: 'No active tab' });
+      });
+      break;
+
+    // ── Navigation ─────────────────────────────────────────────
+    case 'navigate': {
+      const navUrl = ((message.value as string) || '').trim();
+      if (!navUrl) { sendResponse({ success: false, message: 'No URL provided' }); break; }
+      const fullUrl = navUrl.includes('://') ? navUrl : 'https://' + navUrl;
+      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+        if (tabs[0]?.id) chrome.tabs.update(tabs[0].id, { url: fullUrl }, () => sendResponse({ success: true, message: 'Navigating to: ' + fullUrl }));
+        else chrome.tabs.create({ url: fullUrl }, () => sendResponse({ success: true, message: 'Opened: ' + fullUrl }));
+      });
+      break;
+    }
+    case 'webSearch': {
+      const sq = encodeURIComponent((message.value as string) || '');
+      chrome.tabs.create({ url: 'https://www.google.com/search?q=' + sq }, () => sendResponse({ success: true, message: 'Searching: ' + decodeURIComponent(sq) }));
+      break;
+    }
+    case 'navBack':
+      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+        if (tabs[0]?.id) chrome.scripting.executeScript({ target: { tabId: tabs[0].id }, func: () => history.back() }, () => sendResponse({ success: true, message: 'Went back' }));
+        else sendResponse({ success: false, message: 'No active tab' });
+      });
+      break;
+    case 'navForward':
+      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+        if (tabs[0]?.id) chrome.scripting.executeScript({ target: { tabId: tabs[0].id }, func: () => history.forward() }, () => sendResponse({ success: true, message: 'Went forward' }));
+        else sendResponse({ success: false, message: 'No active tab' });
+      });
+      break;
+    case 'scrollDown':
+      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+        if (tabs[0]?.id) chrome.scripting.executeScript({ target: { tabId: tabs[0].id }, func: () => window.scrollBy({ top: 400, behavior: 'smooth' }) }, () => sendResponse({ success: true, message: 'Scrolled down' }));
+        else sendResponse({ success: false, message: 'No active tab' });
+      });
+      break;
+    case 'scrollUp':
+      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+        if (tabs[0]?.id) chrome.scripting.executeScript({ target: { tabId: tabs[0].id }, func: () => window.scrollBy({ top: -400, behavior: 'smooth' }) }, () => sendResponse({ success: true, message: 'Scrolled up' }));
+        else sendResponse({ success: false, message: 'No active tab' });
+      });
+      break;
+    case 'scrollTop':
+      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+        if (tabs[0]?.id) chrome.scripting.executeScript({ target: { tabId: tabs[0].id }, func: () => window.scrollTo({ top: 0, behavior: 'smooth' }) }, () => sendResponse({ success: true, message: 'Scrolled to top' }));
+        else sendResponse({ success: false, message: 'No active tab' });
+      });
+      break;
+    case 'scrollBottom':
+      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+        if (tabs[0]?.id) chrome.scripting.executeScript({ target: { tabId: tabs[0].id }, func: () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }) }, () => sendResponse({ success: true, message: 'Scrolled to bottom' }));
+        else sendResponse({ success: false, message: 'No active tab' });
+      });
+      break;
+
+    // ── Page Reading ───────────────────────────────────────────
+    case 'readHeadings':
+      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+        if (!tabs[0]?.id) { sendResponse({ success: false, message: 'No active tab' }); return; }
+        chrome.scripting.executeScript({
+          target: { tabId: tabs[0].id },
+          func: () => {
+            const hs: { tag: string; text: string }[] = [];
+            document.querySelectorAll('h1,h2,h3,h4,h5,h6').forEach(h => hs.push({ tag: h.tagName, text: (h as HTMLElement).innerText.trim().substring(0, 150) }));
+            return hs;
+          },
+        }, results => {
+          const hs = (results?.[0]?.result as { tag: string; text: string }[]) || [];
+          sendResponse({ success: true, message: hs.length > 0 ? hs.map(h => h.tag + ': ' + h.text).join('\n') : 'No headings found on this page.' });
+        });
+      });
+      break;
+    case 'readLinks':
+      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+        if (!tabs[0]?.id) { sendResponse({ success: false, message: 'No active tab' }); return; }
+        chrome.scripting.executeScript({
+          target: { tabId: tabs[0].id },
+          func: () => {
+            const links: { text: string; href: string }[] = [];
+            document.querySelectorAll('a[href]').forEach((a, i) => {
+              if (i < 50) links.push({ text: (a as HTMLAnchorElement).innerText.trim().substring(0, 80) || '(no text)', href: (a as HTMLAnchorElement).href });
+            });
+            return links;
+          },
+        }, results => {
+          const links = (results?.[0]?.result as { text: string; href: string }[]) || [];
+          sendResponse({ success: true, message: links.length > 0 ? links.map(l => l.text + '\n  → ' + l.href).join('\n') : 'No links found.' });
+        });
+      });
+      break;
+    case 'readMeta':
+      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+        if (!tabs[0]?.id) { sendResponse({ success: false, message: 'No active tab' }); return; }
+        chrome.scripting.executeScript({
+          target: { tabId: tabs[0].id },
+          func: () => {
+            const meta: Record<string, string> = { title: document.title, url: window.location.href };
+            document.querySelectorAll('meta[name],meta[property]').forEach(m => {
+              const key = m.getAttribute('name') || m.getAttribute('property') || '';
+              const val = m.getAttribute('content') || '';
+              if (key && val) meta[key] = val.substring(0, 200);
+            });
+            return meta;
+          },
+        }, results => {
+          const meta = (results?.[0]?.result as Record<string, string>) || {};
+          sendResponse({ success: true, message: Object.entries(meta).map(([k, v]) => k + ': ' + v).join('\n') });
+        });
+      });
+      break;
+    case 'summarizePage':
+      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+        if (!tabs[0]?.id) { sendResponse({ success: false, message: 'No active tab' }); return; }
+        engine.executeSummarize(tabs[0].id, r => {
+          sendResponse({ ...r, message: r.summary ? JSON.stringify(r.summary, null, 2) : r.message });
+        });
+      });
+      break;
+
+    // ── AI Engines ─────────────────────────────────────────────
+    case 'fuseReason':
+      engine.executeChat('Reason deeply about this — use multi-perspective analysis: ' + ((message.value as string) || ''), r => sendResponse(r));
+      break;
+    case 'codeGen':
+      engine.executeChat('Generate code for: ' + ((message.value as string) || ''), r => sendResponse(r));
+      break;
+    case 'translate':
+      engine.executeChat('Translate the following text (detect language, translate to English unless specified): ' + ((message.value as string) || ''), r => sendResponse(r));
+      break;
+    case 'researchTopic':
+      engine.executeChat('research ' + ((message.value as string) || ''), r => sendResponse(r));
+      break;
+    case 'encryptText': {
+      try {
+        const encoded = btoa(unescape(encodeURIComponent((message.value as string) || '')));
+        sendResponse({ success: true, message: '🔐 Encrypted (Base64):\n' + encoded });
+      } catch {
+        sendResponse({ success: false, message: 'Encryption failed. Ensure text is valid.' });
+      }
+      break;
+    }
+    case 'decryptText': {
+      try {
+        const decoded = decodeURIComponent(escape(atob((message.value as string) || '')));
+        sendResponse({ success: true, message: '🔓 Decrypted:\n' + decoded });
+      } catch {
+        sendResponse({ success: false, message: '❌ Invalid encoded text. Paste the full Base64 string.' });
+      }
+      break;
+    }
+    case 'recallMemory': {
+      const kw = ((message.value as string) || '').toLowerCase();
+      getMemories()
+        .then(mems => {
+          const hits = mems.filter((m: { text: string; tags?: string[] }) => m.text.toLowerCase().includes(kw) || m.tags?.some((t: string) => t.toLowerCase().includes(kw)));
+          sendResponse({ success: true, message: hits.length > 0 ? hits.slice(0, 5).map((m: { text: string }, i: number) => (i + 1) + '. ' + m.text.substring(0, 200)).join('\n\n') : 'No memories found for: "' + kw + '"' });
+        })
+        .catch(() => sendResponse({ success: true, message: 'Memory recall: no stored memories yet.' }));
+      break;
+    }
+
+    // ── Legal AI ───────────────────────────────────────────────
+    case 'legalCase':
+      engine.executeChat('Legal case analysis — ' + ((message.value as string) || ''), r => sendResponse(r));
+      break;
+    case 'legalContract':
+      engine.executeChat('Contract review — analyze the following contract text for risks, obligations, and recommendations: ' + ((message.value as string) || ''), r => sendResponse(r));
+      break;
+    case 'legalCompliance':
+      engine.executeChat('Compliance check — ' + ((message.value as string) || ''), r => sendResponse(r));
+      break;
+    case 'legalDraft':
+      engine.executeChat('Draft a legal document — ' + ((message.value as string) || ''), r => sendResponse(r));
+      break;
+
+    // ── Documents ──────────────────────────────────────────────
+    case 'createDoc': {
+      const docTitle = (message.value as string) || 'Vigil Document';
+      engine.executeCreateDocument(docTitle, '', r => sendResponse(r));
+      break;
+    }
+    case 'exportPdf': {
+      const pdfTitle = (message.value as string) || 'Vigil Export';
+      downloadPdf({ title: pdfTitle, content: '', author: 'Alfredo' });
+      sendResponse({ success: true, message: 'PDF downloading: ' + pdfTitle });
+      break;
+    }
+    case 'exportMarkdown': {
+      engine.executeListNotes(r => {
+        if (!r.success || !r.notes?.length) { sendResponse({ success: false, message: 'No notes to export.' }); return; }
+        const md = '# Vigil Notes Export\n\n' + r.notes.map((n: Note) => '## ' + new Date(n.timestamp).toLocaleDateString() + '\n\n' + n.content).join('\n\n---\n\n');
+        const blob = 'data:text/markdown;charset=utf-8,' + encodeURIComponent(md);
+        chrome.downloads.download({ url: blob, filename: 'vigil-notes-' + Date.now() + '.md', saveAs: false }, () =>
+          sendResponse({ success: true, message: 'Markdown exported: ' + r.notes!.length + ' notes saved.' })
+        );
+      });
+      break;
+    }
+    case 'exportExcel': {
+      const exTitle = (message.value as string) || 'Vigil Export';
+      downloadExcel({ title: exTitle, author: 'Alfredo', sheets: [{ name: 'Export', columns: ['Field', 'Value'], rows: [['Export Date', new Date().toISOString()], ['Extension', 'Vigil AI v15']] }] })
+        .then(() => sendResponse({ success: true, message: 'Excel downloading: ' + exTitle }))
+        .catch(() => sendResponse({ success: false, message: 'Excel export failed.' }));
+      break;
+    }
+
+    // ── System ─────────────────────────────────────────────────
+    case 'healthStatus': {
+      const st = engine.getStatus();
+      sendResponse({
+        success: true,
+        message: [
+          '🟢 VIGIL v15 — System Health',
+          '━━━━━━━━━━━━━━━━━━━━━━━━━━',
+          'Uptime:      ' + Math.floor(((st.uptime as number) || 0) / 1000) + 's',
+          'Heartbeat:   ' + st.heartbeatCount,
+          'Commands:    ' + st.commandCount,
+          'Mood:        ' + st.mood,
+          'Awareness:   ' + st.awarenessLevel + '%',
+          'Mem turns:   ' + st.memoryTurns,
+          'Active agents: ' + (st.activeAgents || 0),
+          'Status:      OPERATIONAL',
+        ].join('\n'),
+      });
+      break;
+    }
+    case 'engineInventory':
+      sendResponse({
+        success: true,
+        message: [
+          '⚗️ VIGIL v15 — Engine Inventory',
+          '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
+          '🤖 Agents:     researcher, crawler, scraper, monitor, watcher, digest, analyst, scout, sweep',
+          '🧠 NeuroCore:  MiniHeart + MiniBrain + PSE (40 primitives, 8 domains)',
+          '📚 Memory:     Temple (5 categories) + MemoryAI + Conversation (100 turns)',
+          '🔵 Solus:      Offline Transformers.js NLP',
+          '🛡 Sentry:    Page threat + content analysis',
+          '🕸 Graph:      Knowledge graph (linked page intelligence)',
+          '📋 Skills:     PDF, Excel, Email, Readability, Highlights',
+          '⚡ Protocols:  16 compound primitives + Mission Engine',
+          '🖥️ Screen:     Capture, scroll, nav, DOM read, virtual desktop, control mode',
+          '⚖️ Legal AI:   Case analysis, contracts, compliance, drafting',
+        ].join('\n'),
+      });
+      break;
+    case 'help':
+      sendResponse({
+        success: true,
+        message: [
+          '🆘 VIGIL CNS — Full Capability List',
+          '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
+          '🗂️  Tab Control:   open, close, switch, reload, duplicate, pin/unpin, mute',
+          '🧭  Navigation:    go to URL, web search, back, forward, scroll up/down/top/bottom',
+          '📖  Page Reading:  full text, headings, links, metadata, screenshot, summarize',
+          '⚗️  AI Engines:    fuse reasoning, code gen, translate, research, encrypt/decrypt',
+          '⚖️  Legal AI:      case analysis, contract review, compliance, document drafting',
+          '📄  Documents:     create doc, export PDF, Markdown, Excel',
+          '🤖  Agents:        autonomous research, crawl, monitor, analyze agents',
+          '🧠  Memory:        save + recall memories, memory palace, journal',
+          '🔵  Solus:         offline AI — no internet needed',
+          '🔧  System:        health status, engine inventory, agent list',
+          '',
+          'Ask anything in Chat · Use Control Mode in the Screen tab for full browser control.',
+        ].join('\n'),
+      });
+      break;
   }
 
   return true; // keep channel open for async responses

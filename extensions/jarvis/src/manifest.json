@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Vigil AI",
   "version": "15.0.0",
-  "description": "Vigil AI v15 — Sovereign offline intelligence. Solus offline AI, Memory Palace, Sentry, Knowledge Graph, Agents.",
+  "description": "Vigil AI v15 CNS — Full browser control, scroll, click, navigate, agents, memory, legal AI, offline Solus, knowledge graph.",
   "permissions": [
     "activeTab",
     "storage",
