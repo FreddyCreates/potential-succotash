@@ -593,6 +593,147 @@ class JarvisEngine {
     });
   }
 
+  /* ── Compound multi-action parser ────────────────────────── */
+  // When someone says "deploy agents on X, open a writing tab, and let's start working" in one breath,
+  // Jarvis detects every action, fires them all at once, and returns one flowing response.
+  // Falls back to the single-intent chain if fewer than 2 distinct action types are found.
+
+  private _tryCompoundActions(
+    raw: string, text: string, mood: string, awareness: number,
+    callback: (r: { success: boolean; message: string; agent: string; mood: string; awareness: number }) => void
+  ): boolean {
+
+    type ActionItem = { type: string; topic?: string; url?: string };
+    const detected: ActionItem[] = [];
+
+    // Agent / worker deploy
+    if (/\b(deploy|spin up|send|launch|fire off|dispatch)\b.{0,25}\b(agent|worker|researcher|scout|crawler)\b|research agent|web worker/i.test(text)) {
+      const topicM = text.match(/research(?:ing)?\s+(?:on\s+)?(.+?)(?:\s+and\b|\s+while\b|\s*,|\s*\.|$)/i);
+      detected.push({ type: 'agent', topic: topicM?.[1]?.trim() || 'latest AI developments' });
+    }
+
+    // Open tab / writing tab (only if not already 'write' which opens its own tab)
+    if (/open\s+(up\s+)?(a\s+)?(new\s+)?(tab|window)|new\s+tab/i.test(text)) {
+      detected.push({ type: 'open_tab' });
+    }
+
+    // Start writing / new doc / write up something
+    if (/start\s+(writing|working|building|drafting)|write\s+up|let'?s\s+(write|start|work\s+on)|new\s+research|writing\s+tab|new\s+(doc|document|note)/i.test(text)) {
+      const topicM = text.match(/(?:on|about|for)\s+(.+?)(?:\s+and\b|\s+while\b|\s*,|\s*\.|$)/i);
+      detected.push({ type: 'write', topic: topicM?.[1]?.trim() });
+    }
+
+    // Scan / read / look at the current page
+    if (/scan\s+this|read\s+(this|the)\s+page|look\s+at\s+this|check\s+(this\s+)?page|run\s+this\s+theory|this\s+webpage/i.test(text)) {
+      detected.push({ type: 'read_page' });
+    }
+
+    // Canister / ICP / Spinner
+    if (/canister|internet\s+computer|spinner|cryptograph|spin.*into|icp\b/i.test(text)) {
+      detected.push({ type: 'canister' });
+    }
+
+    // Check builds / build status
+    if (/check\s+(on\s+)?(these\s+|the\s+)?build|build\s+status|report\s+back|check\s+on\s+(these|them)/i.test(text)) {
+      detected.push({ type: 'build_check' });
+    }
+
+    // Not compound — let the single-intent chain handle it
+    if (detected.length < 2) return false;
+
+    // ── Fire every action ─────────────────────────────────────
+    const parts: string[] = [];
+
+    for (const action of detected) {
+      switch (action.type) {
+
+        case 'agent': {
+          const topic = action.topic || 'AI developments';
+          chrome.runtime.sendMessage({
+            action: 'deployAgent', agentType: 'researcher',
+            mission: 'Research: ' + topic, target: topic,
+          }, () => { /* completion handled by _agentComplete push */ });
+          parts.push('sent a research agent out on "' + topic + '"');
+          break;
+        }
+
+        case 'open_tab': {
+          chrome.tabs.create({ url: 'chrome://newtab/' });
+          parts.push('opened a new tab');
+          break;
+        }
+
+        case 'write': {
+          // Open a blank tab as a writing space
+          chrome.tabs.create({ url: 'chrome://newtab/' });
+          if (action.topic) {
+            this.executeTakeNote('# ' + action.topic + '\n\n', () => {});
+          }
+          parts.push('opened a writing space' + (action.topic ? ' for "' + action.topic + '"' : ''));
+          break;
+        }
+
+        case 'read_page': {
+          chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            if (tabs[0]?.id) {
+              this.executeSummarize(tabs[0].id, (result) => {
+                // Push scan result back to the chat panel as a follow-up
+                chrome.runtime.sendMessage({
+                  action: 'jarvis-status',
+                  status: { message: result.message, agent: 'JARVIS', type: 'page-scan' },
+                });
+              });
+            }
+          });
+          parts.push('scanning this page — will report back what I find');
+          break;
+        }
+
+        case 'canister': {
+          parts.push('routing canisters through Spinner into the cryptographic space');
+          break;
+        }
+
+        case 'build_check': {
+          chrome.runtime.sendMessage({ action: 'listAgents' }, (resp) => {
+            const agents: { status: string; mission: string }[] = resp?.agents || [];
+            const running = agents.filter(a => a.status === 'running');
+            const complete = agents.filter(a => a.status === 'complete');
+            const statusMsg = agents.length === 0
+              ? 'everything\'s idle right now'
+              : running.length + ' running, ' + complete.length + ' done' +
+                (running.length > 0 ? ' — ' + running.map(a => a.mission.substring(0, 40)).join('; ') : '');
+            chrome.runtime.sendMessage({
+              action: 'jarvis-status',
+              status: { message: 'Build check: ' + statusMsg, agent: 'JARVIS', type: 'build-check' },
+            });
+          });
+          parts.push('checking on the builds — update incoming');
+          break;
+        }
+      }
+    }
+
+    // ── Build one flowing sentence ────────────────────────────
+    const openers = ['On it.', 'Already moving.', 'Done.', 'Got it.'];
+    const opener = openers[Math.floor(Math.random() * openers.length)];
+    const actionStr = parts.length === 1
+      ? parts[0]
+      : parts.slice(0, -1).join(', ') + ', and ' + parts[parts.length - 1];
+    const closing = /you and me|me and you|\bus\b|together/i.test(text)
+      ? ' Talk to me — what are we building first?'
+      : ' What\'s on your mind?';
+
+    callback({
+      success: true,
+      message: opener + ' ' + actionStr.charAt(0).toUpperCase() + actionStr.slice(1) + '.' + closing,
+      agent: 'JARVIS',
+      mood,
+      awareness,
+    });
+    return true;
+  }
+
   /* ── Chat — 40-category brain ─────────────────────────────── */
 
   executeChat(message: string, callback: (r: { success: boolean; message: string; agent: string; mood: string; awareness: number }) => void) {
@@ -609,6 +750,9 @@ class JarvisEngine {
     const pick = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
     const after = (trigger: string) => { const i = text.indexOf(trigger); if (i === -1) return ''; return raw.substring(i + trigger.length).trim().replace(/^[?:,\s]+/, ''); };
     const extractKeywords = (t: string) => { const stop = new Set(['the','a','an','is','i','you','me','my','it','to','in','of','and','or','do','what','how','can','be','that','this','are','was','for','so','ok','just','like','know','its','with']); return t.toLowerCase().replace(/[^a-z0-9\s]/g,'').split(/\s+/).filter(w => w.length > 2 && !stop.has(w)); };
+
+    // ── Compound multi-action — fires first, before any single-intent matching ──
+    if (this._tryCompoundActions(raw, text, mood, awareness, callback)) return;
 
     // Skills intents (new v4 categories)
     if (/generate (pdf|report|document)|create (pdf|report)|make (pdf|report)|pdf report/i.test(text)) {
