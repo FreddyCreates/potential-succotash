@@ -51,9 +51,9 @@ export default function ChatPanel() {
     endRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
 
-  /** Deliver a JARVIS response from background */
+  /** Deliver an ANIMUS response from background */
   const deliverResponse = useCallback((text: string, opts?: { skipTts?: boolean }) => {
-    addMessage({ role: 'jarvis', text, ts: Date.now() });
+    addMessage({ role: 'animus', text, ts: Date.now() });
     if (ttsEnabled && !opts?.skipTts) speak(text);
   }, [addMessage, ttsEnabled]);
 
@@ -64,7 +64,7 @@ export default function ChatPanel() {
     chrome.runtime.sendMessage({ action: 'brief' }, (resp) => {
       if (chrome.runtime.lastError || !resp?.success) return;
       const greeting = resp.message as string;
-      addMessage({ role: 'jarvis', text: greeting, ts: Date.now() });
+      addMessage({ role: 'animus', text: greeting, ts: Date.now() });
       // speak greeting if voices are ready — wait a tick for voice list
       setTimeout(() => {
         if (ttsEnabled) speak(greeting);
@@ -79,13 +79,13 @@ export default function ChatPanel() {
       if (msg.action === '_timerDone') {
         const label = (msg.label as string) || 'Timer';
         const alert = '⏱ "' + label + '" is done.';
-        addMessage({ role: 'jarvis', text: alert, ts: Date.now() });
+        addMessage({ role: 'animus', text: alert, ts: Date.now() });
         speak(alert);
       } else if (msg.action === '_tabChanged') {
         const title = (msg.title as string) || 'Unknown';
         const context = (msg.context as string) || '';
         const note = '🌐 Active page: "' + title + '".' + (context ? '\n' + context : '');
-        addMessage({ role: 'jarvis', text: note, ts: Date.now() });
+        addMessage({ role: 'animus', text: note, ts: Date.now() });
       } else if (msg.action === '_agentComplete') {
         const agent = msg.agent as { name: string; mission: string; status: string; steps: { status: string }[] };
         if (!agent) return;
@@ -93,7 +93,7 @@ export default function ChatPanel() {
         const announcement = agent.status === 'complete'
           ? '🤖 ' + agent.name + ' — mission complete.\n\n"' + agent.mission.substring(0, 80) + '"\n\n' + done + '/' + agent.steps.length + ' sources extracted. Full report in the 🤖 Agents tab.'
           : '🤖 ' + agent.name + ' — status: ' + agent.status + '. Check the Agents tab for details.';
-        addMessage({ role: 'jarvis', text: announcement, ts: Date.now() });
+        addMessage({ role: 'animus', text: announcement, ts: Date.now() });
         if (ttsEnabled) speak(agent.name + ' mission complete.');
       }
     };
@@ -134,7 +134,7 @@ export default function ChatPanel() {
       return;
     }
     if (text === '__agent_research__') {
-      addMessage({ role: 'jarvis', text: '🤖 What topic would you like me to research? Type it and I\'ll dispatch an agent right away.', ts: Date.now() });
+      addMessage({ role: 'animus', text: '🤖 What topic would you like me to research? Type it and I\'ll dispatch an agent right away.', ts: Date.now() });
       setInput('deploy agent: research ');
       return;
     }
@@ -181,7 +181,7 @@ export default function ChatPanel() {
   const toggleMic = () => {
     const SpeechRec = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SpeechRec) {
-      addMessage({ role: 'jarvis', text: 'Speech recognition not available in this browser.', ts: Date.now() });
+      addMessage({ role: 'animus', text: 'Speech recognition not available in this browser.', ts: Date.now() });
       return;
     }
     if (micListening) { setMicListening(false); return; }
@@ -240,7 +240,7 @@ export default function ChatPanel() {
         {messages.length === 0 && (
           <div className="text-center text-gray-600 text-xs mt-8 space-y-1">
             <div className="text-cyan-600 text-lg">⚡</div>
-            <div>JARVIS standing by</div>
+            <div>ANIMUS standing by</div>
             <div className="text-gray-700">Use "Brief me" for a situational report</div>
           </div>
         )}
@@ -249,7 +249,7 @@ export default function ChatPanel() {
             key={i}
             className={`animate-fade-in flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
-            {msg.role === 'jarvis' && (
+            {msg.role === 'animus' && (
               <button
                 onClick={() => speak(msg.text)}
                 title="Speak"

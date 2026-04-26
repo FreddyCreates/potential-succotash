@@ -1,5 +1,5 @@
 /**
- * MirrorPanel — JARVIS v12
+ * MirrorPanel — ANIMUS v13
  *
  * Jarvis's virtual display canvas. He can push any content here —
  * agent reports, text summaries, image URLs, web URLs — for the user
@@ -74,7 +74,7 @@ export default function MirrorPanel() {
           content: report,
           meta: String(agent.mission || ''),
           pushedAt: Date.now(),
-          author: 'JARVIS',
+          author: 'ANIMUS',
         });
         return;
       }
@@ -85,11 +85,11 @@ export default function MirrorPanel() {
         push({
           id: 'push-' + Date.now(),
           type: (c['type'] as MirrorType) || 'text',
-          title: String(c['title'] || 'JARVIS'),
+          title: String(c['title'] || 'ANIMUS'),
           content: String(c['data'] || ''),
           meta: c['meta'] ? String(c['meta']) : undefined,
           pushedAt: Date.now(),
-          author: 'JARVIS',
+          author: 'ANIMUS',
         });
       }
     };
@@ -117,7 +117,7 @@ export default function MirrorPanel() {
       id: 'fetch-' + Date.now(), type: 'text',
       title: '⏳ Fetching ' + url.substring(0, 50) + '…',
       content: 'Jarvis is fetching and analyzing this URL. Report will appear here when ready.',
-      pushedAt: Date.now(), author: 'JARVIS',
+      pushedAt: Date.now(), author: 'ANIMUS',
     });
     chrome.runtime.sendMessage({ action: 'agiSummarize', url }, (resp) => {
       setFetching(false);

@@ -1,5 +1,5 @@
 /**
- * VaultPanel — JARVIS v11
+ * VaultPanel — ANIMUS v13
  *
  * Local-only secure storage for the user's important data:
  * API keys, passwords, credentials, config values, references.

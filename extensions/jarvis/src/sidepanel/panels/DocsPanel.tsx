@@ -1,5 +1,5 @@
 /**
- * DocsPanel — JARVIS v11 File Manager
+ * DocsPanel — ANIMUS v13 File Manager
  *
  * Folder-organized document storage. Folders live in chrome.storage.local;
  * documents come from Dexie via the background. Docs can be assigned to folders

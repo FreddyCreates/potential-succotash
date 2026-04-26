@@ -18,24 +18,27 @@ import VaultPanel from './panels/VaultPanel';
 import PromptsPanel from './panels/PromptsPanel';
 import InboxPanel from './panels/InboxPanel';
 
+import HighlightsPanel from './panels/HighlightsPanel';
+
 const TABS = [
-  { id: 'chat',      label: '💬 Chat' },
-  { id: 'nexus',     label: '⚡ Nexus' },
-  { id: 'inbox',     label: '📥 Inbox' },
-  { id: 'mirror',    label: '🪞 Mirror' },
-  { id: 'agents',    label: '🤖 Agents' },
-  { id: 'agi',       label: '⚗️ AGI Tools' },
-  { id: 'notes',     label: '📓 Journal' },
-  { id: 'docs',      label: '📁 Files' },
-  { id: 'vault',     label: '🔐 Vault' },
-  { id: 'prompts',   label: '💡 Prompts' },
-  { id: 'workspace', label: '📝 Workspace' },
-  { id: 'tools',     label: '🔧 Tools' },
-  { id: 'search',    label: '🔍 Search' },
-  { id: 'screen',    label: '🖥️ Screen' },
-  { id: 'tabs',      label: '🗂️ Tabs' },
-  { id: 'install',   label: '⬇ Install' },
-  { id: 'log',       label: '📋 Log' },
+  { id: 'chat',       label: '💬 Chat' },
+  { id: 'nexus',      label: '⚡ Nexus' },
+  { id: 'inbox',      label: '📥 Inbox' },
+  { id: 'highlights', label: '📌 Highlights' },
+  { id: 'mirror',     label: '🪞 Mirror' },
+  { id: 'agents',     label: '🤖 Agents' },
+  { id: 'agi',        label: '⚗️ AGI Tools' },
+  { id: 'notes',      label: '📓 Journal' },
+  { id: 'docs',       label: '📁 Files' },
+  { id: 'vault',      label: '🔐 Vault' },
+  { id: 'prompts',    label: '💡 Prompts' },
+  { id: 'workspace',  label: '📝 Workspace' },
+  { id: 'tools',      label: '🔧 Tools' },
+  { id: 'search',     label: '🔍 Search' },
+  { id: 'screen',     label: '🖥️ Screen' },
+  { id: 'tabs',       label: '🗂️ Tabs' },
+  { id: 'install',    label: '⬇ Install' },
+  { id: 'log',        label: '📋 Log' },
 ];
 
 export default function App() {
@@ -66,6 +69,7 @@ export default function App() {
 
   const renderPanel = () => {
     switch (activePanel) {
+      case 'highlights':  return <HighlightsPanel />;
       case 'nexus':     return <NexusPanel />;
       case 'chat':      return <ChatPanel />;
       case 'inbox':     return <InboxPanel />;
@@ -107,8 +111,8 @@ export default function App() {
         <div className="flex items-center gap-2">
           <span className="animate-heartbeat text-cyan-400 text-lg">⚡</span>
           <div>
-            <span className="font-bold text-white tracking-widest text-sm">J.A.R.V.I.S</span>
-            <span className="ml-2 text-xs text-purple-400">v12.0</span>
+            <span className="font-bold text-white tracking-widest text-sm">A.N.I.M.U.S</span>
+            <span className="ml-2 text-xs text-purple-400">v13.0</span>
           </div>
         </div>
         <div className="flex items-center gap-2">

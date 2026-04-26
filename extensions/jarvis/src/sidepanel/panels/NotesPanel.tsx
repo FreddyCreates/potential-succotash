@@ -1,5 +1,5 @@
 /**
- * NotesPanel — JARVIS v11 Journal
+ * NotesPanel — ANIMUS v13 Journal
  *
  * Bidirectional journal: the user can write notes, and Jarvis writes here too.
  * Author badges distinguish user entries from Jarvis entries.
@@ -174,7 +174,7 @@ export default function NotesPanel() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5 mb-0.5">
                       <span className={`text-[9px] font-semibold ${byJarvis ? 'text-cyan-500' : 'text-blue-400'}`}>
-                        {byJarvis ? 'JARVIS' : 'You'}
+                        {byJarvis ? 'ANIMUS' : 'You'}
                       </span>
                       <span className="text-[8px] text-gray-700">
                         {new Date(note.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}

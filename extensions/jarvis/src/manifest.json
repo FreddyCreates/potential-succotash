@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Jarvis AI",
-  "version": "12.0.0",
-  "description": "JARVIS v12 — Inbox proactive briefs, clipboard intel, smart Mirror, real fetch+analyze, Journal, Files, Vault, Prompts.",
+  "name": "Animus AI",
+  "version": "13.0.0",
+  "description": "Animus AI v13 — The autonomous intelligence layer. Highlights, Readability, Inbox, Mirror, Agents, PSE, NeuroCore, Vault, Prompts.",
   "permissions": [
     "activeTab",
     "storage",
@@ -39,7 +39,7 @@
       "16": "icons/icon16.png",
       "48": "icons/icon48.png"
     },
-    "default_title": "Open JARVIS"
+    "default_title": "Open Animus AI"
   },
   "minimum_chrome_version": "116",
   "icons": {

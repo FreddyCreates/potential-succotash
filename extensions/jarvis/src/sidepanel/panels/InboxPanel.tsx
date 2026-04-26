@@ -1,5 +1,5 @@
 /**
- * InboxPanel — JARVIS v12
+ * InboxPanel — ANIMUS v13
  *
  * Jarvis's proactive outbox to the user. This is where Jarvis sends YOU
  * things without you asking:

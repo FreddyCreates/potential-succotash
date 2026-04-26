@@ -104,7 +104,7 @@ export default function AGIToolsPanel() {
   return (
     <div style={{ padding: '14px 12px', fontFamily: 'monospace', color: '#c8d8e8' }}>
       <div style={{ color: '#00d4ff', fontSize: 13, fontWeight: 700, marginBottom: 4, letterSpacing: 1 }}>
-        ⚗️ JARVIS v7 — AGI TOOLS
+        ⚗️ ANIMUS v13 — AGI TOOLS
       </div>
       <div style={{ color: '#7b9ab8', fontSize: 10, marginBottom: 14 }}>
         Parallel fetch engine · No tab overhead · CORS-exempt

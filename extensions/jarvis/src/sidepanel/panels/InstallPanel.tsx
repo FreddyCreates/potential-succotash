@@ -11,7 +11,7 @@ export default function InstallPanel() {
   return (
     <div className="flex flex-col h-full overflow-y-auto p-3 space-y-3 text-xs text-gray-300">
       <div className="bg-purple-900/30 border border-purple-700/40 rounded-lg p-3">
-        <h2 className="font-bold text-purple-300 text-sm mb-2">⚡ JARVIS v4.0.0</h2>
+        <h2 className="font-bold text-purple-300 text-sm mb-2">⚡ ANIMUS v13.0.0</h2>
         <p className="text-gray-400 leading-relaxed">
           Sovereign AI assistant for Microsoft Edge. Native NeuroCore brain, React UI, jsPDF, ExcelJS, Transformers.js NLP, and Dexie persistent memory.
         </p>
@@ -26,7 +26,7 @@ export default function InstallPanel() {
           ⬇ Download install-jarvis-edge.bat
         </button>
         <p className="text-gray-500 leading-relaxed">
-          Double-click the .bat file. It downloads the latest JARVIS zip, extracts it, and opens Edge with JARVIS loaded automatically.
+          Double-click the .bat file. It downloads the latest Animus zip, extracts it, and opens Edge with Animus loaded automatically.
         </p>
       </div>
 
@@ -44,14 +44,14 @@ export default function InstallPanel() {
           <li>Open <code className="text-cyan-400">edge://extensions</code></li>
           <li>Enable Developer Mode (top right)</li>
           <li>Click "Load unpacked" → select the extracted folder</li>
-          <li>Pin JARVIS from the extensions toolbar</li>
+          <li>Pin Animus from the extensions toolbar</li>
         </ol>
       </div>
 
       <div className="space-y-2">
         <h3 className="font-semibold text-gray-200">🔄 Auto-Updates</h3>
         <p className="text-gray-500 leading-relaxed">
-          JARVIS checks for updates every 4 hours. When an update is available, re-run install-jarvis-edge.bat — it replaces the old version automatically.
+          Animus checks for updates every 4 hours. When an update is available, re-run install-jarvis-edge.bat — it replaces the old version automatically.
         </p>
       </div>
 

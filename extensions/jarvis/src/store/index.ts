@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 interface Message {
-  role: 'user' | 'jarvis';
+  role: 'user' | 'animus';
   text: string;
   ts: number;
 }

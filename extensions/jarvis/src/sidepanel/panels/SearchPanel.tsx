@@ -38,7 +38,7 @@ export default function SearchPanel() {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search JARVIS knowledge…"
+          placeholder="Search Animus knowledge…"
           className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-3 py-1.5 text-xs text-gray-100 placeholder-gray-600 outline-none focus:border-cyan-700 transition-colors"
         />
         <button

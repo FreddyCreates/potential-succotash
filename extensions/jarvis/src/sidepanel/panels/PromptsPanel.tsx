@@ -1,5 +1,5 @@
 /**
- * PromptsPanel — JARVIS v11
+ * PromptsPanel — ANIMUS v13
  *
  * Saved prompt templates with variable placeholders.
  * Use {{variable}} syntax for fill-in slots.

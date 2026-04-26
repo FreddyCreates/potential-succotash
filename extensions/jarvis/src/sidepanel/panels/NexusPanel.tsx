@@ -1,5 +1,5 @@
 /**
- * NexusPanel — JARVIS v11 Status Dashboard
+ * NexusPanel — ANIMUS v13 Status Dashboard
  *
  * A read-only control surface for things that genuinely need UI:
  *  - TTS / mic toggles (binary state that can't be expressed in chat)

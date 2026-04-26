@@ -1,23 +1,23 @@
 @echo off
-title JARVIS AI v10.0 - Windows Edge Installer
+title Animus AI v13.0 - Windows Edge Installer
 color 0B
 cls
 
 echo.
 echo  ╔══════════════════════════════════════════════════════════════╗
 echo  ║                                                              ║
-echo  ║      ░░░░░░░  J.A.R.V.I.S  ░░░░░░░                         ║
-echo  ║      Just A Rather Very Intelligent System                   ║
+echo  ║      ░░░░░░░  A.N.I.M.U.S  ░░░░░░░                         ║
+echo  ║      Animus AI — The Autonomous Intelligence Layer          ║
 echo  ║                                                              ║
-echo  ║      VERSION  10.0  ──  SOVEREIGN NEXUS EDITION             ║
-echo  ║      16 primitives · Command Surface · Live agent feed       ║
-echo  ║      One-tap actions · Page awareness · Full side panel      ║
+echo  ║      VERSION  13.0  ──  AUTONOMOUS INTELLIGENCE             ║
+echo  ║      Highlights · Readability · Agents · PSE · NeuroCore    ║
+echo  ║      Chat · Nexus · Vault · Prompts · Full side panel       ║
 echo  ║                                                              ║
 echo  ╚══════════════════════════════════════════════════════════════╝
 echo.
 echo  [ INSTALLING INTO MICROSOFT EDGE ]
 echo.
-echo  This will download and install JARVIS AI into Edge.
+echo  This will download and install Animus AI into Edge.
 echo  Takes about 10 seconds. No admin rights required.
 echo.
 pause
@@ -42,12 +42,12 @@ if "%EDGE_PATH%"=="" (
 echo  [✓] Edge found: %EDGE_PATH%
 
 :: ── Download ──────────────────────────────────────────────────
-set "INSTALL_DIR=%LOCALAPPDATA%\JarvisAI"
-set "ZIP_FILE=%TEMP%\jarvis-v10.zip"
+set "INSTALL_DIR=%LOCALAPPDATA%\AnimusAI"
+set "ZIP_FILE=%TEMP%\animus-v13.zip"
 set "DL_URL=https://github.com/FreddyCreates/potential-succotash/raw/copilot/create-jarvis-integration/dist/extensions/jarvis.zip"
 
 echo.
-echo  [*] Downloading JARVIS v10.0...
+echo  [*] Downloading Animus v13.0...
 
 powershell -NoProfile -ExecutionPolicy Bypass -Command ^
   "try { Invoke-WebRequest -Uri '%DL_URL%' -OutFile '%ZIP_FILE%' -UseBasicParsing; Write-Host '  [OK] Download complete.' } catch { Write-Host '  [ERR] ' + $_.Exception.Message; exit 1 }"
@@ -77,7 +77,7 @@ if errorlevel 1 (
 
 :: ── Launch ────────────────────────────────────────────────────
 echo.
-echo  [*] Launching Edge with JARVIS loaded...
+echo  [*] Launching Edge with Animus AI loaded...
 
 start "" "%EDGE_PATH%" --load-extension="%INSTALL_DIR%" --no-first-run
 
@@ -88,17 +88,17 @@ cls
 echo.
 echo  ╔══════════════════════════════════════════════════════════════╗
 echo  ║                                                              ║
-echo  ║   JARVIS AI v10.0  ──  ONLINE                               ║
+echo  ║   ANIMUS AI v13.0  ──  ONLINE                               ║
 echo  ║                                                              ║
-echo  ║   Command Surface · Live agents · One-tap actions           ║
-echo  ║   Talk naturally · He does the rest                         ║
+echo  ║   Highlights · Readability · Agents · PSE · NeuroCore       ║
+echo  ║   Talk naturally · She does the rest                        ║
 echo  ║                                                              ║
 echo  ╚══════════════════════════════════════════════════════════════╝
 echo.
 echo  HOW TO PIN THE SIDE PANEL:
 echo.
 echo    1. Look for the puzzle-piece icon in the Edge toolbar
-echo    2. Find "Jarvis AI" — click the pin icon
+echo    2. Find "Animus AI" — click the pin icon
 echo    3. Or: press  Ctrl+Shift+Y  to open the side panel
 echo.
 echo  THE NEXUS COMMAND SURFACE (tap the "Nexus" tab):
@@ -108,14 +108,14 @@ echo    - Live agent feed showing what's running right now
 echo    - Active page awareness — see the current tab, hit "Read it"
 echo    - Type a topic and fire any action in one tap
 echo.
-echo  TALKING TO JARVIS (examples):
+echo  TALKING TO ANIMUS (examples):
 echo.
 echo    "Deploy a researcher on AI, open a writing tab, and scan this page"
 echo    "Set a 10-minute timer, take a note on this theory, check builds"
 echo    "Dispatch mission: crawl this site and synthesize the findings"
 echo    "Hey — domain AI report, pse stats, and screenshot"
 echo.
-echo  He hears everything. No commands needed. Just talk.
+echo  She hears everything. No commands needed. Just talk.
 echo.
 echo  Extension installed at:  %INSTALL_DIR%
 echo.
