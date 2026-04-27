@@ -69,7 +69,8 @@ var WORKER_PATHS = {
   pipeline:     'organism/web/pipeline-worker.js',
   inference:    'organism/web/inference-worker.js',
   orchestrator: 'organism/web/orchestrator-worker.js',
-  'twin-alpha':  'organism/web/twin-alpha-worker.js'
+  'twin-alpha':  'organism/web/twin-alpha-worker.js',
+  math:         'organism/web/math-worker.js'
 };
 
 /* ════════════════════════════════════════════════════════════════
@@ -77,7 +78,7 @@ var WORKER_PATHS = {
    ════════════════════════════════════════════════════════════════ */
 
 var DIVISIONS = {
-  brain:          { name: 'Brain',          icon: '🧠', workers: ['engine', 'inference', 'orchestrator', 'twin-alpha'], purpose: 'Thinking & reasoning' },
+  brain:          { name: 'Brain',          icon: '🧠', workers: ['engine', 'inference', 'orchestrator', 'twin-alpha', 'math'], purpose: 'Thinking, reasoning & mathematics' },
   data:           { name: 'Data',           icon: '💾', workers: ['memory', 'analytics', 'pipeline'],           purpose: 'Memory, analytics & pipelines' },
   infrastructure: { name: 'Infrastructure', icon: '🏗', workers: ['mesh', 'scheduler', 'guardian', 'telemetry'], purpose: 'Always-on backbone' },
   protocol:       { name: 'Protocol',       icon: '🔐', workers: ['routing', 'crypto', 'contract'],             purpose: 'Communication & trust' }
@@ -247,6 +248,7 @@ OrganismBridge.prototype._handleMessage = function (workerName, msg) {
     case 'pipeline':
     case 'inference':
     case 'orchestrator':
+    case 'math':
       this._handleExtendedMessage(workerName, msg);
       break;
   }
@@ -514,6 +516,60 @@ OrganismBridge.prototype.executeWorkflow = function (workflowId) {
 };
 OrganismBridge.prototype.decomposeTask = function (task) {
   if (this.workers.orchestrator) this.workers.orchestrator.postMessage({ type: 'decompose', task: task });
+};
+
+// Math Worker
+OrganismBridge.prototype.matrixMultiply = function (a, b) {
+  if (this.workers.math) this.workers.math.postMessage({ type: 'matrix-multiply', a: a, b: b });
+};
+OrganismBridge.prototype.computeStats = function (data) {
+  if (this.workers.math) this.workers.math.postMessage({ type: 'compute-stats', data: data });
+};
+OrganismBridge.prototype.phiSequence = function (n) {
+  if (this.workers.math) this.workers.math.postMessage({ type: 'phi-sequence', n: n || 20 });
+};
+OrganismBridge.prototype.phiSpiral = function (n) {
+  if (this.workers.math) this.workers.math.postMessage({ type: 'phi-spiral', n: n || 50 });
+};
+OrganismBridge.prototype.fourier = function (signal) {
+  if (this.workers.math) this.workers.math.postMessage({ type: 'fourier', signal: signal });
+};
+OrganismBridge.prototype.regression = function (x, y) {
+  if (this.workers.math) this.workers.math.postMessage({ type: 'regression', x: x, y: y });
+};
+OrganismBridge.prototype.optimize = function (fn, bounds) {
+  // Validate function expression before sending to math worker
+  if (typeof fn !== 'string' || fn.length > 200) return;
+  if (!/^[0-9x+\-*/().^ \s]+$/.test(fn.replace(/\b(sin|cos|tan|abs|sqrt|exp|log|pi)\b/gi, ''))) return;
+  if (this.workers.math) this.workers.math.postMessage({ type: 'optimize', fn: fn, bounds: bounds });
+};
+OrganismBridge.prototype.primeCheck = function (n) {
+  if (this.workers.math) this.workers.math.postMessage({ type: 'prime-check', n: n });
+};
+OrganismBridge.prototype.probability = function (dist, params) {
+  if (this.workers.math) this.workers.math.postMessage({ type: 'probability', dist: dist, params: params });
+};
+
+// Enhanced Inference Worker — new capabilities
+OrganismBridge.prototype.summarize = function (text, sentences) {
+  if (this.workers.inference) this.workers.inference.postMessage({ type: 'summarize', text: text, sentences: sentences || 3 });
+};
+OrganismBridge.prototype.answerQuestion = function (question, context) {
+  if (this.workers.inference) this.workers.inference.postMessage({ type: 'answer', question: question, context: context });
+};
+OrganismBridge.prototype.classifyIntent = function (text) {
+  if (this.workers.inference) this.workers.inference.postMessage({ type: 'intent', text: text });
+};
+OrganismBridge.prototype.chainOfThought = function (question) {
+  if (this.workers.inference) this.workers.inference.postMessage({ type: 'chain-of-thought', question: question });
+};
+OrganismBridge.prototype.modelTopics = function (text, k) {
+  if (this.workers.inference) this.workers.inference.postMessage({ type: 'topics', text: text, k: k || 3 });
+};
+
+// Twin Alpha — ask
+OrganismBridge.prototype.askTwinAlpha = function (query, context) {
+  if (this.workers['twin-alpha']) this.workers['twin-alpha'].postMessage({ type: 'ask', query: query, context: context || {} });
 };
 
 /* ────────────────────────────────────────────────────────

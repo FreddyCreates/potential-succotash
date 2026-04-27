@@ -286,7 +286,7 @@
     }
   }
 
-  /* ── Invoke tool action ─────────────────────────────────── */
+  /* ── Invoke tool action via chrome.runtime messaging ─────── */
   function invokeToolAction(tool, action) {
     resultBox.style.display = 'block';
     resultBox.style.borderColor = FAMILY_COLORS[tool.family] || '#30363d';
@@ -294,31 +294,32 @@
 
     var invokeStartTime = Date.now();
 
-    /* Simulate invocation (in real extension, message to background) */
-    setTimeout(function () {
-      var now = Date.now();
-      var beat = Math.floor(now / 873);
-      var latencyMs = now - invokeStartTime;
-      var result;
+    chrome.runtime.sendMessage(
+      { action: 'invokeTool', callId: tool.callId, toolAction: action, params: {} },
+      function (result) {
+        var latencyMs = Date.now() - invokeStartTime;
 
-      if (tool.family === 'Context') {
-        result = { status: 'ok', beatNumber: beat, phase: 'pulse', registers: 4, contextSize: 256, timestamp: now };
-      } else if (tool.family === 'Commander') {
-        result = { status: 'ok', dispatched: true, model: 'gpt-4o', score: 95, syncLevel: 0.87, timestamp: now };
-      } else if (tool.family === 'Crawling') {
-        result = { status: 'ok', nodesScanned: Math.floor(Math.random() * 100 + 50), throughput: Math.floor(Math.random() * 1000 + 500), timestamp: now };
-      } else {
-        result = { status: 'ok', threatLevel: 'none', complianceScore: 100, violations: 0, timestamp: now };
+        if (chrome.runtime.lastError) {
+          resultBox.textContent = '\u274C Error: ' + chrome.runtime.lastError.message;
+          statusBar.textContent = '\u26A0 Background unreachable';
+          return;
+        }
+
+        if (!result) {
+          resultBox.textContent = '\u274C No response from background engine';
+          statusBar.textContent = '\u26A0 Empty response';
+          return;
+        }
+
+        resultBox.textContent =
+          FAMILY_ICONS[tool.family] + ' ' + tool.name + '.' + action + ' \u2192 ' +
+          (result.status || 'ok').toUpperCase() + '\n' +
+          JSON.stringify(result, null, 2);
+
+        statusBar.textContent = '\u2713 ' + tool.name + '.' + action + ' completed \u2022 ' +
+          latencyMs + 'ms';
       }
-
-      resultBox.textContent =
-        FAMILY_ICONS[tool.family] + ' ' + tool.name + '.' + action + ' \u2192 ' +
-        result.status.toUpperCase() + '\n' +
-        JSON.stringify(result, null, 2);
-
-      statusBar.textContent = '\u2713 ' + tool.name + '.' + action + ' completed \u2022 ' +
-        latencyMs + 'ms';
-    }, 150 + Math.random() * 300);
+    );
   }
 
   /* ── Local tool data (mirrors background.js catalog) ──── */
@@ -372,7 +373,7 @@
     return results;
   }
 
-  /* ── Search handler ─────────────────────────────────────── */
+  /* ── Search handler (routes to background engine) ────────── */
   var searchTimeout;
   searchBox.addEventListener('input', function () {
     clearTimeout(searchTimeout);
@@ -382,8 +383,18 @@
         renderToolList();
         return;
       }
-      var results = searchToolsLocal(query);
-      renderToolList(results);
+      chrome.runtime.sendMessage(
+        { action: 'searchTools', query: query },
+        function (results) {
+          if (chrome.runtime.lastError || !results) {
+            /* Fallback to local search if background unavailable */
+            var localResults = searchToolsLocal(query);
+            renderToolList(localResults);
+            return;
+          }
+          renderToolList(results);
+        }
+      );
     }, 200);
   });
 

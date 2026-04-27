@@ -292,6 +292,78 @@ var registerEngine = new RegisterEngine();
 // Handle messages from content script
 if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.onMessage) {
   chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    /* ── Universal message routing (popup / side panel / devtools) ──── */
+    if (request.type === 'heartbeat') {
+      sendResponse({ status: 'alive', healthy: true, timestamp: Date.now() });
+      return true;
+    }
+    if (request.type === 'openSidePanel') {
+      try { if (chrome.sidePanel && chrome.sidePanel.open) chrome.sidePanel.open({ windowId: sender.tab ? sender.tab.windowId : undefined }).catch(function(){}); } catch(e){}
+      sendResponse({ ok: true });
+      return true;
+    }
+    if (request.type === 'popup' || request.type === 'sidePanel' || request.type === 'devtools') {
+      var cmd = request.command || '';
+      var lower = cmd.toLowerCase();
+      var engine = registerEngine;
+
+      /* ── Built-in workspace commands ── */
+      if (cmd === 'ping') { sendResponse({ result: 'pong — Register engine alive at ' + new Date().toISOString() }); return true; }
+      if (cmd === 'getState' || lower === 'state' || lower === 'status') {
+        sendResponse({ result: JSON.stringify(engine && engine.state ? engine.state : { status: 'running', timestamp: Date.now() }, null, 2) });
+        return true;
+      }
+      if (cmd === 'clearLogs') { sendResponse({ result: 'Workspace logs cleared.' }); return true; }
+      if (lower === 'help' || lower === 'capabilities' || lower === '?') {
+        sendResponse({ result: '\u{1F9E0} Register AI Workspace\n\nCapabilities:\n• Get Register State — Get register state\n• Run Pipeline — Run register pipeline\n• Get Downloads — Get download links\n• Get Install Instructions — Get install instructions\n\nType any command or question and I will route it to the best engine method.' });
+        return true;
+      }
+
+      /* ── Save to workspace conversation history ── */
+      var storageKey = 'register_workspace_history';
+      chrome.storage.local.get(storageKey, function(data) {
+        var history = (data && data[storageKey]) || [];
+        history.push({ role: 'user', content: cmd, ts: Date.now() });
+
+        /* ── Intelligent workspace command routing ── */
+        var result;
+        try {
+          if (lower.indexOf('state') !== -1 || lower.indexOf('status') !== -1 || lower.indexOf('overview') !== -1 || lower.indexOf('info') !== -1) {
+            result = engine.getState();
+          }
+          else if (lower.indexOf('pipeline') !== -1 || lower.indexOf('run') !== -1 || lower.indexOf('process') !== -1 || lower.indexOf('build') !== -1) {
+            result = engine._runPipeline();
+          }
+          else if (lower.indexOf('download') !== -1 || lower.indexOf('links') !== -1 || lower.indexOf('get') !== -1 || lower.indexOf('export') !== -1) {
+            result = engine._createDownloadLinks();
+          }
+          else if (lower.indexOf('install') !== -1 || lower.indexOf('instructions') !== -1 || lower.indexOf('setup') !== -1 || lower.indexOf('guide') !== -1) {
+            result = engine._getInstallInstructions();
+          }
+          else {
+            /* Default: route to primary engine method */
+            result = engine.getState();
+          }
+        } catch(e) {
+          result = { error: e.message, fallback: 'Register encountered an error processing: "' + cmd + '"' };
+        }
+
+        var responseText;
+        if (typeof result === 'string') { responseText = result; }
+        else if (result && result.error) { responseText = '\u26A0\uFE0F ' + (result.fallback || result.error); }
+        else { responseText = JSON.stringify(result, null, 2); }
+
+        history.push({ role: 'ai', content: responseText, ts: Date.now() });
+        if (history.length > 100) { history = history.slice(-100); }
+        var update = {};
+        update[storageKey] = history;
+        chrome.storage.local.set(update);
+
+        sendResponse({ result: responseText });
+      });
+      return true;
+    }
+
     if (request.type === 'getRegisterState') {
       sendResponse(registerEngine.getState());
     } else if (request.type === 'runPipeline') {
@@ -305,3 +377,17 @@ if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.onMessage)
     return true;
   });
 }
+
+/* -- Auto-activate on install: open side panel for user -- */
+chrome.runtime.onInstalled.addListener(function(details) {
+  if (details.reason === 'install') {
+    console.log('[Register] Installed — AI activated 24/7');
+    /* Auto-activate side panel on install */
+    if (chrome.sidePanel && chrome.sidePanel.setOptions) {
+      chrome.sidePanel.setOptions({ enabled: true });
+    }
+    if (chrome.sidePanel && chrome.sidePanel.setPanelBehavior) {
+      chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: false }).catch(function(){});
+    }
+  }
+});
