@@ -80,5 +80,7 @@ export function downloadPdf(opts: PdfOptions, filename?: string): void {
     url,
     filename: filename || `jarvis-report-${Date.now()}.pdf`,
     saveAs: false,
+  }, () => {
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
   });
 }

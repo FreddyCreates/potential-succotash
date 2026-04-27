@@ -77,7 +77,7 @@ export function extractEntities(text: string): string[] {
   let sequence: string[] = [];
   for (const word of words) {
     const clean = word.replace(/[^a-zA-Z'-]/g, '');
-    const isCapitalized = /^[A-Z][a-z]{1,}/.test(clean) && !STOP_WORDS.has(clean);
+    const isCapitalized = /^[A-Z][a-z]{1,}/.test(clean) && !STOP_WORDS.has(clean.toLowerCase());
     if (isCapitalized) {
       sequence.push(clean);
     } else {

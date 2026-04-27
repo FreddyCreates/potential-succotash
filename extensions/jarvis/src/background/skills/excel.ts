@@ -50,9 +50,24 @@ export async function generateExcel(opts: ExcelOptions): Promise<Blob> {
 export async function downloadExcel(opts: ExcelOptions, filename?: string): Promise<void> {
   const blob = await generateExcel(opts);
   const url = URL.createObjectURL(blob);
-  chrome.downloads.download({
-    url,
-    filename: filename || `jarvis-report-${Date.now()}.xlsx`,
-    saveAs: false,
+  await new Promise<void>((resolve, reject) => {
+    chrome.downloads.download(
+      {
+        url,
+        filename: filename || `jarvis-report-${Date.now()}.xlsx`,
+        saveAs: false,
+      },
+      () => {
+        try {
+          if (chrome.runtime.lastError) {
+            reject(new Error(chrome.runtime.lastError.message));
+            return;
+          }
+          resolve();
+        } finally {
+          URL.revokeObjectURL(url);
+        }
+      },
+    );
   });
 }

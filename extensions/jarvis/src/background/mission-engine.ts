@@ -121,12 +121,15 @@ export class MissionEngine {
       description,
       target: options.target,
       domainAI: AI.id,
+      status: 'pending',
       issuedAt,
     };
     this._missions.set(missionId, record);
     this._pruneLog();
 
     // Execute
+    record.status = 'running';
+    this._missions.set(missionId, record);
     let result: DomainAIResult;
     try {
       if (AI.id === 'ContextAI') {
@@ -149,6 +152,8 @@ export class MissionEngine {
       result = {
         missionId,
         domainAI: AI.id,
+        domainEmoji: '❌',
+        status: 'failed',
         toolsUsed: [],
         summary: 'Mission failed: ' + errMsg,
         data: { error: errMsg },

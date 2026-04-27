@@ -117,7 +117,12 @@ export async function solusLoad(): Promise<void> {
       ));
     }
 
-    await Promise.allSettled(tasks);
+    try {
+      await Promise.all(tasks);
+    } catch (error) {
+      _loadPromise = null;
+      throw error;
+    }
   })();
   return _loadPromise;
 }

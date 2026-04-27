@@ -64,7 +64,7 @@ export async function dbAddTempleEntry(category: string, entry: TempleEntry): Pr
 }
 
 export async function dbGetTempleEntries(category: string, limit = 50): Promise<TempleEntry[]> {
-  const rows = await db.temple.where('category').equals(category).reverse().sortBy('timestamp');
+  const rows = (await db.temple.where('category').equals(category).sortBy('timestamp')).reverse();
   return rows.slice(0, limit).map(r => ({ text: r.text, intent: r.intent, mood: r.mood, timestamp: r.timestamp }));
 }
 
