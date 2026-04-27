@@ -20,10 +20,7 @@ import {
 import type { Note, JarvisDocument, TempleEntry } from './types';
 import { missionEngine } from './mission-engine.js';
 import { pse } from './pattern-synthesis-engine.js';
-import {
-  solusLoad, solusSummarize, solusClassify, solusAnswer,
-  solusIsReady, solusModelStatus, onSolusProgress,
-} from './skills/solus';
+/* No static solus import — loaded lazily via getSolus() to exclude onnxruntime-web from main bundle */
 import {
   saveMemory, getMemories, deleteMemory, memoryStats, encodeSpatialCoord,
 } from './skills/memoryAI';
@@ -36,6 +33,51 @@ import {
 import {
   phantomReadTab, getPhantomReads, synthesizeAcrossReads, clearPhantomReads,
 } from './skills/phantom-meta';
+
+/**
+ * Route Solus calls through an offscreen document so onnxruntime-web
+ * (2.8 MB) runs in a separate context and never inflates the service
+ * worker bundle or its cold-start parse time.
+ */
+async function _solusOffscreen<T>(msg: Record<string, unknown>): Promise<T> {
+  const offscreenUrl = chrome.runtime.getURL('src/offscreen/offscreen.html');
+  try {
+    const existing = await (chrome.offscreen as typeof chrome.offscreen & { hasDocument(): Promise<boolean> }).hasDocument();
+    if (!existing) {
+      await chrome.offscreen.createDocument({
+        url: offscreenUrl,
+        reasons: [chrome.offscreen.Reason.WORKERS],
+        justification: 'Runs Solus offline AI (onnxruntime-web) to keep service worker bundle lean.',
+      });
+    }
+  } catch { /* already open, or API unavailable */ }
+  return new Promise<T>((resolve, reject) => {
+    chrome.runtime.sendMessage(msg, r => {
+      if (chrome.runtime.lastError) reject(new Error(chrome.runtime.lastError.message));
+      else resolve(r as T);
+    });
+  });
+}
+
+async function getSolus() {
+  type R<T> = { success: boolean; message?: string } & T;
+  return {
+    solusLoad: () => _solusOffscreen<R<object>>({ action: '_solus_load' })
+      .then(r => { if (!r.success) throw new Error(r.message); }),
+    solusModelStatus: () => _solusOffscreen<R<{ status: Record<string, string>; ready: boolean }>>({ action: '_solus_status' }),
+    solusIsReady: () => _solusOffscreen<R<{ ready: boolean }>>({ action: '_solus_status' }).then(r => r.ready),
+    onSolusProgress: (_cb: unknown) => { /* progress events forwarded by offscreen doc directly */ },
+    solusSummarize: (text: string) =>
+      _solusOffscreen<R<{ summary?: string }>>({ action: '_solus_summarize', text })
+        .then(r => { if (!r.success) throw new Error(r.message); return r.summary || ''; }),
+    solusClassify: (text: string, labels: string[]) =>
+      _solusOffscreen<R<{ result?: unknown }>>({ action: '_solus_classify', text, labels })
+        .then(r => { if (!r.success) throw new Error(r.message); return r.result; }),
+    solusAnswer: (context: string, question: string) =>
+      _solusOffscreen<R<{ answer?: string; score?: number }>>({ action: '_solus_answer', context, question })
+        .then(r => { if (!r.success) throw new Error(r.message); return { answer: r.answer || '', score: r.score || 0 }; }),
+  };
+}
 
 const PHI = 1.618033988749895;
 const HEARTBEAT = 873;
@@ -138,7 +180,10 @@ class MiniBrain {
     pw.fires++;
     pw.lastFired = Date.now();
     pw.weight = Math.min(10.0, pw.weight + this.learningRate);
-    for (const k in this.pathways) { if (k !== type) this.pathways[k].weight = Math.max(0.1, this.pathways[k].weight * NEURO_DECAY); }
+    // O(n) decay only every 10 stimuli — amortizes cost as pathway count grows
+    if (this.totalStimuli % 10 === 0) {
+      for (const k in this.pathways) { if (k !== type) this.pathways[k].weight = Math.max(0.1, this.pathways[k].weight * NEURO_DECAY); }
+    }
     if (this.awarenessLevel > 30 && pw.fires % Math.ceil(NEURO_PHI * 10) === 0) {
       this.totalDecisions++;
       this.thoughts.push({ id: `T-${this.workerName}-${this.totalDecisions}`, stimulus: type, strength: pw.weight, awareness: this.awarenessLevel, timestamp: Date.now() });
@@ -206,11 +251,15 @@ class MetaThoughtModel {
     this.totalInferences++;
     this.attentionMap[stimulus] = (this.attentionMap[stimulus] || 0) + weight;
     const keys = Object.keys(this.attentionMap);
-    const maxVal = Math.max(...keys.map(k => this.attentionMap[k]));
-    const expSum = keys.reduce((s, k) => s + Math.exp((this.attentionMap[k] - maxVal) / Math.max(this.temperature, 0.01)), 0);
+    // Use a manual max loop instead of Math.max(...spread) to avoid stack overflow on large maps
+    let maxVal = -Infinity;
+    for (const k of keys) { if (this.attentionMap[k] > maxVal) maxVal = this.attentionMap[k]; }
+    const T = Math.max(this.temperature, 0.01);
+    let expSum = 0;
+    for (const k of keys) expSum += Math.exp((this.attentionMap[k] - maxVal) / T);
     let bestKey: string | null = null, bestScore = 0;
     for (const k of keys) {
-      const score = Math.exp((this.attentionMap[k] - maxVal) / Math.max(this.temperature, 0.01)) / expSum;
+      const score = Math.exp((this.attentionMap[k] - maxVal) / T) / expSum;
       if (score > bestScore) { bestScore = score; bestKey = k; }
     }
     this.focusTarget = bestKey;
@@ -287,7 +336,7 @@ class VigilEngine {
   commandCount = 0;
   commandHistory: unknown[] = [];
   maxHistory = 200;
-  state = { initialized: true, heartbeatCount: 0, version: '16.0.0', agent: 'VIGIL', mood: 'focused', focus: 'awareness', vitals: null as unknown };
+  state = { initialized: true, heartbeatCount: 0, version: '17.0.0', agent: 'VIGIL', mood: 'focused', focus: 'awareness', vitals: null as unknown };
   neuro = new NeuroCore('animus');
   /** NeurochemistryEngine — ODE-based neurochemical simulation */
   neuroChem = new NeurochemistryEngine();
@@ -302,11 +351,7 @@ class VigilEngine {
 
   constructor() {
     this._startHeartbeat();
-    console.log('[VIGIL v16.0] Engine initialized — NeuroCore online, NeurochemistryEngine online (ODE/Hill/Jacobian), PSE online (' + pse.primitiveCount + ' primitives, ' + pse.domains.length + ' domains), Dexie DB active, PHI=' + PHI + ' HEARTBEAT=' + HEARTBEAT + 'ms');
-    // Wire Solus progress to sidepanel
-    onSolusProgress(p => {
-      chrome.runtime.sendMessage({ action: '_solusProgress', progress: p }).catch(() => {});
-    });
+    console.log('[VIGIL v17.0] Engine initialized — NeuroCore online, NeurochemistryEngine online (ODE/Hill/Jacobian), PSE online (' + pse.primitiveCount + ' primitives, ' + pse.domains.length + ' domains), Solus via offscreen, PHI=' + PHI + ' HEARTBEAT=' + HEARTBEAT + 'ms');
   }
 
   _startHeartbeat() {
@@ -2641,8 +2686,54 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       sendResponse({ success: true });
       break;
     }
+
+    /* ── Auto Phantom Meta — content script fires this 1.5s after page load ── */
+    case 'autoPhantomMeta': {
+      const apm = message as {
+        url?: string; title?: string; scrollPct?: number;
+        metas?: { key: string; value: string }[];
+        headings?: string[];
+        jsonLdSnippets?: string[];
+        canonical?: string;
+      };
+      const apmUrl = (apm.url || '').trim();
+      if (!apmUrl || apmUrl.startsWith('chrome://')) { sendResponse({ success: true }); break; }
+
+      const apmHeadings = apm.headings || [];
+      const apmScrollPct = apm.scrollPct ?? 0;
+      const apmExcerpt = [
+        ...(apm.metas || []).filter(m => m.key === 'description' || m.key === 'og:description').map(m => m.value),
+        ...apmHeadings.slice(0, 3),
+      ].join(' · ').substring(0, 300);
+
+      const apmKeywords = [
+        ...(apm.metas || []).filter(m => m.key === 'keywords').flatMap(m => m.value.split(/[,;]/)),
+        ...apmHeadings.slice(0, 5),
+        ...(apm.metas || []).filter(m => m.key === 'og:title').map(m => m.value),
+      ].map(s => s.trim().toLowerCase()).filter(Boolean).slice(0, 15);
+
+      saveMemory(
+        apmUrl,
+        apm.title || apmUrl,
+        apmExcerpt,
+        apmKeywords,
+        { scrollPct: apmScrollPct, sectionPath: apmHeadings.slice(0, 3), domDepth: 0 },
+      ).catch(() => {});
+
+      // Enrich knowledge graph with all meta signals
+      const apmText = [
+        ...(apm.metas || []).map(m => m.value),
+        ...apmHeadings,
+        ...(apm.jsonLdSnippets || []),
+      ].join(' ');
+      graphAddPage(apmUrl, apm.title || apmUrl, apmText.substring(0, 5000)).catch(() => {});
+
+      engine.neuroChem.onStimulus('tab_switch');
+      sendResponse({ success: true });
+      break;
+    }
+
     case 'clipboardCopy': {
-      /* Content script fires this when user copies text on any page */
       const clipText  = (message.text as string) || '';
       const clipUrl   = (message.url as string) || '';
       const clipTitle = (message.title as string) || 'Unknown page';
@@ -2681,22 +2772,24 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     /* ── Solus — Sovereign Offline Intelligence ─────────────── */
     case 'solusLoad': {
-      solusLoad()
+      getSolus().then(s => s.solusLoad())
         .then(() => sendResponse({ success: true, message: 'Solus models loaded.' }))
         .catch(e => sendResponse({ success: false, message: (e as Error).message }));
       break;
     }
     case 'solusStatus': {
-      const status = solusModelStatus();
-      const ready = solusIsReady();
-      const anyLoading = Object.values(status).some(s => s === 'loading');
-      sendResponse({ success: true, ready, anyLoading, status });
+      getSolus().then(s => {
+        const status = s.solusModelStatus();
+        const ready = s.solusIsReady();
+        const anyLoading = Object.values(status).some(st => st === 'loading');
+        sendResponse({ success: true, ready, anyLoading, status });
+      }).catch(e => sendResponse({ success: false, message: (e as Error).message }));
       break;
     }
     case 'solusSummarize': {
       const text = (message.text as string) || '';
       if (!text) { sendResponse({ success: false, message: 'No text provided.' }); break; }
-      solusSummarize(text)
+      getSolus().then(s => s.solusSummarize(text))
         .then(summary => sendResponse({ success: true, summary }))
         .catch(e => sendResponse({ success: false, message: (e as Error).message }));
       break;
@@ -2705,7 +2798,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       const text = (message.text as string) || '';
       const labels = (message.labels as string[]) || [];
       if (!text || !labels.length) { sendResponse({ success: false, message: 'Text and labels required.' }); break; }
-      solusClassify(text, labels)
+      getSolus().then(s => s.solusClassify(text, labels))
         .then(result => sendResponse({ success: true, result }))
         .catch(e => sendResponse({ success: false, message: (e as Error).message }));
       break;
@@ -2714,7 +2807,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       const context = (message.context as string) || '';
       const question = (message.question as string) || '';
       if (!context || !question) { sendResponse({ success: false, message: 'Context and question required.' }); break; }
-      solusAnswer(context, question)
+      getSolus().then(s => s.solusAnswer(context, question))
         .then(r => sendResponse({ success: true, answer: r.answer, score: r.score }))
         .catch(e => sendResponse({ success: false, message: (e as Error).message }));
       break;

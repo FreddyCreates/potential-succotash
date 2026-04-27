@@ -8,7 +8,7 @@ export default defineConfig({
     react(),
     webExtension({
       manifest: 'src/manifest.json',
-      additionalInputs: ['src/content/index.ts'],
+      additionalInputs: ['src/content/index.ts', 'src/offscreen/offscreen.html'],
     }),
     viteStaticCopy({
       targets: [{ src: 'icons', dest: '.' }],
@@ -20,8 +20,6 @@ export default defineConfig({
     target: 'es2022',
   },
   esbuild: {
-    // Prevents esbuild from trying to assign to Function.prototype.name,
-    // which is read-only in Chrome's strict-mode service worker context.
     keepNames: true,
   },
 });

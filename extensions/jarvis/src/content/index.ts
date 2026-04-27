@@ -526,5 +526,62 @@
   }
 
   injectFab();
-  console.log('[JARVIS] Content script injected — FAB active, PHI=' + PHI);
+
+  /* ----------------------------------------------------------
+   *  Auto Phantom Meta Push — fires after page loads
+   *  Extracts page meta layer (meta tags, OG, headings, JSON-LD)
+   *  and sends to background for storage. Completely non-blocking —
+   *  fires 1.5s after DOMContentLoaded to not slow page rendering.
+   * ---------------------------------------------------------- */
+  function _autoPhantomPush(): void {
+    try {
+      const url = window.location.href;
+      if (!url || url.startsWith('chrome://') || url.startsWith('chrome-extension://') ||
+          url.startsWith('about:') || url.startsWith('data:')) return;
+
+      // Collect meta primitives inline (lightweight version — no PSE, no import)
+      const metas: { key: string; value: string }[] = [];
+      document.querySelectorAll('meta[content]').forEach(m => {
+        const key = m.getAttribute('name') || m.getAttribute('property') || '';
+        const value = (m.getAttribute('content') || '').trim();
+        if (key && value && value.length < 400) metas.push({ key, value });
+      });
+
+      const headings: string[] = [];
+      document.querySelectorAll('h1,h2,h3').forEach(h => {
+        const t = (h.textContent || '').trim().substring(0, 100);
+        if (t) headings.push(t);
+      });
+
+      const jsonLdSnippets: string[] = [];
+      document.querySelectorAll('script[type="application/ld+json"]').forEach(s => {
+        const t = (s.textContent || '').trim().substring(0, 500);
+        if (t) jsonLdSnippets.push(t);
+      });
+
+      const canonical = (document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null)?.href || '';
+      const scrollPct = Math.round(
+        (window.scrollY / Math.max(1, document.documentElement.scrollHeight - window.innerHeight)) * 100,
+      );
+
+      chrome.runtime.sendMessage({
+        action: 'autoPhantomMeta',
+        url,
+        title: document.title,
+        metas,
+        headings,
+        jsonLdSnippets,
+        canonical,
+        scrollPct,
+      }).catch(() => {});
+    } catch { /* ignore */ }
+  }
+
+  if (document.readyState === 'complete') {
+    setTimeout(_autoPhantomPush, 1500);
+  } else {
+    window.addEventListener('load', () => setTimeout(_autoPhantomPush, 1500), { once: true });
+  }
+
+  console.log('[VIGIL v17] Content script injected — FAB active, auto-phantom-meta armed, PHI=' + PHI);
 })();

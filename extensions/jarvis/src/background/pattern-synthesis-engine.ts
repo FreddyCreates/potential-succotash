@@ -478,6 +478,9 @@ export class PatternSynthesisEngine {
   private _synthesisCount = 0;
   private _activatedDomains: Set<KnowledgeDomain> = new Set();
   private _bootTime = Date.now();
+  /** LRU cache: cacheKey → SynthesisResult, max 128 entries */
+  private _cache = new Map<string, SynthesisResult>();
+  private readonly _cacheMax = 128;
 
   /** All unique domains represented in the corpus */
   get domains(): KnowledgeDomain[] {
@@ -611,6 +614,16 @@ export class PatternSynthesisEngine {
    * @returns       SynthesisResult — ready for Jarvis response generation
    */
   synthesize(input: string, mood = 'focused', topN = 6): SynthesisResult {
+    // Cache key: first 120 chars of input + mood + topN
+    const cacheKey = input.substring(0, 120) + '|' + mood + '|' + topN;
+    const cached = this._cache.get(cacheKey);
+    if (cached) {
+      // Move to end (LRU touch)
+      this._cache.delete(cacheKey);
+      this._cache.set(cacheKey, cached);
+      return cached;
+    }
+
     this._synthesisCount++;
 
     const recognitions = this.recognize(input);
@@ -636,7 +649,7 @@ export class PatternSynthesisEngine {
     // Track activated domains
     domains.forEach(d => this._activatedDomains.add(d));
 
-    return {
+    const result: SynthesisResult = {
       merged,
       confidence,
       domains,
@@ -644,6 +657,13 @@ export class PatternSynthesisEngine {
       concepts,
       recognitions: top,
     };
+
+    // Store in cache; evict oldest if at capacity
+    if (this._cache.size >= this._cacheMax) {
+      this._cache.delete(this._cache.keys().next().value!);
+    }
+    this._cache.set(cacheKey, result);
+    return result;
   }
 
   // ── Utility Methods ───────────────────────────────────────────────────────────

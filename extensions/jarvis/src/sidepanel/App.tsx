@@ -13,6 +13,7 @@ import ScreenPanel from './panels/ScreenPanel';
 import TabsPanel from './panels/TabsPanel';
 import InstallPanel from './panels/InstallPanel';
 import LogPanel from './panels/LogPanel';
+import PhantomPanel from './panels/PhantomPanel';
 
 // CNS sections — each group is a logical nervous-system layer
 type TabDef = { id: string; label: string; section?: string };
@@ -28,6 +29,7 @@ const TABS: TabDef[] = [
   { id: 'agents',    label: '🤖 Agents' },
   { id: 'agi',       label: '⚗️ AGI' },
   { id: 'search',    label: '🔍 Search' },
+  { id: 'phantom',   label: '👁 Phantom' },
   // ── MIND ─ memory, learning, monitoring ─────────────────────
   { id: '_mind',     label: '── MIND',     section: 'divider' },
   { id: 'memory',    label: '🧠 Memory' },
@@ -84,6 +86,7 @@ export default function App() {
       case 'memory':    return <MemoryVaultPanel />;
       case 'workspace': return <WorkspacePanel />;
       case 'search':    return <SearchPanel />;
+      case 'phantom':   return <PhantomPanel />;
       case 'screen':    return <ScreenPanel />;
       case 'tabs':      return <TabsPanel />;
       case 'install':   return <InstallPanel />;
