@@ -352,6 +352,211 @@
     .stats { gap: 1.5rem; }
     .stat .num { font-size: 1.5rem; }
   }
+
+  /* ── AI Chat Panel ─────────────────────────────── */
+  .chat-panel {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+  .chat-panel h2 {
+    font-size: 1.6rem;
+    color: var(--accent);
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+  .chat-container {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem;
+    margin-top: 1rem;
+  }
+  .chat-messages {
+    max-height: 350px;
+    overflow-y: auto;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .chat-msg {
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    max-width: 85%;
+  }
+  .chat-msg.user {
+    background: var(--accent);
+    color: #fff;
+    margin-left: auto;
+    text-align: right;
+  }
+  .chat-msg.ai {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .chat-msg .msg-meta {
+    font-size: 0.7rem;
+    color: var(--dim);
+    margin-top: 0.3rem;
+  }
+  .chat-input-row {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .chat-input-row input {
+    flex: 1;
+    padding: 0.6rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 0.9rem;
+  }
+  .chat-input-row button {
+    padding: 0.6rem 1.5rem;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+  .chat-input-row button:hover { background: #5a52e0; }
+
+  /* ── AI Insights ─────────────────────────────── */
+  .insights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.8rem;
+    margin-top: 1rem;
+  }
+  .insight-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    transition: border-color 0.3s;
+  }
+  .insight-card:hover { border-color: var(--accent2); }
+  .insight-card .insight-icon { font-size: 1.8rem; margin-bottom: 0.4rem; }
+  .insight-card .insight-val { font-size: 1.4rem; font-weight: bold; color: var(--accent2); }
+  .insight-card .insight-label { font-size: 0.78rem; color: var(--dim); margin-top: 0.2rem; }
+  .insight-card .insight-bar {
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+    margin-top: 0.5rem;
+    overflow: hidden;
+  }
+  .insight-card .insight-bar .fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--accent2);
+    transition: width 0.5s;
+  }
+
+  /* ── Model Playground ──────────────────────────── */
+  .playground-panel {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+  .playground-panel h2 {
+    font-size: 1.6rem;
+    color: var(--accent);
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+  .playground-tabs {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin: 1rem 0;
+    flex-wrap: wrap;
+  }
+  .playground-tab {
+    padding: 0.5rem 1.2rem;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--dim);
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+  }
+  .playground-tab:hover { border-color: var(--accent); color: var(--accent); }
+  .playground-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .playground-workspace {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+  }
+  .playground-workspace textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 0.9rem;
+    font-family: inherit;
+    resize: vertical;
+    margin-bottom: 0.8rem;
+  }
+  .playground-result {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    font-family: monospace;
+    font-size: 0.82rem;
+    color: var(--accent2);
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 0.8rem;
+    white-space: pre-wrap;
+  }
+
+  /* ── Math Panel ──────────────────────────────── */
+  .math-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.8rem;
+    margin-top: 1rem;
+  }
+  .math-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .math-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .math-card .math-icon { font-size: 1.5rem; margin-bottom: 0.3rem; }
+  .math-card .math-name { font-weight: bold; font-size: 0.9rem; }
+  .math-card .math-desc { font-size: 0.75rem; color: var(--dim); margin-top: 0.2rem; }
+  .math-output {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem;
+    margin-top: 1rem;
+    font-family: monospace;
+    font-size: 0.82rem;
+    color: var(--accent2);
+    max-height: 300px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+  }
 </style>
 </head>
 <body>
@@ -363,6 +568,7 @@
   <p class="subtitle">
     Turn your browser into an AI powerhouse. 21 Chrome extensions + 5 Windows extensions — 
     all installable in a single click. No server. No signup. No API keys.
+    Sovereign intelligence with 15 permanent Web Workers, mathematical reasoning, and chain-of-thought AI.
   </p>
   <div class="hero-buttons">
     <a class="btn btn-primary" href="dist/extensions/all-extensions.zip" download>📦 Download All 26</a>
@@ -378,7 +584,8 @@
 <div class="stats">
   <div class="stat"><div class="num">26</div><div class="label">AI Extensions</div></div>
   <div class="stat"><div class="num">40+</div><div class="label">AI Engines Wired</div></div>
-  <div class="stat"><div class="num">5</div><div class="label">Web Workers</div></div>
+  <div class="stat"><div class="num">15</div><div class="label">Web Workers</div></div>
+  <div class="stat"><div class="num">4</div><div class="label">AI Divisions</div></div>
   <div class="stat"><div class="num">0</div><div class="label">Servers Needed</div></div>
   <div class="stat"><div class="num">1</div><div class="label">Click to Install</div></div>
 </div>
@@ -433,20 +640,35 @@
       <h3>Organism Architecture</h3>
       <p>All 25 extensions wire into a single organism with rings, wires, and a sovereign runtime. They work together.</p>
     </div>
+    <div class="feature">
+      <div class="icon">📐</div>
+      <h3>Math Intelligence</h3>
+      <p>Live mathematical engine — matrix algebra, Fourier transforms, golden-ratio optimization, statistics, regression, and prime factorization.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">💬</div>
+      <h3>AI Chat Interface</h3>
+      <p>Conversational AI powered by Twin Alpha — ask anything and get chain-of-thought reasoning, sentiment analysis, summaries, and more.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">🔗</div>
+      <h3>Chain-of-Thought</h3>
+      <p>Step-by-step reasoning engine that decomposes questions, detects intent, extracts concepts, and routes to the right AI capability.</p>
+    </div>
   </div>
 </div>
 
 <!-- ═══════════════════ LIVE ENGINE DASHBOARD ═══════════════════ -->
 <div class="dashboard" id="engine-dashboard">
   <h2>🧬 Live Engine — Neuroemergence Active</h2>
-  <p class="desc">This isn't a page — it's the product. 14 permanent Web Workers organized into 4 autonomous divisions, each with a mini heart (Cor Parvum + MetaCardiacModel), mini brain (Cerebrum Parvum + MetaThoughtModel), and neuroemergence core — running 40 AI engines, sovereign memory, protocol routing, health telemetry, cryptography, contracts, scheduling, mesh networking, analytics, security, data pipelines, inference, orchestration, and the Twin Alpha user-facing intermediary — all alive in your browser right now and forever. <a href="research/neuro-paper.html" style="color:var(--accent)">📄 Paper I: Neuro</a> · <a href="research/autonomy-paper.html" style="color:var(--accent)">📄 Paper II: Autonomy</a> · <a href="research/mesh-paper.html" style="color:var(--accent)">📄 Paper III: Mesh</a> · <a href="research/guardian-paper.html" style="color:var(--accent)">📄 Paper IV: Guardian</a> · <a href="research/crypto-paper.html" style="color:var(--accent)">📄 Paper V: Crypto</a> · <a href="research/pipeline-paper.html" style="color:var(--accent)">📄 Paper VI: Pipeline</a> · <a href="research/scheduler-paper.html" style="color:var(--accent)">📄 Paper VII: Scheduler</a> · <a href="research/inference-paper.html" style="color:var(--accent)">📄 Paper VIII: Inference</a> · <a href="research/twin-alpha-paper.html" style="color:var(--accent)">📄 Paper IX: Twin Alpha</a></p>
+  <p class="desc">This isn't a page — it's the product. 15 permanent Web Workers organized into 4 autonomous divisions, each with a mini heart (Cor Parvum + MetaCardiacModel), mini brain (Cerebrum Parvum + MetaThoughtModel), and neuroemergence core — running 40 AI engines, sovereign memory, protocol routing, health telemetry, cryptography, contracts, scheduling, mesh networking, analytics, security, data pipelines, inference, orchestration, mathematical intelligence, and the Twin Alpha user-facing intermediary — all alive in your browser right now and forever. <a href="research/neuro-paper.html" style="color:var(--accent)">📄 Paper I: Neuro</a> · <a href="research/autonomy-paper.html" style="color:var(--accent)">📄 Paper II: Autonomy</a> · <a href="research/mesh-paper.html" style="color:var(--accent)">📄 Paper III: Mesh</a> · <a href="research/guardian-paper.html" style="color:var(--accent)">📄 Paper IV: Guardian</a> · <a href="research/crypto-paper.html" style="color:var(--accent)">📄 Paper V: Crypto</a> · <a href="research/pipeline-paper.html" style="color:var(--accent)">📄 Paper VI: Pipeline</a> · <a href="research/scheduler-paper.html" style="color:var(--accent)">📄 Paper VII: Scheduler</a> · <a href="research/inference-paper.html" style="color:var(--accent)">📄 Paper VIII: Inference</a> · <a href="research/twin-alpha-paper.html" style="color:var(--accent)">📄 Paper IX: Twin Alpha</a> · <a href="research/math-paper.html" style="color:var(--accent)">📄 Paper X: Math</a></p>
 
   <div class="live-bar" id="live-bar">
     <div class="live-item"><span class="heartbeat-dot" id="hb-dot"></span><span class="lval" id="hb-status">booting…</span> Status</div>
     <div class="live-item"><span class="lval" id="hb-beat">0</span> Heartbeat</div>
     <div class="live-item"><span class="lval" id="hb-engines">0</span> Engines</div>
     <div class="live-item"><span class="lval" id="hb-wires">0</span> Wires</div>
-    <div class="live-item"><span class="lval" id="hb-workers">0/13</span> Workers</div>
+    <div class="live-item"><span class="lval" id="hb-workers">0/15</span> Workers</div>
     <div class="live-item"><span class="lval" id="hb-dispatched">0</span> Dispatched</div>
     <div class="live-item"><span class="lval" id="hb-uptime">0s</span> Uptime</div>
   </div>
@@ -471,7 +693,7 @@
   <h3 style="color:var(--accent2);font-size:0.95rem;margin-bottom:0.5rem;">⚡ 4 Autonomous Worker Divisions — Neuroemergence Active</h3>
   <div id="division-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0.6rem;margin-bottom:1rem;"></div>
 
-  <h3 style="color:var(--accent2);font-size:0.95rem;margin-bottom:0.5rem;">⚙ Worker Status — 13 Permanent Web Workers (Mini Heart + Brain)</h3>
+  <h3 style="color:var(--accent2);font-size:0.95rem;margin-bottom:0.5rem;">⚙ Worker Status — 15 Permanent Web Workers (Mini Heart + Brain)</h3>
   <div class="worker-grid" id="worker-grid">
     <div class="worker-card booting"><div class="wname">🧠 Engine</div><div class="wstatus"><span class="dot booting"></span>booting</div><div class="wbeats">0 beats</div></div>
     <div class="worker-card booting"><div class="wname">💾 Memory</div><div class="wstatus"><span class="dot booting"></span>booting</div><div class="wbeats">0 beats</div></div>
@@ -486,6 +708,7 @@
     <div class="worker-card booting"><div class="wname">🔧 Pipeline</div><div class="wstatus"><span class="dot booting"></span>booting</div><div class="wbeats">0 beats</div></div>
     <div class="worker-card booting"><div class="wname">🤖 Inference</div><div class="wstatus"><span class="dot booting"></span>booting</div><div class="wbeats">0 beats</div></div>
     <div class="worker-card booting"><div class="wname">🎯 Orchestrator</div><div class="wstatus"><span class="dot booting"></span>booting</div><div class="wbeats">0 beats</div></div>
+    <div class="worker-card booting"><div class="wname">📐 Math</div><div class="wstatus"><span class="dot booting"></span>booting</div><div class="wbeats">0 beats</div></div>
   </div>
 
   <div class="dispatch-panel">
@@ -506,6 +729,11 @@
         <option value="Edge inference">Edge inference</option>
         <option value="Mathematical proof">Mathematical proof</option>
         <option value="Semantic embedding">Semantic embedding</option>
+        <option value="Summarization">Summarization</option>
+        <option value="Intent detection">Intent detection</option>
+        <option value="Topic modeling">Topic modeling</option>
+        <option value="Chain-of-thought">Chain-of-thought</option>
+        <option value="Math computation">Math computation</option>
       </select>
       <input type="text" id="task-payload" placeholder="Task payload (e.g. 'Write a function to sort an array')" />
       <button class="fire-btn" id="dispatch-btn" onclick="dispatchTask()">🚀 Dispatch</button>
@@ -779,7 +1007,7 @@ node organism-cli/organism.js install</code></pre>
 
   /* ── Boot the organism engine ───────────────────────────────── */
   var dispatchCount = 0;
-  var WORKER_ICONS = { engine: '🧠', memory: '💾', routing: '🔀', telemetry: '📊', crypto: '🔐', contract: '📜', scheduler: '⏰', mesh: '🕸', analytics: '📈', guardian: '🛡', pipeline: '🔧', inference: '🤖', orchestrator: '🎯' };
+  var WORKER_ICONS = { engine: '🧠', memory: '💾', routing: '🔀', telemetry: '📊', crypto: '🔐', contract: '📜', scheduler: '⏰', mesh: '🕸', analytics: '📈', guardian: '🛡', pipeline: '🔧', inference: '🤖', orchestrator: '🎯', math: '📐', 'twin-alpha': '👤' };
 
   function renderWorkerCards(statuses) {
     var grid = document.getElementById('worker-grid');
@@ -850,6 +1078,197 @@ node organism-cli/organism.js install</code></pre>
     onQuery: function (query, data) {
       if (query === 'wires') {
         renderWires(data);
+      }
+    },
+
+    onWorkerMessage: function (workerName, msg) {
+      var pgResult = document.getElementById('pg-result');
+      var mathOutput = document.getElementById('math-output');
+
+      // ── Inference worker results ──
+      if (workerName === 'inference') {
+        switch (msg.type) {
+          case 'classification':
+            insightsData.classifications++;
+            if (pgResult && currentPlayground === 'classify') {
+              pgResult.textContent = '🏷 Classification Result\n\nTop: ' + msg.data.topCategory + '\n\n' +
+                msg.data.predictions.map(function (p) { return '  ' + p.category + ': ' + (p.score * 100).toFixed(1) + '%'; }).join('\n');
+            }
+            addChatMsg('ai', '🏷 <strong>Classification:</strong> ' + msg.data.topCategory + '<br>' +
+              msg.data.predictions.slice(0, 3).map(function (p) { return p.category + ': ' + (p.score * 100).toFixed(1) + '%'; }).join(', '),
+              'Inference Worker · classify');
+            break;
+          case 'sentiment-result':
+            insightsData.sentiments++;
+            if (pgResult && currentPlayground === 'sentiment') {
+              pgResult.textContent = '💭 Sentiment: ' + msg.data.label.toUpperCase() + '\n\nScore: ' + msg.data.score +
+                '\nPositive words: ' + msg.data.positive + '\nNegative words: ' + msg.data.negative +
+                '\nTotal words: ' + msg.data.total;
+            }
+            var emoji = msg.data.label === 'positive' ? '😊' : (msg.data.label === 'negative' ? '😞' : '😐');
+            addChatMsg('ai', emoji + ' <strong>Sentiment:</strong> ' + msg.data.label + ' (score: ' + msg.data.score + ')<br>Positive: ' + msg.data.positive + ' · Negative: ' + msg.data.negative,
+              'Inference Worker · sentiment');
+            break;
+          case 'summary':
+            insightsData.summaries++;
+            if (pgResult && currentPlayground === 'summarize') {
+              pgResult.textContent = '📝 Summary\n\n' + msg.data.summary + '\n\n' +
+                'Compression: ' + (msg.data.compressionRatio * 100).toFixed(0) + '% | ' +
+                msg.data.selectedSentences + '/' + msg.data.originalSentences + ' sentences';
+            }
+            addChatMsg('ai', '📝 <strong>Summary:</strong><br>' + msg.data.summary + '<br><em>' +
+              msg.data.selectedSentences + '/' + msg.data.originalSentences + ' sentences, ' +
+              (msg.data.compressionRatio * 100).toFixed(0) + '% compression</em>',
+              'Inference Worker · summarize');
+            break;
+          case 'answer-result':
+            insightsData.answers++;
+            addChatMsg('ai', '❓ <strong>Answer:</strong><br>' + msg.data.answer + '<br><em>Confidence: ' + (msg.data.confidence * 100).toFixed(1) + '%</em>',
+              'Inference Worker · QA');
+            break;
+          case 'intent-result':
+            insightsData.intents++;
+            if (pgResult && currentPlayground === 'intent') {
+              pgResult.textContent = '🎯 Intent Detection\n\nPrimary: ' + msg.data.primaryIntent +
+                '\nIs question: ' + msg.data.isQuestion +
+                '\nComplexity: ' + msg.data.complexity +
+                '\n\nAll intents:\n' + msg.data.allIntents.map(function (i) { return '  ' + i.intent + ': ' + (i.confidence * 100).toFixed(1) + '%'; }).join('\n');
+            }
+            addChatMsg('ai', '🎯 <strong>Intent:</strong> ' + msg.data.primaryIntent +
+              (msg.data.isQuestion ? ' (question)' : '') +
+              ' · Complexity: ' + msg.data.complexity +
+              '<br>All: ' + msg.data.allIntents.slice(0, 4).map(function (i) { return i.intent; }).join(', '),
+              'Inference Worker · intent');
+            break;
+          case 'chain-result':
+            insightsData.chains++;
+            if (pgResult && currentPlayground === 'chain') {
+              pgResult.textContent = '🔗 Chain-of-Thought\n\n' +
+                msg.data.steps.map(function (s) { return 'Step ' + s.step + ' [' + s.action + ']: ' + s.result; }).join('\n') +
+                '\n\n→ Recommended: ' + msg.data.recommendedCapability;
+            }
+            addChatMsg('ai', '🔗 <strong>Chain-of-Thought:</strong><br>' +
+              msg.data.steps.map(function (s) { return '↳ <strong>' + s.action + ':</strong> ' + s.result; }).join('<br>') +
+              '<br><br>→ <strong>Route:</strong> ' + msg.data.recommendedCapability,
+              'Inference Worker · chain-of-thought · ' + msg.data.totalSteps + ' steps');
+            break;
+          case 'keywords-result':
+            if (pgResult && currentPlayground === 'keywords') {
+              pgResult.textContent = '🔑 Keywords\n\n' +
+                msg.data.map(function (k) { return k.word + ' (count: ' + k.count + ', score: ' + k.score + ')'; }).join('\n');
+            }
+            addChatMsg('ai', '🔑 <strong>Keywords:</strong> ' + msg.data.slice(0, 8).map(function (k) { return k.word; }).join(', '),
+              'Inference Worker · keywords');
+            break;
+          case 'entities-result':
+            if (pgResult && currentPlayground === 'entities') {
+              pgResult.textContent = '👤 Entities Found: ' + msg.data.length + '\n\n' +
+                msg.data.map(function (e) { return '[' + e.type + '] ' + e.value; }).join('\n');
+            }
+            break;
+          case 'topics-result':
+            if (pgResult && currentPlayground === 'topics') {
+              pgResult.textContent = '📊 Topic Modeling\n\n' +
+                msg.data.topics.map(function (t) { return t.label + ' (' + t.sentenceCount + ' sentences)\n  Keywords: ' + t.keywords.join(', '); }).join('\n\n') +
+                '\n\nVocabulary: ' + msg.data.vocabularySize + ' words';
+            }
+            break;
+          case 'similarity-result':
+            if (pgResult && currentPlayground === 'similarity') {
+              var s = msg.data.similarity;
+              pgResult.textContent = '🔄 Similarity Score: ' + (s * 100).toFixed(2) + '%\n\n' +
+                (s > 0.8 ? 'Very similar' : (s > 0.5 ? 'Moderately similar' : (s > 0.2 ? 'Somewhat related' : 'Not very similar')));
+            }
+            break;
+          case 'inference-stats':
+            insightsData.tokens = msg.stats.totalTokensProcessed;
+            break;
+        }
+        updateInsights();
+      }
+
+      // ── Math worker results ──
+      if (workerName === 'math') {
+        if (msg.type === 'math-result') {
+          insightsData.mathOps++;
+          var data = msg.data;
+          var formatted = '';
+
+          switch (msg.op) {
+            case 'phi-sequence':
+              formatted = '🌀 Fibonacci / φ Convergence\n\n' +
+                'φ = ' + data.phi + '\nφ⁻¹ = ' + data.phiInverse + '\nGolden Angle = ' + data.goldenAngle + '°\n\n' +
+                'Sequence: ' + data.sequence.slice(0, 15).join(', ') + '…\n\n' +
+                'Ratio Convergence → φ:\n' + data.ratios.slice(-8).map(function (r, i) { return '  F(' + (data.ratios.length - 7 + i) + ')/F(' + (data.ratios.length - 8 + i) + ') = ' + r; }).join('\n');
+              addChatMsg('ai', '🌀 <strong>Fibonacci:</strong> φ = ' + data.phi + '<br>Sequence: ' + data.sequence.slice(0, 10).join(', ') + '…<br>Converges to φ at ratio: ' + data.convergence, 'Math Worker · phi-sequence');
+              break;
+            case 'phi-spiral':
+              formatted = '🌻 Phi Spiral — Golden Angle Geometry\n\n' +
+                'Golden Angle: ' + data.goldenAngle + '°\nTotal Points: ' + data.totalPoints + '\n\n' +
+                'First 10 points:\n' + data.points.slice(0, 10).map(function (p) { return '  (' + p.x + ', ' + p.y + ') r=' + p.r; }).join('\n');
+              addChatMsg('ai', '🌻 <strong>Phi Spiral:</strong> ' + data.totalPoints + ' points, golden angle ' + data.goldenAngle + '°', 'Math Worker · phi-spiral');
+              break;
+            case 'stats':
+              formatted = '📊 Statistical Analysis\n\n' +
+                'N = ' + data.n + '\nMean = ' + data.mean + '\nMedian = ' + data.median + '\nStd Dev = ' + data.stdDev +
+                '\nVariance = ' + data.variance + '\nSkewness = ' + data.skewness + '\nKurtosis = ' + data.kurtosis +
+                '\nRange = [' + data.min + ', ' + data.max + ']\nIQR = ' + data.iqr + '\nCoeff of Variation = ' + data.coeffOfVariation;
+              addChatMsg('ai', '📊 <strong>Statistics:</strong><br>Mean: ' + data.mean + ' · Median: ' + data.median + ' · Std Dev: ' + data.stdDev + '<br>Range: [' + data.min + ', ' + data.max + '] · Skewness: ' + data.skewness, 'Math Worker · stats');
+              break;
+            case 'matrix-multiply':
+              formatted = '🧮 Matrix Multiplication\n\nResult (' + data.rows + '×' + data.cols + '):\n' +
+                data.matrix.map(function (row) { return '  [' + row.join(', ') + ']'; }).join('\n');
+              addChatMsg('ai', '🧮 <strong>Matrix:</strong> ' + data.rows + '×' + data.cols + ' result computed', 'Math Worker · matrix');
+              break;
+            case 'fourier':
+              formatted = '〰️ Fourier Transform (DFT)\n\n' +
+                'Signal Length: ' + data.signalLength + '\nDominant Frequency: ' + data.dominantFrequency + ' (magnitude: ' + data.dominantMagnitude + ')\n\n' +
+                'Spectrum (top 8):\n' + data.spectrum.slice(0, 8).map(function (s) { return '  f=' + s.frequency + '  mag=' + s.magnitude + '  phase=' + s.phase; }).join('\n');
+              addChatMsg('ai', '〰️ <strong>Fourier:</strong> Dominant frequency = ' + data.dominantFrequency + ', magnitude = ' + data.dominantMagnitude, 'Math Worker · fourier');
+              break;
+            case 'regression':
+              formatted = '📈 Linear Regression\n\n' + data.equation + '\n\nR = ' + data.r + '\nR² = ' + data.r2 +
+                '\nStandard Error = ' + data.standardError + '\nSlope = ' + data.slope + '\nIntercept = ' + data.intercept;
+              addChatMsg('ai', '📈 <strong>Regression:</strong> ' + data.equation + '<br>R² = ' + data.r2 + ' · Std Error = ' + data.standardError, 'Math Worker · regression');
+              break;
+            case 'optimize':
+              formatted = '🎯 Optimization (Golden-Section Search)\n\n' +
+                'Minimum at x = ' + data.xMin + '\nf(x) = ' + data.fMin + '\nIterations: ' + data.iterations + '\nMethod: ' + data.method;
+              addChatMsg('ai', '🎯 <strong>Optimized:</strong> min at x=' + data.xMin + ', f(x)=' + data.fMin + ' in ' + data.iterations + ' iterations', 'Math Worker · optimize');
+              break;
+            case 'prime-check':
+              formatted = '🔢 Prime Check: ' + data.n + '\n\n' +
+                (data.isPrime ? '✅ PRIME' : '❌ COMPOSITE') +
+                '\nFactors: ' + data.factors.join(' × ') +
+                '\nNearest Primes: ' + data.nearestPrimes.join(', ') +
+                '\nφ Connection: n/φ = ' + data.phiConnection;
+              addChatMsg('ai', (data.isPrime ? '✅' : '❌') + ' <strong>' + data.n + '</strong> is ' + (data.isPrime ? 'PRIME' : 'composite (' + data.factors.join('×') + ')') + '<br>Nearest primes: ' + data.nearestPrimes.join(', '), 'Math Worker · prime');
+              break;
+            case 'probability':
+              if (data.distribution === 'normal') {
+                formatted = '🎲 Normal Distribution\n\nμ = ' + data.mu + ', σ = ' + data.sigma +
+                  '\n\nPDF curve (sample):\n' + data.curve.slice(0, 10).map(function (p) { return '  x=' + p.x + '  pdf=' + p.pdf; }).join('\n') + '\n  …';
+              } else if (data.distribution === 'poisson') {
+                formatted = '🎲 Poisson Distribution\n\nλ = ' + data.lambda +
+                  '\n\nPMF:\n' + data.pmf.slice(0, 10).map(function (p) { return '  k=' + p.k + '  P(X=k)=' + p.pmf; }).join('\n');
+              } else {
+                formatted = JSON.stringify(data, null, 2);
+              }
+              addChatMsg('ai', '🎲 <strong>Probability:</strong> ' + (data.distribution || 'bayesian') + ' distribution computed', 'Math Worker · probability');
+              break;
+            default:
+              formatted = JSON.stringify(data, null, 2);
+          }
+
+          if (mathOutput) mathOutput.textContent = formatted;
+          updateInsights();
+        }
+        if (msg.type === 'math-stats') {
+          insightsData.mathOps = (msg.stats.totalMatrixOps || 0) + (msg.stats.totalStatOps || 0) + (msg.stats.totalPhiOps || 0) +
+            (msg.stats.totalFourierOps || 0) + (msg.stats.totalOptimizations || 0) + (msg.stats.totalProbabilityOps || 0) +
+            (msg.stats.totalRegressions || 0) + (msg.stats.totalPrimeChecks || 0);
+          updateInsights();
+        }
       }
     },
 
