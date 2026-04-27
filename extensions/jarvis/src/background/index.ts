@@ -25,7 +25,7 @@ import {
   solusIsReady, solusModelStatus, onSolusProgress,
 } from './skills/solus';
 import {
-  saveMemory, getMemories, deleteMemory, memoryStats,
+  saveMemory, getMemories, deleteMemory, memoryStats, encodeSpatialCoord,
 } from './skills/memoryAI';
 import {
   analyzePageText, persistAlerts, getAlertHistory, dismissAlert, clearAlerts,
@@ -33,6 +33,9 @@ import {
 import {
   addPage as graphAddPage, getGraph, getRelated, clearGraph, graphStats,
 } from './skills/knowledgeGraph';
+import {
+  phantomReadTab, getPhantomReads, synthesizeAcrossReads, clearPhantomReads,
+} from './skills/phantom-meta';
 
 const PHI = 1.618033988749895;
 const HEARTBEAT = 873;
@@ -3126,6 +3129,97 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         ].join('\n'),
       });
       break;
+
+    /* ══ PHANTOM META ENGINE v17 ══════════════════════════════════════
+     *  Page primitive extractor + cross-domain PSE synthesis.
+     *  Reads through the meta layer of any page and synthesizes patterns
+     *  across multiple pages ("beyond and in between").
+     *  Encoded spatial coordinates stored in the Memory Palace.
+     *  ─────────────────────────────────────────────────────────────── */
+    case 'phantomReadPage': {
+      chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+        const tab = tabs[0];
+        if (!tab?.id) { sendResponse({ success: false, message: 'No active tab.' }); return; }
+        const read = await phantomReadTab(tab.id);
+        if (!read) { sendResponse({ success: false, message: 'Could not read page meta. Check tab permissions.' }); return; }
+        // Also save to memory palace with spatial data
+        await saveMemory(
+          read.url, read.title,
+          'Phantom read · ' + read.keywords.slice(0, 8).join(', '),
+          read.keywords.slice(0, 10),
+          { scrollPct: read.spatial.scrollPct, sectionPath: read.spatial.sectionPath, domDepth: read.spatial.domDepth },
+        );
+        // Feed to knowledge graph
+        const text = read.primitives.map(p => p.value).join(' ');
+        graphAddPage(read.url, read.title, text).catch(() => {});
+        engine.neuroChem.onStimulus('research');
+        const topConcepts = read.synthesis.concepts.slice(0, 4).join(', ');
+        sendResponse({
+          success: true,
+          read,
+          message: [
+            `🔮 Phantom read complete — ${read.primitives.length} primitives extracted.`,
+            '',
+            `📊 PSE synthesis (${read.synthesis.primitiveCount} primitives, ${(read.synthesis.confidence * 100).toFixed(0)}% confidence):`,
+            read.synthesis.merged,
+            '',
+            `🔑 Keywords: ${read.keywords.slice(0, 10).join(' · ')}`,
+            `🧬 Concepts: ${topConcepts || 'none dominant'}`,
+            `📍 Spatial: scroll ${read.spatial.scrollPct}% · section [${read.spatial.sectionPath.slice(0, 2).join(' › ')}]`,
+          ].join('\n'),
+        });
+      });
+      break;
+    }
+    case 'getPhantomReads': {
+      const limit = (message.limit as number) || 20;
+      getPhantomReads(limit).then(reads => sendResponse({ success: true, reads }));
+      break;
+    }
+    case 'phantomSynthesizeAll': {
+      getPhantomReads(30).then(reads => {
+        if (reads.length === 0) { sendResponse({ success: false, message: 'No phantom reads stored yet. Run "phantom read" on some pages first.' }); return; }
+        const synth = synthesizeAcrossReads(reads);
+        engine.neuroChem.onStimulus('research');
+        sendResponse({
+          success: true,
+          synthesis: synth,
+          message: [
+            `🌐 Cross-page synthesis across ${reads.length} phantom reads:`,
+            '',
+            synth.merged,
+            '',
+            `Domains: ${synth.domains.join(', ')} · ${synth.primitiveCount} primitives · ${(synth.confidence * 100).toFixed(0)}% confidence`,
+            `Concepts: ${synth.concepts.slice(0, 6).join(' · ')}`,
+          ].join('\n'),
+        });
+      });
+      break;
+    }
+    case 'clearPhantomReads': {
+      clearPhantomReads().then(() => sendResponse({ success: true, message: 'Phantom reads cleared.' }));
+      break;
+    }
+    case 'saveSpatialMemory': {
+      const { url: smUrl, title: smTitle, excerpt: smExcerpt, tags: smTags, scrollPct, sectionPath, domDepth } = message as {
+        url?: string; title?: string; excerpt?: string; tags?: string[]; scrollPct?: number; sectionPath?: string[]; domDepth?: number;
+      };
+      if (!smUrl) { sendResponse({ success: false, message: 'url required' }); break; }
+      saveMemory(
+        smUrl, smTitle || smUrl, smExcerpt || '', smTags || [],
+        (typeof scrollPct === 'number') ? { scrollPct, sectionPath: sectionPath || [], domDepth: domDepth || 0 } : undefined,
+      ).then(entry => sendResponse({ success: true, entry, message: `Spatial memory saved at scroll ${scrollPct ?? 0}% · ${smTitle}` }));
+      break;
+    }
+    case 'getPhantomSpatial': {
+      // Return memories that have spatial data, sorted by scroll depth
+      getMemories({ limit: 100 }).then(entries => {
+        const spatial = entries.filter(e => e.spatial).sort((a, b) => (a.spatial!.scrollPct - b.spatial!.scrollPct));
+        sendResponse({ success: true, entries: spatial });
+      });
+      break;
+    }
+    /* ─────────────────────────────────────────────────────────────── */
 
     /* ══ CAMPAIGN ENGINE v17 ══════════════════════════════════════════
      *  Long-task / multi-step campaign management for sustained missions.
