@@ -384,14 +384,16 @@
       showOverlayNotification('No text selected to save as note.', 'error');
       return;
     }
-    chrome.runtime.sendMessage({ action: 'takeNote', content: text }, function (resp) {
-      if (chrome.runtime.lastError) return;
-      if (resp && resp.success) {
-        showOverlayNotification('Note saved: "' + text.substring(0, 60) + '…"', 'note');
-      } else {
-        showOverlayNotification('Failed to save note.', 'error');
-      }
-    });
+    try {
+      chrome.runtime.sendMessage({ action: 'takeNote', content: text }, function (resp) {
+        if (chrome.runtime.lastError) return;
+        if (resp && resp.success) {
+          showOverlayNotification('Note saved: "' + text.substring(0, 60) + '…"', 'note');
+        } else {
+          showOverlayNotification('Failed to save note.', 'error');
+        }
+      });
+    } catch { /* extension context may have been invalidated */ }
   }
 
   /* ----------------------------------------------------------
@@ -416,12 +418,14 @@
     _lastClipText  = selected;
     _clipThrottle  = now;
 
-    chrome.runtime.sendMessage({
-      action: 'clipboardCopy',
-      text:   selected.substring(0, 2000),
-      url:    window.location.href,
-      title:  document.title || window.location.hostname,
-    });
+    try {
+      chrome.runtime.sendMessage({
+        action: 'clipboardCopy',
+        text:   selected.substring(0, 2000),
+        url:    window.location.href,
+        title:  document.title || window.location.hostname,
+      });
+    } catch { /* extension context may have been invalidated */ }
   });
 
   /* ----------------------------------------------------------
@@ -478,13 +482,15 @@
     if (!event.data || event.data.type !== 'JARVIS_BRIDGE') return;
 
     const bridgeData = event.data;
-    chrome.runtime.sendMessage({
-      action: bridgeData.action || 'executeCommand',
-      command: bridgeData.command || '',
-      data: bridgeData.data || {},
-    }, function (resp) {
-      window.postMessage({ type: 'JARVIS_BRIDGE_RESPONSE', id: bridgeData.id, response: resp }, '*');
-    });
+    try {
+      chrome.runtime.sendMessage({
+        action: bridgeData.action || 'executeCommand',
+        command: bridgeData.command || '',
+        data: bridgeData.data || {},
+      }, function (resp) {
+        window.postMessage({ type: 'JARVIS_BRIDGE_RESPONSE', id: bridgeData.id, response: resp }, '*');
+      });
+    } catch { /* extension context may have been invalidated */ }
   });
 
   /* ----------------------------------------------------------

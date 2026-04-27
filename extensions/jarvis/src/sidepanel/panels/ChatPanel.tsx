@@ -45,33 +45,11 @@ export default function ChatPanel() {
   const [input, setInput] = useState('');
   const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
   const [greeted, setGreeted] = useState(false);
-  const [delegatePhase, setDelegatePhase] = useState(0);
   const endRef = useRef<HTMLDivElement>(null);
-
-  const DELEGATE_PHASES = [
-    '⚡ Thinking…',
-    '🔀 Delegating to engine…',
-    '🌐 Web worker active…',
-    '🤖 Agent processing…',
-    '🔬 Synthesizing response…',
-    '📡 Streaming data…',
-    '🧠 Cross-referencing memory…',
-    '✅ Compiling answer…',
-  ];
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
-
-  // Cycle through delegation phases while typing
-  useEffect(() => {
-    if (!isTyping) { setDelegatePhase(0); return; }
-    const interval = setInterval(() => {
-      setDelegatePhase(p => (p + 1) % DELEGATE_PHASES.length);
-    }, 700);
-    return () => clearInterval(interval);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isTyping]);
 
   /** Deliver an ANIMUS response from background */
   const deliverResponse = useCallback((text: string, opts?: { skipTts?: boolean }) => {
@@ -87,10 +65,7 @@ export default function ChatPanel() {
       if (chrome.runtime.lastError || !resp?.success) return;
       const greeting = resp.message as string;
       addMessage({ role: 'animus', text: greeting, ts: Date.now() });
-      // speak greeting if voices are ready — wait a tick for voice list
-      setTimeout(() => {
-        if (ttsEnabled) speak(greeting);
-      }, 800);
+      // TTS off by default — user can enable via 🔊 button
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -300,13 +275,11 @@ export default function ChatPanel() {
         ))}
         {isTyping && (
           <div className="flex justify-start">
-            <div className="rounded-lg px-3 py-2" style={{ background: '#13100a', border: '1px solid #2d2010' }}>
-              <div className="flex gap-1 items-center">
-                <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#d4a017', animationDelay: '0ms' }} />
-                <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#d4a017', animationDelay: '150ms' }} />
-                <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#d4a017', animationDelay: '300ms' }} />
-                <span className="ml-2 text-[10px] font-mono transition-all" style={{ color: '#a88030' }}>{DELEGATE_PHASES[delegatePhase]}</span>
-              </div>
+            <div className="rounded-lg px-3 py-2 flex items-center gap-1.5" style={{ background: '#13100a', border: '1px solid #2d2010' }}>
+              <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#d4a017', animationDelay: '0ms' }} />
+              <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#d4a017', animationDelay: '150ms' }} />
+              <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#d4a017', animationDelay: '300ms' }} />
+              <span className="ml-1 text-[10px] font-mono" style={{ color: '#a88030' }}>Thinking…</span>
             </div>
           </div>
         )}

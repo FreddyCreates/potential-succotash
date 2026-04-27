@@ -2354,7 +2354,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         const upd = data['jarvis_update'] as { available: boolean; remoteVersion: string; currentVersion: string } | undefined;
         if (!upd?.available) { sendResponse({ success: false, message: 'No update available' }); return; }
         chrome.downloads.download({ url: 'https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/install-jarvis-edge.bat', filename: 'install-jarvis-edge.bat', saveAs: false }, () => {
-          try { chrome.notifications.create('jarvis-update-' + Date.now(), { type: 'basic', iconUrl: 'icons/icon128.png', title: 'JARVIS Update Ready', message: 'Run install-jarvis-edge.bat to update to v' + upd.remoteVersion }); } catch { /* ignore */ }
+          try { chrome.notifications.create('jarvis-update-' + Date.now(), { type: 'basic', iconUrl: chrome.runtime.getURL('icons/icon128.png'), title: 'JARVIS Update Ready', message: 'Run install-jarvis-edge.bat to update to v' + upd.remoteVersion }); } catch { /* ignore */ }
           sendResponse({ success: true, message: 'Update installer downloaded.' });
         });
       });
@@ -2528,7 +2528,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         try {
           chrome.notifications.create('jarvis-agent-' + Date.now(), {
             type: 'basic',
-            iconUrl: 'icons/icon128.png',
+            iconUrl: chrome.runtime.getURL('icons/icon128.png'),
             title: 'VIGIL — ' + data.name + ' Complete',
             message: data.status === 'complete' ? 'Mission "' + data.mission.substring(0, 60) + '" complete.' : 'Agent ' + data.name + ' status: ' + data.status,
             priority: 1,
@@ -3418,7 +3418,7 @@ chrome.alarms.onAlarm.addListener((alarm) => {
     try {
       chrome.notifications.create('jarvis-timer-done-' + Date.now(), {
         type: 'basic',
-        iconUrl: 'icons/icon128.png',
+        iconUrl: chrome.runtime.getURL('icons/icon128.png'),
         title: 'VIGIL — ' + label + ' Complete',
         message: 'Your "' + label + '" timer is done.',
         priority: 2,
@@ -3453,8 +3453,8 @@ chrome.runtime.onInstalled.addListener((details) => {
     try {
       chrome.notifications.create('vigil-ready-' + Date.now(), {
         type: 'basic',
-        iconUrl: 'icons/icon128.png',
-        title: 'Vigil AI v16 Ready',
+        iconUrl: chrome.runtime.getURL('icons/icon128.png'),
+        title: 'Vigil AI v18 Ready',
         message: 'Vigil AI is ready — click the extension icon to open',
       });
     } catch { /* ignore */ }
@@ -3480,7 +3480,7 @@ chrome.alarms.onAlarm.addListener((alarm) => {
       const isNewer = remote.some((v, i) => v > (local[i] ?? 0)) || remote.reduce((a, b) => a + b, 0) > local.reduce((a, b) => a + b, 0);
       if (isNewer) {
         chrome.storage.local.set({ 'jarvis_update': { available: true, remoteVersion: remoteManifest.version, currentVersion: CURRENT_VERSION, checkedAt: Date.now() } });
-        try { chrome.notifications.create('jarvis-update-' + Date.now(), { type: 'basic', iconUrl: 'icons/icon128.png', title: 'VIGIL Update Available', message: 'v' + CURRENT_VERSION + ' → v' + remoteManifest.version + '. Run install-jarvis-edge.bat to update.' }); } catch { /* ignore */ }
+        try { chrome.notifications.create('jarvis-update-' + Date.now(), { type: 'basic', iconUrl: chrome.runtime.getURL('icons/icon128.png'), title: 'VIGIL Update Available', message: 'v' + CURRENT_VERSION + ' → v' + remoteManifest.version + '. Run install-jarvis-edge.bat to update.' }); } catch { /* ignore */ }
       }
     }).catch(() => {});
 });
