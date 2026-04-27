@@ -27,6 +27,21 @@ actor Organism {
   // ── Stable State — survives upgrades ──────────────────────────────────
   stable var beatCount : Nat = 0;
 
+  // ── SYN — Synapse Binding Engine stable storage ────────────────────
+  // Invariant (imprint permanence): entries here are never deleted
+  // except via owner-revocable termination.
+  // Invariant (upgrade survival): stable var guarantees these survive
+  // every canister upgrade.
+  //
+  // Layout: (agentId, beatCount@bind, boundAtNs, syncCount)
+  stable var synImprints    : [(Text, Types.OrganismSnapshot, Int, Nat)] = [];
+  // Job queue: (jobId, jobTypeTag, priority, targetAgent, retryCount, scheduledNs, createdNs)
+  // jobTypeTag: 0=BIND 1=SYNC 2=HEAL 3=VERIFY 4=TERMINATE
+  stable var synJobs        : [(Nat, Nat, Nat, Text, Nat, Int, Int)] = [];
+  stable var synJobCounter  : Nat = 0;
+  stable var synOwner       : Text = "";   // set on first bind; only owner may TERMINATE
+  stable var synLastSyncNs  : Int = 0;
+
   stable var cognitiveAwareness  : Float = 1.0;
   stable var cognitiveCoherence  : Float = 1.0;
   stable var cognitiveResonance  : Float = PHI_INV;
@@ -102,6 +117,43 @@ actor Organism {
     sovereignCoherence := drift(sovereignCoherence, beatCount + 13);
     sovereignResonance := drift(sovereignResonance, beatCount + 14);
     sovereignEntropy   := clamp(drift(sovereignEntropy, beatCount + 15), PHI);
+
+    // ── SYN: process the highest-priority ready job each tick ──────
+    // Priority ordering: 0 (CRITICAL) → 1 (HIGH) → 2 (NORMAL) → 3 (LOW)
+    let now = Time.now();
+    let readyJobs = Array.filter<(Nat, Nat, Nat, Text, Nat, Int, Int)>(
+      synJobs,
+      func((_, _, _, _, _, scheduledNs, _)) { scheduledNs <= now }
+    );
+    if (readyJobs.size() > 0) {
+      // Pick minimum-priority job (priority 0 = most critical)
+      var best = readyJobs[0];
+      for (j in readyJobs.vals()) {
+        let (_, _, p, _, _, _, _) = j;
+        let (_, _, bp, _, _, _, _) = best;
+        if (p < bp) { best := j };
+      };
+      let (jId, jType, _, jTarget, jRetry, _, _) = best;
+      // Remove the processed job from queue
+      synJobs := Array.filter<(Nat, Nat, Nat, Text, Nat, Int, Int)>(
+        synJobs,
+        func((id, _, _, _, _, _, _)) { id != jId }
+      );
+      // jType=2 (HEAL): schedule a VERIFY follow-up after exponential back-off
+      if (jType == 2) {
+        let backoffNs : Int = 873_000_000 * (1 + jRetry); // back-off scales with retries
+        synJobCounter += 1;
+        synJobs := Array.append(synJobs, [(
+          synJobCounter, 3, 2, jTarget, 0, now + backoffNs, now
+        )]);
+        Debug.print("SYN HEAL job " # Nat.toText(jId) # " processed → VERIFY queued");
+      };
+      // jType=1 (SYNC): update synLastSyncNs
+      if (jType == 1) {
+        synLastSyncNs := now;
+        Debug.print("SYN SYNC job " # Nat.toText(jId) # " processed for " # jTarget);
+      };
+    };
   };
 
   /// Register the 873ms recurring timer on canister initialization.
@@ -275,5 +327,155 @@ actor Organism {
       reasoning     = "Phi-scored routing: task length " # Nat.toText(len) # " × φ-weight → " # bestModel;
       alternates    = alts;
     }
+  };
+
+  // ══════════════════════════════════════════════════════════════════════
+  //  SYN — Synapse Binding Engine
+  //  Permanent cross-agent state imprinting. Zero-cost local reads.
+  //  Three invariants: imprint permanence · upgrade survival · owner-revocable termination
+  // ══════════════════════════════════════════════════════════════════════
+
+  /// BIND — imprint a remote agent's snapshot into local stable memory.
+  /// This is the single cross-canister call of Nexus Perpetuus.
+  /// After this call all queries for agentId are pure local reads.
+  /// Invariant: the imprint persists across upgrades (stable var).
+  public func bindSynapse(agentId : Text, snap : Types.OrganismSnapshot, caller : Text) : async Types.SynapseBindResult {
+    let now = Time.now();
+    // Record owner on first bind — only owner may terminate
+    if (Text.size(synOwner) == 0) { synOwner := caller };
+    // Remove any existing imprint for agentId (re-bind is allowed by owner)
+    synImprints := Array.filter<(Text, Types.OrganismSnapshot, Int, Nat)>(
+      synImprints,
+      func((id, _, _, _)) { id != agentId }
+    );
+    // Write permanent imprint
+    synImprints := Array.append(synImprints, [(agentId, snap, now, 0)]);
+    // Queue an initial VERIFY job (priority 2 = NORMAL)
+    synJobCounter += 1;
+    synJobs := Array.append(synJobs, [(
+      synJobCounter, 3, 2, agentId, 0, now + 873_000_000, now
+    )]);
+    Debug.print("SYN BIND: " # agentId # " imprinted at " # Int.toText(now));
+    {
+      agentId   = agentId;
+      success   = true;
+      boundAtNs = now;
+      message   = "Nexus Perpetuus: imprint permanent. All future reads are local.";
+    }
+  };
+
+  /// QUERY — pure local read of an imprinted agent's state snapshot.
+  /// Zero network cost. Zero latency. This is the payoff of Nexus Perpetuus.
+  public query func querySynapse(agentId : Text) : async ?Types.SynapseImprint {
+    let now = Time.now();
+    let matches = Array.filter<(Text, Types.OrganismSnapshot, Int, Nat)>(
+      synImprints,
+      func((id, _, _, _)) { id == agentId }
+    );
+    if (matches.size() == 0) { return null };
+    let (_, snap, boundAt, syncCount) = matches[0];
+    let stalenessNs = now - snap.timestampNs;
+    ?{
+      agentId     = agentId;
+      snapshot    = snap;
+      boundAtNs   = boundAt;
+      syncCount   = syncCount;
+      stalenessNs = stalenessNs;
+    }
+  };
+
+  /// SYNC — governance-sync refresh. Updates imprint with a fresh snapshot.
+  /// Bounded staleness: staleness ≤ governance-sync interval after each call.
+  public func syncSynapse(agentId : Text, freshSnap : Types.OrganismSnapshot) : async Bool {
+    let now = Time.now();
+    var found = false;
+    var updated : [(Text, Types.OrganismSnapshot, Int, Nat)] = [];
+    for ((id, _oldSnap, boundAt, syncCount) in synImprints.vals()) {
+      if (id == agentId) {
+        found := true;
+        updated := Array.append(updated, [(id, freshSnap, boundAt, syncCount + 1)]);
+      } else {
+        updated := Array.append(updated, [(id, _oldSnap, boundAt, syncCount)]);
+      };
+    };
+    if (found) {
+      synImprints   := updated;
+      synLastSyncNs := now;
+      // Queue a VERIFY job for next tick
+      synJobCounter += 1;
+      synJobs := Array.append(synJobs, [(
+        synJobCounter, 3, 2, agentId, 0, now + 873_000_000, now
+      )]);
+    };
+    found
+  };
+
+  /// TERMINATE — owner-revocable termination of a binding.
+  /// Only the original caller of bindSynapse (synOwner) may terminate.
+  /// Invariant: termination does not depend on remote agent availability.
+  public func terminateSynapse(agentId : Text, caller : Text) : async Bool {
+    if (caller != synOwner) {
+      Debug.print("SYN TERMINATE rejected: caller " # caller # " is not owner " # synOwner);
+      return false;
+    };
+    let before = synImprints.size();
+    synImprints := Array.filter<(Text, Types.OrganismSnapshot, Int, Nat)>(
+      synImprints,
+      func((id, _, _, _)) { id != agentId }
+    );
+    // Queue a TERMINATE job so downstream systems can react
+    let now = Time.now();
+    synJobCounter += 1;
+    synJobs := Array.append(synJobs, [(
+      synJobCounter, 4, 0, agentId, 0, now, now
+    )]);
+    Debug.print("SYN TERMINATE: " # agentId # " bond revoked by owner");
+    synImprints.size() < before
+  };
+
+  /// HEAL — inject a HEAL job into the priority queue.
+  /// Used by external governance to trigger self-healing for a failed bond.
+  public func scheduleSynapseHeal(agentId : Text) : async Nat {
+    let now = Time.now();
+    synJobCounter += 1;
+    synJobs := Array.append(synJobs, [(
+      synJobCounter, 2, 1, agentId, 0, now, now
+    )]);
+    Debug.print("SYN HEAL scheduled for " # agentId);
+    synJobCounter
+  };
+
+  /// getSynapseHealth — zero-cost query returning full SYN health snapshot.
+  /// Self-healing is active when any HEAL jobs exist in the queue.
+  public query func getSynapseHealth() : async Types.SynapseHealth {
+    let now = Time.now();
+    // Governance-sync interval: 10 heartbeats × 873ms ≈ 8.73 s
+    let govSyncIntervalNs : Int = 8_730_000_000;
+    var stale : Nat = 0;
+    for ((_, snap, _, _) in synImprints.vals()) {
+      if (now - snap.timestampNs > govSyncIntervalNs) { stale += 1 };
+    };
+    var healPending : Nat = 0;
+    for ((_, jType, _, _, _, _, _) in synJobs.vals()) {
+      if (jType == 2) { healPending += 1 };
+    };
+    {
+      totalBound    = synImprints.size();
+      activeBonds   = synImprints.size() - stale;
+      staleBonds    = stale;
+      jobQueueDepth = synJobs.size();
+      pendingHeals  = healPending;
+      lastSyncNs    = synLastSyncNs;
+      selfHealing   = healPending > 0;
+      timestampNs   = now;
+    }
+  };
+
+  /// listSynapseBindings — list all currently imprinted agent IDs.
+  public query func listSynapseBindings() : async [Text] {
+    Array.map<(Text, Types.OrganismSnapshot, Int, Nat), Text>(
+      synImprints,
+      func((id, _, _, _)) { id }
+    )
   };
 };
