@@ -1,5 +1,5 @@
 @echo off
-title Vigil AI v14.0 - Windows Edge Installer
+title Vigil AI v18.0 - Windows Edge/Chrome Installer
 color 0B
 cls
 
@@ -9,9 +9,9 @@ echo  ║                                                              ║
 echo  ║      ░░░░░░░  V.I.G.I.L  ░░░░░░░                         ║
 echo  ║      Vigil AI — Sovereign Offline Intelligence          ║
 echo  ║                                                              ║
-echo  ║      VERSION  14.0  ──  SOVEREIGN INTELLIGENCE             ║
-echo  ║      Highlights · Readability · Agents · PSE · NeuroCore    ║
-echo  ║      Chat · Nexus · Vault · Prompts · Full side panel       ║
+echo  ║      VERSION  18.0  ──  CHAT-FIRST · NO VOICE DEFAULT      ║
+echo  ║      Fast reasoning · AGI agents · Codex workspace          ║
+echo  ║      Notes · Grid view · Memory · Solus offline AI          ║
 echo  ║                                                              ║
 echo  ╚══════════════════════════════════════════════════════════════╝
 echo.
@@ -43,11 +43,11 @@ echo  [✓] Edge found: %EDGE_PATH%
 
 :: ── Download ──────────────────────────────────────────────────
 set "INSTALL_DIR=%LOCALAPPDATA%\VigilAI"
-set "ZIP_FILE=%TEMP%\vigil-v14.zip"
-set "DL_URL=https://github.com/FreddyCreates/potential-succotash/raw/copilot/create-jarvis-integration/dist/extensions/vigil.zip"
+set "ZIP_FILE=%TEMP%\vigil-v18.zip"
+set "DL_URL=https://github.com/FreddyCreates/potential-succotash/raw/copilot/create-jarvis-integration/dist/extensions/vigil-ai-v18.zip"
 
 echo.
-echo  [*] Downloading Vigil AI v14.0...
+echo  [*] Downloading Vigil AI v18.0...
 
 powershell -NoProfile -ExecutionPolicy Bypass -Command ^
   "try { Invoke-WebRequest -Uri '%DL_URL%' -OutFile '%ZIP_FILE%' -UseBasicParsing; Write-Host '  [OK] Download complete.' } catch { Write-Host '  [ERR] ' + $_.Exception.Message; exit 1 }"
@@ -88,10 +88,11 @@ cls
 echo.
 echo  ╔══════════════════════════════════════════════════════════════╗
 echo  ║                                                              ║
-echo  ║   VIGIL AI v14.0  ──  ONLINE                               ║
+echo  ║   VIGIL AI v18.0  ──  ONLINE                               ║
 echo  ║                                                              ║
-echo  ║   Highlights · Readability · Agents · PSE · NeuroCore       ║
-echo  ║   Talk naturally · She does the rest                        ║
+echo  ║   Chat-first · No voice by default · Fast reasoning         ║
+echo  ║   AGI Agents · Codex workspace · Grid notes · Memory        ║
+echo  ║   Just type. Oro handles the rest.                          ║
 echo  ║                                                              ║
 echo  ╚══════════════════════════════════════════════════════════════╝
 echo.
@@ -101,21 +102,14 @@ echo    1. Look for the puzzle-piece icon in the Edge toolbar
 echo    2. Find "Vigil AI" — click the pin icon
 echo    3. Or: press  Ctrl+Shift+Y  to open the side panel
 echo.
-echo  THE NEXUS COMMAND SURFACE (tap the "Nexus" tab):
+echo  QUICK COMMANDS (Chat tab):
 echo.
-echo    - 12 one-tap action tiles: research, read page, note, PDF, search...
-echo    - Live agent feed showing what's running right now
-echo    - Active page awareness — see the current tab, hit "Read it"
-echo    - Type a topic and fire any action in one tap
-echo.
-echo  TALKING TO VIGIL (examples):
-echo.
-echo    "Deploy a researcher on AI, open a writing tab, and scan this page"
-echo    "Set a 10-minute timer, take a note on this theory, check builds"
-echo    "Dispatch mission: crawl this site and synthesize the findings"
-echo    "Hey — domain AI report, pse stats, and screenshot"
-echo.
-echo  Vigil hears everything. No commands needed. Just talk.
+echo    "research [topic]"     — Deploy AGI researcher agent
+echo    "read page"            — Analyze and summarize current tab
+echo    "take note: [text]"    — Save to journal
+echo    "set timer 10 min"     — Smart timer
+echo    "summarize page"       — Page summary
+echo    "what can you do"      — Full command help
 echo.
 echo  Extension installed at:  %INSTALL_DIR%
 echo.

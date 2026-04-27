@@ -351,7 +351,7 @@ class VigilEngine {
 
   constructor() {
     this._startHeartbeat();
-    console.log('[VIGIL v17.0] Engine initialized — NeuroCore online, NeurochemistryEngine online (ODE/Hill/Jacobian), PSE online (' + pse.primitiveCount + ' primitives, ' + pse.domains.length + ' domains), Solus via offscreen, PHI=' + PHI + ' HEARTBEAT=' + HEARTBEAT + 'ms');
+    console.log('[VIGIL v18.0] Engine initialized — NeuroCore online, NeurochemistryEngine online (ODE/Hill/Jacobian), PSE online (' + pse.primitiveCount + ' primitives, ' + pse.domains.length + ' domains), Solus via offscreen, PHI=' + PHI + ' HEARTBEAT=' + HEARTBEAT + 'ms');
   }
 
   _startHeartbeat() {
@@ -2429,7 +2429,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         const tabCount = tabs.length;
         const activeTab = tabs.find(t => t.active);
         const pageTitle = activeTab?.title ? '"' + activeTab.title.substring(0, 50) + '"' : 'no active page detected';
-        const brief = `${greeting}. ${timeStr}.\n\nVIGIL v16 online.\n\n• System: ${systemStatus}\n• Heartbeat: #${engine.state.heartbeatCount} — NeuroCore + NeurochemistryEngine online\n• Neurochemistry: DA ${pct1(np.oDA)} · 5HT ${pct1(np.oSE)} · NE ${pct1(np.oNE)} · CO ${pct1(np.oCO)} · ACh ${pct1(np.oACh)} · OX ${pct1(np.oOX)}\n• State: ${np.stateSummary} (${np.mood}, energy ${np.energy}%)\n• Open tabs: ${tabCount} — current: ${pageTitle}\n• Session: ${engine.commandCount} commands · ${engine.conversationMemory.length}/100 memory turns\n\nWhat do you need?`;
+        const brief = `${greeting}. ${timeStr}.\n\nVIGIL v18 online — chat-first, no voice by default.\n\n• System: ${systemStatus}\n• Heartbeat: #${engine.state.heartbeatCount} — NeuroCore + NeurochemistryEngine online\n• Neurochemistry: DA ${pct1(np.oDA)} · 5HT ${pct1(np.oSE)} · NE ${pct1(np.oNE)} · CO ${pct1(np.oCO)} · ACh ${pct1(np.oACh)} · OX ${pct1(np.oOX)}\n• State: ${np.stateSummary} (${np.mood}, energy ${np.energy}%)\n• Open tabs: ${tabCount} — current: ${pageTitle}\n• Session: ${engine.commandCount} commands · ${engine.conversationMemory.length}/100 memory turns\n\nWhat do you need?`;
         sendResponse({ success: true, message: brief });
       });
       break;
@@ -3168,7 +3168,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       sendResponse({
         success: true,
         message: [
-          '🟢 VIGIL v16 — System Health',
+          '🟢 VIGIL v18 — System Health',
           '━━━━━━━━━━━━━━━━━━━━━━━━━━',
           'Uptime:      ' + Math.floor(((st.uptime as number) || 0) / 1000) + 's',
           'Heartbeat:   ' + st.heartbeatCount,
@@ -3186,7 +3186,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       sendResponse({
         success: true,
         message: [
-          '⚗️ VIGIL v17 Alpha SDK — Engine Inventory',
+          '⚗️ VIGIL v18 — Engine Inventory',
           '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
           '🤖 Agents:     researcher, crawler, scraper, monitor, watcher, digest, analyst, scout, sweep',
           '🧠 NeuroCore:  MiniHeart + MiniBrain + PSE (40 primitives, 8 domains)',
@@ -3444,7 +3444,7 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 chrome.runtime.onInstalled.addListener((details) => {
   chrome.alarms.create(ALARM_NAME, { periodInMinutes: 0.4 });
   chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true }).catch(() => {});
-  console.log('[VIGIL v16.0] Installed — 24/7 keepalive active, React+TypeScript build');
+  console.log('[VIGIL v18.0] Installed — 24/7 keepalive active, React+TypeScript build');
   // Auto-open side panel on fresh install
   if (details.reason === 'install') {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -3466,7 +3466,7 @@ chrome.runtime.onInstalled.addListener((details) => {
  * ---------------------------------------------------------- */
 
 const UPDATE_ALARM = 'jarvis-sovereign-update';
-const CURRENT_VERSION = '16.0.0';
+const CURRENT_VERSION = '18.0.0';
 const MANIFEST_URL = 'https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/extensions/jarvis/manifest.json';
 
 chrome.alarms.create(UPDATE_ALARM, { periodInMinutes: 240 });

@@ -65,11 +65,13 @@
   fab.addEventListener('mouseleave', function () { fab.style.transform = 'scale(1)'; });
 
   fab.addEventListener('click', function () {
-    chrome.runtime.sendMessage({ action: 'openSidePanel' }, function () {
-      if (chrome.runtime.lastError) {
-        console.log('[JARVIS] Side panel open request sent');
-      }
-    });
+    try {
+      chrome.runtime.sendMessage({ action: 'openSidePanel' }, function () {
+        if (chrome.runtime.lastError) {
+          console.log('[JARVIS] Side panel open request sent');
+        }
+      });
+    } catch { /* extension context may have been invalidated */ }
   });
 
   fab.addEventListener('keydown', function (e) {
@@ -433,6 +435,10 @@
    * ---------------------------------------------------------- */
 
   chrome.runtime.onMessage.addListener(function (message, _sender, sendResponse) {
+    // Guard against invalidated extension context (happens after extension reload)
+    try { if (!chrome.runtime?.id) { return; } } catch { return; }
+
+    try {
     switch (message.action) {
       case 'renderPdf':
         renderPdfOverlay(message.data);
@@ -470,7 +476,11 @@
       default:
         sendResponse({ success: false, error: 'Unknown content action: ' + message.action });
     }
-    return true;
+    } catch (err) {
+      // Extension context may have been invalidated; swallow to avoid console noise
+      try { sendResponse({ success: false, error: String(err) }); } catch { /* ignore */ }
+    }
+    // All paths are synchronous — do NOT return true (would cause "message channel closed" warning)
   });
 
   /* ----------------------------------------------------------
@@ -589,5 +599,5 @@
     window.addEventListener('load', () => setTimeout(_autoPhantomPush, 1500), { once: true });
   }
 
-  console.log('[VIGIL v17] Content script injected — FAB active, auto-phantom-meta armed, PHI=' + PHI);
+  console.log('[VIGIL v18] Content script injected — FAB active, auto-phantom-meta armed, PHI=' + PHI);
 })();

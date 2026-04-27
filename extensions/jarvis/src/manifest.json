@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Vigil AI",
-  "version": "17.0.0",
-  "description": "Vigil AI v17 Alpha SDK — ODE neurochemistry, campaign engine, agents, memory, legal AI, Solus offline AI, knowledge graph.",
+  "version": "18.0.0",
+  "description": "Vigil AI v18 — fast reasoning, chat-first, no voice by default, grid notes, Codex workspace, AGI agents.",
   "permissions": [
     "activeTab",
     "storage",

@@ -1,17 +1,18 @@
 # ============================================================================
 # Build Extensions — Autonomous Production Pipeline
 #
-# Runs on every push to main. Packages all 25 extensions into .zip files
-# and commits them to dist/extensions/. Fully autonomous — no manual steps.
+# Runs on every push to main or copilot branch. Builds the Vigil AI extension
+# (Vite/React/TypeScript), packages it as a zip, and commits to dist/.
 #
-# This is the organism's build heartbeat. It runs 24/7 on every commit.
+# The resulting vigil-ai-v18.zip can be loaded directly into Chrome/Edge via
+# developer mode, or downloaded via the install-vigil-edge.bat installer.
 # ============================================================================
 
 name: Build Extensions
 
 on:
   push:
-    branches: [main]
+    branches: [main, copilot/create-jarvis-integration]
     paths:
       - 'extensions/**'
       - 'build-extensions.sh'
@@ -22,8 +23,8 @@ permissions:
   contents: write
 
 jobs:
-  build:
-    name: Package All Extensions
+  build-vigil-ai:
+    name: Build Vigil AI v18 (Vite)
     runs-on: ubuntu-latest
 
     steps:
@@ -34,6 +35,53 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: extensions/jarvis/package-lock.json
+
+      - name: Install dependencies
+        working-directory: extensions/jarvis
+        run: npm ci
+
+      - name: Build Vigil AI
+        working-directory: extensions/jarvis
+        run: npm run build
+
+      - name: Package extension zip
+        run: |
+          mkdir -p dist/extensions
+          cd extensions/jarvis/dist
+          VERSION=$(node -p "require('../package.json').version" 2>/dev/null || echo "18")
+          zip -r "../../../dist/extensions/vigil-ai-v${VERSION}.zip" . -x "*.DS_Store"
+          # Also write a stable name for the installer script
+          cp "../../../dist/extensions/vigil-ai-v${VERSION}.zip" "../../../dist/extensions/vigil-ai-latest.zip"
+          echo "ZIP size: $(du -sh '../../../dist/extensions/vigil-ai-v${VERSION}.zip' | cut -f1)"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vigil-ai-extension
+          path: dist/extensions/vigil-ai-*.zip
+          retention-days: 30
+
+      - name: Commit built zip
+        run: |
+          git config user.name "organism-build-bot"
+          git config user.email "organism-bot@users.noreply.github.com"
+          git add dist/extensions/
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "🧬 Auto-build: Vigil AI v18 extension zip"
+            git push
+          fi
+
+  build-simple-extensions:
+    name: Package simple extensions
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Build all extension zips
         run: |
@@ -41,21 +89,21 @@ jobs:
 
           EXT_DIR="extensions"
           DIST_DIR="dist/extensions"
-          rm -rf "${DIST_DIR}"
           mkdir -p "${DIST_DIR}"
 
           BROWSER_COUNT=0
-          WINDOWS_COUNT=0
 
           echo "══════════════════════════════════════════════════════════"
-          echo "  Building Browser Extensions"
+          echo "  Building Simple (non-Vite) Browser Extensions"
           echo "══════════════════════════════════════════════════════════"
 
           for ext_path in "${EXT_DIR}"/*/; do
             ext_name="$(basename "${ext_path}")"
             [ "${ext_name}" = "windows" ] && continue
-            [ "${ext_name}" = "index.js" ] && continue
+            [ "${ext_name}" = "jarvis" ] && continue  # handled by build-vigil-ai job
             [ ! -f "${ext_path}/manifest.json" ] && continue
+            # Skip Vite-based extensions (have package.json)
+            [ -f "${ext_path}/package.json" ] && continue
 
             echo "  📦 Packaging: ${ext_name}"
             (cd "${ext_path}" && zip -r -q "../../${DIST_DIR}/${ext_name}.zip" \
@@ -65,51 +113,12 @@ jobs:
               size=$(du -h "${DIST_DIR}/${ext_name}.zip" | cut -f1)
               echo "     ✓ ${ext_name}.zip (${size})"
               BROWSER_COUNT=$((BROWSER_COUNT + 1))
-            else
-              echo "     ✗ FAILED: ${ext_name}"
             fi
           done
 
-          echo ""
-          echo "══════════════════════════════════════════════════════════"
-          echo "  Building Windows Extensions"
-          echo "══════════════════════════════════════════════════════════"
+          echo "  ${BROWSER_COUNT} simple extensions packaged."
 
-          WINDOWS_DIR="${EXT_DIR}/windows"
-          if [ -d "${WINDOWS_DIR}" ]; then
-            for ext_path in "${WINDOWS_DIR}"/*/; do
-              ext_name="$(basename "${ext_path}")"
-              [ ! -f "${ext_path}/manifest.json" ] && continue
-
-              echo "  📦 Packaging: ${ext_name}"
-              (cd "${ext_path}" && zip -r -q "../../../${DIST_DIR}/${ext_name}.zip" \
-                manifest.json engine.js interface.js icons/ 2>/dev/null || true)
-
-              if [ -f "${DIST_DIR}/${ext_name}.zip" ]; then
-                size=$(du -h "${DIST_DIR}/${ext_name}.zip" | cut -f1)
-                echo "     ✓ ${ext_name}.zip (${size})"
-                WINDOWS_COUNT=$((WINDOWS_COUNT + 1))
-              else
-                echo "     ✗ FAILED: ${ext_name}"
-              fi
-            done
-          fi
-
-          TOTAL=$((BROWSER_COUNT + WINDOWS_COUNT))
-          echo ""
-          echo "══════════════════════════════════════════════════════════"
-          echo "  Build Complete: ${TOTAL} extensions packaged"
-          echo "  Output: ${DIST_DIR}"
-          echo "══════════════════════════════════════════════════════════"
-
-          # Build all-in-one bundle
-          if [ ${TOTAL} -gt 0 ]; then
-            cd "${DIST_DIR}"
-            zip -q all-extensions.zip *.zip
-            echo "  📦 all-extensions.zip ($(du -h all-extensions.zip | cut -f1))"
-          fi
-
-      - name: Commit built zips
+      - name: Commit simple extension zips
         run: |
           git config user.name "organism-build-bot"
           git config user.email "organism-bot@users.noreply.github.com"
@@ -117,6 +126,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "🧬 Auto-build: package all extensions to dist/"
+            git commit -m "🧬 Auto-build: package simple extensions"
             git push
           fi

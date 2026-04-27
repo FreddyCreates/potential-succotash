@@ -77,7 +77,7 @@ export default function ChatPanel() {
         const label = (msg.label as string) || 'Timer';
         const alert = '⏱ "' + label + '" is done.';
         addMessage({ role: 'animus', text: alert, ts: Date.now() });
-        speak(alert);
+        if (ttsEnabled) speak(alert);
       } else if (msg.action === '_tabChanged') {
         const title = (msg.title as string) || 'Unknown';
         const context = (msg.context as string) || '';
