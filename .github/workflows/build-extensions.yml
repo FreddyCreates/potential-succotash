@@ -50,11 +50,10 @@ jobs:
         run: |
           mkdir -p dist/extensions
           cd extensions/jarvis/dist
-          VERSION=$(node -p "require('../package.json').version" 2>/dev/null || echo "18")
+          # Read version from the built manifest (most reliable source)
+          VERSION=$(python3 -c "import json; print(json.load(open('manifest.json'))['version'])" 2>/dev/null || echo "18.0.0")
           zip -r "../../../dist/extensions/vigil-ai-v${VERSION}.zip" . -x "*.DS_Store"
-          # Also write a stable name for the installer script
-          cp "../../../dist/extensions/vigil-ai-v${VERSION}.zip" "../../../dist/extensions/vigil-ai-latest.zip"
-          echo "ZIP size: $(du -sh '../../../dist/extensions/vigil-ai-v${VERSION}.zip' | cut -f1)"
+          echo "ZIP: vigil-ai-v${VERSION}.zip ($(du -sh '../../../dist/extensions/vigil-ai-v${VERSION}.zip' | cut -f1))"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4

@@ -436,7 +436,7 @@
 
   chrome.runtime.onMessage.addListener(function (message, _sender, sendResponse) {
     // Guard against invalidated extension context (happens after extension reload)
-    try { if (!chrome.runtime?.id) { return; } } catch { return; }
+    try { if (!chrome.runtime?.id) return; } catch { return; }
 
     try {
     switch (message.action) {
