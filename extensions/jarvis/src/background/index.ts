@@ -2312,8 +2312,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       });
       break;
     }
-    case 'downloadJarvisZip': chrome.downloads.download({ url: 'https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/dist/extensions/jarvis.zip', filename: 'jarvis-extension.zip', saveAs: false }, () => sendResponse({ success: !chrome.runtime.lastError, message: chrome.runtime.lastError ? chrome.runtime.lastError.message : 'Downloading jarvis-extension.zip...' })); break;
-    case 'downloadJarvisBat': chrome.downloads.download({ url: 'https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/install-vigil-edge.bat', filename: 'install-vigil-edge.bat', saveAs: false }, () => sendResponse({ success: !chrome.runtime.lastError, message: chrome.runtime.lastError ? chrome.runtime.lastError.message : 'Downloading install-vigil-edge.bat...' })); break;
+    case 'downloadJarvisZip': chrome.downloads.download({ url: 'https://github.com/FreddyCreates/potential-succotash/raw/copilot/create-jarvis-integration/dist/extensions/vigil.zip', filename: 'vigil-v17-alpha-sdk.zip', saveAs: false }, () => sendResponse({ success: !chrome.runtime.lastError, message: chrome.runtime.lastError ? chrome.runtime.lastError.message : 'Downloading vigil-v17-alpha-sdk.zip...' })); break;
+    case 'downloadJarvisBat': chrome.downloads.download({ url: 'https://github.com/FreddyCreates/potential-succotash/raw/copilot/create-jarvis-integration/install-vigil-edge.bat', filename: 'install-vigil-edge.bat', saveAs: false }, () => sendResponse({ success: !chrome.runtime.lastError, message: chrome.runtime.lastError ? chrome.runtime.lastError.message : 'Downloading install-vigil-edge.bat...' })); break;
     case 'downloadExtensionZip': {
       const extUrl = (request as { url?: string; name?: string }).url || '';
       const extName = (request as { url?: string; name?: string }).name || 'extension';
@@ -3090,7 +3090,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       sendResponse({
         success: true,
         message: [
-          '⚗️ VIGIL v15 — Engine Inventory',
+          '⚗️ VIGIL v17 Alpha SDK — Engine Inventory',
           '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
           '🤖 Agents:     researcher, crawler, scraper, monitor, watcher, digest, analyst, scout, sweep',
           '🧠 NeuroCore:  MiniHeart + MiniBrain + PSE (40 primitives, 8 domains)',
@@ -3099,7 +3099,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           '🛡 Sentry:    Page threat + content analysis',
           '🕸 Graph:      Knowledge graph (linked page intelligence)',
           '📋 Skills:     PDF, Excel, Email, Readability, Highlights',
-          '⚡ Protocols:  16 compound primitives + Mission Engine',
+          '⚡ Protocols:  16 compound primitives + Mission Engine + Campaign Engine v17',
           '🖥️ Screen:     Capture, scroll, nav, DOM read, virtual desktop, control mode',
           '⚖️ Legal AI:   Case analysis, contracts, compliance, drafting',
         ].join('\n'),
@@ -3126,6 +3126,90 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         ].join('\n'),
       });
       break;
+
+    /* ══ CAMPAIGN ENGINE v17 ══════════════════════════════════════════
+     *  Long-task / multi-step campaign management for sustained missions.
+     *  Each campaign is a named sequence of steps with status tracking.
+     *  Storage: chrome.storage.local under 'vigil_campaigns'.
+     *  ─────────────────────────────────────────────────────────────── */
+    case 'startCampaign': {
+      const { title, goal, steps } = message as { title?: string; goal?: string; steps?: string[] };
+      if (!title || !goal) { sendResponse({ success: false, message: 'Campaign requires title and goal.' }); break; }
+      const campaign = {
+        id: 'cmp_' + Date.now(),
+        title: title.trim(),
+        goal: goal.trim(),
+        steps: (steps || []).map((s: string, i: number) => ({ index: i, text: s.trim(), status: 'pending' as 'pending' | 'active' | 'done' | 'failed' })),
+        status: 'active' as 'active' | 'paused' | 'complete',
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        currentStep: 0,
+        neuroChem: engine.neuroChem.getConcentrations(),
+      };
+      chrome.storage.local.get({ vigil_campaigns: [] }, (d) => {
+        const campaigns: typeof campaign[] = d['vigil_campaigns'] || [];
+        campaigns.unshift(campaign);
+        chrome.storage.local.set({ vigil_campaigns: campaigns.slice(0, 50) }, () => {
+          engine.neuroChem.onStimulus('mission');
+          sendResponse({ success: true, campaign, message: `🎯 Campaign "${title}" launched. ${campaign.steps.length} steps queued. Vigil is tracking this mission.` });
+        });
+      });
+      break;
+    }
+    case 'getCampaigns': {
+      chrome.storage.local.get({ vigil_campaigns: [] }, (d) => {
+        sendResponse({ success: true, campaigns: d['vigil_campaigns'] || [] });
+      });
+      break;
+    }
+    case 'stepCampaign': {
+      const { id, stepIndex, status, note } = message as { id?: string; stepIndex?: number; status?: string; note?: string };
+      if (!id) { sendResponse({ success: false, message: 'Campaign id required.' }); break; }
+      chrome.storage.local.get({ vigil_campaigns: [] }, (d) => {
+        const campaigns: { id: string; steps: { index: number; text: string; status: string; note?: string }[]; status: string; currentStep: number; updatedAt: number }[] = d['vigil_campaigns'] || [];
+        const idx = campaigns.findIndex(c => c.id === id);
+        if (idx < 0) { sendResponse({ success: false, message: 'Campaign not found.' }); return; }
+        const cmp = campaigns[idx]!;
+        if (typeof stepIndex === 'number' && cmp.steps[stepIndex]) {
+          cmp.steps[stepIndex]!.status = (status as string) || 'done';
+          if (note) cmp.steps[stepIndex]!.note = note;
+          cmp.currentStep = Math.min(cmp.steps.length - 1, stepIndex + 1);
+        }
+        const allDone = cmp.steps.every(s => s.status === 'done' || s.status === 'failed');
+        if (allDone) cmp.status = 'complete';
+        cmp.updatedAt = Date.now();
+        chrome.storage.local.set({ vigil_campaigns: campaigns }, () => {
+          if (allDone) {
+            engine.neuroChem.onStimulus('agent_complete');
+          } else {
+            engine.neuroChem.onStimulus('action');
+          }
+          sendResponse({ success: true, campaign: cmp, message: allDone ? `✅ Campaign "${cmp.id}" complete.` : `Step ${(stepIndex ?? 0) + 1} marked ${status || 'done'}.` });
+        });
+      });
+      break;
+    }
+    case 'deleteCampaign': {
+      const { id: delId } = message as { id?: string };
+      if (!delId) { sendResponse({ success: false, message: 'Campaign id required.' }); break; }
+      chrome.storage.local.get({ vigil_campaigns: [] }, (d) => {
+        const filtered = ((d['vigil_campaigns'] || []) as { id: string }[]).filter(c => c.id !== delId);
+        chrome.storage.local.set({ vigil_campaigns: filtered }, () => sendResponse({ success: true, message: 'Campaign deleted.' }));
+      });
+      break;
+    }
+    case 'pauseCampaign': {
+      const { id: pauseId } = message as { id?: string };
+      if (!pauseId) { sendResponse({ success: false, message: 'Campaign id required.' }); break; }
+      chrome.storage.local.get({ vigil_campaigns: [] }, (d) => {
+        const campaigns: { id: string; status: string; updatedAt: number }[] = d['vigil_campaigns'] || [];
+        const idx = campaigns.findIndex(c => c.id === pauseId);
+        if (idx >= 0) { campaigns[idx]!.status = 'paused'; campaigns[idx]!.updatedAt = Date.now(); }
+        chrome.storage.local.set({ vigil_campaigns: campaigns }, () => sendResponse({ success: true, message: 'Campaign paused.' }));
+      });
+      break;
+    }
+    /* ─────────────────────────────────────────────────────────────── */
   }
 
   return true; // keep channel open for async responses

@@ -179,24 +179,24 @@ export default function App() {
           className="flex-1 text-xs py-0.5 px-1 rounded transition-colors"
           style={{ background: 'rgba(212,160,23,0.12)', color: '#d4a017', border: '1px solid #2d2010' }}
         >
-          ⬇ Extension ZIP
+          ⬇ ZIP
         </button>
         <button
-          onClick={() => window.open('https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/install-vigil-edge.bat', '_blank')}
+          onClick={() => chrome.runtime.sendMessage({ action: 'downloadJarvisBat' })}
           className="flex-1 text-xs py-0.5 px-1 rounded transition-colors"
           style={{ background: 'rgba(212,160,23,0.12)', color: '#d4a017', border: '1px solid #2d2010' }}
         >
-          ⬇ Installer
+          🪟 Installer
         </button>
         <button
-          onClick={() => window.open('https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/SDK_Model_Manifest.json', '_blank')}
+          onClick={() => window.open('https://github.com/FreddyCreates/potential-succotash/raw/copilot/create-jarvis-integration/SDK_Model_Manifest.json', '_blank')}
           className="flex-1 text-xs py-0.5 px-1 rounded transition-colors"
           style={{ background: 'rgba(212,160,23,0.12)', color: '#d4a017', border: '1px solid #2d2010' }}
         >
           ⬇ SDK
         </button>
         <button
-          onClick={() => window.open('https://raw.githubusercontent.com/FreddyCreates/potential-succotash/main/AI_Protocols_Register.csv', '_blank')}
+          onClick={() => window.open('https://github.com/FreddyCreates/potential-succotash/raw/copilot/create-jarvis-integration/AI_Protocols_Register.csv', '_blank')}
           className="flex-1 text-xs py-0.5 px-1 rounded transition-colors"
           style={{ background: 'rgba(212,160,23,0.12)', color: '#d4a017', border: '1px solid #2d2010' }}
         >

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import AGIToolsPanel from './AGIToolsPanel';
 import PromptsPanel from './PromptsPanel';
+import CampaignPanel from './CampaignPanel';
 
 const SUB_TABS = [
-  { id: 'agi',     label: '⚗️ AGI Tools' },
-  { id: 'prompts', label: '💡 Prompts' },
+  { id: 'agi',      label: '⚗️ AGI Tools' },
+  { id: 'prompts',  label: '💡 Prompts' },
+  { id: 'campaigns', label: '🎯 Campaigns' },
 ];
 
 export default function AGIPromptsPanel() {
@@ -28,7 +30,9 @@ export default function AGIPromptsPanel() {
         ))}
       </div>
       <div className="flex-1 overflow-hidden">
-        {active === 'agi' ? <AGIToolsPanel /> : <PromptsPanel />}
+        {active === 'agi'       ? <AGIToolsPanel /> :
+         active === 'prompts'   ? <PromptsPanel /> :
+         active === 'campaigns' ? <CampaignPanel /> : null}
       </div>
     </div>
   );
