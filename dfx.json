@@ -4,13 +4,7 @@
   "canisters": {
     "vigil_frontend": {
       "type": "assets",
-      "source": ["."],
-      "workspace": "vigil_frontend",
-      "build": [],
-      "declarations": {
-        "output": "src/declarations/vigil_frontend",
-        "bindings": ["js"]
-      }
+      "source": ["icp-dist"]
     }
   },
   "networks": {

@@ -18,6 +18,15 @@ export default defineConfig({
     outDir: 'dist',
     emptyOutDir: true,
     target: 'es2022',
+    rollupOptions: {
+      output: {
+        // Chrome extensions cannot load files whose names start with "_".
+        // Rollup's CommonJS interop generates "_commonjsHelpers.js"; this
+        // renames any chunk whose name starts with underscores so the extension
+        // loads without error.
+        sanitizeFileName: (name) => name.replace(/^_+/, ''),
+      },
+    },
   },
   esbuild: {
     keepNames: true,
