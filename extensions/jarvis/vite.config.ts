@@ -21,10 +21,16 @@ export default defineConfig({
     rollupOptions: {
       output: {
         // Chrome extensions cannot load files whose names start with "_".
-        // Rollup's CommonJS interop generates "_commonjsHelpers.js"; this
-        // renames any chunk whose name starts with underscores so the extension
-        // loads without error.
-        sanitizeFileName: (name) => name.replace(/^_+/, ''),
+        // Rollup's CommonJS interop virtual modules are prefixed with a null
+        // byte (\x00), which Rollup's default sanitizer converts to "_",
+        // producing "_commonjsHelpers.js".  We strip the null bytes first,
+        // then remove any remaining leading underscores, and finally apply
+        // the standard file-system sanitization for other invalid characters.
+        sanitizeFileName: (name) =>
+          name
+            .replace(/\x00/g, '')            // remove Rollup internal null-byte prefix
+            .replace(/[\\/:*?"<>|]/g, '_')   // replace OS-invalid chars
+            .replace(/^_+/, ''),             // remove leading underscores (Chrome restriction)
       },
     },
   },
