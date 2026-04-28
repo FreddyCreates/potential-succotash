@@ -1,93 +1,95 @@
-# Vigil AI v18 — Downloads & Desktop App
+# Vigil AI v19 — Download Links
 
-> **Sovereign offline intelligence.** Auro AI assistant, Codex code editor, Memory Palace, Agents — all in one.
-
----
-
-## ⬇️ Download Links
-
-| Deliverable | Link | Notes |
-|---|---|---|
-| **Chrome/Edge Extension (zip)** | [`vigil-ai-v18.zip`](https://github.com/FreddyCreates/potential-succotash/raw/copilot/create-jarvis-integration/dist/extensions/vigil-ai-v18.zip) | Sideload into Chrome/Edge |
-| **Web App (browse online)** | [`dist/webapp/`](https://github.com/FreddyCreates/potential-succotash/tree/copilot/create-jarvis-integration/dist/webapp) | Standalone HTML/JS |
-| **Desktop (Windows .exe)** | [Build it yourself](#windows-desktop-app) | Electron 33 + NSIS installer |
+> Updated by native workflow engine (same dispatch protocol as VigilEngine) — 2026-04-28
 
 ---
 
-## 🧩 Install Chrome / Edge Extension
+## 🔵 Chrome / Edge Extension — v19.0.0
 
-1. **Download** [`vigil-ai-v18.zip`](https://github.com/FreddyCreates/potential-succotash/raw/copilot/create-jarvis-integration/dist/extensions/vigil-ai-v18.zip)
-2. Unzip it anywhere (e.g. `C:\Users\You\vigil-ai\`)
-3. Open Chrome → `chrome://extensions/`
-4. Enable **Developer mode** (top-right toggle)
-5. Click **Load unpacked** → select the unzipped folder
-6. Pin the Vigil AI icon from the toolbar ✅
+**Direct download (sideload zip):**
+```
+https://raw.githubusercontent.com/FreddyCreates/potential-succotash/copilot/create-jarvis-integration/dist/extensions/vigil-ai-v19.zip
+```
+
+**Install steps:**
+1. Download the zip above
+2. Unzip it
+3. Go to `chrome://extensions` or `edge://extensions`
+4. Enable **Developer Mode**
+5. Click **Load Unpacked** → select the unzipped folder
 
 ---
 
-## 🖥️ Windows Desktop App
+## 🟣 All Extensions Bundle
 
-> Requires [Node.js 18+](https://nodejs.org) installed on Windows.
+```
+https://raw.githubusercontent.com/FreddyCreates/potential-succotash/copilot/create-jarvis-integration/dist/extensions/all-extensions.zip
+```
 
-```bat
-git clone https://github.com/FreddyCreates/potential-succotash.git
+---
+
+## 🌐 ICP Deployment — Straight to the Runtime
+
+```bash
+# 1. Install dfx (one time)
+sh -ci "$(curl -fsSL https://internetcomputer.org/install.sh)"
+
+# 2. Deploy
+git clone https://github.com/FreddyCreates/potential-succotash
+cd potential-succotash
+node scripts/workflow-runner.js workflows/deploy-icp.json
+```
+
+No GitHub Actions. No intermediary. Deploys straight to ICP runtime using `dfx deploy --network ic`.
+
+---
+
+## 📥 One-Click Installers
+
+| Platform | File |
+|----------|------|
+| Windows  | `install-vigil-edge.bat` |
+| macOS/Linux | `bash install.sh` |
+
+---
+
+## 🔧 Native Workflow Build
+
+```bash
+git clone https://github.com/FreddyCreates/potential-succotash
 cd potential-succotash
 
-REM Build everything + create installer
-build-desktop.bat
+# List workflows
+node scripts/workflow-runner.js --list
+
+# Full build
+node scripts/workflow-runner.js workflows/build.json
+
+# Deploy to ICP
+node scripts/workflow-runner.js workflows/deploy-icp.json
 ```
 
-Output: `dist\desktop\Vigil AI Setup 18.0.0.exe` (NSIS installer) and a portable `.exe`.
-
-### Dev mode (any OS)
-```bash
-npm install
-npm run build:vigil      # build the React sidepanel
-npm run start:desktop    # open as Electron window
-```
+### Trigger from Vigil AI chat (v19):
+- `"run build workflow"` → SUBSTRATUM agent
+- `"deploy to ICP"` → CANISTRUM agent  
+- `"workflow status"` → ORCHESTRATOR
 
 ---
 
-## 🌐 Standalone Web App
+## 🧠 Architecture — Native, Not a Bridge
 
-The built web app lives at `dist/webapp/src/sidepanel/sidepanel.html`.
-
-Serve it locally:
-```bash
-npx serve dist/webapp/src/sidepanel/
-# → http://localhost:3000
+```
+User: "deploy to ICP"
+  → VigilEngine.parseCommand()          intent: 'workflow-deploy-icp'
+  → ProtocolRegistry.routeToAgent()     CANISTRUM
+  → executeChat()                       WorkflowSkill.startWorkflow()
+  → Node.js runner                      { action, payload, agent } dispatch
+  → executeIcpDeploy()                  dfx deploy --network ic
+  → ICP runtime                         canister live at xxx.icp0.io
 ```
 
-> Note: Some features (Agents, Sentry AI) use `chrome.*` APIs that are only available inside the browser extension. The web app gives you Chat, Memory, Notes, Vault, and Codex.
+Same `{ action, payload, agent }` protocol end-to-end. Solus/PSE/MiniBrain are native — zero external AI bridges.
 
 ---
 
-## 🔨 Build Scripts (no GitHub Actions needed)
-
-| Script | What it does |
-|---|---|
-| `bash scripts/build-all.sh` | Build extension zip + web app |
-| `npm run build:vigil` | Build just the Vite extension |
-| `npm run build:desktop:win` | Package Windows .exe (run on Windows) |
-| `npm run start:desktop` | Launch desktop app (dev mode) |
-
----
-
-## 📦 What's inside Vigil AI v18
-
-| Feature | Status |
-|---|---|
-| 💬 Auro AI Chat (GPT/Claude bridge) | ✅ |
-| 🧠 Solus Offline AI (transformers.js) | ✅ |
-| 📝 Codex Code Editor + AI | ✅ |
-| 🗓️ Memory Palace (Dexie + spatial) | ✅ |
-| 🤖 Sovereign Agents (researcher/crawler) | ✅ |
-| 🔐 Vault (local key-value) | ✅ |
-| 📊 Knowledge Graph | ✅ |
-| 🧬 Neurochemistry Engine (ODE/Hill) | ✅ |
-| 📋 Inbox (proactive briefs) | ✅ |
-| 📄 Files (folders in chrome.storage) | ✅ |
-| 🪞 Mirror (agent reports) | ✅ |
-| 💡 Prompts Library | ✅ |
-| 📺 Screen Control Mode | ✅ |
-| 🔒 TTS off by default | ✅ |
+*Vigil AI v19 — WorkflowSkill · CANISTRUM · ICP deploy · 406 modules*

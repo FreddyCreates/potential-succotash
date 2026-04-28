@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "dfx": "0.22.0",
+  "canisters": {
+    "vigil_frontend": {
+      "type": "assets",
+      "source": ["."],
+      "workspace": "vigil_frontend",
+      "build": [],
+      "declarations": {
+        "output": "src/declarations/vigil_frontend",
+        "bindings": ["js"]
+      }
+    }
+  },
+  "networks": {
+    "local": {
+      "bind": "127.0.0.1:4943",
+      "type": "ephemeral"
+    },
+    "ic": {
+      "providers": ["https://icp0.io"],
+      "type": "persistent"
+    }
+  },
+  "output_env_file": ".env"
+}

@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Vigil AI",
-  "version": "18.0.0",
-  "description": "Vigil AI — Sovereign offline intelligence. Auro AI assistant, Codex code editor, Memory Palace, Agents.",
+  "version": "19.0.0",
+  "description": "Vigil AI — Sovereign offline intelligence. Auro AI assistant, Codex code editor, Memory Palace, Agents, native Workflow Engine (CANISTRUM/SUBSTRATUM), ICP deploy.",
   "permissions": [
     "activeTab",
     "storage",

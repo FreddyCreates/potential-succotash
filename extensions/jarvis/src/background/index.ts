@@ -33,6 +33,10 @@ import {
 import {
   phantomReadTab, getPhantomReads, synthesizeAcrossReads, clearPhantomReads,
 } from './skills/phantom-meta';
+import {
+  initWorkflowSkill, getWorkflowState, workflowStatusText,
+  startWorkflow, recordStep, WORKFLOW_INTENTS,
+} from './skills/workflow';
 
 /**
  * Route Solus calls through an offscreen document so onnxruntime-web
@@ -351,7 +355,8 @@ class VigilEngine {
 
   constructor() {
     this._startHeartbeat();
-    console.log('[VIGIL v18.0] Engine initialized — NeuroCore online, NeurochemistryEngine online (ODE/Hill/Jacobian), PSE online (' + pse.primitiveCount + ' primitives, ' + pse.domains.length + ' domains), Solus via offscreen, PHI=' + PHI + ' HEARTBEAT=' + HEARTBEAT + 'ms');
+    initWorkflowSkill();
+    console.log('[VIGIL v19.0] Engine initialized — NeuroCore online, NeurochemistryEngine online (ODE/Hill/Jacobian), PSE online (' + pse.primitiveCount + ' primitives, ' + pse.domains.length + ' domains), WorkflowSkill online, Solus via offscreen, PHI=' + PHI + ' HEARTBEAT=' + HEARTBEAT + 'ms');
   }
 
   _startHeartbeat() {
@@ -472,6 +477,9 @@ class VigilEngine {
       { intent: 'list-tabs',       keywords: ['list tabs','show tabs','all tabs','open tabs','tab list','which tabs'] },
       { intent: 'find-text',       keywords: ['find text','find on page','search page','ctrl f','locate text','find'] },
       { intent: 'highlight',       keywords: ['highlight','mark','emphasize','underline'] },
+      { intent: 'workflow-build',      keywords: ['run build','build extension','build workflow','run workflow build','package extension','build vigil'] },
+      { intent: 'workflow-deploy-icp', keywords: ['deploy icp','deploy to icp','deploy canister','push to icp','upload icp','deploy internet computer','canistrum deploy'] },
+      { intent: 'workflow-status',     keywords: ['workflow status','workflow progress','build status','deploy status','what is the workflow'] },
       { intent: 'chat',            keywords: ['chat','talk','tell me','hey animus','animus','hello','help'] },
     ];
 
@@ -867,7 +875,10 @@ class VigilEngine {
         }
 
         case 'canister': {
-          parts.push('routing canisters through Spinner into the cryptographic space');
+          // Route through CANISTRUM agent — starts the deploy-icp workflow natively
+          const wfDef = WORKFLOW_INTENTS['workflow-deploy-icp'];
+          startWorkflow('vigil:deploy-icp', []);
+          parts.push(`routing to CANISTRUM — ICP deploy workflow queued. Run: node scripts/workflow-runner.js workflows/${wfDef.file}`);
           break;
         }
 
@@ -1070,6 +1081,28 @@ class VigilEngine {
         '🤖 Domain AIs:\n' + aiLines + '\n\n' +
         'Use "dispatch mission: [description]" to send a mission.';
       agent = 'VIGIL • MISSION ENGINE';
+    // ─── Workflow intents — routed through CANISTRUM / SUBSTRATUM ─────────────
+    } else if (/workflow.*(build|status)|run\s+build|build\s+workflow|build\s+extension/i.test(text)) {
+      const wf = WORKFLOW_INTENTS['workflow-build'];
+      startWorkflow('vigil:build', []);
+      response = moodColor + ' Build workflow queued. SUBSTRATUM → PROTOCOLLUM dispatch initiated.\n\n' +
+        '**To execute:** `node scripts/workflow-runner.js workflows/build.json`\n\n' +
+        'Steps: validate manifests → build extension → package zips → generate download links.\n' +
+        'Same dispatch protocol as this engine.';
+      agent = 'VIGIL • SUBSTRATUM';
+    } else if (/deploy\s*(to\s*)?icp|icp\s*deploy|canistrum\s*deploy|deploy\s*canister|internet\s*computer\s*deploy/i.test(text)) {
+      const wf = WORKFLOW_INTENTS['workflow-deploy-icp'];
+      startWorkflow('vigil:deploy-icp', []);
+      response = moodColor + ' ICP deploy workflow queued. CANISTRUM agent engaged.\n\n' +
+        '**To execute:** `node scripts/workflow-runner.js workflows/deploy-icp.json`\n\n' +
+        'Steps: check dfx → build extension → deploy canister to ic network → get live URL.\n\n' +
+        'Deploys straight to the ICP runtime — no GitHub. No intermediary.';
+      agent = 'VIGIL • CANISTRUM';
+    } else if (/workflow\s*status|workflow\s*progress/i.test(text)) {
+      const ws = getWorkflowState();
+      response = moodColor + ' ' + workflowStatusText() +
+        (ws.results.length > 0 ? '\n\nLast steps:\n' + ws.results.slice(-3).map(r => (r.success ? '✓' : '✗') + ' ' + r.action + ' — ' + r.message).join('\n') : '');
+      agent = 'VIGIL • ORCHESTRATOR';
     } else if (/^(hi|hello|hey|yo|sup|what'?s up|good (morning|afternoon|evening)|howdy|hola|what up|whaddup)/i.test(text)) {
       const hour = new Date().getHours();
       const tod = hour < 12 ? 'morning' : hour < 17 ? 'afternoon' : 'evening';
@@ -1645,6 +1678,10 @@ class VigilEngine {
       case 'draft-email':
         draftEmail({ body: action.payload['body'] as string });
         wrapped({ success: true, message: 'Opening email draft in your mail client.' }); break;
+      case 'workflow-build':
+      case 'workflow-deploy-icp':
+      case 'workflow-status':
+        this.executeChat(natural, wrapped as Parameters<typeof this.executeChat>[1]); break;
       case 'chat': this.executeChat(action.payload['message'] as string, wrapped as Parameters<typeof this.executeChat>[1]); break;
       default: this.executeChat(natural, wrapped as Parameters<typeof this.executeChat>[1]);
     }
@@ -2393,6 +2430,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       break;
     }
     case 'clearChat': engine.conversationMemory = []; sendResponse({ success: true }); break;
+    case 'getWorkflowState': sendResponse({ success: true, state: getWorkflowState(), text: workflowStatusText() }); break;
+    case 'recordWorkflowStep': { recordStep(message.result as Parameters<typeof recordStep>[0]); sendResponse({ success: true }); break; }
 
     /* ── Chat — primary conversational interface ────────────────
      * This is the handler ChatPanel uses: { action: 'chat', text }.
