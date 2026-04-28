@@ -67,9 +67,11 @@ const _alarmListeners = [];
 const chrome = {
 
   runtime: {
-    /* Resolved in main.js — points to the unpacked jarvis directory */
+    /* Resolved by main.js via global.__jarvisDir; fallback during tests */
     getURL: function (relativePath) {
-      return path.join(global.__jarvisDir || __dirname, '..', 'extensions', 'jarvis', relativePath);
+      const base = global.__jarvisDir
+        || path.join(__dirname, '..', 'extensions', 'jarvis');
+      return path.join(base, relativePath);
     },
     onMessage: {
       addListener: function (fn) {

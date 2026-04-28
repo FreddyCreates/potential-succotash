@@ -3,9 +3,9 @@ REM ═════════════════════════�
 REM  build-desktop.bat — Vigil AI Windows Desktop Builder
 REM
 REM  Requirements: Node.js 18+  (node, npm on PATH)
-REM  Output:
-REM    dist\desktop\Vigil AI Setup 18.0.0.exe   (NSIS installer)
-REM    dist\desktop\Vigil AI 18.0.0.exe         (portable)
+REM  Output (version read from desktop/package.json):
+REM    dist\desktop\Vigil AI Setup <version>.exe   (NSIS installer)
+REM    dist\desktop\Vigil AI <version>.exe         (portable)
 REM ═══════════════════════════════════════════════════════════════
 
 setlocal EnableDelayedExpansion
@@ -31,6 +31,10 @@ if errorlevel 1 (
 
 for /f "tokens=1 delims=v" %%V in ('node -e "process.stdout.write(process.version)"') do set NODEVER=%%V
 echo  [INFO]  Node.js detected: %NODEVER%
+
+REM ── Read version from desktop/package.json ───────────────────────
+for /f "tokens=2 delims=:, " %%V in ('node -e "process.stdout.write(require('./desktop/package.json').version)"') do set APPVER=%%~V
+if "%APPVER%"=="" set APPVER=18.0.0
 
 REM ── Install desktop dependencies ──────────────────────────────────
 echo.
@@ -80,8 +84,8 @@ if exist "..\dist\desktop" (
     for %%F in ("..\dist\desktop\*.exe") do echo    %%F
 )
 echo.
-echo  To install: run "Vigil AI Setup 18.0.0.exe"
-echo  To run portable: run "Vigil AI 18.0.0.exe"
+echo  To install: run "Vigil AI Setup %APPVER%.exe"
+echo  To run portable: run "Vigil AI %APPVER%.exe"
 echo.
 
 cd /d "%~dp0"
