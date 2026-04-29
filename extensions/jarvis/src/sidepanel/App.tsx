@@ -14,7 +14,6 @@ import TabsPanel from './panels/TabsPanel';
 import InstallPanel from './panels/InstallPanel';
 import LogPanel from './panels/LogPanel';
 import PhantomPanel from './panels/PhantomPanel';
-import WyomingPanel from './panels/WyomingPanel';
 
 // CNS sections — each group is a logical nervous-system layer
 type TabDef = { id: string; label: string; section?: string };
@@ -39,9 +38,6 @@ const TABS: TabDef[] = [
   // ── ARCHIVE ─ documents, workspace ──────────────────────────
   { id: '_archive',  label: '── ARCHIVE',  section: 'divider' },
   { id: 'workspace', label: '📁 Workspace' },
-  // ── SOVEREIGN ─ master charter, state strategy ──────────────
-  { id: '_sovereign', label: '── SOVEREIGN', section: 'divider' },
-  { id: 'wyoming',    label: '🏔 Wyoming' },
   // ── SYSTEM ──────────────────────────────────────────────────
   { id: '_sys',      label: '── SYS',      section: 'divider' },
   { id: 'log',       label: '📋 Log' },
@@ -91,7 +87,6 @@ export default function App() {
       case 'workspace': return <WorkspacePanel />;
       case 'search':    return <SearchPanel />;
       case 'phantom':   return <PhantomPanel />;
-      case 'wyoming':   return <WyomingPanel />;
       case 'screen':    return <ScreenPanel />;
       case 'tabs':      return <TabsPanel />;
       case 'install':   return <InstallPanel />;
