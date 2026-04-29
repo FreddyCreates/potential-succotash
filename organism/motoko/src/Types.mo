@@ -174,4 +174,66 @@ module {
     uptimeNs    : Int;
     timestampNs : Int;
   };
+
+  // ── SYN — Synapse Binding Engine Types ──────────────────────────────
+
+  /// Permanent imprint of a remote agent's state, stored in local stable memory.
+  /// Invariant: once written, this imprint persists across upgrades (imprint permanence).
+  public type SynapseImprint = {
+    agentId     : Text;
+    snapshot    : OrganismSnapshot;
+    boundAtNs   : Int;   // timestamp of first binding (never changes)
+    syncCount   : Nat;   // governance-sync refresh counter
+    stalenessNs : Int;   // age of current imprint relative to last sync
+  };
+
+  /// Job types processed by the autonomous priority-scheduled queue.
+  /// Five types: BIND · SYNC · HEAL · VERIFY · TERMINATE
+  public type SynapseJobType = {
+    #BIND;       // priority 0 — CRITICAL: imprint a new remote agent
+    #SYNC;       // priority 1 — HIGH: governance-sync refresh
+    #HEAL;       // priority 1 — HIGH: self-healing after transient failure
+    #VERIFY;     // priority 2 — NORMAL: validate staleness bounds
+    #TERMINATE;  // priority 0 — CRITICAL (owner-only): revoke binding
+  };
+
+  /// A single entry in the autonomous job queue.
+  public type SynapseJob = {
+    jobId       : Nat;
+    jobType     : SynapseJobType;
+    priority    : Nat;    // 0=CRITICAL 1=HIGH 2=NORMAL 3=LOW
+    targetAgent : Text;
+    retryCount  : Nat;    // exponential back-off counter
+    scheduledNs : Int;    // earliest execution timestamp
+    createdNs   : Int;
+  };
+
+  /// Failure class taxonomy (seven classes, indexed 1–7).
+  /// Classes 1–2: Transient; 3–4: Permanent; 5–7: Cascade.
+  public type FailureClass = {
+    classId     : Nat;   // 1..7
+    label       : Text;  // e.g. "TransientTimeout", "CascadeTopologyFault"
+    category    : Text;  // "Transient" | "Permanent" | "Cascade"
+    worstCaseNs : Int;   // proven upper bound on recovery time
+  };
+
+  /// Overall SYN health snapshot — zero-cost query.
+  public type SynapseHealth = {
+    totalBound    : Nat;
+    activeBonds   : Nat;
+    staleBonds    : Nat;   // staleness > governance-sync interval
+    jobQueueDepth : Nat;
+    pendingHeals  : Nat;
+    lastSyncNs    : Int;
+    selfHealing   : Bool;
+    timestampNs   : Int;
+  };
+
+  /// Result returned from bindSynapse — confirms permanent imprint.
+  public type SynapseBindResult = {
+    agentId    : Text;
+    success    : Bool;
+    boundAtNs  : Int;
+    message    : Text;
+  };
 };

@@ -7,7 +7,10 @@
     "build": "bash build-extensions.sh",
     "build:icons": "node scripts/generate-icons.js",
     "prebuild": "node scripts/generate-icons.js",
-    "build:vigil": "node -e \"const fs=require('fs'),p='extensions/jarvis/sidepanel.html'; if(!fs.existsSync(p)) throw new Error('sidepanel.html not found'); console.log('[build:vigil] Vigil AI source OK — sidepanel.html ready.');\"",
+    "build:vigil": "cd extensions/jarvis && npm install && npm run build",
+    "build:desktop": "npm run build:vigil && cd desktop && npm install && npm run dist",
+    "build:desktop:win": "npm run build:vigil && cd desktop && npm install && npm run dist",
+    "build:all": "bash scripts/build-all.sh",
     "start:desktop": "cd desktop && npm install --prefer-offline && npm start",
     "test": "node --test test/**/*.test.js",
     "test:sdk": "node --test test/sdk/*.test.js",
@@ -38,5 +41,40 @@
   "license": "MIT",
   "engines": {
     "node": ">=18.0.0"
+  },
+  "main": "electron/main.js",
+  "build": {
+    "appId": "ai.vigil.desktop",
+    "productName": "Vigil AI",
+    "directories": {
+      "output": "dist/desktop"
+    },
+    "files": [
+      "electron/**/*",
+      "extensions/jarvis/dist/**/*"
+    ],
+    "win": {
+      "target": [
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "portable", "arch": ["x64"] }
+      ],
+      "icon": "extensions/jarvis/dist/icons/icon128.png"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "extensions/jarvis/dist/icons/icon128.png"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "extensions/jarvis/dist/icons/icon128.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.1.8"
   }
 }

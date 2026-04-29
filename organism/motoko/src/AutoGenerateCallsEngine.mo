@@ -3,9 +3,12 @@
 /// 22 Web Worker Builder AIs (OPERARII AEDIFICATORES), each Latin-named
 /// with 3 dedicated engines (Generator + Router + Builder).
 ///
-/// 66 engines total. 1344+ auto-generated calls across all domains.
+/// 66 engines total. 1359+ auto-generated calls across all domains.
 /// Full routing table — every call auto-routed to correct target module.
 /// All AI, AGI, 24/7, user-facing, cross-substrate.
+///
+/// AGENTICUS now includes SYN (Synapse Binding Engine) calls:
+/// Nexus Perpetuus — one bind, zero-cost reads forever.
 ///
 /// As above, so below.
 
@@ -219,12 +222,12 @@ module {
         engines = buildTriad("NEURONICUS", ts);
         totalCalls = 15; callsGenerated = 0; healthy = true;
       },
-      // 15. AGENTICUS — Multi-Agent Coordination — 15 calls
+      // 15. AGENTICUS — Multi-Agent Coordination + SYN Binding — 30 calls
       {
         id = 15; name = "AGENTICUS"; latinName = "OPERARIUS AGENTIUM";
-        domain = "Multi-Agent Coordination";
+        domain = "Multi-Agent Coordination, Synapse Binding";
         engines = buildTriad("AGENTICUS", ts);
-        totalCalls = 15; callsGenerated = 0; healthy = true;
+        totalCalls = 30; callsGenerated = 0; healthy = true;
       },
       // 16. PRIVATICUS — Privacy-Preserving Analytics — 15 calls
       {
@@ -754,6 +757,56 @@ module {
           targetModule = "sdk/multiagent/" # e;
           workerName = "AGENTICUS";
           priority = PHI * Float.fromInt(id % 5 + 1) / 5.0;
+          autoRouted = true;
+        }]);
+      };
+    };
+    calls
+  };
+
+  /// Generate SYN (Synapse Binding Engine) calls for AGENTICUS — 15 binding calls
+  ///
+  /// These calls implement Nexus Perpetuus: a single cross-canister BIND converts
+  /// a remote agent's state into a permanent local imprint, after which all queries
+  /// are pure local reads with zero network cost.
+  ///
+  /// Five job types (BIND · SYNC · HEAL · VERIFY · TERMINATE) map to three
+  /// priority tiers (CRITICAL=0, HIGH=1, NORMAL=2) driving the autonomous queue.
+  public func generateSynapseBindingCalls(ts : Int) : [CallDefinition] {
+    let operations = [
+      // CRITICAL priority operations
+      "bind",        // SynapseBinding.bind     — imprint remote agent (CRITICAL)
+      "terminate",   // SynapseBinding.terminate — owner-revoke bond   (CRITICAL)
+      // HIGH priority operations
+      "sync",        // SynapseBinding.sync      — governance-sync refresh (HIGH)
+      "heal",        // SynapseBinding.heal      — self-heal a failed bond (HIGH)
+      // NORMAL priority operations
+      "verify",      // SynapseBinding.verify    — validate staleness bounds (NORMAL)
+    ];
+    let synapseModules = [
+      "SynapseBinding",    // core binding engine
+      "ImprintStore",      // stable-memory imprint repository
+      "SynapseJobQueue",   // priority-scheduled job queue with exponential back-off
+    ];
+    var calls : [CallDefinition] = [];
+    var id : Nat = 1700;
+    for (m in synapseModules.vals()) {
+      for (op in operations.vals()) {
+        id += 1;
+        let prio : Float = switch (op) {
+          case "bind"      { PHI * PHI };   // CRITICAL — highest weight
+          case "terminate" { PHI * PHI };   // CRITICAL
+          case "sync"      { PHI };         // HIGH
+          case "heal"      { PHI };         // HIGH
+          case _           { PHI_INV };     // NORMAL
+        };
+        calls := Array.append(calls, [{
+          callId = id;
+          callName = m # "." # op;
+          domain = "SynapseBinding";
+          targetModule = "sdk/syn/" # m;
+          workerName = "AGENTICUS";
+          priority = prio;
           autoRouted = true;
         }]);
       };
@@ -1337,7 +1390,7 @@ module {
       case "DEFENSOR"      { "sdk/defense/" # callName };
       case "FABRICATOR"    { "sdk/forgeworks/" # callName };
       case "NEURONICUS"    { "sdk/neuromorphic/" # callName };
-      case "AGENTICUS"     { "sdk/multiagent/" # callName };
+      case "AGENTICUS"     { "sdk/syn/" # callName };    // SYN Binding Engine + MultiAgent
       case "PRIVATICUS"    { "sdk/privacy/" # callName };
       case "CACHEXIUS"     { "sdk/caching/" # callName };
       case "TENANTIUS"     { "sdk/multitenant/" # callName };

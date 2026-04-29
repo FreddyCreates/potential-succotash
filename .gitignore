@@ -43,6 +43,10 @@ organism/cpp/build/
 # Motoko build output
 organism/motoko/.dfx/
 
+# ICP / DFX
+.dfx/
+icp-dist/
+
 # Python eggs/dist
 organism/python/dist/
 organism/python/*.egg-info/
