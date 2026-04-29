@@ -14,16 +14,10 @@ import TabsPanel from './panels/TabsPanel';
 import InstallPanel from './panels/InstallPanel';
 import LogPanel from './panels/LogPanel';
 import PhantomPanel from './panels/PhantomPanel';
-import WyomingPanel from './panels/WyomingPanel';
-import SchoolPanel from './panels/SchoolPanel';
 
 // CNS sections — each group is a logical nervous-system layer
 type TabDef = { id: string; label: string; section?: string };
 const TABS: TabDef[] = [
-  // ── SOVEREIGN ─ living governance organisms ────────────────────
-  { id: '_sov',      label: '── SOVEREIGN', section: 'divider' },
-  { id: 'wyoming',   label: '🦬 Wyoming' },
-  { id: 'school',    label: '🎓 School' },
   // ── COMMAND ─ primary operator surface ──────────────────────
   { id: '_cmd',      label: '── COMMAND',  section: 'divider' },
   { id: 'chat',      label: '💬 Chat' },
@@ -83,23 +77,21 @@ export default function App() {
 
   const renderPanel = () => {
     switch (activePanel) {
-      case 'wyoming':    return <WyomingPanel />;
-      case 'school':     return <SchoolPanel />;
-      case 'chat':       return <ChatPanel />;
-      case 'inbox':      return <InboxPanel />;
-      case 'solus':      return <SolusPanel />;
-      case 'agents':     return <AgentsPanel />;
-      case 'agi':        return <AGIPromptsPanel />;
-      case 'sentry':     return <SentryPanel />;
-      case 'memory':     return <MemoryVaultPanel />;
-      case 'workspace':  return <WorkspacePanel />;
-      case 'search':     return <SearchPanel />;
-      case 'phantom':    return <PhantomPanel />;
-      case 'screen':     return <ScreenPanel />;
-      case 'tabs':       return <TabsPanel />;
-      case 'install':    return <InstallPanel />;
-      case 'log':        return <LogPanel />;
-      default:           return <ChatPanel />;
+      case 'chat':      return <ChatPanel />;
+      case 'inbox':     return <InboxPanel />;
+      case 'solus':     return <SolusPanel />;
+      case 'agents':    return <AgentsPanel />;
+      case 'agi':       return <AGIPromptsPanel />;
+      case 'sentry':    return <SentryPanel />;
+      case 'memory':    return <MemoryVaultPanel />;
+      case 'workspace': return <WorkspacePanel />;
+      case 'search':    return <SearchPanel />;
+      case 'phantom':   return <PhantomPanel />;
+      case 'screen':    return <ScreenPanel />;
+      case 'tabs':      return <TabsPanel />;
+      case 'install':   return <InstallPanel />;
+      case 'log':       return <LogPanel />;
+      default:          return <ChatPanel />;
     }
   };
 

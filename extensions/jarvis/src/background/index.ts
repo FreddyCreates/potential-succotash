@@ -4,6 +4,8 @@
  * ============================================================ */
 
 import { NeurochemistryEngine } from './neuro-chemistry.js';
+import { ΩWN } from './engines/WyomingNevadaEngine.js';
+import { ΩDISD } from './engines/DallasISDEngine.js';
 import { extractArticle } from './skills/readability';
 import {
   saveHighlight, getHighlights, deleteHighlight, exportHighlights,
@@ -2432,6 +2434,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     case 'clearChat': engine.conversationMemory = []; sendResponse({ success: true }); break;
     case 'getWorkflowState': sendResponse({ success: true, state: getWorkflowState(), text: workflowStatusText() }); break;
     case 'recordWorkflowStep': { recordStep(message.result as Parameters<typeof recordStep>[0]); sendResponse({ success: true }); break; }
+
+    /* ── Sovereign Engines — Wyoming-Nevada & Dallas ISD ──────── */
+    case 'getWyomingState': sendResponse({ success: true, data: ΩWN.Σstate() }); break;
+    case 'wyomingStimulus': { ΩWN.Ξ(message.event as string, (message.magnitude as number) || 1); sendResponse({ success: true }); break; }
+    case 'wyomingBind': { ΩWN.Β(message.organismId as string); sendResponse({ success: true }); break; }
+    case 'getDallasState': sendResponse({ success: true, data: ΩDISD.state() }); break;
+    case 'dallasSchool': { ΩDISD.Σschool(message.id as string, message.name as string, message.students as number, message.educators as number); sendResponse({ success: true }); break; }
+    case 'dallasLearning': { ΩDISD.Λ(message.schoolId as string, message.teksCode as string, message.score as number); sendResponse({ success: true }); break; }
+    case 'dallasTEKS': sendResponse({ success: true, data: ΩDISD.Τ(message.domain as string, message.grade as number) }); break;
 
     /* ── Chat — primary conversational interface ────────────────
      * This is the handler ChatPanel uses: { action: 'chat', text }.
