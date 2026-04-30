@@ -22,6 +22,12 @@ export const GOLDEN_ANGLE = 137.508;
 export const HEARTBEAT = 873;
 
 // ═══════════════════════════════════════════════════════════════════════════
+// IMPORT FOR INTERNAL USE
+// ═══════════════════════════════════════════════════════════════════════════
+
+import { createMultiHeartGenerator as _createMultiHeartGenerator } from './sacred-geometry.js';
+
+// ═══════════════════════════════════════════════════════════════════════════
 // ANCIENT CALENDAR EXPORTS
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -171,8 +177,7 @@ export function createAgentTimerSuite(agentId, options = {}) {
     
     // Create multi-heart for this agent
     createMultiHeart: (heartCount, callback) => {
-      const { createMultiHeartGenerator } = require('./sacred-geometry.js');
-      return createMultiHeartGenerator(heartCount, callback, { baseMs });
+      return _createMultiHeartGenerator(heartCount, callback, { baseMs });
     },
     
     // Create multi-brain for this agent

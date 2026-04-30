@@ -235,7 +235,7 @@ export function createQueryContext(options = {}) {
    * Execute a query with optional caching
    */
   async function executeQuery(queryFn, ...args) {
-    const queryId = `query-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    const queryId = `query-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
     const startTime = Date.now();
     
     try {

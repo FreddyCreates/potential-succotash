@@ -155,7 +155,13 @@ export function createCallContext(options = {}) {
         error: error.message,
         stack: error.stack,
         timestamp: Date.now(),
-        args: args.map(a => typeof a === 'object' ? JSON.stringify(a).substring(0, 100) : a),
+        args: args.map(a => {
+          if (typeof a === 'object') {
+            const str = JSON.stringify(a);
+            return str.length > 100 ? str.substring(0, 97) + '...' : str;
+          }
+          return a;
+        }),
       };
       
       context.errors.push(errorRecord);

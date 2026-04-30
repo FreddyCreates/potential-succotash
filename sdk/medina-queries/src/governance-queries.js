@@ -43,7 +43,7 @@ export async function querySystemMetrics() {
       totalTraces: true,
       totalEvidence: true,
       totalAllocations: true,
-      activeCoundils: true,
+      activeCouncils: true,
       activeFieldAgents: true,
       phiResonance: true,
     },
