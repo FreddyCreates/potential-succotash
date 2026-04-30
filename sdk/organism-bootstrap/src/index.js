@@ -4,10 +4,12 @@
  * ICP/Organism bootstrap SDK.
  * - Node.js bootstrap function for Civitas
  * - Motoko code generator with φ-based timers
+ * - Hash routing for frontend navigation between organisms
  * 
  * BOOTSTRAP TYPES:
  * - CIVITAS: Node.js runtime with setInterval loops
  * - ORGANISM: ICP canister with Timer.recurringTimer
+ * - HASH_ROUTER: Browser-based organism switching
  */
 
 const PHI = 1.618033988749895;
@@ -497,6 +499,206 @@ export function bootstrapOrganism(organismName, options = {}) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
+// HASH ROUTING — Navigate Between Organisms
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * Create a hash router for navigating between organisms
+ * 
+ * Routes can be:
+ * - '#/wyoming' -> Wyoming governance organism
+ * - '#/nevada' -> Nevada governance organism
+ * - '#/dallas-isd' -> Dallas ISD student organism
+ * - '#/civitas/main' -> Main Civitas civilization
+ * 
+ * @param {object} routes - Hash to organism mapping
+ * @param {object} options - Router options
+ * @returns {object} Hash router control object
+ */
+export function createHashRouter(routes, options = {}) {
+  const organisms = new Map();
+  let currentRoute = null;
+  let currentOrganism = null;
+  
+  const config = {
+    defaultRoute: options.defaultRoute || '#/',
+    onNavigate: options.onNavigate || null,
+    onOrganismSwitch: options.onOrganismSwitch || null,
+    persistState: options.persistState !== false,
+    phiTransition: options.phiTransition !== false, // Phi-weighted transitions
+  };
+  
+  // Parse route to extract organism type and parameters
+  function parseRoute(hash) {
+    const parts = hash.replace('#/', '').split('/');
+    const routeKey = '#/' + (parts[0] || '');
+    const params = parts.slice(1);
+    
+    return {
+      hash,
+      routeKey,
+      params,
+      fullMatch: routes[hash] || null,
+      prefixMatch: routes[routeKey] || null,
+    };
+  }
+  
+  // Handle hash change event
+  function handleHashChange() {
+    const hash = (typeof window !== 'undefined' ? window.location.hash : '') || config.defaultRoute;
+    const parsed = parseRoute(hash);
+    const routeConfig = parsed.fullMatch || parsed.prefixMatch || routes[config.defaultRoute];
+    
+    if (!routeConfig) {
+      console.warn(`[HASH ROUTER] No route found for: ${hash}`);
+      return;
+    }
+    
+    // Get or create organism
+    const organismKey = typeof routeConfig === 'string' ? routeConfig : routeConfig.id;
+    
+    if (!organisms.has(organismKey)) {
+      // Create new organism based on route config
+      if (typeof routeConfig === 'object' && routeConfig.type === 'civitas') {
+        organisms.set(organismKey, bootstrapCivitas(
+          routeConfig.meridian || organismKey,
+          routeConfig.id,
+          { autoAwaken: false, ...routeConfig.options }
+        ));
+      } else {
+        // Store route config for lazy organism creation
+        organisms.set(organismKey, {
+          config: routeConfig,
+          instance: null,
+        });
+      }
+    }
+    
+    const previousRoute = currentRoute;
+    const previousOrganism = currentOrganism;
+    
+    currentRoute = hash;
+    currentOrganism = organisms.get(organismKey);
+    
+    // Awaken current organism if it has an awaken method
+    if (currentOrganism && currentOrganism.awaken && !currentOrganism._awake) {
+      currentOrganism.awaken();
+      currentOrganism._awake = true;
+    }
+    
+    // Callbacks
+    if (config.onNavigate) {
+      config.onNavigate({
+        from: previousRoute,
+        to: hash,
+        params: parsed.params,
+        organism: currentOrganism,
+      });
+    }
+    
+    if (config.onOrganismSwitch && previousOrganism !== currentOrganism) {
+      config.onOrganismSwitch({
+        from: previousOrganism,
+        to: currentOrganism,
+        phiTransition: config.phiTransition ? PHI_INV : 0,
+      });
+    }
+    
+    console.log(`[HASH ROUTER] Navigated: ${hash} → ${organismKey}`);
+  }
+  
+  // Initialize
+  if (typeof window !== 'undefined') {
+    window.addEventListener('hashchange', handleHashChange);
+    // Handle initial route on next tick
+    setTimeout(handleHashChange, 0);
+  }
+  
+  return {
+    // Get current state
+    getCurrentRoute: () => currentRoute,
+    getCurrentOrganism: () => currentOrganism,
+    getAllOrganisms: () => organisms,
+    
+    // Navigation
+    navigate: (hash) => {
+      if (typeof window !== 'undefined') {
+        window.location.hash = hash;
+      } else {
+        // For Node.js environments, manually trigger
+        currentRoute = hash;
+        handleHashChange();
+      }
+    },
+    
+    // Programmatic route management
+    addRoute: (hash, routeConfig) => {
+      routes[hash] = routeConfig;
+    },
+    
+    removeRoute: (hash) => {
+      delete routes[hash];
+    },
+    
+    // Lifecycle
+    start: () => {
+      if (typeof window !== 'undefined') {
+        handleHashChange();
+      }
+    },
+    
+    stop: () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('hashchange', handleHashChange);
+      }
+      
+      // Shutdown all organisms
+      for (const org of organisms.values()) {
+        if (org && org.dormant) {
+          org.dormant();
+        }
+      }
+    },
+    
+    // Get route info
+    getRoutes: () => Object.keys(routes),
+    
+    getRouteConfig: (hash) => routes[hash],
+  };
+}
+
+/**
+ * Create a governance router specifically for state/district organisms
+ */
+export function createGovernanceRouter(options = {}) {
+  const routes = {
+    '#/': { type: 'civitas', id: 'main-civitas', meridian: 'governance' },
+    '#/wyoming': { type: 'organism', id: 'wyoming', canisterId: options.wyomingCanisterId },
+    '#/nevada': { type: 'organism', id: 'nevada', canisterId: options.nevadaCanisterId },
+    '#/dallas-isd': { type: 'organism', id: 'dallas-isd', canisterId: options.dallasIsdCanisterId },
+    ...(options.additionalRoutes || {}),
+  };
+  
+  return createHashRouter(routes, {
+    defaultRoute: '#/',
+    ...options,
+    onNavigate: (event) => {
+      console.log(`[GOVERNANCE ROUTER] ${event.from || 'init'} → ${event.to}`);
+      if (options.onNavigate) options.onNavigate(event);
+    },
+  });
+}
+
+/**
+ * Bootstrap with hash routing (convenience wrapper)
+ */
+export function bootstrapWithHashRouting(routes, options = {}) {
+  const router = createHashRouter(routes, options);
+  router.start();
+  return router;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
 // CONSTANTS EXPORT
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -521,6 +723,11 @@ export default {
   bootstrapOrganism,
   generateMotokoOrganism,
   generateDfxConfig,
+  
+  // Hash Routing
+  createHashRouter,
+  createGovernanceRouter,
+  bootstrapWithHashRouting,
   
   // Constants
   PHI, PHI_INV, HEARTBEAT, HEARTBEAT_NS, GOLDEN_ANGLE,

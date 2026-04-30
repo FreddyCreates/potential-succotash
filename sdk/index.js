@@ -273,6 +273,10 @@ export {
   bootstrapOrganism,
   generateMotokoOrganism,
   generateDfxConfig,
+  // Hash Routing
+  createHashRouter,
+  createGovernanceRouter,
+  bootstrapWithHashRouting as bootstrapOrganismWithHashRouting,
 } from './organism-bootstrap/src/index.js';
 
 // Default export is the bootstrap function
