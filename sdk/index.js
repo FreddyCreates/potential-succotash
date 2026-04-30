@@ -22,6 +22,12 @@
  *   STEP 4: BOOTSTRAP (activation)
  *     - bootstrapCivitas(): One call to start a living civilization
  * 
+ * Internal SDKs (Professional Pattern):
+ *   - @medina/medina-timers: Mathematical timers (ancient calendars, sacred geometry, cosmic cycles)
+ *   - @medina/medina-calls: Write operations (civitas, organism, governance mutations)
+ *   - @medina/medina-queries: Read operations with caching
+ *   - @medina/organism-bootstrap: ICP/Motoko organism bootstrap
+ * 
  * Usage:
  *   import { bootstrapCivitas } from '@medina/civitas-intelligentiae';
  *   const civitas = bootstrapCivitas('my-meridian');
@@ -71,6 +77,203 @@ export {
   bootstrapMultiple,
   bootstrapWithHashRouting,
 } from './runtime/index.js';
+
+// ═══════════════════════════════════════════════════════════════════════════
+// INTERNAL SDKs — Professional Pattern
+// ═══════════════════════════════════════════════════════════════════════════
+
+// Timers SDK (@medina/medina-timers)
+export {
+  // Ancient Calendars
+  createMayanTzolkinTimer,
+  createMayanHaabTimer,
+  createMayanLongCountTimer,
+  createSumerianSexagesimalTimer,
+  createSumerianLunarTimer,
+  createVedicPanchangaTimer,
+  createVedicYugaTimer,
+  createEgyptianDecanTimer,
+  createEgyptianSeasonTimer,
+  createChineseSexagenaryCycleTimer,
+  createChineseSolarTermsTimer,
+  // Sacred Geometry
+  createFibonacciTimer,
+  createFibonacciSpiralTimer,
+  createPhiOscillator,
+  createDualPhiOscillator,
+  createGoldenAngleRotator,
+  createPhyllotaxisTimer,
+  createMetatronRouter,
+  createMultiHeartGenerator,
+  createSacredGeometrySuite,
+  // Cosmic Cycles
+  createLunarPhaseTimer,
+  createLunarNodeTimer,
+  createSolarDeclinationTimer,
+  createSunspotCycleTimer,
+  createPlanetarySynodicTimer,
+  createAllPlanetsTimer,
+  createPrecessionTimer,
+  createMultiBrainTimer,
+  createCosmicCycleSuite,
+  // Agent Suite Factory
+  createAgentTimerSuite,
+  createMultiAgentTimerSuites,
+} from './medina-timers/src/index.js';
+
+// Calls SDK (@medina/medina-calls)
+export {
+  // Civitas Calls
+  callBootstrapCivitas,
+  callAwakenCivitas,
+  callDormantCivitas,
+  callTerminateCivitas,
+  callUpdateAgentState,
+  callSendStimulus,
+  callTriggerReflection,
+  callSetAgentGoal,
+  callCompleteGoal,
+  callStoreMemory,
+  callConsolidateMemories,
+  callForgetMemory,
+  callUpdateMemoryImportance,
+  callCreateArtifact,
+  callUpdateArtifact,
+  callArchiveArtifact,
+  callApplyReward,
+  callApplyPunishment,
+  callUpdateLearningRate,
+  // Organism Calls
+  callDeployOrganism,
+  callUpgradeOrganism,
+  callDeleteOrganism,
+  callStartHeartbeat,
+  callStopHeartbeat,
+  callRegisterCitizen,
+  callCreateProposal,
+  callVote,
+  callExecuteProposal,
+  callTransfer,
+  callStake,
+  callUnstake,
+  callClaimRewards,
+  callDepositFunds,
+  callWithdrawFunds,
+  callAllocateFunds,
+  // Governance Calls
+  callCreateEffectTrace,
+  callUpdateTraceMetrics,
+  callArchiveTrace,
+  callLinkTraces,
+  callSubmitEvidence,
+  callVerifyEvidence,
+  callChallengeEvidence,
+  callCreateCouncil,
+  callAddCouncilMember,
+  callRemoveCouncilMember,
+  callCreateCouncilDecision,
+  callCouncilVote,
+  callFinalizeDecision,
+  callRegisterFieldAgent,
+  callSubmitFieldCollection,
+  callCreateAllocation,
+  callApproveMilestone,
+  callDisburseFunds,
+  // Context
+  createCallContext,
+  batchExecute,
+} from './medina-calls/src/index.js';
+
+// Queries SDK (@medina/medina-queries)
+export {
+  // Civitas Queries
+  queryCivitasStatus,
+  queryCivitasHealth,
+  queryAllAgentStatuses,
+  queryAgentStatus,
+  queryAgentRegisters,
+  queryMemories,
+  queryMemory,
+  queryMemoryAssociations,
+  queryConsolidationStatus,
+  queryActiveGoals,
+  queryGoalProgress,
+  queryGoalHistory,
+  queryArtifacts,
+  queryArtifact,
+  queryArtifactLineage,
+  queryCollectiveCoherence,
+  queryEmergenceState,
+  queryLearningMetrics,
+  queryRewardHistory,
+  // Organism Queries
+  queryCanisterStatus,
+  queryCanisterCycles,
+  queryCanisterMemory,
+  queryOrganismState,
+  queryHeartbeatStatus,
+  queryGovernanceSnapshot,
+  queryCitizen,
+  queryAllCitizens,
+  queryProposals,
+  queryProposal,
+  queryBalance,
+  queryTokenSupply,
+  queryStakeInfo,
+  queryTransferHistory,
+  queryFundBalance,
+  queryFundAllocations,
+  querySynapseHealth,
+  querySynapseImprints,
+  querySynapseBinding,
+  queryInnovationZones,
+  queryEnergyCredits,
+  queryTotalEnergyCredits,
+  queryDistrictSnapshot,
+  queryStudent,
+  queryStudentsBySchool,
+  queryLearningPathways,
+  querySchools,
+  // Governance Queries
+  queryGovernanceDashboard,
+  querySystemMetrics,
+  queryActivityFeed,
+  queryEffectTraces,
+  queryEffectTrace,
+  queryTraceMetricsHistory,
+  queryTraceDelta,
+  queryLinkedTraces,
+  queryTraceEvidence,
+  queryEvidence,
+  queryEvidenceBySubmitter,
+  queryPendingEvidence,
+  queryCouncils,
+  queryCouncil,
+  queryCouncilMember,
+  queryCouncilDecisions,
+  queryDecision,
+  queryFieldAgents,
+  queryFieldAgent,
+  queryFieldCollections,
+  queryAllocations,
+  queryAllocation,
+  queryAllocationMilestones,
+  queryDisbursementHistory,
+  queryOverallImpact,
+  queryImpactByDomain,
+  queryImpactTimeline,
+  // Context & Cache
+  createQueryContext,
+  createQueryCache,
+  batchQuery,
+} from './medina-queries/src/index.js';
+
+// Organism Bootstrap SDK (@medina/organism-bootstrap)
+export {
+  bootstrapOrganism,
+  generateMotokoOrganism,
+  generateDfxConfig,
+} from './organism-bootstrap/src/index.js';
 
 // Default export is the bootstrap function
 export { default } from './runtime/bootstrap.js';
