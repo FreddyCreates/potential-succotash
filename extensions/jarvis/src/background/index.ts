@@ -4,6 +4,7 @@
  * ============================================================ */
 
 import { NeurochemistryEngine } from './neuro-chemistry.js';
+import { MASTER, WN, DISD, phi, Phi } from './engines/index.js';
 import { extractArticle } from './skills/readability';
 import {
   saveHighlight, getHighlights, deleteHighlight, exportHighlights,
@@ -2432,6 +2433,21 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     case 'clearChat': engine.conversationMemory = []; sendResponse({ success: true }); break;
     case 'getWorkflowState': sendResponse({ success: true, state: getWorkflowState(), text: workflowStatusText() }); break;
     case 'recordWorkflowStep': { recordStep(message.result as Parameters<typeof recordStep>[0]); sendResponse({ success: true }); break; }
+
+    /* ── Sovereign Engines — Wyoming-Nevada & Dallas ISD ──────── */
+    case 'getWyomingState': sendResponse({ success: true, data: WN.getState() }); break;
+    case 'wyomingStimulus': { WN.Xi(message.event as string, (message.magnitude as number) || 1); sendResponse({ success: true }); break; }
+    case 'wyomingBind': { WN.bind(message.organismId as string); sendResponse({ success: true }); break; }
+    case 'getDallasState': sendResponse({ success: true, data: DISD.getState() }); break;
+    case 'dallasSchool': { DISD.registerSchool(message.id as string, message.name as string, message.students as number, message.educators as number); sendResponse({ success: true }); break; }
+    case 'dallasLearning': { DISD.learning(message.schoolId as string, message.teksCode as string, message.score as number); sendResponse({ success: true }); break; }
+    case 'dallasTEKS': sendResponse({ success: true, data: DISD.getTEKS(message.domain as string, message.grade as number) }); break;
+    
+    /* ── Master Charter — Self-Organizing AI ──────────────────── */
+    case 'getMasterCharter': sendResponse({ success: true, data: MASTER.getCharter() }); break;
+    case 'getMasterEmergence': sendResponse({ success: true, emergence: MASTER.getEmergence(), resonance: MASTER.R() }); break;
+    case 'masterStimulus': { MASTER.Xi(message.event as string, (message.magnitude as number) || 1); sendResponse({ success: true }); break; }
+    case 'listOrganisms': sendResponse({ success: true, organisms: MASTER.listOrganisms() }); break;
 
     /* ── Chat — primary conversational interface ────────────────
      * This is the handler ChatPanel uses: { action: 'chat', text }.
