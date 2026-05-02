@@ -1,0 +1,103 @@
+# ============================================================================
+# 📦 organism-sdk-bot — SDK Packaging & Validation
+#
+# Validates all SDKs for npm-publish readiness:
+#   - Checks required fields (name, version, main, license, description)
+#   - Normalizes package.json (adds missing fields with sensible defaults)
+#   - Creates .tgz tarballs via `npm pack`
+#   - Generates SDK registry manifest at docs/sdk-registry.json
+#
+# Bot identity: organism-sdk-bot
+# Triggers on: push to sdk/
+# ============================================================================
+
+name: 📦 organism-sdk-bot
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'sdk/**'
+      - '.github/workflows/organism-sdk-bot.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sdk-validation:
+    name: 📦 SDK Validation & Normalization
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate & normalize SDKs
+        run: node scripts/sdk-bot/validate-sdks.js
+
+      - name: Pack SDK tarballs
+        run: |
+          mkdir -p dist/sdks
+          PACKED=0
+          FAILED=0
+
+          echo "══════════════════════════════════════════════════════════"
+          echo "  📦 organism-sdk-bot: Packing SDK tarballs"
+          echo "══════════════════════════════════════════════════════════"
+
+          for sdk_dir in sdk/*/; do
+            sdk_name="$(basename "${sdk_dir}")"
+            pkg="${sdk_dir}/package.json"
+            [ ! -f "${pkg}" ] && continue
+
+            # Must have name and version to pack
+            NAME=$(node -e "try{const p=require('./${pkg}');process.stdout.write(p.name||'')}catch(e){}" 2>/dev/null)
+            VERSION=$(node -e "try{const p=require('./${pkg}');process.stdout.write(p.version||'')}catch(e){}" 2>/dev/null)
+
+            if [ -z "${NAME}" ] || [ -z "${VERSION}" ]; then
+              echo "  ⚠ ${sdk_name}: missing name or version, skipping pack"
+              FAILED=$((FAILED + 1))
+              continue
+            fi
+
+            cd "${sdk_dir}"
+            npm pack --pack-destination "../../dist/sdks" --quiet 2>/dev/null && \
+              echo "  ✓ ${sdk_name} → ${NAME}-${VERSION}.tgz" || \
+              echo "  ✗ ${sdk_name}: pack failed"
+            cd - > /dev/null
+
+            PACKED=$((PACKED + 1))
+          done
+
+          echo ""
+          echo "  Packed: ${PACKED}  Failed: ${FAILED}"
+          echo "PACKED=${PACKED}" >> "$GITHUB_ENV"
+
+      - name: Generate SDK registry
+        run: node scripts/sdk-bot/generate-registry.js
+
+      - name: Upload SDK tarballs
+        uses: actions/upload-artifact@v4
+        with:
+          name: sdk-tarballs
+          path: dist/sdks/*.tgz
+          retention-days: 30
+          if-no-files-found: warn
+
+      - name: Commit registry and report
+        run: |
+          git config user.name "organism-sdk-bot"
+          git config user.email "organism-sdk-bot@users.noreply.github.com"
+          git add docs/sdk-registry.json docs/sdk-report.md
+          if git diff --cached --quiet; then
+            echo "SDK registry unchanged"
+          else
+            git commit -m "📦 organism-sdk-bot: update SDK registry [skip ci]"
+            git push
+          fi

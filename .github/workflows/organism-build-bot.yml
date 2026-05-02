@@ -1,0 +1,208 @@
+# ============================================================================
+# 🧬 organism-build-bot — Extension Packaging
+#
+# Zips all browser extensions (Vite-built Vigil AI + 35 simple extensions),
+# commits packaged zips to dist/extensions/, and uploads build artifacts.
+#
+# Bot identity: organism-build-bot
+# Triggers on: push to extensions/
+# ============================================================================
+
+name: 🧬 organism-build-bot
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'extensions/**'
+      - 'build-extensions.sh'
+      - 'scripts/generate-icons.js'
+      - '.github/workflows/organism-build-bot.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  # ── Job 1: Build Vigil AI (Vite/React/TypeScript) ─────────────────────────
+  build-vigil-ai:
+    name: 🧬 Build Vigil AI (Vite)
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      zip_name: ${{ steps.version.outputs.zip_name }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: extensions/jarvis/package-lock.json
+
+      - name: Install dependencies
+        working-directory: extensions/jarvis
+        run: npm ci
+
+      - name: Build Vigil AI
+        working-directory: extensions/jarvis
+        run: npm run build
+
+      - name: Read version
+        id: version
+        run: |
+          VERSION=$(node -e "console.log(require('./extensions/jarvis/dist/manifest.json').version)" 2>/dev/null || echo "20.0.0")
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "zip_name=vigil-ai-v${VERSION}.zip" >> "$GITHUB_OUTPUT"
+          echo "🧬 Vigil AI version: ${VERSION}"
+
+      - name: Package Vigil AI zip
+        run: |
+          mkdir -p dist/extensions
+          cd extensions/jarvis/dist
+          zip -r "../../../dist/extensions/vigil-ai-v${{ steps.version.outputs.version }}.zip" . -x "*.DS_Store"
+          SIZE=$(du -h "../../../dist/extensions/vigil-ai-v${{ steps.version.outputs.version }}.zip" | cut -f1)
+          echo "✅ Packaged vigil-ai-v${{ steps.version.outputs.version }}.zip (${SIZE})"
+
+      - name: Upload Vigil AI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vigil-ai-extension-${{ steps.version.outputs.version }}
+          path: dist/extensions/vigil-ai-*.zip
+          retention-days: 30
+
+  # ── Job 2: Package all simple extensions ──────────────────────────────────
+  build-simple-extensions:
+    name: 🧬 Package Simple Extensions
+    runs-on: ubuntu-latest
+    outputs:
+      count: ${{ steps.package.outputs.count }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate icons (if missing)
+        run: node scripts/generate-icons.js
+
+      - name: Package all simple extensions
+        id: package
+        run: |
+          set -euo pipefail
+          EXT_DIR="extensions"
+          DIST_DIR="dist/extensions"
+          mkdir -p "${DIST_DIR}"
+          COUNT=0
+
+          echo "══════════════════════════════════════════════════════════"
+          echo "  🧬 organism-build-bot: Packaging Simple Extensions"
+          echo "══════════════════════════════════════════════════════════"
+
+          for ext_path in "${EXT_DIR}"/*/; do
+            ext_name="$(basename "${ext_path}")"
+            [ "${ext_name}" = "windows" ] && continue
+            [ "${ext_name}" = "jarvis"  ] && continue   # built by build-vigil-ai job
+            [ ! -f "${ext_path}/manifest.json" ] && continue
+            [ -f "${ext_path}/package.json" ] && continue  # skip Vite-based
+
+            (cd "${ext_path}" && zip -r -q \
+              "../../${DIST_DIR}/${ext_name}.zip" \
+              manifest.json \
+              $(ls background.js content.js icons/ 2>/dev/null || true) \
+              2>/dev/null || true)
+
+            if [ -f "${DIST_DIR}/${ext_name}.zip" ]; then
+              SIZE=$(du -h "${DIST_DIR}/${ext_name}.zip" | cut -f1)
+              echo "  ✓ ${ext_name}.zip (${SIZE})"
+              COUNT=$((COUNT + 1))
+            else
+              echo "  ⚠ ${ext_name}: no zip produced"
+            fi
+          done
+
+          echo ""
+          echo "  Total: ${COUNT} simple extensions packaged"
+          echo "count=${COUNT}" >> "$GITHUB_OUTPUT"
+
+      - name: Create all-extensions bundle
+        run: |
+          cd dist/extensions
+          zip -r all-extensions.zip *.zip 2>/dev/null || true
+          echo "✅ all-extensions.zip created"
+
+      - name: Upload simple extensions artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: simple-extensions
+          path: dist/extensions/*.zip
+          retention-days: 30
+
+  # ── Job 3: Commit artifacts and write build report ────────────────────────
+  commit-and-report:
+    name: 🧬 Commit & Report
+    runs-on: ubuntu-latest
+    needs: [build-vigil-ai, build-simple-extensions]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download Vigil AI artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: vigil-ai-extension-${{ needs.build-vigil-ai.outputs.version }}
+          path: dist/extensions/
+
+      - name: Download simple extensions artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: simple-extensions
+          path: dist/extensions/
+
+      - name: Write build report
+        run: |
+          mkdir -p docs
+          TOTAL=$(ls dist/extensions/*.zip 2>/dev/null | wc -l)
+          VIGIL_VERSION="${{ needs.build-vigil-ai.outputs.version }}"
+          SIMPLE_COUNT="${{ needs.build-simple-extensions.outputs.count }}"
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+          cat > docs/build-report.md << EOF
+          # 🧬 organism-build-bot — Build Report
+
+          **Generated:** ${TIMESTAMP}
+          **Vigil AI Version:** v${VIGIL_VERSION}
+          **Simple Extensions:** ${SIMPLE_COUNT}
+          **Total Packages:** ${TOTAL}
+
+          ## Packages
+
+          $(ls dist/extensions/*.zip 2>/dev/null | while read f; do
+            name=$(basename "$f")
+            size=$(du -h "$f" | cut -f1)
+            echo "| \`${name}\` | ${size} |"
+          done)
+
+          ## Bot Identity
+
+          Built by **organism-build-bot** 🧬
+          Commit: \`${GITHUB_SHA:0:7}\`
+          Run: [\`${GITHUB_RUN_ID}\`](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID})
+          EOF
+
+          echo "📊 Build report written to docs/build-report.md"
+
+      - name: Commit artifacts and report
+        run: |
+          git config user.name "organism-build-bot"
+          git config user.email "organism-build-bot@users.noreply.github.com"
+          git add dist/extensions/ docs/build-report.md
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "🧬 organism-build-bot: package ${{ needs.build-simple-extensions.outputs.count }} extensions [skip ci]"
+            git push
+          fi

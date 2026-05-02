@@ -1,0 +1,77 @@
+# ============================================================================
+# 🛡️ organism-sentinel-bot — Security Audit
+#
+# Runs a full security audit across the entire organism:
+#   - Extension permission audit (flags dangerous/overly-broad permissions)
+#   - Content Security Policy (CSP) validation per extension
+#   - Secret scanning (API keys, tokens, credentials in source code)
+#   - eval() / new Function() scan in protocols and SDK code
+#   - Generates docs/security-report.md with findings
+#
+# Bot identity: organism-sentinel-bot
+# Triggers: Weekly (Sundays 00:00 UTC) + every push
+# ============================================================================
+
+name: 🛡️ organism-sentinel-bot
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'   # Weekly on Sunday midnight UTC
+  push:
+    branches: [main]
+    paths:
+      - 'extensions/**'
+      - 'protocols/**'
+      - 'sdk/**'
+      - 'scripts/**'
+      - '.github/workflows/organism-sentinel-bot.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  security-events: write
+
+jobs:
+  sentinel-audit:
+    name: 🛡️ Security Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 🛡️ Audit extension permissions
+        id: permissions
+        run: node scripts/sentinel-bot/audit-permissions.js
+
+      - name: 🛡️ Validate Content Security Policies
+        id: csp
+        run: node scripts/sentinel-bot/validate-csp.js
+
+      - name: 🛡️ Scan for secrets
+        id: secrets
+        run: node scripts/sentinel-bot/scan-secrets.js
+
+      - name: 🛡️ Scan for dangerous code patterns
+        id: dangerous
+        run: node scripts/sentinel-bot/scan-dangerous-patterns.js
+
+      - name: 🛡️ Generate security report
+        run: node scripts/sentinel-bot/generate-security-report.js
+
+      - name: Commit security report
+        run: |
+          git config user.name "organism-sentinel-bot"
+          git config user.email "organism-sentinel-bot@users.noreply.github.com"
+          git add docs/security-report.md docs/security-audit.json
+          if git diff --cached --quiet; then
+            echo "Security report unchanged"
+          else
+            git commit -m "🛡️ organism-sentinel-bot: update security report [skip ci]"
+            git push
+          fi

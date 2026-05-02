@@ -1,0 +1,35 @@
+{
+  "generated": "2026-05-02T22:32:05.368Z",
+  "bot": "organism-sentinel-bot",
+  "status": "clean",
+  "summary": {
+    "totalErrors": 0,
+    "totalWarnings": 53,
+    "permissionErrors": 0,
+    "permissionWarnings": 53,
+    "cspErrors": 0,
+    "secretsFound": 0,
+    "dangerousHigh": 0,
+    "dangerousMedium": 0
+  },
+  "scans": {
+    "permissions": {
+      "ran": true,
+      "timestamp": "2026-05-02T22:31:46.291Z"
+    },
+    "csp": {
+      "ran": true,
+      "timestamp": "2026-05-02T22:31:46.346Z"
+    },
+    "secrets": {
+      "ran": true,
+      "timestamp": "2026-05-02T22:32:05.322Z",
+      "filesScanned": 648
+    },
+    "dangerous": {
+      "ran": true,
+      "timestamp": "2026-05-02T22:32:01.523Z",
+      "filesScanned": 123
+    }
+  }
+}

@@ -1,0 +1,68 @@
+# ============================================================================
+# 📚 organism-docs-bot — Auto-Documentation Generator
+#
+# Generates living documentation from the codebase:
+#   - docs/extension-catalog.md   — full registry of all 36 extensions
+#   - docs/protocol-encyclopedia.md — all protocols with domain/description
+#   - docs/sdk-reference.md       — all SDKs with API surface
+#   - docs/architecture-map.md    — full architecture visualization
+#
+# Sources: CSV registers, SDK package.json files, protocol files, extension
+# manifests and the extensions/index.js wire index.
+#
+# Bot identity: organism-docs-bot
+# Triggers on: push to CSV registers, sdk/, protocols/
+# ============================================================================
+
+name: 📚 organism-docs-bot
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '*.csv'
+      - 'sdk/**'
+      - 'protocols/**'
+      - 'extensions/index.js'
+      - 'organism/**'
+      - '.github/workflows/organism-docs-bot.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate-docs:
+    name: 📚 Generate Living Documentation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate extension catalog
+        run: node scripts/docs-bot/generate-extension-catalog.js
+
+      - name: Generate SDK reference
+        run: node scripts/docs-bot/generate-sdk-reference.js
+
+      - name: Generate architecture map
+        run: node scripts/docs-bot/generate-architecture-map.js
+
+      - name: Commit all documentation
+        run: |
+          git config user.name "organism-docs-bot"
+          git config user.email "organism-docs-bot@users.noreply.github.com"
+          git add docs/
+          if git diff --cached --quiet; then
+            echo "Documentation unchanged"
+          else
+            CHANGED=$(git diff --cached --name-only | wc -l)
+            git commit -m "📚 organism-docs-bot: regenerate ${CHANGED} doc files [skip ci]"
+            git push
+          fi

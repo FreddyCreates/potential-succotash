@@ -12,6 +12,9 @@ node_modules/
 dist/sovereign-organism-*.tar.gz
 dist/sovereign-organism-*.zip
 
+# Bot intermediate build artifacts (prefixed with _)
+docs/_*.json
+
 # IDE / editor
 .idea/
 .vscode/

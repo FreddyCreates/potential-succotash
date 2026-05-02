@@ -1,0 +1,51 @@
+{
+  "generated": "2026-05-02T22:31:26.420Z",
+  "bot": "organism-deploy-bot",
+  "commit": "a8a72ae7a7d3b9f2a826086632d76e139a933001",
+  "ref": "refs/heads/copilot/separate-frontends-and-backends",
+  "icp": {
+    "dfxVersion": "0.22.0",
+    "canisters": [
+      "vigil_frontend"
+    ],
+    "networks": [
+      "local",
+      "ic"
+    ],
+    "deployedCanisters": {}
+  },
+  "organism": {
+    "substrates": {
+      "typescript": {
+        "exists": true,
+        "fileCount": 14
+      },
+      "python": {
+        "exists": true,
+        "fileCount": 12
+      },
+      "cpp": {
+        "exists": true,
+        "fileCount": 8
+      },
+      "java": {
+        "exists": true,
+        "fileCount": 15
+      },
+      "motoko": {
+        "exists": true,
+        "fileCount": 7
+      },
+      "web": {
+        "exists": true,
+        "fileCount": 22
+      }
+    },
+    "totalSubstrates": 6
+  },
+  "system": {
+    "protocols": 16,
+    "sdks": 11,
+    "extensions": 37
+  }
+}

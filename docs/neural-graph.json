@@ -1,0 +1,285 @@
+{
+  "version": "1.0",
+  "generated": "2026-05-02T22:31:06.741Z",
+  "bot": "organism-neural-bot",
+  "stats": {
+    "nodes": 34,
+    "edges": 3,
+    "protocols": 16,
+    "sdks": 11,
+    "substrates": 6,
+    "extensions": 37
+  },
+  "nodes": [
+    {
+      "id": "proto:adaptive-knowledge-absorption-protocol",
+      "label": "adaptive-knowledge-absorption-protocol",
+      "type": "protocol",
+      "domain": "memory",
+      "hasPHI": true,
+      "hasHeartbeat": true
+    },
+    {
+      "id": "proto:auro-absorption-charter-protocol",
+      "label": "auro-absorption-charter-protocol",
+      "type": "protocol",
+      "domain": "memory",
+      "hasPHI": true,
+      "hasHeartbeat": true
+    },
+    {
+      "id": "proto:auro-guardian-intelligence-protocol",
+      "label": "auro-guardian-intelligence-protocol",
+      "type": "protocol",
+      "domain": "security",
+      "hasPHI": true,
+      "hasHeartbeat": true
+    },
+    {
+      "id": "proto:edge-mesh-intelligence-protocol",
+      "label": "edge-mesh-intelligence-protocol",
+      "type": "protocol",
+      "domain": "routing",
+      "hasPHI": true,
+      "hasHeartbeat": true
+    },
+    {
+      "id": "proto:encrypted-intelligence-transport",
+      "label": "encrypted-intelligence-transport",
+      "type": "protocol",
+      "domain": "routing",
+      "hasPHI": true,
+      "hasHeartbeat": true
+    },
+    {
+      "id": "proto:memory-lineage-enhancement-protocol",
+      "label": "memory-lineage-enhancement-protocol",
+      "type": "protocol",
+      "domain": "memory",
+      "hasPHI": true,
+      "hasHeartbeat": true
+    },
+    {
+      "id": "proto:memory-lineage-protocol",
+      "label": "memory-lineage-protocol",
+      "type": "protocol",
+      "domain": "memory",
+      "hasPHI": true,
+      "hasHeartbeat": true
+    },
+    {
+      "id": "proto:multi-model-fusion-protocol",
+      "label": "multi-model-fusion-protocol",
+      "type": "protocol",
+      "domain": "resonance",
+      "hasPHI": true,
+      "hasHeartbeat": true
+    },
+    {
+      "id": "proto:organism-lifecycle-protocol",
+      "label": "organism-lifecycle-protocol",
+      "type": "protocol",
+      "domain": "routing",
+      "hasPHI": true,
+      "hasHeartbeat": true
+    },
+    {
+      "id": "proto:organism-marketplace-protocol",
+      "label": "organism-marketplace-protocol",
+      "type": "protocol",
+      "domain": "memory",
+      "hasPHI": true,
+      "hasHeartbeat": true
+    },
+    {
+      "id": "proto:oro-engine-integration-protocol",
+      "label": "oro-engine-integration-protocol",
+      "type": "protocol",
+      "domain": "memory",
+      "hasPHI": true,
+      "hasHeartbeat": true
+    },
+    {
+      "id": "proto:phi-resonance-sync-protocol",
+      "label": "phi-resonance-sync-protocol",
+      "type": "protocol",
+      "domain": "resonance",
+      "hasPHI": true,
+      "hasHeartbeat": true
+    },
+    {
+      "id": "proto:sovereign-contract-verification-protocol",
+      "label": "sovereign-contract-verification-protocol",
+      "type": "protocol",
+      "domain": "routing",
+      "hasPHI": true,
+      "hasHeartbeat": true
+    },
+    {
+      "id": "proto:sovereign-offline-cognition-protocol",
+      "label": "sovereign-offline-cognition-protocol",
+      "type": "protocol",
+      "domain": "neural",
+      "hasPHI": true,
+      "hasHeartbeat": true
+    },
+    {
+      "id": "proto:sovereign-routing-protocol",
+      "label": "sovereign-routing-protocol",
+      "type": "protocol",
+      "domain": "routing",
+      "hasPHI": true,
+      "hasHeartbeat": true
+    },
+    {
+      "id": "proto:visual-scene-intelligence-protocol",
+      "label": "visual-scene-intelligence-protocol",
+      "type": "protocol",
+      "domain": "resonance",
+      "hasPHI": true,
+      "hasHeartbeat": true
+    },
+    {
+      "id": "sdk:ai-model-engines",
+      "label": "@medina/ai-model-engines",
+      "type": "sdk",
+      "domain": "general",
+      "version": "1.0.0"
+    },
+    {
+      "id": "sdk:document-absorption-engine",
+      "label": "@medina/document-absorption-engine",
+      "type": "sdk",
+      "domain": "general",
+      "version": "1.0.0"
+    },
+    {
+      "id": "sdk:enterprise-integration-sdk",
+      "label": "@medina/enterprise-integration-sdk",
+      "type": "sdk",
+      "domain": "general",
+      "version": "1.0.0"
+    },
+    {
+      "id": "sdk:frontend-intelligence-models",
+      "label": "@medina/frontend-intelligence-models",
+      "type": "sdk",
+      "domain": "general",
+      "version": "1.0.0"
+    },
+    {
+      "id": "sdk:intelligence-routing-sdk",
+      "label": "@medina/intelligence-routing-sdk",
+      "type": "sdk",
+      "domain": "routing",
+      "version": "1.0.0"
+    },
+    {
+      "id": "sdk:organism-marketplace",
+      "label": "@medina/organism-marketplace",
+      "type": "sdk",
+      "domain": "lifecycle",
+      "version": "1.0.0"
+    },
+    {
+      "id": "sdk:organism-runtime-sdk",
+      "label": "@medina/organism-runtime-sdk",
+      "type": "sdk",
+      "domain": "lifecycle",
+      "version": "1.0.0"
+    },
+    {
+      "id": "sdk:register-ai",
+      "label": "@medina/register-ai",
+      "type": "sdk",
+      "domain": "general",
+      "version": "1.0.0"
+    },
+    {
+      "id": "sdk:sovereign-memory-sdk",
+      "label": "@medina/sovereign-memory-sdk",
+      "type": "sdk",
+      "domain": "memory",
+      "version": "1.0.0"
+    },
+    {
+      "id": "sdk:windows-desktop-sdk",
+      "label": "@medina/windows-desktop-sdk",
+      "type": "sdk",
+      "domain": "general",
+      "version": "1.0.0"
+    },
+    {
+      "id": "sdk:windows-runtime-sdk",
+      "label": "@medina/windows-runtime-sdk",
+      "type": "sdk",
+      "domain": "general",
+      "version": "1.0.0"
+    },
+    {
+      "id": "substrate:typescript",
+      "label": "TypeScript Organism",
+      "lang": "typescript",
+      "type": "substrate",
+      "domain": "lifecycle"
+    },
+    {
+      "id": "substrate:python",
+      "label": "Python Organism",
+      "lang": "python",
+      "type": "substrate",
+      "domain": "lifecycle"
+    },
+    {
+      "id": "substrate:cpp",
+      "label": "C++ Organism",
+      "lang": "cpp",
+      "type": "substrate",
+      "domain": "lifecycle"
+    },
+    {
+      "id": "substrate:java",
+      "label": "Java Organism",
+      "lang": "java",
+      "type": "substrate",
+      "domain": "lifecycle"
+    },
+    {
+      "id": "substrate:motoko",
+      "label": "Motoko (ICP)",
+      "lang": "motoko",
+      "type": "substrate",
+      "domain": "lifecycle"
+    },
+    {
+      "id": "substrate:web",
+      "label": "Web Workers",
+      "lang": "web",
+      "type": "substrate",
+      "domain": "lifecycle"
+    },
+    {
+      "id": "extensions",
+      "label": "Browser Extensions (37)",
+      "type": "frontend",
+      "domain": "neural"
+    }
+  ],
+  "edges": [
+    {
+      "source": "extensions",
+      "target": "proto:phi-resonance-sync-protocol",
+      "type": "uses"
+    },
+    {
+      "source": "extensions",
+      "target": "proto:memory-lineage-protocol",
+      "type": "uses"
+    },
+    {
+      "source": "extensions",
+      "target": "proto:sovereign-routing-protocol",
+      "type": "uses"
+    }
+  ]
+}

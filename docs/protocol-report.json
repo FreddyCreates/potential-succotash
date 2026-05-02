@@ -1,0 +1,178 @@
+{
+  "generated": "2026-05-02T22:31:15.721Z",
+  "bot": "organism-protocol-bot",
+  "totalProtocols": 16,
+  "hasCycles": false,
+  "domainBreakdown": {
+    "memory": 4,
+    "security": 3,
+    "routing": 2,
+    "fusion": 1,
+    "lifecycle": 2,
+    "neural": 2,
+    "resonance": 1,
+    "vision": 1
+  },
+  "protocols": [
+    {
+      "slug": "adaptive-knowledge-absorption-protocol",
+      "className": "AdaptiveKnowledgeAbsorptionProtocol",
+      "domain": "memory",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 25,
+      "deps": []
+    },
+    {
+      "slug": "auro-absorption-charter-protocol",
+      "className": "AuroAbsorptionCharterProtocol",
+      "domain": "memory",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 17,
+      "deps": []
+    },
+    {
+      "slug": "auro-guardian-intelligence-protocol",
+      "className": "AuroGuardianIntelligenceProtocol",
+      "domain": "security",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 18,
+      "deps": []
+    },
+    {
+      "slug": "edge-mesh-intelligence-protocol",
+      "className": "EdgeMeshIntelligenceProtocol",
+      "domain": "routing",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 23,
+      "deps": []
+    },
+    {
+      "slug": "encrypted-intelligence-transport",
+      "className": "EncryptedIntelligenceTransport",
+      "domain": "security",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 19,
+      "deps": []
+    },
+    {
+      "slug": "memory-lineage-enhancement-protocol",
+      "className": "MemoryLineageEnhancementProtocol",
+      "domain": "memory",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 20,
+      "deps": []
+    },
+    {
+      "slug": "memory-lineage-protocol",
+      "className": "MemoryLineageProtocol",
+      "domain": "memory",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 37,
+      "deps": []
+    },
+    {
+      "slug": "multi-model-fusion-protocol",
+      "className": "MultiModelFusionProtocol",
+      "domain": "fusion",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 31,
+      "deps": []
+    },
+    {
+      "slug": "organism-lifecycle-protocol",
+      "className": "OrganismLifecycleProtocol",
+      "domain": "lifecycle",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 40,
+      "deps": []
+    },
+    {
+      "slug": "organism-marketplace-protocol",
+      "className": "OrganismMarketplaceProtocol",
+      "domain": "lifecycle",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 28,
+      "deps": []
+    },
+    {
+      "slug": "oro-engine-integration-protocol",
+      "className": "OroEngineIntegrationProtocol",
+      "domain": "neural",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 15,
+      "deps": []
+    },
+    {
+      "slug": "phi-resonance-sync-protocol",
+      "className": "PhiResonanceSyncProtocol",
+      "domain": "resonance",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 18,
+      "deps": []
+    },
+    {
+      "slug": "sovereign-contract-verification-protocol",
+      "className": "SovereignContractVerificationProtocol",
+      "domain": "security",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 19,
+      "deps": []
+    },
+    {
+      "slug": "sovereign-offline-cognition-protocol",
+      "className": "SovereignOfflineCognitionProtocol",
+      "domain": "neural",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 19,
+      "deps": []
+    },
+    {
+      "slug": "sovereign-routing-protocol",
+      "className": "SovereignRoutingProtocol",
+      "domain": "routing",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 20,
+      "deps": []
+    },
+    {
+      "slug": "visual-scene-intelligence-protocol",
+      "className": "VisualSceneIntelligenceProtocol",
+      "domain": "vision",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 29,
+      "deps": []
+    }
+  ]
+}
