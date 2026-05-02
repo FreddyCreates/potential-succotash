@@ -45,7 +45,7 @@ if (protoReport?.protocols) {
       module: p.slug,
       type: 'protocol',
       outcome: p.status,
-      strength: strength * PHI % 1.0,  // phi-modulated
+      strength: (strength * PHI) % 1.0,  // phi-modulated
       domain: p.domain,
       hasPHI: p.hasPHI,
       hasHeartbeat: p.hasHeartbeat,
