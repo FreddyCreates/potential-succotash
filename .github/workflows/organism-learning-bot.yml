@@ -1,0 +1,73 @@
+# ============================================================================
+# 🎓 organism-learning-bot — Continuous Learning Engine
+#
+# Implements a living learning loop over the organism's own CI history:
+#   - Gathers training signals from test dashboards, security scans,
+#     protocol metrics, and build outcomes
+#   - Trains Hebbian synapses between co-succeeding modules
+#   - Evolves protocol weights using TD learning with phi-based discount
+#   - Persists learning state to dist/learning/learning-state.json
+#   - Generates learning report at docs/learning-report.md
+#
+# Bot identity: organism-learning-bot
+# Triggers on: push to docs/ (after other bots commit their reports),
+#              weekly on Tuesday, or manual dispatch
+# ============================================================================
+
+name: 🎓 organism-learning-bot
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/test-dashboard.md'
+      - 'docs/security-report.md'
+      - 'docs/neural-report.md'
+      - 'docs/protocol-encyclopedia.md'
+      - 'docs/build-report.md'
+      - '.github/workflows/organism-learning-bot.yml'
+  schedule:
+    - cron: '0 4 * * 2'   # Weekly Tuesday 04:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  continuous-learning:
+    name: 🎓 Continuous Learning
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Gather training signals
+        run: node scripts/learning-bot/gather-signals.js
+
+      - name: Train Hebbian synapses
+        run: node scripts/learning-bot/train-hebbian.js
+
+      - name: Evolve protocol weights
+        run: node scripts/learning-bot/evolve-protocols.js
+
+      - name: Generate learning report
+        run: node scripts/learning-bot/generate-learning-report.js
+
+      - name: Commit learning state and report
+        run: |
+          mkdir -p dist/learning
+          git config user.name "organism-learning-bot"
+          git config user.email "organism-learning-bot@users.noreply.github.com"
+          git add docs/learning-report.md dist/learning/learning-state.json
+          if git diff --cached --quiet; then
+            echo "Learning state unchanged"
+          else
+            git commit -m "🎓 organism-learning-bot: evolve learning state [skip ci]"
+            git push
+          fi

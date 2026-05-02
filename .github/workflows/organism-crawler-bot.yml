@@ -1,0 +1,66 @@
+# ============================================================================
+# 🕷️ organism-crawler-bot — Organism Mapper
+#
+# Crawls the entire repository topology and builds a living organism map:
+#   - Full directory topology (depth, file counts, language breakdown)
+#   - Cross-reference index (which files import/require what)
+#   - Symbol surface map (exported functions/classes per module)
+#   - Organism wiring map (how protocols, SDKs, extensions interconnect)
+#   - Generates docs/organism-map.md + docs/topology.json
+#
+# Bot identity: organism-crawler-bot
+# Triggers on: push to any source directory (broad scan)
+# ============================================================================
+
+name: 🕷️ organism-crawler-bot
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'protocols/**'
+      - 'sdk/**'
+      - 'organism/**'
+      - 'extensions/jarvis/src/**'
+      - '.github/workflows/organism-crawler-bot.yml'
+  schedule:
+    - cron: '0 5 * * 4'   # Weekly Thursday 05:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  organism-mapping:
+    name: 🕷️ Organism Mapping
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Crawl repository topology
+        run: node scripts/crawler-bot/crawl-topology.js
+
+      - name: Build cross-reference index
+        run: node scripts/crawler-bot/build-cross-reference.js
+
+      - name: Generate organism map
+        run: node scripts/crawler-bot/generate-organism-map.js
+
+      - name: Commit organism map
+        run: |
+          git config user.name "organism-crawler-bot"
+          git config user.email "organism-crawler-bot@users.noreply.github.com"
+          git add docs/organism-map.md docs/topology.json
+          if git diff --cached --quiet; then
+            echo "Organism map unchanged"
+          else
+            git commit -m "🕷️ organism-crawler-bot: update organism map [skip ci]"
+            git push
+          fi

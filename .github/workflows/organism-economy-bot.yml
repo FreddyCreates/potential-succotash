@@ -1,0 +1,65 @@
+# ============================================================================
+# 💰 organism-economy-bot — Marketplace Analytics
+#
+# Scans the full organism asset ecosystem and generates economic intelligence:
+#   - Asset inventory (extensions, SDKs, protocols, CSV registers)
+#   - Complexity scoring (weighted by asset type and wiring density)
+#   - Coverage analysis (SDK/extension/protocol cross-coverage)
+#   - Economy dashboard at docs/economy-dashboard.md
+#
+# Bot identity: organism-economy-bot
+# Triggers on: push to sdk/, extensions/, protocols/, *.csv
+# ============================================================================
+
+name: 💰 organism-economy-bot
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'sdk/**'
+      - 'extensions/**'
+      - 'protocols/**'
+      - '*.csv'
+      - '.github/workflows/organism-economy-bot.yml'
+  schedule:
+    - cron: '0 3 * * 3'   # Weekly Wednesday 03:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  marketplace-analytics:
+    name: 💰 Marketplace Analytics
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Scan all assets
+        run: node scripts/economy-bot/scan-assets.js
+
+      - name: Calculate coverage
+        run: node scripts/economy-bot/calculate-coverage.js
+
+      - name: Generate economy dashboard
+        run: node scripts/economy-bot/generate-economy-dashboard.js
+
+      - name: Commit dashboard
+        run: |
+          git config user.name "organism-economy-bot"
+          git config user.email "organism-economy-bot@users.noreply.github.com"
+          git add docs/economy-dashboard.md docs/economy-data.json
+          if git diff --cached --quiet; then
+            echo "Economy dashboard unchanged"
+          else
+            git commit -m "💰 organism-economy-bot: update economy dashboard [skip ci]"
+            git push
+          fi

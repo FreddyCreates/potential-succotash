@@ -1,0 +1,388 @@
+{
+  "generated": "2026-05-02T23:02:22.789Z",
+  "bot": "organism-crawler-bot",
+  "summary": {
+    "totalFiles": 803,
+    "totalBytes": 6762412,
+    "totalKB": 6604,
+    "sections": 13,
+    "langCounts": {
+      "YAML": 18,
+      "Other": 179,
+      "CSV": 8,
+      "Markdown": 28,
+      "JSON": 79,
+      "Shell": 5,
+      "JavaScript": 299,
+      "HTML": 146,
+      "TypeScript": 23,
+      "CSS": 1,
+      "C++": 3,
+      "Motoko": 4,
+      "Python": 9,
+      "TOML": 1
+    },
+    "langBytes": {
+      "YAML": 65610,
+      "Other": 199089,
+      "CSV": 408419,
+      "Markdown": 126829,
+      "JSON": 487343,
+      "Shell": 33732,
+      "JavaScript": 2488622,
+      "HTML": 2420908,
+      "TypeScript": 388209,
+      "CSS": 2590,
+      "C++": 21215,
+      "Motoko": 92473,
+      "Python": 26961,
+      "TOML": 412
+    }
+  },
+  "sections": [
+    {
+      "name": ".github",
+      "files": 18,
+      "bytes": 65610,
+      "dirs": 1,
+      "topLanguage": "YAML"
+    },
+    {
+      "name": "desktop",
+      "files": 4,
+      "bytes": 15873,
+      "dirs": 0,
+      "topLanguage": "JavaScript"
+    },
+    {
+      "name": "docs",
+      "files": 21,
+      "bytes": 140835,
+      "dirs": 1,
+      "topLanguage": "Markdown"
+    },
+    {
+      "name": "electron",
+      "files": 2,
+      "bytes": 4983,
+      "dirs": 0,
+      "topLanguage": "JavaScript"
+    },
+    {
+      "name": "extensions",
+      "files": 475,
+      "bytes": 2938484,
+      "dirs": 38,
+      "topLanguage": "Other"
+    },
+    {
+      "name": "organism",
+      "files": 61,
+      "bytes": 555083,
+      "dirs": 6,
+      "topLanguage": "JavaScript"
+    },
+    {
+      "name": "organism-cli",
+      "files": 4,
+      "bytes": 49635,
+      "dirs": 0,
+      "topLanguage": "JavaScript"
+    },
+    {
+      "name": "protocols",
+      "files": 17,
+      "bytes": 163715,
+      "dirs": 0,
+      "topLanguage": "JavaScript"
+    },
+    {
+      "name": "research",
+      "files": 13,
+      "bytes": 1313195,
+      "dirs": 0,
+      "topLanguage": "HTML"
+    },
+    {
+      "name": "scripts",
+      "files": 38,
+      "bytes": 192736,
+      "dirs": 10,
+      "topLanguage": "JavaScript"
+    },
+    {
+      "name": "sdk",
+      "files": 117,
+      "bytes": 643837,
+      "dirs": 11,
+      "topLanguage": "JavaScript"
+    },
+    {
+      "name": "test",
+      "files": 3,
+      "bytes": 9343,
+      "dirs": 3,
+      "topLanguage": "JavaScript"
+    },
+    {
+      "name": "workflows",
+      "files": 2,
+      "bytes": 2776,
+      "dirs": 0,
+      "topLanguage": "JSON"
+    }
+  ],
+  "crossRef": {
+    "totalFiles": 159,
+    "totalImports": 182,
+    "totalExports": 112,
+    "uniqueSymbols": 107
+  },
+  "topSymbols": [
+    {
+      "name": "CrossOrganismResonance",
+      "definedIn": 2,
+      "locations": [
+        {
+          "file": "sdk/organism-runtime-sdk/src/cross-organism-resonance.js",
+          "kind": "class",
+          "section": "sdk"
+        },
+        {
+          "file": "organism/typescript/src/cross-organism-resonance.ts",
+          "kind": "class",
+          "section": "organism"
+        }
+      ]
+    },
+    {
+      "name": "EdgeSensor",
+      "definedIn": 2,
+      "locations": [
+        {
+          "file": "sdk/organism-runtime-sdk/src/edge-sensor.js",
+          "kind": "class",
+          "section": "sdk"
+        },
+        {
+          "file": "organism/typescript/src/edge-sensor.ts",
+          "kind": "class",
+          "section": "organism"
+        }
+      ]
+    },
+    {
+      "name": "Heartbeat",
+      "definedIn": 2,
+      "locations": [
+        {
+          "file": "sdk/organism-runtime-sdk/src/heartbeat.js",
+          "kind": "class",
+          "section": "sdk"
+        },
+        {
+          "file": "organism/typescript/src/heartbeat.ts",
+          "kind": "class",
+          "section": "organism"
+        }
+      ]
+    },
+    {
+      "name": "KernelExecutor",
+      "definedIn": 2,
+      "locations": [
+        {
+          "file": "sdk/organism-runtime-sdk/src/kernel-executor.js",
+          "kind": "class",
+          "section": "sdk"
+        },
+        {
+          "file": "organism/typescript/src/kernel-executor.ts",
+          "kind": "class",
+          "section": "organism"
+        }
+      ]
+    },
+    {
+      "name": "OrganismState",
+      "definedIn": 2,
+      "locations": [
+        {
+          "file": "sdk/organism-runtime-sdk/src/organism-state.js",
+          "kind": "class",
+          "section": "sdk"
+        },
+        {
+          "file": "organism/typescript/src/organism-state.ts",
+          "kind": "class",
+          "section": "organism"
+        }
+      ]
+    },
+    {
+      "name": "OrganismMarketplaceProtocol",
+      "definedIn": 1,
+      "locations": [
+        {
+          "file": "protocols/organism-marketplace-protocol.js",
+          "kind": "class",
+          "section": "protocols"
+        }
+      ]
+    },
+    {
+      "name": "ModelWire",
+      "definedIn": 1,
+      "locations": [
+        {
+          "file": "sdk/ai-model-engines/src/model-wire.js",
+          "kind": "class",
+          "section": "sdk"
+        }
+      ]
+    },
+    {
+      "name": "AbsorptionPipeline",
+      "definedIn": 1,
+      "locations": [
+        {
+          "file": "sdk/document-absorption-engine/src/absorption-pipeline.js",
+          "kind": "class",
+          "section": "sdk"
+        }
+      ]
+    },
+    {
+      "name": "ContentExtractor",
+      "definedIn": 1,
+      "locations": [
+        {
+          "file": "sdk/document-absorption-engine/src/content-extractor.js",
+          "kind": "class",
+          "section": "sdk"
+        }
+      ]
+    },
+    {
+      "name": "DigestGenerator",
+      "definedIn": 1,
+      "locations": [
+        {
+          "file": "sdk/document-absorption-engine/src/digest-generator.js",
+          "kind": "class",
+          "section": "sdk"
+        }
+      ]
+    },
+    {
+      "name": "DocumentIntake",
+      "definedIn": 1,
+      "locations": [
+        {
+          "file": "sdk/document-absorption-engine/src/document-intake.js",
+          "kind": "class",
+          "section": "sdk"
+        }
+      ]
+    },
+    {
+      "name": "KnowledgeGraph",
+      "definedIn": 1,
+      "locations": [
+        {
+          "file": "sdk/document-absorption-engine/src/knowledge-graph.js",
+          "kind": "class",
+          "section": "sdk"
+        }
+      ]
+    },
+    {
+      "name": "CampaignManager",
+      "definedIn": 1,
+      "locations": [
+        {
+          "file": "sdk/enterprise-integration-sdk/src/campaign-manager.js",
+          "kind": "class",
+          "section": "sdk"
+        }
+      ]
+    },
+    {
+      "name": "BaseConnector",
+      "definedIn": 1,
+      "locations": [
+        {
+          "file": "sdk/enterprise-integration-sdk/src/connectors/base-connector.js",
+          "kind": "class",
+          "section": "sdk"
+        }
+      ]
+    },
+    {
+      "name": "GoogleConnector",
+      "definedIn": 1,
+      "locations": [
+        {
+          "file": "sdk/enterprise-integration-sdk/src/connectors/google.js",
+          "kind": "class",
+          "section": "sdk"
+        }
+      ]
+    },
+    {
+      "name": "HubSpotConnector",
+      "definedIn": 1,
+      "locations": [
+        {
+          "file": "sdk/enterprise-integration-sdk/src/connectors/hubspot.js",
+          "kind": "class",
+          "section": "sdk"
+        }
+      ]
+    },
+    {
+      "name": "SalesforceConnector",
+      "definedIn": 1,
+      "locations": [
+        {
+          "file": "sdk/enterprise-integration-sdk/src/connectors/salesforce.js",
+          "kind": "class",
+          "section": "sdk"
+        }
+      ]
+    },
+    {
+      "name": "SAPConnector",
+      "definedIn": 1,
+      "locations": [
+        {
+          "file": "sdk/enterprise-integration-sdk/src/connectors/sap.js",
+          "kind": "class",
+          "section": "sdk"
+        }
+      ]
+    },
+    {
+      "name": "ShopifyConnector",
+      "definedIn": 1,
+      "locations": [
+        {
+          "file": "sdk/enterprise-integration-sdk/src/connectors/shopify.js",
+          "kind": "class",
+          "section": "sdk"
+        }
+      ]
+    },
+    {
+      "name": "SlackConnector",
+      "definedIn": 1,
+      "locations": [
+        {
+          "file": "sdk/enterprise-integration-sdk/src/connectors/slack.js",
+          "kind": "class",
+          "section": "sdk"
+        }
+      ]
+    }
+  ]
+}

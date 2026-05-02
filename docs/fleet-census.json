@@ -1,0 +1,306 @@
+{
+  "generated": "2026-05-02T23:02:06.487Z",
+  "bot": "organism-alpha-bot",
+  "totalBots": 13,
+  "healthy": 13,
+  "degraded": 0,
+  "unknownBots": [],
+  "fleet": [
+    {
+      "name": "organism-build-bot",
+      "emoji": "🧬",
+      "domain": "Extension Packaging",
+      "workflow": "organism-build-bot.yml",
+      "scriptDir": "build-bot",
+      "hasWorkflow": true,
+      "hasScriptDir": false,
+      "scripts": [],
+      "scriptCount": 0,
+      "trigger": "push",
+      "workflowSize": 7117,
+      "status": "healthy"
+    },
+    {
+      "name": "organism-neural-bot",
+      "emoji": "🧠",
+      "domain": "Deep AI Architecture",
+      "workflow": "organism-neural-bot.yml",
+      "scriptDir": "neural-bot",
+      "hasWorkflow": true,
+      "hasScriptDir": true,
+      "scripts": [
+        "build-neural-graph.js",
+        "validate-agents.js",
+        "validate-protocols.js",
+        "validate-substrates.js"
+      ],
+      "scriptCount": 4,
+      "trigger": "push",
+      "workflowSize": 2086,
+      "status": "healthy"
+    },
+    {
+      "name": "organism-sdk-bot",
+      "emoji": "📦",
+      "domain": "SDK Packaging",
+      "workflow": "organism-sdk-bot.yml",
+      "scriptDir": "sdk-bot",
+      "hasWorkflow": true,
+      "hasScriptDir": true,
+      "scripts": [
+        "generate-registry.js",
+        "validate-sdks.js"
+      ],
+      "scriptCount": 2,
+      "trigger": "push",
+      "workflowSize": 3339,
+      "status": "healthy"
+    },
+    {
+      "name": "organism-protocol-bot",
+      "emoji": "🔬",
+      "domain": "Protocol Integrity",
+      "workflow": "organism-protocol-bot.yml",
+      "scriptDir": "protocol-bot",
+      "hasWorkflow": true,
+      "hasScriptDir": true,
+      "scripts": [
+        "detect-circular-deps.js",
+        "generate-encyclopedia.js",
+        "lint-protocols.js"
+      ],
+      "scriptCount": 3,
+      "trigger": "push",
+      "workflowSize": 1871,
+      "status": "healthy"
+    },
+    {
+      "name": "organism-test-bot",
+      "emoji": "🧪",
+      "domain": "Cross-Matrix Testing",
+      "workflow": "organism-test-bot.yml",
+      "scriptDir": null,
+      "hasWorkflow": true,
+      "hasScriptDir": null,
+      "scripts": [],
+      "scriptCount": 0,
+      "trigger": "push",
+      "workflowSize": 6236,
+      "status": "healthy"
+    },
+    {
+      "name": "organism-docs-bot",
+      "emoji": "📚",
+      "domain": "Auto-Documentation",
+      "workflow": "organism-docs-bot.yml",
+      "scriptDir": "docs-bot",
+      "hasWorkflow": true,
+      "hasScriptDir": true,
+      "scripts": [
+        "generate-architecture-map.js",
+        "generate-extension-catalog.js",
+        "generate-sdk-reference.js"
+      ],
+      "scriptCount": 3,
+      "trigger": "push",
+      "workflowSize": 2130,
+      "status": "healthy"
+    },
+    {
+      "name": "organism-release-bot",
+      "emoji": "🚀",
+      "domain": "Production Releases",
+      "workflow": "organism-release-bot.yml",
+      "scriptDir": null,
+      "hasWorkflow": true,
+      "hasScriptDir": null,
+      "scripts": [],
+      "scriptCount": 0,
+      "trigger": "push",
+      "workflowSize": 8674,
+      "status": "healthy"
+    },
+    {
+      "name": "organism-deploy-bot",
+      "emoji": "🌐",
+      "domain": "Deployment",
+      "workflow": "organism-deploy-bot.yml",
+      "scriptDir": "deploy-bot",
+      "hasWorkflow": true,
+      "hasScriptDir": true,
+      "scripts": [
+        "generate-deployment-manifest.js"
+      ],
+      "scriptCount": 1,
+      "trigger": "push",
+      "workflowSize": 7338,
+      "status": "healthy"
+    },
+    {
+      "name": "organism-sentinel-bot",
+      "emoji": "🛡️",
+      "domain": "Security",
+      "workflow": "organism-sentinel-bot.yml",
+      "scriptDir": "sentinel-bot",
+      "hasWorkflow": true,
+      "hasScriptDir": true,
+      "scripts": [
+        "audit-permissions.js",
+        "generate-security-report.js",
+        "scan-dangerous-patterns.js",
+        "scan-secrets.js",
+        "validate-csp.js"
+      ],
+      "scriptCount": 5,
+      "trigger": "scheduled + push",
+      "workflowSize": 2402,
+      "status": "healthy"
+    },
+    {
+      "name": "organism-alpha-bot",
+      "emoji": "👑",
+      "domain": "Fleet Command",
+      "workflow": "organism-alpha-bot.yml",
+      "scriptDir": "alpha-bot",
+      "hasWorkflow": true,
+      "hasScriptDir": true,
+      "scripts": [
+        "census.js",
+        "generate-fleet-report.js",
+        "health-check.js"
+      ],
+      "scriptCount": 3,
+      "trigger": "scheduled + push",
+      "workflowSize": 2901,
+      "status": "healthy"
+    },
+    {
+      "name": "organism-economy-bot",
+      "emoji": "💰",
+      "domain": "Marketplace Analytics",
+      "workflow": "organism-economy-bot.yml",
+      "scriptDir": "economy-bot",
+      "hasWorkflow": true,
+      "hasScriptDir": true,
+      "scripts": [
+        "calculate-coverage.js",
+        "generate-economy-dashboard.js",
+        "scan-assets.js"
+      ],
+      "scriptCount": 3,
+      "trigger": "scheduled + push",
+      "workflowSize": 2009,
+      "status": "healthy"
+    },
+    {
+      "name": "organism-learning-bot",
+      "emoji": "🎓",
+      "domain": "Continuous Learning",
+      "workflow": "organism-learning-bot.yml",
+      "scriptDir": "learning-bot",
+      "hasWorkflow": true,
+      "hasScriptDir": true,
+      "scripts": [
+        "evolve-protocols.js",
+        "gather-signals.js",
+        "generate-learning-report.js",
+        "train-hebbian.js"
+      ],
+      "scriptCount": 4,
+      "trigger": "scheduled + push",
+      "workflowSize": 2438,
+      "status": "healthy"
+    },
+    {
+      "name": "organism-crawler-bot",
+      "emoji": "🕷️",
+      "domain": "Organism Mapper",
+      "workflow": "organism-crawler-bot.yml",
+      "scriptDir": "crawler-bot",
+      "hasWorkflow": true,
+      "hasScriptDir": true,
+      "scripts": [
+        "build-cross-reference.js",
+        "crawl-topology.js",
+        "generate-organism-map.js"
+      ],
+      "scriptCount": 3,
+      "trigger": "scheduled + push",
+      "workflowSize": 2080,
+      "status": "healthy"
+    }
+  ],
+  "healthResults": [
+    {
+      "bot": "organism-build-bot",
+      "status": "healthy",
+      "violations": []
+    },
+    {
+      "bot": "organism-neural-bot",
+      "status": "healthy",
+      "violations": []
+    },
+    {
+      "bot": "organism-sdk-bot",
+      "status": "healthy",
+      "violations": []
+    },
+    {
+      "bot": "organism-protocol-bot",
+      "status": "healthy",
+      "violations": []
+    },
+    {
+      "bot": "organism-test-bot",
+      "status": "healthy",
+      "violations": []
+    },
+    {
+      "bot": "organism-docs-bot",
+      "status": "healthy",
+      "violations": []
+    },
+    {
+      "bot": "organism-release-bot",
+      "status": "healthy",
+      "violations": []
+    },
+    {
+      "bot": "organism-deploy-bot",
+      "status": "healthy",
+      "violations": []
+    },
+    {
+      "bot": "organism-sentinel-bot",
+      "status": "healthy",
+      "violations": []
+    },
+    {
+      "bot": "organism-alpha-bot",
+      "status": "healthy",
+      "violations": []
+    },
+    {
+      "bot": "organism-economy-bot",
+      "status": "healthy",
+      "violations": []
+    },
+    {
+      "bot": "organism-learning-bot",
+      "status": "healthy",
+      "violations": []
+    },
+    {
+      "bot": "organism-crawler-bot",
+      "status": "healthy",
+      "violations": []
+    }
+  ],
+  "policyStats": {
+    "totalPolicies": 78,
+    "totalPass": 78,
+    "totalFail": 0
+  },
+  "healthGenerated": "2026-05-02T23:02:09.744Z"
+}
