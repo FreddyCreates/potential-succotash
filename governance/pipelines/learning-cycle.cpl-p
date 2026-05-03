@@ -1,0 +1,100 @@
+# ============================================================================
+# CPL-P — Learning Governance Cycle
+# id: pipeline://governance/learning_cycle
+# Specializes: pipeline://governance/default_cycle
+# Domain: learning (organism-learning-bot, Hebbian + TD protocol weights)
+# ============================================================================
+
+id: "pipeline://governance/learning_cycle"
+class: GovernancePipeline
+version: "1.0.0"
+created: "2026-05-03T00:00:00.000Z"
+author: "organism-alpha-bot"
+extends: "pipeline://governance/default_cycle"
+laws_ref: ["LEARNING_STABILITY", "BOT_FLEET_SAFETY"]
+domain: learning
+
+description: |
+  Learning governance cycle. Watches Hebbian synapse training, TD weight
+  evolution, phi-emergence events, and learning stability.
+  α=0.1 (Hebbian), α=0.05 (TD), γ=1/φ≈0.618 (discount).
+
+steps:
+
+  - id: "load_learning_state"
+    name: "Load Learning State"
+    use: "learning.load_state"
+    description: |
+      Load: dist/learning/learning-state.json.
+      Parse: synapseCount, signalCount, tdWeights, emergenceLevel, cycleDurationMs.
+    outputs:
+      - context.learningState
+      - context.emergenceLevel
+      - context.synapseCount
+
+  - id: "apply_learning_laws"
+    name: "Apply Learning Laws (LEARNING_STABILITY)"
+    use: "governance.apply_cpl_l"
+    law_set: "LEARNING_STABILITY"
+    outputs:
+      - context.learningDecisions[]
+      - context.learningForbids[]
+
+  - id: "check_emergence"
+    name: "Check Phi-Emergence"
+    use: "learning.check_emergence"
+    description: |
+      emergence_level = (synapseCount / signalCount) × PHI
+      Triggers when >= 0.618 (1/PHI threshold).
+    outputs:
+      - context.emergenceLevel
+      - context.emergenceTriggered
+
+  - id: "evaluate_drift"
+    name: "Evaluate Weight Drift"
+    use: "learning.evaluate_drift"
+    description: |
+      maxWeightDelta = max TD weight change across all protocols.
+      Block if delta > 0.618 (phi-ceiling for stability).
+    outputs:
+      - context.maxWeightDelta
+      - context.driftRiskScore
+
+  - id: "generate_learning_report"
+    name: "Generate Learning Report"
+    use: "learning.generate_report"
+    outputs:
+      - docs/learning-report.md
+      - dist/governance/events/evt-learning-<ts>.json
+
+# Learning-specific branches
+branches:
+
+  - id: "if_weight_drift_blocked"
+    when: 'context.learningForbids.includes("protocol_weight_update")'
+    then:
+      type: HOLD
+      target: protocol_weight_update
+      notify: "human://freddy"
+      reason: "TD weight drift blocked — learning stability at risk"
+
+  - id: "if_emergence"
+    when: 'context.emergenceTriggered == true'
+    then:
+      type: CELEBRATE
+      target: governance/memory/emergence-events.json
+      notify: commit_comment
+      reason: "φ-emergence threshold crossed — organism evolving"
+
+  - id: "if_slow_pulse"
+    when: 'context.metrics.cycleDurationMs > 1746'
+    then:
+      type: WARN
+      target: report
+      reason: "Learning cycle > 2×HEARTBEAT (1746ms) — organism slowing"
+
+phi: 1.618033988749895
+heartbeat_ms: 873
+alpha_hebbian: 0.1
+alpha_td: 0.05
+gamma_td: 0.618   # = 1/PHI

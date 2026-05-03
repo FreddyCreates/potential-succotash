@@ -1,0 +1,23 @@
+[
+  {
+    "ts": "2026-05-03T04:45:07.176Z",
+    "decision": "ALLOW",
+    "risk": 0.05,
+    "events": 2,
+    "forbids": 2
+  },
+  {
+    "ts": "2026-05-03T04:45:34.416Z",
+    "decision": "ALLOW",
+    "risk": 0.05,
+    "events": 6,
+    "forbids": 6
+  },
+  {
+    "ts": "2026-05-03T04:46:40.479Z",
+    "decision": "ALLOW",
+    "risk": 0.05,
+    "events": 6,
+    "forbids": 6
+  }
+]

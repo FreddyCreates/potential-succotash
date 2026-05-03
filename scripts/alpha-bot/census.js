@@ -48,6 +48,7 @@ const KNOWN_BOTS = [
   { name: 'organism-economy-bot',     emoji: '💰', domain: 'Marketplace Analytics',    workflow: 'organism-economy-bot.yml',     scriptDir: 'economy-bot',     division: 'Learn & Evolve'       },
   // Division VII — Command & Control
   { name: 'organism-alpha-bot',       emoji: '👑', domain: 'Fleet Command',            workflow: 'organism-alpha-bot.yml',       scriptDir: 'alpha-bot',       division: 'Command & Control'    },
+  { name: 'organism-governance-bot',  emoji: '🌐', domain: 'Atlas Governance Cycle',  workflow: 'organism-governance-bot.yml',  scriptDir: 'governance',      division: 'Command & Control'    },
 ];
 
 // ── Census each bot ───────────────────────────────────────────────────────────

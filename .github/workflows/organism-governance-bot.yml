@@ -1,0 +1,78 @@
+# ============================================================================
+# 🌐 organism-governance-bot — Atlas Universal Governance Cycle
+#
+# Runs the complete Atlas governance cycle:
+#   1. Ingest all events from dist/governance/events/
+#   2. Apply all CPL-L laws (bot-fleet, economy, learning, topology, meta)
+#   3. Run domain-specific CPL-P pipelines
+#   4. Update governance memory (law stats, pipeline stats, RIL, UEL)
+#   5. Run Meta Engine (pattern detection, evolution proposals)
+#   6. Generate docs/governance-report.md + docs/governance-cycle.json
+#
+# Bot identity: organism-governance-bot
+# Triggers: Every 6h + push to governance/ or dist/governance/ + manual
+# ============================================================================
+
+name: 🌐 organism-governance-bot
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'    # Every 6 hours
+  push:
+    branches: [main]
+    paths:
+      - 'governance/**'
+      - 'dist/governance/events/**'
+      - 'atlas/registry/**'
+      - 'scripts/governance/**'
+      - '.github/workflows/organism-governance-bot.yml'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (no file writes)'
+        required: false
+        default: 'false'
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  governance-cycle:
+    name: 🌐 Atlas Governance Cycle
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Atlas Governance Cycle
+        run: |
+          FLAGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then FLAGS="--dry-run"; fi
+          node scripts/governance/governance-cycle.js $FLAGS
+
+      - name: Commit governance reports
+        if: ${{ inputs.dry_run != 'true' }}
+        run: |
+          git config user.name "organism-governance-bot"
+          git config user.email "organism-governance-bot@users.noreply.github.com"
+          git add \
+            docs/governance-report.md \
+            docs/governance-cycle.json \
+            docs/governance-history.json \
+            governance/memory/ \
+            governance/proposals/ \
+            dist/governance/events/ \
+            || true
+          if git diff --cached --quiet; then
+            echo "Governance reports unchanged"
+          else
+            git commit -m "🌐 organism-governance-bot: governance cycle complete [skip ci]"
+            git push
+          fi

@@ -1,0 +1,97 @@
+# ============================================================================
+# CPL-P — Topology Governance Cycle
+# id: pipeline://governance/topology_cycle
+# Specializes: pipeline://governance/default_cycle
+# Domain: topology (organism-crawler-bot, neural graph, cross-reference index)
+# ============================================================================
+
+id: "pipeline://governance/topology_cycle"
+class: GovernancePipeline
+version: "1.0.0"
+created: "2026-05-03T00:00:00.000Z"
+author: "organism-alpha-bot"
+extends: "pipeline://governance/default_cycle"
+laws_ref: ["TOPOLOGY_INTEGRITY", "BOT_FLEET_SAFETY"]
+domain: topology
+
+description: |
+  Topology governance cycle. Watches organism topology maps, circular deps,
+  cross-reference index completeness, and structural drift.
+
+steps:
+
+  - id: "load_topology_state"
+    name: "Load Topology State"
+    use: "topology.load_state"
+    description: |
+      Load: docs/topology.json, docs/neural-graph.json, docs/organism-map.md.
+      Parse: fileCount, protocolCount, coverageRatio, circularDeps, unreachableProtocols.
+    outputs:
+      - context.topologyState
+      - context.fileCount
+      - context.circularDeps
+
+  - id: "apply_topology_laws"
+    name: "Apply Topology Laws (TOPOLOGY_INTEGRITY)"
+    use: "governance.apply_cpl_l"
+    law_set: "TOPOLOGY_INTEGRITY"
+    outputs:
+      - context.topologyDecisions[]
+      - context.topologyForbids[]
+
+  - id: "check_graph_integrity"
+    name: "Check Neural Graph Integrity"
+    use: "topology.check_integrity"
+    description: |
+      DFS circular dependency detection.
+      Reachability analysis from root protocols.
+      Coverage ratio: reachable / total.
+    outputs:
+      - context.circularDeps
+      - context.unreachableProtocols
+      - context.coverageRatio
+
+  - id: "detect_structural_drift"
+    name: "Detect Structural Drift"
+    use: "topology.detect_drift"
+    description: |
+      Compare current fileCount vs. last cycle (stored in governance/memory/topology-baseline.json).
+      Flag if delta > 1/PHI² (≈0.382) of total file count.
+    outputs:
+      - context.structuralDrift
+      - context.driftRatio
+
+  - id: "generate_topology_report"
+    name: "Generate Topology Report"
+    use: "topology.generate_report"
+    outputs:
+      - docs/organism-map.md
+      - dist/governance/events/evt-topology-<ts>.json
+
+# Topology-specific branches
+branches:
+
+  - id: "if_release_blocked_circular"
+    when: 'context.topologyForbids.includes("release") && context.circularDeps > 0'
+    then:
+      type: BLOCK
+      target: release
+      notify: "human://freddy"
+      reason: "Circular dependency blocks release — protocol wiring must be fixed"
+
+  - id: "if_structural_shift"
+    when: 'context.driftRatio > 0.382'
+    then:
+      type: WARN
+      target: report
+      reason: "Organism structure shifted by >1/PHI² — significant topology change"
+
+  - id: "if_low_coverage"
+    when: 'context.coverageRatio < 0.618'
+    then:
+      type: WARN
+      target: report
+      reason: "Topology coverage below phi-threshold — organism parts unreachable"
+
+phi: 1.618033988749895
+heartbeat_ms: 873

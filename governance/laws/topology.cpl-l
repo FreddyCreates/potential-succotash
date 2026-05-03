@@ -1,0 +1,78 @@
+# ============================================================================
+# CPL-L — Topology Laws
+# id: TOPOLOGY_INTEGRITY
+# Applies to: organism-crawler-bot + atlas topology events
+# ============================================================================
+
+id: "TOPOLOGY_INTEGRITY"
+class: LawSet
+version: "1.0.0"
+created: "2026-05-03T00:00:00.000Z"
+author: "organism-alpha-bot"
+charter_ref: "atlas://organism/bot-fleet"
+domain: "topology"
+pipeline_ref: "pipeline://governance/topology_cycle"
+
+description: |
+  Topology laws govern organism topology mapping, cross-reference integrity,
+  and knowledge graph coherence. The crawler maps the organism's neural wiring —
+  breaks in that wiring are detected and escalated.
+
+laws:
+
+  - id: "TOPOLOGY_CIRCULAR_DEP_BLOCK"
+    subject: "atlas://bot/organism-crawler-bot"
+    name: "Block release on circular dependency in topology graph"
+    priority: 0    # CRITICAL
+    when: 'context.findings.circularDeps > 0'
+    then:
+      - action: FORBID
+        target: release
+        reason: "Circular dependency detected in topology graph — organism wiring broken"
+      - action: REQUIRE
+        target: protocol_review
+      - action: EMIT
+        target: risk_event
+        payload: { severity: critical, type: topology_circular_dep }
+
+  - id: "TOPOLOGY_COVERAGE_DROP_WARN"
+    subject: "atlas://bot/organism-crawler-bot"
+    name: "Warn when topology coverage ratio drops"
+    priority: 2    # MEDIUM
+    when: 'context.metrics.coverageRatio < 0.618'   # 1/PHI coverage floor
+    then:
+      - action: WARN
+        target: report
+        reason: "Topology coverage below phi-threshold (0.618)"
+      - action: EMIT
+        target: risk_event
+        payload: { severity: medium, type: topology_low_coverage }
+
+  - id: "TOPOLOGY_UNREACHABLE_PROTOCOL_WARN"
+    subject: "atlas://bot/organism-crawler-bot"
+    name: "Warn when protocols are unreachable from the main graph"
+    priority: 2    # MEDIUM
+    when: 'context.metrics.unreachableProtocols > 0'
+    then:
+      - action: WARN
+        target: report
+        reason: "Unreachable protocols in topology — dead wiring detected"
+      - action: EMIT
+        target: risk_event
+        payload: { severity: medium, type: topology_dead_wiring }
+
+  - id: "TOPOLOGY_FILE_COUNT_DRIFT_ALERT"
+    subject: "atlas://bot/organism-crawler-bot"
+    name: "Alert when organism file count changes by more than phi factor"
+    priority: 3    # LOW
+    when: 'Math.abs(context.metrics.fileCount - context.metrics.previousFileCount) / Math.max(1, context.metrics.previousFileCount) > 0.382'
+    then:
+      - action: WARN
+        target: report
+        reason: "Organism file count changed by >1/PHI² — significant structural shift"
+      - action: EMIT
+        target: risk_event
+        payload: { severity: low, type: topology_structural_shift }
+
+evaluation_order: priority_ascending
+short_circuit_on_forbid: true

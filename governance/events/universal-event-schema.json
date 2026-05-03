@@ -1,0 +1,174 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "atlas://schema/event/universal",
+  "title": "Atlas Universal Event Schema",
+  "description": "Every entity in the organism (bot, agent, organism, realm, terminal) emits events in this shape. All events are written to dist/governance/events/<id>.json and ingested by the Atlas governance cycle.",
+  "type": "object",
+  "required": ["id", "entity_id", "op", "ts", "context"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique event ID. Format: evt-<ISO8601-timestamp>[-<seq>]",
+      "pattern": "^evt-",
+      "examples": ["evt-2026-05-03T04:30:00.000Z", "evt-2026-05-03T04:30:00.000Z-001"]
+    },
+    "entity_id": {
+      "type": "string",
+      "description": "Atlas URI of the emitting entity",
+      "pattern": "^atlas://",
+      "examples": [
+        "atlas://bot/organism-alpha-bot",
+        "atlas://agent/ANIMUS",
+        "atlas://organism/guardian",
+        "atlas://realm/wyoming",
+        "atlas://terminal/cli-001"
+      ]
+    },
+    "op": {
+      "type": "string",
+      "description": "Operation / what happened. Use snake_case. Common ops below.",
+      "examples": [
+        "fleet_census_completed",
+        "ci_run_completed",
+        "scan_completed",
+        "learning_cycle_completed",
+        "economy_scan_completed",
+        "topology_crawl_completed",
+        "security_audit_completed",
+        "deploy_completed",
+        "governance_cycle_completed",
+        "law_violated",
+        "pipeline_escalated",
+        "feedback_recorded",
+        "meta_proposal_emitted",
+        "emergence_triggered"
+      ]
+    },
+    "ts": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of when the event was emitted"
+    },
+    "context": {
+      "type": "object",
+      "description": "Domain-specific payload. Structure varies by op. All numeric metrics are phi-normalized (0.0–1.0) where applicable.",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["pass", "fail", "warn", "skip", "blocked", "escalated"],
+          "description": "High-level outcome status"
+        },
+        "risk_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Phi-normalized risk score (0=safe, 1=critical). Block threshold=1/φ²≈0.382, escalate threshold=1/φ≈0.618"
+        },
+        "health_dashboard": {
+          "type": "object",
+          "properties": {
+            "overall": { "type": "string", "enum": ["green", "yellow", "red"] },
+            "healthy": { "type": "integer" },
+            "degraded": { "type": "integer" },
+            "total": { "type": "integer" }
+          }
+        },
+        "findings": {
+          "type": "object",
+          "description": "Security / quality findings",
+          "properties": {
+            "secretsFound": { "type": "integer" },
+            "permissionWarnings": { "type": "integer" },
+            "criticalCves": { "type": "integer" },
+            "circularDeps": { "type": "integer" }
+          }
+        },
+        "metrics": {
+          "type": "object",
+          "description": "Numeric metrics (phi-normalized where applicable)"
+        },
+        "phi_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Phi-modulated composite health/quality score"
+        },
+        "emergence_level": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Phi-emergence level (>=0.618 triggers emergence event)"
+        }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Routing hints: division, risk level, domain, entity class",
+      "examples": [
+        ["bot", "alpha", "census", "division-vii"],
+        ["bot", "sentinel", "security", "division-iii"],
+        ["agent", "animus", "cognitive"],
+        ["economy", "risk-medium"],
+        ["emergence", "phi-threshold-crossed"]
+      ]
+    },
+    "schema_version": {
+      "type": "string",
+      "default": "1.0.0",
+      "description": "Schema version for forward-compatibility"
+    },
+    "parent_event_id": {
+      "type": "string",
+      "description": "Optional: ID of a parent event this event is responding to (for causal chains)"
+    },
+    "governance_cycle_id": {
+      "type": "string",
+      "description": "Optional: ID of the governance cycle that processed this event"
+    }
+  },
+  "examples": [
+    {
+      "id": "evt-2026-05-03T04:30:00.000Z",
+      "entity_id": "atlas://bot/organism-alpha-bot",
+      "op": "fleet_census_completed",
+      "ts": "2026-05-03T04:30:00.000Z",
+      "context": {
+        "status": "pass",
+        "risk_score": 0.05,
+        "health_dashboard": { "overall": "green", "healthy": 16, "degraded": 0, "total": 16 },
+        "metrics": { "totalBots": 16, "totalScripts": 43, "healthRatio": 1.0 }
+      },
+      "tags": ["bot", "alpha", "census", "division-vii"],
+      "schema_version": "1.0.0"
+    },
+    {
+      "id": "evt-2026-05-03T04:31:00.000Z",
+      "entity_id": "atlas://bot/organism-sentinel-bot",
+      "op": "security_audit_completed",
+      "ts": "2026-05-03T04:31:00.000Z",
+      "context": {
+        "status": "warn",
+        "risk_score": 0.45,
+        "findings": { "secretsFound": 0, "permissionWarnings": 23, "criticalCves": 0 }
+      },
+      "tags": ["bot", "sentinel", "security", "division-iii"],
+      "schema_version": "1.0.0"
+    },
+    {
+      "id": "evt-2026-05-03T04:32:00.000Z",
+      "entity_id": "atlas://bot/organism-learning-bot",
+      "op": "learning_cycle_completed",
+      "ts": "2026-05-03T04:32:00.000Z",
+      "context": {
+        "status": "pass",
+        "risk_score": 0.1,
+        "emergence_level": 0.72,
+        "metrics": { "synapseCount": 42, "signalCount": 38, "tdWeight": 0.618 }
+      },
+      "tags": ["bot", "learning", "emergence", "phi-threshold-crossed", "division-vi"],
+      "schema_version": "1.0.0"
+    }
+  ]
+}

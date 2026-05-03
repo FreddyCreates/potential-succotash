@@ -1,0 +1,95 @@
+{
+  "ranAt": "2026-05-03T04:46:40.474Z",
+  "domains": [
+    "bot",
+    "security",
+    "learning",
+    "economy",
+    "topology",
+    "meta",
+    "general"
+  ],
+  "domainResults": {
+    "bot": {
+      "domain": "bot",
+      "pipelineId": "pipeline://governance/bot_cycle",
+      "eventCount": 2,
+      "forbidCount": 0,
+      "warnCount": 0,
+      "riskScore": 0.05,
+      "status": "pass",
+      "branchDecision": "ALLOW",
+      "ranAt": "2026-05-03T04:46:40.473Z"
+    },
+    "security": {
+      "domain": "security",
+      "pipelineId": "pipeline://governance/bot_cycle",
+      "eventCount": 1,
+      "forbidCount": 0,
+      "warnCount": 0,
+      "riskScore": 0.05,
+      "status": "pass",
+      "branchDecision": "ALLOW",
+      "ranAt": "2026-05-03T04:46:40.473Z"
+    },
+    "learning": {
+      "domain": "learning",
+      "pipelineId": "pipeline://governance/learning_cycle",
+      "eventCount": 1,
+      "forbidCount": 0,
+      "warnCount": 0,
+      "riskScore": 0.05,
+      "status": "pass",
+      "branchDecision": "ALLOW",
+      "ranAt": "2026-05-03T04:46:40.473Z"
+    },
+    "economy": {
+      "domain": "economy",
+      "pipelineId": "pipeline://governance/economy_cycle",
+      "eventCount": 1,
+      "forbidCount": 0,
+      "warnCount": 0,
+      "riskScore": 0.05,
+      "status": "pass",
+      "branchDecision": "ALLOW",
+      "ranAt": "2026-05-03T04:46:40.474Z"
+    },
+    "topology": {
+      "domain": "topology",
+      "pipelineId": "pipeline://governance/topology_cycle",
+      "eventCount": 1,
+      "forbidCount": 0,
+      "warnCount": 0,
+      "riskScore": 0.05,
+      "status": "pass",
+      "branchDecision": "ALLOW",
+      "ranAt": "2026-05-03T04:46:40.474Z"
+    },
+    "meta": {
+      "domain": "meta",
+      "pipelineId": "pipeline://governance/meta_cycle",
+      "eventCount": 0,
+      "forbidCount": 0,
+      "warnCount": 0,
+      "riskScore": 0.05,
+      "status": "pass",
+      "branchDecision": "ALLOW",
+      "ranAt": "2026-05-03T04:46:40.474Z"
+    },
+    "general": {
+      "domain": "general",
+      "pipelineId": "pipeline://governance/default_cycle",
+      "eventCount": 0,
+      "forbidCount": 0,
+      "warnCount": 0,
+      "riskScore": 0.05,
+      "status": "pass",
+      "branchDecision": "ALLOW",
+      "ranAt": "2026-05-03T04:46:40.474Z"
+    }
+  },
+  "overallRisk": 0.05,
+  "overallDecision": "ALLOW",
+  "blockThreshold": 0.382,
+  "escalateThreshold": 0.618
+}

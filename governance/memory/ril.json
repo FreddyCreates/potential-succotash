@@ -1,0 +1,144 @@
+{
+  "incidents": [
+    {
+      "ts": "2026-05-03T04:45:07.172Z",
+      "type": "FORBID",
+      "lawSetId": "META_EVOLUTION",
+      "ruleId": "META_CONFIDENCE_GATE",
+      "target": "proposal_publish",
+      "entity": "atlas://bot/organism-economy-bot",
+      "domain": "\"meta\"",
+      "eventId": "evt-2026-05-03T04-45-07-158Z"
+    },
+    {
+      "ts": "2026-05-03T04:45:07.172Z",
+      "type": "FORBID",
+      "lawSetId": "META_EVOLUTION",
+      "ruleId": "META_CONFIDENCE_GATE",
+      "target": "proposal_publish",
+      "entity": "atlas://bot/organism-crawler-bot",
+      "domain": "\"meta\"",
+      "eventId": "evt-2026-05-03T04-45-07-159Z"
+    },
+    {
+      "ts": "2026-05-03T04:45:34.412Z",
+      "type": "FORBID",
+      "lawSetId": "META_EVOLUTION",
+      "ruleId": "META_CONFIDENCE_GATE",
+      "target": "proposal_publish",
+      "entity": "atlas://bot/organism-alpha-bot",
+      "domain": "\"meta\"",
+      "eventId": "evt-2026-05-03T04-45-34-393Z-001"
+    },
+    {
+      "ts": "2026-05-03T04:45:34.412Z",
+      "type": "FORBID",
+      "lawSetId": "META_EVOLUTION",
+      "ruleId": "META_CONFIDENCE_GATE",
+      "target": "proposal_publish",
+      "entity": "atlas://bot/organism-sentinel-bot",
+      "domain": "\"meta\"",
+      "eventId": "evt-2026-05-03T04-45-34-393Z-002"
+    },
+    {
+      "ts": "2026-05-03T04:45:34.412Z",
+      "type": "FORBID",
+      "lawSetId": "META_EVOLUTION",
+      "ruleId": "META_CONFIDENCE_GATE",
+      "target": "proposal_publish",
+      "entity": "atlas://bot/organism-learning-bot",
+      "domain": "\"meta\"",
+      "eventId": "evt-2026-05-03T04-45-34-393Z-003"
+    },
+    {
+      "ts": "2026-05-03T04:45:34.412Z",
+      "type": "FORBID",
+      "lawSetId": "META_EVOLUTION",
+      "ruleId": "META_CONFIDENCE_GATE",
+      "target": "proposal_publish",
+      "entity": "atlas://bot/organism-economy-bot",
+      "domain": "\"meta\"",
+      "eventId": "evt-2026-05-03T04-45-34-393Z-004"
+    },
+    {
+      "ts": "2026-05-03T04:45:34.412Z",
+      "type": "FORBID",
+      "lawSetId": "META_EVOLUTION",
+      "ruleId": "META_CONFIDENCE_GATE",
+      "target": "proposal_publish",
+      "entity": "atlas://bot/organism-sandcastle-bot",
+      "domain": "\"meta\"",
+      "eventId": "evt-2026-05-03T04-45-34-393Z-005"
+    },
+    {
+      "ts": "2026-05-03T04:45:34.412Z",
+      "type": "FORBID",
+      "lawSetId": "META_EVOLUTION",
+      "ruleId": "META_CONFIDENCE_GATE",
+      "target": "proposal_publish",
+      "entity": "atlas://bot/organism-crawler-bot",
+      "domain": "\"meta\"",
+      "eventId": "evt-2026-05-03T04-45-34-393Z-006"
+    },
+    {
+      "ts": "2026-05-03T04:46:40.475Z",
+      "type": "FORBID",
+      "lawSetId": "META_EVOLUTION",
+      "ruleId": "META_CONFIDENCE_GATE",
+      "target": "proposal_publish",
+      "entity": "atlas://bot/organism-alpha-bot",
+      "domain": "\"meta\"",
+      "eventId": "evt-2026-05-03T04-46-40-455Z-001"
+    },
+    {
+      "ts": "2026-05-03T04:46:40.475Z",
+      "type": "FORBID",
+      "lawSetId": "META_EVOLUTION",
+      "ruleId": "META_CONFIDENCE_GATE",
+      "target": "proposal_publish",
+      "entity": "atlas://bot/organism-sentinel-bot",
+      "domain": "\"meta\"",
+      "eventId": "evt-2026-05-03T04-46-40-455Z-002"
+    },
+    {
+      "ts": "2026-05-03T04:46:40.475Z",
+      "type": "FORBID",
+      "lawSetId": "META_EVOLUTION",
+      "ruleId": "META_CONFIDENCE_GATE",
+      "target": "proposal_publish",
+      "entity": "atlas://bot/organism-learning-bot",
+      "domain": "\"meta\"",
+      "eventId": "evt-2026-05-03T04-46-40-455Z-003"
+    },
+    {
+      "ts": "2026-05-03T04:46:40.475Z",
+      "type": "FORBID",
+      "lawSetId": "META_EVOLUTION",
+      "ruleId": "META_CONFIDENCE_GATE",
+      "target": "proposal_publish",
+      "entity": "atlas://bot/organism-economy-bot",
+      "domain": "\"meta\"",
+      "eventId": "evt-2026-05-03T04-46-40-455Z-004"
+    },
+    {
+      "ts": "2026-05-03T04:46:40.475Z",
+      "type": "FORBID",
+      "lawSetId": "META_EVOLUTION",
+      "ruleId": "META_CONFIDENCE_GATE",
+      "target": "proposal_publish",
+      "entity": "atlas://bot/organism-sandcastle-bot",
+      "domain": "\"meta\"",
+      "eventId": "evt-2026-05-03T04-46-40-456Z-005"
+    },
+    {
+      "ts": "2026-05-03T04:46:40.475Z",
+      "type": "FORBID",
+      "lawSetId": "META_EVOLUTION",
+      "ruleId": "META_CONFIDENCE_GATE",
+      "target": "proposal_publish",
+      "entity": "atlas://bot/organism-crawler-bot",
+      "domain": "\"meta\"",
+      "eventId": "evt-2026-05-03T04-46-40-456Z-006"
+    }
+  ]
+}

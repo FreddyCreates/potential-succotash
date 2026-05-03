@@ -1,8 +1,8 @@
 {
-  "generated": "2026-05-03T04:25:07.626Z",
+  "generated": "2026-05-03T04:46:36.090Z",
   "bot": "organism-alpha-bot",
-  "totalBots": 16,
-  "healthy": 16,
+  "totalBots": 17,
+  "healthy": 17,
   "degraded": 0,
   "unknownBots": [],
   "fleet": [
@@ -301,6 +301,30 @@
       "trigger": "scheduled + push",
       "workflowSize": 2901,
       "status": "healthy"
+    },
+    {
+      "name": "organism-governance-bot",
+      "emoji": "🌐",
+      "domain": "Atlas Governance Cycle",
+      "workflow": "organism-governance-bot.yml",
+      "scriptDir": "governance",
+      "division": "Command & Control",
+      "hasWorkflow": true,
+      "hasScriptDir": true,
+      "scripts": [
+        "apply-laws.js",
+        "emit-event.js",
+        "generate-governance-report.js",
+        "governance-cycle.js",
+        "ingest-events.js",
+        "meta-engine.js",
+        "run-pipelines.js",
+        "update-memory.js"
+      ],
+      "scriptCount": 8,
+      "trigger": "scheduled + push",
+      "workflowSize": 2500,
+      "status": "healthy"
     }
   ],
   "healthResults": [
@@ -383,12 +407,17 @@
       "bot": "organism-alpha-bot",
       "status": "healthy",
       "violations": []
+    },
+    {
+      "bot": "organism-governance-bot",
+      "status": "healthy",
+      "violations": []
     }
   ],
   "policyStats": {
-    "totalPolicies": 96,
-    "totalPass": 96,
+    "totalPolicies": 102,
+    "totalPass": 102,
     "totalFail": 0
   },
-  "healthGenerated": "2026-05-03T04:25:07.678Z"
+  "healthGenerated": "2026-05-03T04:46:36.143Z"
 }

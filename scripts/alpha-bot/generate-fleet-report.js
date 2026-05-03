@@ -44,12 +44,13 @@ const DIVISIONS = {
   'Division IV — Document & Report': ['organism-docs-bot'],
   'Division V — Deploy & Operate':   ['organism-deploy-bot'],
   'Division VI — Learn & Evolve':    ['organism-learning-bot', 'organism-economy-bot'],
-  'Division VII — Command & Control':['organism-alpha-bot'],
+  'Division VII — Command & Control':['organism-alpha-bot', 'organism-governance-bot'],
 };
 
 // Authority matrix (who can trigger whom)
 const AUTHORITY = {
   'organism-alpha-bot':       ['ALL'],
+  'organism-governance-bot':  ['ALL'],
   'organism-release-bot':     ['organism-build-bot', 'organism-sdk-bot'],
   'organism-deploy-bot':      ['organism-build-bot'],
   'organism-sentinel-bot':    [],

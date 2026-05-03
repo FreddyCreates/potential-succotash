@@ -1,0 +1,75 @@
+# ============================================================================
+# CPL-L — Meta Engine Laws
+# id: META_EVOLUTION
+# Applies to: the Meta Engine itself (atlas://meta/engine)
+# These laws define when the Meta Engine is allowed to propose changes.
+# ============================================================================
+
+id: "META_EVOLUTION"
+class: LawSet
+version: "1.0.0"
+created: "2026-05-03T00:00:00.000Z"
+author: "organism-alpha-bot"
+charter_ref: "atlas://organism/bot-fleet"
+domain: "meta"
+pipeline_ref: "pipeline://governance/meta_cycle"
+
+description: |
+  Meta Engine laws govern when the Meta Engine may emit evolution proposals.
+  The Meta Engine watches law stats, pipeline stats, RIL, and UEL to detect
+  patterns — but proposals must be gated by confidence thresholds.
+
+laws:
+
+  - id: "META_PROPOSE_ON_PATTERN"
+    subject: "atlas://meta/engine"
+    name: "Emit proposal when override pattern repeats 3+ times"
+    priority: 2    # MEDIUM
+    when: 'context.metrics.overrideCount >= 3 && context.metrics.overridePattern == context.metrics.previousPattern'
+    then:
+      - action: EMIT
+        target: meta_proposal
+        payload:
+          type: law_relaxation
+          reason: "Same override pattern seen 3+ times — law may be too strict"
+      - action: COMMIT
+        target: governance/proposals/
+        reason: "Persist law relaxation proposal"
+
+  - id: "META_PROPOSE_NEW_BOT"
+    subject: "atlas://meta/engine"
+    name: "Propose new bot when escalation pattern repeats"
+    priority: 2    # MEDIUM
+    when: 'context.metrics.escalationCount >= 5'
+    then:
+      - action: EMIT
+        target: meta_proposal
+        payload:
+          type: new_entity
+          reason: "Escalation pattern (>=5 events) suggests a specialized bot is needed"
+
+  - id: "META_CONFIDENCE_GATE"
+    subject: "atlas://meta/engine"
+    name: "Block low-confidence proposals"
+    priority: 0    # CRITICAL (runs first)
+    when: 'context.metrics.confidence < 0.618'   # 1/PHI confidence floor
+    then:
+      - action: FORBID
+        target: proposal_publish
+        reason: "Meta Engine confidence below phi-threshold (0.618) — proposal suppressed"
+
+  - id: "META_EMERGENCY_HALT"
+    subject: "atlas://meta/engine"
+    name: "Halt meta proposals when risk is critical"
+    priority: 0    # CRITICAL
+    when: 'context.risk_score > 0.9'
+    then:
+      - action: FORBID
+        target: all_proposals
+        reason: "Global risk score critical (>0.9) — Meta Engine in silent mode"
+      - action: ESCALATE
+        target: "human://freddy"
+        reason: "Critical risk — Meta Engine halted, human must review"
+
+evaluation_order: priority_ascending
+short_circuit_on_forbid: true

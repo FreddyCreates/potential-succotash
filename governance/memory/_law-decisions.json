@@ -1,0 +1,382 @@
+{
+  "evaluated": "2026-05-03T04:46:40.471Z",
+  "lawFiles": [
+    "bot-fleet.cpl-l",
+    "economy.cpl-l",
+    "learning.cpl-l",
+    "meta.cpl-l",
+    "topology.cpl-l"
+  ],
+  "totalLawChecks": 156,
+  "totalFired": 12,
+  "riskScore": "0.091",
+  "decisions": [
+    {
+      "lawSetId": "ECONOMY_HEALTH",
+      "ruleId": "ECONOMY_PHI_SCORE_WATCH",
+      "action": "WARN",
+      "target": "report",
+      "event": "evt-2026-05-03T04-46-40-455Z-001",
+      "entity": "atlas://bot/organism-alpha-bot",
+      "domain": "\"economy\"",
+      "ts": "2026-05-03T04:46:40.467Z"
+    },
+    {
+      "lawSetId": "ECONOMY_HEALTH",
+      "ruleId": "ECONOMY_PHI_SCORE_WATCH",
+      "action": "EMIT",
+      "target": "risk_event",
+      "event": "evt-2026-05-03T04-46-40-455Z-001",
+      "entity": "atlas://bot/organism-alpha-bot",
+      "domain": "\"economy\"",
+      "ts": "2026-05-03T04:46:40.467Z"
+    },
+    {
+      "lawSetId": "ECONOMY_HEALTH",
+      "ruleId": "ECONOMY_PHI_SCORE_WATCH",
+      "action": "WARN",
+      "target": "report",
+      "event": "evt-2026-05-03T04-46-40-455Z-002",
+      "entity": "atlas://bot/organism-sentinel-bot",
+      "domain": "\"economy\"",
+      "ts": "2026-05-03T04:46:40.467Z"
+    },
+    {
+      "lawSetId": "ECONOMY_HEALTH",
+      "ruleId": "ECONOMY_PHI_SCORE_WATCH",
+      "action": "EMIT",
+      "target": "risk_event",
+      "event": "evt-2026-05-03T04-46-40-455Z-002",
+      "entity": "atlas://bot/organism-sentinel-bot",
+      "domain": "\"economy\"",
+      "ts": "2026-05-03T04:46:40.467Z"
+    },
+    {
+      "lawSetId": "ECONOMY_HEALTH",
+      "ruleId": "ECONOMY_PHI_SCORE_WATCH",
+      "action": "WARN",
+      "target": "report",
+      "event": "evt-2026-05-03T04-46-40-455Z-003",
+      "entity": "atlas://bot/organism-learning-bot",
+      "domain": "\"economy\"",
+      "ts": "2026-05-03T04:46:40.467Z"
+    },
+    {
+      "lawSetId": "ECONOMY_HEALTH",
+      "ruleId": "ECONOMY_PHI_SCORE_WATCH",
+      "action": "EMIT",
+      "target": "risk_event",
+      "event": "evt-2026-05-03T04-46-40-455Z-003",
+      "entity": "atlas://bot/organism-learning-bot",
+      "domain": "\"economy\"",
+      "ts": "2026-05-03T04:46:40.467Z"
+    },
+    {
+      "lawSetId": "ECONOMY_HEALTH",
+      "ruleId": "ECONOMY_PHI_SCORE_WATCH",
+      "action": "WARN",
+      "target": "report",
+      "event": "evt-2026-05-03T04-46-40-456Z-005",
+      "entity": "atlas://bot/organism-sandcastle-bot",
+      "domain": "\"economy\"",
+      "ts": "2026-05-03T04:46:40.468Z"
+    },
+    {
+      "lawSetId": "ECONOMY_HEALTH",
+      "ruleId": "ECONOMY_PHI_SCORE_WATCH",
+      "action": "EMIT",
+      "target": "risk_event",
+      "event": "evt-2026-05-03T04-46-40-456Z-005",
+      "entity": "atlas://bot/organism-sandcastle-bot",
+      "domain": "\"economy\"",
+      "ts": "2026-05-03T04:46:40.468Z"
+    },
+    {
+      "lawSetId": "ECONOMY_HEALTH",
+      "ruleId": "ECONOMY_PHI_SCORE_WATCH",
+      "action": "WARN",
+      "target": "report",
+      "event": "evt-2026-05-03T04-46-40-456Z-006",
+      "entity": "atlas://bot/organism-crawler-bot",
+      "domain": "\"economy\"",
+      "ts": "2026-05-03T04:46:40.468Z"
+    },
+    {
+      "lawSetId": "ECONOMY_HEALTH",
+      "ruleId": "ECONOMY_PHI_SCORE_WATCH",
+      "action": "EMIT",
+      "target": "risk_event",
+      "event": "evt-2026-05-03T04-46-40-456Z-006",
+      "entity": "atlas://bot/organism-crawler-bot",
+      "domain": "\"economy\"",
+      "ts": "2026-05-03T04:46:40.468Z"
+    },
+    {
+      "lawSetId": "META_EVOLUTION",
+      "ruleId": "META_CONFIDENCE_GATE",
+      "action": "FORBID",
+      "target": "proposal_publish",
+      "event": "evt-2026-05-03T04-46-40-455Z-001",
+      "entity": "atlas://bot/organism-alpha-bot",
+      "domain": "\"meta\"",
+      "ts": "2026-05-03T04:46:40.469Z"
+    },
+    {
+      "lawSetId": "META_EVOLUTION",
+      "ruleId": "META_CONFIDENCE_GATE",
+      "action": "FORBID",
+      "target": "proposal_publish",
+      "event": "evt-2026-05-03T04-46-40-455Z-002",
+      "entity": "atlas://bot/organism-sentinel-bot",
+      "domain": "\"meta\"",
+      "ts": "2026-05-03T04:46:40.469Z"
+    },
+    {
+      "lawSetId": "META_EVOLUTION",
+      "ruleId": "META_CONFIDENCE_GATE",
+      "action": "FORBID",
+      "target": "proposal_publish",
+      "event": "evt-2026-05-03T04-46-40-455Z-003",
+      "entity": "atlas://bot/organism-learning-bot",
+      "domain": "\"meta\"",
+      "ts": "2026-05-03T04:46:40.470Z"
+    },
+    {
+      "lawSetId": "META_EVOLUTION",
+      "ruleId": "META_CONFIDENCE_GATE",
+      "action": "FORBID",
+      "target": "proposal_publish",
+      "event": "evt-2026-05-03T04-46-40-455Z-004",
+      "entity": "atlas://bot/organism-economy-bot",
+      "domain": "\"meta\"",
+      "ts": "2026-05-03T04:46:40.470Z"
+    },
+    {
+      "lawSetId": "META_EVOLUTION",
+      "ruleId": "META_CONFIDENCE_GATE",
+      "action": "FORBID",
+      "target": "proposal_publish",
+      "event": "evt-2026-05-03T04-46-40-456Z-005",
+      "entity": "atlas://bot/organism-sandcastle-bot",
+      "domain": "\"meta\"",
+      "ts": "2026-05-03T04:46:40.470Z"
+    },
+    {
+      "lawSetId": "META_EVOLUTION",
+      "ruleId": "META_CONFIDENCE_GATE",
+      "action": "FORBID",
+      "target": "proposal_publish",
+      "event": "evt-2026-05-03T04-46-40-456Z-006",
+      "entity": "atlas://bot/organism-crawler-bot",
+      "domain": "\"meta\"",
+      "ts": "2026-05-03T04:46:40.470Z"
+    },
+    {
+      "lawSetId": "TOPOLOGY_INTEGRITY",
+      "ruleId": "TOPOLOGY_FILE_COUNT_DRIFT_ALERT",
+      "action": "WARN",
+      "target": "report",
+      "event": "evt-2026-05-03T04-46-40-456Z-006",
+      "entity": "atlas://bot/organism-crawler-bot",
+      "domain": "\"topology\"",
+      "ts": "2026-05-03T04:46:40.471Z"
+    },
+    {
+      "lawSetId": "TOPOLOGY_INTEGRITY",
+      "ruleId": "TOPOLOGY_FILE_COUNT_DRIFT_ALERT",
+      "action": "EMIT",
+      "target": "risk_event",
+      "event": "evt-2026-05-03T04-46-40-456Z-006",
+      "entity": "atlas://bot/organism-crawler-bot",
+      "domain": "\"topology\"",
+      "ts": "2026-05-03T04:46:40.471Z"
+    }
+  ],
+  "activeForbids": [
+    {
+      "lawSetId": "META_EVOLUTION",
+      "ruleId": "META_CONFIDENCE_GATE",
+      "action": "FORBID",
+      "target": "proposal_publish",
+      "event": "evt-2026-05-03T04-46-40-455Z-001",
+      "entity": "atlas://bot/organism-alpha-bot",
+      "domain": "\"meta\"",
+      "ts": "2026-05-03T04:46:40.469Z"
+    },
+    {
+      "lawSetId": "META_EVOLUTION",
+      "ruleId": "META_CONFIDENCE_GATE",
+      "action": "FORBID",
+      "target": "proposal_publish",
+      "event": "evt-2026-05-03T04-46-40-455Z-002",
+      "entity": "atlas://bot/organism-sentinel-bot",
+      "domain": "\"meta\"",
+      "ts": "2026-05-03T04:46:40.469Z"
+    },
+    {
+      "lawSetId": "META_EVOLUTION",
+      "ruleId": "META_CONFIDENCE_GATE",
+      "action": "FORBID",
+      "target": "proposal_publish",
+      "event": "evt-2026-05-03T04-46-40-455Z-003",
+      "entity": "atlas://bot/organism-learning-bot",
+      "domain": "\"meta\"",
+      "ts": "2026-05-03T04:46:40.470Z"
+    },
+    {
+      "lawSetId": "META_EVOLUTION",
+      "ruleId": "META_CONFIDENCE_GATE",
+      "action": "FORBID",
+      "target": "proposal_publish",
+      "event": "evt-2026-05-03T04-46-40-455Z-004",
+      "entity": "atlas://bot/organism-economy-bot",
+      "domain": "\"meta\"",
+      "ts": "2026-05-03T04:46:40.470Z"
+    },
+    {
+      "lawSetId": "META_EVOLUTION",
+      "ruleId": "META_CONFIDENCE_GATE",
+      "action": "FORBID",
+      "target": "proposal_publish",
+      "event": "evt-2026-05-03T04-46-40-456Z-005",
+      "entity": "atlas://bot/organism-sandcastle-bot",
+      "domain": "\"meta\"",
+      "ts": "2026-05-03T04:46:40.470Z"
+    },
+    {
+      "lawSetId": "META_EVOLUTION",
+      "ruleId": "META_CONFIDENCE_GATE",
+      "action": "FORBID",
+      "target": "proposal_publish",
+      "event": "evt-2026-05-03T04-46-40-456Z-006",
+      "entity": "atlas://bot/organism-crawler-bot",
+      "domain": "\"meta\"",
+      "ts": "2026-05-03T04:46:40.470Z"
+    }
+  ],
+  "warnings": [
+    {
+      "lawSetId": "ECONOMY_HEALTH",
+      "ruleId": "ECONOMY_PHI_SCORE_WATCH",
+      "action": "WARN",
+      "target": "report",
+      "event": "evt-2026-05-03T04-46-40-455Z-001",
+      "entity": "atlas://bot/organism-alpha-bot",
+      "domain": "\"economy\"",
+      "ts": "2026-05-03T04:46:40.467Z"
+    },
+    {
+      "lawSetId": "ECONOMY_HEALTH",
+      "ruleId": "ECONOMY_PHI_SCORE_WATCH",
+      "action": "WARN",
+      "target": "report",
+      "event": "evt-2026-05-03T04-46-40-455Z-002",
+      "entity": "atlas://bot/organism-sentinel-bot",
+      "domain": "\"economy\"",
+      "ts": "2026-05-03T04:46:40.467Z"
+    },
+    {
+      "lawSetId": "ECONOMY_HEALTH",
+      "ruleId": "ECONOMY_PHI_SCORE_WATCH",
+      "action": "WARN",
+      "target": "report",
+      "event": "evt-2026-05-03T04-46-40-455Z-003",
+      "entity": "atlas://bot/organism-learning-bot",
+      "domain": "\"economy\"",
+      "ts": "2026-05-03T04:46:40.467Z"
+    },
+    {
+      "lawSetId": "ECONOMY_HEALTH",
+      "ruleId": "ECONOMY_PHI_SCORE_WATCH",
+      "action": "WARN",
+      "target": "report",
+      "event": "evt-2026-05-03T04-46-40-456Z-005",
+      "entity": "atlas://bot/organism-sandcastle-bot",
+      "domain": "\"economy\"",
+      "ts": "2026-05-03T04:46:40.468Z"
+    },
+    {
+      "lawSetId": "ECONOMY_HEALTH",
+      "ruleId": "ECONOMY_PHI_SCORE_WATCH",
+      "action": "WARN",
+      "target": "report",
+      "event": "evt-2026-05-03T04-46-40-456Z-006",
+      "entity": "atlas://bot/organism-crawler-bot",
+      "domain": "\"economy\"",
+      "ts": "2026-05-03T04:46:40.468Z"
+    },
+    {
+      "lawSetId": "TOPOLOGY_INTEGRITY",
+      "ruleId": "TOPOLOGY_FILE_COUNT_DRIFT_ALERT",
+      "action": "WARN",
+      "target": "report",
+      "event": "evt-2026-05-03T04-46-40-456Z-006",
+      "entity": "atlas://bot/organism-crawler-bot",
+      "domain": "\"topology\"",
+      "ts": "2026-05-03T04:46:40.471Z"
+    }
+  ],
+  "escalations": [],
+  "emits": [
+    {
+      "lawSetId": "ECONOMY_HEALTH",
+      "ruleId": "ECONOMY_PHI_SCORE_WATCH",
+      "action": "EMIT",
+      "target": "risk_event",
+      "event": "evt-2026-05-03T04-46-40-455Z-001",
+      "entity": "atlas://bot/organism-alpha-bot",
+      "domain": "\"economy\"",
+      "ts": "2026-05-03T04:46:40.467Z"
+    },
+    {
+      "lawSetId": "ECONOMY_HEALTH",
+      "ruleId": "ECONOMY_PHI_SCORE_WATCH",
+      "action": "EMIT",
+      "target": "risk_event",
+      "event": "evt-2026-05-03T04-46-40-455Z-002",
+      "entity": "atlas://bot/organism-sentinel-bot",
+      "domain": "\"economy\"",
+      "ts": "2026-05-03T04:46:40.467Z"
+    },
+    {
+      "lawSetId": "ECONOMY_HEALTH",
+      "ruleId": "ECONOMY_PHI_SCORE_WATCH",
+      "action": "EMIT",
+      "target": "risk_event",
+      "event": "evt-2026-05-03T04-46-40-455Z-003",
+      "entity": "atlas://bot/organism-learning-bot",
+      "domain": "\"economy\"",
+      "ts": "2026-05-03T04:46:40.467Z"
+    },
+    {
+      "lawSetId": "ECONOMY_HEALTH",
+      "ruleId": "ECONOMY_PHI_SCORE_WATCH",
+      "action": "EMIT",
+      "target": "risk_event",
+      "event": "evt-2026-05-03T04-46-40-456Z-005",
+      "entity": "atlas://bot/organism-sandcastle-bot",
+      "domain": "\"economy\"",
+      "ts": "2026-05-03T04:46:40.468Z"
+    },
+    {
+      "lawSetId": "ECONOMY_HEALTH",
+      "ruleId": "ECONOMY_PHI_SCORE_WATCH",
+      "action": "EMIT",
+      "target": "risk_event",
+      "event": "evt-2026-05-03T04-46-40-456Z-006",
+      "entity": "atlas://bot/organism-crawler-bot",
+      "domain": "\"economy\"",
+      "ts": "2026-05-03T04:46:40.468Z"
+    },
+    {
+      "lawSetId": "TOPOLOGY_INTEGRITY",
+      "ruleId": "TOPOLOGY_FILE_COUNT_DRIFT_ALERT",
+      "action": "EMIT",
+      "target": "risk_event",
+      "event": "evt-2026-05-03T04-46-40-456Z-006",
+      "entity": "atlas://bot/organism-crawler-bot",
+      "domain": "\"topology\"",
+      "ts": "2026-05-03T04:46:40.471Z"
+    }
+  ]
+}

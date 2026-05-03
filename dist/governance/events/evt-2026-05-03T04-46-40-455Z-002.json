@@ -1,0 +1,23 @@
+{
+  "id": "evt-2026-05-03T04-46-40-455Z-002",
+  "entity_id": "atlas://bot/organism-sentinel-bot",
+  "op": "security_audit_completed",
+  "ts": "2026-05-03T04:46:40.455Z",
+  "context": {
+    "status": "pass",
+    "risk_score": 0.1,
+    "findings": {
+      "secretsFound": 0,
+      "permissionWarnings": 8,
+      "criticalCves": 0
+    },
+    "sentinel_status": "clean"
+  },
+  "tags": [
+    "bot",
+    "sentinel",
+    "security",
+    "division-iii"
+  ],
+  "schema_version": "1.0.0"
+}

@@ -1,0 +1,72 @@
+{
+  "cycles": [
+    {
+      "ts": "2026-05-03T04:45:07.172Z",
+      "totalFired": 4,
+      "riskScore": "0.091"
+    },
+    {
+      "ts": "2026-05-03T04:45:34.412Z",
+      "totalFired": 12,
+      "riskScore": "0.091"
+    },
+    {
+      "ts": "2026-05-03T04:46:40.475Z",
+      "totalFired": 12,
+      "riskScore": "0.091"
+    }
+  ],
+  "lawFireCounts": {
+    "ECONOMY_HEALTH.ECONOMY_PHI_SCORE_WATCH": [
+      {
+        "ts": "2026-05-03T04:45:07.172Z",
+        "count": 2,
+        "riskScore": "0.091"
+      },
+      {
+        "ts": "2026-05-03T04:45:34.412Z",
+        "count": 10,
+        "riskScore": "0.091"
+      },
+      {
+        "ts": "2026-05-03T04:46:40.475Z",
+        "count": 10,
+        "riskScore": "0.091"
+      }
+    ],
+    "META_EVOLUTION.META_CONFIDENCE_GATE": [
+      {
+        "ts": "2026-05-03T04:45:07.172Z",
+        "count": 2,
+        "riskScore": "0.091"
+      },
+      {
+        "ts": "2026-05-03T04:45:34.412Z",
+        "count": 6,
+        "riskScore": "0.091"
+      },
+      {
+        "ts": "2026-05-03T04:46:40.475Z",
+        "count": 6,
+        "riskScore": "0.091"
+      }
+    ],
+    "TOPOLOGY_INTEGRITY.TOPOLOGY_FILE_COUNT_DRIFT_ALERT": [
+      {
+        "ts": "2026-05-03T04:45:07.172Z",
+        "count": 2,
+        "riskScore": "0.091"
+      },
+      {
+        "ts": "2026-05-03T04:45:34.412Z",
+        "count": 2,
+        "riskScore": "0.091"
+      },
+      {
+        "ts": "2026-05-03T04:46:40.475Z",
+        "count": 2,
+        "riskScore": "0.091"
+      }
+    ]
+  }
+}

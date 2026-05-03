@@ -1,0 +1,25 @@
+{
+  "id": "evt-2026-05-03T04-46-40-456Z-006",
+  "entity_id": "atlas://bot/organism-crawler-bot",
+  "op": "topology_crawl_completed",
+  "ts": "2026-05-03T04:46:40.456Z",
+  "context": {
+    "status": "pass",
+    "risk_score": 0.1,
+    "findings": {
+      "circularDeps": 0
+    },
+    "metrics": {
+      "fileCount": 803,
+      "coverageRatio": 0.88,
+      "unreachableProtocols": 0
+    }
+  },
+  "tags": [
+    "bot",
+    "crawler",
+    "topology",
+    "division-iii"
+  ],
+  "schema_version": "1.0.0"
+}
