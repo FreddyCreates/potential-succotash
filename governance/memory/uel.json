@@ -1,37 +1,15 @@
 {
   "entries": [
     {
-      "ts": "2026-05-03T04:45:07.172Z",
-      "cycleRisk": 0.05,
-      "decision": "ALLOW",
-      "eventsProcessed": 2,
-      "lawsFired": 4,
-      "forbids": 2,
-      "warnings": 2,
-      "escalations": 0,
-      "phiHealth": 0.95
-    },
-    {
-      "ts": "2026-05-03T04:45:34.412Z",
-      "cycleRisk": 0.05,
+      "ts": "2026-05-03T04:50:47.196Z",
+      "cycleRisk": 0.25,
       "decision": "ALLOW",
       "eventsProcessed": 6,
-      "lawsFired": 12,
-      "forbids": 6,
-      "warnings": 6,
+      "lawsFired": 1,
+      "forbids": 0,
+      "warnings": 1,
       "escalations": 0,
-      "phiHealth": 0.95
-    },
-    {
-      "ts": "2026-05-03T04:46:40.475Z",
-      "cycleRisk": 0.05,
-      "decision": "ALLOW",
-      "eventsProcessed": 6,
-      "lawsFired": 12,
-      "forbids": 6,
-      "warnings": 6,
-      "escalations": 0,
-      "phiHealth": 0.95
+      "phiHealth": 0.75
     }
   ]
 }

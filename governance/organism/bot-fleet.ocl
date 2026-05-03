@@ -17,10 +17,11 @@ created: "2026-05-03T00:00:00.000Z"
 author: "organism-alpha-bot"
 
 description: |
-  Shared governance charter for the full 16-bot organism fleet.
-  All bots are first-class entities in the organism — they are not tools,
-  they are cognitive organs with bounded authority, explicit capabilities,
-  and phi-encoded drives.
+  Shared governance charter for the full 17-bot organism fleet.
+  Bots are first-class entities in the organism — each is a cognitive organ
+  with bounded authority, explicit capabilities, and phi-encoded drives.
+  Bots may also expose callable interfaces to the marketplace; their entity
+  identity and their callable interface are complementary, not contradictory.
 
 # ── Capabilities ──────────────────────────────────────────────────────────────
 # These are the permitted action classes. Bots may only exercise capabilities

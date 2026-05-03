@@ -122,17 +122,22 @@ try {
 // ── Parse laws (lightweight YAML-ish parser for law id + subjects + rules) ────
 function parseLaw(text) {
   const idMatch     = text.match(/^id:\s*"([^"]+)"/m);
-  const domainMatch = text.match(/^domain:\s*(\S+)/m);
+  const domainMatch = text.match(/^domain:\s*"?([^"\s]+)"?/m);
   if (!idMatch) return null;
 
   const id     = idMatch[1];
   const domain = domainMatch?.[1] || 'general';
 
-  // Extract law blocks (id + when + then)
+  // Extract law blocks (id + subject + when + then)
   const lawBlocks = [];
   const lawRegex  = /- id:\s*"([^"]+)"[\s\S]*?when:\s*'([^']+)'[\s\S]*?then:([\s\S]*?)(?=\s+-\s+id:|\s*evaluation_order|$)/g;
   let   match;
   while ((match = lawRegex.exec(text)) !== null) {
+    // Extract subject for this specific law block (look backwards from match start)
+    const beforeBlock = text.slice(0, match.index + match[0].indexOf('when:'));
+    const subjectMatch = beforeBlock.match(/subject:\s*"([^"]+)"(?=[^}]*$)/);
+    const subject = subjectMatch?.[1] || null;  // null = applies to all entities
+
     const actions = [];
     const thenBlock = match[3];
     const actionRegex = /action:\s*(\S+)[\s\S]*?target:\s*(\S+)/g;
@@ -140,7 +145,7 @@ function parseLaw(text) {
     while ((am = actionRegex.exec(thenBlock)) !== null) {
       actions.push({ action: am[1], target: am[2] });
     }
-    lawBlocks.push({ id: match[1], when: match[2], actions });
+    lawBlocks.push({ id: match[1], when: match[2], subject, actions });
   }
 
   return { id, domain, laws: lawBlocks };
@@ -168,6 +173,11 @@ for (const [lawFile, lawText] of Object.entries(lawTexts)) {
     const entity = entityMap[event.entity_id] || null;
 
     for (const rule of lawSet.laws) {
+      // Subject matching: if rule declares a subject, only evaluate for that entity
+      if (rule.subject && rule.subject !== event.entity_id) {
+        continue;
+      }
+
       totalLawChecks++;
       const fired = evaluateCondition(rule.when, event, entity);
 

@@ -1,8 +1,8 @@
 {
-  "id": "evt-2026-05-03T04-46-40-455Z-004",
+  "id": "evt-2026-05-03T04-50-47-184Z-004",
   "entity_id": "atlas://bot/organism-economy-bot",
   "op": "economy_scan_completed",
-  "ts": "2026-05-03T04:46:40.455Z",
+  "ts": "2026-05-03T04:50:47.184Z",
   "context": {
     "status": "pass",
     "risk_score": 0.12,

@@ -11,7 +11,7 @@ version: "1.0.0"
 created: "2026-05-03T00:00:00.000Z"
 author: "organism-alpha-bot"
 charter_ref: "atlas://organism/bot-fleet"
-domain: "meta"
+domain: meta
 pipeline_ref: "pipeline://governance/meta_cycle"
 
 description: |

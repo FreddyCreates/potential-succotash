@@ -1,10 +1,10 @@
 # 🌐 Atlas Governance Cycle Report
 
-**Generated:** 2026-05-03T04:46:40.479Z
+**Generated:** 2026-05-03T04:50:47.199Z
 **Decision:** ✅ ALLOW
-**Risk Score:** 5.0%  _(block threshold: 38%  |  escalate: 62%)_
+**Risk Score:** 25.0%  _(block threshold: 38%  |  escalate: 62%)_
 **Events Processed:** 6
-**Laws Fired:** 12
+**Laws Fired:** 1
 
 ## Domain Pipeline Results
 
@@ -14,30 +14,14 @@
 | **security** | bot_cycle | ✅ pass | 5% | ALLOW |
 | **learning** | learning_cycle | ✅ pass | 5% | ALLOW |
 | **economy** | economy_cycle | ✅ pass | 5% | ALLOW |
-| **topology** | topology_cycle | ✅ pass | 5% | ALLOW |
+| **topology** | topology_cycle | ⚠️ warned | 25% | ALLOW |
 | **meta** | meta_cycle | ✅ pass | 5% | ALLOW |
 | **general** | default_cycle | ✅ pass | 5% | ALLOW |
-
-## Active Blocks (FORBID)
-
-| Law.Rule | Target | Entity |
-|---|---|---|
-| `META_EVOLUTION.META_CONFIDENCE_GATE` | `proposal_publish` | `atlas://bot/organism-alpha-bot` |
-| `META_EVOLUTION.META_CONFIDENCE_GATE` | `proposal_publish` | `atlas://bot/organism-sentinel-bot` |
-| `META_EVOLUTION.META_CONFIDENCE_GATE` | `proposal_publish` | `atlas://bot/organism-learning-bot` |
-| `META_EVOLUTION.META_CONFIDENCE_GATE` | `proposal_publish` | `atlas://bot/organism-economy-bot` |
-| `META_EVOLUTION.META_CONFIDENCE_GATE` | `proposal_publish` | `atlas://bot/organism-sandcastle-bot` |
-| `META_EVOLUTION.META_CONFIDENCE_GATE` | `proposal_publish` | `atlas://bot/organism-crawler-bot` |
 
 ## Warnings
 
 | Law.Rule | Target | Entity |
 |---|---|---|
-| `ECONOMY_HEALTH.ECONOMY_PHI_SCORE_WATCH` | `report` | `atlas://bot/organism-alpha-bot` |
-| `ECONOMY_HEALTH.ECONOMY_PHI_SCORE_WATCH` | `report` | `atlas://bot/organism-sentinel-bot` |
-| `ECONOMY_HEALTH.ECONOMY_PHI_SCORE_WATCH` | `report` | `atlas://bot/organism-learning-bot` |
-| `ECONOMY_HEALTH.ECONOMY_PHI_SCORE_WATCH` | `report` | `atlas://bot/organism-sandcastle-bot` |
-| `ECONOMY_HEALTH.ECONOMY_PHI_SCORE_WATCH` | `report` | `atlas://bot/organism-crawler-bot` |
 | `TOPOLOGY_INTEGRITY.TOPOLOGY_FILE_COUNT_DRIFT_ALERT` | `report` | `atlas://bot/organism-crawler-bot` |
 
 ## Risk Legend

@@ -1,5 +1,5 @@
 {
-  "ranAt": "2026-05-03T04:46:40.474Z",
+  "ranAt": "2026-05-03T04:50:47.195Z",
   "domains": [
     "bot",
     "security",
@@ -19,7 +19,7 @@
       "riskScore": 0.05,
       "status": "pass",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-05-03T04:46:40.473Z"
+      "ranAt": "2026-05-03T04:50:47.194Z"
     },
     "security": {
       "domain": "security",
@@ -30,7 +30,7 @@
       "riskScore": 0.05,
       "status": "pass",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-05-03T04:46:40.473Z"
+      "ranAt": "2026-05-03T04:50:47.194Z"
     },
     "learning": {
       "domain": "learning",
@@ -41,7 +41,7 @@
       "riskScore": 0.05,
       "status": "pass",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-05-03T04:46:40.473Z"
+      "ranAt": "2026-05-03T04:50:47.194Z"
     },
     "economy": {
       "domain": "economy",
@@ -52,18 +52,18 @@
       "riskScore": 0.05,
       "status": "pass",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-05-03T04:46:40.474Z"
+      "ranAt": "2026-05-03T04:50:47.194Z"
     },
     "topology": {
       "domain": "topology",
       "pipelineId": "pipeline://governance/topology_cycle",
       "eventCount": 1,
       "forbidCount": 0,
-      "warnCount": 0,
-      "riskScore": 0.05,
-      "status": "pass",
+      "warnCount": 1,
+      "riskScore": 0.25,
+      "status": "warned",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-05-03T04:46:40.474Z"
+      "ranAt": "2026-05-03T04:50:47.194Z"
     },
     "meta": {
       "domain": "meta",
@@ -74,7 +74,7 @@
       "riskScore": 0.05,
       "status": "pass",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-05-03T04:46:40.474Z"
+      "ranAt": "2026-05-03T04:50:47.194Z"
     },
     "general": {
       "domain": "general",
@@ -85,10 +85,10 @@
       "riskScore": 0.05,
       "status": "pass",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-05-03T04:46:40.474Z"
+      "ranAt": "2026-05-03T04:50:47.194Z"
     }
   },
-  "overallRisk": 0.05,
+  "overallRisk": 0.25,
   "overallDecision": "ALLOW",
   "blockThreshold": 0.382,
   "escalateThreshold": 0.618

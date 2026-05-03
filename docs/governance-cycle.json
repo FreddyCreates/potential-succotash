@@ -1,12 +1,12 @@
 {
-  "id": "cycle-2026-05-03T04:46:40.479Z",
-  "generated": "2026-05-03T04:46:40.479Z",
+  "id": "cycle-2026-05-03T04:50:47.199Z",
+  "generated": "2026-05-03T04:50:47.199Z",
   "decision": "ALLOW",
-  "riskScore": 0.05,
+  "riskScore": 0.25,
   "eventCount": 6,
-  "lawsFired": 12,
-  "forbids": 6,
-  "warnings": 6,
+  "lawsFired": 1,
+  "forbids": 0,
+  "warnings": 1,
   "escalations": 0,
   "domainResults": {
     "bot": {
@@ -18,7 +18,7 @@
       "riskScore": 0.05,
       "status": "pass",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-05-03T04:46:40.473Z"
+      "ranAt": "2026-05-03T04:50:47.194Z"
     },
     "security": {
       "domain": "security",
@@ -29,7 +29,7 @@
       "riskScore": 0.05,
       "status": "pass",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-05-03T04:46:40.473Z"
+      "ranAt": "2026-05-03T04:50:47.194Z"
     },
     "learning": {
       "domain": "learning",
@@ -40,7 +40,7 @@
       "riskScore": 0.05,
       "status": "pass",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-05-03T04:46:40.473Z"
+      "ranAt": "2026-05-03T04:50:47.194Z"
     },
     "economy": {
       "domain": "economy",
@@ -51,18 +51,18 @@
       "riskScore": 0.05,
       "status": "pass",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-05-03T04:46:40.474Z"
+      "ranAt": "2026-05-03T04:50:47.194Z"
     },
     "topology": {
       "domain": "topology",
       "pipelineId": "pipeline://governance/topology_cycle",
       "eventCount": 1,
       "forbidCount": 0,
-      "warnCount": 0,
-      "riskScore": 0.05,
-      "status": "pass",
+      "warnCount": 1,
+      "riskScore": 0.25,
+      "status": "warned",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-05-03T04:46:40.474Z"
+      "ranAt": "2026-05-03T04:50:47.194Z"
     },
     "meta": {
       "domain": "meta",
@@ -73,7 +73,7 @@
       "riskScore": 0.05,
       "status": "pass",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-05-03T04:46:40.474Z"
+      "ranAt": "2026-05-03T04:50:47.194Z"
     },
     "general": {
       "domain": "general",
@@ -84,7 +84,7 @@
       "riskScore": 0.05,
       "status": "pass",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-05-03T04:46:40.474Z"
+      "ranAt": "2026-05-03T04:50:47.194Z"
     }
   }
 }
