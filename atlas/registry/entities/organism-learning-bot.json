@@ -1,0 +1,20 @@
+{
+  "id": "atlas://bot/organism-learning-bot",
+  "name": "organism-learning-bot",
+  "class": "Bot",
+  "division": "Learn & Evolve",
+  "emoji": "🎓",
+  "domain": "Learn & Evolve",
+  "triggers": [
+    "schedule:nightly",
+    "push:protocols/"
+  ],
+  "languages": [
+    "atlas://language/ocl",
+    "atlas://language/cil",
+    "atlas://language/cpl-l"
+  ],
+  "governance_pipeline": "pipeline://governance/bot_cycle",
+  "created": "2026-05-03T00:00:00.000Z",
+  "version": "1.0.0"
+}

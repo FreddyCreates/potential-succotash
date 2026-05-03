@@ -1,0 +1,68 @@
+# ============================================================================
+# 🔄 organism-deps-bot — Dependency Scanning & Staleness
+#
+# Keeps the organism's dependency graph healthy:
+#   - Scans all package.json files across extensions, SDK, desktop, scripts
+#   - Detects outdated, deprecated, or insecure dependencies
+#   - Calculates staleness score (age of last update × severity weight)
+#   - Flags deps with known CVEs (cross-references npm audit output)
+#   - Generates docs/deps-report.md with staleness dashboard
+#
+# Bot identity: organism-deps-bot
+# Triggers: Mon/Thu schedule + push to any package.json
+# ============================================================================
+
+name: 🔄 organism-deps-bot
+
+on:
+  schedule:
+    - cron: '0 7 * * 1'   # Monday 07:00 UTC
+    - cron: '0 7 * * 4'   # Thursday 07:00 UTC
+  push:
+    branches: [main]
+    paths:
+      - '**/package.json'
+      - '**/package-lock.json'
+      - '.github/workflows/organism-deps-bot.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  dependency-scan:
+    name: 🔄 Dependency Health Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Scan all package.json files
+        run: node scripts/deps-bot/scan-packages.js
+
+      - name: Calculate staleness scores
+        run: node scripts/deps-bot/calculate-staleness.js
+
+      - name: Run security audit
+        run: node scripts/deps-bot/run-audit.js
+
+      - name: Generate dependency report
+        run: node scripts/deps-bot/generate-deps-report.js
+
+      - name: Commit dependency report
+        run: |
+          git config user.name "organism-deps-bot"
+          git config user.email "organism-deps-bot@users.noreply.github.com"
+          git add docs/deps-report.md docs/deps-data.json
+          if git diff --cached --quiet; then
+            echo "Deps report unchanged"
+          else
+            git commit -m "🔄 organism-deps-bot: update dependency health report [skip ci]"
+            git push
+          fi

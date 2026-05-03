@@ -1,0 +1,177 @@
+# ============================================================================
+# CPL-L — Capability Policy Language (Laws)
+# Bot Fleet Safety Laws
+#
+# id:     BOT_FLEET_SAFETY
+# class:  LawSet
+#
+# These laws are evaluated by the CPL-L engine at governance cycle runtime.
+# Laws bind specific bots (subjects) to conditional rules.
+# When a condition (when:) is true, the actions (then:) are executed.
+# ============================================================================
+
+id: "BOT_FLEET_SAFETY"
+class: LawSet
+version: "1.0.0"
+created: "2026-05-03T00:00:00.000Z"
+author: "organism-alpha-bot"
+charter_ref: "atlas://organism/bot-fleet"
+
+description: |
+  Binding safety laws for the 16-bot organism fleet.
+  These laws are evaluated on every governance cycle (every 873ms heartbeat
+  when CI is active, or on every workflow_dispatch event).
+
+laws:
+
+  # ── sentinel-bot laws ────────────────────────────────────────────────────────
+  - id: "SENTINEL_BLOCK_SECRETS"
+    subject: "atlas://bot/organism-sentinel-bot"
+    name: "Block merge on secret leak"
+    priority: 0    # CRITICAL (highest)
+    when: 'context.findings.secretsFound > 0'
+    then:
+      - action: FORBID
+        target: merge
+        reason: "Secret leak detected — human review required before merge"
+      - action: REQUIRE
+        target: human_review
+        arg: "security_team"
+      - action: EMIT
+        target: risk_event
+        payload: { severity: critical, type: secret_leak }
+
+  - id: "SENTINEL_WARN_PERMISSIONS"
+    subject: "atlas://bot/organism-sentinel-bot"
+    name: "Warn on permission sprawl"
+    priority: 2    # MEDIUM
+    when: 'context.findings.permissionWarnings > 20'
+    then:
+      - action: WARN
+        target: report
+        reason: "Extension permission sprawl above threshold"
+      - action: EMIT
+        target: risk_event
+        payload: { severity: medium, type: permission_sprawl }
+
+  # ── release-bot laws ─────────────────────────────────────────────────────────
+  - id: "RELEASE_NO_RED_HEALTH"
+    subject: "atlas://bot/organism-release-bot"
+    name: "Block release on red health dashboard"
+    priority: 0    # CRITICAL
+    when: 'context.health_dashboard.overall == "red"'
+    then:
+      - action: FORBID
+        target: release
+        reason: "Health dashboard is RED — organism not fit for production release"
+      - action: REQUIRE
+        target: stability_review
+      - action: EMIT
+        target: risk_event
+        payload: { severity: critical, type: release_blocked_red }
+
+  - id: "RELEASE_REQUIRE_SANDCASTLE_PASS"
+    subject: "atlas://bot/organism-release-bot"
+    name: "Require sandcastle PASS before release"
+    priority: 1    # HIGH
+    when: 'context.sandcastle_decision != "PASS"'
+    then:
+      - action: FORBID
+        target: release
+        reason: "Sandcastle BTL gate did not PASS — release blocked"
+      - action: EMIT
+        target: risk_event
+        payload: { severity: high, type: release_blocked_btl }
+
+  # ── sandcastle-bot laws ──────────────────────────────────────────────────────
+  - id: "SANDCASTLE_BLOCK_ON_GATE_FAIL"
+    subject: "atlas://bot/organism-sandcastle-bot"
+    name: "Block land when any gate fails"
+    priority: 0    # CRITICAL
+    when: 'context.gate_failures > 0'
+    then:
+      - action: FORBID
+        target: land
+        reason: "One or more BTL gates failed — land denied"
+      - action: EMIT
+        target: risk_event
+        payload: { severity: high, type: land_blocked }
+
+  - id: "SANDCASTLE_ESCALATE_HIGH_RISK"
+    subject: "atlas://bot/organism-sandcastle-bot"
+    name: "Escalate when risk score above phi-threshold"
+    priority: 1    # HIGH
+    when: 'context.risk_score > 0.618'    # 1/PHI threshold
+    then:
+      - action: ESCALATE
+        target: "human://freddy"
+        reason: "Sandcastle risk score exceeds phi-threshold (0.618)"
+      - action: EMIT
+        target: risk_event
+        payload: { severity: high, type: high_risk_escalation }
+
+  # ── deps-bot laws ─────────────────────────────────────────────────────────────
+  - id: "DEPS_BLOCK_CRITICAL_VULN"
+    subject: "atlas://bot/organism-deps-bot"
+    name: "Block deploy on critical CVE"
+    priority: 0    # CRITICAL
+    when: 'context.audit.critical_count > 0'
+    then:
+      - action: FORBID
+        target: deploy
+        reason: "Critical CVE in dependency tree — deploy blocked"
+      - action: REQUIRE
+        target: human_review
+        arg: "security_team"
+      - action: EMIT
+        target: risk_event
+        payload: { severity: critical, type: critical_cve }
+
+  # ── deploy-bot laws ───────────────────────────────────────────────────────────
+  - id: "DEPLOY_REQUIRE_SENTINEL_CLEAN"
+    subject: "atlas://bot/organism-deploy-bot"
+    name: "Block ICP deploy without clean sentinel report"
+    priority: 1    # HIGH
+    when: 'context.sentinel_status != "clean"'
+    then:
+      - action: FORBID
+        target: icp_deploy
+        reason: "Sentinel report is not clean — ICP deploy blocked"
+      - action: EMIT
+        target: risk_event
+        payload: { severity: high, type: deploy_blocked_sentinel }
+
+  # ── alpha-bot laws ────────────────────────────────────────────────────────────
+  - id: "ALPHA_FLEET_DEGRADED_ALERT"
+    subject: "atlas://bot/organism-alpha-bot"
+    name: "Alert when fleet health drops below phi-threshold"
+    priority: 1    # HIGH
+    when: 'context.fleet_health_ratio < 0.618'   # 1/PHI
+    then:
+      - action: ESCALATE
+        target: "human://freddy"
+        reason: "Fleet health below phi-threshold — organism degraded"
+      - action: EMIT
+        target: risk_event
+        payload: { severity: high, type: fleet_degraded }
+
+  # ── learning-bot laws ─────────────────────────────────────────────────────────
+  - id: "LEARNING_EMERGENCE_ALERT"
+    subject: "atlas://bot/organism-learning-bot"
+    name: "Notify when phi-emergence triggers"
+    priority: 3    # LOW (informational)
+    when: 'context.emergence_level >= 0.618'    # 1/PHI emergence threshold
+    then:
+      - action: EMIT
+        target: emergence_event
+        payload: { type: phi_emergence, threshold: 0.618 }
+      - action: COMMIT
+        target: docs/learning-report.md
+        reason: "Phi-emergence reached — persisting learning state"
+
+# ── Evaluation order ──────────────────────────────────────────────────────────
+# Laws are evaluated in ascending priority order (0=CRITICAL first).
+# A FORBID action from any law short-circuits lower-priority laws for the
+# same target action.
+evaluation_order: priority_ascending
+short_circuit_on_forbid: true

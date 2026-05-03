@@ -25,19 +25,29 @@ fs.mkdirSync(DOCS, { recursive: true });
 
 // ── Known bot fleet manifest ──────────────────────────────────────────────────
 const KNOWN_BOTS = [
-  { name: 'organism-build-bot',    emoji: '🧬', domain: 'Extension Packaging',    workflow: 'organism-build-bot.yml',    scriptDir: 'build-bot'     },
-  { name: 'organism-neural-bot',   emoji: '🧠', domain: 'Deep AI Architecture',   workflow: 'organism-neural-bot.yml',   scriptDir: 'neural-bot'    },
-  { name: 'organism-sdk-bot',      emoji: '📦', domain: 'SDK Packaging',          workflow: 'organism-sdk-bot.yml',      scriptDir: 'sdk-bot'       },
-  { name: 'organism-protocol-bot', emoji: '🔬', domain: 'Protocol Integrity',     workflow: 'organism-protocol-bot.yml', scriptDir: 'protocol-bot'  },
-  { name: 'organism-test-bot',     emoji: '🧪', domain: 'Cross-Matrix Testing',   workflow: 'organism-test-bot.yml',     scriptDir: null            },
-  { name: 'organism-docs-bot',     emoji: '📚', domain: 'Auto-Documentation',     workflow: 'organism-docs-bot.yml',     scriptDir: 'docs-bot'      },
-  { name: 'organism-release-bot',  emoji: '🚀', domain: 'Production Releases',    workflow: 'organism-release-bot.yml',  scriptDir: null            },
-  { name: 'organism-deploy-bot',   emoji: '🌐', domain: 'Deployment',             workflow: 'organism-deploy-bot.yml',   scriptDir: 'deploy-bot'    },
-  { name: 'organism-sentinel-bot', emoji: '🛡️', domain: 'Security',               workflow: 'organism-sentinel-bot.yml', scriptDir: 'sentinel-bot'  },
-  { name: 'organism-alpha-bot',    emoji: '👑', domain: 'Fleet Command',          workflow: 'organism-alpha-bot.yml',    scriptDir: 'alpha-bot'     },
-  { name: 'organism-economy-bot',  emoji: '💰', domain: 'Marketplace Analytics',  workflow: 'organism-economy-bot.yml',  scriptDir: 'economy-bot'   },
-  { name: 'organism-learning-bot', emoji: '🎓', domain: 'Continuous Learning',    workflow: 'organism-learning-bot.yml', scriptDir: 'learning-bot'  },
-  { name: 'organism-crawler-bot',  emoji: '🕷️', domain: 'Organism Mapper',        workflow: 'organism-crawler-bot.yml',  scriptDir: 'crawler-bot'   },
+  // Division I — Build & Package
+  { name: 'organism-build-bot',       emoji: '🧬', domain: 'Extension Packaging',      workflow: 'organism-build-bot.yml',       scriptDir: 'build-bot',       division: 'Build & Package'      },
+  { name: 'organism-sdk-bot',         emoji: '📦', domain: 'SDK Packaging',            workflow: 'organism-sdk-bot.yml',         scriptDir: 'sdk-bot',         division: 'Build & Package'      },
+  { name: 'organism-release-bot',     emoji: '🚀', domain: 'Production Releases',      workflow: 'organism-release-bot.yml',     scriptDir: null,              division: 'Build & Package'      },
+  // Division II — Validate & Test
+  { name: 'organism-neural-bot',      emoji: '🧠', domain: 'Deep AI Architecture',     workflow: 'organism-neural-bot.yml',      scriptDir: 'neural-bot',      division: 'Validate & Test'      },
+  { name: 'organism-protocol-bot',    emoji: '🔬', domain: 'Protocol Integrity',       workflow: 'organism-protocol-bot.yml',    scriptDir: 'protocol-bot',    division: 'Validate & Test'      },
+  { name: 'organism-test-bot',        emoji: '🧪', domain: 'Cross-Matrix Testing',     workflow: 'organism-test-bot.yml',        scriptDir: null,              division: 'Validate & Test'      },
+  { name: 'organism-sandcastle-bot',  emoji: '🏰', domain: 'Sandboxed BTL Pipeline',  workflow: 'organism-sandcastle-bot.yml',  scriptDir: 'sandcastle-bot',  division: 'Validate & Test'      },
+  { name: 'organism-visual-bot',      emoji: '📸', domain: 'Visual Regression',        workflow: 'organism-visual-bot.yml',      scriptDir: 'visual-bot',      division: 'Validate & Test'      },
+  // Division III — Secure & Monitor
+  { name: 'organism-sentinel-bot',    emoji: '🛡️', domain: 'Security',                 workflow: 'organism-sentinel-bot.yml',    scriptDir: 'sentinel-bot',    division: 'Secure & Monitor'     },
+  { name: 'organism-deps-bot',        emoji: '🔄', domain: 'Dependency Health',        workflow: 'organism-deps-bot.yml',        scriptDir: 'deps-bot',        division: 'Secure & Monitor'     },
+  { name: 'organism-crawler-bot',     emoji: '🕷️', domain: 'Organism Mapper',          workflow: 'organism-crawler-bot.yml',     scriptDir: 'crawler-bot',     division: 'Secure & Monitor'     },
+  // Division IV — Document & Report
+  { name: 'organism-docs-bot',        emoji: '📚', domain: 'Auto-Documentation',       workflow: 'organism-docs-bot.yml',        scriptDir: 'docs-bot',        division: 'Document & Report'    },
+  // Division V — Deploy & Operate
+  { name: 'organism-deploy-bot',      emoji: '🌐', domain: 'Deployment',               workflow: 'organism-deploy-bot.yml',      scriptDir: 'deploy-bot',      division: 'Deploy & Operate'     },
+  // Division VI — Learn & Evolve
+  { name: 'organism-learning-bot',    emoji: '🎓', domain: 'Continuous Learning',      workflow: 'organism-learning-bot.yml',    scriptDir: 'learning-bot',    division: 'Learn & Evolve'       },
+  { name: 'organism-economy-bot',     emoji: '💰', domain: 'Marketplace Analytics',    workflow: 'organism-economy-bot.yml',     scriptDir: 'economy-bot',     division: 'Learn & Evolve'       },
+  // Division VII — Command & Control
+  { name: 'organism-alpha-bot',       emoji: '👑', domain: 'Fleet Command',            workflow: 'organism-alpha-bot.yml',       scriptDir: 'alpha-bot',       division: 'Command & Control'    },
 ];
 
 // ── Census each bot ───────────────────────────────────────────────────────────

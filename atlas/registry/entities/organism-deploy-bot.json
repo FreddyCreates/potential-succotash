@@ -1,0 +1,20 @@
+{
+  "id": "atlas://bot/organism-deploy-bot",
+  "name": "organism-deploy-bot",
+  "class": "Bot",
+  "division": "Deploy & Operate",
+  "emoji": "🌐",
+  "domain": "Deploy & Operate",
+  "triggers": [
+    "push:organism/",
+    "push:dfx.json"
+  ],
+  "languages": [
+    "atlas://language/ocl",
+    "atlas://language/cpl-p",
+    "atlas://language/err"
+  ],
+  "governance_pipeline": "pipeline://governance/bot_cycle",
+  "created": "2026-05-03T00:00:00.000Z",
+  "version": "1.0.0"
+}

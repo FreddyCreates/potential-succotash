@@ -1,0 +1,41 @@
+# ============================================================================
+# Human Feedback Record — Example
+# governance/feedback/records/fb-2026-05-03-001.yaml
+#
+# Example: Override of NO_RELEASE_ON_RED for docs-only change
+# ============================================================================
+
+id: "fb-2026-05-03-001"
+schema_version: "1.0.0"
+
+actor: "human://freddy"
+timestamp: "2026-05-03T04:00:00.000Z"
+
+target:
+  type: decision
+  entity: "atlas://bot/organism-release-bot"
+  law_id: "BOT_FLEET_SAFETY"
+  rule_name: "RELEASE_NO_RED_HEALTH"
+  cycle_id: "cycle-2026-05-03-0400"
+
+decision:
+  system: FORBID
+  human: ALLOW
+
+rationale: |
+  Health dashboard is RED due to a single flaky visual regression test on
+  download.html — a purely cosmetic page that does not affect extension
+  functionality. The organism's core intelligence (protocols, SDKs, agents)
+  is fully green. Safe to release this patch which only updates docs.
+
+suggest_law_change: true
+
+tags:
+  - "flaky-test"
+  - "docs-only-change"
+  - "visual-bot-flake"
+
+# ── Meta Engine note ──────────────────────────────────────────────────────────
+# This record will be counted toward the 3-override threshold for
+# RELEASE_NO_RED_HEALTH. After 3 identical overrides, the Meta Engine
+# will propose: "Exclude docs-only releases from RELEASE_NO_RED_HEALTH check."

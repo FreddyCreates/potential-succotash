@@ -36,22 +36,25 @@ const timestamp = census.generated;
 const fleet = census.fleet || [];
 const health = census.healthResults || [];
 
-// Division mapping
+// Division mapping (7 Divisions)
 const DIVISIONS = {
-  'Core Infrastructure':    ['organism-build-bot', 'organism-neural-bot', 'organism-sdk-bot'],
-  'Intelligence & Protocol':['organism-protocol-bot', 'organism-docs-bot', 'organism-crawler-bot'],
-  'Security & Quality':     ['organism-sentinel-bot', 'organism-test-bot'],
-  'Economy & Learning':     ['organism-economy-bot', 'organism-learning-bot'],
-  'Fleet Command':          ['organism-alpha-bot', 'organism-release-bot', 'organism-deploy-bot'],
+  'Division I — Build & Package':    ['organism-build-bot', 'organism-sdk-bot', 'organism-release-bot'],
+  'Division II — Validate & Test':   ['organism-neural-bot', 'organism-protocol-bot', 'organism-test-bot', 'organism-sandcastle-bot', 'organism-visual-bot'],
+  'Division III — Secure & Monitor': ['organism-sentinel-bot', 'organism-deps-bot', 'organism-crawler-bot'],
+  'Division IV — Document & Report': ['organism-docs-bot'],
+  'Division V — Deploy & Operate':   ['organism-deploy-bot'],
+  'Division VI — Learn & Evolve':    ['organism-learning-bot', 'organism-economy-bot'],
+  'Division VII — Command & Control':['organism-alpha-bot'],
 };
 
 // Authority matrix (who can trigger whom)
 const AUTHORITY = {
-  'organism-alpha-bot':    ['ALL'],
-  'organism-release-bot':  ['organism-build-bot', 'organism-sdk-bot'],
-  'organism-deploy-bot':   ['organism-build-bot'],
-  'organism-sentinel-bot': [],
-  'organism-learning-bot': ['organism-protocol-bot', 'organism-neural-bot'],
+  'organism-alpha-bot':       ['ALL'],
+  'organism-release-bot':     ['organism-build-bot', 'organism-sdk-bot'],
+  'organism-deploy-bot':      ['organism-build-bot'],
+  'organism-sentinel-bot':    [],
+  'organism-learning-bot':    ['organism-protocol-bot', 'organism-neural-bot'],
+  'organism-sandcastle-bot':  ['organism-protocol-bot', 'organism-build-bot'],
 };
 
 // ── Compute stats ─────────────────────────────────────────────────────────────

@@ -1,0 +1,157 @@
+# ============================================================================
+# CPL-P — Capability Policy Language (Pipelines)
+# Bot Governance Cycle Pipeline
+#
+# id:     pipeline://governance/bot_cycle
+# class:  GovernancePipeline
+#
+# This pipeline is the master governance loop that runs on every CI event.
+# It is bound to all 16 bots via their entity's governance_pipeline field.
+# The CPL-P executor runs each step in order, with branching on conditions.
+# ============================================================================
+
+id: "pipeline://governance/bot_cycle"
+class: GovernancePipeline
+version: "1.0.0"
+created: "2026-05-03T00:00:00.000Z"
+author: "organism-alpha-bot"
+charter_ref: "atlas://organism/bot-fleet"
+laws_ref: "BOT_FLEET_SAFETY"
+
+description: |
+  Master governance cycle for the 16-bot organism fleet.
+  Runs on every CI event (push, PR, schedule, workflow_dispatch).
+  Steps: collect → evaluate → decide → route → persist → emit.
+
+# ── Pipeline steps ─────────────────────────────────────────────────────────────
+steps:
+
+  - id: "collect_state"
+    name: "Collect Bot State"
+    use: "governance.collect_bot_state"
+    description: |
+      Reads all available bot reports from docs/:
+        - fleet-census.json (alpha-bot)
+        - security-audit.json (sentinel-bot)
+        - sandcastle-report.md + decision (sandcastle-bot)
+        - deps-data.json (deps-bot)
+        - learning-state.json (learning-bot)
+        - neural-graph.json (neural-bot)
+      Assembles a unified context object for law evaluation.
+    outputs:
+      - context.fleet_health_ratio
+      - context.findings
+      - context.sandcastle_decision
+      - context.audit
+      - context.emergence_level
+      - context.health_dashboard
+
+  - id: "evaluate_laws"
+    name: "Apply CPL-L Laws"
+    use: "governance.apply_cpl_l"
+    law_set: "BOT_FLEET_SAFETY"
+    description: |
+      Evaluates all laws in BOT_FLEET_SAFETY against the collected context.
+      Produces a list of decisions: ALLOW / FORBID / WARN / ESCALATE / EMIT.
+    outputs:
+      - context.decisions[]
+      - context.risk_score
+      - context.active_forbids[]
+      - context.escalations[]
+
+  - id: "calculate_risk"
+    name: "Calculate Phi-Risk Score"
+    use: "governance.calculate_phi_risk"
+    description: |
+      Aggregates law decisions into a phi-normalized risk score.
+        risk_score = sum(decision.weight × phi_decay(priority)) / total_weight
+      where phi_decay(p) = 1 / PHI^p (PHI = 1.618033988749895)
+    outputs:
+      - context.risk_score   # 0.0–1.0, phi-normalized
+
+  - id: "route_escalations"
+    name: "Route Escalations"
+    use: "governance.route_escalations"
+    description: |
+      Routes any ESCALATE decisions to the appropriate target.
+      Supports: human://freddy (GitHub issue + comment),
+                slack://organism-alerts, github://issue
+    outputs:
+      - context.escalations_routed[]
+
+  - id: "persist_decisions"
+    name: "Persist Governance Decisions"
+    use: "governance.persist_decisions"
+    description: |
+      Writes the governance cycle result to docs/governance-cycle.json.
+      Appends to docs/governance-history.json (append-only, last 100 cycles).
+    outputs:
+      - docs/governance-cycle.json
+      - docs/governance-history.json
+
+  - id: "emit_events"
+    name: "Emit Risk Events"
+    use: "governance.emit_risk_events"
+    description: |
+      Emits any EMIT-typed actions from law evaluation.
+      Risk events are recorded in docs/risk-events.json.
+    outputs:
+      - docs/risk-events.json
+
+# ── Branches ───────────────────────────────────────────────────────────────────
+branches:
+
+  - id: "if_critical_block"
+    when: 'context.active_forbids.length > 0 && context.risk_score > 0.9'
+    description: "Hard block — critical forbids active with extreme risk"
+    then:
+      type: BLOCK
+      target: "all_pending_actions"
+      notify: "human://freddy"
+      reason: "Critical governance block — human override required"
+
+  - id: "if_high_risk"
+    when: 'context.risk_score > 0.618'    # 1/PHI threshold
+    description: "High risk — escalate to fleet commander"
+    then:
+      type: ESCALATE
+      target: "human://freddy"
+      notify_channel: "github://issue"
+      label: "organism-escalation"
+      reason: "Risk score exceeds phi-threshold (0.618)"
+
+  - id: "if_medium_risk"
+    when: 'context.risk_score > 0.382 && context.risk_score <= 0.618'  # 1/PHI^2 to 1/PHI
+    description: "Medium risk — warn and continue"
+    then:
+      type: WARN
+      target: "commit_comment"
+      reason: "Governance warning — risk in medium zone"
+
+  - id: "if_emergence"
+    when: 'context.emergence_level >= 0.618'
+    description: "Phi-emergence detected — learning milestone"
+    then:
+      type: CELEBRATE
+      target: "docs/emergence-events.json"
+      reason: "φ-emergence threshold crossed — organism evolving"
+
+  - id: "if_healthy"
+    when: 'context.risk_score <= 0.382 && context.active_forbids.length == 0'
+    description: "All clear — organism healthy"
+    then:
+      type: ALLOW
+      target: "all_pending_actions"
+      reason: "Governance cycle clear — proceed"
+
+# ── Error handling ─────────────────────────────────────────────────────────────
+on_error:
+  strategy: conservative
+  action: HOLD    # Hold on error rather than allow or block arbitrarily
+  notify: "human://freddy"
+  reason: "Governance cycle error — defaulting to HOLD"
+
+# ── Cycle metadata ─────────────────────────────────────────────────────────────
+heartbeat_ms: 873    # Sync with organism heartbeat
+phi: 1.618033988749895
+max_cycle_duration_ms: 30000   # 30s max per governance cycle

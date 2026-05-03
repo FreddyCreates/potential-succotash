@@ -1,8 +1,8 @@
 {
-  "generated": "2026-05-02T23:02:06.487Z",
+  "generated": "2026-05-03T04:25:07.626Z",
   "bot": "organism-alpha-bot",
-  "totalBots": 13,
-  "healthy": 13,
+  "totalBots": 16,
+  "healthy": 16,
   "degraded": 0,
   "unknownBots": [],
   "fleet": [
@@ -12,6 +12,7 @@
       "domain": "Extension Packaging",
       "workflow": "organism-build-bot.yml",
       "scriptDir": "build-bot",
+      "division": "Build & Package",
       "hasWorkflow": true,
       "hasScriptDir": false,
       "scripts": [],
@@ -21,11 +22,45 @@
       "status": "healthy"
     },
     {
+      "name": "organism-sdk-bot",
+      "emoji": "📦",
+      "domain": "SDK Packaging",
+      "workflow": "organism-sdk-bot.yml",
+      "scriptDir": "sdk-bot",
+      "division": "Build & Package",
+      "hasWorkflow": true,
+      "hasScriptDir": true,
+      "scripts": [
+        "generate-registry.js",
+        "validate-sdks.js"
+      ],
+      "scriptCount": 2,
+      "trigger": "push",
+      "workflowSize": 3339,
+      "status": "healthy"
+    },
+    {
+      "name": "organism-release-bot",
+      "emoji": "🚀",
+      "domain": "Production Releases",
+      "workflow": "organism-release-bot.yml",
+      "scriptDir": null,
+      "division": "Build & Package",
+      "hasWorkflow": true,
+      "hasScriptDir": null,
+      "scripts": [],
+      "scriptCount": 0,
+      "trigger": "push",
+      "workflowSize": 8674,
+      "status": "healthy"
+    },
+    {
       "name": "organism-neural-bot",
       "emoji": "🧠",
       "domain": "Deep AI Architecture",
       "workflow": "organism-neural-bot.yml",
       "scriptDir": "neural-bot",
+      "division": "Validate & Test",
       "hasWorkflow": true,
       "hasScriptDir": true,
       "scripts": [
@@ -40,28 +75,12 @@
       "status": "healthy"
     },
     {
-      "name": "organism-sdk-bot",
-      "emoji": "📦",
-      "domain": "SDK Packaging",
-      "workflow": "organism-sdk-bot.yml",
-      "scriptDir": "sdk-bot",
-      "hasWorkflow": true,
-      "hasScriptDir": true,
-      "scripts": [
-        "generate-registry.js",
-        "validate-sdks.js"
-      ],
-      "scriptCount": 2,
-      "trigger": "push",
-      "workflowSize": 3339,
-      "status": "healthy"
-    },
-    {
       "name": "organism-protocol-bot",
       "emoji": "🔬",
       "domain": "Protocol Integrity",
       "workflow": "organism-protocol-bot.yml",
       "scriptDir": "protocol-bot",
+      "division": "Validate & Test",
       "hasWorkflow": true,
       "hasScriptDir": true,
       "scripts": [
@@ -80,6 +99,7 @@
       "domain": "Cross-Matrix Testing",
       "workflow": "organism-test-bot.yml",
       "scriptDir": null,
+      "division": "Validate & Test",
       "hasWorkflow": true,
       "hasScriptDir": null,
       "scripts": [],
@@ -89,51 +109,43 @@
       "status": "healthy"
     },
     {
-      "name": "organism-docs-bot",
-      "emoji": "📚",
-      "domain": "Auto-Documentation",
-      "workflow": "organism-docs-bot.yml",
-      "scriptDir": "docs-bot",
+      "name": "organism-sandcastle-bot",
+      "emoji": "🏰",
+      "domain": "Sandboxed BTL Pipeline",
+      "workflow": "organism-sandcastle-bot.yml",
+      "scriptDir": "sandcastle-bot",
+      "division": "Validate & Test",
       "hasWorkflow": true,
       "hasScriptDir": true,
       "scripts": [
-        "generate-architecture-map.js",
-        "generate-extension-catalog.js",
-        "generate-sdk-reference.js"
+        "build-gate.js",
+        "generate-sandcastle-report.js",
+        "land-decision.js",
+        "protocol-gate.js"
       ],
-      "scriptCount": 3,
+      "scriptCount": 4,
       "trigger": "push",
-      "workflowSize": 2130,
+      "workflowSize": 2374,
       "status": "healthy"
     },
     {
-      "name": "organism-release-bot",
-      "emoji": "🚀",
-      "domain": "Production Releases",
-      "workflow": "organism-release-bot.yml",
-      "scriptDir": null,
-      "hasWorkflow": true,
-      "hasScriptDir": null,
-      "scripts": [],
-      "scriptCount": 0,
-      "trigger": "push",
-      "workflowSize": 8674,
-      "status": "healthy"
-    },
-    {
-      "name": "organism-deploy-bot",
-      "emoji": "🌐",
-      "domain": "Deployment",
-      "workflow": "organism-deploy-bot.yml",
-      "scriptDir": "deploy-bot",
+      "name": "organism-visual-bot",
+      "emoji": "📸",
+      "domain": "Visual Regression",
+      "workflow": "organism-visual-bot.yml",
+      "scriptDir": "visual-bot",
+      "division": "Validate & Test",
       "hasWorkflow": true,
       "hasScriptDir": true,
       "scripts": [
-        "generate-deployment-manifest.js"
+        "capture-screenshots.js",
+        "compare-baselines.js",
+        "generate-visual-report.js",
+        "scan-html-surfaces.js"
       ],
-      "scriptCount": 1,
-      "trigger": "push",
-      "workflowSize": 7338,
+      "scriptCount": 4,
+      "trigger": "scheduled + push",
+      "workflowSize": 2782,
       "status": "healthy"
     },
     {
@@ -142,6 +154,7 @@
       "domain": "Security",
       "workflow": "organism-sentinel-bot.yml",
       "scriptDir": "sentinel-bot",
+      "division": "Secure & Monitor",
       "hasWorkflow": true,
       "hasScriptDir": true,
       "scripts": [
@@ -157,39 +170,78 @@
       "status": "healthy"
     },
     {
-      "name": "organism-alpha-bot",
-      "emoji": "👑",
-      "domain": "Fleet Command",
-      "workflow": "organism-alpha-bot.yml",
-      "scriptDir": "alpha-bot",
+      "name": "organism-deps-bot",
+      "emoji": "🔄",
+      "domain": "Dependency Health",
+      "workflow": "organism-deps-bot.yml",
+      "scriptDir": "deps-bot",
+      "division": "Secure & Monitor",
       "hasWorkflow": true,
       "hasScriptDir": true,
       "scripts": [
-        "census.js",
-        "generate-fleet-report.js",
-        "health-check.js"
+        "calculate-staleness.js",
+        "generate-deps-report.js",
+        "run-audit.js",
+        "scan-packages.js"
       ],
-      "scriptCount": 3,
+      "scriptCount": 4,
       "trigger": "scheduled + push",
-      "workflowSize": 2901,
+      "workflowSize": 2149,
       "status": "healthy"
     },
     {
-      "name": "organism-economy-bot",
-      "emoji": "💰",
-      "domain": "Marketplace Analytics",
-      "workflow": "organism-economy-bot.yml",
-      "scriptDir": "economy-bot",
+      "name": "organism-crawler-bot",
+      "emoji": "🕷️",
+      "domain": "Organism Mapper",
+      "workflow": "organism-crawler-bot.yml",
+      "scriptDir": "crawler-bot",
+      "division": "Secure & Monitor",
       "hasWorkflow": true,
       "hasScriptDir": true,
       "scripts": [
-        "calculate-coverage.js",
-        "generate-economy-dashboard.js",
-        "scan-assets.js"
+        "build-cross-reference.js",
+        "crawl-topology.js",
+        "generate-organism-map.js"
       ],
       "scriptCount": 3,
       "trigger": "scheduled + push",
-      "workflowSize": 2009,
+      "workflowSize": 2080,
+      "status": "healthy"
+    },
+    {
+      "name": "organism-docs-bot",
+      "emoji": "📚",
+      "domain": "Auto-Documentation",
+      "workflow": "organism-docs-bot.yml",
+      "scriptDir": "docs-bot",
+      "division": "Document & Report",
+      "hasWorkflow": true,
+      "hasScriptDir": true,
+      "scripts": [
+        "generate-architecture-map.js",
+        "generate-extension-catalog.js",
+        "generate-sdk-reference.js"
+      ],
+      "scriptCount": 3,
+      "trigger": "push",
+      "workflowSize": 2130,
+      "status": "healthy"
+    },
+    {
+      "name": "organism-deploy-bot",
+      "emoji": "🌐",
+      "domain": "Deployment",
+      "workflow": "organism-deploy-bot.yml",
+      "scriptDir": "deploy-bot",
+      "division": "Deploy & Operate",
+      "hasWorkflow": true,
+      "hasScriptDir": true,
+      "scripts": [
+        "generate-deployment-manifest.js"
+      ],
+      "scriptCount": 1,
+      "trigger": "push",
+      "workflowSize": 7338,
       "status": "healthy"
     },
     {
@@ -198,6 +250,7 @@
       "domain": "Continuous Learning",
       "workflow": "organism-learning-bot.yml",
       "scriptDir": "learning-bot",
+      "division": "Learn & Evolve",
       "hasWorkflow": true,
       "hasScriptDir": true,
       "scripts": [
@@ -212,21 +265,41 @@
       "status": "healthy"
     },
     {
-      "name": "organism-crawler-bot",
-      "emoji": "🕷️",
-      "domain": "Organism Mapper",
-      "workflow": "organism-crawler-bot.yml",
-      "scriptDir": "crawler-bot",
+      "name": "organism-economy-bot",
+      "emoji": "💰",
+      "domain": "Marketplace Analytics",
+      "workflow": "organism-economy-bot.yml",
+      "scriptDir": "economy-bot",
+      "division": "Learn & Evolve",
       "hasWorkflow": true,
       "hasScriptDir": true,
       "scripts": [
-        "build-cross-reference.js",
-        "crawl-topology.js",
-        "generate-organism-map.js"
+        "calculate-coverage.js",
+        "generate-economy-dashboard.js",
+        "scan-assets.js"
       ],
       "scriptCount": 3,
       "trigger": "scheduled + push",
-      "workflowSize": 2080,
+      "workflowSize": 2009,
+      "status": "healthy"
+    },
+    {
+      "name": "organism-alpha-bot",
+      "emoji": "👑",
+      "domain": "Fleet Command",
+      "workflow": "organism-alpha-bot.yml",
+      "scriptDir": "alpha-bot",
+      "division": "Command & Control",
+      "hasWorkflow": true,
+      "hasScriptDir": true,
+      "scripts": [
+        "census.js",
+        "generate-fleet-report.js",
+        "health-check.js"
+      ],
+      "scriptCount": 3,
+      "trigger": "scheduled + push",
+      "workflowSize": 2901,
       "status": "healthy"
     }
   ],
@@ -237,12 +310,17 @@
       "violations": []
     },
     {
-      "bot": "organism-neural-bot",
+      "bot": "organism-sdk-bot",
       "status": "healthy",
       "violations": []
     },
     {
-      "bot": "organism-sdk-bot",
+      "bot": "organism-release-bot",
+      "status": "healthy",
+      "violations": []
+    },
+    {
+      "bot": "organism-neural-bot",
       "status": "healthy",
       "violations": []
     },
@@ -257,17 +335,12 @@
       "violations": []
     },
     {
-      "bot": "organism-docs-bot",
+      "bot": "organism-sandcastle-bot",
       "status": "healthy",
       "violations": []
     },
     {
-      "bot": "organism-release-bot",
-      "status": "healthy",
-      "violations": []
-    },
-    {
-      "bot": "organism-deploy-bot",
+      "bot": "organism-visual-bot",
       "status": "healthy",
       "violations": []
     },
@@ -277,12 +350,22 @@
       "violations": []
     },
     {
-      "bot": "organism-alpha-bot",
+      "bot": "organism-deps-bot",
       "status": "healthy",
       "violations": []
     },
     {
-      "bot": "organism-economy-bot",
+      "bot": "organism-crawler-bot",
+      "status": "healthy",
+      "violations": []
+    },
+    {
+      "bot": "organism-docs-bot",
+      "status": "healthy",
+      "violations": []
+    },
+    {
+      "bot": "organism-deploy-bot",
       "status": "healthy",
       "violations": []
     },
@@ -292,15 +375,20 @@
       "violations": []
     },
     {
-      "bot": "organism-crawler-bot",
+      "bot": "organism-economy-bot",
+      "status": "healthy",
+      "violations": []
+    },
+    {
+      "bot": "organism-alpha-bot",
       "status": "healthy",
       "violations": []
     }
   ],
   "policyStats": {
-    "totalPolicies": 78,
-    "totalPass": 78,
+    "totalPolicies": 96,
+    "totalPass": 96,
     "totalFail": 0
   },
-  "healthGenerated": "2026-05-02T23:02:09.744Z"
+  "healthGenerated": "2026-05-03T04:25:07.678Z"
 }

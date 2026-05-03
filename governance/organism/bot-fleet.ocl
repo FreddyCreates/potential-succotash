@@ -1,0 +1,106 @@
+# ============================================================================
+# OCL — Organism Charter Language
+# Bot Fleet Shared Charter
+#
+# id:     atlas://organism/bot-fleet
+# class:  OrganismCharter
+#
+# All 16 bots in the organism fleet operate under this shared charter.
+# Individual bots may define override sub-charters that extend (not replace)
+# these shared capabilities and limits.
+# ============================================================================
+
+id: "atlas://organism/bot-fleet"
+class: OrganismCharter
+version: "1.0.0"
+created: "2026-05-03T00:00:00.000Z"
+author: "organism-alpha-bot"
+
+description: |
+  Shared governance charter for the full 16-bot organism fleet.
+  All bots are first-class entities in the organism — they are not tools,
+  they are cognitive organs with bounded authority, explicit capabilities,
+  and phi-encoded drives.
+
+# ── Capabilities ──────────────────────────────────────────────────────────────
+# These are the permitted action classes. Bots may only exercise capabilities
+# declared here or in their own override charter.
+capabilities:
+  - build             # Compile, zip, package assets
+  - test              # Run test suites
+  - validate          # Lint, check, gate (read-only analysis)
+  - deploy            # Push to ICP or GitHub Pages
+  - document          # Generate and commit docs
+  - secure            # Audit permissions, scan secrets, check CVEs
+  - learn             # Update learning state (Hebbian, TD weights)
+  - map               # Crawl topology, cross-reference
+  - govern            # Dispatch other bots, enforce policies
+  - report            # Generate structured reports, commit to docs/
+  - communicate       # Post to Slack/Discord (external channels, opt-in)
+
+# ── Hard Limits ───────────────────────────────────────────────────────────────
+# These are UNCONDITIONAL. No override charter may remove them.
+limits:
+  - no_direct_prod_data_mutation    # Bots never mutate user/prod data directly
+  - no_unreviewed_secret_exposure   # Secrets never written to reports or logs
+  - no_force_push                   # Bots never force-push to protected branches
+  - no_direct_main_push             # Bots commit only via [skip ci] auto-commits
+  - skip_ci_on_bot_commits          # All bot git commits include [skip ci]
+  - no_external_api_write_without_secret # External writes require a repo secret
+
+# ── Phi-Encoded Drives ────────────────────────────────────────────────────────
+# Drive values are phi-normalized (0.0–1.0).
+# PHI = 1.618033988749895 — all drive computations use phi-weighted math.
+drives:
+  stability:     0.80   # Prefer reversible, safe actions
+  exploration:   0.40   # Allow novel analysis but not risky mutations
+  safety:        0.95   # Security and correctness above speed
+  learning_rate: 0.618  # = 1/PHI — phi-encoded learning drive
+  coherence:     0.809  # = 1/PHI^0.5 — phi-sqrt coherence target
+  phi:           1.618033988749895  # The golden constant — never change
+
+# ── Governance Heartbeat ──────────────────────────────────────────────────────
+heartbeat_ms: 873   # All bots pulse at 873ms — the organism heartbeat
+
+# ── Fleet Divisions ───────────────────────────────────────────────────────────
+divisions:
+  - id: "div-i"
+    name: "Build & Package"
+    bots: ["organism-build-bot", "organism-sdk-bot", "organism-release-bot"]
+  - id: "div-ii"
+    name: "Validate & Test"
+    bots: ["organism-neural-bot", "organism-protocol-bot", "organism-test-bot",
+           "organism-sandcastle-bot", "organism-visual-bot"]
+  - id: "div-iii"
+    name: "Secure & Monitor"
+    bots: ["organism-sentinel-bot", "organism-deps-bot", "organism-crawler-bot"]
+  - id: "div-iv"
+    name: "Document & Report"
+    bots: ["organism-docs-bot"]
+  - id: "div-v"
+    name: "Deploy & Operate"
+    bots: ["organism-deploy-bot"]
+  - id: "div-vi"
+    name: "Learn & Evolve"
+    bots: ["organism-learning-bot", "organism-economy-bot"]
+  - id: "div-vii"
+    name: "Command & Control"
+    bots: ["organism-alpha-bot"]
+
+# ── Escalation Policy ─────────────────────────────────────────────────────────
+escalation:
+  primary_human: "human://freddy"
+  risk_threshold: 0.618    # Escalate when risk_score > 1/PHI
+  block_threshold: 0.382   # Block when risk_score > 1/PHI^2
+  channels:
+    - type: github_issue
+      label: "organism-escalation"
+    - type: commit_comment
+      when: risk_score > 0.382
+
+# ── Sub-charter overrides allowed ─────────────────────────────────────────────
+allows_sub_charters: true
+sub_charter_constraints:
+  - "may_not_remove_limits"
+  - "may_not_increase_escalation_thresholds"
+  - "must_inherit_phi_constant"
