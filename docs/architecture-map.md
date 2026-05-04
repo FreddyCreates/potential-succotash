@@ -1,6 +1,6 @@
 # 🏛 Casa de Inteligencia — Architecture Map
 
-**Generated:** 2026-05-02T22:31:21.775Z
+**Generated:** 2026-05-04T05:11:41.711Z
 **Bot:** organism-docs-bot 📚
 
 ## System Overview
@@ -18,7 +18,7 @@
 ║         └──────────────┴────────────┴────────────────┘          ║
 ║                              │                                   ║
 ╠══════════════════════════════╪═══════════════════════════════════╣
-║  PROTOCOLS (16 intelligence protocols)                                 ║
+║  PROTOCOLS (36 intelligence protocols)                                 ║
 ║  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────────┐  ║
 ║  │ Routing  │ │ Memory   │ │ Security │ │   Resonance/PHI  │  ║
 ║  │ SRP·EMIP │ │ MLP·AKAP │ │ EIT·SCVP │ │      PRSP        │  ║
@@ -28,7 +28,7 @@
 ║  │   VSIP   │ │ OLP·OMP  │ │   MMFP   │ │  AGIP·SOCP       │  ║
 ║  └──────────┘ └──────────┘ └──────────┘ └──────────────────┘  ║
 ╠══════════════════════════════╪═══════════════════════════════════╣
-║  SDKs (11 capability surfaces)                                         ║
+║  SDKs (18 capability surfaces)                                         ║
 ║  ai-model-engines · intelligence-routing · sovereign-memory      ║
 ║  organism-runtime · organism-marketplace · enterprise-integration║
 ║  document-absorption · frontend-intelligence · windows-runtime   ║
@@ -57,35 +57,62 @@
 | Web App | HTML/JS | 1 |
 | CLI | Node.js | 1 |
 
-### 🔬 Protocols (16)
+### 🔬 Protocols (36)
 
 - `adaptive-knowledge-absorption-protocol`
+- `artifact-generation-protocol`
+- `attention-routing-protocol`
 - `auro-absorption-charter-protocol`
 - `auro-guardian-intelligence-protocol`
+- `auto-generate-calls-engine-protocol`
+- `cross-substrate-resonance-protocol`
 - `edge-mesh-intelligence-protocol`
+- `edge-sensor-protocol`
 - `encrypted-intelligence-transport`
+- `goal-stack-protocol`
+- `hebbian-learning-protocol`
+- `homeostatic-drive-protocol`
+- `kernel-execution-protocol`
+- `kuramoto-oscillator-protocol`
+- `memory-consolidation-protocol`
 - `memory-lineage-enhancement-protocol`
 - `memory-lineage-protocol`
+- `mini-brain-protocol`
+- `mini-heart-protocol`
 - `multi-model-fusion-protocol`
+- `neuro-emergence-protocol`
+- `neurochemistry-ode-protocol`
 - `organism-lifecycle-protocol`
 - `organism-marketplace-protocol`
 - `oro-engine-integration-protocol`
+- `pattern-synthesis-protocol`
 - `phi-resonance-sync-protocol`
+- `predictive-coding-protocol`
+- `reward-signal-protocol`
 - `sovereign-contract-verification-protocol`
 - `sovereign-offline-cognition-protocol`
 - `sovereign-routing-protocol`
+- `synapse-binding-engine-protocol`
 - `visual-scene-intelligence-protocol`
+- `vitality-homeostasis-protocol`
 
-### 📦 SDKs (11)
+### 📦 SDKs (18)
 
+- `agents`
 - `ai-model-engines`
 - `document-absorption-engine`
+- `engines`
 - `enterprise-integration-sdk`
 - `frontend-intelligence-models`
 - `intelligence-routing-sdk`
+- `medina-calls`
+- `medina-queries`
+- `medina-timers`
+- `organism-bootstrap`
 - `organism-marketplace`
 - `organism-runtime-sdk`
 - `register-ai`
+- `runtime`
 - `sovereign-memory-sdk`
 - `windows-desktop-sdk`
 - `windows-runtime-sdk`
