@@ -1,8 +1,8 @@
 # 🔄 organism-deps-bot — Dependency Health Report
 
-**Generated:** 2026-05-03T04:24:36.585Z
+**Generated:** 2026-05-04T09:11:08.561Z
 **Status:** ✅ HEALTHY
-**Packages:** 16 | **Total Deps:** 25
+**Packages:** 20 | **Total Deps:** 25
 
 ## Staleness Summary
 
@@ -27,6 +27,10 @@
 | **@medina/enterprise-integration-sdk** | 0 | 0 | 0.000 |
 | **@medina/frontend-intelligence-models** | 0 | 0 | 0.000 |
 | **@medina/intelligence-routing-sdk** | 0 | 0 | 0.000 |
+| **@medina/medina-calls** | 0 | 0 | 0.000 |
+| **@medina/medina-queries** | 0 | 0 | 0.000 |
+| **@medina/medina-timers** | 0 | 0 | 0.000 |
+| **@medina/organism-bootstrap** | 0 | 0 | 0.000 |
 | **@medina/organism-marketplace** | 0 | 0 | 0.000 |
 | **@medina/organism-runtime-sdk** | 0 | 0 | 0.000 |
 | **@medina/register-ai** | 0 | 0 | 0.000 |
@@ -55,6 +59,10 @@
 | **@medina/enterprise-integration-sdk** | — Not installed |
 | **@medina/frontend-intelligence-models** | — Not installed |
 | **@medina/intelligence-routing-sdk** | — Not installed |
+| **@medina/medina-calls** | — Not installed |
+| **@medina/medina-queries** | — Not installed |
+| **@medina/medina-timers** | — Not installed |
+| **@medina/organism-bootstrap** | — Not installed |
 | **@medina/organism-marketplace** | — Not installed |
 | **@medina/organism-runtime-sdk** | — Not installed |
 | **@medina/register-ai** | — Not installed |
