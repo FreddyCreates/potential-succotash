@@ -1,0 +1,65 @@
+{
+  "id": "atlas://registry/bots",
+  "class": "EntityRegistry",
+  "version": "2.0.0",
+  "created": "2026-05-03T00:00:00.000Z",
+  "description": "Atlas entity registry for all 17 organism bots + universal governance engine",
+  "totalEntities": 17,
+  "divisions": {
+    "Build & Package": ["organism-build-bot", "organism-sdk-bot", "organism-release-bot"],
+    "Validate & Test": ["organism-neural-bot", "organism-protocol-bot", "organism-test-bot", "organism-sandcastle-bot", "organism-visual-bot"],
+    "Secure & Monitor": ["organism-sentinel-bot", "organism-deps-bot", "organism-crawler-bot"],
+    "Document & Report": ["organism-docs-bot"],
+    "Deploy & Operate": ["organism-deploy-bot"],
+    "Learn & Evolve": ["organism-learning-bot", "organism-economy-bot"],
+    "Command & Control": ["organism-alpha-bot", "organism-governance-bot"]
+  },
+  "entities": [
+    "atlas://bot/organism-build-bot",
+    "atlas://bot/organism-sdk-bot",
+    "atlas://bot/organism-release-bot",
+    "atlas://bot/organism-neural-bot",
+    "atlas://bot/organism-protocol-bot",
+    "atlas://bot/organism-test-bot",
+    "atlas://bot/organism-sandcastle-bot",
+    "atlas://bot/organism-visual-bot",
+    "atlas://bot/organism-sentinel-bot",
+    "atlas://bot/organism-deps-bot",
+    "atlas://bot/organism-crawler-bot",
+    "atlas://bot/organism-docs-bot",
+    "atlas://bot/organism-deploy-bot",
+    "atlas://bot/organism-learning-bot",
+    "atlas://bot/organism-economy-bot",
+    "atlas://bot/organism-alpha-bot",
+    "atlas://bot/organism-governance-bot"
+  ],
+  "governance": {
+    "charter":         "atlas://organism/bot-fleet",
+    "universal_cycle": "pipeline://governance/default_cycle",
+    "domain_pipelines": {
+      "bot":      "pipeline://governance/bot_cycle",
+      "economy":  "pipeline://governance/economy_cycle",
+      "learning": "pipeline://governance/learning_cycle",
+      "topology": "pipeline://governance/topology_cycle",
+      "meta":     "pipeline://governance/meta_cycle"
+    },
+    "law_sets": [
+      "BOT_FLEET_SAFETY",
+      "ECONOMY_HEALTH",
+      "LEARNING_STABILITY",
+      "TOPOLOGY_INTEGRITY",
+      "META_EVOLUTION"
+    ],
+    "event_schema":    "atlas://schema/event/universal",
+    "event_store":     "dist/governance/events/",
+    "memory_store":    "governance/memory/",
+    "proposal_store":  "governance/proposals/"
+  },
+  "phi": 1.618033988749895,
+  "heartbeat_ms": 873,
+  "risk_thresholds": {
+    "block":    0.382,
+    "escalate": 0.618,
+    "emergence": 0.618
+  }
+}

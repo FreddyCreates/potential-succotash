@@ -1,0 +1,61 @@
+{
+  "evaluated": "2026-05-03T04:50:47.193Z",
+  "lawFiles": [
+    "bot-fleet.cpl-l",
+    "economy.cpl-l",
+    "learning.cpl-l",
+    "meta.cpl-l",
+    "topology.cpl-l"
+  ],
+  "totalLawChecks": 17,
+  "totalFired": 1,
+  "riskScore": "0.244",
+  "decisions": [
+    {
+      "lawSetId": "TOPOLOGY_INTEGRITY",
+      "ruleId": "TOPOLOGY_FILE_COUNT_DRIFT_ALERT",
+      "action": "WARN",
+      "target": "report",
+      "event": "evt-2026-05-03T04-50-47-185Z-006",
+      "entity": "atlas://bot/organism-crawler-bot",
+      "domain": "topology",
+      "ts": "2026-05-03T04:50:47.192Z"
+    },
+    {
+      "lawSetId": "TOPOLOGY_INTEGRITY",
+      "ruleId": "TOPOLOGY_FILE_COUNT_DRIFT_ALERT",
+      "action": "EMIT",
+      "target": "risk_event",
+      "event": "evt-2026-05-03T04-50-47-185Z-006",
+      "entity": "atlas://bot/organism-crawler-bot",
+      "domain": "topology",
+      "ts": "2026-05-03T04:50:47.192Z"
+    }
+  ],
+  "activeForbids": [],
+  "warnings": [
+    {
+      "lawSetId": "TOPOLOGY_INTEGRITY",
+      "ruleId": "TOPOLOGY_FILE_COUNT_DRIFT_ALERT",
+      "action": "WARN",
+      "target": "report",
+      "event": "evt-2026-05-03T04-50-47-185Z-006",
+      "entity": "atlas://bot/organism-crawler-bot",
+      "domain": "topology",
+      "ts": "2026-05-03T04:50:47.192Z"
+    }
+  ],
+  "escalations": [],
+  "emits": [
+    {
+      "lawSetId": "TOPOLOGY_INTEGRITY",
+      "ruleId": "TOPOLOGY_FILE_COUNT_DRIFT_ALERT",
+      "action": "EMIT",
+      "target": "risk_event",
+      "event": "evt-2026-05-03T04-50-47-185Z-006",
+      "entity": "atlas://bot/organism-crawler-bot",
+      "domain": "topology",
+      "ts": "2026-05-03T04:50:47.192Z"
+    }
+  ]
+}

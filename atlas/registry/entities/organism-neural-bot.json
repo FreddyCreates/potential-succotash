@@ -1,0 +1,20 @@
+{
+  "id": "atlas://bot/organism-neural-bot",
+  "name": "organism-neural-bot",
+  "class": "Bot",
+  "division": "Validate & Test",
+  "emoji": "🧠",
+  "domain": "Validate & Test",
+  "triggers": [
+    "push:protocols/",
+    "push:sdk/"
+  ],
+  "languages": [
+    "atlas://language/ocl",
+    "atlas://language/cil",
+    "atlas://language/ril"
+  ],
+  "governance_pipeline": "pipeline://governance/bot_cycle",
+  "created": "2026-05-03T00:00:00.000Z",
+  "version": "1.0.0"
+}

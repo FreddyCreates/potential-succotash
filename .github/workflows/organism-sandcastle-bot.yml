@@ -1,0 +1,75 @@
+# ============================================================================
+# 🏰 organism-sandcastle-bot — Sandboxed Build-Test-Land Pipeline
+#
+# Implements a full BTL (Build → Test → Land) gate for every push:
+#   - Isolated sandbox: fresh checkout, clean state, no side effects
+#   - Build gate: verifies the main extension and at least one SDK build clean
+#   - Test gate: runs the test suite in isolated environment
+#   - Protocol gate: lints protocols and checks for regressions
+#   - Land decision: PASS (safe to merge) / HOLD (needs review) / BLOCK (fail)
+#   - Generates docs/sandcastle-report.md with gate results
+#
+# Bot identity: organism-sandcastle-bot
+# Triggers: Every push to main + PRs
+# ============================================================================
+
+name: 🏰 organism-sandcastle-bot
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sandcastle:
+    name: 🏰 Sandcastle BTL Pipeline
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build gate
+        id: build-gate
+        run: node scripts/sandcastle-bot/build-gate.js
+
+      - name: Protocol gate
+        id: protocol-gate
+        run: node scripts/sandcastle-bot/protocol-gate.js
+
+      - name: Land decision
+        id: land-decision
+        run: node scripts/sandcastle-bot/land-decision.js
+
+      - name: Generate sandcastle report
+        run: node scripts/sandcastle-bot/generate-sandcastle-report.js
+
+      - name: Commit sandcastle report
+        if: github.event_name == 'push'
+        run: |
+          git config user.name "organism-sandcastle-bot"
+          git config user.email "organism-sandcastle-bot@users.noreply.github.com"
+          git add docs/sandcastle-report.md docs/sandcastle-history.json
+          if git diff --cached --quiet; then
+            echo "Sandcastle report unchanged"
+          else
+            git commit -m "🏰 organism-sandcastle-bot: update BTL gate report [skip ci]"
+            git push
+          fi
+
+      - name: Block on failure
+        if: failure()
+        run: |
+          echo "🏰 Sandcastle BLOCK: one or more gates failed — land denied"
+          exit 1

@@ -1,0 +1,87 @@
+# ============================================================================
+# 👑 organism-alpha-bot — Fleet Commander
+#
+# The commanding intelligence of the entire bot fleet. Alpha-bot:
+#   - Conducts a full fleet census (all 13 bots, workflows, scripts)
+#   - Monitors health of every bot workflow (structural integrity)
+#   - Enforces fleet-wide policy (git identity, checkout version, etc.)
+#   - Generates the authoritative fleet report at docs/fleet-report.md
+#   - Can dispatch any bot workflow via workflow_dispatch
+#
+# Bot identity: organism-alpha-bot
+# Triggers on: push to .github/workflows/, weekly on Monday
+# ============================================================================
+
+name: 👑 organism-alpha-bot
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'   # Weekly on Monday 06:00 UTC
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/**'
+      - 'scripts/**'
+      - '.github/workflows/organism-alpha-bot.yml'
+  workflow_dispatch:
+    inputs:
+      dispatch_bot:
+        description: 'Name of bot workflow to dispatch (e.g. organism-neural-bot)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  actions: write    # needed to dispatch other workflows
+
+jobs:
+  fleet-command:
+    name: 👑 Fleet Command
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fleet census
+        run: node scripts/alpha-bot/census.js
+
+      - name: Health check
+        run: node scripts/alpha-bot/health-check.js
+
+      - name: Generate fleet report
+        run: node scripts/alpha-bot/generate-fleet-report.js
+
+      - name: Dispatch bot workflow (if requested)
+        if: ${{ inputs.dispatch_bot != '' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const botWorkflow = '${{ inputs.dispatch_bot }}'.trim();
+            if (!botWorkflow) return;
+            const workflow = botWorkflow.endsWith('.yml') ? botWorkflow : botWorkflow + '.yml';
+            console.log(`👑 alpha-bot dispatching: ${workflow}`);
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: workflow,
+              ref: 'main',
+            });
+            console.log(`✅ Dispatched: ${workflow}`);
+
+      - name: Commit fleet report
+        run: |
+          git config user.name "organism-alpha-bot"
+          git config user.email "organism-alpha-bot@users.noreply.github.com"
+          git add docs/fleet-report.md docs/fleet-census.json
+          if git diff --cached --quiet; then
+            echo "Fleet report unchanged"
+          else
+            git commit -m "👑 organism-alpha-bot: update fleet report [skip ci]"
+            git push
+          fi

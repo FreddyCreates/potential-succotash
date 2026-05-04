@@ -1,0 +1,80 @@
+# ============================================================================
+# CPL-L — Economy Laws
+# id: ECONOMY_HEALTH
+# Applies to: organism-economy-bot + any entity with division == "Learn & Evolve"
+# ============================================================================
+
+id: "ECONOMY_HEALTH"
+class: LawSet
+version: "1.0.0"
+created: "2026-05-03T00:00:00.000Z"
+author: "organism-alpha-bot"
+charter_ref: "atlas://organism/bot-fleet"
+domain: "economy"
+pipeline_ref: "pipeline://governance/economy_cycle"
+
+description: |
+  Economy laws govern marketplace analytics, SDK coverage health,
+  and economy-bot event responses. PHI-normalized thresholds throughout.
+
+laws:
+
+  - id: "ECONOMY_LOW_COVERAGE_ALERT"
+    subject: "atlas://bot/organism-economy-bot"
+    name: "Alert when SDK/protocol coverage is low"
+    priority: 2    # MEDIUM
+    when: 'context.metrics.coverageRatio < 0.382'   # below 1/PHI^2
+    then:
+      - action: WARN
+        target: report
+        reason: "Economy coverage below phi-floor (0.382)"
+      - action: EMIT
+        target: risk_event
+        payload: { severity: medium, type: economy_low_coverage }
+
+  - id: "ECONOMY_HIGH_RISK_BLOCK"
+    subject: "atlas://bot/organism-economy-bot"
+    name: "Block economy actions on high risk score"
+    priority: 1    # HIGH
+    when: 'context.risk_score > 0.618'   # above 1/PHI
+    then:
+      - action: FORBID
+        target: marketplace_publish
+        reason: "Economy risk above phi-threshold (0.618)"
+      - action: ESCALATE
+        target: "human://freddy"
+      - action: EMIT
+        target: risk_event
+        payload: { severity: high, type: economy_high_risk }
+
+  - id: "ECONOMY_PHI_SCORE_WATCH"
+    subject: "atlas://bot/organism-economy-bot"
+    name: "Monitor phi composite score"
+    priority: 3    # LOW (informational)
+    when: 'context.phi_score < 0.5'
+    then:
+      - action: WARN
+        target: report
+        reason: "Economy phi-score below 0.5 — complexity growing faster than coverage"
+      - action: EMIT
+        target: risk_event
+        payload: { severity: low, type: economy_phi_drift }
+
+  - id: "ECONOMY_STALENESS_BLOCK"
+    subject: "atlas://bot/organism-deps-bot"
+    name: "Block deploy when critical deps are stale/vulnerable"
+    priority: 0    # CRITICAL
+    when: 'context.findings.criticalCves > 0 || context.metrics.staleness_critical > 5'
+    then:
+      - action: FORBID
+        target: deploy
+        reason: "Critical CVE or excessive stale deps — deploy blocked"
+      - action: REQUIRE
+        target: human_review
+        arg: security_team
+      - action: EMIT
+        target: risk_event
+        payload: { severity: critical, type: economy_stale_critical }
+
+evaluation_order: priority_ascending
+short_circuit_on_forbid: true

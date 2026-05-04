@@ -1,0 +1,23 @@
+{
+  "id": "evt-2026-05-03T04-50-47-184Z-003",
+  "entity_id": "atlas://bot/organism-learning-bot",
+  "op": "learning_cycle_completed",
+  "ts": "2026-05-03T04:50:47.184Z",
+  "context": {
+    "status": "pass",
+    "risk_score": 0.08,
+    "emergence_level": 0.45,
+    "metrics": {
+      "synapseCount": 42,
+      "signalCount": 38,
+      "tdWeight": 0.618,
+      "cycleDurationMs": 820
+    }
+  },
+  "tags": [
+    "bot",
+    "learning",
+    "division-vi"
+  ],
+  "schema_version": "1.0.0"
+}

@@ -1,0 +1,244 @@
+{
+  "generated": "2026-05-02T22:31:10.971Z",
+  "bot": "organism-sdk-bot",
+  "totalSDKs": 11,
+  "publishableSDKs": 11,
+  "sdks": [
+    {
+      "slug": "ai-model-engines",
+      "name": "@medina/ai-model-engines",
+      "version": "1.0.0",
+      "description": "AI model family registry, alpha resolver, capability matrix, and organism wiring engine — routes intelligence through 40 AI families to the sovereign frontend organism",
+      "main": "src/index.js",
+      "license": "MIT",
+      "keywords": [
+        "ai-model-engines",
+        "intelligence-routing",
+        "model-families",
+        "alpha-resolver",
+        "sovereign-intelligence",
+        "organism-wiring"
+      ],
+      "dependencies": [],
+      "peerDependencies": [],
+      "srcFileCount": 6,
+      "publishable": true
+    },
+    {
+      "slug": "document-absorption-engine",
+      "name": "@medina/document-absorption-engine",
+      "version": "1.0.0",
+      "description": "Document intake, extraction, and knowledge absorption — turning raw documents into structured intelligence.",
+      "main": "src/index.js",
+      "license": "MIT",
+      "keywords": [
+        "document",
+        "absorption",
+        "extraction",
+        "knowledge-graph",
+        "intelligence"
+      ],
+      "dependencies": [],
+      "peerDependencies": [],
+      "srcFileCount": 6,
+      "publishable": true
+    },
+    {
+      "slug": "enterprise-integration-sdk",
+      "name": "@medina/enterprise-integration-sdk",
+      "version": "1.0.0",
+      "description": "Plug any enterprise into a sovereign intelligence substrate — company onboarding, connector templates, campaign management, multi-channel messaging, and export pipelines.",
+      "main": "src/index.js",
+      "license": "MIT",
+      "keywords": [
+        "enterprise",
+        "integration",
+        "connectors",
+        "onboarding",
+        "campaign",
+        "messaging",
+        "export",
+        "sovereign-intelligence"
+      ],
+      "dependencies": [],
+      "peerDependencies": [],
+      "srcFileCount": 5,
+      "publishable": true
+    },
+    {
+      "slug": "frontend-intelligence-models",
+      "name": "@medina/frontend-intelligence-models",
+      "version": "1.0.0",
+      "description": "30 front-end technology AI models — each with 5 intelligence uses — wired as 24-hour autonomous organisms into the sovereign frontend runtime",
+      "main": "src/index.js",
+      "license": "MIT",
+      "keywords": [
+        "frontend-intelligence",
+        "autonomous-models",
+        "multimodal-families",
+        "sovereign-organism",
+        "24-hour-runtime",
+        "phi-encoded",
+        "intelligence-fracture"
+      ],
+      "dependencies": [],
+      "peerDependencies": [],
+      "srcFileCount": 5,
+      "publishable": true
+    },
+    {
+      "slug": "intelligence-routing-sdk",
+      "name": "@medina/intelligence-routing-sdk",
+      "version": "1.0.0",
+      "description": "Intelligent task routing for AI workforces — model router, command parser, terminal dispatch, Intelligence Wire, workforce routing",
+      "main": "src/index.js",
+      "license": "MIT",
+      "keywords": [
+        "ai",
+        "routing",
+        "intelligence",
+        "workforce",
+        "orchestration",
+        "model-router",
+        "terminal-dispatch"
+      ],
+      "dependencies": [],
+      "peerDependencies": [],
+      "srcFileCount": 6,
+      "publishable": true
+    },
+    {
+      "slug": "organism-marketplace",
+      "name": "@medina/organism-marketplace",
+      "version": "1.0.0",
+      "description": "Callable tool marketplace for the sovereign organism — 24 VOIS tools across 4 families (Crawling, Context, Commander, Sentry), registry, routing, invocation, settlement, and family template generator.",
+      "main": "src/index.js",
+      "license": "MIT",
+      "keywords": [
+        "marketplace",
+        "callable-tools",
+        "registry",
+        "routing",
+        "settlement",
+        "organism",
+        "VOIS",
+        "sovereign",
+        "family-profiles",
+        "crawling",
+        "context",
+        "commander",
+        "sentry"
+      ],
+      "dependencies": [],
+      "peerDependencies": [],
+      "srcFileCount": 8,
+      "publishable": true
+    },
+    {
+      "slug": "organism-runtime-sdk",
+      "name": "@medina/organism-runtime-sdk",
+      "version": "1.0.0",
+      "description": "A living runtime for autonomous AI systems — the organism IS the computation",
+      "main": "src/index.js",
+      "license": "MIT",
+      "keywords": [
+        "organism",
+        "runtime",
+        "autonomous",
+        "AI",
+        "heartbeat",
+        "kernel",
+        "edge",
+        "resonance",
+        "state-management"
+      ],
+      "dependencies": [],
+      "peerDependencies": [],
+      "srcFileCount": 6,
+      "publishable": true
+    },
+    {
+      "slug": "register-ai",
+      "name": "@medina/register-ai",
+      "version": "1.0.0",
+      "description": "Register AI — Builder Family SDK. The organism's native build intelligence: scans, validates, packages, and deploys extensions via autonomous in-browser AI with Web Workers and browser Observers.",
+      "main": "src/index.js",
+      "license": "MIT",
+      "keywords": [
+        "register-ai",
+        "builder",
+        "extension-builder",
+        "web-worker",
+        "observer",
+        "organism",
+        "sovereign"
+      ],
+      "dependencies": [],
+      "peerDependencies": [],
+      "srcFileCount": 3,
+      "publishable": true
+    },
+    {
+      "slug": "sovereign-memory-sdk",
+      "name": "@medina/sovereign-memory-sdk",
+      "version": "1.0.0",
+      "description": "Enterprise memory that never forgets — spatial memory storage, dual-layer search, lineage tracking, and φ-encoded coordinate generation.",
+      "main": "src/index.js",
+      "license": "MIT",
+      "keywords": [
+        "memory",
+        "spatial",
+        "phi",
+        "resonance",
+        "lineage",
+        "living-document"
+      ],
+      "dependencies": [],
+      "peerDependencies": [],
+      "srcFileCount": 6,
+      "publishable": true
+    },
+    {
+      "slug": "windows-desktop-sdk",
+      "name": "@medina/windows-desktop-sdk",
+      "version": "1.0.0",
+      "description": "Windows Desktop integration SDK — sovereign organism intelligence for Win32, WinUI, system tray, and native notifications",
+      "main": "src/index.js",
+      "license": "MIT",
+      "keywords": [
+        "ai",
+        "sovereign",
+        "intelligence",
+        "windows",
+        "desktop",
+        "win32",
+        "winui"
+      ],
+      "dependencies": [],
+      "peerDependencies": [],
+      "srcFileCount": 6,
+      "publishable": true
+    },
+    {
+      "slug": "windows-runtime-sdk",
+      "name": "@medina/windows-runtime-sdk",
+      "version": "1.0.0",
+      "description": "Windows Runtime SDK — sovereign organism intelligence for WinRT, background tasks, App Services, and Windows APIs",
+      "main": "src/index.js",
+      "license": "MIT",
+      "keywords": [
+        "ai",
+        "sovereign",
+        "intelligence",
+        "windows",
+        "runtime",
+        "winrt",
+        "uwp"
+      ],
+      "dependencies": [],
+      "peerDependencies": [],
+      "srcFileCount": 6,
+      "publishable": true
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+[
+  {
+    "timestamp": "2026-05-03T04:25:03.397Z",
+    "decision": "PASS",
+    "reason": "All 2 gates passed",
+    "riskScore": "0.000",
+    "gates": [
+      "build:pass",
+      "protocol:pass"
+    ]
+  }
+]

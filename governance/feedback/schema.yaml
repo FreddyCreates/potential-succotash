@@ -1,0 +1,105 @@
+# ============================================================================
+# Human Feedback Schema
+# governance/feedback/schema.yaml
+#
+# Defines the structure for human feedback records that override or annotate
+# bot governance decisions. The governance cycle ingests these records and
+# the Meta Engine uses patterns to suggest law improvements.
+# ============================================================================
+
+schema_version: "1.0.0"
+class: HumanFeedbackSchema
+created: "2026-05-03T00:00:00.000Z"
+
+description: |
+  When a bot is blocked, held, or escalated by the governance engine,
+  a human may override the decision by creating a feedback file in
+  governance/feedback/records/. The governance cycle will:
+    1. Ingest the feedback record
+    2. Tag the original decision as overridden
+    3. Allow the Meta Engine to detect recurring override patterns
+    4. Optionally propose a law relaxation if the pattern repeats N times
+
+fields:
+
+  id:
+    type: string
+    format: "fb-YYYY-MM-DD-NNN"
+    required: true
+    description: "Unique feedback ID (date + sequence number)"
+    example: "fb-2026-05-03-001"
+
+  actor:
+    type: string
+    format: "human://<username>"
+    required: true
+    description: "The human who created this feedback"
+    example: "human://freddy"
+
+  timestamp:
+    type: string
+    format: ISO-8601
+    required: true
+    description: "When the feedback was created"
+
+  target:
+    type: object
+    required: true
+    fields:
+      type:
+        type: enum
+        values: [decision, law, pipeline_step, bot_action]
+        required: true
+      entity:
+        type: string
+        format: "atlas://bot/<bot-name>"
+        required: true
+      law_id:
+        type: string
+        description: "The law ID that produced the contested decision"
+      rule_name:
+        type: string
+        description: "The specific rule name within the law"
+      cycle_id:
+        type: string
+        description: "The governance cycle ID where the decision was made"
+
+  decision:
+    type: object
+    required: true
+    fields:
+      system:
+        type: enum
+        values: [FORBID, WARN, ESCALATE, HOLD, BLOCK]
+        description: "What the governance system decided"
+      human:
+        type: enum
+        values: [ALLOW, FORBID, WARN, ESCALATE, DEFER]
+        description: "What the human is overriding to"
+
+  rationale:
+    type: string
+    required: true
+    min_length: 20
+    description: "Why the human is overriding the system decision"
+
+  suggest_law_change:
+    type: boolean
+    default: false
+    description: "Whether the Meta Engine should consider a law relaxation proposal"
+
+  tags:
+    type: array
+    items: string
+    description: "Optional tags for categorization"
+    examples:
+      - "flaky-test"
+      - "docs-only-change"
+      - "known-false-positive"
+      - "emergency-override"
+
+# ── Meta Engine thresholds ────────────────────────────────────────────────────
+meta_engine:
+  propose_law_relaxation_after_n_overrides: 3
+  propose_new_bot_after_n_escalations: 5
+  flag_pattern_after_n_identical_feedbacks: 2

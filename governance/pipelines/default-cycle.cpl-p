@@ -1,0 +1,189 @@
+# ============================================================================
+# CPL-P — Universal Default Governance Cycle
+# id: pipeline://governance/default_cycle
+#
+# The universal governance pattern that all domain-specific pipelines inherit.
+# Every entity in Atlas — bots, agents, organisms, realms — runs this cycle.
+# Domain cycles (bot_cycle, economy_cycle, etc.) specialize it.
+# ============================================================================
+
+id: "pipeline://governance/default_cycle"
+class: GovernancePipeline
+version: "1.0.0"
+created: "2026-05-03T00:00:00.000Z"
+author: "organism-alpha-bot"
+charter_ref: "atlas://organism/bot-fleet"
+
+description: |
+  Universal Atlas governance cycle. All entities plug into this.
+  Domain pipelines reference this as their base pattern.
+  Steps: ingest → group → apply_laws → run_pipelines → update_memory → meta → organisms → feedback.
+
+# ── Universal steps (all domain pipelines inherit these) ──────────────────────
+steps:
+
+  - id: "ingest_events"
+    name: "Ingest Events"
+    use: "governance.ingest_events"
+    description: |
+      Read all events from dist/governance/events/*.json.
+      Validate each against the universal event schema.
+      Discard malformed events (log to governance/errors/).
+    outputs:
+      - context.events[]
+      - context.eventCount
+      - context.errorCount
+
+  - id: "group_events"
+    name: "Group by Entity / Division / Domain"
+    use: "governance.group_events"
+    description: |
+      Group events by:
+        - entity_id (bot, agent, organism)
+        - division (Build/Validate/Secure/Docs/Deploy/Learn/Command)
+        - domain (bot, economy, learning, topology, meta, ...)
+        - tags (routing hints)
+    outputs:
+      - context.byEntity{}
+      - context.byDivision{}
+      - context.byDomain{}
+
+  - id: "apply_laws"
+    name: "Apply CPL-L Laws"
+    use: "governance.apply_cpl_l"
+    description: |
+      Load all CPL-L law files from governance/laws/*.cpl-l.
+      For each event group: evaluate all matching laws.
+      Produce decision list: ALLOW / FORBID / WARN / ESCALATE / EMIT / REQUIRE.
+    outputs:
+      - context.decisions[]
+      - context.activeForbids[]
+      - context.warnings[]
+      - context.escalations[]
+      - context.emits[]
+
+  - id: "calculate_risk"
+    name: "Calculate Phi-Risk Score"
+    use: "governance.calculate_phi_risk"
+    description: |
+      Phi-normalized risk: risk = 1 - 1/(1 + PHI × rawRisk)
+      Block threshold: 1/PHI² ≈ 0.382
+      Escalate threshold: 1/PHI ≈ 0.618
+    outputs:
+      - context.riskScore    # 0.0–1.0
+
+  - id: "run_domain_pipelines"
+    name: "Run Domain-Specific Pipelines"
+    use: "governance.run_domain_pipelines"
+    description: |
+      Dispatch events to their domain pipeline:
+        bot domain     → pipeline://governance/bot_cycle
+        economy domain → pipeline://governance/economy_cycle
+        learning domain→ pipeline://governance/learning_cycle
+        topology domain→ pipeline://governance/topology_cycle
+        meta domain    → pipeline://governance/meta_cycle
+    outputs:
+      - context.domainResults{}
+
+  - id: "update_memory"
+    name: "Update Governance Memory"
+    use: "governance.update_memory"
+    description: |
+      Update all memory layers:
+        MML law stats:      governance/memory/law-stats.json
+        MML pipeline stats: governance/memory/pipeline-stats.json
+        RIL incidents:      governance/memory/ril.json
+        UEL evolution:      governance/memory/uel.json
+    outputs:
+      - governance/memory/law-stats.json
+      - governance/memory/pipeline-stats.json
+      - governance/memory/ril.json
+
+  - id: "run_meta_engine"
+    name: "Run Meta Engine"
+    use: "governance.run_meta_engine"
+    description: |
+      Meta Engine reads: law stats + pipeline stats + RIL + UEL.
+      Detects patterns. Emits evolution proposals when confidence >= 1/PHI.
+      Proposals written to governance/proposals/.
+    outputs:
+      - governance/proposals/
+
+  - id: "emit_narrative"
+    name: "Route to Organism Narratives"
+    use: "governance.emit_narrative"
+    description: |
+      ORACLE and GUARDIAN organisms consume decision summaries.
+      They produce human-readable narratives:
+        - ORACLE: "Here is what happened and why"
+        - GUARDIAN: "Here is what I blocked and what you should review"
+    outputs:
+      - docs/governance-narrative.md
+
+  - id: "process_feedback"
+    name: "Process Human Feedback"
+    use: "governance.process_feedback"
+    description: |
+      Read governance/feedback/records/*.yaml.
+      Tag overridden decisions.
+      Feed override patterns into Meta Engine input.
+    outputs:
+      - context.feedbackCount
+      - context.overridePatterns[]
+
+  - id: "persist_cycle"
+    name: "Persist Cycle Result"
+    use: "governance.persist_cycle"
+    description: |
+      Write cycle result to docs/governance-cycle.json.
+      Append to docs/governance-history.json (last 100 cycles).
+      Emit governance_cycle_completed event.
+    outputs:
+      - docs/governance-cycle.json
+      - docs/governance-history.json
+      - dist/governance/events/evt-governance-cycle-<ts>.json
+
+# ── Universal branches ────────────────────────────────────────────────────────
+branches:
+
+  - id: "if_critical_block"
+    when: 'context.activeForbids.length > 0 && context.riskScore > 0.9'
+    then:
+      type: BLOCK
+      target: all_pending_actions
+      notify: "human://freddy"
+
+  - id: "if_high_risk"
+    when: 'context.riskScore > 0.618'
+    then:
+      type: ESCALATE
+      target: "human://freddy"
+      channel: github_issue
+      label: organism-escalation
+
+  - id: "if_medium_risk"
+    when: 'context.riskScore > 0.382 && context.riskScore <= 0.618'
+    then:
+      type: WARN
+      target: commit_comment
+
+  - id: "if_emergence"
+    when: 'context.emergenceLevel >= 0.618'
+    then:
+      type: CELEBRATE
+      target: governance/memory/emergence-events.json
+
+  - id: "if_healthy"
+    when: 'context.riskScore <= 0.382 && context.activeForbids.length == 0'
+    then:
+      type: ALLOW
+      target: all_pending_actions
+
+# ── Error handling ─────────────────────────────────────────────────────────────
+on_error:
+  strategy: conservative
+  action: HOLD
+  notify: "human://freddy"
+
+phi: 1.618033988749895
+heartbeat_ms: 873

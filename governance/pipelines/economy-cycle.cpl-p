@@ -1,0 +1,80 @@
+# ============================================================================
+# CPL-P — Economy Governance Cycle
+# id: pipeline://governance/economy_cycle
+# Specializes: pipeline://governance/default_cycle
+# Domain: economy (organism-economy-bot, organism-deps-bot, marketplace events)
+# ============================================================================
+
+id: "pipeline://governance/economy_cycle"
+class: GovernancePipeline
+version: "1.0.0"
+created: "2026-05-03T00:00:00.000Z"
+author: "organism-alpha-bot"
+extends: "pipeline://governance/default_cycle"
+laws_ref: ["ECONOMY_HEALTH", "BOT_FLEET_SAFETY"]
+domain: economy
+
+description: |
+  Economy governance cycle. Handles marketplace analytics, dependency health,
+  SDK coverage scoring, and economy-specific law enforcement.
+  PHI-normalized throughout.
+
+# ── Economy-specific steps (prepended before universal steps) ─────────────────
+steps:
+
+  - id: "load_economy_state"
+    name: "Load Economy State"
+    use: "economy.load_state"
+    description: |
+      Load: docs/economy-data.json, docs/deps-data.json, docs/sdk-registry.json.
+      Compute: coverageRatio, phiScore, stalenessScore, marketplaceAssets.
+    outputs:
+      - context.economyState
+      - context.coverageRatio
+      - context.phiScore
+
+  - id: "apply_economy_laws"
+    name: "Apply Economy Laws (ECONOMY_HEALTH)"
+    use: "governance.apply_cpl_l"
+    law_set: "ECONOMY_HEALTH"
+    outputs:
+      - context.economyDecisions[]
+      - context.economyForbids[]
+
+  - id: "score_marketplace"
+    name: "Score Marketplace Health"
+    use: "economy.score_marketplace"
+    description: |
+      Compute phi-weighted marketplace score:
+        score = (coverage × PHI + sdk_health × PHI² + dep_health) / (PHI² + PHI + 1)
+    outputs:
+      - context.marketplaceScore
+      - context.riskScore
+
+  - id: "generate_economy_report"
+    name: "Generate Economy Report"
+    use: "economy.generate_report"
+    outputs:
+      - docs/economy-dashboard.md
+      - dist/governance/events/evt-economy-<ts>.json
+
+# Economy-specific branches
+branches:
+
+  - id: "if_marketplace_publish_blocked"
+    when: 'context.economyForbids.includes("marketplace_publish")'
+    then:
+      type: HOLD
+      target: marketplace_publish
+      notify: "human://freddy"
+      reason: "Marketplace publish blocked by ECONOMY_HEALTH law"
+
+  - id: "if_low_coverage"
+    when: 'context.coverageRatio < 0.382'
+    then:
+      type: WARN
+      target: report
+      reason: "Economy coverage below phi-floor — SDK/protocol gap detected"
+
+phi: 1.618033988749895
+heartbeat_ms: 873

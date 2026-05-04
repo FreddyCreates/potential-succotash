@@ -1,0 +1,40 @@
+{
+  "generated": "2026-05-03T04:24:36.585Z",
+  "bot": "organism-deps-bot",
+  "totalPackages": 16,
+  "totalDeps": 25,
+  "stalenessSummary": {
+    "critical": 0,
+    "stale": 0,
+    "monitor": 0,
+    "fresh": 25
+  },
+  "auditTotal": 0,
+  "topRiskPackages": [
+    {
+      "name": "@medina/sovereign-organism",
+      "score": "0.195",
+      "criticalDeps": 0
+    },
+    {
+      "name": "@medina/organism-runtime-typescript",
+      "score": "0.195",
+      "criticalDeps": 0
+    },
+    {
+      "name": "vigil-ai-desktop",
+      "score": "0.098",
+      "criticalDeps": 0
+    },
+    {
+      "name": "jarvis-ai",
+      "score": "0.011",
+      "criticalDeps": 0
+    },
+    {
+      "name": "organism-cli",
+      "score": "0.000",
+      "criticalDeps": 0
+    }
+  ]
+}

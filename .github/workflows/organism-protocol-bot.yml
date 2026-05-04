@@ -1,0 +1,60 @@
+# ============================================================================
+# 🔬 organism-protocol-bot — Protocol Integrity Guardian
+#
+# Lints every protocol file:
+#   - Checks required exports and PHI/HEARTBEAT constants
+#   - Categorizes by domain (neural/memory/routing/transport/security/etc.)
+#   - Detects circular dependencies between protocols
+#   - Generates a protocol encyclopedia at docs/protocol-encyclopedia.md
+#
+# Bot identity: organism-protocol-bot
+# Triggers on: push to protocols/
+# ============================================================================
+
+name: 🔬 organism-protocol-bot
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'protocols/**'
+      - '.github/workflows/organism-protocol-bot.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  protocol-integrity:
+    name: 🔬 Protocol Integrity Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Lint all protocols
+        run: node scripts/protocol-bot/lint-protocols.js
+
+      - name: Detect circular dependencies
+        run: node scripts/protocol-bot/detect-circular-deps.js
+
+      - name: Generate protocol encyclopedia
+        run: node scripts/protocol-bot/generate-encyclopedia.js
+
+      - name: Commit encyclopedia and report
+        run: |
+          git config user.name "organism-protocol-bot"
+          git config user.email "organism-protocol-bot@users.noreply.github.com"
+          git add docs/protocol-encyclopedia.md docs/protocol-report.json
+          if git diff --cached --quiet; then
+            echo "Protocol docs unchanged"
+          else
+            git commit -m "🔬 organism-protocol-bot: update protocol encyclopedia [skip ci]"
+            git push
+          fi

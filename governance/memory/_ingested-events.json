@@ -1,0 +1,692 @@
+{
+  "ingested": "2026-05-03T04:50:47.187Z",
+  "eventCount": 6,
+  "errorCount": 0,
+  "events": [
+    {
+      "id": "evt-2026-05-03T04-50-47-184Z-001",
+      "entity_id": "atlas://bot/organism-alpha-bot",
+      "op": "fleet_census_completed",
+      "ts": "2026-05-03T04:50:47.184Z",
+      "context": {
+        "status": "pass",
+        "risk_score": 0.05,
+        "health_dashboard": {
+          "overall": "green",
+          "healthy": 16,
+          "degraded": 0,
+          "total": 16
+        },
+        "fleet_health_ratio": 1,
+        "metrics": {
+          "totalBots": 16,
+          "totalScripts": 43,
+          "healthRatio": 1
+        }
+      },
+      "tags": [
+        "bot",
+        "alpha",
+        "census",
+        "division-vii"
+      ],
+      "schema_version": "1.0.0",
+      "_domain": "bot",
+      "_division": "Command & Control",
+      "_file": "evt-2026-05-03T04-50-47-184Z-001.json"
+    },
+    {
+      "id": "evt-2026-05-03T04-50-47-184Z-002",
+      "entity_id": "atlas://bot/organism-sentinel-bot",
+      "op": "security_audit_completed",
+      "ts": "2026-05-03T04:50:47.184Z",
+      "context": {
+        "status": "pass",
+        "risk_score": 0.1,
+        "findings": {
+          "secretsFound": 0,
+          "permissionWarnings": 8,
+          "criticalCves": 0
+        },
+        "sentinel_status": "clean"
+      },
+      "tags": [
+        "bot",
+        "sentinel",
+        "security",
+        "division-iii"
+      ],
+      "schema_version": "1.0.0",
+      "_domain": "security",
+      "_division": "Secure & Monitor",
+      "_file": "evt-2026-05-03T04-50-47-184Z-002.json"
+    },
+    {
+      "id": "evt-2026-05-03T04-50-47-184Z-003",
+      "entity_id": "atlas://bot/organism-learning-bot",
+      "op": "learning_cycle_completed",
+      "ts": "2026-05-03T04:50:47.184Z",
+      "context": {
+        "status": "pass",
+        "risk_score": 0.08,
+        "emergence_level": 0.45,
+        "metrics": {
+          "synapseCount": 42,
+          "signalCount": 38,
+          "tdWeight": 0.618,
+          "cycleDurationMs": 820
+        }
+      },
+      "tags": [
+        "bot",
+        "learning",
+        "division-vi"
+      ],
+      "schema_version": "1.0.0",
+      "_domain": "learning",
+      "_division": "Learn & Evolve",
+      "_file": "evt-2026-05-03T04-50-47-184Z-003.json"
+    },
+    {
+      "id": "evt-2026-05-03T04-50-47-184Z-004",
+      "entity_id": "atlas://bot/organism-economy-bot",
+      "op": "economy_scan_completed",
+      "ts": "2026-05-03T04:50:47.184Z",
+      "context": {
+        "status": "pass",
+        "risk_score": 0.12,
+        "phi_score": 0.73,
+        "metrics": {
+          "coverageRatio": 0.81,
+          "totalAssets": 72,
+          "sdkCount": 11
+        }
+      },
+      "tags": [
+        "bot",
+        "economy",
+        "division-vi"
+      ],
+      "schema_version": "1.0.0",
+      "_domain": "economy",
+      "_division": "Learn & Evolve",
+      "_file": "evt-2026-05-03T04-50-47-184Z-004.json"
+    },
+    {
+      "id": "evt-2026-05-03T04-50-47-184Z-005",
+      "entity_id": "atlas://bot/organism-sandcastle-bot",
+      "op": "ci_run_completed",
+      "ts": "2026-05-03T04:50:47.184Z",
+      "context": {
+        "status": "pass",
+        "risk_score": 0.02,
+        "sandcastle_decision": "PASS",
+        "gate_failures": 0,
+        "metrics": {
+          "gatesPassed": 2,
+          "gatesFailed": 0
+        }
+      },
+      "tags": [
+        "bot",
+        "sandcastle",
+        "division-ii"
+      ],
+      "schema_version": "1.0.0",
+      "_domain": "bot",
+      "_division": "Validate & Test",
+      "_file": "evt-2026-05-03T04-50-47-184Z-005.json"
+    },
+    {
+      "id": "evt-2026-05-03T04-50-47-185Z-006",
+      "entity_id": "atlas://bot/organism-crawler-bot",
+      "op": "topology_crawl_completed",
+      "ts": "2026-05-03T04:50:47.185Z",
+      "context": {
+        "status": "pass",
+        "risk_score": 0.1,
+        "findings": {
+          "circularDeps": 0
+        },
+        "metrics": {
+          "fileCount": 803,
+          "coverageRatio": 0.88,
+          "unreachableProtocols": 0
+        }
+      },
+      "tags": [
+        "bot",
+        "crawler",
+        "topology",
+        "division-iii"
+      ],
+      "schema_version": "1.0.0",
+      "_domain": "topology",
+      "_division": "Secure & Monitor",
+      "_file": "evt-2026-05-03T04-50-47-185Z-006.json"
+    }
+  ],
+  "errors": [],
+  "byEntity": {
+    "atlas://bot/organism-alpha-bot": [
+      {
+        "id": "evt-2026-05-03T04-50-47-184Z-001",
+        "entity_id": "atlas://bot/organism-alpha-bot",
+        "op": "fleet_census_completed",
+        "ts": "2026-05-03T04:50:47.184Z",
+        "context": {
+          "status": "pass",
+          "risk_score": 0.05,
+          "health_dashboard": {
+            "overall": "green",
+            "healthy": 16,
+            "degraded": 0,
+            "total": 16
+          },
+          "fleet_health_ratio": 1,
+          "metrics": {
+            "totalBots": 16,
+            "totalScripts": 43,
+            "healthRatio": 1
+          }
+        },
+        "tags": [
+          "bot",
+          "alpha",
+          "census",
+          "division-vii"
+        ],
+        "schema_version": "1.0.0",
+        "_domain": "bot",
+        "_division": "Command & Control",
+        "_file": "evt-2026-05-03T04-50-47-184Z-001.json"
+      }
+    ],
+    "atlas://bot/organism-sentinel-bot": [
+      {
+        "id": "evt-2026-05-03T04-50-47-184Z-002",
+        "entity_id": "atlas://bot/organism-sentinel-bot",
+        "op": "security_audit_completed",
+        "ts": "2026-05-03T04:50:47.184Z",
+        "context": {
+          "status": "pass",
+          "risk_score": 0.1,
+          "findings": {
+            "secretsFound": 0,
+            "permissionWarnings": 8,
+            "criticalCves": 0
+          },
+          "sentinel_status": "clean"
+        },
+        "tags": [
+          "bot",
+          "sentinel",
+          "security",
+          "division-iii"
+        ],
+        "schema_version": "1.0.0",
+        "_domain": "security",
+        "_division": "Secure & Monitor",
+        "_file": "evt-2026-05-03T04-50-47-184Z-002.json"
+      }
+    ],
+    "atlas://bot/organism-learning-bot": [
+      {
+        "id": "evt-2026-05-03T04-50-47-184Z-003",
+        "entity_id": "atlas://bot/organism-learning-bot",
+        "op": "learning_cycle_completed",
+        "ts": "2026-05-03T04:50:47.184Z",
+        "context": {
+          "status": "pass",
+          "risk_score": 0.08,
+          "emergence_level": 0.45,
+          "metrics": {
+            "synapseCount": 42,
+            "signalCount": 38,
+            "tdWeight": 0.618,
+            "cycleDurationMs": 820
+          }
+        },
+        "tags": [
+          "bot",
+          "learning",
+          "division-vi"
+        ],
+        "schema_version": "1.0.0",
+        "_domain": "learning",
+        "_division": "Learn & Evolve",
+        "_file": "evt-2026-05-03T04-50-47-184Z-003.json"
+      }
+    ],
+    "atlas://bot/organism-economy-bot": [
+      {
+        "id": "evt-2026-05-03T04-50-47-184Z-004",
+        "entity_id": "atlas://bot/organism-economy-bot",
+        "op": "economy_scan_completed",
+        "ts": "2026-05-03T04:50:47.184Z",
+        "context": {
+          "status": "pass",
+          "risk_score": 0.12,
+          "phi_score": 0.73,
+          "metrics": {
+            "coverageRatio": 0.81,
+            "totalAssets": 72,
+            "sdkCount": 11
+          }
+        },
+        "tags": [
+          "bot",
+          "economy",
+          "division-vi"
+        ],
+        "schema_version": "1.0.0",
+        "_domain": "economy",
+        "_division": "Learn & Evolve",
+        "_file": "evt-2026-05-03T04-50-47-184Z-004.json"
+      }
+    ],
+    "atlas://bot/organism-sandcastle-bot": [
+      {
+        "id": "evt-2026-05-03T04-50-47-184Z-005",
+        "entity_id": "atlas://bot/organism-sandcastle-bot",
+        "op": "ci_run_completed",
+        "ts": "2026-05-03T04:50:47.184Z",
+        "context": {
+          "status": "pass",
+          "risk_score": 0.02,
+          "sandcastle_decision": "PASS",
+          "gate_failures": 0,
+          "metrics": {
+            "gatesPassed": 2,
+            "gatesFailed": 0
+          }
+        },
+        "tags": [
+          "bot",
+          "sandcastle",
+          "division-ii"
+        ],
+        "schema_version": "1.0.0",
+        "_domain": "bot",
+        "_division": "Validate & Test",
+        "_file": "evt-2026-05-03T04-50-47-184Z-005.json"
+      }
+    ],
+    "atlas://bot/organism-crawler-bot": [
+      {
+        "id": "evt-2026-05-03T04-50-47-185Z-006",
+        "entity_id": "atlas://bot/organism-crawler-bot",
+        "op": "topology_crawl_completed",
+        "ts": "2026-05-03T04:50:47.185Z",
+        "context": {
+          "status": "pass",
+          "risk_score": 0.1,
+          "findings": {
+            "circularDeps": 0
+          },
+          "metrics": {
+            "fileCount": 803,
+            "coverageRatio": 0.88,
+            "unreachableProtocols": 0
+          }
+        },
+        "tags": [
+          "bot",
+          "crawler",
+          "topology",
+          "division-iii"
+        ],
+        "schema_version": "1.0.0",
+        "_domain": "topology",
+        "_division": "Secure & Monitor",
+        "_file": "evt-2026-05-03T04-50-47-185Z-006.json"
+      }
+    ]
+  },
+  "byDivision": {
+    "Command & Control": [
+      {
+        "id": "evt-2026-05-03T04-50-47-184Z-001",
+        "entity_id": "atlas://bot/organism-alpha-bot",
+        "op": "fleet_census_completed",
+        "ts": "2026-05-03T04:50:47.184Z",
+        "context": {
+          "status": "pass",
+          "risk_score": 0.05,
+          "health_dashboard": {
+            "overall": "green",
+            "healthy": 16,
+            "degraded": 0,
+            "total": 16
+          },
+          "fleet_health_ratio": 1,
+          "metrics": {
+            "totalBots": 16,
+            "totalScripts": 43,
+            "healthRatio": 1
+          }
+        },
+        "tags": [
+          "bot",
+          "alpha",
+          "census",
+          "division-vii"
+        ],
+        "schema_version": "1.0.0",
+        "_domain": "bot",
+        "_division": "Command & Control",
+        "_file": "evt-2026-05-03T04-50-47-184Z-001.json"
+      }
+    ],
+    "Secure & Monitor": [
+      {
+        "id": "evt-2026-05-03T04-50-47-184Z-002",
+        "entity_id": "atlas://bot/organism-sentinel-bot",
+        "op": "security_audit_completed",
+        "ts": "2026-05-03T04:50:47.184Z",
+        "context": {
+          "status": "pass",
+          "risk_score": 0.1,
+          "findings": {
+            "secretsFound": 0,
+            "permissionWarnings": 8,
+            "criticalCves": 0
+          },
+          "sentinel_status": "clean"
+        },
+        "tags": [
+          "bot",
+          "sentinel",
+          "security",
+          "division-iii"
+        ],
+        "schema_version": "1.0.0",
+        "_domain": "security",
+        "_division": "Secure & Monitor",
+        "_file": "evt-2026-05-03T04-50-47-184Z-002.json"
+      },
+      {
+        "id": "evt-2026-05-03T04-50-47-185Z-006",
+        "entity_id": "atlas://bot/organism-crawler-bot",
+        "op": "topology_crawl_completed",
+        "ts": "2026-05-03T04:50:47.185Z",
+        "context": {
+          "status": "pass",
+          "risk_score": 0.1,
+          "findings": {
+            "circularDeps": 0
+          },
+          "metrics": {
+            "fileCount": 803,
+            "coverageRatio": 0.88,
+            "unreachableProtocols": 0
+          }
+        },
+        "tags": [
+          "bot",
+          "crawler",
+          "topology",
+          "division-iii"
+        ],
+        "schema_version": "1.0.0",
+        "_domain": "topology",
+        "_division": "Secure & Monitor",
+        "_file": "evt-2026-05-03T04-50-47-185Z-006.json"
+      }
+    ],
+    "Learn & Evolve": [
+      {
+        "id": "evt-2026-05-03T04-50-47-184Z-003",
+        "entity_id": "atlas://bot/organism-learning-bot",
+        "op": "learning_cycle_completed",
+        "ts": "2026-05-03T04:50:47.184Z",
+        "context": {
+          "status": "pass",
+          "risk_score": 0.08,
+          "emergence_level": 0.45,
+          "metrics": {
+            "synapseCount": 42,
+            "signalCount": 38,
+            "tdWeight": 0.618,
+            "cycleDurationMs": 820
+          }
+        },
+        "tags": [
+          "bot",
+          "learning",
+          "division-vi"
+        ],
+        "schema_version": "1.0.0",
+        "_domain": "learning",
+        "_division": "Learn & Evolve",
+        "_file": "evt-2026-05-03T04-50-47-184Z-003.json"
+      },
+      {
+        "id": "evt-2026-05-03T04-50-47-184Z-004",
+        "entity_id": "atlas://bot/organism-economy-bot",
+        "op": "economy_scan_completed",
+        "ts": "2026-05-03T04:50:47.184Z",
+        "context": {
+          "status": "pass",
+          "risk_score": 0.12,
+          "phi_score": 0.73,
+          "metrics": {
+            "coverageRatio": 0.81,
+            "totalAssets": 72,
+            "sdkCount": 11
+          }
+        },
+        "tags": [
+          "bot",
+          "economy",
+          "division-vi"
+        ],
+        "schema_version": "1.0.0",
+        "_domain": "economy",
+        "_division": "Learn & Evolve",
+        "_file": "evt-2026-05-03T04-50-47-184Z-004.json"
+      }
+    ],
+    "Validate & Test": [
+      {
+        "id": "evt-2026-05-03T04-50-47-184Z-005",
+        "entity_id": "atlas://bot/organism-sandcastle-bot",
+        "op": "ci_run_completed",
+        "ts": "2026-05-03T04:50:47.184Z",
+        "context": {
+          "status": "pass",
+          "risk_score": 0.02,
+          "sandcastle_decision": "PASS",
+          "gate_failures": 0,
+          "metrics": {
+            "gatesPassed": 2,
+            "gatesFailed": 0
+          }
+        },
+        "tags": [
+          "bot",
+          "sandcastle",
+          "division-ii"
+        ],
+        "schema_version": "1.0.0",
+        "_domain": "bot",
+        "_division": "Validate & Test",
+        "_file": "evt-2026-05-03T04-50-47-184Z-005.json"
+      }
+    ]
+  },
+  "byDomain": {
+    "bot": [
+      {
+        "id": "evt-2026-05-03T04-50-47-184Z-001",
+        "entity_id": "atlas://bot/organism-alpha-bot",
+        "op": "fleet_census_completed",
+        "ts": "2026-05-03T04:50:47.184Z",
+        "context": {
+          "status": "pass",
+          "risk_score": 0.05,
+          "health_dashboard": {
+            "overall": "green",
+            "healthy": 16,
+            "degraded": 0,
+            "total": 16
+          },
+          "fleet_health_ratio": 1,
+          "metrics": {
+            "totalBots": 16,
+            "totalScripts": 43,
+            "healthRatio": 1
+          }
+        },
+        "tags": [
+          "bot",
+          "alpha",
+          "census",
+          "division-vii"
+        ],
+        "schema_version": "1.0.0",
+        "_domain": "bot",
+        "_division": "Command & Control",
+        "_file": "evt-2026-05-03T04-50-47-184Z-001.json"
+      },
+      {
+        "id": "evt-2026-05-03T04-50-47-184Z-005",
+        "entity_id": "atlas://bot/organism-sandcastle-bot",
+        "op": "ci_run_completed",
+        "ts": "2026-05-03T04:50:47.184Z",
+        "context": {
+          "status": "pass",
+          "risk_score": 0.02,
+          "sandcastle_decision": "PASS",
+          "gate_failures": 0,
+          "metrics": {
+            "gatesPassed": 2,
+            "gatesFailed": 0
+          }
+        },
+        "tags": [
+          "bot",
+          "sandcastle",
+          "division-ii"
+        ],
+        "schema_version": "1.0.0",
+        "_domain": "bot",
+        "_division": "Validate & Test",
+        "_file": "evt-2026-05-03T04-50-47-184Z-005.json"
+      }
+    ],
+    "security": [
+      {
+        "id": "evt-2026-05-03T04-50-47-184Z-002",
+        "entity_id": "atlas://bot/organism-sentinel-bot",
+        "op": "security_audit_completed",
+        "ts": "2026-05-03T04:50:47.184Z",
+        "context": {
+          "status": "pass",
+          "risk_score": 0.1,
+          "findings": {
+            "secretsFound": 0,
+            "permissionWarnings": 8,
+            "criticalCves": 0
+          },
+          "sentinel_status": "clean"
+        },
+        "tags": [
+          "bot",
+          "sentinel",
+          "security",
+          "division-iii"
+        ],
+        "schema_version": "1.0.0",
+        "_domain": "security",
+        "_division": "Secure & Monitor",
+        "_file": "evt-2026-05-03T04-50-47-184Z-002.json"
+      }
+    ],
+    "learning": [
+      {
+        "id": "evt-2026-05-03T04-50-47-184Z-003",
+        "entity_id": "atlas://bot/organism-learning-bot",
+        "op": "learning_cycle_completed",
+        "ts": "2026-05-03T04:50:47.184Z",
+        "context": {
+          "status": "pass",
+          "risk_score": 0.08,
+          "emergence_level": 0.45,
+          "metrics": {
+            "synapseCount": 42,
+            "signalCount": 38,
+            "tdWeight": 0.618,
+            "cycleDurationMs": 820
+          }
+        },
+        "tags": [
+          "bot",
+          "learning",
+          "division-vi"
+        ],
+        "schema_version": "1.0.0",
+        "_domain": "learning",
+        "_division": "Learn & Evolve",
+        "_file": "evt-2026-05-03T04-50-47-184Z-003.json"
+      }
+    ],
+    "economy": [
+      {
+        "id": "evt-2026-05-03T04-50-47-184Z-004",
+        "entity_id": "atlas://bot/organism-economy-bot",
+        "op": "economy_scan_completed",
+        "ts": "2026-05-03T04:50:47.184Z",
+        "context": {
+          "status": "pass",
+          "risk_score": 0.12,
+          "phi_score": 0.73,
+          "metrics": {
+            "coverageRatio": 0.81,
+            "totalAssets": 72,
+            "sdkCount": 11
+          }
+        },
+        "tags": [
+          "bot",
+          "economy",
+          "division-vi"
+        ],
+        "schema_version": "1.0.0",
+        "_domain": "economy",
+        "_division": "Learn & Evolve",
+        "_file": "evt-2026-05-03T04-50-47-184Z-004.json"
+      }
+    ],
+    "topology": [
+      {
+        "id": "evt-2026-05-03T04-50-47-185Z-006",
+        "entity_id": "atlas://bot/organism-crawler-bot",
+        "op": "topology_crawl_completed",
+        "ts": "2026-05-03T04:50:47.185Z",
+        "context": {
+          "status": "pass",
+          "risk_score": 0.1,
+          "findings": {
+            "circularDeps": 0
+          },
+          "metrics": {
+            "fileCount": 803,
+            "coverageRatio": 0.88,
+            "unreachableProtocols": 0
+          }
+        },
+        "tags": [
+          "bot",
+          "crawler",
+          "topology",
+          "division-iii"
+        ],
+        "schema_version": "1.0.0",
+        "_domain": "topology",
+        "_division": "Secure & Monitor",
+        "_file": "evt-2026-05-03T04-50-47-185Z-006.json"
+      }
+    ]
+  }
+}

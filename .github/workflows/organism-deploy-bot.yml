@@ -1,0 +1,206 @@
+# ============================================================================
+# 🌐 organism-deploy-bot — ICP Deployment & Canister Validation
+#
+# Validates the ICP deployment configuration and organism substrate:
+#   - Validates dfx.json structure and canister definitions
+#   - Checks all 6 organism substrate directories exist and have required files
+#   - Generates a deployment manifest at docs/deployment-manifest.json
+#   - Runs dfx deploy on the IC mainnet (when DFX_IDENTITY_PEM secret is set)
+#
+# Bot identity: organism-deploy-bot
+# Triggers on: push to dfx.json, organism/
+# ============================================================================
+
+name: 🌐 organism-deploy-bot
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'dfx.json'
+      - 'organism/**'
+      - 'index.html'
+      - 'download.html'
+      - 'docs/**'
+      - '.github/workflows/organism-deploy-bot.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  # ── Job 1: Validate dfx config and organism substrates ────────────────────
+  validate-deployment:
+    name: 🌐 Validate Deployment Config
+    runs-on: ubuntu-latest
+    outputs:
+      dfx_valid: ${{ steps.dfx.outputs.valid }}
+      substrates_valid: ${{ steps.substrates.outputs.valid }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate dfx.json
+        id: dfx
+        run: |
+          echo "🌐 Validating dfx.json..."
+          node -e "
+            const fs = require('fs');
+            const dfx = JSON.parse(fs.readFileSync('dfx.json', 'utf8'));
+            const issues = [];
+
+            if (!dfx.version) issues.push('Missing version field');
+            if (!dfx.dfx) issues.push('Missing dfx version field');
+            if (!dfx.canisters) issues.push('Missing canisters field');
+            if (!dfx.networks) issues.push('Missing networks field');
+
+            if (dfx.canisters) {
+              for (const [name, canister] of Object.entries(dfx.canisters)) {
+                if (!canister.type) issues.push(\`Canister \${name}: missing type\`);
+                if (canister.type === 'assets' && !canister.source) {
+                  issues.push(\`Canister \${name}: asset canister missing source\`);
+                }
+              }
+            }
+
+            if (dfx.networks) {
+              if (!dfx.networks.ic) issues.push('Missing ic network config');
+              if (!dfx.networks.local) issues.push('Missing local network config');
+            }
+
+            if (issues.length > 0) {
+              console.error('❌ dfx.json validation failed:');
+              issues.forEach(i => console.error('  ✗ ' + i));
+              process.exit(1);
+            }
+
+            const canisters = Object.keys(dfx.canisters);
+            console.log('✅ dfx.json valid');
+            console.log('  DFX version: ' + dfx.dfx);
+            console.log('  Canisters: ' + canisters.join(', '));
+            console.log('  Networks: ' + Object.keys(dfx.networks).join(', '));
+          "
+          echo "valid=true" >> "$GITHUB_OUTPUT"
+
+      - name: Validate organism substrates
+        id: substrates
+        run: |
+          echo "🌐 Validating organism substrates..."
+
+          ISSUES=0
+
+          check_substrate() {
+            local name="$1"
+            local dir="$2"
+            local required_files=("${@:3}")
+
+            if [ ! -d "$dir" ]; then
+              echo "  ✗ ${name}: directory missing (${dir})"
+              ISSUES=$((ISSUES + 1))
+              return
+            fi
+
+            for f in "${required_files[@]}"; do
+              if ! ls "${dir}/${f}" 1>/dev/null 2>&1; then
+                echo "  ✗ ${name}: missing ${f}"
+                ISSUES=$((ISSUES + 1))
+              fi
+            done
+
+            echo "  ✓ ${name}"
+          }
+
+          check_substrate "TypeScript"  "organism/typescript/src"  "*.ts"
+          check_substrate "Python"      "organism/python"          "pyproject.toml"
+          check_substrate "C++"         "organism/cpp"             "src"
+          check_substrate "Java"        "organism/java"            "src"
+          check_substrate "Motoko"      "organism/motoko/src"      "*.mo"
+          check_substrate "Web Workers" "organism/web"             "*.js"
+
+          echo ""
+          if [ $ISSUES -gt 0 ]; then
+            echo "❌ ${ISSUES} substrate issue(s) found"
+            echo "valid=false" >> "$GITHUB_OUTPUT"
+            exit 1
+          else
+            echo "✅ All 6 organism substrates valid"
+            echo "valid=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generate deployment manifest
+        run: node scripts/deploy-bot/generate-deployment-manifest.js
+
+      - name: Commit deployment manifest
+        run: |
+          git config user.name "organism-deploy-bot"
+          git config user.email "organism-deploy-bot@users.noreply.github.com"
+          git add docs/deployment-manifest.json docs/deployment-report.md
+          if git diff --cached --quiet; then
+            echo "Deployment manifest unchanged"
+          else
+            git commit -m "🌐 organism-deploy-bot: update deployment manifest [skip ci]"
+            git push
+          fi
+
+  # ── Job 2: Deploy to ICP mainnet (only when secret is available) ──────────
+  deploy-icp:
+    name: 🌐 Deploy to ICP Mainnet
+    runs-on: ubuntu-latest
+    needs: validate-deployment
+    if: needs.validate-deployment.outputs.dfx_valid == 'true' && secrets.DFX_IDENTITY_PEM != ''
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install DFX
+        uses: dfinity/setup-dfx@main
+        with:
+          dfx-version: "0.22.0"
+
+      - name: Set up ICP identity
+        run: |
+          echo "${{ secrets.DFX_IDENTITY_PEM }}" > /tmp/deploy-identity.pem
+          dfx identity import --storage-mode plaintext deploy-ci /tmp/deploy-identity.pem
+          dfx identity use deploy-ci
+          rm -f /tmp/deploy-identity.pem
+          echo "Active principal: $(dfx identity get-principal)"
+
+      - name: Assemble icp-dist
+        run: |
+          rm -rf icp-dist
+          mkdir -p icp-dist
+          cp index.html    icp-dist/index.html
+          cp download.html icp-dist/download.html
+          [ -d docs ] && cp -r docs icp-dist/docs || true
+          echo "icp-dist contents:"
+          find icp-dist -type f | sort
+
+      - name: Deploy to ICP mainnet
+        run: dfx deploy vigil_frontend --network ic --yes
+        env:
+          DFX_WARNING: "-mainnet_plaintext_identity"
+
+      - name: Commit canister IDs and print URL
+        run: |
+          CANISTER_ID=$(dfx canister --network ic id vigil_frontend 2>/dev/null || echo "unknown")
+          echo ""
+          echo "✅ Vigil AI is live on the Internet Computer"
+          echo "   Canister ID : ${CANISTER_ID}"
+          echo "   URL         : https://${CANISTER_ID}.icp0.io"
+
+          if [ -f canister_ids.json ]; then
+            git config user.name "organism-deploy-bot"
+            git config user.email "organism-deploy-bot@users.noreply.github.com"
+            git add canister_ids.json
+            if ! git diff --cached --quiet; then
+              git commit -m "🌐 organism-deploy-bot: update canister_ids.json [skip ci]"
+              git push
+            fi
+          fi

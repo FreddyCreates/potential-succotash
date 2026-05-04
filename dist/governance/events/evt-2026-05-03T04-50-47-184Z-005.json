@@ -1,0 +1,22 @@
+{
+  "id": "evt-2026-05-03T04-50-47-184Z-005",
+  "entity_id": "atlas://bot/organism-sandcastle-bot",
+  "op": "ci_run_completed",
+  "ts": "2026-05-03T04:50:47.184Z",
+  "context": {
+    "status": "pass",
+    "risk_score": 0.02,
+    "sandcastle_decision": "PASS",
+    "gate_failures": 0,
+    "metrics": {
+      "gatesPassed": 2,
+      "gatesFailed": 0
+    }
+  },
+  "tags": [
+    "bot",
+    "sandcastle",
+    "division-ii"
+  ],
+  "schema_version": "1.0.0"
+}

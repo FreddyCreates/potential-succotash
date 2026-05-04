@@ -1,0 +1,9 @@
+[
+  {
+    "ts": "2026-05-03T04:50:47.199Z",
+    "decision": "ALLOW",
+    "risk": 0.25,
+    "events": 6,
+    "forbids": 0
+  }
+]

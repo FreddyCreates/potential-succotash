@@ -1,0 +1,69 @@
+# ============================================================================
+# 🧠 organism-neural-bot — Deep AI Architecture Validator
+#
+# Validates the entire organism nervous system:
+#   - All protocols (structure, exports, dependencies)
+#   - All SDK agents (capability matrix)
+#   - All organism substrates (6 runtimes: TS/Python/C++/Java/Motoko/Web)
+#   - Builds a neural dependency graph saved to docs/neural-graph.json
+#
+# Bot identity: organism-neural-bot
+# Triggers on: push to protocols/, sdk/agents/, organism/
+# ============================================================================
+
+name: 🧠 organism-neural-bot
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'protocols/**'
+      - 'sdk/**'
+      - 'organism/**'
+      - 'scripts/**'
+      - '.github/workflows/organism-neural-bot.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  neural-validation:
+    name: 🧠 Neural Architecture Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate protocols
+        id: protocols
+        run: node scripts/neural-bot/validate-protocols.js
+
+      - name: Validate SDK agents
+        id: agents
+        run: node scripts/neural-bot/validate-agents.js
+
+      - name: Validate organism substrates
+        id: substrates
+        run: node scripts/neural-bot/validate-substrates.js
+
+      - name: Build neural dependency graph
+        run: node scripts/neural-bot/build-neural-graph.js
+
+      - name: Commit neural graph and report
+        run: |
+          git config user.name "organism-neural-bot"
+          git config user.email "organism-neural-bot@users.noreply.github.com"
+          git add docs/neural-graph.json docs/neural-report.md
+          if git diff --cached --quiet; then
+            echo "Neural graph unchanged"
+          else
+            git commit -m "🧠 organism-neural-bot: update neural dependency graph [skip ci]"
+            git push
+          fi

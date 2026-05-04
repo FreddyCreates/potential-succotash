@@ -1,0 +1,22 @@
+{
+  "id": "evt-2026-05-03T04-50-47-184Z-004",
+  "entity_id": "atlas://bot/organism-economy-bot",
+  "op": "economy_scan_completed",
+  "ts": "2026-05-03T04:50:47.184Z",
+  "context": {
+    "status": "pass",
+    "risk_score": 0.12,
+    "phi_score": 0.73,
+    "metrics": {
+      "coverageRatio": 0.81,
+      "totalAssets": 72,
+      "sdkCount": 11
+    }
+  },
+  "tags": [
+    "bot",
+    "economy",
+    "division-vi"
+  ],
+  "schema_version": "1.0.0"
+}

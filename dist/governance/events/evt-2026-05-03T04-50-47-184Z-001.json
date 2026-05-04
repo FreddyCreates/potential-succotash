@@ -1,0 +1,29 @@
+{
+  "id": "evt-2026-05-03T04-50-47-184Z-001",
+  "entity_id": "atlas://bot/organism-alpha-bot",
+  "op": "fleet_census_completed",
+  "ts": "2026-05-03T04:50:47.184Z",
+  "context": {
+    "status": "pass",
+    "risk_score": 0.05,
+    "health_dashboard": {
+      "overall": "green",
+      "healthy": 16,
+      "degraded": 0,
+      "total": 16
+    },
+    "fleet_health_ratio": 1,
+    "metrics": {
+      "totalBots": 16,
+      "totalScripts": 43,
+      "healthRatio": 1
+    }
+  },
+  "tags": [
+    "bot",
+    "alpha",
+    "census",
+    "division-vii"
+  ],
+  "schema_version": "1.0.0"
+}

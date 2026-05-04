@@ -1,0 +1,15 @@
+{
+  "entries": [
+    {
+      "ts": "2026-05-03T04:50:47.196Z",
+      "cycleRisk": 0.25,
+      "decision": "ALLOW",
+      "eventsProcessed": 6,
+      "lawsFired": 1,
+      "forbids": 0,
+      "warnings": 1,
+      "escalations": 0,
+      "phiHealth": 0.75
+    }
+  ]
+}

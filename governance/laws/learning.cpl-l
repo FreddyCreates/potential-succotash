@@ -1,0 +1,78 @@
+# ============================================================================
+# CPL-L — Learning Laws
+# id: LEARNING_STABILITY
+# Applies to: organism-learning-bot + any entity with division == "Learn & Evolve"
+# ============================================================================
+
+id: "LEARNING_STABILITY"
+class: LawSet
+version: "1.0.0"
+created: "2026-05-03T00:00:00.000Z"
+author: "organism-alpha-bot"
+charter_ref: "atlas://organism/bot-fleet"
+domain: "learning"
+pipeline_ref: "pipeline://governance/learning_cycle"
+
+description: |
+  Learning laws govern Hebbian synapse training, TD protocol weight evolution,
+  and phi-emergence events. Learning must be stable — wild drift is blocked.
+  PHI=1.618033988749895, HEARTBEAT=873ms. Learning rate capped at 1/PHI.
+
+laws:
+
+  - id: "LEARNING_WEIGHT_DRIFT_BLOCK"
+    subject: "atlas://bot/organism-learning-bot"
+    name: "Block protocol weight drift above phi-ceiling"
+    priority: 0    # CRITICAL
+    when: 'context.metrics.maxWeightDelta > 0.618'   # 1/PHI drift ceiling
+    then:
+      - action: FORBID
+        target: protocol_weight_update
+        reason: "TD weight delta exceeds phi-ceiling (0.618) — unstable learning"
+      - action: REQUIRE
+        target: stability_review
+      - action: EMIT
+        target: risk_event
+        payload: { severity: critical, type: learning_weight_drift }
+
+  - id: "LEARNING_EMERGENCE_CELEBRATE"
+    subject: "atlas://bot/organism-learning-bot"
+    name: "Emit emergence event when phi-threshold crossed"
+    priority: 3    # LOW (celebratory / informational)
+    when: 'context.emergence_level >= 0.618'   # 1/PHI emergence threshold
+    then:
+      - action: EMIT
+        target: emergence_event
+        payload: { type: phi_emergence, threshold: 0.618, milestone: true }
+      - action: COMMIT
+        target: dist/learning/learning-state.json
+        reason: "Phi-emergence reached — checkpoint learning state"
+
+  - id: "LEARNING_STALE_SYNAPSES_WARN"
+    subject: "atlas://bot/organism-learning-bot"
+    name: "Warn when synapse count drops (learning regression)"
+    priority: 2    # MEDIUM
+    when: 'context.metrics.synapseCount < context.metrics.previousSynapseCount * 0.618'
+    then:
+      - action: WARN
+        target: report
+        reason: "Synapse count fell by more than 1/PHI — learning regression detected"
+      - action: EMIT
+        target: risk_event
+        payload: { severity: medium, type: learning_synapse_regression }
+
+  - id: "LEARNING_HEARTBEAT_CHECK"
+    subject: "atlas://bot/organism-learning-bot"
+    name: "Block if heartbeat cycle duration exceeds 2x HEARTBEAT"
+    priority: 1    # HIGH
+    when: 'context.metrics.cycleDurationMs > 1746'   # 873ms * 2
+    then:
+      - action: WARN
+        target: report
+        reason: "Learning cycle duration > 2×HEARTBEAT (1746ms) — organism pulse slowing"
+      - action: EMIT
+        target: risk_event
+        payload: { severity: high, type: learning_slow_pulse }
+
+evaluation_order: priority_ascending
+short_circuit_on_forbid: true

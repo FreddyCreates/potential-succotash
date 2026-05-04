@@ -1,0 +1,176 @@
+# ============================================================================
+# 🧪 organism-test-bot — Cross-Matrix Testing
+#
+# Runs the full test suite simultaneously on Node 18, 20, and 22.
+# Generates a health dashboard at docs/test-dashboard.md showing
+# pass/fail status per Node version.
+#
+# Bot identity: organism-test-bot
+# Triggers on: push to test/, sdk/, protocols/
+# ============================================================================
+
+name: 🧪 organism-test-bot
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'test/**'
+      - 'sdk/**'
+      - 'protocols/**'
+      - 'scripts/**'
+      - 'extensions/index.js'
+      - '.github/workflows/organism-test-bot.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  # ── Cross-matrix test run ──────────────────────────────────────────────────
+  test-matrix:
+    name: 🧪 Node ${{ matrix.node-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['18', '20', '22']
+      fail-fast: false
+
+    outputs:
+      # outputs are set per-matrix job but the last writer wins;
+      # we use the dashboard job below to aggregate.
+      result_18: ${{ matrix.node-version == '18' && steps.run.outputs.result || '' }}
+      result_20: ${{ matrix.node-version == '20' && steps.run.outputs.result || '' }}
+      result_22: ${{ matrix.node-version == '22' && steps.run.outputs.result || '' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Validate manifests
+        run: node scripts/lint-manifests.js
+
+      - name: Run test suite
+        id: run
+        run: |
+          set +e
+          node --test test/**/*.test.js 2>&1 | tee /tmp/test-output-${{ matrix.node-version }}.txt
+          EXIT_CODE=$?
+          if [ $EXIT_CODE -eq 0 ]; then
+            echo "result=pass" >> "$GITHUB_OUTPUT"
+            echo "✅ All tests passed on Node ${{ matrix.node-version }}"
+          else
+            echo "result=fail" >> "$GITHUB_OUTPUT"
+            echo "❌ Tests failed on Node ${{ matrix.node-version }}"
+          fi
+          exit $EXIT_CODE
+
+      - name: Upload test output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-output-node-${{ matrix.node-version }}
+          path: /tmp/test-output-${{ matrix.node-version }}.txt
+          retention-days: 7
+
+  # ── Health dashboard ───────────────────────────────────────────────────────
+  health-dashboard:
+    name: 🧪 Health Dashboard
+    runs-on: ubuntu-latest
+    needs: test-matrix
+    if: always()
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download test outputs
+        uses: actions/download-artifact@v4
+        with:
+          pattern: test-output-node-*
+          path: /tmp/test-outputs/
+          merge-multiple: true
+
+      - name: Generate health dashboard
+        run: |
+          mkdir -p docs
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          COMMIT="${GITHUB_SHA:0:7}"
+          RUN_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+
+          # Parse results from job status
+          RESULT_18="${{ needs.test-matrix.result }}"
+          if [ -f /tmp/test-outputs/test-output-18.txt ]; then
+            PASS_18=$(grep -c "✓\|# pass" /tmp/test-outputs/test-output-18.txt 2>/dev/null || echo 0)
+            FAIL_18=$(grep -c "✗\|# fail" /tmp/test-outputs/test-output-18.txt 2>/dev/null || echo 0)
+          else
+            PASS_18="—"; FAIL_18="—"
+          fi
+          if [ -f /tmp/test-outputs/test-output-20.txt ]; then
+            PASS_20=$(grep -c "✓\|# pass" /tmp/test-outputs/test-output-20.txt 2>/dev/null || echo 0)
+            FAIL_20=$(grep -c "✗\|# fail" /tmp/test-outputs/test-output-20.txt 2>/dev/null || echo 0)
+          else
+            PASS_20="—"; FAIL_20="—"
+          fi
+          if [ -f /tmp/test-outputs/test-output-22.txt ]; then
+            PASS_22=$(grep -c "✓\|# pass" /tmp/test-outputs/test-output-22.txt 2>/dev/null || echo 0)
+            FAIL_22=$(grep -c "✗\|# fail" /tmp/test-outputs/test-output-22.txt 2>/dev/null || echo 0)
+          else
+            PASS_22="—"; FAIL_22="—"
+          fi
+
+          # Status emoji
+          STATUS="${{ needs.test-matrix.result }}"
+          if [ "$STATUS" = "success" ]; then
+            BADGE="✅ PASSING"
+          else
+            BADGE="❌ FAILING"
+          fi
+
+          cat > docs/test-dashboard.md << EOF
+          # 🧪 organism-test-bot — Health Dashboard
+
+          **Status:** ${BADGE}
+          **Generated:** ${TIMESTAMP}
+          **Commit:** [\`${COMMIT}\`](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA})
+          **Run:** [View logs](${RUN_URL})
+
+          ## Cross-Matrix Results
+
+          | Node Version | Status | Tests Passed | Tests Failed |
+          |---|---|---|---|
+          | Node 18 | $( [ -f /tmp/test-outputs/test-output-18.txt ] && echo "✅ Pass" || echo "❌ Fail" ) | ${PASS_18} | ${FAIL_18} |
+          | Node 20 | $( [ -f /tmp/test-outputs/test-output-20.txt ] && echo "✅ Pass" || echo "❌ Fail" ) | ${PASS_20} | ${FAIL_20} |
+          | Node 22 | $( [ -f /tmp/test-outputs/test-output-22.txt ] && echo "✅ Pass" || echo "❌ Fail" ) | ${PASS_22} | ${FAIL_22} |
+
+          ## Test Suites
+
+          | Suite | File |
+          |---|---|
+          | Extension Manifests | \`test/extensions/manifest-validation.test.js\` |
+          | SDK Structure | \`test/sdk/sdk-structure.test.js\` |
+          | CLI | \`test/cli/*.test.js\` |
+
+          ## Bot Identity
+
+          Validated by **organism-test-bot** 🧪
+          EOF
+
+          echo "📊 Health dashboard written to docs/test-dashboard.md"
+
+      - name: Commit dashboard
+        run: |
+          git config user.name "organism-test-bot"
+          git config user.email "organism-test-bot@users.noreply.github.com"
+          git add docs/test-dashboard.md
+          if git diff --cached --quiet; then
+            echo "Dashboard unchanged"
+          else
+            git commit -m "🧪 organism-test-bot: update health dashboard [skip ci]"
+            git push
+          fi

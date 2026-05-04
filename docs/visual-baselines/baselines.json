@@ -1,0 +1,782 @@
+{
+  "root:download.html": {
+    "id": "root:download.html",
+    "hash": "a9cde382bdaaa6964c223b1f976d34333b3eeb8d474273cdabd5123ef2e73358",
+    "phiScore": 0.12564351820079162,
+    "lastUpdated": "2026-05-03T04:24:16.761Z"
+  },
+  "root:index.html": {
+    "id": "root:index.html",
+    "hash": "bdd6b58ad19c112e771749ec17329d0f0d22284c8a17086996d035598343405b",
+    "phiScore": 0.05910435151595191,
+    "lastUpdated": "2026-05-03T04:24:16.761Z"
+  },
+  "ext:cipher-shield:devtools-panel.html": {
+    "id": "ext:cipher-shield:devtools-panel.html",
+    "hash": "58ecec094a98ce8e257b4575cc0d9efe74a3f5bee128db84e005857df557f3c6",
+    "phiScore": 0.29255045130739693,
+    "lastUpdated": "2026-05-03T04:24:16.761Z"
+  },
+  "ext:cipher-shield:devtools.html": {
+    "id": "ext:cipher-shield:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.761Z"
+  },
+  "ext:cipher-shield:popup.html": {
+    "id": "ext:cipher-shield:popup.html",
+    "hash": "124fa10c453aa6ad7f2d128af3dacaab488ac89c0a3d11dc964830e6fefdc489",
+    "phiScore": 0.34749588382663854,
+    "lastUpdated": "2026-05-03T04:24:16.761Z"
+  },
+  "ext:cipher-shield:sidepanel.html": {
+    "id": "ext:cipher-shield:sidepanel.html",
+    "hash": "4583e372de7ce7005c54c70e3c92545346df6372ac4be458a4e3ef45329c1e4a",
+    "phiScore": 0.2578073844165332,
+    "lastUpdated": "2026-05-03T04:24:16.761Z"
+  },
+  "ext:code-sovereign:devtools-panel.html": {
+    "id": "ext:code-sovereign:devtools-panel.html",
+    "hash": "b2e70f4ad15c1843918e5ed1492cfe6f379907800e3601893e9bce2caa0bf68e",
+    "phiScore": 0.29241974631407297,
+    "lastUpdated": "2026-05-03T04:24:16.761Z"
+  },
+  "ext:code-sovereign:devtools.html": {
+    "id": "ext:code-sovereign:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.762Z"
+  },
+  "ext:code-sovereign:popup.html": {
+    "id": "ext:code-sovereign:popup.html",
+    "hash": "f889eb34d067e59691cacdc8a2e98edff31a3399b20b95e7c3733dc903c8698b",
+    "phiScore": 0.3472654183246976,
+    "lastUpdated": "2026-05-03T04:24:16.762Z"
+  },
+  "ext:code-sovereign:sidepanel.html": {
+    "id": "ext:code-sovereign:sidepanel.html",
+    "hash": "4723611bb767ed42c7e5b6c0e5f1dda0c2fb3b4a06a0c4823acce7df0c3fcb9d",
+    "phiScore": 0.2576551509447786,
+    "lastUpdated": "2026-05-03T04:24:16.762Z"
+  },
+  "ext:contract-forge:devtools-panel.html": {
+    "id": "ext:contract-forge:devtools-panel.html",
+    "hash": "1699f5c37c3456f4d6efc4f9fb9e41523e627a328a17ef943c2617a28541ce0b",
+    "phiScore": 0.29241974631407297,
+    "lastUpdated": "2026-05-03T04:24:16.762Z"
+  },
+  "ext:contract-forge:devtools.html": {
+    "id": "ext:contract-forge:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.762Z"
+  },
+  "ext:contract-forge:popup.html": {
+    "id": "ext:contract-forge:popup.html",
+    "hash": "6f31d51c762decc02008160401bbc1f56e46fa4d994bae5e2e5b52dd38267e95",
+    "phiScore": 0.34662173821658876,
+    "lastUpdated": "2026-05-03T04:24:16.762Z"
+  },
+  "ext:contract-forge:sidepanel.html": {
+    "id": "ext:contract-forge:sidepanel.html",
+    "hash": "08b7d08a63041bd09f0b7da82eaae170d0d1b332799bf1932c7d576959d77f31",
+    "phiScore": 0.25775661994190163,
+    "lastUpdated": "2026-05-03T04:24:16.762Z"
+  },
+  "ext:creative-muse:devtools-panel.html": {
+    "id": "ext:creative-muse:devtools-panel.html",
+    "hash": "7262a2eb26a8c39ba50c9f4b696a2f35a45a9e92592607ef2c5529398ecffc54",
+    "phiScore": 0.29255045130739693,
+    "lastUpdated": "2026-05-03T04:24:16.762Z"
+  },
+  "ext:creative-muse:devtools.html": {
+    "id": "ext:creative-muse:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.763Z"
+  },
+  "ext:creative-muse:popup.html": {
+    "id": "ext:creative-muse:popup.html",
+    "hash": "84a21cdea96446b4210375f02de057e4a8d5becb131da1a721d89dd6d2cd4eb4",
+    "phiScore": 0.3472193619031691,
+    "lastUpdated": "2026-05-03T04:24:16.763Z"
+  },
+  "ext:creative-muse:sidepanel.html": {
+    "id": "ext:creative-muse:sidepanel.html",
+    "hash": "95c3155a06f21dbcda9affe94950585701083643a843f95bcef42bf82aa23181",
+    "phiScore": 0.2580615070231538,
+    "lastUpdated": "2026-05-03T04:24:16.763Z"
+  },
+  "ext:data-alchemist:devtools-panel.html": {
+    "id": "ext:data-alchemist:devtools-panel.html",
+    "hash": "68d7e8ae388f3b14c40bf0946cb16f729f6638f5f7e9354ecd0eb1093372c8eb",
+    "phiScore": 0.29241974631407297,
+    "lastUpdated": "2026-05-03T04:24:16.763Z"
+  },
+  "ext:data-alchemist:devtools.html": {
+    "id": "ext:data-alchemist:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.763Z"
+  },
+  "ext:data-alchemist:popup.html": {
+    "id": "ext:data-alchemist:popup.html",
+    "hash": "9611ae6b299da337a18d03a0d73afd1b50f33fd244a7525f3850be564850f92d",
+    "phiScore": 0.3468973086988068,
+    "lastUpdated": "2026-05-03T04:24:16.763Z"
+  },
+  "ext:data-alchemist:sidepanel.html": {
+    "id": "ext:data-alchemist:sidepanel.html",
+    "hash": "1cae7161cdf17bf796deb6b40f57e8a57769eaa289cd94dcc13d603cc327768e",
+    "phiScore": 0.25760444639869085,
+    "lastUpdated": "2026-05-03T04:24:16.763Z"
+  },
+  "ext:data-oracle:devtools-panel.html": {
+    "id": "ext:data-oracle:devtools-panel.html",
+    "hash": "6b1c64b9ede29649349ff6716d48429d53b3f123284762ab7a0229d64daa56e9",
+    "phiScore": 0.29281221214068837,
+    "lastUpdated": "2026-05-03T04:24:16.763Z"
+  },
+  "ext:data-oracle:devtools.html": {
+    "id": "ext:data-oracle:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.763Z"
+  },
+  "ext:data-oracle:popup.html": {
+    "id": "ext:data-oracle:popup.html",
+    "hash": "d2e701671b2bb657f8da5abbbf32b1baf7787ec010f345808fe03b6f06706d7f",
+    "phiScore": 0.34731148696602476,
+    "lastUpdated": "2026-05-03T04:24:16.763Z"
+  },
+  "ext:data-oracle:sidepanel.html": {
+    "id": "ext:data-oracle:sidepanel.html",
+    "hash": "5959f0356dc087693fca5c66df387034a33c6c8b820495ab5c4c85daf84842b3",
+    "phiScore": 0.25821422120030524,
+    "lastUpdated": "2026-05-03T04:24:16.763Z"
+  },
+  "ext:edge-ai-assistant:devtools-panel.html": {
+    "id": "ext:edge-ai-assistant:devtools-panel.html",
+    "hash": "b1d4542bb7df7f39c7fd6bea4843abaefafbf5cb996275a123bd07d2271dff35",
+    "phiScore": 0.292844965184552,
+    "lastUpdated": "2026-05-03T04:24:16.763Z"
+  },
+  "ext:edge-ai-assistant:devtools.html": {
+    "id": "ext:edge-ai-assistant:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.764Z"
+  },
+  "ext:edge-ai-assistant:popup.html": {
+    "id": "ext:edge-ai-assistant:popup.html",
+    "hash": "76811d7ffffa8a69c201e55c6660749596df41277ccd8f242e088168e97355f5",
+    "phiScore": 0.34763431001857586,
+    "lastUpdated": "2026-05-03T04:24:16.764Z"
+  },
+  "ext:edge-ai-assistant:sidepanel.html": {
+    "id": "ext:edge-ai-assistant:sidepanel.html",
+    "hash": "bae7dee245f1def77cebbb353c31d554bbcd8f249b35bf2aaebd9cd3f4c3c207",
+    "phiScore": 0.45107408489832784,
+    "lastUpdated": "2026-05-03T04:24:16.764Z"
+  },
+  "ext:edge-context-engine:devtools-panel.html": {
+    "id": "ext:edge-context-engine:devtools-panel.html",
+    "hash": "6136f957d4c01b3fdba31e6ef7d66ef992ddb3ed739714dd414911aab1bef4d0",
+    "phiScore": 0.29241974631407297,
+    "lastUpdated": "2026-05-03T04:24:16.764Z"
+  },
+  "ext:edge-context-engine:devtools.html": {
+    "id": "ext:edge-context-engine:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.764Z"
+  },
+  "ext:edge-context-engine:popup.html": {
+    "id": "ext:edge-context-engine:popup.html",
+    "hash": "5509a9eda8b879243e17ac0d1fea85469e468beba4bc61e631733aa090f17d97",
+    "phiScore": 0.34598043990351457,
+    "lastUpdated": "2026-05-03T04:24:16.764Z"
+  },
+  "ext:edge-context-engine:sidepanel.html": {
+    "id": "ext:edge-context-engine:sidepanel.html",
+    "hash": "fca6f2234a0c334c885410fb9462247764d65f8af8bf789f44566d2a3d908ac8",
+    "phiScore": 0.31015685212058935,
+    "lastUpdated": "2026-05-03T04:24:16.764Z"
+  },
+  "ext:edge-prompt-lab:devtools-panel.html": {
+    "id": "ext:edge-prompt-lab:devtools-panel.html",
+    "hash": "3a924b2ec20f7078b8d7cbfa4e47a3bdbdfefa547e31a0fb20919d17f1232a8a",
+    "phiScore": 0.29294326829471806,
+    "lastUpdated": "2026-05-03T04:24:16.764Z"
+  },
+  "ext:edge-prompt-lab:devtools.html": {
+    "id": "ext:edge-prompt-lab:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.764Z"
+  },
+  "ext:edge-prompt-lab:popup.html": {
+    "id": "ext:edge-prompt-lab:popup.html",
+    "hash": "f7dd863d32dec0664aeee531c4b0c6314b49dee7162550338d5130db18a9dd29",
+    "phiScore": 0.3472654183246976,
+    "lastUpdated": "2026-05-03T04:24:16.764Z"
+  },
+  "ext:edge-prompt-lab:sidepanel.html": {
+    "id": "ext:edge-prompt-lab:sidepanel.html",
+    "hash": "4529b66369308f1a080c8bc286a5769bd319120568b347da69fd2b87b91480d2",
+    "phiScore": 0.34525042710667214,
+    "lastUpdated": "2026-05-03T04:24:16.764Z"
+  },
+  "ext:edge-runner:devtools-panel.html": {
+    "id": "ext:edge-runner:devtools-panel.html",
+    "hash": "7259a5bfdda0f2c12a72e84561c2a1d232c305cb5adef966165a0952ec2c5cb8",
+    "phiScore": 0.29281221214068837,
+    "lastUpdated": "2026-05-03T04:24:16.764Z"
+  },
+  "ext:edge-runner:devtools.html": {
+    "id": "ext:edge-runner:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.765Z"
+  },
+  "ext:edge-runner:popup.html": {
+    "id": "ext:edge-runner:popup.html",
+    "hash": "18457b51eb9b136a83c0a5d0dbe4ec4821bf416c84a95ccf7039faff0b247b11",
+    "phiScore": 0.34795773375197964,
+    "lastUpdated": "2026-05-03T04:24:16.765Z"
+  },
+  "ext:edge-runner:sidepanel.html": {
+    "id": "ext:edge-runner:sidepanel.html",
+    "hash": "9687a8130892d81fef5e2be6e832513a4cdec70207fb712039e349713771f3ce",
+    "phiScore": 0.25821422120030524,
+    "lastUpdated": "2026-05-03T04:24:16.765Z"
+  },
+  "ext:edge-tab-analyzer:devtools-panel.html": {
+    "id": "ext:edge-tab-analyzer:devtools-panel.html",
+    "hash": "76e6a65815cb72fea6b5eb29b06bae9cfe4d772f99625eaad5af7180ad85d260",
+    "phiScore": 0.2926812731973052,
+    "lastUpdated": "2026-05-03T04:24:16.765Z"
+  },
+  "ext:edge-tab-analyzer:devtools.html": {
+    "id": "ext:edge-tab-analyzer:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.765Z"
+  },
+  "ext:edge-tab-analyzer:popup.html": {
+    "id": "ext:edge-tab-analyzer:popup.html",
+    "hash": "c543618d14a3e761d8b9e003abc5c8fa07022af0009fb2365ae37fae596442f0",
+    "phiScore": 0.3467135463845709,
+    "lastUpdated": "2026-05-03T04:24:16.765Z"
+  },
+  "ext:edge-tab-analyzer:sidepanel.html": {
+    "id": "ext:edge-tab-analyzer:sidepanel.html",
+    "hash": "9d6c41a50ec8bbc813b43e507b46479f513617ae9334bf664649813d3ab841d4",
+    "phiScore": 0.31289996280027427,
+    "lastUpdated": "2026-05-03T04:24:16.765Z"
+  },
+  "ext:jarvis:devtools-panel.html": {
+    "id": "ext:jarvis:devtools-panel.html",
+    "hash": "6a8dc48e2db78d76f30ae1c802dabc0bafcba0ed9c8b25f51004e7ef7538c82c",
+    "phiScore": 0.19355566972866295,
+    "lastUpdated": "2026-05-03T04:24:16.765Z"
+  },
+  "ext:jarvis:devtools.html": {
+    "id": "ext:jarvis:devtools.html",
+    "hash": "8f3a3d83caa8d5fd59d2e415b1cadc0c033adde8fc0933f32c160b55b702ada7",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.765Z"
+  },
+  "ext:jarvis:popup.html": {
+    "id": "ext:jarvis:popup.html",
+    "hash": "363c358e019cf7abf336161c7524af2f4eb3c7cec50fe11ce7b43e0514f23baa",
+    "phiScore": 0.3139882452326571,
+    "lastUpdated": "2026-05-03T04:24:16.765Z"
+  },
+  "ext:jarvis:sidepanel.html": {
+    "id": "ext:jarvis:sidepanel.html",
+    "hash": "589ba3e32d5435e8e529c2e0b7c7298791a594f183af4593254357133f055e94",
+    "phiScore": 0.04554766068911942,
+    "lastUpdated": "2026-05-03T04:24:16.765Z"
+  },
+  "ext:knowledge-cartographer:devtools-panel.html": {
+    "id": "ext:knowledge-cartographer:devtools-panel.html",
+    "hash": "4b6dbfc7ba3d9f0b81850ec5f072fd71e1d3b241beb5544bb6c00885d86338c1",
+    "phiScore": 0.29137829590983805,
+    "lastUpdated": "2026-05-03T04:24:16.765Z"
+  },
+  "ext:knowledge-cartographer:devtools.html": {
+    "id": "ext:knowledge-cartographer:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.765Z"
+  },
+  "ext:knowledge-cartographer:popup.html": {
+    "id": "ext:knowledge-cartographer:popup.html",
+    "hash": "8d84bd7ba6aa1d7509a64994137f2b32f585ccec4ab4eb5eaa628334861821d2",
+    "phiScore": 0.3456150480197881,
+    "lastUpdated": "2026-05-03T04:24:16.766Z"
+  },
+  "ext:knowledge-cartographer:sidepanel.html": {
+    "id": "ext:knowledge-cartographer:sidepanel.html",
+    "hash": "5e11a40e72b6fb6c8a61cfe30c41bb133a8e2b14079dd02f55841da3e5c8b4eb",
+    "phiScore": 0.25629309728339644,
+    "lastUpdated": "2026-05-03T04:24:16.766Z"
+  },
+  "ext:logic-prover:devtools-panel.html": {
+    "id": "ext:logic-prover:devtools-panel.html",
+    "hash": "e8d2d5220e3ae4028f651126bf7839ba3e6f839df1e4821db8d32565316f610c",
+    "phiScore": 0.2926812731973052,
+    "lastUpdated": "2026-05-03T04:24:16.766Z"
+  },
+  "ext:logic-prover:devtools.html": {
+    "id": "ext:logic-prover:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.766Z"
+  },
+  "ext:logic-prover:popup.html": {
+    "id": "ext:logic-prover:popup.html",
+    "hash": "445d64a8583b46f82c7b19ed30362d10aaca9e4db372722a031e582ad1627294",
+    "phiScore": 0.34763431001857586,
+    "lastUpdated": "2026-05-03T04:24:16.766Z"
+  },
+  "ext:logic-prover:sidepanel.html": {
+    "id": "ext:logic-prover:sidepanel.html",
+    "hash": "05f64a99c83683ae07728f04c1011daaff4856c519b5a9383cee52a7a8abe650",
+    "phiScore": 0.25821422120030524,
+    "lastUpdated": "2026-05-03T04:24:16.766Z"
+  },
+  "ext:marketplace-hub:devtools-panel.html": {
+    "id": "ext:marketplace-hub:devtools-panel.html",
+    "hash": "6c6d6609849493c5cd00aeb3199b5cd2e6cc0a82b47892e14bed12937d03de34",
+    "phiScore": 0.29228915806072286,
+    "lastUpdated": "2026-05-03T04:24:16.766Z"
+  },
+  "ext:marketplace-hub:devtools.html": {
+    "id": "ext:marketplace-hub:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.766Z"
+  },
+  "ext:marketplace-hub:popup.html": {
+    "id": "ext:marketplace-hub:popup.html",
+    "hash": "a535bc55d57d9de8e883ac6a3fde533d36da763d3ef92ad100930b978cb4d399",
+    "phiScore": 0.34675946870859536,
+    "lastUpdated": "2026-05-03T04:24:16.766Z"
+  },
+  "ext:marketplace-hub:sidepanel.html": {
+    "id": "ext:marketplace-hub:sidepanel.html",
+    "hash": "7c7c67ba8b4ee98e7bc958ad7264c32dd44f90e0b9e2c0d378d5579a0790f87d",
+    "phiScore": 0.2573512227219006,
+    "lastUpdated": "2026-05-03T04:24:16.766Z"
+  },
+  "ext:memory-palace:devtools-panel.html": {
+    "id": "ext:memory-palace:devtools-panel.html",
+    "hash": "f64c8037c3837f90a8dbd795f24db23c96bdf6b594946a4e1aad8d5aa897ce76",
+    "phiScore": 0.29255045130739693,
+    "lastUpdated": "2026-05-03T04:24:16.766Z"
+  },
+  "ext:memory-palace:devtools.html": {
+    "id": "ext:memory-palace:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.766Z"
+  },
+  "ext:memory-palace:popup.html": {
+    "id": "ext:memory-palace:popup.html",
+    "hash": "b6797144525d5a1dec2b231b09fee0386991f5e9cae646c5421017151cb7124f",
+    "phiScore": 0.34731148696602476,
+    "lastUpdated": "2026-05-03T04:24:16.766Z"
+  },
+  "ext:memory-palace:sidepanel.html": {
+    "id": "ext:memory-palace:sidepanel.html",
+    "hash": "b4437af54187cbc7caab0f41391fbd75f1c6a9b52d41ea7c625e2044a2039c7a",
+    "phiScore": 0.25795979788648093,
+    "lastUpdated": "2026-05-03T04:24:16.766Z"
+  },
+  "ext:organism-dashboard:devtools-panel.html": {
+    "id": "ext:organism-dashboard:devtools-panel.html",
+    "hash": "0fcf1163093a5481dde5d371384b92d0d4eeae3f7c480bcfbbbf96c97a930717",
+    "phiScore": 0.2918980921786035,
+    "lastUpdated": "2026-05-03T04:24:16.766Z"
+  },
+  "ext:organism-dashboard:devtools.html": {
+    "id": "ext:organism-dashboard:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.767Z"
+  },
+  "ext:organism-dashboard:popup.html": {
+    "id": "ext:organism-dashboard:popup.html",
+    "hash": "a1b0aa2296022fb8e4a09c22ff9917a346618259829b063da1c31bd1e8bbf471",
+    "phiScore": 0.34579764743757696,
+    "lastUpdated": "2026-05-03T04:24:16.767Z"
+  },
+  "ext:organism-dashboard:sidepanel.html": {
+    "id": "ext:organism-dashboard:sidepanel.html",
+    "hash": "e092ed11a4be8382af9ba1bbe778d3f2e7b5907029aa5ff82640ff0f13228fa8",
+    "phiScore": 0.25669516508970436,
+    "lastUpdated": "2026-05-03T04:24:16.767Z"
+  },
+  "ext:pattern-forge:devtools-panel.html": {
+    "id": "ext:pattern-forge:devtools-panel.html",
+    "hash": "721ef8c722d5c8e6c828947cc6b82e973953e20a3fe5e1e3ca63891fa48ac838",
+    "phiScore": 0.29255045130739693,
+    "lastUpdated": "2026-05-03T04:24:16.767Z"
+  },
+  "ext:pattern-forge:devtools.html": {
+    "id": "ext:pattern-forge:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.767Z"
+  },
+  "ext:pattern-forge:popup.html": {
+    "id": "ext:pattern-forge:popup.html",
+    "hash": "6b55b506b06c11956ac9d2cf5ab0ab874706f9008a432139e5fdc628310ac580",
+    "phiScore": 0.3470352583178546,
+    "lastUpdated": "2026-05-03T04:24:16.767Z"
+  },
+  "ext:pattern-forge:sidepanel.html": {
+    "id": "ext:pattern-forge:sidepanel.html",
+    "hash": "1ec60f5f7e3814e30d1765538a22a485355cc69bb1cefd1df96a8c7b60db85e8",
+    "phiScore": 0.25795979788648093,
+    "lastUpdated": "2026-05-03T04:24:16.767Z"
+  },
+  "ext:polyglot-oracle:devtools-panel.html": {
+    "id": "ext:polyglot-oracle:devtools-panel.html",
+    "hash": "2c1c69f646af0aa0147aa361970cc7e1d5a83f568f3b04760cde4a6013f18183",
+    "phiScore": 0.29228915806072286,
+    "lastUpdated": "2026-05-03T04:24:16.767Z"
+  },
+  "ext:polyglot-oracle:devtools.html": {
+    "id": "ext:polyglot-oracle:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.767Z"
+  },
+  "ext:polyglot-oracle:popup.html": {
+    "id": "ext:polyglot-oracle:popup.html",
+    "hash": "30cae634ef8cfc333c28b0e4cbfd922ed76c622189307bf7d16198bde2af4f36",
+    "phiScore": 0.346484117092363,
+    "lastUpdated": "2026-05-03T04:24:16.767Z"
+  },
+  "ext:polyglot-oracle:sidepanel.html": {
+    "id": "ext:polyglot-oracle:sidepanel.html",
+    "hash": "51237b712787515b741267d8255ea67d9565e61fc49223b8eb6dfccef1a6f533",
+    "phiScore": 0.2573512227219006,
+    "lastUpdated": "2026-05-03T04:24:16.767Z"
+  },
+  "ext:protocol-bridge:devtools-panel.html": {
+    "id": "ext:protocol-bridge:devtools-panel.html",
+    "hash": "fcacdf7b4e2a2238b6de8013239026db7c3b84d4408411af118da21ae4b18dca",
+    "phiScore": 0.29228915806072286,
+    "lastUpdated": "2026-05-03T04:24:16.767Z"
+  },
+  "ext:protocol-bridge:devtools.html": {
+    "id": "ext:protocol-bridge:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.767Z"
+  },
+  "ext:protocol-bridge:popup.html": {
+    "id": "ext:protocol-bridge:popup.html",
+    "hash": "1e20dfbc2e84321a8cb49b994122178f4e7c8c94bd1290feb0508ae39231a80d",
+    "phiScore": 0.3471272857000656,
+    "lastUpdated": "2026-05-03T04:24:16.767Z"
+  },
+  "ext:protocol-bridge:sidepanel.html": {
+    "id": "ext:protocol-bridge:sidepanel.html",
+    "hash": "686b5bfa55293e25594044a0a0d3207cecd3bc02892b6ff4ca1381159d02c5d4",
+    "phiScore": 0.25775661994190163,
+    "lastUpdated": "2026-05-03T04:24:16.767Z"
+  },
+  "ext:register:devtools-panel.html": {
+    "id": "ext:register:devtools-panel.html",
+    "hash": "8a22fb3f74cdbec34c0f0b52b51dc1241fb0ef11dc44f55640e2dafe15b94de1",
+    "phiScore": 0.2932057328648107,
+    "lastUpdated": "2026-05-03T04:24:16.768Z"
+  },
+  "ext:register:devtools.html": {
+    "id": "ext:register:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.768Z"
+  },
+  "ext:register:popup.html": {
+    "id": "ext:register:popup.html",
+    "hash": "02cd9e3c38ff72f34ff9e371112c13bfac62d14783ed110d05cd06c638c3e51e",
+    "phiScore": 0.3480039862754081,
+    "lastUpdated": "2026-05-03T04:24:16.768Z"
+  },
+  "ext:register:sidepanel.html": {
+    "id": "ext:register:sidepanel.html",
+    "hash": "98687050a4833fd54d0c821497bca47affdb893135796a21a5ad0fa08bd12c1f",
+    "phiScore": 0.2586734501284354,
+    "lastUpdated": "2026-05-03T04:24:16.768Z"
+  },
+  "ext:research-nexus:devtools-panel.html": {
+    "id": "ext:research-nexus:devtools-panel.html",
+    "hash": "bdd80782add5c26cdece24ba8b457338aaddcf842bac6d347bbf21eb1259318f",
+    "phiScore": 0.29241974631407297,
+    "lastUpdated": "2026-05-03T04:24:16.768Z"
+  },
+  "ext:research-nexus:devtools.html": {
+    "id": "ext:research-nexus:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.768Z"
+  },
+  "ext:research-nexus:popup.html": {
+    "id": "ext:research-nexus:popup.html",
+    "hash": "abafb18750d2da969023502fa54d2ea8b440e7bb59eceec293f60750a702ea15",
+    "phiScore": 0.34680540319908526,
+    "lastUpdated": "2026-05-03T04:24:16.768Z"
+  },
+  "ext:research-nexus:sidepanel.html": {
+    "id": "ext:research-nexus:sidepanel.html",
+    "hash": "9076c5ed739b2e359b11db9b4d39706a8dfd1bf71dd24d721be8cb7971c203c1",
+    "phiScore": 0.25760444639869085,
+    "lastUpdated": "2026-05-03T04:24:16.768Z"
+  },
+  "ext:screen-commander:devtools-panel.html": {
+    "id": "ext:screen-commander:devtools-panel.html",
+    "hash": "694c35f1bdcc401190c3ff8e6f5a3c20b4d2d70b34fb250140377c5859d6797c",
+    "phiScore": 0.29215868639101605,
+    "lastUpdated": "2026-05-03T04:24:16.768Z"
+  },
+  "ext:screen-commander:devtools.html": {
+    "id": "ext:screen-commander:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.768Z"
+  },
+  "ext:screen-commander:popup.html": {
+    "id": "ext:screen-commander:popup.html",
+    "hash": "b14da07f3cf7bb61a4fe4bef748d4b26d562578e31d5112c0fb5e2f34837daa3",
+    "phiScore": 0.34662173821658876,
+    "lastUpdated": "2026-05-03T04:24:16.768Z"
+  },
+  "ext:screen-commander:sidepanel.html": {
+    "id": "ext:screen-commander:sidepanel.html",
+    "hash": "7459c51577b5fe92a8ae5ecfe3e5e3fbcd40a1c4bd7d6fbdbc27382d428a2457",
+    "phiScore": 0.2570984963910336,
+    "lastUpdated": "2026-05-03T04:24:16.768Z"
+  },
+  "ext:sentinel-watch:devtools-panel.html": {
+    "id": "ext:sentinel-watch:devtools-panel.html",
+    "hash": "33487182c7a79db1b7fc1b1b29262412f32bb32519ccf4f1db03d6ee51a4c61d",
+    "phiScore": 0.29241974631407297,
+    "lastUpdated": "2026-05-03T04:24:16.768Z"
+  },
+  "ext:sentinel-watch:devtools.html": {
+    "id": "ext:sentinel-watch:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.768Z"
+  },
+  "ext:sentinel-watch:popup.html": {
+    "id": "ext:sentinel-watch:popup.html",
+    "hash": "e00bb007234c7e581595ecf0f5b7138442de24c379a1093ca664f13eb727e15a",
+    "phiScore": 0.3474497662574512,
+    "lastUpdated": "2026-05-03T04:24:16.768Z"
+  },
+  "ext:sentinel-watch:sidepanel.html": {
+    "id": "ext:sentinel-watch:sidepanel.html",
+    "hash": "39604941d449b04573c76cb5fd4534191fa91c0eeadd80f5a96ec3dd6e3e9980",
+    "phiScore": 0.2578073844165332,
+    "lastUpdated": "2026-05-03T04:24:16.769Z"
+  },
+  "ext:social-cortex:devtools-panel.html": {
+    "id": "ext:social-cortex:devtools-panel.html",
+    "hash": "053631d5cd036e96ede5105f86fbe80fb5835c1254d6cee28e6a84df53bf7139",
+    "phiScore": 0.29255045130739693,
+    "lastUpdated": "2026-05-03T04:24:16.769Z"
+  },
+  "ext:social-cortex:devtools.html": {
+    "id": "ext:social-cortex:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.769Z"
+  },
+  "ext:social-cortex:popup.html": {
+    "id": "ext:social-cortex:popup.html",
+    "hash": "b3317885ec702a44a26083971bbf2b1322a826d8b410b8ff2771ed140ac98140",
+    "phiScore": 0.3471272857000656,
+    "lastUpdated": "2026-05-03T04:24:16.769Z"
+  },
+  "ext:social-cortex:sidepanel.html": {
+    "id": "ext:social-cortex:sidepanel.html",
+    "hash": "4d5b4d410c806472934d11ef7a538f9493e23c37bd0dd837f31dceeb5649aa66",
+    "phiScore": 0.2576551509447786,
+    "lastUpdated": "2026-05-03T04:24:16.769Z"
+  },
+  "ext:sovereign-alpha:devtools-panel.html": {
+    "id": "ext:sovereign-alpha:devtools-panel.html",
+    "hash": "5ed1e5751bcd2081a2a3105c0171a5d5b76e912c6558771f815b0d50fad5a333",
+    "phiScore": 0.2929104932591066,
+    "lastUpdated": "2026-05-03T04:24:16.769Z"
+  },
+  "ext:sovereign-alpha:devtools.html": {
+    "id": "ext:sovereign-alpha:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.769Z"
+  },
+  "ext:sovereign-alpha:popup.html": {
+    "id": "ext:sovereign-alpha:popup.html",
+    "hash": "6e2f6a101748736311203bbcba4f112b95bf526e9f9fc054e6dc898bd45019d2",
+    "phiScore": 0.917642477655063,
+    "lastUpdated": "2026-05-03T04:24:16.769Z"
+  },
+  "ext:sovereign-alpha:sidepanel.html": {
+    "id": "ext:sovereign-alpha:sidepanel.html",
+    "hash": "6ab0191e1d54eb43be137451a1da15efc51b55db2f4bb58992ac88bb68158f11",
+    "phiScore": 0.033995584900207695,
+    "lastUpdated": "2026-05-03T04:24:16.769Z"
+  },
+  "ext:sovereign-mind:devtools-panel.html": {
+    "id": "ext:sovereign-mind:devtools-panel.html",
+    "hash": "4c7a54696048071a0a4daf762c046a4ac841e7e04ee1ff5a1856f1c19c7b0a4d",
+    "phiScore": 0.29241974631407297,
+    "lastUpdated": "2026-05-03T04:24:16.769Z"
+  },
+  "ext:sovereign-mind:devtools.html": {
+    "id": "ext:sovereign-mind:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.769Z"
+  },
+  "ext:sovereign-mind:popup.html": {
+    "id": "ext:sovereign-mind:popup.html",
+    "hash": "21c2330f41235a03ea13ab1e5ab8914dfed0ad0214fe91146cb0d760419a6c4e",
+    "phiScore": 0.3469892629224513,
+    "lastUpdated": "2026-05-03T04:24:16.769Z"
+  },
+  "ext:sovereign-mind:sidepanel.html": {
+    "id": "ext:sovereign-mind:sidepanel.html",
+    "hash": "7bf391c1318f4877248ff924ffd3832d6eb84e5d5829e2ff1f9c1912948d5b7b",
+    "phiScore": 0.25790897337699686,
+    "lastUpdated": "2026-05-03T04:24:16.769Z"
+  },
+  "ext:sovereign-nexus:devtools-panel.html": {
+    "id": "ext:sovereign-nexus:devtools-panel.html",
+    "hash": "48c2bee5c9c9a5e25ecd96c8384d19784c42f19061f6e6821097ac607bc2c67d",
+    "phiScore": 0.29228915806072286,
+    "lastUpdated": "2026-05-03T04:24:16.769Z"
+  },
+  "ext:sovereign-nexus:devtools.html": {
+    "id": "ext:sovereign-nexus:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.770Z"
+  },
+  "ext:sovereign-nexus:popup.html": {
+    "id": "ext:sovereign-nexus:popup.html",
+    "hash": "99b543812c3c3d618bb458253d3dbd06bf81e2c51e65a867c65f3291817a6c3f",
+    "phiScore": 0.34675946870859536,
+    "lastUpdated": "2026-05-03T04:24:16.770Z"
+  },
+  "ext:sovereign-nexus:sidepanel.html": {
+    "id": "ext:sovereign-nexus:sidepanel.html",
+    "hash": "f6ba61ca1bf5a145cdc5435033f59e5423eb1651fa62e5d6532c8f733d5e7ba5",
+    "phiScore": 0.2574524524289404,
+    "lastUpdated": "2026-05-03T04:24:16.770Z"
+  },
+  "ext:spread-scanner:devtools-panel.html": {
+    "id": "ext:spread-scanner:devtools-panel.html",
+    "hash": "0a0ca4a43b7af34d69457f29d343468a04af154ad172650a78d370d40ae00a0b",
+    "phiScore": 0.29241974631407297,
+    "lastUpdated": "2026-05-03T04:24:16.770Z"
+  },
+  "ext:spread-scanner:devtools.html": {
+    "id": "ext:spread-scanner:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.770Z"
+  },
+  "ext:spread-scanner:popup.html": {
+    "id": "ext:spread-scanner:popup.html",
+    "hash": "f9b05fda5ba7c856623b8d3c70bda6b9acd554890294b4b04f618496d8b0c010",
+    "phiScore": 0.3468973086988068,
+    "lastUpdated": "2026-05-03T04:24:16.770Z"
+  },
+  "ext:spread-scanner:sidepanel.html": {
+    "id": "ext:spread-scanner:sidepanel.html",
+    "hash": "1cf21704dfb8fa5f4462b67f37b2af4be5b951504c7a88cf6a12264b7f40c042",
+    "phiScore": 0.2576551509447786,
+    "lastUpdated": "2026-05-03T04:24:16.770Z"
+  },
+  "ext:video-architect:devtools-panel.html": {
+    "id": "ext:video-architect:devtools-panel.html",
+    "hash": "b4a00bcde9dd077e3e3c925b7dfb1f696f8c28337162f2a751f7f783b9f07dc1",
+    "phiScore": 0.29228915806072286,
+    "lastUpdated": "2026-05-03T04:24:16.770Z"
+  },
+  "ext:video-architect:devtools.html": {
+    "id": "ext:video-architect:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.770Z"
+  },
+  "ext:video-architect:popup.html": {
+    "id": "ext:video-architect:popup.html",
+    "hash": "48f802110bbab7b3bdbcc863d70466910dc41fb656a275c7899946f2c8ca9e74",
+    "phiScore": 0.346484117092363,
+    "lastUpdated": "2026-05-03T04:24:16.770Z"
+  },
+  "ext:video-architect:sidepanel.html": {
+    "id": "ext:video-architect:sidepanel.html",
+    "hash": "3eae73f4ed96ce7ca3172e23d87147b22269aca9fd3be7436b9d236490e9a35e",
+    "phiScore": 0.2574018276226423,
+    "lastUpdated": "2026-05-03T04:24:16.770Z"
+  },
+  "ext:vision-weaver:devtools-panel.html": {
+    "id": "ext:vision-weaver:devtools-panel.html",
+    "hash": "1b49598948e74ba1d10feae4962623518f97e5ea8965c68e17964018e9e6691a",
+    "phiScore": 0.29255045130739693,
+    "lastUpdated": "2026-05-03T04:24:16.770Z"
+  },
+  "ext:vision-weaver:devtools.html": {
+    "id": "ext:vision-weaver:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.770Z"
+  },
+  "ext:vision-weaver:popup.html": {
+    "id": "ext:vision-weaver:popup.html",
+    "hash": "a5b20a826f6727bf4ac111d0ebb13d3a8e71a8e444af128529ad30622ee5390d",
+    "phiScore": 0.3470352583178546,
+    "lastUpdated": "2026-05-03T04:24:16.770Z"
+  },
+  "ext:vision-weaver:sidepanel.html": {
+    "id": "ext:vision-weaver:sidepanel.html",
+    "hash": "617b08b9949de43fff8192f9636fc50af2c5fa037a0388c433498f8c6846ada0",
+    "phiScore": 0.25795979788648093,
+    "lastUpdated": "2026-05-03T04:24:16.770Z"
+  },
+  "ext:voice-forge:devtools-panel.html": {
+    "id": "ext:voice-forge:devtools-panel.html",
+    "hash": "f67830307b36c8e5ad2002b0cbc743b99342d8ff6115fb33854c41d6354b1179",
+    "phiScore": 0.29281221214068837,
+    "lastUpdated": "2026-05-03T04:24:16.770Z"
+  },
+  "ext:voice-forge:devtools.html": {
+    "id": "ext:voice-forge:devtools.html",
+    "hash": "008d33d425ebe85a1e116deb0608cc6f34fe18eed79436ee4c724e8c88898ce2",
+    "phiScore": 1,
+    "lastUpdated": "2026-05-03T04:24:16.771Z"
+  },
+  "ext:voice-forge:popup.html": {
+    "id": "ext:voice-forge:popup.html",
+    "hash": "14768cd49303b9857a083fdda84a3d4bb68475cd620be3de9f9b216281520eca",
+    "phiScore": 0.34731148696602476,
+    "lastUpdated": "2026-05-03T04:24:16.771Z"
+  },
+  "ext:voice-forge:sidepanel.html": {
+    "id": "ext:voice-forge:sidepanel.html",
+    "hash": "d499e0da6567b791be18589593a20684ccd1a04e189ab42baf1a23dc6eba64d3",
+    "phiScore": 0.25821422120030524,
+    "lastUpdated": "2026-05-03T04:24:16.771Z"
+  }
+}
