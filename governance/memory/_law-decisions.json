@@ -1,5 +1,5 @@
 {
-  "evaluated": "2026-05-04T14:07:28.593Z",
+  "evaluated": "2026-05-04T19:44:04.054Z",
   "lawFiles": [
     "bot-fleet.cpl-l",
     "economy.cpl-l",
@@ -7,7 +7,7 @@
     "meta.cpl-l",
     "topology.cpl-l"
   ],
-  "totalLawChecks": 19,
+  "totalLawChecks": 20,
   "totalFired": 1,
   "riskScore": "0.244",
   "decisions": [
@@ -19,7 +19,7 @@
       "event": "evt-2026-05-03T04-50-47-185Z-006",
       "entity": "atlas://bot/organism-crawler-bot",
       "domain": "topology",
-      "ts": "2026-05-04T14:07:28.593Z"
+      "ts": "2026-05-04T19:44:04.054Z"
     },
     {
       "lawSetId": "TOPOLOGY_INTEGRITY",
@@ -29,7 +29,7 @@
       "event": "evt-2026-05-03T04-50-47-185Z-006",
       "entity": "atlas://bot/organism-crawler-bot",
       "domain": "topology",
-      "ts": "2026-05-04T14:07:28.593Z"
+      "ts": "2026-05-04T19:44:04.054Z"
     }
   ],
   "activeForbids": [],
@@ -42,7 +42,7 @@
       "event": "evt-2026-05-03T04-50-47-185Z-006",
       "entity": "atlas://bot/organism-crawler-bot",
       "domain": "topology",
-      "ts": "2026-05-04T14:07:28.593Z"
+      "ts": "2026-05-04T19:44:04.054Z"
     }
   ],
   "escalations": [],
@@ -55,7 +55,7 @@
       "event": "evt-2026-05-03T04-50-47-185Z-006",
       "entity": "atlas://bot/organism-crawler-bot",
       "domain": "topology",
-      "ts": "2026-05-04T14:07:28.593Z"
+      "ts": "2026-05-04T19:44:04.054Z"
     }
   ]
 }
