@@ -40,5 +40,12 @@
     "risk": 0.25,
     "events": 11,
     "forbids": 0
+  },
+  {
+    "ts": "2026-05-05T19:25:08.035Z",
+    "decision": "ALLOW",
+    "risk": 0.25,
+    "events": 12,
+    "forbids": 0
   }
 ]
