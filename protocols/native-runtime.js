@@ -47,6 +47,12 @@ import {
   HomeostaticDriveProtocol,
   GoalStackProtocol,
   ArtifactGenerationProtocol,
+  // Chaos Creation Theory: Mathematical Intelligence Protocols
+  FormalLogicInferenceProtocol,
+  SymbolicMathematicsProtocol,
+  CategoryTheoryProtocol,
+  FractalDynamicsProtocol,
+  CausalInferenceProtocol,
 } from './index.js';
 
 // ─── Organism Identity ───────────────────────────────────────────────────────
@@ -95,6 +101,16 @@ const protocols = {
   // Per-Worker Components
   miniHeart: new MiniHeartProtocol(ORGANISM_ID),
   miniBrain: new MiniBrainProtocol(ORGANISM_ID),
+
+  // ── Chaos Creation Theory: Mathematical Intelligence (PROTO-221–225) ──────
+  // The organism now REASONS IN MATHEMATICS — not just pattern-matching
+  // but formal proof, symbolic calculus, structural algebra, fractal
+  // self-similarity, and causal understanding.
+  logic: new FormalLogicInferenceProtocol(),
+  symbolicMath: new SymbolicMathematicsProtocol(),
+  categoryTheory: new CategoryTheoryProtocol(),
+  fractalDynamics: new FractalDynamicsProtocol(),
+  causalInference: new CausalInferenceProtocol(),
 };
 
 // ─── State Registers ─────────────────────────────────────────────────────────
@@ -194,7 +210,7 @@ function startHeartbeat() {
   console.log(`║  Substrate: ${SUBSTRATE.padEnd(47)}║`);
   console.log(`║  Heartbeat: ${HEARTBEAT}ms                                              ║`);
   console.log(`║  PHI:       ${PHI}                                 ║`);
-  console.log(`║  Protocols: 36                                                  ║`);
+  console.log(`║  Protocols: 41 (36 original + 5 math intelligence)            ║`);
   console.log(`╚════════════════════════════════════════════════════════════════╝\n`);
   
   startTime = Date.now();
@@ -261,6 +277,31 @@ export const NativeRuntime = {
   reward: (state, amount) => protocols.reward.reward(state, amount),
   generate: (generatorId, input) => protocols.artifacts.generate(generatorId, input),
   
+  // ── Mathematical Intelligence (PROTO-221–225) ─────────────────────────────
+  // Logic
+  assertLogic: (id, formula, conf, label) => protocols.logic.assert(id, formula, conf, label),
+  prove: (goal, bindings) => protocols.logic.prove(goal, bindings),
+  forwardChain: (worldState) => protocols.logic.forwardChain(worldState),
+  // Symbolic Math
+  defineExpr: (name, expr) => protocols.symbolicMath.define(name, expr),
+  derive: (expr, varName, order) => protocols.symbolicMath.derive(expr, varName, order),
+  taylor: (expr, varName, point, order) => protocols.symbolicMath.taylor(expr, varName, point, order),
+  detectPhi: (value) => protocols.symbolicMath.detectPhi(value),
+  phiSpiral: (n, scale) => protocols.symbolicMath.phiSpiral(n, scale),
+  // Category Theory
+  category: (name, config) => protocols.categoryTheory.category(name, config),
+  modelOrganism: (protocols_, flows) => protocols.categoryTheory.modelOrganism(protocols_, flows),
+  // Fractal Dynamics
+  attractor: (preset, n) => protocols.fractalDynamics.attractor(preset, n),
+  mandelbrot: (cx, cy) => protocols.fractalDynamics.mandelbrot(cx, cy),
+  fractalDimension: (points) => protocols.fractalDynamics.dimension(points),
+  bifurcation: (rRange) => protocols.fractalDynamics.bifurcation(rRange),
+  // Causal Inference
+  createCausalModel: (name) => protocols.causalInference.createModel(name),
+  intervene: (model, X, Y, x, Z, data) => protocols.causalInference.intervene(model, X, Y, x, Z, data),
+  counterfactual: (model, X, Y, xObs, yObs, xCF) => protocols.causalInference.counterfactual(model, X, Y, xObs, yObs, xCF),
+  modelOrganismCausality: () => protocols.causalInference.modelOrganismCausality(),
+  
   // Full metrics
   getMetrics: () => ({
     organism: {
@@ -279,6 +320,12 @@ export const NativeRuntime = {
     drives: protocols.drives.getMetrics(),
     attention: protocols.attention.getMetrics(),
     artifacts: protocols.artifacts.getMetrics(),
+    // Chaos Creation Theory math intelligence
+    logic: protocols.logic.getMetrics(),
+    symbolicMath: protocols.symbolicMath.getMetrics(),
+    categoryTheory: protocols.categoryTheory.getMetrics(),
+    fractalDynamics: protocols.fractalDynamics.getMetrics(),
+    causalInference: protocols.causalInference.getMetrics(),
     phi: PHI,
     heartbeat: HEARTBEAT,
   }),

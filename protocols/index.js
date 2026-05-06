@@ -106,3 +106,42 @@ export { GoalStackProtocol, GOAL_STATES } from './goal-stack-protocol.js';
 
 // PROTO-220: Artifact Generation — autonomous artifact production, validation
 export { ArtifactGenerationProtocol, ARTIFACT_TYPES } from './artifact-generation-protocol.js';
+
+// ─── Chaos Creation Theory: Mathematical Intelligence Protocols ───────────────
+// PROTO-221 through PROTO-225: The organism's formal reasoning, symbolic math,
+// structural algebra, fractal dynamics, and causal understanding.
+// These five protocols give the organism the ability to REASON IN MATHEMATICS,
+// not just compute — to understand WHY as well as WHAT and HOW.
+
+// PROTO-221: Formal Logic & Inference — propositional/predicate logic, resolution, phi-weighted proof search
+export {
+  FormalLogicInferenceProtocol, CONNECTIVE,
+  atom, not, and, or, implies, iff, xor, forall, exists, evaluate as evaluateLogic,
+} from './formal-logic-inference-protocol.js';
+
+// PROTO-222: Symbolic Mathematics — CAS, auto-diff (dual numbers), Taylor series, phi-ratio detection
+export {
+  SymbolicMathematicsProtocol, Polynomial, SYM,
+  num, variable, constant, add, sub, mul, div, pow, neg,
+  sin, cos, tan, exp, ln, sqrt,
+  evaluate as evaluateExpr, simplify, differentiate, autoDiff, taylorSeries,
+  detectPhiRatio, exprToString,
+} from './symbolic-mathematics-protocol.js';
+
+// PROTO-223: Category Theory — objects, morphisms, functors, natural transformations
+export {
+  CategoryTheoryProtocol, Category, CategoryObject, Morphism, Functor, NaturalTransformation,
+} from './category-theory-protocol.js';
+
+// PROTO-224: Fractal Dynamics — IFS attractors, Mandelbrot, Julia, Hausdorff dimension, L-systems, bifurcation
+export {
+  FractalDynamicsProtocol, IFSTransform, IFS_PRESETS, L_SYSTEM_PRESETS,
+  ifsAttractor, mandelbrot, sampleMandelbrot, julia,
+  boxCountingDimension, lSystem, bifurcationDiagram, vanDerCorput,
+} from './fractal-dynamics-protocol.js';
+
+// PROTO-225: Causal Inference — Pearl SCM, do-calculus, backdoor criterion, counterfactuals, mediation
+export {
+  CausalInferenceProtocol, StructuralCausalModel, CausalVariable, CausalEdge,
+  backdoorCriterion, doCalc, counterfactual, mediationAnalysis, discoverCausalGraph,
+} from './causal-inference-protocol.js';
