@@ -1,25 +1,25 @@
 {
-  "generated": "2026-05-02T23:02:13.932Z",
+  "generated": "2026-05-06T05:57:39.207Z",
   "bot": "organism-economy-bot",
   "summary": {
-    "total": 72,
+    "total": 99,
     "extensions": 37,
-    "sdks": 11,
-    "protocols": 16,
+    "sdks": 18,
+    "protocols": 36,
     "csvRegisters": 8,
-    "totalComplexity": 187
+    "totalComplexity": 282
   },
   "coverage": {
-    "sdkCoverage": 3,
+    "sdkCoverage": 100,
     "protocolCoverage": 0,
     "registerCoverage": 57,
-    "overallCoverage": 20,
-    "extWithSDK": 1,
+    "overallCoverage": 52,
+    "extWithSDK": 37,
     "assetsWithProtocol": 0,
     "extWithRegister": 21
   },
   "topAssets": {
-    "highestComplexitySDK": "@medina/organism-marketplace",
+    "highestComplexitySDK": "@medina/medina-timers",
     "largestProtocol": "OrganismLifecycleProtocol",
     "mostMethodsProtocol": "OrganismLifecycleProtocol",
     "largestCSV": "Organism Marketplace"
