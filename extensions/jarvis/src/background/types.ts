@@ -95,6 +95,7 @@ export type MessageAction =
   | 'getMemoryTemple'
   | 'addTempleEntry'
   | 'runSovereignTool'
+  | 'synthesizeMathExecution'
   | 'autoInstallUpdate'
   | 'downloadJarvisZip'
   | 'downloadJarvisBat'

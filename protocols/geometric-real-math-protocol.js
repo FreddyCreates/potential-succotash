@@ -30,8 +30,9 @@ class GeometricRealMathProtocol {
     this.aiModel = {
       id: 'GRMP-AIMODEL',
       name: 'Geometric Reality Model',
-      engines: ['euclidean-engine', 'projective-engine', 'topology-engine'],
+      engines: ['euclidean-engine', 'projective-engine', 'topology-engine', 'middle-synthesis-engine', 'compression-engine'],
     };
+    this.synthesisLog = [];
   }
 
   runEngine(engine, input = {}) {
@@ -40,8 +41,45 @@ class GeometricRealMathProtocol {
       case 'euclidean-engine': return this.euclidean(input);
       case 'projective-engine': return this.projective(input);
       case 'topology-engine': return this.topology(input);
+      case 'middle-synthesis-engine': return this.middleSynthesis(input);
+      case 'compression-engine': return this.compressForFront(input.payload || input);
       default: throw new Error(`Unknown geometric engine: ${engine}`);
     }
+  }
+
+  middleSynthesis(input = {}) {
+    this.computations++;
+    const symbolic = input.symbolic || {};
+    const geometric = input.geometric || {};
+    const thought = input.thought || {};
+    const symbolicComplexity = Number(symbolic.complexity || symbolic.order || 1);
+    const geometricComplexity = Number(geometric.distance || geometric.depth || geometric.curvature || 1);
+    const thoughtStrength = Number(thought.strength || thought.confidence || thought.weight || 1);
+    const fused = (symbolicComplexity + geometricComplexity + thoughtStrength) / 3;
+    const result = {
+      middle: {
+        symbolicComplexity,
+        geometricComplexity,
+        thoughtStrength,
+        fused,
+      },
+      power: fused * PHI,
+      timestamp: Date.now(),
+    };
+    this.synthesisLog.push(result);
+    if (this.synthesisLog.length > 100) this.synthesisLog.shift();
+    return result;
+  }
+
+  compressForFront(payload = {}) {
+    this.computations++;
+    return {
+      frontPower: Number(payload.power || payload.fused || 0) * (PHI - 1),
+      thoughtWire: payload.thoughtWire || payload.middle || null,
+      compressed: true,
+      phi: PHI,
+      t: Date.now(),
+    };
   }
 
   euclidean(input = {}) {
@@ -112,6 +150,8 @@ class GeometricRealMathProtocol {
       subProtocols: Object.keys(this.subProtocols),
       aiModel: this.aiModel.name,
       engines: this.aiModel.engines,
+      synthesisCount: this.synthesisLog.length,
+      recentSynthesis: this.synthesisLog.slice(-5),
       phi: PHI,
       heartbeat: HEARTBEAT,
     };

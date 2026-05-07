@@ -33,7 +33,7 @@ export class MathIntelligenceEngine extends OrganismEngine {
   readonly aiModel = {
     id: 'MATHX-AIMODEL',
     name: 'Math Intelligence Multi-Engine',
-    engines: ['symbolic-engine', 'geometric-engine', 'fusion-engine'],
+    engines: ['symbolic-engine', 'geometric-engine', 'middle-synthesis-engine', 'fusion-engine', 'compression-engine'],
   } as const;
 
   constructor() {
@@ -54,9 +54,50 @@ export class MathIntelligenceEngine extends OrganismEngine {
         const complexity = (input.symbolicComplexity ?? 1) * (input.geometricComplexity ?? 1);
         return { mode: 'fusion', score: complexity * Phi.inv, heartbeat: Phi.tau };
       }
+      case 'middle-synthesis-engine': {
+        const symbolicComplexity = Number(input.symbolicComplexity ?? input.order ?? 1);
+        const geometricComplexity = Number(input.geometricComplexity ?? input.distance ?? 1);
+        const thoughtStrength = Number(input.thoughtStrength ?? input.confidence ?? Phi.inv);
+        const middle = (symbolicComplexity + geometricComplexity + thoughtStrength) / 3;
+        return {
+          mode: 'middle',
+          middle,
+          symbolicComplexity,
+          geometricComplexity,
+          thoughtStrength,
+          power: middle * Phi._1,
+        };
+      }
+      case 'compression-engine': {
+        const power = Number(input.power ?? 0);
+        return {
+          mode: 'compressed-front',
+          compressed: true,
+          frontPower: power * Phi.inv,
+          thoughtWire: input.thoughtWire ?? null,
+          heartbeat: Phi.tau,
+        };
+      }
       default:
         throw new Error(`Unknown MathIntelligence engine: ${engine}`);
     }
+  }
+
+  synthesizeExecution(input: Record<string, any> = {}) {
+    const symbolic = this.runEngine('symbolic-engine', input);
+    const geometric = this.runEngine('geometric-engine', input);
+    const middle = this.runEngine('middle-synthesis-engine', {
+      symbolicComplexity: input.symbolicComplexity ?? symbolic.order ?? 1,
+      geometricComplexity: geometric.distance ?? 1,
+      thoughtStrength: input.thoughtStrength ?? Phi.inv,
+    }) as { power: number; middle: number };
+    const thoughtWire = {
+      thought: input.thought || 'math-execution',
+      confidence: Number(input.thoughtStrength ?? Phi.inv),
+      middle: middle.middle,
+    };
+    const compressed = this.runEngine('compression-engine', { power: middle.power, thoughtWire });
+    return { symbolic, geometric, middle, thoughtWire, compressed };
   }
 
   getMathModel() {
@@ -66,4 +107,3 @@ export class MathIntelligenceEngine extends OrganismEngine {
 
 export const MATHX = new MathIntelligenceEngine();
 MATHX.activate();
-

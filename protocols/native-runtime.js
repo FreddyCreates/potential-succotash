@@ -144,6 +144,41 @@ const state = {
   },
 };
 
+function synthesizeMathMiddle(input = {}) {
+  const symbolicComplexity = Number(input.symbolicComplexity ?? input.order ?? 1);
+  const p1 = input.p1 || [0, 0, 0];
+  const p2 = input.p2 || [1, 1, 0];
+  const geometric = protocols.geometricMath.runEngine('euclidean-engine', { p1, p2 });
+  const thoughtStimulus = input.thought || `math-middle:${symbolicComplexity}:${geometric.distance}`;
+  protocols.miniBrain.learn(thoughtStimulus, 'math-synthesis', PHI - 1);
+  const thoughtResponse = protocols.miniBrain.respond(thoughtStimulus);
+
+  const middle = protocols.geometricMath.runEngine('middle-synthesis-engine', {
+    symbolic: { complexity: symbolicComplexity },
+    geometric,
+    thought: {
+      strength: thoughtResponse.confidence || 0.5,
+      confidence: thoughtResponse.confidence || 0.5,
+      response: thoughtResponse.response,
+    },
+  });
+
+  const compressed = protocols.geometricMath.runEngine('compression-engine', {
+    payload: {
+      power: middle.power,
+      middle: middle.middle,
+      thoughtWire: thoughtResponse,
+    },
+  });
+
+  return {
+    geometric,
+    middle,
+    thought: thoughtResponse,
+    compressed,
+  };
+}
+
 // ─── Heartbeat Engine ────────────────────────────────────────────────────────
 
 let beatCount = 0;
@@ -295,6 +330,8 @@ export const NativeRuntime = {
   geometricAngle: (a, b) => protocols.geometricMath.angle(a, b),
   geometricCircle: (r) => protocols.geometricMath.circle(r),
   goldenTriangle: (s) => protocols.geometricMath.goldenTriangle(s),
+  mathMiddleSynthesis: (input) => synthesizeMathMiddle(input),
+  mathFrontCompression: (input) => synthesizeMathMiddle(input).compressed,
   // Category Theory
   category: (name, config) => protocols.categoryTheory.category(name, config),
   modelOrganism: (protocols_, flows) => protocols.categoryTheory.modelOrganism(protocols_, flows),
