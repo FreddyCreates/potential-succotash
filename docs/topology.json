@@ -1,40 +1,40 @@
 {
-  "generated": "2026-05-02T23:02:22.789Z",
+  "generated": "2026-05-07T07:37:52.619Z",
   "bot": "organism-crawler-bot",
   "summary": {
-    "totalFiles": 803,
-    "totalBytes": 6762412,
-    "totalKB": 6604,
-    "sections": 13,
+    "totalFiles": 1066,
+    "totalBytes": 11553014,
+    "totalKB": 11282,
+    "sections": 15,
     "langCounts": {
-      "YAML": 18,
-      "Other": 179,
+      "YAML": 24,
+      "Other": 320,
       "CSV": 8,
-      "Markdown": 28,
-      "JSON": 79,
+      "Markdown": 34,
+      "JSON": 117,
+      "JavaScript": 368,
       "Shell": 5,
-      "JavaScript": 299,
       "HTML": 146,
       "TypeScript": 23,
       "CSS": 1,
+      "Motoko": 7,
       "C++": 3,
-      "Motoko": 4,
       "Python": 9,
       "TOML": 1
     },
     "langBytes": {
-      "YAML": 65610,
-      "Other": 199089,
+      "YAML": 80111,
+      "Other": 4258947,
       "CSV": 408419,
-      "Markdown": 126829,
-      "JSON": 487343,
+      "Markdown": 160626,
+      "JSON": 598230,
+      "JavaScript": 2997564,
       "Shell": 33732,
-      "JavaScript": 2488622,
       "HTML": 2420908,
-      "TypeScript": 388209,
+      "TypeScript": 389876,
       "CSS": 2590,
+      "Motoko": 153423,
       "C++": 21215,
-      "Motoko": 92473,
       "Python": 26961,
       "TOML": 412
     }
@@ -42,10 +42,17 @@
   "sections": [
     {
       "name": ".github",
-      "files": 18,
-      "bytes": 65610,
+      "files": 22,
+      "bytes": 75464,
       "dirs": 1,
       "topLanguage": "YAML"
+    },
+    {
+      "name": "atlas",
+      "files": 19,
+      "bytes": 15039,
+      "dirs": 1,
+      "topLanguage": "JSON"
     },
     {
       "name": "desktop",
@@ -56,10 +63,10 @@
     },
     {
       "name": "docs",
-      "files": 21,
-      "bytes": 140835,
-      "dirs": 1,
-      "topLanguage": "Markdown"
+      "files": 160,
+      "bytes": 4196445,
+      "dirs": 2,
+      "topLanguage": "Other"
     },
     {
       "name": "electron",
@@ -71,9 +78,16 @@
     {
       "name": "extensions",
       "files": 475,
-      "bytes": 2938484,
+      "bytes": 2940151,
       "dirs": 38,
       "topLanguage": "Other"
+    },
+    {
+      "name": "governance",
+      "files": 29,
+      "bytes": 199909,
+      "dirs": 9,
+      "topLanguage": "JSON"
     },
     {
       "name": "organism",
@@ -91,8 +105,8 @@
     },
     {
       "name": "protocols",
-      "files": 17,
-      "bytes": 163715,
+      "files": 38,
+      "bytes": 289401,
       "dirs": 0,
       "topLanguage": "JavaScript"
     },
@@ -105,16 +119,16 @@
     },
     {
       "name": "scripts",
-      "files": 38,
-      "bytes": 192736,
-      "dirs": 10,
+      "files": 58,
+      "bytes": 299231,
+      "dirs": 14,
       "topLanguage": "JavaScript"
     },
     {
       "name": "sdk",
-      "files": 117,
-      "bytes": 643837,
-      "dirs": 11,
+      "files": 148,
+      "bytes": 920179,
+      "dirs": 18,
       "topLanguage": "JavaScript"
     },
     {
@@ -133,12 +147,182 @@
     }
   ],
   "crossRef": {
-    "totalFiles": 159,
-    "totalImports": 182,
-    "totalExports": 112,
-    "uniqueSymbols": 107
+    "totalFiles": 207,
+    "totalImports": 220,
+    "totalExports": 321,
+    "uniqueSymbols": 302
   },
   "topSymbols": [
+    {
+      "name": "PHI",
+      "definedIn": 4,
+      "locations": [
+        {
+          "file": "protocols/index.js",
+          "kind": "const",
+          "section": "protocols"
+        },
+        {
+          "file": "sdk/index.js",
+          "kind": "const",
+          "section": "sdk"
+        },
+        {
+          "file": "sdk/medina-timers/src/index.js",
+          "kind": "const",
+          "section": "sdk"
+        }
+      ]
+    },
+    {
+      "name": "GOLDEN_ANGLE",
+      "definedIn": 4,
+      "locations": [
+        {
+          "file": "protocols/index.js",
+          "kind": "const",
+          "section": "protocols"
+        },
+        {
+          "file": "sdk/index.js",
+          "kind": "const",
+          "section": "sdk"
+        },
+        {
+          "file": "sdk/medina-timers/src/index.js",
+          "kind": "const",
+          "section": "sdk"
+        }
+      ]
+    },
+    {
+      "name": "HEARTBEAT",
+      "definedIn": 2,
+      "locations": [
+        {
+          "file": "protocols/index.js",
+          "kind": "const",
+          "section": "protocols"
+        },
+        {
+          "file": "sdk/medina-timers/src/index.js",
+          "kind": "const",
+          "section": "sdk"
+        }
+      ]
+    },
+    {
+      "name": "EMERGENCE_THRESHOLD",
+      "definedIn": 2,
+      "locations": [
+        {
+          "file": "protocols/index.js",
+          "kind": "const",
+          "section": "protocols"
+        },
+        {
+          "file": "sdk/index.js",
+          "kind": "const",
+          "section": "sdk"
+        }
+      ]
+    },
+    {
+      "name": "PHI_INV",
+      "definedIn": 2,
+      "locations": [
+        {
+          "file": "sdk/index.js",
+          "kind": "const",
+          "section": "sdk"
+        },
+        {
+          "file": "sdk/medina-timers/src/index.js",
+          "kind": "const",
+          "section": "sdk"
+        }
+      ]
+    },
+    {
+      "name": "HEARTBEAT_MS",
+      "definedIn": 2,
+      "locations": [
+        {
+          "file": "sdk/index.js",
+          "kind": "const",
+          "section": "sdk"
+        },
+        {
+          "file": "organism/typescript/src/types.ts",
+          "kind": "const",
+          "section": "organism"
+        }
+      ]
+    },
+    {
+      "name": "callBindSynapse",
+      "definedIn": 2,
+      "locations": [
+        {
+          "file": "sdk/medina-calls/src/civitas-calls.js",
+          "kind": "function",
+          "section": "sdk"
+        },
+        {
+          "file": "sdk/medina-calls/src/organism-calls.js",
+          "kind": "function",
+          "section": "sdk"
+        }
+      ]
+    },
+    {
+      "name": "bootstrapCivitas",
+      "definedIn": 2,
+      "locations": [
+        {
+          "file": "sdk/organism-bootstrap/src/index.js",
+          "kind": "function",
+          "section": "sdk"
+        },
+        {
+          "file": "sdk/runtime/bootstrap.js",
+          "kind": "function",
+          "section": "sdk"
+        }
+      ]
+    },
+    {
+      "name": "bootstrapMultiple",
+      "definedIn": 2,
+      "locations": [
+        {
+          "file": "sdk/organism-bootstrap/src/index.js",
+          "kind": "function",
+          "section": "sdk"
+        },
+        {
+          "file": "sdk/runtime/bootstrap.js",
+          "kind": "function",
+          "section": "sdk"
+        }
+      ]
+    },
+    {
+      "name": "bootstrapWithHashRouting",
+      "definedIn": 2,
+      "locations": [
+        {
+          "file": "sdk/organism-bootstrap/src/index.js",
+          "kind": "function",
+          "section": "sdk"
+        },
+        {
+          "file": "sdk/runtime/bootstrap.js",
+          "kind": "function",
+          "section": "sdk"
+        }
+      ]
+    },
     {
       "name": "CrossOrganismResonance",
       "definedIn": 2,
@@ -220,6 +404,17 @@
       ]
     },
     {
+      "name": "NativeRuntime",
+      "definedIn": 1,
+      "locations": [
+        {
+          "file": "protocols/native-runtime.js",
+          "kind": "const",
+          "section": "protocols"
+        }
+      ]
+    },
+    {
       "name": "OrganismMarketplaceProtocol",
       "definedIn": 1,
       "locations": [
@@ -227,6 +422,17 @@
           "file": "protocols/organism-marketplace-protocol.js",
           "kind": "class",
           "section": "protocols"
+        }
+      ]
+    },
+    {
+      "name": "createAgents",
+      "definedIn": 1,
+      "locations": [
+        {
+          "file": "sdk/agents/index.js",
+          "kind": "function",
+          "section": "sdk"
         }
       ]
     },
@@ -247,138 +453,6 @@
       "locations": [
         {
           "file": "sdk/document-absorption-engine/src/absorption-pipeline.js",
-          "kind": "class",
-          "section": "sdk"
-        }
-      ]
-    },
-    {
-      "name": "ContentExtractor",
-      "definedIn": 1,
-      "locations": [
-        {
-          "file": "sdk/document-absorption-engine/src/content-extractor.js",
-          "kind": "class",
-          "section": "sdk"
-        }
-      ]
-    },
-    {
-      "name": "DigestGenerator",
-      "definedIn": 1,
-      "locations": [
-        {
-          "file": "sdk/document-absorption-engine/src/digest-generator.js",
-          "kind": "class",
-          "section": "sdk"
-        }
-      ]
-    },
-    {
-      "name": "DocumentIntake",
-      "definedIn": 1,
-      "locations": [
-        {
-          "file": "sdk/document-absorption-engine/src/document-intake.js",
-          "kind": "class",
-          "section": "sdk"
-        }
-      ]
-    },
-    {
-      "name": "KnowledgeGraph",
-      "definedIn": 1,
-      "locations": [
-        {
-          "file": "sdk/document-absorption-engine/src/knowledge-graph.js",
-          "kind": "class",
-          "section": "sdk"
-        }
-      ]
-    },
-    {
-      "name": "CampaignManager",
-      "definedIn": 1,
-      "locations": [
-        {
-          "file": "sdk/enterprise-integration-sdk/src/campaign-manager.js",
-          "kind": "class",
-          "section": "sdk"
-        }
-      ]
-    },
-    {
-      "name": "BaseConnector",
-      "definedIn": 1,
-      "locations": [
-        {
-          "file": "sdk/enterprise-integration-sdk/src/connectors/base-connector.js",
-          "kind": "class",
-          "section": "sdk"
-        }
-      ]
-    },
-    {
-      "name": "GoogleConnector",
-      "definedIn": 1,
-      "locations": [
-        {
-          "file": "sdk/enterprise-integration-sdk/src/connectors/google.js",
-          "kind": "class",
-          "section": "sdk"
-        }
-      ]
-    },
-    {
-      "name": "HubSpotConnector",
-      "definedIn": 1,
-      "locations": [
-        {
-          "file": "sdk/enterprise-integration-sdk/src/connectors/hubspot.js",
-          "kind": "class",
-          "section": "sdk"
-        }
-      ]
-    },
-    {
-      "name": "SalesforceConnector",
-      "definedIn": 1,
-      "locations": [
-        {
-          "file": "sdk/enterprise-integration-sdk/src/connectors/salesforce.js",
-          "kind": "class",
-          "section": "sdk"
-        }
-      ]
-    },
-    {
-      "name": "SAPConnector",
-      "definedIn": 1,
-      "locations": [
-        {
-          "file": "sdk/enterprise-integration-sdk/src/connectors/sap.js",
-          "kind": "class",
-          "section": "sdk"
-        }
-      ]
-    },
-    {
-      "name": "ShopifyConnector",
-      "definedIn": 1,
-      "locations": [
-        {
-          "file": "sdk/enterprise-integration-sdk/src/connectors/shopify.js",
-          "kind": "class",
-          "section": "sdk"
-        }
-      ]
-    },
-    {
-      "name": "SlackConnector",
-      "definedIn": 1,
-      "locations": [
-        {
-          "file": "sdk/enterprise-integration-sdk/src/connectors/slack.js",
           "kind": "class",
           "section": "sdk"
         }
