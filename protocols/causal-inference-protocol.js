@@ -490,7 +490,31 @@ class CausalInferenceProtocol {
     this.counterfactualLog = [];
     this.inferences = 0;
     this.defaultPhiStrength = config.defaultPhiStrength ?? PHI_INV;
+    this.subProtocols = {
+      interventionalCausality: { id: 'CIP-A', name: 'Interventional Causality', capabilities: ['backdoor', 'do-calc', 'mediation'] },
+      counterfactualReasoning: { id: 'CIP-B', name: 'Counterfactual Reasoning', capabilities: ['abduction', 'action', 'prediction'] },
+    };
+    this.aiModel = {
+      id: 'CIP-AIMODEL',
+      name: 'Causal Multi-Engine',
+      engines: ['do-calculus-engine', 'counterfactual-engine', 'discovery-engine'],
+    };
   }
+
+  runEngine(engine, input = {}) {
+    if (engine === 'do-calculus-engine') {
+      return this.intervene(input.model, input.X, input.Y, input.xValue, input.adjustmentSet || [], input.data || []);
+    }
+    if (engine === 'counterfactual-engine') {
+      return this.counterfactual(input.model, input.X, input.Y, input.xObserved, input.yObserved, input.xCounterfactual);
+    }
+    if (engine === 'discovery-engine') {
+      return this.discover(input.variables || [], input.correlationMatrix || {}, input.threshold ?? 0.3);
+    }
+    throw new Error(`Unknown CIP engine: ${engine}`);
+  }
+
+  getModel() { return this.aiModel; }
 
   /**
    * Create a new Structural Causal Model.
@@ -620,6 +644,9 @@ class CausalInferenceProtocol {
     return {
       modelCount: this.models.size,
       inferences: this.inferences,
+      subProtocols: Object.keys(this.subProtocols),
+      aiModel: this.aiModel.name,
+      engines: this.aiModel.engines,
       interventions: this.interventionLog.length,
       counterfactuals: this.counterfactualLog.length,
       recentInterventions: this.interventionLog.slice(-3),

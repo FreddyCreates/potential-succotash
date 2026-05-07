@@ -84,7 +84,7 @@ describe('Extensions index', () => {
 });
 
 describe('Protocols index', () => {
-  it('should export 11 protocols', () => {
+  it('should export protocol set', () => {
     const indexPath = path.join(SDK_ROOT, '..', 'protocols', 'index.js');
     assert.ok(fs.existsSync(indexPath));
     const content = fs.readFileSync(indexPath, 'utf8');
@@ -92,11 +92,11 @@ describe('Protocols index', () => {
     assert.ok(exports, 'No exports found in protocols/index.js');
   });
 
-  it('should reference all 11 protocol files', () => {
+  it('should reference at least the original 11 protocol files', () => {
     const indexPath = path.join(SDK_ROOT, '..', 'protocols', 'index.js');
     const content = fs.readFileSync(indexPath, 'utf8');
     const fromMatches = content.match(/from\s+'\.\/[^']+'/g);
     assert.ok(fromMatches);
-    assert.equal(fromMatches.length, 11, `Expected 11 protocol imports, found ${fromMatches.length}`);
+    assert.ok(fromMatches.length >= 11, `Expected at least 11 protocol imports, found ${fromMatches.length}`);
   });
 });

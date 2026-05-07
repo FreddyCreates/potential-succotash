@@ -568,7 +568,26 @@ class SymbolicMathematicsProtocol {
     this.derivativeCache = new Map();
     this.phiDetections = [];
     this.computations = 0;
+    this.subProtocols = {
+      symbolicAlgebra: { id: 'SMP-A', name: 'Symbolic Algebra', capabilities: ['simplify', 'derive', 'taylor'] },
+      geometricSynthesis: { id: 'SMP-B', name: 'Geometric Synthesis', capabilities: ['phi-spiral', 'phi-detection', 'shape-metrics'] },
+    };
+    this.aiModel = {
+      id: 'SMP-AIMODEL',
+      name: 'Symbolic-Geometric Multi-Engine',
+      engines: ['symbolic-engine', 'autodiff-engine', 'phi-geometry-engine'],
+    };
   }
+
+  runEngine(engine, input = {}) {
+    this.computations++;
+    if (engine === 'symbolic-engine') return this.eval(input.expr, input.env || {});
+    if (engine === 'autodiff-engine') return this.autoDiff(input.fn, input.x0 ?? 0);
+    if (engine === 'phi-geometry-engine') return this.phiSpiral(input.n ?? 50, input.scale ?? 1);
+    throw new Error(`Unknown SMP engine: ${engine}`);
+  }
+
+  getModel() { return this.aiModel; }
 
   /**
    * Register a named symbolic expression.
@@ -680,6 +699,9 @@ class SymbolicMathematicsProtocol {
       registeredExpressions: this.expressionRegistry.size,
       cachedDerivatives: this.derivativeCache.size,
       computations: this.computations,
+      subProtocols: Object.keys(this.subProtocols),
+      aiModel: this.aiModel.name,
+      engines: this.aiModel.engines,
       phiDetections: this.phiDetections.length,
       recentPhiDetections: this.phiDetections.slice(-5),
       phi: PHI,

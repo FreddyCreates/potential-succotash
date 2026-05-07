@@ -356,7 +356,25 @@ class FractalDynamicsProtocol {
     this.attractorCache = new Map();
     this.computations = 0;
     this.phiDetections = [];
+    this.subProtocols = {
+      attractorDynamics: { id: 'FDP-A', name: 'Attractor Dynamics', capabilities: ['ifs', 'mandelbrot', 'julia'] },
+      geometricComplexity: { id: 'FDP-B', name: 'Geometric Complexity', capabilities: ['dimension', 'lsystem', 'bifurcation'] },
+    };
+    this.aiModel = {
+      id: 'FDP-AIMODEL',
+      name: 'Fractal Multi-Engine',
+      engines: ['attractor-engine', 'dimension-engine', 'bifurcation-engine'],
+    };
   }
+
+  runEngine(engine, input = {}) {
+    if (engine === 'attractor-engine') return this.attractor(input.preset || 'phi_spiral', input.iterations || 5000);
+    if (engine === 'dimension-engine') return this.dimension(input.points || []);
+    if (engine === 'bifurcation-engine') return this.bifurcation(input.rRange, input.rSteps || 200);
+    throw new Error(`Unknown FDP engine: ${engine}`);
+  }
+
+  getModel() { return this.aiModel; }
 
   /**
    * Generate IFS attractor points.
@@ -468,6 +486,9 @@ class FractalDynamicsProtocol {
     return {
       maxIter: this.maxIter,
       computations: this.computations,
+      subProtocols: Object.keys(this.subProtocols),
+      aiModel: this.aiModel.name,
+      engines: this.aiModel.engines,
       attractorsCached: this.attractorCache.size,
       phiDetections: this.phiDetections.length,
       recentPhiDetections: this.phiDetections.slice(-3),

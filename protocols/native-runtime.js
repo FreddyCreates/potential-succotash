@@ -18,7 +18,7 @@
  *   - MiniBrain (stimulus-response learning)
  *   - Kernel executor (autonomous task execution)
  *   - Cross-substrate resonance (inter-organism communication)
- *   - 36 protocols (intelligence primitives)
+ *   - 42 protocols (intelligence primitives)
  * 
  * @module native-runtime
  * @version 1.0.0
@@ -53,6 +53,7 @@ import {
   CategoryTheoryProtocol,
   FractalDynamicsProtocol,
   CausalInferenceProtocol,
+  GeometricRealMathProtocol,
 } from './index.js';
 
 // ─── Organism Identity ───────────────────────────────────────────────────────
@@ -111,6 +112,7 @@ const protocols = {
   categoryTheory: new CategoryTheoryProtocol(),
   fractalDynamics: new FractalDynamicsProtocol(),
   causalInference: new CausalInferenceProtocol(),
+  geometricMath: new GeometricRealMathProtocol(),
 };
 
 // ─── State Registers ─────────────────────────────────────────────────────────
@@ -210,7 +212,7 @@ function startHeartbeat() {
   console.log(`║  Substrate: ${SUBSTRATE.padEnd(47)}║`);
   console.log(`║  Heartbeat: ${HEARTBEAT}ms                                              ║`);
   console.log(`║  PHI:       ${PHI}                                 ║`);
-  console.log(`║  Protocols: 41 (36 original + 5 math intelligence)            ║`);
+  console.log(`║  Protocols: 42 (36 original + 6 math intelligence)            ║`);
   console.log(`╚════════════════════════════════════════════════════════════════╝\n`);
   
   startTime = Date.now();
@@ -288,6 +290,11 @@ export const NativeRuntime = {
   taylor: (expr, varName, point, order) => protocols.symbolicMath.taylor(expr, varName, point, order),
   detectPhi: (value) => protocols.symbolicMath.detectPhi(value),
   phiSpiral: (n, scale) => protocols.symbolicMath.phiSpiral(n, scale),
+  // Geometric Real Math
+  geometricEngine: (engine, input) => protocols.geometricMath.runEngine(engine, input),
+  geometricAngle: (a, b) => protocols.geometricMath.angle(a, b),
+  geometricCircle: (r) => protocols.geometricMath.circle(r),
+  goldenTriangle: (s) => protocols.geometricMath.goldenTriangle(s),
   // Category Theory
   category: (name, config) => protocols.categoryTheory.category(name, config),
   modelOrganism: (protocols_, flows) => protocols.categoryTheory.modelOrganism(protocols_, flows),
@@ -326,6 +333,7 @@ export const NativeRuntime = {
     categoryTheory: protocols.categoryTheory.getMetrics(),
     fractalDynamics: protocols.fractalDynamics.getMetrics(),
     causalInference: protocols.causalInference.getMetrics(),
+    geometricMath: protocols.geometricMath.getMetrics(),
     phi: PHI,
     heartbeat: HEARTBEAT,
   }),

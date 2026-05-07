@@ -127,7 +127,25 @@ class FormalLogicInferenceProtocol {
     this.phiDepthDecay = config.phiDepthDecay ?? PHI_INV;  // conf × PHI_INV per depth
     this.maxSearchDepth = config.maxSearchDepth ?? 7;
     this.maxResolutions = config.maxResolutions ?? 200;
+    this.subProtocols = {
+      propositionalCore: { id: 'FLIP-A', name: 'Propositional Core', capabilities: ['truth-eval', 'cnf', 'resolution'] },
+      predicateCore: { id: 'FLIP-B', name: 'Predicate Core', capabilities: ['quantifiers', 'goal-proving', 'chain-inference'] },
+    };
+    this.aiModel = {
+      id: 'FLIP-AIMODEL',
+      name: 'Formal Logic Multi-Engine',
+      engines: ['resolution-engine', 'forward-chain-engine', 'backward-chain-engine'],
+    };
   }
+
+  runEngine(engine, payload = {}) {
+    if (engine === 'resolution-engine') return this.resolve(payload.queryClauses || []);
+    if (engine === 'forward-chain-engine') return this.forwardChain(payload.worldState || {});
+    if (engine === 'backward-chain-engine') return this.prove(payload.goal || atom('truth'), payload.bindings || {});
+    throw new Error(`Unknown FLIP engine: ${engine}`);
+  }
+
+  getModel() { return this.aiModel; }
 
   // ── Knowledge Base ──────────────────────────────────────────────────────────
 
@@ -396,6 +414,9 @@ class FormalLogicInferenceProtocol {
       inferenceCount: this.inferenceCount,
       proofCount: this.proofLog.length,
       recentProofs: this.proofLog.slice(-5),
+      subProtocols: Object.keys(this.subProtocols),
+      aiModel: this.aiModel.name,
+      engines: this.aiModel.engines,
       phiDepthDecay: this.phiDepthDecay,
       maxSearchDepth: this.maxSearchDepth,
       phi: PHI,

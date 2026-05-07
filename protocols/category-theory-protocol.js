@@ -475,7 +475,37 @@ class CategoryTheoryProtocol {
     this.naturalTransformations = new Map();
     this.totalCompositions = 0;
     this.phiResolutionEnabled = config.phiResolutionEnabled ?? true;
+    this.subProtocols = {
+      morphismAlgebra: { id: 'CTP-A', name: 'Morphism Algebra', capabilities: ['hom', 'compose', 'associativity'] },
+      functorialSemantics: { id: 'CTP-B', name: 'Functorial Semantics', capabilities: ['functors', 'naturality', 'organism-model'] },
+    };
+    this.aiModel = {
+      id: 'CTP-AIMODEL',
+      name: 'Category Multi-Engine',
+      engines: ['composition-engine', 'functor-engine', 'naturality-engine'],
+    };
   }
+
+  runEngine(engine, input = {}) {
+    if (engine === 'composition-engine') {
+      const cat = this.category(input.category || 'default');
+      return cat.composeChain(input.chain || []);
+    }
+    if (engine === 'functor-engine') {
+      const F = this.functors.get(input.functor);
+      if (!F) throw new Error(`Unknown functor: ${input.functor}`);
+      return input.type === 'morphism' ? F.mapMorphism(input.id) : F.mapObject(input.id);
+    }
+    if (engine === 'naturality-engine') {
+      const nt = this.naturalTransformations.get(input.transformation);
+      const cat = this.categories.get(input.category);
+      if (!nt || !cat) throw new Error('Naturality engine missing transformation/category');
+      return nt.verifyNaturality(input.morphism, cat);
+    }
+    throw new Error(`Unknown CTP engine: ${engine}`);
+  }
+
+  getModel() { return this.aiModel; }
 
   /**
    * Create or retrieve a named category.
@@ -552,6 +582,9 @@ class CategoryTheoryProtocol {
       functorCount: this.functors.size,
       naturalTransformationCount: this.naturalTransformations.size,
       totalCompositions: this.totalCompositions,
+      subProtocols: Object.keys(this.subProtocols),
+      aiModel: this.aiModel.name,
+      engines: this.aiModel.engines,
       categories: categoryMetrics,
       phi: PHI,
       heartbeat: HEARTBEAT,

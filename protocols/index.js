@@ -108,7 +108,7 @@ export { GoalStackProtocol, GOAL_STATES } from './goal-stack-protocol.js';
 export { ArtifactGenerationProtocol, ARTIFACT_TYPES } from './artifact-generation-protocol.js';
 
 // ─── Chaos Creation Theory: Mathematical Intelligence Protocols ───────────────
-// PROTO-221 through PROTO-225: The organism's formal reasoning, symbolic math,
+// PROTO-221 through PROTO-226: The organism's formal reasoning, symbolic+geometric math,
 // structural algebra, fractal dynamics, and causal understanding.
 // These five protocols give the organism the ability to REASON IN MATHEMATICS,
 // not just compute — to understand WHY as well as WHAT and HOW.
@@ -119,7 +119,7 @@ export {
   atom, not, and, or, implies, iff, xor, forall, exists, evaluate as evaluateLogic,
 } from './formal-logic-inference-protocol.js';
 
-// PROTO-222: Symbolic Mathematics — CAS, auto-diff (dual numbers), Taylor series, phi-ratio detection
+// PROTO-222: Symbolic Mathematics — symbolic algebra (paired with geometric-real math in PROTO-226)
 export {
   SymbolicMathematicsProtocol, Polynomial, SYM,
   num, variable, constant, add, sub, mul, div, pow, neg,
@@ -127,6 +127,9 @@ export {
   evaluate as evaluateExpr, simplify, differentiate, autoDiff, taylorSeries,
   detectPhiRatio, exprToString,
 } from './symbolic-mathematics-protocol.js';
+
+// PROTO-226: Geometric Real Mathematics — measurable spatial geometry in real coordinates
+export { GeometricRealMathProtocol } from './geometric-real-math-protocol.js';
 
 // PROTO-223: Category Theory — objects, morphisms, functors, natural transformations
 export {
