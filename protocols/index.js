@@ -148,3 +148,22 @@ export {
   CausalInferenceProtocol, StructuralCausalModel, CausalVariable, CausalEdge,
   backdoorCriterion, doCalc, counterfactual, mediationAnalysis, discoverCausalGraph,
 } from './causal-inference-protocol.js';
+
+// ─── Alpha Model Protocols (PROTO-227–230) ────────────────────────────────────
+// The four sovereign alpha-tier intelligence primitives. These protocols operate
+// at the commander level above all other fleet protocols. They close the
+// self-reinforcing reward loop, synchronize the fleet at the golden-ratio
+// resonance boundary, amplify emergence cascades, and route priority signals.
+
+// PROTO-227: Alpha Emergence — sovereign cascade amplification (fleet emergence × PHI)
+export { AlphaEmergenceProtocol } from './alpha-emergence-protocol.js';
+
+// PROTO-228: Alpha Resonance — Kuramoto order parameter across the alpha-tier fleet
+export { AlphaResonanceProtocol } from './alpha-resonance-protocol.js';
+
+// PROTO-229: Alpha Signal — PHI-weighted priority signal router (0=CRITICAL to 3=LOW)
+export { AlphaSignalProtocol, PRIORITY } from './alpha-signal-protocol.js';
+
+// PROTO-230: Alpha Reward — DA/OX feedback loop: rewards the organism when
+//            compressed math synthesis confidence exceeds PHI_INV (0.618)
+export { AlphaRewardProtocol } from './alpha-reward-protocol.js';

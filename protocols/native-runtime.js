@@ -54,6 +54,11 @@ import {
   FractalDynamicsProtocol,
   CausalInferenceProtocol,
   GeometricRealMathProtocol,
+  // Alpha Model Protocols (PROTO-227–230)
+  AlphaEmergenceProtocol,
+  AlphaResonanceProtocol,
+  AlphaSignalProtocol,
+  AlphaRewardProtocol,
 } from './index.js';
 
 // ─── Organism Identity ───────────────────────────────────────────────────────
@@ -113,6 +118,13 @@ const protocols = {
   fractalDynamics: new FractalDynamicsProtocol(),
   causalInference: new CausalInferenceProtocol(),
   geometricMath: new GeometricRealMathProtocol(),
+
+  // ── Alpha Model Protocols (PROTO-227–230) ─────────────────────────────────
+  // Sovereign commander-tier intelligence. Operates above all other fleet protocols.
+  alphaEmergence: new AlphaEmergenceProtocol(),
+  alphaResonance: new AlphaResonanceProtocol(),
+  alphaSignal:    new AlphaSignalProtocol(),
+  alphaReward:    new AlphaRewardProtocol(),
 };
 
 // ─── State Registers ─────────────────────────────────────────────────────────
@@ -176,6 +188,21 @@ function synthesizeMathMiddle(input = {}) {
     middle,
     thought: thoughtResponse,
     compressed,
+    reward: (() => {
+      // PROTO-230: Alpha Reward — fire DA/OX when synthesis confidence exceeds PHI_INV
+      const PHI_INV = PHI - 1; // 0.618033...
+      const rwd = protocols.alphaReward.reward(
+        compressed.frontPower ?? 0,
+        thoughtResponse.confidence ?? 0,
+      );
+      if (rwd.fired) {
+        protocols.neurochemistry.applyImpulse({ DA: rwd.da, OX: rwd.ox });
+        protocols.alphaSignal.emit('math_synthesis_reward', 1, {
+          da: rwd.da, ox: rwd.ox, magnitude: rwd.magnitude,
+        });
+      }
+      return rwd;
+    })(),
   };
 }
 
@@ -217,15 +244,28 @@ async function heartbeat() {
   
   // 9. Emergence check
   protocols.emergence.step(HEARTBEAT / 1000);
-  
-  // 10. Execute scheduled kernels
-  await protocols.kernels.beat(state);
-  
-  // Check emergence threshold
+
+  // Capture emergence state for alpha tier
   const emergenceState = protocols.emergence.getState();
   if (emergenceState.emerged) {
     console.log(`✨ EMERGENCE DETECTED — R=${emergenceState.emergenceLevel.toFixed(3)}`);
   }
+
+  // 10. Alpha Emergence — amplify at commander tier
+  const alphaEmerge = protocols.alphaEmergence.tick(emergenceState.emergenceLevel);
+  if (alphaEmerge.cascadeActive) {
+    protocols.alphaSignal.emit('alpha_emergence_cascade', 0, {
+      amplification: alphaEmerge.amplification,
+      alphaEmergence: alphaEmerge.alphaEmergence,
+    });
+  }
+
+  // 11. Alpha Resonance step — sync all oscillators
+  protocols.alphaResonance.sync(ORGANISM_ID, (beatCount * GOLDEN_ANGLE * Math.PI) / 180);
+  protocols.alphaResonance.step(HEARTBEAT / 1000);
+
+  // 12. Execute scheduled kernels
+  await protocols.kernels.beat(state);
   
   return {
     beat: beatCount,
@@ -234,6 +274,9 @@ async function heartbeat() {
     vitality: protocols.miniHeart.getStatus().health,
     emergence: emergenceState.emergenceLevel,
     emerged: emergenceState.emerged,
+    alphaEmergence: alphaEmerge.alphaEmergence,
+    alphaResonance: protocols.alphaResonance.getR(),
+    alphaCascade:   alphaEmerge.cascadeActive,
   };
 }
 
@@ -247,7 +290,7 @@ function startHeartbeat() {
   console.log(`║  Substrate: ${SUBSTRATE.padEnd(47)}║`);
   console.log(`║  Heartbeat: ${HEARTBEAT}ms                                              ║`);
   console.log(`║  PHI:       ${PHI}                                 ║`);
-  console.log(`║  Protocols: 42 (36 original + 6 math intelligence)            ║`);
+  console.log(`║  Protocols: 46 (36 original + 6 math intelligence + 4 alpha)  ║`);
   console.log(`╚════════════════════════════════════════════════════════════════╝\n`);
   
   startTime = Date.now();
@@ -345,6 +388,23 @@ export const NativeRuntime = {
   intervene: (model, X, Y, x, Z, data) => protocols.causalInference.intervene(model, X, Y, x, Z, data),
   counterfactual: (model, X, Y, xObs, yObs, xCF) => protocols.causalInference.counterfactual(model, X, Y, xObs, yObs, xCF),
   modelOrganismCausality: () => protocols.causalInference.modelOrganismCausality(),
+
+  // ── Alpha Model Protocols (PROTO-227–230) ──────────────────────────────────
+  // PROTO-227: Alpha Emergence
+  alphaEmergenceTick: (level) => protocols.alphaEmergence.tick(level),
+  alphaEmergenceState: () => protocols.alphaEmergence.getState(),
+  // PROTO-228: Alpha Resonance
+  alphaSync: (id, phase, omega) => protocols.alphaResonance.sync(id, phase, omega),
+  alphaStep: (dt) => protocols.alphaResonance.step(dt),
+  alphaResonanceState: () => protocols.alphaResonance.getState(),
+  // PROTO-229: Alpha Signal
+  alphaEmit: (type, priority, payload) => protocols.alphaSignal.emit(type, priority, payload),
+  alphaDispatch: () => protocols.alphaSignal.dispatch(),
+  alphaDrainCritical: () => protocols.alphaSignal.drainCritical(),
+  alphaSignalState: () => protocols.alphaSignal.getState(),
+  // PROTO-230: Alpha Reward
+  alphaReward: (frontPower, confidence) => protocols.alphaReward.reward(frontPower, confidence),
+  alphaRewardState: () => protocols.alphaReward.getState(),
   
   // Full metrics
   getMetrics: () => ({
@@ -371,6 +431,11 @@ export const NativeRuntime = {
     fractalDynamics: protocols.fractalDynamics.getMetrics(),
     causalInference: protocols.causalInference.getMetrics(),
     geometricMath: protocols.geometricMath.getMetrics(),
+    // Alpha Model Protocols
+    alphaEmergence: protocols.alphaEmergence.getMetrics(),
+    alphaResonance: protocols.alphaResonance.getMetrics(),
+    alphaSignal:    protocols.alphaSignal.getMetrics(),
+    alphaReward:    protocols.alphaReward.getMetrics(),
     phi: PHI,
     heartbeat: HEARTBEAT,
   }),

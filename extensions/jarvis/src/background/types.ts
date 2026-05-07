@@ -96,6 +96,8 @@ export type MessageAction =
   | 'addTempleEntry'
   | 'runSovereignTool'
   | 'synthesizeMathExecution'
+  | 'getAlphaProtocols'
+  | 'getAlphaRewardMetrics'
   | 'autoInstallUpdate'
   | 'downloadJarvisZip'
   | 'downloadJarvisBat'

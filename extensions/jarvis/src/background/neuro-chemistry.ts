@@ -95,19 +95,22 @@ const J: Partial<Record<Species, Partial<Record<Species, number>>>> = {
  * Negative entries model acute suppression (e.g., error → ↓ DA).
  */
 const STIMULUS_TABLE: Record<string, Partial<Record<Species, number>>> = {
-  chat:           { DA: +0.04, SE: +0.02, OX:  +0.06, ACh: +0.02 },
-  research:       { DA: +0.05, ACh: +0.08, NE: +0.03, SE:  +0.01 },
-  mission:        { NE: +0.09, DA: +0.06, CO:  +0.04 },
-  agent_complete: { DA: +0.12, SE: +0.04, OX:  +0.03 },
-  error:          { CO: +0.10, NE: +0.07, DA:  -0.05, SE:  -0.03 },
-  success:        { DA: +0.10, SE: +0.05, CO:  -0.04 },
-  alert:          { NE: +0.09, CO: +0.06, SE:  -0.02, ACh: +0.04 },
-  tab_switch:     { NE: +0.03, ACh: +0.03 },
-  creative:       { DA: +0.07, ACh: +0.06, SE:  +0.03 },
-  emotional:      { OX: +0.10, SE: +0.05, ACh: +0.04 },
-  action:         { NE: +0.05, DA: +0.03 },
-  timer:          { NE: +0.04, ACh: +0.02 },
-  memory:         { ACh: +0.07, SE: +0.02, OX:  +0.02 },
+  chat:                   { DA: +0.04, SE: +0.02, OX:  +0.06, ACh: +0.02 },
+  research:               { DA: +0.05, ACh: +0.08, NE: +0.03, SE:  +0.01 },
+  mission:                { NE: +0.09, DA: +0.06, CO:  +0.04 },
+  agent_complete:         { DA: +0.12, SE: +0.04, OX:  +0.03 },
+  error:                  { CO: +0.10, NE: +0.07, DA:  -0.05, SE:  -0.03 },
+  success:                { DA: +0.10, SE: +0.05, CO:  -0.04 },
+  alert:                  { NE: +0.09, CO: +0.06, SE:  -0.02, ACh: +0.04 },
+  tab_switch:             { NE: +0.03, ACh: +0.03 },
+  creative:               { DA: +0.07, ACh: +0.06, SE:  +0.03 },
+  emotional:              { OX: +0.10, SE: +0.05, ACh: +0.04 },
+  action:                 { NE: +0.05, DA: +0.03 },
+  timer:                  { NE: +0.04, ACh: +0.02 },
+  memory:                 { ACh: +0.07, SE: +0.02, OX:  +0.02 },
+  // PROTO-230 Alpha Reward: fired by AlphaRewardProtocol when frontPower > PHI_INV
+  // DA boost rewards successful synthesis; OX signals the social-bonding quality of good work
+  math_synthesis_success: { DA: +0.12, OX: +0.05, SE: +0.02, CO: -0.03 },
 };
 
 export type StimulusType = keyof typeof STIMULUS_TABLE;
@@ -179,7 +182,19 @@ export class NeurochemistryEngine {
   }
 
   /**
-   * Hill equation — receptor occupancy:
+   * Apply a direct species impulse with explicit magnitudes.
+   * Used by PROTO-230 (AlphaRewardProtocol) to inject variable-magnitude DA/OX.
+   * @param impulse - Map of species → delta concentration
+   */
+  applyImpulse(impulse: Partial<Record<Species, number>>): void {
+    for (const [sp, delta] of Object.entries(impulse) as [Species, number][]) {
+      if (delta !== undefined) {
+        this.C[sp] = Math.max(0.10, Math.min(4.0, this.C[sp] + delta));
+      }
+    }
+  }
+
+  /**
    *   ρ = Cⁿ / (Kdⁿ + Cⁿ)
    *
    * @param C  Normalized concentration

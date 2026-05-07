@@ -2454,6 +2454,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       sendResponse({ success: true, data: result, compressed: result.compressed });
       break;
     }
+    case 'getAlphaProtocols': {
+      sendResponse({ success: true, data: MATHX.getAlphaProtocols() });
+      break;
+    }
+    case 'getAlphaRewardMetrics': {
+      sendResponse({ success: true, data: MATHX.getRewardMetrics() });
+      break;
+    }
 
     /* ── Chat — primary conversational interface ────────────────
      * This is the handler ChatPanel uses: { action: 'chat', text }.

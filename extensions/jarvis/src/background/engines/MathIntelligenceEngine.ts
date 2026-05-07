@@ -1,9 +1,13 @@
 import { OrganismEngine, Phi, type MeanReversionParams } from './OrganismCore.js';
 
+const PHI_INV = Phi.inv; // 0.618033988749895
+
 /**
  * Extension-backend mirror of math intelligence:
  * - exactly two sub-protocols
  * - multi-engine AI model
+ * - alpha reward loop: when synthesis confidence > PHI_INV,
+ *   computes variable-magnitude DA/OX impulses (PROTO-230)
  */
 export class MathIntelligenceEngine extends OrganismEngine {
   protected params: MeanReversionParams = {
@@ -35,6 +39,18 @@ export class MathIntelligenceEngine extends OrganismEngine {
     name: 'Math Intelligence Multi-Engine',
     engines: ['symbolic-engine', 'geometric-engine', 'middle-synthesis-engine', 'fusion-engine', 'compression-engine'],
   } as const;
+
+  // Alpha Model Protocols (PROTO-227–230) — mirrored at the extension layer
+  readonly alphaProtocols = {
+    'PROTO-227': { name: 'Alpha Emergence', tier: 'alpha', role: 'cascade-amplification' },
+    'PROTO-228': { name: 'Alpha Resonance', tier: 'alpha', role: 'kuramoto-order-parameter' },
+    'PROTO-229': { name: 'Alpha Signal',    tier: 'alpha', role: 'phi-weighted-priority-router' },
+    'PROTO-230': { name: 'Alpha Reward',    tier: 'alpha', role: 'da-ox-feedback-loop' },
+  } as const;
+
+  /** Rolling alpha reward log for this extension-side engine */
+  private _rewardLog: Array<{ da: number; ox: number; magnitude: number; fired: boolean; t: number }> = [];
+  private _rewardCount = 0;
 
   constructor() {
     super('MATHX', 'Math Intelligence Engine');
@@ -96,14 +112,45 @@ export class MathIntelligenceEngine extends OrganismEngine {
       confidence: Number(input.thoughtStrength ?? Phi.inv),
       middle: middle.middle,
     };
-    const compressed = this.runEngine('compression-engine', { power: middle.power, thoughtWire });
-    return { symbolic, geometric, middle, thoughtWire, compressed };
+    const compressed = this.runEngine('compression-engine', { power: middle.power, thoughtWire }) as {
+      frontPower: number;
+      thoughtWire: typeof thoughtWire;
+      [k: string]: unknown;
+    };
+
+    // PROTO-230: Alpha Reward — close the DA/OX feedback loop
+    const frontPower = compressed.frontPower ?? 0;
+    const confidence = thoughtWire.confidence;
+    const rewardFired = frontPower > PHI_INV;
+    const da = rewardFired ? (frontPower - PHI_INV) * Phi._1 * 0.12 : 0;
+    const ox = rewardFired ? confidence * PHI_INV * 0.08 : 0;
+    const rewardMagnitude = da + ox;
+    const alphaReward = { da, ox, magnitude: rewardMagnitude, fired: rewardFired };
+
+    if (rewardFired) {
+      this._rewardCount++;
+      this._rewardLog.push({ ...alphaReward, t: Date.now() });
+      if (this._rewardLog.length > 100) this._rewardLog.shift();
+    }
+
+    return { symbolic, geometric, middle, thoughtWire, compressed, alphaReward };
   }
 
   getMathModel() {
     return this.aiModel;
   }
-}
+
+  getAlphaProtocols() {
+    return this.alphaProtocols;
+  }
+
+  getRewardMetrics() {
+    return {
+      rewardCount: this._rewardCount,
+      recentRewards: this._rewardLog.slice(-10),
+      threshold: PHI_INV,
+    };
+  }
 
 export const MATHX = new MathIntelligenceEngine();
 MATHX.activate();
