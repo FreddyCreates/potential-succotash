@@ -1,0 +1,264 @@
+# ============================================================================
+# OCL — Organism Charter Language
+# Infrastructure Charter: Gates (GTW-001)
+#
+# id:     atlas://civilization/infrastructure/gates
+# class:  InfrastructureCharter
+#
+# Gates are the controlled entry/exit points of the civilization organism.
+# They implement enterprise connector architecture with CONNECT/INTERNALIZE/HYBRID
+# modes, voice-based AI interaction, and phi-weighted identity verification.
+# ============================================================================
+
+id: "atlas://civilization/infrastructure/gates"
+class: InfrastructureCharter
+version: "1.0.0"
+created: "2026-05-09T00:00:00.000Z"
+author: "civilization-architect"
+
+description: |
+  Gates are the controlled portals of the Civilization Organism.
+  Like ancient city gates that regulated who entered and left, these
+  interfaces manage all external interactions: enterprise integrations,
+  user interactions, API access, and inter-civilization communications.
+  
+  Each gate implements personality-weighted voice interaction, enterprise
+  connector architecture with three onboarding modes, and phi-optimized
+  identity verification cascades.
+
+# ── Core Identity ─────────────────────────────────────────────────────────────
+infrastructure_type: "controlled_portal"
+coverage: "perimeter"
+phi_constant: 1.618033988749895
+heartbeat_ms: 873
+
+# ── Enterprise Connector Modes ────────────────────────────────────────────────
+connector_modes:
+  - mode: "CONNECT"
+    name: "Connection Mode"
+    description: |
+      Lightweight integration where external systems query the organism
+      but data remains external. Minimum footprint, maximum flexibility.
+    characteristics:
+      - "Read-only access to organism capabilities"
+      - "No data internalization"
+      - "Stateless sessions"
+      - "Rate-limited by tier"
+    phi_weight: 0.618
+    onboarding_time: "minutes"
+    
+  - mode: "INTERNALIZE"
+    name: "Internalization Mode"
+    description: |
+      Full integration where external data is ingested, transformed,
+      and becomes part of the organism's cognitive fabric.
+    characteristics:
+      - "Full read-write access"
+      - "Data migration and transformation"
+      - "Stateful persistent sessions"
+      - "Nova-attested data lineage"
+    phi_weight: 1.618
+    onboarding_time: "days"
+    
+  - mode: "HYBRID"
+    name: "Hybrid Mode"
+    description: |
+      Selective internalization with connection for the rest.
+      Enterprises choose which data flows each direction.
+    characteristics:
+      - "Configurable access patterns"
+      - "Selective data internalization"
+      - "Mixed stateful/stateless"
+      - "Custom rate limits"
+    phi_weight: 1.0
+    onboarding_time: "hours"
+
+# ── Voice-Based AI Interaction ────────────────────────────────────────────────
+voice_interaction:
+  enabled: true
+  description: |
+    Personality-weighted voice interface for natural interaction.
+    Each gate can be configured with distinct personality traits
+    that affect communication style.
+    
+  personality_weights:
+    warmth:
+      description: "Friendliness and approachability"
+      range: [0.0, 1.0]
+      default: 0.618
+      phi_factor: true
+      
+    authority:
+      description: "Confidence and decisiveness"
+      range: [0.0, 1.0]
+      default: 0.382
+      phi_factor: true
+      
+    resonance:
+      description: "Emotional attunement and empathy"
+      range: [0.0, 1.0]
+      default: 0.5
+      phi_factor: false
+      
+    cadence:
+      description: "Speech rhythm and pacing"
+      range: [0.5, 2.0]
+      default: 1.0
+      unit: "multiplier"
+      
+  voice_profiles:
+    - id: "GUARDIAN"
+      name: "Guardian Voice"
+      description: "Protective, watchful, authoritative"
+      weights:
+        warmth: 0.4
+        authority: 0.9
+        resonance: 0.5
+        cadence: 0.9
+        
+    - id: "GUIDE"
+      name: "Guide Voice"
+      description: "Helpful, patient, educational"
+      weights:
+        warmth: 0.8
+        authority: 0.5
+        resonance: 0.7
+        cadence: 1.1
+        
+    - id: "ORACLE"
+      name: "Oracle Voice"
+      description: "Wise, measured, mysterious"
+      weights:
+        warmth: 0.5
+        authority: 0.7
+        resonance: 0.9
+        cadence: 0.8
+        
+    - id: "HERALD"
+      name: "Herald Voice"
+      description: "Clear, direct, informative"
+      weights:
+        warmth: 0.6
+        authority: 0.6
+        resonance: 0.4
+        cadence: 1.2
+
+# ── Gate Types ────────────────────────────────────────────────────────────────
+gate_types:
+  - id: "GTW-ENTERPRISE"
+    name: "Enterprise Gate"
+    description: "B2B integration point for business systems"
+    protocols: ["REST", "GraphQL", "gRPC", "WebSocket"]
+    authentication: ["OAuth2", "SAML", "mTLS", "API_KEY"]
+    default_mode: "HYBRID"
+    voice_profile: "GUARDIAN"
+    
+  - id: "GTW-USER"
+    name: "User Gate"
+    description: "Human user interface entry point"
+    protocols: ["HTTP/3", "WebSocket", "WebRTC"]
+    authentication: ["OIDC", "Passkey", "Biometric"]
+    default_mode: "CONNECT"
+    voice_profile: "GUIDE"
+    
+  - id: "GTW-AGENT"
+    name: "Agent Gate"
+    description: "AI agent and bot integration point"
+    protocols: ["Agent Protocol", "MCP", "A2A"]
+    authentication: ["Agent Credential", "Nova Attestation"]
+    default_mode: "INTERNALIZE"
+    voice_profile: "ORACLE"
+    
+  - id: "GTW-FEDERATION"
+    name: "Federation Gate"
+    description: "Inter-civilization communication portal"
+    protocols: ["FIN-TREATY", "NOVA-SYNC", "DCM-001"]
+    authentication: ["Treaty Signature", "Quorum"]
+    default_mode: "HYBRID"
+    voice_profile: "HERALD"
+
+# ── Identity Verification Cascade ─────────────────────────────────────────────
+identity_cascade:
+  description: |
+    Phi-weighted identity verification with cascading trust levels.
+    Each step increases trust but also increases friction.
+    
+  steps:
+    - step: 1
+      method: "rate_limit_check"
+      trust_increase: 0.1
+      friction: "none"
+      
+    - step: 2
+      method: "device_fingerprint"
+      trust_increase: 0.15
+      friction: "passive"
+      
+    - step: 3
+      method: "credential_verification"
+      trust_increase: 0.25
+      friction: "active"
+      
+    - step: 4
+      method: "multi_factor_auth"
+      trust_increase: 0.25
+      friction: "active"
+      
+    - step: 5
+      method: "biometric_or_hardware_key"
+      trust_increase: 0.25
+      friction: "active"
+      
+  trust_thresholds:
+    guest_access: 0.1
+    registered_access: 0.5
+    federated_access: 0.75
+    sovereign_access: 1.0
+
+# ── Protocol Handlers ─────────────────────────────────────────────────────────
+protocol_handlers:
+  - protocol: "GTW-OPEN"
+    description: "Request gate access"
+    required_trust: 0.1
+    
+  - protocol: "GTW-AUTH"
+    description: "Authenticate identity"
+    required_trust: 0.0
+    
+  - protocol: "GTW-CONNECT"
+    description: "Establish CONNECT mode session"
+    required_trust: 0.5
+    
+  - protocol: "GTW-INTERNALIZE"
+    description: "Begin INTERNALIZE mode onboarding"
+    required_trust: 0.75
+    
+  - protocol: "GTW-CLOSE"
+    description: "Graceful session termination"
+    required_trust: 0.1
+
+# ── Invariants ────────────────────────────────────────────────────────────────
+invariants:
+  - "All gates log all access attempts immutably"
+  - "Trust level cannot decrease within a session"
+  - "INTERNALIZE mode requires Nova attestation"
+  - "Voice interaction always discloses AI nature"
+  - "Federation gates only accept treaty-signed requests"
+
+# ── Metrics & Monitoring ──────────────────────────────────────────────────────
+metrics:
+  - name: "gate_throughput"
+    description: "Requests processed per heartbeat"
+    threshold_min: 100
+    
+  - name: "auth_success_rate"
+    description: "Percentage of successful authentications"
+    threshold_min: 0.95
+    
+  - name: "onboarding_completion_rate"
+    description: "Percentage of started onboardings completed"
+    threshold_min: 0.8
+    
+  - name: "voice_interaction_satisfaction"
+    description: "User satisfaction with voice interactions"
+    threshold_min: 0.7

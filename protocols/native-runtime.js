@@ -18,10 +18,10 @@
  *   - MiniBrain (stimulus-response learning)
  *   - Kernel executor (autonomous task execution)
  *   - Cross-substrate resonance (inter-organism communication)
- *   - 52 protocols (intelligence primitives)
+ *   - 66 protocols (intelligence primitives)
  * 
  * @module native-runtime
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 import { 
@@ -70,6 +70,21 @@ import {
   AlphaKnowledgeGraphProtocol,
   AlphaSecuritySentinelProtocol,
   AlphaEvolutionEngineProtocol,
+  // Civilization Architecture Protocols (REV-001 through CIV-ORG-001)
+  ReasoningEngineLayerProtocol,
+  CodeBlockCognitiveInterfaceProtocol,
+  ActivatedAgentBrainMappingProtocol,
+  CivilizationArchitectureCoreProtocol,
+  TokenEconomyProtocol,
+  NovaCoreProtocol,
+  MultiNodeAIHubProtocol,
+  DistributedCognitiveMeshProtocol,
+  MultiAgentReasoningEcosystemProtocol,
+  SelfProgrammingArchitectureProtocol,
+  FederatedIntelligenceNetworksProtocol,
+  ConceptualPersistenceEngineProtocol,
+  MultiSovereignComputeCoresProtocol,
+  CivilizationScaleOrganismProtocol,
 } from './index.js';
 
 // ─── Organism Identity ───────────────────────────────────────────────────────

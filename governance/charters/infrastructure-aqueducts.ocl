@@ -1,0 +1,158 @@
+# ============================================================================
+# OCL — Organism Charter Language
+# Infrastructure Charter: Aqueducts (AQD-001)
+#
+# id:     atlas://civilization/infrastructure/aqueducts
+# class:  InfrastructureCharter
+#
+# Aqueducts are the cognitive resource channels of the civilization organism.
+# They carry tokens, compute allocation, priority credits, and economic flow
+# throughout the distributed system with phi-weighted flow control.
+# ============================================================================
+
+id: "atlas://civilization/infrastructure/aqueducts"
+class: InfrastructureCharter
+version: "1.0.0"
+created: "2026-05-09T00:00:00.000Z"
+author: "civilization-architect"
+
+description: |
+  Aqueducts are the economic arteries of the Civilization Organism.
+  Like Roman aqueducts that carried life-giving water across the empire,
+  these channels carry INT tokens (intelligence contribution tokens),
+  compute credits, priority allocations, and governance weight throughout
+  the distributed cognitive mesh.
+  
+  Flow is controlled by phi-weighted algorithms ensuring fair distribution
+  and preventing resource hoarding. The economic metabolism of the organism
+  depends on healthy aqueduct flow.
+
+# ── Core Identity ─────────────────────────────────────────────────────────────
+infrastructure_type: "economic_channel"
+coverage: "civilization_wide"
+phi_constant: 1.618033988749895
+heartbeat_ms: 873
+
+# ── Resource Types ────────────────────────────────────────────────────────────
+resource_types:
+  - id: "INT"
+    name: "Intelligence Token"
+    description: "Base unit of cognitive contribution measurement"
+    divisibility: 18
+    phi_weight: 1.618
+    
+  - id: "COMPUTE"
+    name: "Compute Credit"
+    description: "Processing power allocation unit"
+    divisibility: 6
+    phi_weight: 1.0
+    
+  - id: "PRIORITY"
+    name: "Priority Credit"
+    description: "Queue position and attention weight"
+    divisibility: 2
+    phi_weight: 0.618
+    
+  - id: "GOV"
+    name: "Governance Weight"
+    description: "Voting power in federation decisions"
+    divisibility: 4
+    phi_weight: 0.382
+
+# ── Flow Control ──────────────────────────────────────────────────────────────
+flow_control:
+  algorithm: "phi_weighted_fair_queue"
+  max_flow_rate_per_channel: 10000  # units per heartbeat
+  burst_allowance: 1.618             # PHI multiplier for bursts
+  congestion_threshold: 0.618        # Flow reduced when > 61.8% capacity
+  
+  distribution_rules:
+    - "No single node may receive > 61.8% of total flow"
+    - "Emergency flows preempt all other flows"
+    - "Nova-attested flows bypass congestion controls"
+    - "Decay rate 1/PHI^2 for unclaimed allocations"
+
+# ── Economic Protocols ────────────────────────────────────────────────────────
+protocols:
+  - id: "ECO-MINT"
+    name: "Token Minting"
+    description: "Create new INT tokens upon verified contribution"
+    authority: "nova_core"
+    validation: "proof_of_contribution"
+    
+  - id: "ECO-SETTLE"
+    name: "Cross-Node Settlement"
+    description: "Atomic settlement across nodes and hubs"
+    authority: "federation"
+    validation: "two_phase_commit"
+    
+  - id: "ECO-REWARD"
+    name: "Reward Distribution"
+    description: "Distribute earned tokens to agents/humans"
+    authority: "hub_local"
+    validation: "merkle_proof"
+    
+  - id: "ECO-DECAY"
+    name: "Token Decay"
+    description: "Phi-weighted decay for inactive tokens"
+    authority: "automatic"
+    validation: "time_based"
+
+# ── Channel Types ─────────────────────────────────────────────────────────────
+channel_types:
+  - id: "AQD-MAIN"
+    name: "Main Aqueduct"
+    description: "Primary inter-Nova economic channel"
+    capacity_multiplier: 1.618
+    
+  - id: "AQD-REGIONAL"
+    name: "Regional Channel"
+    description: "Hub-to-hub economic flow"
+    capacity_multiplier: 1.0
+    
+  - id: "AQD-LOCAL"
+    name: "Local Channel"
+    description: "Intra-hub agent payments"
+    capacity_multiplier: 0.618
+    
+  - id: "AQD-MICRO"
+    name: "Micro Channel"
+    description: "Agent-to-agent micro-transactions"
+    capacity_multiplier: 0.382
+
+# ── Security Requirements ─────────────────────────────────────────────────────
+security:
+  encryption: "homomorphic_balances"
+  authentication: "zero_knowledge_proof"
+  integrity: "merkle_accumulator"
+  double_spend_prevention: "canonical_ordering"
+
+# ── Invariants ────────────────────────────────────────────────────────────────
+invariants:
+  - "Total supply always equals sum of all balances"
+  - "No negative balances permitted"
+  - "All minting requires proof of contribution"
+  - "Settlement is atomic—all or nothing"
+  - "Decay rate never exceeds 1/PHI^2 per cycle"
+
+# ── Metrics & Monitoring ──────────────────────────────────────────────────────
+metrics:
+  - name: "flow_velocity"
+    description: "Tokens flowing per heartbeat"
+    threshold_min: 1000
+    alert_on_breach: true
+    
+  - name: "channel_utilization"
+    description: "Percentage of channel capacity in use"
+    threshold_max: 0.618
+    alert_on_breach: true
+    
+  - name: "settlement_latency_p99"
+    description: "Time to settle cross-node transactions"
+    threshold_ms: 873
+    alert_on_breach: true
+    
+  - name: "mint_to_burn_ratio"
+    description: "Ratio of new tokens to decayed tokens"
+    threshold_range: [0.618, 1.618]
+    alert_on_breach: true

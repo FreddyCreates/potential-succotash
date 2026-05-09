@@ -203,3 +203,50 @@ export { AlphaSecuritySentinelProtocol, THREAT_LEVELS, SECURITY_EVENTS } from '.
 
 // PROTO-240: Alpha Evolution Engine — genetic algorithm-based adaptation
 export { AlphaEvolutionEngineProtocol } from './alpha-evolution-engine-protocol.js';
+
+// ─── Civilization Architecture Protocols (REV-001 through CIV-ORG-001) ────────
+// The fifteen civilization-scale protocols that define the organism's
+// architectural foundation: reasoning, persistence, agents, economy,
+// federation, multi-node networks, and the organism itself.
+
+// REV-001: Reasoning Engine Layer — active cognitive substrate
+export { ReasoningEngineLayerProtocol, INPUT_TYPES, OUTPUT_TYPES, ATTENTION_PATTERNS } from './reasoning-engine-layer-protocol.js';
+
+// CBI-001: Code-Block Cognitive Interface — conceptual persistence engine
+export { CodeBlockCognitiveInterfaceProtocol, ARTIFACT_TYPES, ARTIFACT_STATES, LINK_TYPES } from './code-block-cognitive-interface-protocol.js';
+
+// AAB-001: Activated Agent Brain-Region Mapping — synthetic cortex
+export { ActivatedAgentBrainMappingProtocol, AGENT_CLASSES, TASK_TYPES as AAB_TASK_TYPES, ROUTING_RULES } from './activated-agent-brain-mapping-protocol.js';
+
+// CIV-CORE-001: Civilization Architecture Core — the organism itself
+export { CivilizationArchitectureCoreProtocol, CIVILIZATION_LAYERS, GOVERNANCE_PRINCIPLES } from './civilization-architecture-core-protocol.js';
+
+// ECO-001: Token Economy — cognitive economy
+export { TokenEconomyProtocol, TOKEN_TYPES, CONTRIBUTION_TYPES } from './token-economy-protocol.js';
+
+// NOVA-001: Nova Core — sovereign anchor node
+export { NovaCoreProtocol, NOVA_PROPERTIES, ATTESTATION_TYPES, SYNC_TYPES } from './nova-core-protocol.js';
+
+// HUB-001: Multi-Node AI Hub — distributed nervous system
+export { MultiNodeAIHubProtocol, HUB_TYPES, HUB_STATES } from './multi-node-ai-hub-protocol.js';
+
+// DCM-001: Distributed Cognitive Mesh — global thinking fabric
+export { DistributedCognitiveMeshProtocol, MESH_NODE_TYPES, MESH_ARTIFACT_TYPES } from './distributed-cognitive-mesh-protocol.js';
+
+// MAE-001: Multi-Agent Reasoning Ecosystem — task-level cognition
+export { MultiAgentReasoningEcosystemProtocol, TASK_STATES, AGENT_ROLES, TASK_TYPES as MAE_TASK_TYPES } from './multi-agent-reasoning-ecosystem-protocol.js';
+
+// SPA-001: Self-Programming Architecture — self-rewriting organism
+export { SelfProgrammingArchitectureProtocol, CHANGE_TYPES, CHANGE_STATES, RISK_LEVELS } from './self-programming-architecture-protocol.js';
+
+// FIN-001: Federated Intelligence Networks — sovereign nodes, shared laws
+export { FederatedIntelligenceNetworksProtocol, SOVEREIGNTY_LEVELS, TREATY_TYPES, DISPUTE_STATES } from './federated-intelligence-networks-protocol.js';
+
+// CPE-001: Conceptual Persistence Engine — keep ideas alive without disk writes
+export { ConceptualPersistenceEngineProtocol, CONCEPT_STATES, REFERENCE_TYPES } from './conceptual-persistence-engine-protocol.js';
+
+// MSC-001: Multi-Sovereign Compute Cores — many Novas pattern
+export { MultiSovereignComputeCoresProtocol, NOVA_DOMAINS, CORE_STATES } from './multi-sovereign-compute-cores-protocol.js';
+
+// CIV-ORG-001: Civilization-Scale Organism — the whole thing as one being
+export { CivilizationScaleOrganismProtocol, ORGANISM_ORGANS, LIFECYCLE_PHASES } from './civilization-scale-organism-protocol.js';
