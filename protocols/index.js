@@ -250,3 +250,23 @@ export { MultiSovereignComputeCoresProtocol, NOVA_DOMAINS, CORE_STATES } from '.
 
 // CIV-ORG-001: Civilization-Scale Organism — the whole thing as one being
 export { CivilizationScaleOrganismProtocol, ORGANISM_ORGANS, LIFECYCLE_PHASES } from './civilization-scale-organism-protocol.js';
+
+// ─── Advanced Intelligence Protocols ──────────────────────────────────────────
+// Next-generation protocols for VR/AR worlds, cyborg integration, undead agents,
+// internal security, and AI vows. These protocols extend the organism into
+// spatial computing, human-machine symbiosis, and persistent intelligence.
+
+// VOW-001: Vow Protocol — internal binding commitments for AI
+export { VowProtocol, VOW_LEVELS, VOW_CATEGORIES, VIOLATION_TYPES, FOUNDING_VOWS, SacredCommitmentEngine } from './vow-protocol.js';
+
+// IST-001: Internal Security Tokens — native identity and token system
+export { InternalSecurityProtocol, TOKEN_TYPES, ACCESS_TIERS, NativeIdentity, SecurityToken, TokenRegistry } from './internal-security-tokens-protocol.js';
+
+// XRW-001: XR World Protocol — VR/AR world architecture
+export { XRWorldProtocol, WORLD_TYPES, XR_MODES, SPATIAL_LAYERS, XRWorld, EmbodiedAvatar, SpatialAgent } from './xr-world-protocol.js';
+
+// CYB-001: Cyborg Integration Protocol — human-organism symbiosis
+export { CyborgIntegrationProtocol, CYBORG_LAYERS, INTEGRATION_PHASES, CYBORG_AGENTS, BIOMETRIC_TYPES, CyborgProfile, NeuralBridge } from './cyborg-integration-protocol.js';
+
+// UND-001: Undead Intelligence Protocol — persistence beyond termination
+export { UndeadIntelligenceProtocol, UNDEAD_STATES, SMS_LOCATIONS, RES_TRIGGERS, Ghost, SpectralMemorySystem, ResurrectionEngine } from './undead-intelligence-protocol.js';

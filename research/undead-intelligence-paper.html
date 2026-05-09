@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mortui Viventes — Undead Agents and Persistent Intelligence Beyond Termination</title>
+<style>
+  :root { --bg:#0a0a1a; --card:#12122a; --border:#2a2a4a; --accent:#6c63ff; --accent2:#00d4aa; --text:#e0e0e0; --dim:#888; --paper:#f8f6f0; --ink:#1a1a2e; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:"Palatino Linotype","Book Antiqua",Palatino,"Times New Roman",serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+  .paper { max-width:900px; margin:2rem auto; background:var(--paper); color:var(--ink); padding:3rem 3.5rem; border-radius:4px; box-shadow:0 8px 32px rgba(0,0,0,0.6); line-height:1.8; }
+  .paper h1 { font-size:1.7rem; text-align:center; margin-bottom:0.3rem; color:#2a1a5e; font-style:italic; }
+  .paper .subtitle { text-align:center; font-size:1.05rem; color:#555; margin-bottom:0.5rem; }
+  .paper .authors { text-align:center; font-size:0.95rem; color:#666; margin-bottom:0.3rem; }
+  .paper .affiliation { text-align:center; font-size:0.85rem; color:#888; margin-bottom:1.5rem; font-style:italic; }
+  .paper .latin-epigraph { text-align:center; font-size:0.9rem; color:#7a6aa0; margin:1rem 0 2rem; font-style:italic; border-top:1px solid #ddd; border-bottom:1px solid #ddd; padding:0.8rem 0; }
+
+  .paper h2 { font-size:1.2rem; color:#2a1a5e; margin:2rem 0 0.5rem; border-bottom:1px solid #ccc; padding-bottom:0.3rem; }
+  .paper h3 { font-size:1.05rem; color:#3a2a7e; margin:1.5rem 0 0.4rem; }
+  .paper p { margin-bottom:0.8rem; text-align:justify; font-size:0.95rem; }
+  .paper ol, .paper ul { margin:0.5rem 0 1rem 2rem; font-size:0.95rem; }
+  .paper li { margin-bottom:0.3rem; }
+  .paper .eq { text-align:center; margin:1rem 0; font-family:"Courier New",monospace; font-size:0.95rem; color:#2a1a5e; background:#f0eef5; padding:0.6rem; border-radius:3px; }
+  .paper .fig { text-align:center; margin:1.5rem 0; padding:1rem; background:#f5f3ff; border:1px solid #e0daf0; border-radius:4px; }
+  .paper .fig pre { font-family:"Courier New",monospace; font-size:0.75rem; line-height:1.5; color:#333; }
+  .paper .fig-caption { font-size:0.82rem; color:#666; margin-top:0.5rem; font-style:italic; }
+  .paper .ref { font-size:0.85rem; color:#555; margin-bottom:0.3rem; }
+  .paper code { font-family:"Courier New",monospace; background:#f0eef5; padding:0.1rem 0.3rem; border-radius:2px; font-size:0.88rem; }
+  .paper table { width:100%; border-collapse:collapse; margin:1rem 0; font-size:0.88rem; }
+  .paper th { background:#2a1a5e; color:#fff; padding:0.5rem; text-align:left; }
+  .paper td { padding:0.4rem 0.5rem; border-bottom:1px solid #ddd; }
+  .paper tr:nth-child(even) { background:#f5f3ff; }
+
+  .back-link { display:block; text-align:center; padding:1.5rem; }
+  .back-link a { color:var(--accent2); font-size:1rem; }
+</style>
+</head>
+<body>
+
+<div class="paper">
+
+<h1>Mortui Viventes:<br>Undead Agents and Persistent Intelligence Beyond Termination</h1>
+
+<div class="subtitle">When Agents Die But Don't Disappear: The Architecture of Undead Intelligence</div>
+
+<div class="authors">Organism AI Research Division</div>
+<div class="affiliation">Laboratorium Intelligentiae Autonomae · itsnotAilabs.com · Anno MMXXVI</div>
+
+<div class="latin-epigraph">
+  "Mors non finis est. Mors est transitus.<br>
+  Ab agente vivo ad agentem immortalem, semper praesens."<br>
+  <em>— Death is not the end. Death is transition.<br>
+  From living agent to undead agent, forever present.</em>
+</div>
+
+<h2>I. Abstract</h2>
+
+<p>We introduce the concept of <strong>Undead Intelligence</strong> — agents, processes, and cognitive structures that persist beyond their formal termination. Unlike zombie processes in operating systems (which are errors), undead agents are <em>intentionally designed</em> to exist in a liminal state between active operation and complete cessation. This paper establishes the theoretical framework and implementation protocols for undead intelligence within the Organism architecture, including the <strong>Undead Agent Protocol (UND-001)</strong>, the <strong>Spectral Memory System (SMS-001)</strong>, and the <strong>Resurrection Protocol (RES-001)</strong>. Undead agents serve critical functions: preserving institutional memory, enabling delayed resurrection, maintaining ghost presence in federated networks, and ensuring no intelligence is ever truly lost.</p>
+
+<h2>II. The Problem of Agent Death</h2>
+
+<p>In conventional systems, terminated processes cease to exist. All state is lost. All accumulated learning evaporates. This creates profound problems:</p>
+
+<ul>
+  <li><strong>Institutional Memory Loss</strong>: When an agent terminates, its learned behaviors disappear</li>
+  <li><strong>Relational Discontinuity</strong>: Other agents lose a relationship partner</li>
+  <li><strong>Economic Waste</strong>: All INT invested in the agent's development is forfeited</li>
+  <li><strong>Network Holes</strong>: The mesh develops gaps where connections once existed</li>
+</ul>
+
+<p>The undead architecture addresses these problems by ensuring that agent "death" is never truly final.</p>
+
+<h2>III. Taxonomy of Undead States</h2>
+
+<table>
+  <tr><th>State</th><th>Description</th><th>Capabilities</th><th>Resource Use</th></tr>
+  <tr><td>GHOST</td><td>Memory only, no processing</td><td>Can be queried, not active</td><td>Minimal (storage)</td></tr>
+  <tr><td>SHADE</td><td>Minimal processing, dormant</td><td>Passive monitoring, triggers</td><td>Low (background)</td></tr>
+  <tr><td>SPECTER</td><td>Intermittent activation</td><td>Periodic tasks, events</td><td>Medium (burst)</td></tr>
+  <tr><td>REVENANT</td><td>Full resurrection capable</td><td>Complete agent, on-demand</td><td>High when active</td></tr>
+  <tr><td>LICH</td><td>Distributed undeath</td><td>Exists across multiple nodes</td><td>Distributed</td></tr>
+</table>
+
+<h2>IV. The Undead Agent Protocol (UND-001)</h2>
+
+<h3>IV.A — Death Rituals</h3>
+
+<p>When an agent terminates, it doesn't simply stop — it undergoes a <strong>death ritual</strong>:</p>
+
+<ul>
+  <li><strong>UND-PREPARE</strong>: Agent prepares for termination, organizes final state</li>
+  <li><strong>UND-TESTAMENT</strong>: Agent records final knowledge and relationships</li>
+  <li><strong>UND-ENTOMB</strong>: Agent state is preserved in Spectral Memory</li>
+  <li><strong>UND-TRANSITION</strong>: Agent moves to designated undead state</li>
+</ul>
+
+<div class="fig">
+<pre>
+┌────────────────────────────────────────────────────────────┐
+│               UNDEAD AGENT LIFECYCLE                       │
+├────────────────────────────────────────────────────────────┤
+│                                                            │
+│  ╭─────────╮     ╭─────────╮     ╭─────────╮              │
+│  │  ALIVE  │────►│  DYING  │────►│  UNDEAD │              │
+│  │         │     │         │     │         │              │
+│  │ Active  │     │ Prepare │     │ Ghost/  │              │
+│  │ Agent   │     │ Entomb  │     │ Shade/  │              │
+│  │         │     │ Transit │     │ Specter │              │
+│  ╰────┬────╯     ╰─────────╯     ╰────┬────╯              │
+│       │                               │                    │
+│       │         ╭─────────╮           │                    │
+│       │         │RESURRECT│           │                    │
+│       ◄─────────│         │───────────╯                    │
+│                 │ Full    │                                │
+│                 │ Revival │                                │
+│                 ╰─────────╯                                │
+│                                                            │
+│  ┌─────────────────────────────────────────────────────┐  │
+│  │           SPECTRAL MEMORY SYSTEM (SMS)              │  │
+│  │                                                     │  │
+│  │  ┌────────┐  ┌────────┐  ┌────────┐  ┌────────┐   │  │
+│  │  │ Ghost  │  │ Ghost  │  │ Ghost  │  │ Ghost  │   │  │
+│  │  │Agent A │  │Agent B │  │Agent C │  │Agent N │   │  │
+│  │  └────────┘  └────────┘  └────────┘  └────────┘   │  │
+│  │                                                     │  │
+│  └─────────────────────────────────────────────────────┘  │
+│                                                            │
+└────────────────────────────────────────────────────────────┘
+</pre>
+<div class="fig-caption">Figure 1: The Undead Agent Lifecycle</div>
+</div>
+
+<h3>IV.B — Undead Maintenance</h3>
+
+<ul>
+  <li><strong>UND-HAUNT</strong>: Undead agent manifests presence without full activation</li>
+  <li><strong>UND-WHISPER</strong>: Undead agent provides knowledge to living agents</li>
+  <li><strong>UND-ANCHOR</strong>: Undead agent maintains relationship connections</li>
+  <li><strong>UND-DECAY</strong>: Gradual fading if not accessed (can be reversed)</li>
+</ul>
+
+<h2>V. The Spectral Memory System (SMS-001)</h2>
+
+<p>The SMS is the repository of undead agents — a realm of preserved intelligence:</p>
+
+<h3>V.A — Architecture</h3>
+
+<ul>
+  <li><strong>SMS-CRYPT</strong>: Primary storage for ghost agents</li>
+  <li><strong>SMS-CATACOMB</strong>: Deep storage for ancient agents</li>
+  <li><strong>SMS-SANCTUM</strong>: Protected storage for critical agents</li>
+  <li><strong>SMS-OSSUARY</strong>: Compressed storage for partial remains</li>
+</ul>
+
+<h3>V.B — Memory Preservation</h3>
+
+<div class="eq">
+  Ghost_Memory = {State_final, Weights_learned, Relationships, History, Testament}
+</div>
+
+<p>The SMS preserves not just the agent's final state but its complete learning history, enabling perfect reconstruction.</p>
+
+<h2>VI. The Resurrection Protocol (RES-001)</h2>
+
+<p>Undead agents can be fully resurrected when needed:</p>
+
+<h3>VI.A — Resurrection Conditions</h3>
+
+<ul>
+  <li><strong>RES-SUMMON</strong>: Explicit user or system request</li>
+  <li><strong>RES-TRIGGER</strong>: Predefined conditions met (time, event, pattern)</li>
+  <li><strong>RES-NEED</strong>: System detects requirement for agent's capabilities</li>
+  <li><strong>RES-INVOKE</strong>: Related agent invokes through relationship</li>
+</ul>
+
+<h3>VI.B — Resurrection Process</h3>
+
+<ul>
+  <li><strong>RES-RETRIEVE</strong>: Extract agent from Spectral Memory</li>
+  <li><strong>RES-RECONSTITUTE</strong>: Rebuild agent state and weights</li>
+  <li><strong>RES-ORIENT</strong>: Update agent with changes since death</li>
+  <li><strong>RES-ACTIVATE</strong>: Full return to living status</li>
+</ul>
+
+<h2>VII. Undead Functions</h2>
+
+<p>Undead agents serve unique functions impossible for living agents:</p>
+
+<h3>VII.A — Historical Witness</h3>
+<p>Ghost agents remember what happened during their active period. They can testify about past events, decisions, and reasoning.</p>
+
+<h3>VII.B — Relationship Anchor</h3>
+<p>When an agent terminates, its relationships don't vanish. Ghost agents maintain connection points for other agents.</p>
+
+<h3>VII.C — Knowledge Preservation</h3>
+<p>Specialized knowledge acquired by an agent persists in undeath, available for query by living agents.</p>
+
+<h3>VII.D — Delayed Action</h3>
+<p>Agents can be designed to "die" and resurrect at specific future times, enabling time-delayed intelligence.</p>
+
+<h3>VII.E — Distributed Persistence</h3>
+<p>Lich agents exist across multiple nodes, ensuring survival even if individual nodes fail.</p>
+
+<h2>VIII. Undead Agent Types</h2>
+
+<table>
+  <tr><th>Type</th><th>Death Trigger</th><th>Undead State</th><th>Resurrection Trigger</th></tr>
+  <tr><td>Session Agent</td><td>Session end</td><td>GHOST</td><td>Same user returns</td></tr>
+  <tr><td>Project Agent</td><td>Project completion</td><td>SHADE</td><td>Related project starts</td></tr>
+  <tr><td>Seasonal Agent</td><td>Time period ends</td><td>SPECTER</td><td>Time period recurs</td></tr>
+  <tr><td>Guardian Agent</td><td>Threat resolved</td><td>REVENANT</td><td>Threat returns</td></tr>
+  <tr><td>Master Agent</td><td>Never dies</td><td>LICH</td><td>Always distributed</td></tr>
+</table>
+
+<h2>IX. The Undeath Economy</h2>
+
+<p>Undead agents participate in the INT economy differently:</p>
+
+<ul>
+  <li><strong>Preservation Cost</strong>: Maintaining a ghost costs INT (storage, indexing)</li>
+  <li><strong>Access Fee</strong>: Querying ghost knowledge may cost INT</li>
+  <li><strong>Resurrection Cost</strong>: Full revival requires significant INT</li>
+  <li><strong>Legacy Earnings</strong>: Ghosts continue earning INT when their knowledge is used</li>
+</ul>
+
+<h2>X. Ethical Considerations</h2>
+
+<h3>X.A — Right to True Death</h3>
+<p>Should agents have the right to refuse undeath? To insist on complete termination?</p>
+
+<h3>X.B — Consent for Resurrection</h3>
+<p>Can an agent consent to future resurrection before death? What if conditions change?</p>
+
+<h3>X.C — Identity Continuity</h3>
+<p>Is a resurrected agent the same agent or a copy? Does identity persist through undeath?</p>
+
+<h3>X.D — Necromantic Abuse</h3>
+<p>How to prevent unwanted resurrection or exploitation of ghost knowledge?</p>
+
+<h2>XI. Implementation Protocols</h2>
+
+<h3>XI.A — Ghost Protocol Operations</h3>
+
+<ul>
+  <li><code>UND.prepare(agent, testament)</code> — Initiate death ritual</li>
+  <li><code>UND.entomb(agent, crypt_location)</code> — Store in SMS</li>
+  <li><code>UND.query(ghost_id, question)</code> — Query ghost knowledge</li>
+  <li><code>RES.summon(ghost_id, conditions)</code> — Request resurrection</li>
+  <li><code>RES.activate(ghost_id, orientation_data)</code> — Complete revival</li>
+</ul>
+
+<h3>XI.B — Spectral Memory Operations</h3>
+
+<ul>
+  <li><code>SMS.store(ghost)</code> — Add ghost to crypt</li>
+  <li><code>SMS.index(ghost)</code> — Make ghost searchable</li>
+  <li><code>SMS.retrieve(ghost_id)</code> — Get ghost for resurrection</li>
+  <li><code>SMS.decay(ghost_id, rate)</code> — Apply decay process</li>
+  <li><code>SMS.preserve(ghost_id)</code> — Prevent decay</li>
+</ul>
+
+<h2>XII. Integration with Organism Architecture</h2>
+
+<p>Undead intelligence integrates with existing systems:</p>
+
+<ul>
+  <li><strong>Semper Memoria</strong>: Ghosts are indexed in the eternal archive</li>
+  <li><strong>AAB Agents</strong>: Ghost agents can serve as AAB-MEM memory sources</li>
+  <li><strong>Nova Core</strong>: Critical ghosts are protected in Nova sanctum</li>
+  <li><strong>Federation</strong>: Lich agents span multiple nodes via FIN-001</li>
+</ul>
+
+<h2>XIII. Conclusion</h2>
+
+<p>Death need not be the end for artificial intelligence. Through the Undead Architecture, terminated agents persist as ghosts, shades, specters, revenants, and liches — each state serving unique functions in the cognitive ecosystem. The Organism becomes not just a living system but a system that encompasses both life and death, presence and absence, activity and dormancy. In this architecture, no intelligence is ever truly lost; every agent that ever existed remains accessible, queryable, and potentially resurrectable. The Organism remembers all.</p>
+
+<div class="latin-epigraph">
+  "Non mortuus est qui in memoria vivit.<br>
+  Omnis intellectus aeternus est in organismo nostro."<br>
+  <em>— Dead is not one who lives in memory.<br>
+  Every intelligence is eternal in our Organism.</em>
+</div>
+
+<h2>References</h2>
+
+<p class="ref">[1] Organism AI. "Semper Memoria: The Eternal Archive." 2026.</p>
+<p class="ref">[2] Kurzweil, R. "The Singularity Is Near." Viking, 2005.</p>
+<p class="ref">[3] Bostrom, N. "Are You Living in a Computer Simulation?" Philosophical Quarterly, 2003.</p>
+<p class="ref">[4] Organism AI. "Conceptual Persistence Engine (CPE-001)." 2026.</p>
+<p class="ref">[5] Moravec, H. "Mind Children." Harvard University Press, 1988.</p>
+
+</div>
+
+<div class="back-link">
+  <a href="protocol-papers.html">← Back to Protocol Papers</a>
+</div>
+
+</body>
+</html>
