@@ -18,7 +18,7 @@
  *   - MiniBrain (stimulus-response learning)
  *   - Kernel executor (autonomous task execution)
  *   - Cross-substrate resonance (inter-organism communication)
- *   - 42 protocols (intelligence primitives)
+ *   - 52 protocols (intelligence primitives)
  * 
  * @module native-runtime
  * @version 1.0.0
@@ -59,6 +59,17 @@ import {
   AlphaResonanceProtocol,
   AlphaSignalProtocol,
   AlphaRewardProtocol,
+  // Alpha Commander Protocols (PROTO-231–240)
+  AlphaCommanderCharterProtocol,
+  AlphaFleetOrchestrationProtocol,
+  AlphaSubstrateBridgeProtocol,
+  AlphaGovernanceEnforcementProtocol,
+  AlphaIssueIntelligenceProtocol,
+  AlphaWorkflowEngineProtocol,
+  AlphaHealthMonitorProtocol,
+  AlphaKnowledgeGraphProtocol,
+  AlphaSecuritySentinelProtocol,
+  AlphaEvolutionEngineProtocol,
 } from './index.js';
 
 // ─── Organism Identity ───────────────────────────────────────────────────────
@@ -125,6 +136,19 @@ const protocols = {
   alphaResonance: new AlphaResonanceProtocol(),
   alphaSignal:    new AlphaSignalProtocol(),
   alphaReward:    new AlphaRewardProtocol(),
+
+  // ── Alpha Commander Protocols (PROTO-231–240) ─────────────────────────────
+  // The ten commander protocols that orchestrate the entire organism ecosystem.
+  alphaCharter:    new AlphaCommanderCharterProtocol(),
+  alphaFleet:      new AlphaFleetOrchestrationProtocol(),
+  alphaBridge:     new AlphaSubstrateBridgeProtocol(),
+  alphaGovernance: new AlphaGovernanceEnforcementProtocol(),
+  alphaIssues:     new AlphaIssueIntelligenceProtocol(),
+  alphaWorkflow:   new AlphaWorkflowEngineProtocol(),
+  alphaHealth:     new AlphaHealthMonitorProtocol(),
+  alphaKnowledge:  new AlphaKnowledgeGraphProtocol(),
+  alphaSecurity:   new AlphaSecuritySentinelProtocol(),
+  alphaEvolution:  new AlphaEvolutionEngineProtocol(),
 };
 
 // ─── State Registers ─────────────────────────────────────────────────────────

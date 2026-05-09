@@ -1,0 +1,420 @@
+{
+  "timestamp": "2026-05-09T17:22:22.028Z",
+  "overallHealth": 0.9594594594594594,
+  "categories": {
+    "protocols": {
+      "passed": 6,
+      "failed": 0,
+      "checks": [
+        {
+          "name": "Directory exists",
+          "passed": true,
+          "detail": "OK"
+        },
+        {
+          "name": "Protocol count",
+          "passed": true,
+          "detail": "56 protocols found"
+        },
+        {
+          "name": "Index exports",
+          "passed": true,
+          "detail": "56 export blocks"
+        },
+        {
+          "name": "PHI constant",
+          "passed": true,
+          "detail": "OK"
+        },
+        {
+          "name": "Alpha Commander Charter (PROTO-231)",
+          "passed": true,
+          "detail": "OK"
+        },
+        {
+          "name": "Alpha Evolution Engine (PROTO-240)",
+          "passed": true,
+          "detail": "OK"
+        }
+      ]
+    },
+    "agents": {
+      "passed": 7,
+      "failed": 0,
+      "checks": [
+        {
+          "name": "Scripts directory",
+          "passed": true,
+          "detail": "OK"
+        },
+        {
+          "name": "Sandbox Coordinator Agent",
+          "passed": true,
+          "detail": "OK"
+        },
+        {
+          "name": "BTL Gate Agent",
+          "passed": true,
+          "detail": "OK"
+        },
+        {
+          "name": "Isolation Agent",
+          "passed": true,
+          "detail": "OK"
+        },
+        {
+          "name": "Internal Issue Agent",
+          "passed": true,
+          "detail": "OK"
+        },
+        {
+          "name": "Issue AGI Agent",
+          "passed": true,
+          "detail": "OK"
+        },
+        {
+          "name": "Native Flow Registry",
+          "passed": true,
+          "detail": "OK"
+        }
+      ]
+    },
+    "workflows": {
+      "passed": 4,
+      "failed": 0,
+      "checks": [
+        {
+          "name": "Workflows directory",
+          "passed": true,
+          "detail": "OK"
+        },
+        {
+          "name": "Workflow count",
+          "passed": true,
+          "detail": "22 workflows found"
+        },
+        {
+          "name": "Sandcastle bot",
+          "passed": true,
+          "detail": "OK"
+        },
+        {
+          "name": "Alpha bot",
+          "passed": true,
+          "detail": "OK"
+        }
+      ]
+    },
+    "substrates": {
+      "passed": 7,
+      "failed": 0,
+      "checks": [
+        {
+          "name": "Organism directory",
+          "passed": true,
+          "detail": "OK"
+        },
+        {
+          "name": "motoko substrate",
+          "passed": true,
+          "detail": "OK"
+        },
+        {
+          "name": "typescript substrate",
+          "passed": true,
+          "detail": "OK"
+        },
+        {
+          "name": "python substrate",
+          "passed": true,
+          "detail": "OK"
+        },
+        {
+          "name": "cpp substrate",
+          "passed": true,
+          "detail": "OK"
+        },
+        {
+          "name": "java substrate",
+          "passed": true,
+          "detail": "OK"
+        },
+        {
+          "name": "web substrate",
+          "passed": true,
+          "detail": "OK"
+        }
+      ]
+    },
+    "extensions": {
+      "passed": 39,
+      "failed": 1,
+      "checks": [
+        {
+          "name": "Extensions directory",
+          "passed": true,
+          "detail": "OK"
+        },
+        {
+          "name": "Extension count",
+          "passed": true,
+          "detail": "38 extensions found"
+        },
+        {
+          "name": "cipher-shield manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "code-sovereign manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "contract-forge manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "creative-muse manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "data-alchemist manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "data-oracle manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "edge-ai-assistant manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "edge-context-engine manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "edge-prompt-lab manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "edge-runner manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "edge-tab-analyzer manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "jarvis manifest",
+          "passed": true,
+          "detail": "19.0.0"
+        },
+        {
+          "name": "knowledge-cartographer manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "logic-prover manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "marketplace-hub manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "memory-palace manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "organism-dashboard manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "pattern-forge manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "polyglot-oracle manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "protocol-bridge manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "register manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "research-nexus manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "screen-commander manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "sentinel-watch manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "social-cortex manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "sovereign-alpha manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "sovereign-mind manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "sovereign-nexus manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "spread-scanner manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "video-architect manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "vision-weaver manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "voice-forge manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "windows manifest",
+          "passed": false,
+          "detail": "Failed"
+        },
+        {
+          "name": "windows-copilot-hub manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "windows-file-oracle manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "windows-notification-cortex manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "windows-shell-intelligence manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "windows-terminal-forge manifest",
+          "passed": true,
+          "detail": "1.0.0"
+        }
+      ]
+    },
+    "sdk": {
+      "passed": 5,
+      "failed": 2,
+      "checks": [
+        {
+          "name": "SDK directory",
+          "passed": true,
+          "detail": "OK"
+        },
+        {
+          "name": "SDK count",
+          "passed": true,
+          "detail": "18 SDKs found"
+        },
+        {
+          "name": "agents package.json",
+          "passed": false,
+          "detail": "Failed"
+        },
+        {
+          "name": "ai-model-engines package.json",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "document-absorption-engine package.json",
+          "passed": true,
+          "detail": "1.0.0"
+        },
+        {
+          "name": "engines package.json",
+          "passed": false,
+          "detail": "Failed"
+        },
+        {
+          "name": "enterprise-integration-sdk package.json",
+          "passed": true,
+          "detail": "1.0.0"
+        }
+      ]
+    },
+    "governance": {
+      "passed": 3,
+      "failed": 0,
+      "checks": [
+        {
+          "name": "Governance directory",
+          "passed": true,
+          "detail": "OK"
+        },
+        {
+          "name": "Laws directory",
+          "passed": true,
+          "detail": "OK"
+        },
+        {
+          "name": "Pipelines directory",
+          "passed": true,
+          "detail": "OK"
+        }
+      ]
+    }
+  },
+  "issues": [],
+  "recommendations": []
+}

@@ -167,3 +167,39 @@ export { AlphaSignalProtocol, PRIORITY } from './alpha-signal-protocol.js';
 // PROTO-230: Alpha Reward — DA/OX feedback loop: rewards the organism when
 //            compressed math synthesis confidence exceeds PHI_INV (0.618)
 export { AlphaRewardProtocol } from './alpha-reward-protocol.js';
+
+// ─── Alpha Commander Protocols (PROTO-231–240) ────────────────────────────────
+// Ten sovereign alpha-tier commander protocols that orchestrate the entire
+// organism ecosystem. These protocols handle fleet management, substrate bridging,
+// governance enforcement, issue intelligence, workflow execution, health monitoring,
+// knowledge graphs, security, and evolutionary adaptation.
+
+// PROTO-231: Alpha Commander Charter — constitutional framework for alpha operations
+export { AlphaCommanderCharterProtocol, CHARTER_SECTIONS, AUTHORITY_LEVELS, EMERGENCY_POWERS } from './alpha-commander-charter-protocol.js';
+
+// PROTO-232: Alpha Fleet Orchestration — unified bot fleet coordination
+export { AlphaFleetOrchestrationProtocol } from './alpha-fleet-orchestration-protocol.js';
+
+// PROTO-233: Alpha Substrate Bridge — cross-substrate communication
+export { AlphaSubstrateBridgeProtocol, SUBSTRATES } from './alpha-substrate-bridge-protocol.js';
+
+// PROTO-234: Alpha Governance Enforcement — policy compliance and audit
+export { AlphaGovernanceEnforcementProtocol, POLICY_TYPES, VIOLATION_SEVERITY } from './alpha-governance-enforcement-protocol.js';
+
+// PROTO-235: Alpha Issue Intelligence — intelligent issue triage and resolution
+export { AlphaIssueIntelligenceProtocol } from './alpha-issue-intelligence-protocol.js';
+
+// PROTO-236: Alpha Workflow Engine — complex workflow execution with rollback
+export { AlphaWorkflowEngineProtocol, STEP_STATUS } from './alpha-workflow-engine-protocol.js';
+
+// PROTO-237: Alpha Health Monitor — organism health monitoring and healing
+export { AlphaHealthMonitorProtocol, HEALTH_THRESHOLDS } from './alpha-health-monitor-protocol.js';
+
+// PROTO-238: Alpha Knowledge Graph — semantic knowledge relationships
+export { AlphaKnowledgeGraphProtocol, EDGE_TYPES } from './alpha-knowledge-graph-protocol.js';
+
+// PROTO-239: Alpha Security Sentinel — security monitoring and enforcement
+export { AlphaSecuritySentinelProtocol, THREAT_LEVELS, SECURITY_EVENTS } from './alpha-security-sentinel-protocol.js';
+
+// PROTO-240: Alpha Evolution Engine — genetic algorithm-based adaptation
+export { AlphaEvolutionEngineProtocol } from './alpha-evolution-engine-protocol.js';
