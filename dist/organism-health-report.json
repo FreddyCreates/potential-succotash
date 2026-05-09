@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-09T17:22:22.028Z",
+  "timestamp": "2026-05-09T18:56:40.190Z",
   "overallHealth": 0.9594594594594594,
   "categories": {
     "protocols": {
@@ -14,12 +14,12 @@
         {
           "name": "Protocol count",
           "passed": true,
-          "detail": "56 protocols found"
+          "detail": "70 protocols found"
         },
         {
           "name": "Index exports",
           "passed": true,
-          "detail": "56 export blocks"
+          "detail": "70 export blocks"
         },
         {
           "name": "PHI constant",
