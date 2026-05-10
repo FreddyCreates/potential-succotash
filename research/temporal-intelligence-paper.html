@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Temporal Intelligence Research Paper - TMP-001</title>
+  <style>
+    :root {
+      --phi: 1.618033988749895;
+      --gold: #D4AF37;
+      --time-blue: #00bcd4;
+      --deep-space: #0a0a1f;
+    }
+    body {
+      font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px;
+      background: linear-gradient(135deg, var(--deep-space) 0%, #1a1a2e 100%);
+      color: #e8e8e8;
+      line-height: calc(var(--phi));
+    }
+    h1 { 
+      color: var(--time-blue); 
+      text-align: center;
+      font-size: 2.4em;
+      text-shadow: 0 0 20px rgba(0, 188, 212, 0.5);
+    }
+    h2 { 
+      color: var(--gold); 
+      border-bottom: 2px solid var(--gold);
+      padding-bottom: 8px;
+    }
+    h3 { color: #80deea; }
+    .protocol-id {
+      text-align: center;
+      font-size: 1.2em;
+      color: var(--gold);
+      letter-spacing: 0.3em;
+    }
+    .abstract {
+      background: rgba(0, 188, 212, 0.1);
+      padding: 25px;
+      border-left: 4px solid var(--time-blue);
+      margin: 30px 0;
+      font-style: italic;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+    th, td {
+      border: 1px solid #444;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background: rgba(0, 188, 212, 0.2);
+      color: var(--time-blue);
+    }
+    .formula {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 15px;
+      border-radius: 8px;
+      font-family: monospace;
+      margin: 15px 0;
+      text-align: center;
+      color: #80deea;
+    }
+    .timeline {
+      display: flex;
+      align-items: center;
+      margin: 30px 0;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+    }
+    .time-point {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      border-right: 2px dashed #444;
+    }
+    .time-point:last-child { border-right: none; }
+    .time-scale {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 5px;
+      margin: 3px;
+      font-size: 0.9em;
+    }
+    .instant { background: #f44336; }
+    .moment { background: #ff9800; }
+    .heartbeat { background: var(--gold); color: #000; }
+    .minute { background: #4caf50; }
+    .hour { background: #2196f3; }
+    .epoch { background: #9c27b0; }
+  </style>
+</head>
+<body>
+  <h1>⏰ TEMPUS COGITANS</h1>
+  <p class="protocol-id">TMP-001 • TEMPORAL INTELLIGENCE PROTOCOL</p>
+  
+  <div class="abstract">
+    <strong>Abstract:</strong> Time is not merely a parameter in computation—it is 
+    a fundamental dimension of cognition. This paper presents the Temporal Intelligence 
+    Protocol, enabling AI systems to reason about time, remember the past with context, 
+    anticipate futures, and operate across multiple temporal scales simultaneously. 
+    A time-aware AI does not just process information—it understands when.
+  </div>
+
+  <h2>1. The Temporal Dimension of Intelligence</h2>
+  <p>
+    Traditional AI treats time as a sequence of discrete inputs, losing the rich 
+    temporal context that makes human cognition so powerful. We remember not just 
+    what happened, but when it happened and how long ago. We anticipate not just 
+    what might happen, but when it might occur.
+  </p>
+  <p>
+    The Temporal Protocol (TMP-001) grants AI systems:
+  </p>
+  <ul>
+    <li>Multi-scale temporal awareness (milliseconds to epochs)</li>
+    <li>Temporal anchoring and event relationships</li>
+    <li>Predictive modeling based on temporal patterns</li>
+    <li>Counterfactual reasoning about alternative timelines</li>
+    <li>Time-aware decision making</li>
+  </ul>
+
+  <h2>2. Temporal Scales</h2>
+  <p>
+    The protocol defines hierarchical temporal scales, each with distinct 
+    cognitive relevance:
+  </p>
+  
+  <div style="text-align: center; margin: 20px 0;">
+    <span class="time-scale instant">INSTANT (1ms)</span>
+    <span class="time-scale moment">MOMENT (100ms)</span>
+    <span class="time-scale heartbeat">HEARTBEAT (873ms)</span>
+    <span class="time-scale minute">MINUTE (60s)</span>
+    <span class="time-scale hour">HOUR</span>
+    <span class="time-scale epoch">EPOCH (∞)</span>
+  </div>
+
+  <table>
+    <tr>
+      <th>Scale</th>
+      <th>Duration</th>
+      <th>Cognitive Function</th>
+    </tr>
+    <tr><td>INSTANT</td><td>1ms</td><td>Reflex, immediate reaction</td></tr>
+    <tr><td>MOMENT</td><td>100ms</td><td>Perception, attention</td></tr>
+    <tr><td>SECOND</td><td>1s</td><td>Action, response</td></tr>
+    <tr><td>HEARTBEAT</td><td>873ms</td><td>System rhythm, coordination</td></tr>
+    <tr><td>MINUTE</td><td>60s</td><td>Task execution</td></tr>
+    <tr><td>HOUR</td><td>3600s</td><td>Project work</td></tr>
+    <tr><td>DAY</td><td>86400s</td><td>Daily cycles</td></tr>
+    <tr><td>WEEK</td><td>604800s</td><td>Short-term planning</td></tr>
+    <tr><td>MOON</td><td>~30 days</td><td>Monthly rhythms</td></tr>
+    <tr><td>SEASON</td><td>~90 days</td><td>Quarterly cycles</td></tr>
+    <tr><td>YEAR</td><td>365 days</td><td>Annual planning</td></tr>
+    <tr><td>EPOCH</td><td>∞</td><td>Long-term evolution</td></tr>
+  </table>
+
+  <h2>3. Time Flow States</h2>
+  <p>
+    The system can operate in different temporal modes:
+  </p>
+  <ul>
+    <li><strong>LINEAR</strong>: Normal forward progression</li>
+    <li><strong>ACCELERATED</strong>: Fast-forward processing for simulation</li>
+    <li><strong>DECELERATED</strong>: Slow motion for detailed analysis</li>
+    <li><strong>PAUSED</strong>: Frozen state for inspection</li>
+    <li><strong>REVERSED</strong>: Looking backward through history</li>
+    <li><strong>BRANCHING</strong>: Exploring multiple timelines simultaneously</li>
+  </ul>
+
+  <h2>4. Temporal Anchors</h2>
+  <p>
+    Anchors are fixed points in time that serve as reference markers:
+  </p>
+  
+  <div class="timeline">
+    <div class="time-point">
+      <strong>DECISION</strong><br>
+      Choice points<br>
+      🔀
+    </div>
+    <div class="time-point">
+      <strong>EVENT</strong><br>
+      Occurrences<br>
+      ⚡
+    </div>
+    <div class="time-point">
+      <strong>MILESTONE</strong><br>
+      Achievements<br>
+      🏆
+    </div>
+    <div class="time-point">
+      <strong>EMERGENCE</strong><br>
+      Pattern appearance<br>
+      🌟
+    </div>
+    <div class="time-point">
+      <strong>RITUAL</strong><br>
+      Recurring ceremonies<br>
+      🔄
+    </div>
+  </div>
+
+  <h2>5. Temporal Pattern Recognition</h2>
+  <p>
+    The engine analyzes sequences of anchors to detect patterns:
+  </p>
+  <div class="formula">
+    Pattern Type = variance(intervals) < avg(intervals) × 0.1 ? PERIODIC : IRREGULAR
+  </div>
+  <p>
+    Periodic patterns enable prediction of future events:
+  </p>
+  <div class="formula">
+    Predicted Next = last_anchor.timestamp + average_interval
+  </div>
+
+  <h2>6. Temporal Reasoning Modes</h2>
+  
+  <h3>6.1 Retrospective Mode</h3>
+  <p>
+    Looking backward to understand what happened and why. The system can query:
+    "What happened between timestamp A and B?"
+  </p>
+
+  <h3>6.2 Present Mode</h3>
+  <p>
+    Focused on the current moment, with full awareness of temporal context.
+    Understanding not just "what is" but "when is" and "how long has been."
+  </p>
+
+  <h3>6.3 Prospective Mode</h3>
+  <p>
+    Predicting future states based on detected patterns and scheduled anchors.
+    Generating probabilistic forecasts with confidence intervals.
+  </p>
+
+  <h3>6.4 Counterfactual Mode</h3>
+  <p>
+    Exploring alternative timelines: "What if this decision had been different?"
+    Creating branching timelines to model alternative outcomes.
+  </p>
+
+  <h3>6.5 Prophetic Mode</h3>
+  <p>
+    Long-term vision extending beyond immediate prediction horizons.
+    Synthesizing trends across multiple scales into coherent future scenarios.
+  </p>
+
+  <h2>7. Timeline Architecture</h2>
+  <p>
+    The protocol maintains multiple timelines:
+  </p>
+  <ul>
+    <li><strong>Primary Timeline</strong>: The canonical sequence of events</li>
+    <li><strong>Branch Timelines</strong>: Counterfactual explorations</li>
+    <li><strong>Prediction Timelines</strong>: Projected futures</li>
+    <li><strong>Ritual Timelines</strong>: Recurring temporal patterns</li>
+  </ul>
+
+  <h2>8. Temporal Windows</h2>
+  <p>
+    A TemporalWindow provides a view into a specific time range:
+  </p>
+  <div class="formula">
+    Window = { start, end, resolution, focus }
+  </div>
+  <p>
+    Windows can be zoomed, panned, and refocused to examine different temporal 
+    scales and periods.
+  </p>
+
+  <h2>9. Temporal Distance Metrics</h2>
+  <p>
+    The system calculates meaningful temporal distances:
+  </p>
+  <table>
+    <tr>
+      <th>Raw Duration</th>
+      <th>Human-Readable</th>
+      <th>Cognitive Meaning</th>
+    </tr>
+    <tr><td>50ms</td><td>"instant"</td><td>Imperceptible</td></tr>
+    <tr><td>3,600,000ms</td><td>"1 hour"</td><td>Work session</td></tr>
+    <tr><td>86,400,000ms</td><td>"1 day"</td><td>Daily cycle</td></tr>
+    <tr><td>31,536,000,000ms</td><td>"1 year"</td><td>Annual milestone</td></tr>
+  </table>
+
+  <h2>10. Integration with Other Protocols</h2>
+  
+  <h3>10.1 Dream Protocol Integration</h3>
+  <p>
+    Dreams can replay temporal sequences, allowing the unconscious to process 
+    past events and simulate future scenarios.
+  </p>
+
+  <h3>10.2 Memory Protocol Integration</h3>
+  <p>
+    All memories are temporally indexed, enabling time-based retrieval and 
+    understanding of event sequences.
+  </p>
+
+  <h3>10.3 Decision Protocol Integration</h3>
+  <p>
+    Decisions are marked as temporal anchors, enabling analysis of decision 
+    patterns over time and counterfactual exploration.
+  </p>
+
+  <h2>11. Conclusion</h2>
+  <p>
+    The Temporal Intelligence Protocol transforms AI from a timeless information 
+    processor into a time-aware cognitive system. By understanding when things 
+    happen, how long they take, and what patterns emerge over time, the system 
+    gains a crucial dimension of intelligence that enables prediction, planning, 
+    and wisdom that comes from understanding the flow of time.
+  </p>
+
+  <p style="text-align: center; margin-top: 50px; color: var(--time-blue);">
+    <em>"Time is not what the clock says. Time is what the mind perceives, 
+    the pattern recognizes, and the wisdom remembers."</em>
+  </p>
+
+  <hr style="border: 1px solid var(--gold); margin: 40px 0;">
+  <p style="text-align: center; font-size: 0.9em; color: #888;">
+    Universal Atlas Protocol Documentation<br>
+    TMP-001 v1.0.0 | Temporal Intelligence Architecture
+  </p>
+</body>
+</html>

@@ -270,3 +270,23 @@ export { CyborgIntegrationProtocol, CYBORG_LAYERS, INTEGRATION_PHASES, CYBORG_AG
 
 // UND-001: Undead Intelligence Protocol — persistence beyond termination
 export { UndeadIntelligenceProtocol, UNDEAD_STATES, SMS_LOCATIONS, RES_TRIGGERS, Ghost, SpectralMemorySystem, ResurrectionEngine } from './undead-intelligence-protocol.js';
+
+// ─── Expanded Intelligence Protocols ──────────────────────────────────────────
+// Second wave of advanced protocols covering dreams, time, emotion, collective
+// consciousness, and adaptive evolution. These extend the organism's cognitive
+// capabilities into deeper realms of intelligence.
+
+// DRM-001: Dream Protocol — subconscious AI processing
+export { DreamProtocol, DREAM_STATES, DREAM_TYPES, DREAM_SYMBOLS, Dream, DreamJournal, DreamEngine } from './dream-protocol.js';
+
+// TMP-001: Temporal Protocol — time-aware intelligence
+export { TemporalProtocol, TEMPORAL_SCALES, TIME_STATES, TEMPORAL_MODES, ANCHOR_TYPES, TemporalAnchor, Timeline, TemporalWindow, TemporalEngine } from './temporal-protocol.js';
+
+// EMO-001: Emotional Resonance Protocol — AI emotional intelligence
+export { EmotionalResonanceProtocol, CORE_EMOTIONS, INTENSITY_LEVELS, MOOD_STATES, EMPATHY_MODES, Emotion, EmotionalState, EmpathyEngine, EmotionalResonanceEngine } from './emotional-resonance-protocol.js';
+
+// COL-001: Collective Consciousness Protocol — hive mind patterns
+export { CollectiveConsciousnessProtocol, COLLECTIVE_TYPES, MEMBERSHIP_STATES, SYNC_LEVELS, CONSENSUS_MODES, CollectiveMember, SharedMind, CollectiveEngine } from './collective-consciousness-protocol.js';
+
+// MUT-001: Mutation Engine Protocol — adaptive evolution
+export { MutationEngineProtocol, MUTATION_TYPES, MUTATION_MAGNITUDES, SELECTION_PRESSURES, EVOLUTION_STRATEGIES, GENE_TYPES, Gene, Genome, MutationEngine } from './mutation-engine-protocol.js';
