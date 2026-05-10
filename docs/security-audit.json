@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-02T22:32:05.368Z",
+  "generated": "2026-05-10T03:53:55.853Z",
   "bot": "organism-sentinel-bot",
   "status": "clean",
   "summary": {
@@ -15,21 +15,21 @@
   "scans": {
     "permissions": {
       "ran": true,
-      "timestamp": "2026-05-02T22:31:46.291Z"
+      "timestamp": "2026-05-10T03:53:55.566Z"
     },
     "csp": {
       "ran": true,
-      "timestamp": "2026-05-02T22:31:46.346Z"
+      "timestamp": "2026-05-10T03:53:55.612Z"
     },
     "secrets": {
       "ran": true,
-      "timestamp": "2026-05-02T22:32:05.322Z",
-      "filesScanned": 648
+      "timestamp": "2026-05-10T03:53:55.755Z",
+      "filesScanned": 794
     },
     "dangerous": {
       "ran": true,
-      "timestamp": "2026-05-02T22:32:01.523Z",
-      "filesScanned": 123
+      "timestamp": "2026-05-10T03:53:55.818Z",
+      "filesScanned": 171
     }
   }
 }
