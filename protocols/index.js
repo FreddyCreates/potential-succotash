@@ -318,3 +318,31 @@ export { AGICoreProtocol, INTELLIGENCE_DIMENSIONS, COGNITIVE_ARCHITECTURES, LEAR
 
 // SAE-001: SAECI Protocol — safe AI ethics & compliance
 export { SAECIProtocol, ETHICAL_FRAMEWORKS, SAFETY_LEVELS, BIAS_TYPES, HARM_CATEGORIES, COMPLIANCE_FRAMEWORKS, TRANSPARENCY_LEVELS, CONTAINMENT_LEVELS, Value, SafetyConstraint, BiasDetector, Explainer, ContainmentSystem } from './saeci-protocol.js';
+
+// ─── Extended Native Protocols ─────────────────────────────────────────────
+// Advanced protocols for knowledge synthesis, narrative intelligence, simulation,
+// cryptography, neural networks, data fabric, audio, and visual intelligence.
+
+// KST-001: Knowledge Synthesis & Transfer Protocol — cross-domain knowledge bridging
+export { KnowledgeSynthesisProtocol, KNOWLEDGE_DOMAINS, SYNTHESIS_MODES, RELATION_TYPES, TRANSFER_STRATEGIES, KnowledgeConcept, KnowledgeGraph, AnalogyEngine, KnowledgeDistiller, TransferEngine, OntologyAligner } from './knowledge-synthesis-protocol.js';
+
+// NAR-001: Narrative Intelligence Protocol — storytelling and character AI
+export { NarrativeIntelligenceProtocol, STORY_STRUCTURES, GENRES, ARCHETYPES, PLOT_ELEMENTS, NARRATIVE_MODES, Character, PlotPoint, Story, PlotGenerator, DialogueEngine, WorldBuilder } from './narrative-intelligence-protocol.js';
+
+// SIM-001: Simulation Engine Protocol — physics, social, economic simulations
+export { SimulationEngineProtocol, SIMULATION_TYPES, PHYSICS_MODELS, ECONOMIC_MODELS, SOCIAL_MODELS, INTEGRATION_METHODS, Vector3D, PhysicsBody, Particle, PhysicsWorld, Agent, SocialNetwork, Market, EpidemiologicalModel } from './simulation-engine-protocol.js';
+
+// CRY-001: Cryptographic Intelligence Protocol — ZK proofs, homomorphic encryption, MPC
+export { CryptographicIntelligenceProtocol, ENCRYPTION_SCHEMES, ZK_TYPES, SIGNATURE_SCHEMES, KEY_EXCHANGE, HASH_FUNCTIONS, SECURITY_LEVELS, FieldElement, Polynomial, Commitment, ZeroKnowledgeProof, HomomorphicEncryption, MultiPartyComputation, DigitalSignature } from './cryptographic-intelligence-protocol.js';
+
+// NET-001: Neural Network Architecture Protocol — transformers, CNNs, GNNs
+export { NeuralNetworkArchitectureProtocol, ARCHITECTURE_TYPES, LAYER_TYPES, ACTIVATIONS, NORMALIZATIONS, ATTENTION_TYPES, OPTIMIZERS, Tensor, Layer, Linear, MultiHeadAttention, LayerNorm, TransformerBlock, TransformerModel, ConvBlock, NeuralArchitectureSearch } from './neural-network-architecture-protocol.js';
+
+// DAT-001: Data Fabric Protocol — distributed data, lineage, governance
+export { DataFabricProtocol, DATA_SOURCES, QUALITY_DIMENSIONS, SCHEMA_TYPES, LINEAGE_EVENTS, CLASSIFICATIONS, DataAsset, Schema as DataSchema, DataLineage, DataQualityEngine, DataCatalog, DataContract } from './data-fabric-protocol.js';
+
+// AUD-001: Audio Intelligence Protocol — speech, music, sound analysis
+export { AudioIntelligenceProtocol, PROCESSING_MODES as AUDIO_PROCESSING_MODES, ASR_TYPES, VOICE_TYPES, AUDIO_FEATURES, MUSIC_GENRES, EMOTIONS as AUDIO_EMOTIONS, AudioSignal, FeatureExtractor, SpeechRecognizer, SpeechSynthesizer, SpeakerRecognizer, MusicAnalyzer, EmotionRecognizer } from './audio-intelligence-protocol.js';
+
+// VIS-001: Visual Intelligence Protocol — computer vision, image/video AI
+export { VisualIntelligenceProtocol, VISUAL_TASKS, MODEL_ARCHITECTURES, IMAGE_FORMATS, SEGMENTATION_TYPES, GENERATION_METHODS, OBJECT_CLASSES, Image, BoundingBox, SegmentationMask, ObjectDetector, ImageClassifier, ImageSegmenter, ImageGenerator, OCREngine, FaceProcessor, VideoAnalyzer } from './visual-intelligence-protocol.js';
