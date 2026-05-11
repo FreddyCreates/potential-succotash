@@ -290,3 +290,31 @@ export { CollectiveConsciousnessProtocol, COLLECTIVE_TYPES, MEMBERSHIP_STATES, S
 
 // MUT-001: Mutation Engine Protocol — adaptive evolution
 export { MutationEngineProtocol, MUTATION_TYPES, MUTATION_MAGNITUDES, SELECTION_PRESSURES, EVOLUTION_STRATEGIES, GENE_TYPES, Gene, Genome, MutationEngine } from './mutation-engine-protocol.js';
+
+// ─── Universal Integration Protocols ──────────────────────────────────────────
+// Comprehensive protocols for language processing, AI SDKs, quantum computing,
+// MLOps, package bridging, embodiment, AGI, and safe AI operations.
+
+// LNG-001: Language Bridge Protocol — universal language processing
+export { LanguageBridgeProtocol, LANGUAGE_CATEGORIES, PROGRAMMING_FAMILIES, NATURAL_FAMILIES, DSL_TYPES, PROCESSING_MODES, AST_TYPES, LanguageSpec, ASTNode, LanguageTranslation, LanguageEngine, NaturalLanguageProcessor, DSLFactory } from './language-bridge-protocol.js';
+
+// AISDK-001: AI SDK Protocol — universal AI SDK integration
+export { AISDKProtocol, PROVIDER_CATEGORIES, AI_PROVIDERS, MODEL_TYPES, MODEL_FAMILIES, CAPABILITIES, ModelConfig, Message, Tool, Conversation, AIClient, AIRouter } from './ai-sdk-protocol.js';
+
+// AIQ-001: AI Quantum Protocol — quantum computing integration
+export { AIQuantumProtocol, QUANTUM_PROVIDERS, GATE_TYPES, ALGORITHM_TYPES, ANSATZ_TYPES, Complex, Qubit, QuantumGate, QuantumCircuit, VariationalCircuit, QAOACircuit, QuantumEngine } from './ai-quantum-protocol.js';
+
+// MLP-001: MLOps Protocol — machine learning operations
+export { MLOpsProtocol, PIPELINE_STAGES, MODEL_STATES, DEPLOYMENT_STRATEGIES, METRIC_TYPES, DRIFT_TYPES, INFRASTRUCTURE_TYPES, ModelVersion, ModelRegistry, Experiment, ExperimentRun, FeatureStore, DriftDetector, Pipeline } from './mlops-protocol.js';
+
+// PKG-001: Package Bridge Protocol — universal package bridging
+export { PackageBridgeProtocol, PACKAGE_ECOSYSTEMS, RUNTIME_TYPES, ADAPTER_TYPES, BRIDGE_STATES, WRAPPER_MODES, PackageSpec, RuntimeAdapter, PackageBridge, UniversalWrapper, PackageEngine } from './package-bridge-protocol.js';
+
+// EMB-001: Embodiment Engine Protocol — physical/virtual embodiment
+export { EmbodimentEngineProtocol, EMBODIMENT_TYPES, PHYSICAL_FORMS, VIRTUAL_FORMS, SENSOR_TYPES, ACTUATOR_TYPES, EMBODIMENT_STATES, Sensor, Actuator, Joint, Embodiment, SwarmSystem } from './embodiment-engine-protocol.js';
+
+// AGI-001: AGI Core Protocol — artificial general intelligence
+export { AGICoreProtocol, INTELLIGENCE_DIMENSIONS, COGNITIVE_ARCHITECTURES, LEARNING_MODES, REASONING_TYPES, CONSCIOUSNESS_STATES, WORLD_MODEL_TYPES, Concept, Schema, Goal, WorldModel, MetaLearner, ReasoningEngine } from './agi-core-protocol.js';
+
+// SAE-001: SAECI Protocol — safe AI ethics & compliance
+export { SAECIProtocol, ETHICAL_FRAMEWORKS, SAFETY_LEVELS, BIAS_TYPES, HARM_CATEGORIES, COMPLIANCE_FRAMEWORKS, TRANSPARENCY_LEVELS, CONTAINMENT_LEVELS, Value, SafetyConstraint, BiasDetector, Explainer, ContainmentSystem } from './saeci-protocol.js';
