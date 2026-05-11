@@ -34,6 +34,9 @@ The system doesn't *model* a living organism—it **is** one.
 | 01 | `01-neurochemistry-ode.js` | Neurochemistry ODE Protocol | dCᵢ/dt = θᵢ(μᵢ − Cᵢ) + Σⱼ Jᵢⱼ·(Cⱼ − μⱼ) |
 | 02 | `02-kuramoto-oscillator.js` | Emergence via Phase Sync | dθᵢ/dt = ωᵢ + (K/N)·Σⱼ sin(θⱼ − θᵢ) |
 | 03 | `03-phi-mathematics.js` | Golden Ratio Throughout | φ = (1+√5)/2, φ² = φ+1, 1/φ = φ-1 |
+| 04 | `04-memory-palace.js` | Phi-Encoded Spatial Memory | d(p₁,p₂) = √(Δθ² + Δφ² + 0.5Δρ² + ...) |
+| 05 | `05-ocl-cpl-governance.js` | Constitutional Law for AI | WHEN condition THEN action |
+| 06 | `06-neurocore-stack.js` | Living Computational Substrate | H = 100 - Latency - Errors + Uptime |
 | 07 | `07-mayan-long-count.js` | Ancient Calendar Timers | baktun.katun.tun.winal.kin |
 
 ---
@@ -51,6 +54,15 @@ node examples/academic-sticks/02-kuramoto-oscillator.js
 
 # Run Phi Mathematics exploration
 node examples/academic-sticks/03-phi-mathematics.js
+
+# Run Memory Palace (Phi-Encoded Spatial Memory)
+node examples/academic-sticks/04-memory-palace.js
+
+# Run OCL/CPL-L Governance Framework
+node examples/academic-sticks/05-ocl-cpl-governance.js
+
+# Run NeuroCore Stack demo
+node examples/academic-sticks/06-neurocore-stack.js
 
 # Run Mayan Long Count timer demo
 node examples/academic-sticks/07-mayan-long-count.js
