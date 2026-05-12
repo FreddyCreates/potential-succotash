@@ -346,3 +346,9 @@ export { AudioIntelligenceProtocol, PROCESSING_MODES as AUDIO_PROCESSING_MODES, 
 
 // VIS-001: Visual Intelligence Protocol — computer vision, image/video AI
 export { VisualIntelligenceProtocol, VISUAL_TASKS, MODEL_ARCHITECTURES, IMAGE_FORMATS, SEGMENTATION_TYPES, GENERATION_METHODS, OBJECT_CLASSES, Image, BoundingBox, SegmentationMask, ObjectDetector, ImageClassifier, ImageSegmenter, ImageGenerator, OCREngine, FaceProcessor, VideoAnalyzer } from './visual-intelligence-protocol.js';
+
+// ─── Sovereign Infrastructure Protocols ────────────────────────────────────
+// Protocols for self-funding, resource allocation, and autonomous operation.
+
+// CYC-001: Sovereign Cycle Allocator Protocol — self-funding through φ-mathematics
+export { SovereignCycleAllocatorProtocol, CYCLE_CONSTANTS, ALLOCATION_PURPOSES, GENERATION_SOURCES, AllocationRecord, GenerationEvent, SovereignCycleAllocator, fibonacciAt, fibonacciRatio, projectGeneration, projectDecay } from './sovereign-cycle-allocator-protocol.js';
