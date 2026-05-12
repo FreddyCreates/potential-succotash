@@ -1,6 +1,6 @@
 # 🏛 Casa de Inteligencia — Architecture Map
 
-**Generated:** 2026-05-04T23:25:05.839Z
+**Generated:** 2026-05-12T06:52:40.441Z
 **Bot:** organism-docs-bot 📚
 
 ## System Overview
@@ -18,7 +18,7 @@
 ║         └──────────────┴────────────┴────────────────┘          ║
 ║                              │                                   ║
 ╠══════════════════════════════╪═══════════════════════════════════╣
-║  PROTOCOLS (36 intelligence protocols)                                 ║
+║  PROTOCOLS (97 intelligence protocols)                                 ║
 ║  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────────┐  ║
 ║  │ Routing  │ │ Memory   │ │ Security │ │   Resonance/PHI  │  ║
 ║  │ SRP·EMIP │ │ MLP·AKAP │ │ EIT·SCVP │ │      PRSP        │  ║
@@ -57,44 +57,105 @@
 | Web App | HTML/JS | 1 |
 | CLI | Node.js | 1 |
 
-### 🔬 Protocols (36)
+### 🔬 Protocols (97)
 
+- `activated-agent-brain-mapping-protocol`
 - `adaptive-knowledge-absorption-protocol`
+- `agi-core-protocol`
+- `ai-quantum-protocol`
+- `ai-sdk-protocol`
+- `alpha-commander-charter-protocol`
+- `alpha-emergence-protocol`
+- `alpha-evolution-engine-protocol`
+- `alpha-fleet-orchestration-protocol`
+- `alpha-governance-enforcement-protocol`
+- `alpha-health-monitor-protocol`
+- `alpha-issue-intelligence-protocol`
+- `alpha-knowledge-graph-protocol`
+- `alpha-resonance-protocol`
+- `alpha-reward-protocol`
+- `alpha-security-sentinel-protocol`
+- `alpha-signal-protocol`
+- `alpha-substrate-bridge-protocol`
+- `alpha-workflow-engine-protocol`
 - `artifact-generation-protocol`
 - `attention-routing-protocol`
+- `audio-intelligence-protocol`
 - `auro-absorption-charter-protocol`
 - `auro-guardian-intelligence-protocol`
 - `auto-generate-calls-engine-protocol`
+- `category-theory-protocol`
+- `causal-inference-protocol`
+- `civilization-architecture-core-protocol`
+- `civilization-scale-organism-protocol`
+- `code-block-cognitive-interface-protocol`
+- `collective-consciousness-protocol`
+- `conceptual-persistence-engine-protocol`
 - `cross-substrate-resonance-protocol`
+- `cryptographic-intelligence-protocol`
+- `cyborg-integration-protocol`
+- `data-fabric-protocol`
+- `distributed-cognitive-mesh-protocol`
+- `dream-protocol`
 - `edge-mesh-intelligence-protocol`
 - `edge-sensor-protocol`
+- `embodiment-engine-protocol`
+- `emotional-resonance-protocol`
 - `encrypted-intelligence-transport`
+- `federated-intelligence-networks-protocol`
+- `formal-logic-inference-protocol`
+- `fractal-dynamics-protocol`
+- `geometric-real-math-protocol`
 - `goal-stack-protocol`
 - `hebbian-learning-protocol`
 - `homeostatic-drive-protocol`
+- `internal-security-tokens-protocol`
 - `kernel-execution-protocol`
+- `knowledge-synthesis-protocol`
 - `kuramoto-oscillator-protocol`
+- `language-bridge-protocol`
 - `memory-consolidation-protocol`
 - `memory-lineage-enhancement-protocol`
 - `memory-lineage-protocol`
 - `mini-brain-protocol`
 - `mini-heart-protocol`
+- `mlops-protocol`
+- `multi-agent-reasoning-ecosystem-protocol`
 - `multi-model-fusion-protocol`
+- `multi-node-ai-hub-protocol`
+- `multi-sovereign-compute-cores-protocol`
+- `mutation-engine-protocol`
+- `narrative-intelligence-protocol`
+- `neural-network-architecture-protocol`
 - `neuro-emergence-protocol`
 - `neurochemistry-ode-protocol`
+- `nova-core-protocol`
 - `organism-lifecycle-protocol`
 - `organism-marketplace-protocol`
 - `oro-engine-integration-protocol`
+- `package-bridge-protocol`
 - `pattern-synthesis-protocol`
 - `phi-resonance-sync-protocol`
 - `predictive-coding-protocol`
+- `reasoning-engine-layer-protocol`
 - `reward-signal-protocol`
+- `saeci-protocol`
+- `self-programming-architecture-protocol`
+- `simulation-engine-protocol`
 - `sovereign-contract-verification-protocol`
+- `sovereign-cycle-allocator-protocol`
 - `sovereign-offline-cognition-protocol`
 - `sovereign-routing-protocol`
+- `symbolic-mathematics-protocol`
 - `synapse-binding-engine-protocol`
+- `temporal-protocol`
+- `token-economy-protocol`
+- `undead-intelligence-protocol`
+- `visual-intelligence-protocol`
 - `visual-scene-intelligence-protocol`
 - `vitality-homeostasis-protocol`
+- `vow-protocol`
+- `xr-world-protocol`
 
 ### 📦 SDKs (18)
 
