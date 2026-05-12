@@ -18,10 +18,10 @@
  *   - MiniBrain (stimulus-response learning)
  *   - Kernel executor (autonomous task execution)
  *   - Cross-substrate resonance (inter-organism communication)
- *   - 36 protocols (intelligence primitives)
+ *   - 66 protocols (intelligence primitives)
  * 
  * @module native-runtime
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 import { 
@@ -47,6 +47,44 @@ import {
   HomeostaticDriveProtocol,
   GoalStackProtocol,
   ArtifactGenerationProtocol,
+  // Chaos Creation Theory: Mathematical Intelligence Protocols
+  FormalLogicInferenceProtocol,
+  SymbolicMathematicsProtocol,
+  CategoryTheoryProtocol,
+  FractalDynamicsProtocol,
+  CausalInferenceProtocol,
+  GeometricRealMathProtocol,
+  // Alpha Model Protocols (PROTO-227–230)
+  AlphaEmergenceProtocol,
+  AlphaResonanceProtocol,
+  AlphaSignalProtocol,
+  AlphaRewardProtocol,
+  // Alpha Commander Protocols (PROTO-231–240)
+  AlphaCommanderCharterProtocol,
+  AlphaFleetOrchestrationProtocol,
+  AlphaSubstrateBridgeProtocol,
+  AlphaGovernanceEnforcementProtocol,
+  AlphaIssueIntelligenceProtocol,
+  AlphaWorkflowEngineProtocol,
+  AlphaHealthMonitorProtocol,
+  AlphaKnowledgeGraphProtocol,
+  AlphaSecuritySentinelProtocol,
+  AlphaEvolutionEngineProtocol,
+  // Civilization Architecture Protocols (REV-001 through CIV-ORG-001)
+  ReasoningEngineLayerProtocol,
+  CodeBlockCognitiveInterfaceProtocol,
+  ActivatedAgentBrainMappingProtocol,
+  CivilizationArchitectureCoreProtocol,
+  TokenEconomyProtocol,
+  NovaCoreProtocol,
+  MultiNodeAIHubProtocol,
+  DistributedCognitiveMeshProtocol,
+  MultiAgentReasoningEcosystemProtocol,
+  SelfProgrammingArchitectureProtocol,
+  FederatedIntelligenceNetworksProtocol,
+  ConceptualPersistenceEngineProtocol,
+  MultiSovereignComputeCoresProtocol,
+  CivilizationScaleOrganismProtocol,
 } from './index.js';
 
 // ─── Organism Identity ───────────────────────────────────────────────────────
@@ -95,6 +133,37 @@ const protocols = {
   // Per-Worker Components
   miniHeart: new MiniHeartProtocol(ORGANISM_ID),
   miniBrain: new MiniBrainProtocol(ORGANISM_ID),
+
+  // ── Chaos Creation Theory: Mathematical Intelligence (PROTO-221–225) ──────
+  // The organism now REASONS IN MATHEMATICS — not just pattern-matching
+  // but formal proof, symbolic calculus, structural algebra, fractal
+  // self-similarity, and causal understanding.
+  logic: new FormalLogicInferenceProtocol(),
+  symbolicMath: new SymbolicMathematicsProtocol(),
+  categoryTheory: new CategoryTheoryProtocol(),
+  fractalDynamics: new FractalDynamicsProtocol(),
+  causalInference: new CausalInferenceProtocol(),
+  geometricMath: new GeometricRealMathProtocol(),
+
+  // ── Alpha Model Protocols (PROTO-227–230) ─────────────────────────────────
+  // Sovereign commander-tier intelligence. Operates above all other fleet protocols.
+  alphaEmergence: new AlphaEmergenceProtocol(),
+  alphaResonance: new AlphaResonanceProtocol(),
+  alphaSignal:    new AlphaSignalProtocol(),
+  alphaReward:    new AlphaRewardProtocol(),
+
+  // ── Alpha Commander Protocols (PROTO-231–240) ─────────────────────────────
+  // The ten commander protocols that orchestrate the entire organism ecosystem.
+  alphaCharter:    new AlphaCommanderCharterProtocol(),
+  alphaFleet:      new AlphaFleetOrchestrationProtocol(),
+  alphaBridge:     new AlphaSubstrateBridgeProtocol(),
+  alphaGovernance: new AlphaGovernanceEnforcementProtocol(),
+  alphaIssues:     new AlphaIssueIntelligenceProtocol(),
+  alphaWorkflow:   new AlphaWorkflowEngineProtocol(),
+  alphaHealth:     new AlphaHealthMonitorProtocol(),
+  alphaKnowledge:  new AlphaKnowledgeGraphProtocol(),
+  alphaSecurity:   new AlphaSecuritySentinelProtocol(),
+  alphaEvolution:  new AlphaEvolutionEngineProtocol(),
 };
 
 // ─── State Registers ─────────────────────────────────────────────────────────
@@ -125,6 +194,56 @@ const state = {
     alignment: 1.0,
   },
 };
+
+function synthesizeMathMiddle(input = {}) {
+  const symbolicComplexity = Number(input.symbolicComplexity ?? input.order ?? 1);
+  const p1 = input.p1 || [0, 0, 0];
+  const p2 = input.p2 || [1, 1, 0];
+  const geometric = protocols.geometricMath.runEngine('euclidean-engine', { p1, p2 });
+  const thoughtStimulus = input.thought || `math-middle:${symbolicComplexity}:${geometric.distance}`;
+  protocols.miniBrain.learn(thoughtStimulus, 'math-synthesis', PHI - 1);
+  const thoughtResponse = protocols.miniBrain.respond(thoughtStimulus);
+
+  const middle = protocols.geometricMath.runEngine('middle-synthesis-engine', {
+    symbolic: { complexity: symbolicComplexity },
+    geometric,
+    thought: {
+      strength: thoughtResponse.confidence || 0.5,
+      confidence: thoughtResponse.confidence || 0.5,
+      response: thoughtResponse.response,
+    },
+  });
+
+  const compressed = protocols.geometricMath.runEngine('compression-engine', {
+    payload: {
+      power: middle.power,
+      middle: middle.middle,
+      thoughtWire: thoughtResponse,
+    },
+  });
+
+  return {
+    geometric,
+    middle,
+    thought: thoughtResponse,
+    compressed,
+    reward: (() => {
+      // PROTO-230: Alpha Reward — fire DA/OX when synthesis confidence exceeds PHI_INV
+      const PHI_INV = PHI - 1; // 0.618033...
+      const rwd = protocols.alphaReward.reward(
+        compressed.frontPower ?? 0,
+        thoughtResponse.confidence ?? 0,
+      );
+      if (rwd.fired) {
+        protocols.neurochemistry.applyImpulse({ DA: rwd.da, OX: rwd.ox });
+        protocols.alphaSignal.emit('math_synthesis_reward', 1, {
+          da: rwd.da, ox: rwd.ox, magnitude: rwd.magnitude,
+        });
+      }
+      return rwd;
+    })(),
+  };
+}
 
 // ─── Heartbeat Engine ────────────────────────────────────────────────────────
 
@@ -164,15 +283,28 @@ async function heartbeat() {
   
   // 9. Emergence check
   protocols.emergence.step(HEARTBEAT / 1000);
-  
-  // 10. Execute scheduled kernels
-  await protocols.kernels.beat(state);
-  
-  // Check emergence threshold
+
+  // Capture emergence state for alpha tier
   const emergenceState = protocols.emergence.getState();
   if (emergenceState.emerged) {
     console.log(`✨ EMERGENCE DETECTED — R=${emergenceState.emergenceLevel.toFixed(3)}`);
   }
+
+  // 10. Alpha Emergence — amplify at commander tier
+  const alphaEmerge = protocols.alphaEmergence.tick(emergenceState.emergenceLevel);
+  if (alphaEmerge.cascadeActive) {
+    protocols.alphaSignal.emit('alpha_emergence_cascade', 0, {
+      amplification: alphaEmerge.amplification,
+      alphaEmergence: alphaEmerge.alphaEmergence,
+    });
+  }
+
+  // 11. Alpha Resonance step — sync all oscillators
+  protocols.alphaResonance.sync(ORGANISM_ID, (beatCount * GOLDEN_ANGLE * Math.PI) / 180);
+  protocols.alphaResonance.step(HEARTBEAT / 1000);
+
+  // 12. Execute scheduled kernels
+  await protocols.kernels.beat(state);
   
   return {
     beat: beatCount,
@@ -181,6 +313,9 @@ async function heartbeat() {
     vitality: protocols.miniHeart.getStatus().health,
     emergence: emergenceState.emergenceLevel,
     emerged: emergenceState.emerged,
+    alphaEmergence: alphaEmerge.alphaEmergence,
+    alphaResonance: protocols.alphaResonance.getR(),
+    alphaCascade:   alphaEmerge.cascadeActive,
   };
 }
 
@@ -194,7 +329,7 @@ function startHeartbeat() {
   console.log(`║  Substrate: ${SUBSTRATE.padEnd(47)}║`);
   console.log(`║  Heartbeat: ${HEARTBEAT}ms                                              ║`);
   console.log(`║  PHI:       ${PHI}                                 ║`);
-  console.log(`║  Protocols: 36                                                  ║`);
+  console.log(`║  Protocols: 46 (36 original + 6 math intelligence + 4 alpha)  ║`);
   console.log(`╚════════════════════════════════════════════════════════════════╝\n`);
   
   startTime = Date.now();
@@ -261,6 +396,55 @@ export const NativeRuntime = {
   reward: (state, amount) => protocols.reward.reward(state, amount),
   generate: (generatorId, input) => protocols.artifacts.generate(generatorId, input),
   
+  // ── Mathematical Intelligence (PROTO-221–225) ─────────────────────────────
+  // Logic
+  assertLogic: (id, formula, conf, label) => protocols.logic.assert(id, formula, conf, label),
+  prove: (goal, bindings) => protocols.logic.prove(goal, bindings),
+  forwardChain: (worldState) => protocols.logic.forwardChain(worldState),
+  // Symbolic Math
+  defineExpr: (name, expr) => protocols.symbolicMath.define(name, expr),
+  derive: (expr, varName, order) => protocols.symbolicMath.derive(expr, varName, order),
+  taylor: (expr, varName, point, order) => protocols.symbolicMath.taylor(expr, varName, point, order),
+  detectPhi: (value) => protocols.symbolicMath.detectPhi(value),
+  phiSpiral: (n, scale) => protocols.symbolicMath.phiSpiral(n, scale),
+  // Geometric Real Math
+  geometricEngine: (engine, input) => protocols.geometricMath.runEngine(engine, input),
+  geometricAngle: (a, b) => protocols.geometricMath.angle(a, b),
+  geometricCircle: (r) => protocols.geometricMath.circle(r),
+  goldenTriangle: (s) => protocols.geometricMath.goldenTriangle(s),
+  mathMiddleSynthesis: (input) => synthesizeMathMiddle(input),
+  mathFrontCompression: (input) => synthesizeMathMiddle(input).compressed,
+  // Category Theory
+  category: (name, config) => protocols.categoryTheory.category(name, config),
+  modelOrganism: (protocols_, flows) => protocols.categoryTheory.modelOrganism(protocols_, flows),
+  // Fractal Dynamics
+  attractor: (preset, n) => protocols.fractalDynamics.attractor(preset, n),
+  mandelbrot: (cx, cy) => protocols.fractalDynamics.mandelbrot(cx, cy),
+  fractalDimension: (points) => protocols.fractalDynamics.dimension(points),
+  bifurcation: (rRange) => protocols.fractalDynamics.bifurcation(rRange),
+  // Causal Inference
+  createCausalModel: (name) => protocols.causalInference.createModel(name),
+  intervene: (model, X, Y, x, Z, data) => protocols.causalInference.intervene(model, X, Y, x, Z, data),
+  counterfactual: (model, X, Y, xObs, yObs, xCF) => protocols.causalInference.counterfactual(model, X, Y, xObs, yObs, xCF),
+  modelOrganismCausality: () => protocols.causalInference.modelOrganismCausality(),
+
+  // ── Alpha Model Protocols (PROTO-227–230) ──────────────────────────────────
+  // PROTO-227: Alpha Emergence
+  alphaEmergenceTick: (level) => protocols.alphaEmergence.tick(level),
+  alphaEmergenceState: () => protocols.alphaEmergence.getState(),
+  // PROTO-228: Alpha Resonance
+  alphaSync: (id, phase, omega) => protocols.alphaResonance.sync(id, phase, omega),
+  alphaStep: (dt) => protocols.alphaResonance.step(dt),
+  alphaResonanceState: () => protocols.alphaResonance.getState(),
+  // PROTO-229: Alpha Signal
+  alphaEmit: (type, priority, payload) => protocols.alphaSignal.emit(type, priority, payload),
+  alphaDispatch: () => protocols.alphaSignal.dispatch(),
+  alphaDrainCritical: () => protocols.alphaSignal.drainCritical(),
+  alphaSignalState: () => protocols.alphaSignal.getState(),
+  // PROTO-230: Alpha Reward
+  alphaReward: (frontPower, confidence) => protocols.alphaReward.reward(frontPower, confidence),
+  alphaRewardState: () => protocols.alphaReward.getState(),
+  
   // Full metrics
   getMetrics: () => ({
     organism: {
@@ -279,6 +463,18 @@ export const NativeRuntime = {
     drives: protocols.drives.getMetrics(),
     attention: protocols.attention.getMetrics(),
     artifacts: protocols.artifacts.getMetrics(),
+    // Chaos Creation Theory math intelligence
+    logic: protocols.logic.getMetrics(),
+    symbolicMath: protocols.symbolicMath.getMetrics(),
+    categoryTheory: protocols.categoryTheory.getMetrics(),
+    fractalDynamics: protocols.fractalDynamics.getMetrics(),
+    causalInference: protocols.causalInference.getMetrics(),
+    geometricMath: protocols.geometricMath.getMetrics(),
+    // Alpha Model Protocols
+    alphaEmergence: protocols.alphaEmergence.getMetrics(),
+    alphaResonance: protocols.alphaResonance.getMetrics(),
+    alphaSignal:    protocols.alphaSignal.getMetrics(),
+    alphaReward:    protocols.alphaReward.getMetrics(),
     phi: PHI,
     heartbeat: HEARTBEAT,
   }),

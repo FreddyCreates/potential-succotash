@@ -4,7 +4,7 @@
  * ============================================================ */
 
 import { NeurochemistryEngine } from './neuro-chemistry.js';
-import { MASTER, WN, DISD, phi, Phi } from './engines/index.js';
+import { MASTER, WN, DISD, MATHX, phi, Phi } from './engines/index.js';
 import { extractArticle } from './skills/readability';
 import {
   saveHighlight, getHighlights, deleteHighlight, exportHighlights,
@@ -2448,6 +2448,20 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     case 'getMasterEmergence': sendResponse({ success: true, emergence: MASTER.getEmergence(), resonance: MASTER.R() }); break;
     case 'masterStimulus': { MASTER.Xi(message.event as string, (message.magnitude as number) || 1); sendResponse({ success: true }); break; }
     case 'listOrganisms': sendResponse({ success: true, organisms: MASTER.listOrganisms() }); break;
+    case 'synthesizeMathExecution': {
+      const payload = (message.payload as Record<string, unknown>) || {};
+      const result = MATHX.synthesizeExecution(payload);
+      sendResponse({ success: true, data: result, compressed: result.compressed });
+      break;
+    }
+    case 'getAlphaProtocols': {
+      sendResponse({ success: true, data: MATHX.getAlphaProtocols() });
+      break;
+    }
+    case 'getAlphaRewardMetrics': {
+      sendResponse({ success: true, data: MATHX.getRewardMetrics() });
+      break;
+    }
 
     /* ── Chat — primary conversational interface ────────────────
      * This is the handler ChatPanel uses: { action: 'chat', text }.
@@ -3575,4 +3589,3 @@ chrome.tabs.onActivated.addListener(({ tabId }) => {
     });
   });
 });
-

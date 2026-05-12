@@ -1,0 +1,219 @@
+# ============================================================================
+# OCL — Organism Charter Language
+# Infrastructure Charter: City Walls (WLL-001)
+#
+# id:     atlas://civilization/infrastructure/city-walls
+# class:  InfrastructureCharter
+#
+# City Walls define the security perimeter of the civilization organism.
+# They implement tiered sandbox access control, mirage responses for
+# unauthorized access, and multi-layer defense against adversarial inputs.
+# ============================================================================
+
+id: "atlas://civilization/infrastructure/city-walls"
+class: InfrastructureCharter
+version: "1.0.0"
+created: "2026-05-09T00:00:00.000Z"
+author: "civilization-architect"
+
+description: |
+  City Walls are the defensive perimeter of the Civilization Organism.
+  Like ancient city walls that protected citizens from invaders, these
+  security boundaries protect cognitive artifacts, protocols, and the
+  Nova core from unauthorized access, adversarial manipulation, and
+  external threats.
+  
+  The walls implement a 5-tier access control system with "mirage responses"
+  that provide plausible but non-real data to unauthorized requesters,
+  protecting both data and system architecture from reconnaissance.
+
+# ── Core Identity ─────────────────────────────────────────────────────────────
+infrastructure_type: "security_perimeter"
+coverage: "civilization_wide"
+phi_constant: 1.618033988749895
+heartbeat_ms: 873
+
+# ── Access Tiers ──────────────────────────────────────────────────────────────
+access_tiers:
+  - tier: 0
+    name: "SOVEREIGN"
+    description: "Nova core, root of trust, canonical decisions"
+    clearance_required: "nova_attestation"
+    phi_weight: 2.618  # PHI + 1
+    capabilities:
+      - "read_all"
+      - "write_all"
+      - "mint_tokens"
+      - "attest_protocols"
+      - "emergency_powers"
+    
+  - tier: 1
+    name: "FEDERATED"
+    description: "Federation members, treaty-bound nodes"
+    clearance_required: "treaty_signature"
+    phi_weight: 1.618  # PHI
+    capabilities:
+      - "read_federated"
+      - "write_local"
+      - "propose_protocols"
+      - "participate_governance"
+    
+  - tier: 2
+    name: "REGISTERED"
+    description: "Registered agents and verified users"
+    clearance_required: "identity_proof"
+    phi_weight: 1.0
+    capabilities:
+      - "read_public"
+      - "write_sandbox"
+      - "execute_tasks"
+      - "earn_tokens"
+    
+  - tier: 3
+    name: "GUEST"
+    description: "Unauthenticated but non-malicious visitors"
+    clearance_required: "captcha_or_rate_limit"
+    phi_weight: 0.618  # 1/PHI
+    capabilities:
+      - "read_public_cached"
+      - "request_registration"
+    
+  - tier: 4
+    name: "QUARANTINED"
+    description: "Detected adversarial or suspicious actors"
+    clearance_required: "appeal_review"
+    phi_weight: 0.382  # 1/PHI^2
+    capabilities:
+      - "receive_mirage_responses"
+      - "submit_appeal"
+
+# ── Gate Levels ───────────────────────────────────────────────────────────────
+gate_levels:
+  - level: 0
+    name: "NOVA_GATE"
+    description: "Direct access to Nova core—maximum security"
+    defense_depth: 5
+    verification_steps:
+      - "zero_knowledge_proof"
+      - "multi_party_computation"
+      - "time_lock_puzzle"
+      - "nova_attestation"
+      - "quorum_signature"
+    
+  - level: 1
+    name: "FEDERATION_GATE"
+    description: "Inter-node communication—treaty verification"
+    defense_depth: 4
+    verification_steps:
+      - "treaty_signature"
+      - "node_attestation"
+      - "merkle_proof"
+      - "rate_limit_check"
+    
+  - level: 2
+    name: "HUB_GATE"
+    description: "Hub-level access—standard authentication"
+    defense_depth: 3
+    verification_steps:
+      - "identity_verification"
+      - "session_token"
+      - "permission_check"
+    
+  - level: 3
+    name: "AGENT_GATE"
+    description: "Agent pool access—sandbox enforcement"
+    defense_depth: 2
+    verification_steps:
+      - "agent_credential"
+      - "sandbox_boundary"
+    
+  - level: 4
+    name: "PUBLIC_GATE"
+    description: "Public interface—rate limiting only"
+    defense_depth: 1
+    verification_steps:
+      - "rate_limit_check"
+
+# ── Mirage Response System ────────────────────────────────────────────────────
+mirage_system:
+  enabled: true
+  description: |
+    Mirage responses provide plausible but non-real data to unauthorized
+    requesters. This protects actual data and prevents reconnaissance
+    of system architecture. Mirages are phi-encoded to be detectable only
+    by authorized systems.
+    
+  response_types:
+    - type: "PHANTOM_DATA"
+      description: "Synthetic data that looks real but is meaningless"
+      generation: "ai_generated_plausible"
+      
+    - type: "DELAYED_TRUTH"
+      description: "Real data from N cycles ago"
+      generation: "historical_sample"
+      delay_cycles: 873  # ~12 minutes behind
+      
+    - type: "PARTIAL_SHADOW"
+      description: "Subset of real data mixed with phantoms"
+      generation: "selective_masking"
+      real_percentage: 0.382
+      
+    - type: "REDIRECT"
+      description: "Redirect to honeypot system"
+      generation: "honeypot_routing"
+
+# ── Defense Mechanisms ────────────────────────────────────────────────────────
+defense_mechanisms:
+  - id: "WLL-DETECT"
+    name: "Anomaly Detection"
+    description: "Phi-weighted anomaly scoring for all requests"
+    threshold: 0.618
+    
+  - id: "WLL-ISOLATE"
+    name: "Threat Isolation"
+    description: "Automatic quarantine of suspicious actors"
+    response_time_ms: 50
+    
+  - id: "WLL-ADAPT"
+    name: "Adaptive Defense"
+    description: "ML-based defense pattern evolution"
+    learning_rate: 0.1
+    
+  - id: "WLL-CASCADE"
+    name: "Cascade Alert"
+    description: "Federation-wide threat propagation"
+    propagation_speed: "spinal_road_critical"
+
+# ── Security Protocols ────────────────────────────────────────────────────────
+protocols:
+  - "Zero-trust architecture: never trust, always verify"
+  - "Defense in depth: multiple layers at each gate"
+  - "Least privilege: minimum access for each operation"
+  - "Fail-secure: deny access on any verification failure"
+  - "Audit everything: immutable logs of all access attempts"
+
+# ── Invariants ────────────────────────────────────────────────────────────────
+invariants:
+  - "Nova core never directly accessible from public gate"
+  - "Quarantined actors never receive real data"
+  - "Gate levels strictly ordered—no bypass paths"
+  - "All access logged with immutable timestamps"
+  - "Mirage phi-encoding undetectable without SOVEREIGN clearance"
+
+# ── Metrics & Monitoring ──────────────────────────────────────────────────────
+metrics:
+  - name: "unauthorized_attempts"
+    description: "Count of blocked access attempts"
+    alert_threshold: 1000  # per minute
+    
+  - name: "quarantine_rate"
+    description: "Percentage of requests quarantined"
+    alert_threshold: 0.05
+    
+  - name: "mirage_trigger_rate"
+    description: "Mirage responses issued per minute"
+    alert_threshold: 100
+    
+  - name: "defense_latency_p99"
+    description: "Time to detect and respond to threats"
+    threshold_ms: 50

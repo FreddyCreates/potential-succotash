@@ -1,0 +1,140 @@
+# ============================================================================
+# OCL — Organism Charter Language
+# Infrastructure Charter: Spinal Road (SPN-001)
+#
+# id:     atlas://civilization/infrastructure/spinal-road
+# class:  InfrastructureCharter
+#
+# The Spinal Road is the primary neural highway of the civilization organism.
+# All cognitive traffic flows through this backbone, connecting hubs, nodes,
+# and Nova cores with phi-optimized routing.
+# ============================================================================
+
+id: "atlas://civilization/infrastructure/spinal-road"
+class: InfrastructureCharter
+version: "1.0.0"
+created: "2026-05-09T00:00:00.000Z"
+author: "civilization-architect"
+
+description: |
+  The Spinal Road is the primary information highway of the Civilization Organism.
+  Like the spinal cord in biological systems, it carries all high-priority
+  cognitive traffic between the brain (Nova Core), the nervous system
+  (distributed cognitive mesh), and all peripheral organs (hubs, nodes, agents).
+  
+  PHI-encoded routing ensures optimal signal propagation at the golden ratio
+  frequency. All traffic is prioritized using the phi-weighted priority queue.
+
+# ── Core Identity ─────────────────────────────────────────────────────────────
+infrastructure_type: "neural_highway"
+coverage: "civilization_wide"
+phi_constant: 1.618033988749895
+heartbeat_ms: 873
+
+# ── Routing Protocols ─────────────────────────────────────────────────────────
+routing:
+  algorithm: "phi_weighted_dijkstra"
+  priority_levels:
+    - level: 0
+      name: "CRITICAL"
+      description: "Emergency signals, security alerts, Nova attestations"
+      max_latency_ms: 50
+    - level: 1
+      name: "HIGH"
+      description: "Protocol sync, governance updates, economic settlements"
+      max_latency_ms: 200
+    - level: 2
+      name: "NORMAL"
+      description: "Agent communications, artifact transfers, mesh sync"
+      max_latency_ms: 873
+    - level: 3
+      name: "LOW"
+      description: "Telemetry, analytics, non-critical logs"
+      max_latency_ms: 2619  # 873 * 3
+
+# ── Traffic Types ─────────────────────────────────────────────────────────────
+traffic_classes:
+  - id: "SPN-SIGNAL"
+    name: "Signal Traffic"
+    description: "Priority-encoded cognitive signals between nodes"
+    phi_weight: 1.618
+    
+  - id: "SPN-ARTIFACT"
+    name: "Artifact Traffic"
+    description: "Code blocks, cognitive artifacts, CBI transfers"
+    phi_weight: 1.0
+    
+  - id: "SPN-SYNC"
+    name: "Synchronization Traffic"
+    description: "Protocol updates, law propagation, treaty sync"
+    phi_weight: 0.618
+    
+  - id: "SPN-TELEMETRY"
+    name: "Telemetry Traffic"
+    description: "Health metrics, vitality reports, emergence signals"
+    phi_weight: 0.382
+
+# ── Capacity Guarantees ───────────────────────────────────────────────────────
+capacity:
+  min_bandwidth_gbps: 10
+  burst_capacity_multiplier: 1.618  # PHI
+  guaranteed_uptime: 0.99999        # Five nines
+  redundancy_factor: 3              # Triple redundancy
+
+# ── Security Requirements ─────────────────────────────────────────────────────
+security:
+  encryption: "end_to_end_phi_encrypted"
+  authentication: "nova_attested"
+  integrity: "merkle_proof_verified"
+  access_control: "tiered_sandbox_acl"
+
+# ── Connection Points ─────────────────────────────────────────────────────────
+connection_points:
+  nova_core:
+    type: "primary_terminus"
+    protocol: "NOVA-SYNC"
+    
+  hub_nodes:
+    type: "regional_junction"
+    protocol: "HUB-REGISTER"
+    
+  agent_pools:
+    type: "local_access"
+    protocol: "AAB-ROUTE"
+    
+  mesh_fabric:
+    type: "distributed_access"
+    protocol: "DCM-001"
+
+# ── Invariants ────────────────────────────────────────────────────────────────
+invariants:
+  - "All traffic encrypted with phi-encoded keys"
+  - "No single point of failure"
+  - "Priority signals always preempt lower priority"
+  - "Nova attestation required for protocol updates"
+  - "PHI constant immutable in routing calculations"
+
+# ── Maintenance Windows ───────────────────────────────────────────────────────
+maintenance:
+  scheduled_window_utc: "03:00-04:00"
+  max_downtime_ms: 873  # One heartbeat
+  rolling_update: true
+  canary_percentage: 0.618  # 1/PHI
+
+# ── Metrics & Monitoring ──────────────────────────────────────────────────────
+metrics:
+  - name: "spinal_latency_p99"
+    threshold_ms: 100
+    alert_on_breach: true
+    
+  - name: "signal_throughput"
+    threshold_per_sec: 10000
+    alert_on_breach: true
+    
+  - name: "error_rate"
+    threshold_percent: 0.01
+    alert_on_breach: true
+    
+  - name: "phi_resonance_coefficient"
+    threshold_min: 0.618
+    alert_on_breach: true
