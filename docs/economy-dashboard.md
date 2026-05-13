@@ -1,6 +1,6 @@
 # 💰 organism-economy-bot — Economy Dashboard
 
-**Generated:** 2026-05-06T05:57:39.207Z
+**Generated:** 2026-05-13T06:26:34.872Z
 **Bot:** organism-economy-bot 💰
 
 ## Asset Inventory
@@ -9,9 +9,9 @@
 |---|---|---|---|
 | 🧬 Extensions | 37 | 2–4 pts | 76 |
 | 📦 SDKs | 18 | 5 pts | 90 |
-| 🔬 Protocols | 36 | 3 pts | 108 |
+| 🔬 Protocols | 97 | 3 pts | 291 |
 | 📊 CSV Registers | 8 | 1 pt | 8 |
-| **Total** | **99** | — | **282** |
+| **Total** | **160** | — | **465** |
 
 ## Coverage Analysis
 
@@ -91,19 +91,67 @@
 
 | Protocol | Class | Methods | Lines | PHI | Heartbeat |
 |---|---|---|---|---|---|
+| `simulation-engine-protocol` | `Vector3D` | 105 | 800 | ✓ | ✓ |
+| `language-bridge-protocol` | `LanguageSpec` | 95 | 824 | ✓ | ✓ |
+| `cryptographic-intelligence-protocol` | `FieldElement` | 93 | 820 | ✓ | ✓ |
+| `mlops-protocol` | `ModelVersion` | 90 | 851 | ✓ | ✓ |
+| `neural-network-architecture-protocol` | `Tensor` | 89 | 797 | ✓ | ✓ |
+| `agi-core-protocol` | `Concept` | 86 | 929 | ✓ | ✓ |
+| `audio-intelligence-protocol` | `AudioSignal` | 82 | 841 | ✓ | ✓ |
+| `data-fabric-protocol` | `DataAsset` | 81 | 812 | ✓ | ✓ |
+| `saeci-protocol` | `Value` | 80 | 911 | ✓ | ✓ |
+| `cyborg-integration-protocol` | `CyborgProfile` | 80 | 728 | ✓ | ✓ |
+| `ai-quantum-protocol` | `Complex` | 78 | 696 | ✓ | ✓ |
+| `internal-security-tokens-protocol` | `NativeIdentity` | 77 | 647 | ✓ | ✓ |
+| `embodiment-engine-protocol` | `Sensor` | 74 | 791 | ✓ | ✓ |
+| `package-bridge-protocol` | `PackageSpec` | 71 | 732 | ✓ | ✓ |
+| `narrative-intelligence-protocol` | `Character` | 70 | 746 | ✓ | ✓ |
+| `causal-inference-protocol` | `CausalVariable` | 70 | 676 | ✓ | ✓ |
+| `knowledge-synthesis-protocol` | `KnowledgeConcept` | 69 | 715 | ✓ | ✓ |
+| `mutation-engine-protocol` | `Gene` | 64 | 609 | ✓ | ✓ |
+| `undead-intelligence-protocol` | `Ghost` | 61 | 591 | ✓ | ✓ |
+| `ai-sdk-protocol` | `ModelConfig` | 60 | 703 | ✓ | ✓ |
+| `category-theory-protocol` | `CategoryObject` | 60 | 606 | ✓ | ✓ |
+| `collective-consciousness-protocol` | `CollectiveMember` | 60 | 588 | ✓ | ✓ |
+| `dream-protocol` | `Dream` | 59 | 550 | ✓ | ✓ |
+| `symbolic-mathematics-protocol` | `constant` | 58 | 733 | ✓ | ✓ |
+| `xr-world-protocol` | `XRWorld` | 57 | 579 | ✓ | ✓ |
+| `visual-intelligence-protocol` | `Image` | 57 | 548 | ✓ | ✓ |
+| `emotional-resonance-protocol` | `Emotion` | 57 | 536 | ✓ | ✓ |
+| `temporal-protocol` | `TemporalAnchor` | 57 | 502 | ✓ | ✓ |
+| `code-block-cognitive-interface-protocol` | `CognitiveArtifact` | 43 | 423 | ✓ | ✓ |
+| `sovereign-cycle-allocator-protocol` | `AllocationRecord` | 42 | 665 | ✓ | ✓ |
+| `fractal-dynamics-protocol` | `IFSTransform` | 41 | 522 | ✓ | ✓ |
+| `distributed-cognitive-mesh-protocol` | `MeshNode` | 41 | 393 | ✓ | ✓ |
 | `organism-lifecycle-protocol` | `OrganismLifecycleProtocol` | 40 | 525 | ✓ | ✓ |
+| `vow-protocol` | `Vow` | 39 | 479 | ✓ | ✓ |
+| `nova-core-protocol` | `SemperMemoria` | 39 | 415 | ✓ | ✓ |
 | `memory-lineage-protocol` | `MemoryLineageProtocol` | 37 | 443 | ✓ | ✓ |
+| `token-economy-protocol` | `Account` | 37 | 410 | ✓ | ✓ |
+| `federated-intelligence-networks-protocol` | `SovereignNode` | 36 | 396 | ✓ | ✓ |
+| `activated-agent-brain-mapping-protocol` | `AgentInstance` | 35 | 438 | ✓ | ✓ |
+| `multi-node-ai-hub-protocol` | `HubNode` | 33 | 375 | ✓ | ✓ |
+| `formal-logic-inference-protocol` | `FormalLogicInferenceProtocol` | 32 | 437 | ✓ | ✓ |
+| `conceptual-persistence-engine-protocol` | `Concept` | 32 | 328 | ✓ | ✓ |
 | `goal-stack-protocol` | `GoalStackProtocol` | 32 | 227 | ✓ | ✓ |
+| `civilization-architecture-core-protocol` | `CityState` | 31 | 396 | ✓ | ✓ |
+| `reasoning-engine-layer-protocol` | `CognitiveNode` | 31 | 341 | ✓ | ✓ |
 | `multi-model-fusion-protocol` | `MultiModelFusionProtocol` | 31 | 303 | ✓ | ✓ |
+| `self-programming-architecture-protocol` | `ProposedChange` | 29 | 409 | ✓ | ✓ |
+| `multi-agent-reasoning-ecosystem-protocol` | `Task` | 29 | 390 | ✓ | ✓ |
 | `visual-scene-intelligence-protocol` | `VisualSceneIntelligenceProtocol` | 29 | 361 | ✓ | ✓ |
 | `organism-marketplace-protocol` | `OrganismMarketplaceProtocol` | 28 | 480 | ✓ | ✓ |
+| `civilization-scale-organism-protocol` | `OrganismState` | 28 | 432 | ✓ | ✓ |
 | `synapse-binding-engine-protocol` | `SynapseBindingEngineProtocol` | 28 | 231 | ✓ | ✓ |
+| `multi-sovereign-compute-cores-protocol` | `NovaCore` | 27 | 374 | ✓ | ✓ |
 | `auto-generate-calls-engine-protocol` | `AutoGenerateCallsEngineProtocol` | 26 | 184 | ✓ | ✓ |
 | `adaptive-knowledge-absorption-protocol` | `AdaptiveKnowledgeAbsorptionProtocol` | 25 | 373 | ✓ | ✓ |
 | `edge-sensor-protocol` | `EdgeSensorProtocol` | 24 | 185 | ✓ | ✓ |
 | `edge-mesh-intelligence-protocol` | `EdgeMeshIntelligenceProtocol` | 23 | 297 | ✓ | ✓ |
+| `alpha-health-monitor-protocol` | `AlphaHealthMonitorProtocol` | 23 | 182 | ✓ | ✓ |
 | `memory-consolidation-protocol` | `MemoryConsolidationProtocol` | 21 | 206 | ✓ | ✓ |
 | `attention-routing-protocol` | `AttentionRoutingProtocol` | 21 | 186 | ✓ | ✓ |
+| `alpha-commander-charter-protocol` | `AlphaCommanderCharterProtocol` | 20 | 277 | ✓ | ✓ |
 | `memory-lineage-enhancement-protocol` | `MemoryLineageEnhancementProtocol` | 20 | 244 | ✓ | ✓ |
 | `sovereign-routing-protocol` | `SovereignRoutingProtocol` | 20 | 208 | ✓ | ✓ |
 | `mini-brain-protocol` | `MiniBrainProtocol` | 20 | 161 | ✓ | ✓ |
@@ -117,16 +165,29 @@
 | `artifact-generation-protocol` | `ArtifactGenerationProtocol` | 18 | 212 | ✓ | ✓ |
 | `homeostatic-drive-protocol` | `HomeostaticDriveProtocol` | 18 | 170 | ✓ | ✓ |
 | `cross-substrate-resonance-protocol` | `CrossSubstrateResonanceProtocol` | 18 | 166 | ✓ | ✓ |
+| `alpha-evolution-engine-protocol` | `AlphaEvolutionEngineProtocol` | 18 | 144 | ✓ | — |
 | `auro-absorption-charter-protocol` | `AuroAbsorptionCharterProtocol` | 17 | 277 | ✓ | ✓ |
 | `predictive-coding-protocol` | `PredictiveCodingProtocol` | 17 | 171 | ✓ | ✓ |
+| `alpha-security-sentinel-protocol` | `AlphaSecuritySentinelProtocol` | 17 | 161 | ✓ | — |
 | `kuramoto-oscillator-protocol` | `KuramotoOscillatorProtocol` | 16 | 152 | ✓ | ✓ |
 | `oro-engine-integration-protocol` | `OroEngineIntegrationProtocol` | 15 | 239 | ✓ | ✓ |
+| `geometric-real-math-protocol` | `GeometricRealMathProtocol` | 14 | 163 | ✓ | ✓ |
 | `hebbian-learning-protocol` | `HebbianLearningProtocol` | 14 | 153 | ✓ | ✓ |
 | `pattern-synthesis-protocol` | `PatternSynthesisProtocol` | 13 | 470 | ✓ | ✓ |
 | `mini-heart-protocol` | `MiniHeartProtocol` | 13 | 134 | ✓ | ✓ |
+| `alpha-knowledge-graph-protocol` | `AlphaKnowledgeGraphProtocol` | 12 | 148 | ✓ | — |
+| `alpha-resonance-protocol` | `AlphaResonanceProtocol` | 12 | 136 | ✓ | ✓ |
+| `alpha-signal-protocol` | `AlphaSignalProtocol` | 12 | 130 | ✓ | — |
 | `vitality-homeostasis-protocol` | `VitalityHomeostasisProtocol` | 12 | 130 | ✓ | ✓ |
+| `alpha-issue-intelligence-protocol` | `AlphaIssueIntelligenceProtocol` | 11 | 107 | ✓ | — |
 | `neurochemistry-ode-protocol` | `NeurochemistryODEProtocol` | 10 | 124 | ✓ | ✓ |
+| `alpha-fleet-orchestration-protocol` | `AlphaFleetOrchestrationProtocol` | 10 | 94 | ✓ | ✓ |
 | `kernel-execution-protocol` | `KernelExecutionProtocol` | 9 | 149 | ✓ | ✓ |
+| `alpha-emergence-protocol` | `AlphaEmergenceProtocol` | 8 | 107 | ✓ | — |
+| `alpha-governance-enforcement-protocol` | `AlphaGovernanceEnforcementProtocol` | 8 | 99 | ✓ | — |
+| `alpha-substrate-bridge-protocol` | `AlphaSubstrateBridgeProtocol` | 8 | 91 | ✓ | — |
+| `alpha-workflow-engine-protocol` | `AlphaWorkflowEngineProtocol` | 7 | 136 | ✓ | — |
+| `alpha-reward-protocol` | `AlphaRewardProtocol` | 6 | 119 | ✓ | — |
 
 ## CSV Registers
 
