@@ -1,39 +1,39 @@
 {
-  "generated": "2026-05-07T07:37:52.619Z",
+  "generated": "2026-05-14T07:37:50.195Z",
   "bot": "organism-crawler-bot",
   "summary": {
-    "totalFiles": 1066,
-    "totalBytes": 11553014,
-    "totalKB": 11282,
-    "sections": 15,
+    "totalFiles": 1161,
+    "totalBytes": 13128357,
+    "totalKB": 12821,
+    "sections": 16,
     "langCounts": {
       "YAML": 24,
-      "Other": 320,
+      "Other": 325,
       "CSV": 8,
-      "Markdown": 34,
+      "Markdown": 37,
       "JSON": 117,
-      "JavaScript": 368,
+      "JavaScript": 443,
       "Shell": 5,
-      "HTML": 146,
+      "HTML": 157,
       "TypeScript": 23,
       "CSS": 1,
-      "Motoko": 7,
+      "Motoko": 8,
       "C++": 3,
       "Python": 9,
       "TOML": 1
     },
     "langBytes": {
       "YAML": 80111,
-      "Other": 4258947,
+      "Other": 4305154,
       "CSV": 408419,
-      "Markdown": 160626,
-      "JSON": 598230,
-      "JavaScript": 2997564,
+      "Markdown": 229536,
+      "JSON": 735151,
+      "JavaScript": 4148839,
       "Shell": 33732,
-      "HTML": 2420908,
-      "TypeScript": 389876,
+      "HTML": 2575767,
+      "TypeScript": 391285,
       "CSS": 2590,
-      "Motoko": 153423,
+      "Motoko": 169185,
       "C++": 21215,
       "Python": 26961,
       "TOML": 412
@@ -63,9 +63,9 @@
     },
     {
       "name": "docs",
-      "files": 160,
-      "bytes": 4196445,
-      "dirs": 2,
+      "files": 163,
+      "bytes": 4282717,
+      "dirs": 3,
       "topLanguage": "Other"
     },
     {
@@ -76,23 +76,30 @@
       "topLanguage": "JavaScript"
     },
     {
+      "name": "examples",
+      "files": 8,
+      "bytes": 163093,
+      "dirs": 1,
+      "topLanguage": "JavaScript"
+    },
+    {
       "name": "extensions",
       "files": 475,
-      "bytes": 2940151,
+      "bytes": 2941560,
       "dirs": 38,
       "topLanguage": "Other"
     },
     {
       "name": "governance",
-      "files": 29,
-      "bytes": 199909,
-      "dirs": 9,
-      "topLanguage": "JSON"
+      "files": 33,
+      "bytes": 361218,
+      "dirs": 10,
+      "topLanguage": "Other"
     },
     {
       "name": "organism",
-      "files": 61,
-      "bytes": 555083,
+      "files": 62,
+      "bytes": 570845,
       "dirs": 6,
       "topLanguage": "JavaScript"
     },
@@ -105,23 +112,23 @@
     },
     {
       "name": "protocols",
-      "files": 38,
-      "bytes": 289401,
+      "files": 99,
+      "bytes": 1204953,
       "dirs": 0,
       "topLanguage": "JavaScript"
     },
     {
       "name": "research",
-      "files": 13,
-      "bytes": 1313195,
+      "files": 24,
+      "bytes": 1468054,
       "dirs": 0,
       "topLanguage": "HTML"
     },
     {
       "name": "scripts",
-      "files": 58,
-      "bytes": 299231,
-      "dirs": 14,
+      "files": 65,
+      "bytes": 376292,
+      "dirs": 15,
       "topLanguage": "JavaScript"
     },
     {
@@ -134,7 +141,7 @@
     {
       "name": "test",
       "files": 3,
-      "bytes": 9343,
+      "bytes": 9369,
       "dirs": 3,
       "topLanguage": "JavaScript"
     },
@@ -147,12 +154,33 @@
     }
   ],
   "crossRef": {
-    "totalFiles": 207,
-    "totalImports": 220,
-    "totalExports": 321,
-    "uniqueSymbols": 302
+    "totalFiles": 268,
+    "totalImports": 276,
+    "totalExports": 395,
+    "uniqueSymbols": 362
   },
   "topSymbols": [
+    {
+      "name": "INVARIANTS",
+      "definedIn": 14,
+      "locations": [
+        {
+          "file": "protocols/activated-agent-brain-mapping-protocol.js",
+          "kind": "const",
+          "section": "protocols"
+        },
+        {
+          "file": "protocols/civilization-architecture-core-protocol.js",
+          "kind": "const",
+          "section": "protocols"
+        },
+        {
+          "file": "protocols/civilization-scale-organism-protocol.js",
+          "kind": "const",
+          "section": "protocols"
+        }
+      ]
+    },
     {
       "name": "PHI",
       "definedIn": 4,
@@ -192,6 +220,22 @@
           "file": "sdk/medina-timers/src/index.js",
           "kind": "const",
           "section": "sdk"
+        }
+      ]
+    },
+    {
+      "name": "TASK_TYPES",
+      "definedIn": 2,
+      "locations": [
+        {
+          "file": "protocols/activated-agent-brain-mapping-protocol.js",
+          "kind": "const",
+          "section": "protocols"
+        },
+        {
+          "file": "protocols/multi-agent-reasoning-ecosystem-protocol.js",
+          "kind": "const",
+          "section": "protocols"
         }
       ]
     },
@@ -404,57 +448,35 @@
       ]
     },
     {
-      "name": "NativeRuntime",
+      "name": "ActivatedAgentBrainMappingProtocol",
       "definedIn": 1,
       "locations": [
         {
-          "file": "protocols/native-runtime.js",
+          "file": "protocols/activated-agent-brain-mapping-protocol.js",
+          "kind": "class",
+          "section": "protocols"
+        }
+      ]
+    },
+    {
+      "name": "AGENT_CLASSES",
+      "definedIn": 1,
+      "locations": [
+        {
+          "file": "protocols/activated-agent-brain-mapping-protocol.js",
           "kind": "const",
           "section": "protocols"
         }
       ]
     },
     {
-      "name": "OrganismMarketplaceProtocol",
+      "name": "ROUTING_RULES",
       "definedIn": 1,
       "locations": [
         {
-          "file": "protocols/organism-marketplace-protocol.js",
-          "kind": "class",
+          "file": "protocols/activated-agent-brain-mapping-protocol.js",
+          "kind": "const",
           "section": "protocols"
-        }
-      ]
-    },
-    {
-      "name": "createAgents",
-      "definedIn": 1,
-      "locations": [
-        {
-          "file": "sdk/agents/index.js",
-          "kind": "function",
-          "section": "sdk"
-        }
-      ]
-    },
-    {
-      "name": "ModelWire",
-      "definedIn": 1,
-      "locations": [
-        {
-          "file": "sdk/ai-model-engines/src/model-wire.js",
-          "kind": "class",
-          "section": "sdk"
-        }
-      ]
-    },
-    {
-      "name": "AbsorptionPipeline",
-      "definedIn": 1,
-      "locations": [
-        {
-          "file": "sdk/document-absorption-engine/src/absorption-pipeline.js",
-          "kind": "class",
-          "section": "sdk"
         }
       ]
     }
