@@ -2,6 +2,8 @@
 
 This system overview defines five production-ready AGI portfolio systems built by mixing frontend intelligence models, routing protocols, and sovereign runtime patterns already present in this repository.
 
+**Latency convention:** all latency targets below are **p95** under standard production network conditions.
+
 ## 1) Helios Commerce AGI
 
 **Purpose:** Autonomous revenue intelligence for storefronts, marketplaces, and conversion workflows.
@@ -15,7 +17,7 @@ This system overview defines five production-ready AGI portfolio systems built b
 
 **Production spec:**
 - **Primary surfaces:** browser extension, web app, desktop operator panel
-- **Target latency:** < 250ms for recommendation scoring at interaction time
+- **Target latency:** p95 < 250ms for recommendation scoring at interaction time
 - **Inference mode:** hybrid (offline first, online escalation)
 - **Data sources:** clickstream, catalog metadata, campaign data, checkout events
 - **Reliability goal:** 99.9% workflow availability
@@ -34,7 +36,7 @@ This system overview defines five production-ready AGI portfolio systems built b
 
 **Production spec:**
 - **Primary surfaces:** CLI + dashboard + extension side panel
-- **Target latency:** < 400ms incident classification
+- **Target latency:** p95 < 400ms incident classification
 - **Inference mode:** offline summarization with secure online enrichment
 - **Data sources:** issue streams, CI signals, runtime metrics, release events
 - **Reliability goal:** 99.95% command-path availability
@@ -53,11 +55,11 @@ This system overview defines five production-ready AGI portfolio systems built b
 
 **Production spec:**
 - **Primary surfaces:** browser security panel + governance console
-- **Target latency:** < 200ms risk alert classification
+- **Target latency:** p95 < 200ms risk alert classification
 - **Inference mode:** local-first detection, signed online attestations
 - **Data sources:** page content, access logs, policy artifacts, vulnerability feeds
 - **Reliability goal:** 99.99% alert pipeline uptime
-- **Governance:** SAECI safety alignment, full traceability per enforcement action
+- **Governance:** SAECI (Safety, Alignment, Ethics, Containment, and Integrity) safety alignment, full traceability per enforcement action
 
 ## 4) Meridian Knowledge AGI
 
@@ -72,7 +74,7 @@ This system overview defines five production-ready AGI portfolio systems built b
 
 **Production spec:**
 - **Primary surfaces:** research workspace + memory/graph panels
-- **Target latency:** < 3s for multi-source synthesis jobs
+- **Target latency:** p95 < 3s for multi-source synthesis jobs
 - **Inference mode:** sovereign local memory with asynchronous cloud federation
 - **Data sources:** web content, internal docs, saved highlights, historical notes
 - **Reliability goal:** 99.9% retrieval correctness SLO
@@ -91,7 +93,7 @@ This system overview defines five production-ready AGI portfolio systems built b
 
 **Production spec:**
 - **Primary surfaces:** IDE/extension flows + CI visibility dashboard
-- **Target latency:** < 500ms planning retrieval, < 5s synthesis tasks
+- **Target latency:** p95 < 500ms planning retrieval, p95 < 5s synthesis tasks
 - **Inference mode:** repo-local reasoning with policy-gated external calls
 - **Data sources:** source code, tests, CI logs, issues, release metadata
 - **Reliability goal:** 99.9% pipeline assistant availability
