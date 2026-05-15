@@ -376,6 +376,7 @@ export async function searchCaseLaw(query: string, limit = 5): Promise<CaseLawRe
  *  STATUTE LOOKUP — Library of Congress Congress.gov
  * ──────────────────────────────────────────────────────────────── */
 export async function lookupStatute(query: string): Promise<string> {
+  // DEMO_KEY: limited to ~1000 req/hr. Register free at https://api.congress.gov/ for a personal key.
   const url = `https://api.congress.gov/v3/bill?query=${encodeURIComponent(query)}&limit=5&api_key=DEMO_KEY`;
   const resp = await safeFetch(url);
   if (!resp || !resp.ok) {

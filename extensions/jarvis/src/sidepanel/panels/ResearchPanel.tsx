@@ -96,6 +96,7 @@ export default function ResearchPanel() {
     }
     if (action === 'weather') {
       const [lat, lon] = v.split(',').map(Number);
+      // Parse user-supplied lat/lon; fall back to New York City (40.7°N, 74.0°W) if not provided
       extra = { lat: lat || 40.7, lon: lon || -74.0 };
     }
     if (action === 'earthquakes')       extra = { period: v || 'day' };

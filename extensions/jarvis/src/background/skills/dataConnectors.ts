@@ -42,8 +42,13 @@ export async function fetchWikipedia(query: string): Promise<string> {
     const sj = await sr.json() as { query?: { search?: Array<{ title?: string; snippet?: string }> } };
     const hits = sj.query?.search ?? [];
     if (hits.length === 0) return `⚠️ No Wikipedia article found for "${query}".`;
+    // Strip all HTML tags and decode common HTML entities before returning plain text
+    const stripHtml = (s: string) => s
+      .replace(/<[^>]*>/g, '')
+      .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"').replace(/&#039;/g, "'").replace(/&nbsp;/g, ' ');
     return `🔍 Wikipedia search results for "${query}":\n\n` +
-      hits.map((h, i) => `${i + 1}. ${h.title}\n   ${(h.snippet ?? '').replace(/<[^>]+>/g, '')}`).join('\n\n') +
+      hits.map((h, i) => `${i + 1}. ${h.title}\n   ${stripHtml(h.snippet ?? '')}`).join('\n\n') +
       `\n\nVisit: https://en.wikipedia.org/wiki/${encodeURIComponent((hits[0]?.title ?? '').replace(/\s+/g, '_'))}`;
   }
   const j = await resp.json() as { title?: string; extract?: string; content_urls?: { desktop?: { page?: string } } };
@@ -132,6 +137,7 @@ export async function fetchEarthquakes(period: 'hour' | 'day' | 'week' = 'day', 
  *  NASA APOD
  * ──────────────────────────────────────────────────────────────── */
 export async function fetchNasaApod(): Promise<string> {
+  // DEMO_KEY: 30 req/hr, 50 req/day. For higher limits, register free at https://api.nasa.gov/
   const url = `https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY`;
   const resp = await safeFetch(url);
   if (!resp || !resp.ok) return `⚠️ NASA APOD unavailable. Visit: apod.nasa.gov`;

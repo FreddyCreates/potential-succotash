@@ -63,7 +63,8 @@ export async function saveScreenCapture(
   const preview = pageText.replace(/\s+/g, ' ').trim().slice(0, 500);
   const entry: ScreenCapture = { id, url, title, timestamp: Date.now(), dataUrl, pageText, preview, tags };
 
-  // Store the dataUrl only if under 2 MB to stay within chrome.storage.local 5 MB limit
+  // Store the dataUrl only if under 2 MB to stay within chrome.storage.local 5 MB limit.
+  // If the screenshot exceeds this, the image is omitted but text remains fully searchable.
   const storageEntry: ScreenCapture = { ...entry };
   if (dataUrl.length > 2_000_000) storageEntry.dataUrl = ''; // evict large image but keep text
 

@@ -3304,6 +3304,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
     case 'generateCitation': {
       const raw = (message.value as string) || '';
+      if (!raw.trim()) {
+        sendResponse({ success: true, message: '📌 Citation format: Title, Author Name, Year, Journal (optional), DOI (optional)\n\nExample: "The Attention Mechanism, Vaswani A, 2017, NeurIPS"\n\nSelect a citation style (APA/MLA/Chicago/IEEE/Harvard) in the Research panel.' });
+        break;
+      }
       const parts = raw.split(',').map((s: string) => s.trim());
       const style = ((message.style as string) || 'APA') as CitationStyle;
       const input: CitationInput = {
@@ -3363,6 +3367,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       break;
     }
     case 'weather': {
+      // Default coordinates: New York City (40.7128°N, 74.0060°W) — user should provide their own
       const lat = Number(message.lat) || 40.7128;
       const lon = Number(message.lon) || -74.0060;
       fetchWeather(lat, lon).then(msg => sendResponse({ success: true, message: msg }))

@@ -145,7 +145,8 @@ export interface OpenAlexResult {
 }
 
 export async function searchOpenAlex(query: string, limit = 5): Promise<OpenAlexResult[]> {
-  const url = `https://api.openalex.org/works?search=${encodeURIComponent(query)}&per-page=${limit}&select=title,authorships,publication_year,cited_by_count,doi,primary_location,abstract_inverted_index&mailto=vigil@ai`;
+  // OpenAlex polite pool: include a real email in mailto= for higher rate limits (see openalex.org/polite-pool)
+  const url = `https://api.openalex.org/works?search=${encodeURIComponent(query)}&per-page=${limit}&select=title,authorships,publication_year,cited_by_count,doi,primary_location,abstract_inverted_index&mailto=vigil-ai-user@example.com`;
   const resp = await safeFetch(url);
   if (!resp || !resp.ok) return [];
   const json = await resp.json() as { results?: Array<{
