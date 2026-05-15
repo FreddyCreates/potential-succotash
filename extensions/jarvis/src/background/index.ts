@@ -66,6 +66,10 @@ import {
   detectBias, preMortem, socraticQuestions, eisenhowerMatrix,
   secondOrderEffects, auditAssumptions,
 } from './skills/offlineAGI';
+import {
+  cfSetConfig, cfGetConfigSafe, cfTestConnection, cfRunMessages,
+  cfSummarizeText, cfResearchBrief,
+} from './skills/cloudflareWorkersAI';
 
 /**
  * Route Solus calls through an offscreen document so onnxruntime-web
@@ -3184,6 +3188,60 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     case 'researchTopic':
       engine.executeChat('research ' + ((message.value as string) || ''), r => sendResponse(r));
       break;
+    // ── Cloudflare Workers AI ───────────────────────────────────
+    case 'cloudflareSetConfig': {
+      const accountId = (message.accountId as string) || '';
+      const apiToken = (message.apiToken as string) || '';
+      const model = (message.model as string) || '';
+      cfSetConfig({ accountId, apiToken, model })
+        .then(data => sendResponse({ success: true, message: 'Cloudflare config saved locally.', data }))
+        .catch((e: unknown) => sendResponse({ success: false, message: 'Failed to save Cloudflare config: ' + String((e as { message?: string })?.message || e) }));
+      break;
+    }
+    case 'cloudflareGetConfig':
+      cfGetConfigSafe()
+        .then(data => sendResponse({ success: true, data, message: 'Cloudflare config loaded.' }))
+        .catch(() => sendResponse({ success: false, message: 'Could not load Cloudflare config.' }));
+      break;
+    case 'cloudflareTestConnection':
+      cfTestConnection()
+        .then(r => sendResponse({ success: r.ok, message: r.output, data: { model: r.model } }))
+        .catch((e: unknown) => sendResponse({ success: false, message: 'Connection failed: ' + String((e as { message?: string })?.message || e) }));
+      break;
+    case 'cloudflareRunPrompt': {
+      const prompt = ((message.prompt as string) || (message.value as string) || '').trim();
+      const model = (message.model as string) || undefined;
+      if (!prompt) { sendResponse({ success: false, message: 'Enter a prompt first.' }); break; }
+      cfRunMessages([
+        { role: 'system', content: 'You are a helpful AI assistant.' },
+        { role: 'user', content: prompt },
+      ], model)
+        .then(r => sendResponse({ success: r.ok, message: r.output, data: { model: r.model } }))
+        .catch((e: unknown) => sendResponse({ success: false, message: 'Inference failed: ' + String((e as { message?: string })?.message || e) }));
+      break;
+    }
+    case 'cloudflareSummarizePage':
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        const tab = tabs[0];
+        if (!tab?.id) { sendResponse({ success: false, message: 'No active tab.' }); return; }
+        chrome.scripting.executeScript({
+          target: { tabId: tab.id },
+          func: () => document.body.innerText.slice(0, 20000),
+        }).then(async (res) => {
+          const text = (res?.[0]?.result as string) || '';
+          const out = await cfSummarizeText(text);
+          sendResponse({ success: out.ok, message: out.output, data: { model: out.model } });
+        }).catch(() => sendResponse({ success: false, message: 'Could not extract page text for summarization.' }));
+      });
+      break;
+    case 'cloudflareResearchBrief': {
+      const topic = ((message.topic as string) || (message.value as string) || '').trim();
+      if (!topic) { sendResponse({ success: false, message: 'Enter a topic first.' }); break; }
+      cfResearchBrief(topic)
+        .then(r => sendResponse({ success: r.ok, message: r.output, data: { model: r.model } }))
+        .catch((e: unknown) => sendResponse({ success: false, message: 'Research brief failed: ' + String((e as { message?: string })?.message || e) }));
+      break;
+    }
     case 'encryptText': {
       try {
         const encoded = btoa(unescape(encodeURIComponent((message.value as string) || '')));
@@ -3740,6 +3798,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           '🛡 Sentry:      Page threat + content analysis',
           '🕸 Graph:       Knowledge graph (linked page intelligence)',
           '📋 Skills:      PDF, Excel, Email, Readability, Highlights, Screen Search',
+          '☁️ Cloudflare:  Workers AI REST node (optional token/account, local secure config)',
           '⚡ Protocols:   16 compound primitives + Mission + Campaign Engine v17',
           '🖥️ Screen:      Capture, find text, save+search captures, nav, virtual desktop, control mode',
           '⚖️ Legal AI:    Contract analysis, ToS scanner, rights briefings (12 areas), case law search, statute lookup, templates',
@@ -3766,6 +3825,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           '⚖️  Legal (12 areas): contracts, ToS, rights briefings, case law, statutes, templates',
           '🎓  Academic:         ArXiv, PubMed, OpenAlex, citations, hypothesis, methodology',
           '🌐  Open Data:        Wikipedia, World Bank, weather, earthquakes, NASA, FDA, countries',
+          '☁️  Cloudflare AI:   Workers AI REST integration (config + test + prompt + page summary + research brief)',
           '🏥  Medical Research: FDA drug lookup, PubMed, symptom research (not medical advice)',
           '🧠  Offline AGI:      chain-of-thought, fallacy/bias detection, SWOT, 5-Whys, mental models',
           '✍️  Writing:          translate, rewrite, sentiment, tone, headline, brainstorm',
