@@ -184,7 +184,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 (function keepAlive() {
   const ALARM_NAME = 'law-firm-economy-counsel-keepalive';
-  chrome.alarms.create(ALARM_NAME, { periodInMinutes: 0.4 });
+  chrome.alarms.create(ALARM_NAME, { periodInMinutes: 0.5 });
   chrome.alarms.onAlarm.addListener((alarm) => {
     if (alarm.name !== ALARM_NAME) return;
     if (!globalThis.lawFirmEconomyCounsel) {
