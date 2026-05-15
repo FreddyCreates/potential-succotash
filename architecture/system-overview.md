@@ -79,7 +79,8 @@ This system overview defines five production-ready AGI portfolio systems built b
 - **Inference mode:** sovereign local memory with asynchronous cloud federation
 - **Data sources:** web content, internal docs, saved highlights, historical notes
 - **Reliability goal:** 99.9% synthesis pipeline availability
-- **Quality goal:** 99.9% on top-3 evidence relevance, factual consistency checks, and citation coverage
+- **Synthesis scope:** multi-document briefs, contradiction analysis, and source-grounded executive summaries
+- **Quality goal:** each quality metric independently targets 99.9% (top-3 evidence relevance, factual consistency checks, citation coverage)
 - **Governance:** source provenance required for every synthesized conclusion
 
 ## 5) Orion Builder AGI
