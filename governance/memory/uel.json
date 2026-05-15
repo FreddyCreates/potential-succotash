@@ -472,6 +472,17 @@
       "warnings": 1,
       "escalations": 0,
       "phiHealth": 0.75
+    },
+    {
+      "ts": "2026-05-15T08:52:18.058Z",
+      "cycleRisk": 0.25,
+      "decision": "ALLOW",
+      "eventsProcessed": 49,
+      "lawsFired": 1,
+      "forbids": 0,
+      "warnings": 1,
+      "escalations": 0,
+      "phiHealth": 0.75
     }
   ]
 }
