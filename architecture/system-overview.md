@@ -2,7 +2,7 @@
 
 This system overview defines five production-ready AGI portfolio systems built by mixing frontend intelligence models, routing protocols, and sovereign runtime patterns already present in this repository.
 
-**Latency convention:** all latency targets below are **p95** under standard production network conditions.
+**Latency convention:** all latency targets below are **p95**, measured under a production baseline profile (same-region deployment, median broadband/mobile mix, warm cache).
 
 ## 1) Helios Commerce AGI
 
@@ -77,7 +77,7 @@ This system overview defines five production-ready AGI portfolio systems built b
 - **Target latency:** p95 < 3s for multi-source synthesis jobs
 - **Inference mode:** sovereign local memory with asynchronous cloud federation
 - **Data sources:** web content, internal docs, saved highlights, historical notes
-- **Reliability goal:** 99.9% retrieval correctness SLO (correctness = top-3 evidence relevance + factual consistency checks with citation coverage)
+- **Reliability goals:** 99.9% top-3 evidence relevance, 99.9% factual consistency checks, and 99.9% citation coverage
 - **Governance:** source provenance required for every synthesized conclusion
 
 ## 5) Orion Builder AGI
@@ -93,7 +93,7 @@ This system overview defines five production-ready AGI portfolio systems built b
 
 **Production spec:**
 - **Primary surfaces:** IDE/extension flows + CI visibility dashboard
-- **Target latency:** p95 < 500ms planning retrieval, p95 < 5s synthesis tasks
+- **Target latency:** p95 < 500ms planning retrieval, p95 < 5s synthesis tasks (architecture proposals, changelog generation, and documentation sync outputs)
 - **Inference mode:** repo-local reasoning with policy-gated external calls
 - **Data sources:** source code, tests, CI logs, issues, release metadata
 - **Reliability goal:** 99.9% pipeline assistant availability
