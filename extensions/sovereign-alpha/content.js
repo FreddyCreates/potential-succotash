@@ -300,13 +300,190 @@
   let _selectedIdx = -1;
   let _suggestionItems = [];
   let _recentCmds = [];
+  let _terminalHistory = [];
+  const _saRuntimeErrors = [];
 
   const COMMAND_NAMES = [
     "scroll up","scroll down","scroll top","scroll bottom","find","click","read",
     "goto","summarize","extract links","extract images","extract headings",
     "extract emails","extract numbers","word count","highlight","dark mode",
-    "zoom in","zoom out","bookmark","copy title","copy url","tabs","close tab","history"
+    "zoom in","zoom out","bookmark","copy title","copy url","tabs","close tab","history",
+    "debug dom","debug forms","extract code blocks","screen map","terminal help",
+    "terminal ls","terminal cat /page/dom","terminal ps","terminal grep"
   ];
+
+  window.addEventListener("error", (e) => {
+    _saRuntimeErrors.unshift({
+      message: e.message || "Unknown error",
+      source: e.filename || "inline",
+      line: e.lineno || 0,
+      col: e.colno || 0,
+      timestamp: Date.now()
+    });
+    if (_saRuntimeErrors.length > 40) _saRuntimeErrors.length = 40;
+  });
+
+  window.addEventListener("unhandledrejection", (e) => {
+    const reason = e.reason && typeof e.reason === "object" ? (e.reason.message || JSON.stringify(e.reason)) : String(e.reason || "Unknown rejection");
+    _saRuntimeErrors.unshift({
+      message: `Promise rejection: ${reason}`,
+      source: "promise",
+      line: 0,
+      col: 0,
+      timestamp: Date.now()
+    });
+    if (_saRuntimeErrors.length > 40) _saRuntimeErrors.length = 40;
+  });
+
+  function cbDevDomReport() {
+    const nodes = document.querySelectorAll("*");
+    const scripts = document.querySelectorAll("script");
+    const styles = document.querySelectorAll("style,link[rel='stylesheet']");
+    const interactive = document.querySelectorAll("button,a,input,textarea,select,[role='button']");
+    const hidden = document.querySelectorAll("[hidden],[aria-hidden='true']");
+    return [
+      "Developer DOM Diagnostics",
+      `Nodes: ${nodes.length}`,
+      `Scripts: ${scripts.length}`,
+      `Styles: ${styles.length}`,
+      `Interactive elements: ${interactive.length}`,
+      `Hidden / aria-hidden elements: ${hidden.length}`,
+      `Runtime errors captured: ${_saRuntimeErrors.length}`
+    ].join("\n");
+  }
+
+  function cbDevFormReport() {
+    const forms = Array.from(document.querySelectorAll("form"));
+    if (!forms.length) return "No forms found on page.";
+    const report = forms.slice(0, 25).map((form, idx) => {
+      const controls = form.querySelectorAll("input,select,textarea").length;
+      const labeled = form.querySelectorAll("label").length;
+      const action = form.getAttribute("action") || "(same-page)";
+      const method = (form.getAttribute("method") || "get").toUpperCase();
+      return `${idx + 1}. method=${method} action=${action}\n   controls=${controls} labels=${labeled}`;
+    });
+    return `Forms found: ${forms.length}\n${report.join("\n")}`;
+  }
+
+  function cbExtractCodeBlocks() {
+    const blocks = Array.from(document.querySelectorAll("pre,code"))
+      .map((el) => (el.innerText || "").trim())
+      .filter(Boolean);
+    if (!blocks.length) return "No code blocks found.";
+    const sampled = blocks.slice(0, 30).map((b, idx) => {
+      const line = b.split("\n").slice(0, 6).join("\n");
+      return `#${idx + 1}\n${line}${b.length > line.length ? "\n..." : ""}`;
+    });
+    return `Code blocks: ${blocks.length}\n\n${sampled.join("\n\n")}`;
+  }
+
+  function cbScreenMap() {
+    const viewport = { width: window.innerWidth, height: window.innerHeight, scrollX: window.scrollX, scrollY: window.scrollY };
+    const activeEl = document.activeElement ? document.activeElement.tagName.toLowerCase() : "none";
+    const headings = document.querySelectorAll("h1,h2,h3").length;
+    const clickable = document.querySelectorAll("button,a,[role='button']").length;
+    const forms = document.querySelectorAll("form").length;
+    const inputs = document.querySelectorAll("input,textarea,select").length;
+    const iframes = document.querySelectorAll("iframe").length;
+
+    return [
+      "Screen Map",
+      `Viewport: ${viewport.width}x${viewport.height} @ (${viewport.scrollX}, ${viewport.scrollY})`,
+      `Active element: ${activeEl}`,
+      `Headings(h1-h3): ${headings}`,
+      `Clickable controls: ${clickable}`,
+      `Forms: ${forms} | Inputs: ${inputs}`,
+      `Iframes: ${iframes}`
+    ].join("\n");
+  }
+
+  function cbVirtualTerminal(cmd) {
+    const raw = String(cmd || "").trim();
+    const sub = raw.replace(/^terminal\s*/i, "").trim();
+    const term = sub || "help";
+    _terminalHistory.unshift({ command: term, ts: Date.now() });
+    if (_terminalHistory.length > 100) _terminalHistory.length = 100;
+
+    if (term === "help") {
+      return [
+        "Sovereign Alpha Virtual Terminal",
+        "Commands:",
+        "  terminal help",
+        "  terminal ls",
+        "  terminal pwd",
+        "  terminal cat /page/dom|/page/links|/page/forms|/page/errors|/page/perf",
+        "  terminal ps",
+        "  terminal grep <text>",
+        "  terminal history",
+        "  terminal run debug|deploy|garden"
+      ].join("\n");
+    }
+
+    if (term === "ls") {
+      return "/page/dom\n/page/links\n/page/forms\n/page/errors\n/page/perf\n/page/scripts";
+    }
+
+    if (term === "pwd") return "/page";
+
+    if (term.startsWith("cat ")) {
+      const path = term.slice(4).trim();
+      if (path === "/page/dom") return cbDevDomReport();
+      if (path === "/page/links") return `Links: ${document.querySelectorAll("a[href]").length}`;
+      if (path === "/page/forms") return cbDevFormReport();
+      if (path === "/page/errors") {
+        if (!_saRuntimeErrors.length) return "No runtime errors captured in this page session.";
+        return _saRuntimeErrors.slice(0, 20).map((e, i) => `${i + 1}. ${e.message} (${e.source}:${e.line}:${e.col})`).join("\n");
+      }
+      if (path === "/page/perf") {
+        const nav = performance.getEntriesByType("navigation")[0];
+        if (!nav) return "Navigation performance entries unavailable.";
+        return [
+          `DOMContentLoaded: ${Math.round(nav.domContentLoadedEventEnd)}ms`,
+          `LoadEventEnd: ${Math.round(nav.loadEventEnd)}ms`,
+          `TTFB: ${Math.round(nav.responseStart)}ms`,
+          `TransferSize: ${nav.transferSize || 0} bytes`
+        ].join("\n");
+      }
+      if (path === "/page/scripts") return `Scripts: ${document.querySelectorAll("script").length}`;
+      return `Unknown path: ${path}`;
+    }
+
+    if (term === "ps" || term === "top") {
+      return [
+        "PID\tPROCESS\tMETRIC",
+        `1\tDOM\t${document.querySelectorAll("*").length} nodes`,
+        `2\tSCRIPTS\t${document.querySelectorAll("script").length} loaded`,
+        `3\tNETWORK\t${performance.getEntriesByType("resource").length} resources`,
+        `4\tERRORS\t${_saRuntimeErrors.length} captured`
+      ].join("\n");
+    }
+
+    if (term.startsWith("grep ")) {
+      const needle = term.slice(5).trim().toLowerCase();
+      if (!needle) return "Usage: terminal grep <text>";
+      const text = (document.body?.innerText || "").toLowerCase();
+      const count = text.split(needle).length - 1;
+      return `Matches for "${needle}": ${Math.max(0, count)}`;
+    }
+
+    if (term === "history") {
+      if (!_terminalHistory.length) return "No terminal history.";
+      return _terminalHistory.slice(0, 20).map((h, i) => `${i + 1}. ${h.command}`).join("\n");
+    }
+
+    if (term.startsWith("run ")) {
+      const workflow = term.slice(4).trim().toLowerCase();
+      if (!workflow) return "Usage: terminal run <debug|deploy|garden>";
+      const plans = {
+        debug: ["capture failing behavior", "collect diagnostics", "isolate root cause", "validate fix"].join(" -> "),
+        deploy: ["verify tests", "check build artifacts", "execute release checklist", "confirm post-release health"].join(" -> "),
+        garden: ["scan tasks", "prioritize patches", "execute incremental updates", "re-validate environment"].join(" -> ")
+      };
+      return `Workflow ${workflow}: ${plans[workflow] || "No predefined flow. Use debug/deploy/garden."}`;
+    }
+
+    return `Unknown terminal command: ${term}`;
+  }
 
   function cbEscHtml(str) {
     const d = document.createElement("div");
@@ -361,6 +538,11 @@
     if (lower === "zoom out") { const cur = parseFloat(document.body.style.zoom || "1"); document.body.style.zoom = String(Math.max(cur - 0.1, 0.3).toFixed(1)); return { ok: true, result: `Zoom: ${document.body.style.zoom}` }; }
     if (lower === "copy title") { navigator.clipboard.writeText(document.title).catch(() => {}); return { ok: true, result: `Copied: "${document.title}"` }; }
     if (lower === "copy url") { navigator.clipboard.writeText(location.href).catch(() => {}); return { ok: true, result: `Copied: ${location.href}` }; }
+    if (lower === "debug dom") return { ok: true, result: cbDevDomReport() };
+    if (lower === "debug forms") return { ok: true, result: cbDevFormReport() };
+    if (lower === "extract code blocks") return { ok: true, result: cbExtractCodeBlocks() };
+    if (lower === "screen map") return { ok: true, result: cbScreenMap() };
+    if (lower === "terminal help" || lower.startsWith("terminal ")) return { ok: true, result: cbVirtualTerminal(cmd) };
 
     if (["tabs","close tab","bookmark","history"].includes(lower)) return null; // forward to background
     return { ok: false, result: `Unknown command: "${cmd}"` };

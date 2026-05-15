@@ -1,7 +1,7 @@
 # 🧬 Extension Catalog
 
-**Generated:** 2026-05-15T00:11:33.094Z
-**Total Extensions:** 39
+**Generated:** 2026-05-15T17:13:36.172Z
+**Total Extensions:** 40
 **Bot:** organism-docs-bot 📚
 
 ## Extension Registry
@@ -22,6 +22,7 @@
 | — | **Edge Tab Analyzer** | `1.0.0` | — | ✅ | ✅ |
 | — | **Vigil AI** | `19.0.0` | — | ✅ | ✅ |
 | EXT-017 | **Knowledge Cartographer** | `1.0.0` | Memory Ring | ✅ | ✅ |
+| EXT-029 | **Law Firm Economy Counsel** | `1.0.0` | Counsel Ring | ✅ | ✅ |
 | EXT-012 | **Logic Prover** | `1.0.0` | Proof Ring | ✅ | ✅ |
 | EXT-021 | **Marketplace Hub** | `1.0.0` | Interface Ring | ✅ | ✅ |
 | EXT-006 | **Memory Palace** | `1.0.0` | Memory Ring | ✅ | ✅ |
@@ -160,6 +161,14 @@
 - **Ring:** Memory Ring
 - **Description:** AI User Experience — Browse the web and watch your knowledge graph grow visually with every page you visit
 - **Permissions:** activeTab, storage, tabs, history, alarms, sidePanel
+- **Background Worker:** ✅
+- **Content Script:** ✅
+### EXT-029 — Law Firm Economy Counsel
+- **Slug:** `law-firm-economy-counsel`
+- **Version:** `1.0.0`
+- **Ring:** Counsel Ring
+- **Description:** AI User Experience — User-facing law-firm operations copilot for legal matter triage, workflow drafting, and legal-economy signals.
+- **Permissions:** activeTab, storage, alarms, tabs
 - **Background Worker:** ✅
 - **Content Script:** ✅
 ### EXT-012 — Logic Prover
