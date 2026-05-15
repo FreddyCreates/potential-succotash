@@ -107,7 +107,7 @@ export async function cfRunMessages(
 export async function cfTestConnection(): Promise<{ ok: boolean; output: string; model: string }> {
   return cfRunMessages([
     { role: 'system', content: 'You are a concise assistant.' },
-    { role: 'user', content: 'Reply with exactly: CLOUDFARE_WORKERS_AI_OK' },
+    { role: 'user', content: 'Reply with exactly: CLOUDFLARE_WORKERS_AI_OK' },
   ]);
 }
 
@@ -126,4 +126,3 @@ export async function cfResearchBrief(topic: string): Promise<{ ok: boolean; out
     { role: 'user', content: `Create a starter research brief for: ${t}` },
   ]);
 }
-

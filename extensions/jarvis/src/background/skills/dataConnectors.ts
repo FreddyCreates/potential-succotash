@@ -42,11 +42,11 @@ export async function fetchWikipedia(query: string): Promise<string> {
     const sj = await sr.json() as { query?: { search?: Array<{ title?: string; snippet?: string }> } };
     const hits = sj.query?.search ?? [];
     if (hits.length === 0) return `⚠️ No Wikipedia article found for "${query}".`;
-    // Strip all HTML tags and decode common HTML entities before returning plain text
-    const stripHtml = (s: string) => s
-      .replace(/<[^>]*>/g, '')
-      .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
-      .replace(/&quot;/g, '"').replace(/&#039;/g, "'").replace(/&nbsp;/g, ' ');
+    // Convert snippet HTML to plain text safely without manual entity replacement.
+    const stripHtml = (s: string) => {
+      const doc = new DOMParser().parseFromString(`<div>${s}</div>`, 'text/html');
+      return (doc.body.textContent || '').replace(/\s+/g, ' ').trim();
+    };
     return `🔍 Wikipedia search results for "${query}":\n\n` +
       hits.map((h, i) => `${i + 1}. ${h.title}\n   ${stripHtml(h.snippet ?? '')}`).join('\n\n') +
       `\n\nVisit: https://en.wikipedia.org/wiki/${encodeURIComponent((hits[0]?.title ?? '').replace(/\s+/g, '_'))}`;
