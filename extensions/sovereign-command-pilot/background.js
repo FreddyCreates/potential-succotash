@@ -96,7 +96,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 (function keepAlive() {
   const ALARM_NAME = 'sovereign-command-pilot-keepalive';
-  const ALARM_PERIOD = 0.4;
+  const ALARM_PERIOD = 1;
 
   chrome.alarms.create(ALARM_NAME, { periodInMinutes: ALARM_PERIOD });
   chrome.alarms.onAlarm.addListener((alarm) => {
