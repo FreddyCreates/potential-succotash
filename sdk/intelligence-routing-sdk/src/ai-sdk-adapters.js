@@ -134,7 +134,7 @@ export class AISDKAdapters {
       modelFamily: 'copilot',
       capabilities: ['code-generation', 'refactoring', 'ci-assist', 'pull-request-review'],
       adaptRequest: (payload) => ({
-        model: payload.model || 'gpt-4o-mini',
+        model: payload.model || 'copilot-default',
         task: payload.metadata?.task || 'ci-pilot-embodied',
         prompt: payload.prompt || '',
         messages: payload.messages || this._messagesFromPrompt(payload.prompt),

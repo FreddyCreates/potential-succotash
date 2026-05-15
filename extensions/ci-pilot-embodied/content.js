@@ -27,7 +27,7 @@
     });
 
     const header = document.createElement('div');
-    header.textContent = '🧪 CI Pilot Embodied';
+    header.textContent = 'CI Pilot Embodied';
     Object.assign(header.style, {
       padding: '10px 12px',
       fontWeight: '700',
