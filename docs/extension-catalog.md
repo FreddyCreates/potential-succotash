@@ -1,13 +1,14 @@
 # 🧬 Extension Catalog
 
-**Generated:** 2026-05-12T06:52:40.346Z
-**Total Extensions:** 37
+**Generated:** 2026-05-15T00:11:33.094Z
+**Total Extensions:** 39
 **Bot:** organism-docs-bot 📚
 
 ## Extension Registry
 
 | ID | Name | Version | Ring | Background | Content Script |
 |---|---|---|---|---|---|
+| EXT-028 | **CI Pilot Embodied** | `1.0.0` | Counsel Ring | ✅ | ✅ |
 | EXT-002 | **Cipher Shield** | `1.0.0` | Counsel Ring | ✅ | ✅ |
 | EXT-005 | **Code Sovereign** | `1.0.0` | Build Ring | ✅ | ✅ |
 | EXT-015 | **Contract Forge** | `1.0.0` | Counsel Ring | ✅ | ✅ |
@@ -34,6 +35,7 @@
 | EXT-007 | **Sentinel Watch** | `1.0.0` | Counsel Ring | ✅ | ✅ |
 | EXT-013 | **Social Cortex** | `1.0.0` | Interface Ring | ✅ | ✅ |
 | — | **Sovereign Alpha** | `1.0.0` | — | ✅ | ✅ |
+| EXT-027 | **Sovereign Command Pilot** | `1.0.0` | Build Ring | ✅ | ✅ |
 | EXT-001 | **Sovereign Mind** | `1.0.0` | Interface Ring | ✅ | ✅ |
 | EXT-020 | **Sovereign Nexus** | `1.0.0` | Sovereign Ring | ✅ | ✅ |
 | EXT-022 | **Spread Scanner** | `1.0.0` | Interface Ring | ✅ | ✅ |
@@ -48,6 +50,14 @@
 
 ## Extension Details
 
+### EXT-028 — CI Pilot Embodied
+- **Slug:** `ci-pilot-embodied`
+- **Version:** `1.0.0`
+- **Ring:** Counsel Ring
+- **Description:** AI User Experience — Production CI copilot embodied in-browser for pipeline triage, failure routing, and patch guidance.
+- **Permissions:** activeTab, storage, alarms, tabs
+- **Background Worker:** ✅
+- **Content Script:** ✅
 ### EXT-002 — Cipher Shield
 - **Slug:** `cipher-shield`
 - **Version:** `1.0.0`
@@ -254,6 +264,14 @@
 - **Ring:** —
 - **Description:** Four sovereign tools unified — Workbook AI, Page Intelligence, Secure Vault, Command Bar. One install, one sidepanel.
 - **Permissions:** storage, sidePanel, activeTab, contextMenus, alarms, tabs (+2 more)
+- **Background Worker:** ✅
+- **Content Script:** ✅
+### EXT-027 — Sovereign Command Pilot
+- **Slug:** `sovereign-command-pilot`
+- **Version:** `1.0.0`
+- **Ring:** Build Ring
+- **Description:** AI User Experience — First-party sovereign command pilot for production workflows, planning, and execution guidance in-page.
+- **Permissions:** activeTab, storage, alarms, tabs
 - **Background Worker:** ✅
 - **Content Script:** ✅
 ### EXT-001 — Sovereign Mind
