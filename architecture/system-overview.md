@@ -59,7 +59,7 @@ This system overview defines five production-ready AGI portfolio systems built b
 - **Inference mode:** local-first detection, signed online attestations
 - **Data sources:** page content, access logs, policy artifacts, vulnerability feeds
 - **Reliability goal:** 99.99% alert pipeline uptime
-- **Governance:** SAECI (Safety, Alignment, Ethics, Containment, and Integrity) safety alignment, full traceability per enforcement action
+- **Governance:** SAECI (Safety, Alignment, Ethics, Containment, and Integrity) framework with full traceability per enforcement action
 
 ## 4) Meridian Knowledge AGI
 
