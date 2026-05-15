@@ -78,7 +78,8 @@ This system overview defines five production-ready AGI portfolio systems built b
 - **Target latency:** p95 < 3s for multi-source synthesis jobs
 - **Inference mode:** sovereign local memory with asynchronous cloud federation
 - **Data sources:** web content, internal docs, saved highlights, historical notes
-- **Reliability goal:** 99.9% on top-3 evidence relevance, factual consistency checks, and citation coverage
+- **Reliability goal:** 99.9% synthesis pipeline availability
+- **Quality goal:** 99.9% on top-3 evidence relevance, factual consistency checks, and citation coverage
 - **Governance:** source provenance required for every synthesized conclusion
 
 ## 5) Orion Builder AGI
@@ -96,7 +97,6 @@ This system overview defines five production-ready AGI portfolio systems built b
 - **Primary surfaces:** IDE/extension flows + CI visibility dashboard
 - **Target latency:** p95 < 500ms planning retrieval, p95 < 5s synthesis tasks
 - **Synthesis scope:** architecture proposals, changelog generation, and documentation sync outputs
-- **Synthesis note:** this explicit scope is unique to Orion because it is the delivery orchestration system responsible for release artifacts
 - **Inference mode:** repo-local reasoning with policy-gated external calls
 - **Data sources:** source code, tests, CI logs, issues, release metadata
 - **Reliability goal:** 99.9% pipeline assistant availability
