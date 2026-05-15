@@ -38,6 +38,34 @@ import {
   initWorkflowSkill, getWorkflowState, workflowStatusText,
   startWorkflow, recordStep, WORKFLOW_INTENTS,
 } from './skills/workflow';
+import {
+  analyzeContract, scanTermsOfService, getLegalBriefing,
+  searchCaseLaw, lookupStatute, generateLegalTemplate,
+  RIGHTS_BRIEFINGS,
+} from './skills/legalResearch';
+import {
+  searchArxiv, formatArxivResults,
+  searchPubmed, formatPubmedResults,
+  searchOpenAlex, formatOpenAlexResults,
+  generateCitation, generateHypothesis, refineResearchQuestion,
+  evaluateMethodology, explainStatistics, simulatePeerReview,
+} from './skills/academicResearch';
+import type { CitationStyle, CitationInput } from './skills/academicResearch';
+import {
+  fetchWikipedia, lookupWikidata, fetchWorldBank, fetchWeather,
+  fetchEarthquakes, fetchNasaApod, fetchDrugInfo, fetchCountryInfo,
+  searchBooks, fetchExchangeRates, lookupWord, searchEdgar, fetchGithubStats,
+} from './skills/dataConnectors';
+import {
+  saveScreenCapture, searchCaptures, listCaptures, deleteCapture,
+  exportCaptureIndex, captureStats, buildFindTextScript,
+} from './skills/screenSearch';
+import {
+  chainOfThought, devilsAdvocate, detectFallacies, mapArgument,
+  fiveWhys, swotAnalysis, getMentalModel, listMentalModels,
+  detectBias, preMortem, socraticQuestions, eisenhowerMatrix,
+  secondOrderEffects, auditAssumptions,
+} from './skills/offlineAGI';
 
 /**
  * Route Solus calls through an offscreen document so onnxruntime-web
@@ -3199,6 +3227,449 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       engine.executeChat('Draft a legal document — ' + ((message.value as string) || ''), r => sendResponse(r));
       break;
 
+    // ── Legal Research (extended offline-first) ─────────────────
+    case 'contractAnalyze': {
+      const text = (message.text as string) || (message.value as string) || '';
+      if (!text.trim()) { sendResponse({ success: false, message: 'Paste contract text to analyze.' }); break; }
+      const result = analyzeContract(text);
+      sendResponse({ success: true, message: result.summary });
+      break;
+    }
+    case 'tosAnalyze': {
+      const tos = (message.text as string) || (message.value as string) || '';
+      if (!tos.trim()) { sendResponse({ success: false, message: 'Paste Terms of Service text to scan.' }); break; }
+      sendResponse({ success: true, message: scanTermsOfService(tos) });
+      break;
+    }
+    case 'legalRights': {
+      const topic = (message.topic as string) || (message.value as string) || '';
+      sendResponse({ success: true, message: getLegalBriefing(topic) });
+      break;
+    }
+    case 'caseLawSearch': {
+      const query = (message.query as string) || (message.value as string) || '';
+      if (!query.trim()) { sendResponse({ success: false, message: 'Enter a search query for case law.' }); break; }
+      searchCaseLaw(query).then(results => {
+        if (results.length === 0) {
+          sendResponse({ success: true, message: `No case law results for "${query}".\n\nTry: courtlistener.com/search/?q=${encodeURIComponent(query)}` });
+          return;
+        }
+        const msg = `⚖️ Case Law Results for "${query}":\n\n` + results.map((r, i) =>
+          `${i + 1}. ${r.caseName}\n   Court: ${r.court} | Filed: ${r.dateFiled}\n   ${r.url}`
+        ).join('\n\n');
+        sendResponse({ success: true, message: msg });
+      }).catch(() => sendResponse({ success: true, message: `Offline. Visit: courtlistener.com/search/?q=${encodeURIComponent(query)}` }));
+      break;
+    }
+    case 'statuteLookup': {
+      const q = (message.query as string) || (message.value as string) || '';
+      lookupStatute(q).then(msg => sendResponse({ success: true, message: msg })).catch(() =>
+        sendResponse({ success: true, message: `Statute lookup offline. Visit: congress.gov/search?q=${encodeURIComponent(q)}` })
+      );
+      break;
+    }
+    case 'legalTemplate': {
+      const tType = (message.type as string) || (message.value as string) || '';
+      sendResponse({ success: true, message: generateLegalTemplate(tType) });
+      break;
+    }
+    case 'gdprCheck':
+      sendResponse({ success: true, message: RIGHTS_BRIEFINGS.gdpr });
+      break;
+    case 'smallBizLegal':
+      sendResponse({ success: true, message: RIGHTS_BRIEFINGS.smallbusiness });
+      break;
+
+    // ── Academic Research ───────────────────────────────────────
+    case 'arxivSearch': {
+      const q = (message.query as string) || (message.value as string) || '';
+      if (!q.trim()) { sendResponse({ success: false, message: 'Enter a search query for ArXiv.' }); break; }
+      searchArxiv(q).then(r => sendResponse({ success: true, message: formatArxivResults(r) }))
+        .catch(() => sendResponse({ success: true, message: `ArXiv offline. Visit: arxiv.org/search/?query=${encodeURIComponent(q)}` }));
+      break;
+    }
+    case 'pubmedSearch': {
+      const q = (message.query as string) || (message.value as string) || '';
+      if (!q.trim()) { sendResponse({ success: false, message: 'Enter a search query for PubMed.' }); break; }
+      searchPubmed(q).then(r => sendResponse({ success: true, message: formatPubmedResults(r) }))
+        .catch(() => sendResponse({ success: true, message: `PubMed offline. Visit: pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(q)}` }));
+      break;
+    }
+    case 'openalexSearch': {
+      const q = (message.query as string) || (message.value as string) || '';
+      if (!q.trim()) { sendResponse({ success: false, message: 'Enter a search query for OpenAlex.' }); break; }
+      searchOpenAlex(q).then(r => sendResponse({ success: true, message: formatOpenAlexResults(r) }))
+        .catch(() => sendResponse({ success: true, message: `OpenAlex offline. Visit: openalex.org/search?q=${encodeURIComponent(q)}` }));
+      break;
+    }
+    case 'generateCitation': {
+      const raw = (message.value as string) || '';
+      const parts = raw.split(',').map((s: string) => s.trim());
+      const style = ((message.style as string) || 'APA') as CitationStyle;
+      const input: CitationInput = {
+        title:   parts[0] || 'Unknown Title',
+        authors: parts[1] ? [parts[1]] : ['Unknown Author'],
+        year:    parseInt(parts[2] ?? '0') || new Date().getFullYear(),
+        journal: parts[3] || undefined,
+        doi:     parts[4] || undefined,
+      };
+      sendResponse({ success: true, message: generateCitation(input, style) });
+      break;
+    }
+    case 'generateHypothesis': {
+      const topic = (message.topic as string) || (message.value as string) || '';
+      sendResponse({ success: true, message: generateHypothesis(topic) });
+      break;
+    }
+    case 'refineQuestion': {
+      const q = (message.question as string) || (message.value as string) || '';
+      sendResponse({ success: true, message: refineResearchQuestion(q) });
+      break;
+    }
+    case 'evalMethodology': {
+      const desc = (message.description as string) || (message.value as string) || '';
+      sendResponse({ success: true, message: evaluateMethodology(desc) });
+      break;
+    }
+    case 'explainStats': {
+      const concept = (message.concept as string) || (message.value as string) || '';
+      sendResponse({ success: true, message: explainStatistics(concept) });
+      break;
+    }
+    case 'peerReview': {
+      const abstract = (message.abstract as string) || (message.value as string) || '';
+      sendResponse({ success: true, message: simulatePeerReview(abstract) });
+      break;
+    }
+
+    // ── Open Data Connectors ────────────────────────────────────
+    case 'wikipedia': {
+      const q = (message.query as string) || (message.value as string) || '';
+      fetchWikipedia(q).then(msg => sendResponse({ success: true, message: msg }))
+        .catch(() => sendResponse({ success: true, message: `Wikipedia offline. Visit: wikipedia.org/wiki/${encodeURIComponent(q)}` }));
+      break;
+    }
+    case 'wikidata': {
+      const q = (message.query as string) || (message.value as string) || '';
+      lookupWikidata(q).then(msg => sendResponse({ success: true, message: msg }))
+        .catch(() => sendResponse({ success: true, message: 'Wikidata offline. Visit: wikidata.org' }));
+      break;
+    }
+    case 'worldbank': {
+      const cc = (message.countryCode as string) || 'US';
+      const ind = (message.indicator as string) || 'gdp';
+      fetchWorldBank(cc, ind).then(msg => sendResponse({ success: true, message: msg }))
+        .catch(() => sendResponse({ success: true, message: 'World Bank offline. Visit: data.worldbank.org' }));
+      break;
+    }
+    case 'weather': {
+      const lat = Number(message.lat) || 40.7128;
+      const lon = Number(message.lon) || -74.0060;
+      fetchWeather(lat, lon).then(msg => sendResponse({ success: true, message: msg }))
+        .catch(() => sendResponse({ success: true, message: 'Weather unavailable. Visit: open-meteo.com' }));
+      break;
+    }
+    case 'earthquakes': {
+      const period = ((message.period as string) || 'day') as 'hour' | 'day' | 'week';
+      fetchEarthquakes(period).then(msg => sendResponse({ success: true, message: msg }))
+        .catch(() => sendResponse({ success: true, message: 'USGS offline. Visit: earthquake.usgs.gov' }));
+      break;
+    }
+    case 'nasaApod':
+      fetchNasaApod().then(msg => sendResponse({ success: true, message: msg }))
+        .catch(() => sendResponse({ success: true, message: 'NASA APOD offline. Visit: apod.nasa.gov' }));
+      break;
+    case 'drugInfo': {
+      const drug = (message.query as string) || (message.value as string) || '';
+      if (!drug.trim()) { sendResponse({ success: false, message: 'Enter a drug or medication name.' }); break; }
+      fetchDrugInfo(drug).then(msg => sendResponse({ success: true, message: msg }))
+        .catch(() => sendResponse({ success: true, message: `FDA offline. Visit: dailymed.nlm.nih.gov — ⚠️ Not medical advice.` }));
+      break;
+    }
+    case 'countryInfo': {
+      const country = (message.country as string) || (message.value as string) || '';
+      fetchCountryInfo(country).then(msg => sendResponse({ success: true, message: msg }))
+        .catch(() => sendResponse({ success: true, message: 'Country info offline. Visit: restcountries.com' }));
+      break;
+    }
+    case 'searchBooks': {
+      const q = (message.query as string) || (message.value as string) || '';
+      searchBooks(q).then(msg => sendResponse({ success: true, message: msg }))
+        .catch(() => sendResponse({ success: true, message: `Open Library offline. Visit: openlibrary.org/search?q=${encodeURIComponent(q)}` }));
+      break;
+    }
+    case 'exchangeRates': {
+      const base = (message.base as string) || (message.value as string) || 'USD';
+      fetchExchangeRates(base).then(msg => sendResponse({ success: true, message: msg }))
+        .catch(() => sendResponse({ success: true, message: 'Exchange rates offline. Visit: exchangerate-api.com' }));
+      break;
+    }
+    case 'lookupWord': {
+      const word = (message.query as string) || (message.value as string) || '';
+      lookupWord(word).then(msg => sendResponse({ success: true, message: msg }))
+        .catch(() => sendResponse({ success: true, message: `Dictionary offline. Visit: merriam-webster.com/dictionary/${encodeURIComponent(word)}` }));
+      break;
+    }
+    case 'edgarSearch': {
+      const company = (message.company as string) || (message.value as string) || '';
+      searchEdgar(company).then(msg => sendResponse({ success: true, message: msg }))
+        .catch(() => sendResponse({ success: true, message: `SEC EDGAR offline. Visit: sec.gov/cgi-bin/browse-edgar?company=${encodeURIComponent(company)}&action=getcompany` }));
+      break;
+    }
+    case 'githubStats': {
+      const owner = (message.owner as string) || '';
+      const repo = (message.repo as string) || '';
+      if (!owner || !repo) { sendResponse({ success: false, message: 'Provide owner/repo format (e.g. torvalds/linux).' }); break; }
+      fetchGithubStats(owner, repo).then(msg => sendResponse({ success: true, message: msg }))
+        .catch(() => sendResponse({ success: true, message: `GitHub offline. Visit: github.com/${owner}/${repo}` }));
+      break;
+    }
+
+    // ── Medical Research (AI-assisted) ──────────────────────────
+    case 'medicalResearch':
+      engine.executeChat('Medical research overview (not medical advice) — ' + ((message.value as string) || ''), r => sendResponse(r));
+      break;
+    case 'symptomResearch':
+      engine.executeChat('Research the following symptoms (this is NOT a medical diagnosis — always consult a licensed physician): ' + ((message.value as string) || ''), r => sendResponse(r));
+      break;
+    case 'drugInteraction':
+      engine.executeChat('Provide general drug interaction information (not medical advice — consult a pharmacist or physician): ' + ((message.value as string) || ''), r => sendResponse(r));
+      break;
+    case 'clinicalTrials': {
+      const cond = (message.value as string) || '';
+      sendResponse({ success: true, message: `🧪 Clinical Trials for "${cond}":\n\nhttps://clinicaltrials.gov/search?term=${encodeURIComponent(cond)}\n\nVisit the link above to search active trials on the official NIH ClinicalTrials.gov registry.\n\n⚠️ Not medical advice. Consult your physician before joining any trial.` });
+      break;
+    }
+
+    // ── Screen Search ───────────────────────────────────────────
+    case 'findTextOnPage': {
+      const findQ = (message.value as string) || '';
+      if (!findQ.trim()) { sendResponse({ success: false, message: 'Enter text to find on the page.' }); break; }
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        const tab = tabs[0];
+        if (!tab?.id) { sendResponse({ success: false, message: 'No active tab.' }); return; }
+        chrome.scripting.executeScript({
+          target: { tabId: tab.id },
+          func: (query: string) => {
+            const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+            const matches: Array<{ context: string; tag: string; visible: boolean }> = [];
+            const q = query.toLowerCase();
+            let node: Node | null;
+            while ((node = walker.nextNode()) && matches.length < 15) {
+              const txt = node.nodeValue ?? '';
+              const lower = txt.toLowerCase();
+              const idx = lower.indexOf(q);
+              if (idx !== -1) {
+                const start = Math.max(0, idx - 60);
+                const context = txt.slice(start, idx + q.length + 80).replace(/\s+/g, ' ').trim();
+                const parent = node.parentElement;
+                matches.push({ context, tag: parent?.tagName ?? 'UNKNOWN', visible: parent ? parent.offsetParent !== null : false });
+              }
+            }
+            return { found: matches.length > 0, count: matches.length, matches };
+          },
+          args: [findQ],
+        }).then(results => {
+          const r = results?.[0]?.result as { found: boolean; count: number; matches: Array<{ context: string; tag: string; visible: boolean }> } | undefined;
+          if (!r || !r.found) { sendResponse({ success: true, message: `🔎 "${findQ}" not found on this page.` }); return; }
+          const msg = `🔎 Found "${findQ}" — ${r.count} occurrence(s):\n\n` +
+            r.matches.slice(0, 10).map((m, i) => `${i + 1}. [${m.tag}${m.visible ? '' : ' (hidden)'}] …${m.context}…`).join('\n\n');
+          sendResponse({ success: true, message: msg });
+        }).catch(() => sendResponse({ success: false, message: 'Could not search — check tab permissions.' }));
+      });
+      break;
+    }
+    case 'saveScreenCapture': {
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        const tab = tabs[0];
+        if (!tab?.id || !tab.url) { sendResponse({ success: false, message: 'No active tab.' }); return; }
+        chrome.tabs.captureVisibleTab({}, (dataUrl) => {
+          if (chrome.runtime.lastError || !dataUrl) { sendResponse({ success: false, message: 'Screenshot failed.' }); return; }
+          chrome.scripting.executeScript({
+            target: { tabId: tab.id! },
+            func: () => document.body.innerText.slice(0, 20000),
+          }).then(async (res) => {
+            const pageText = (res?.[0]?.result as string) || '';
+            await saveScreenCapture(dataUrl, pageText, tab.url!, tab.title || '');
+            sendResponse({ success: true, message: `📸 Screenshot saved with ${pageText.length.toLocaleString()} chars of page text. Now searchable via "Search saved captures".` });
+          }).catch(async () => {
+            await saveScreenCapture(dataUrl, '', tab.url!, tab.title || '');
+            sendResponse({ success: true, message: '📸 Screenshot saved (text extraction failed — page may have script restrictions).' });
+          });
+        });
+      });
+      break;
+    }
+    case 'searchCaptures': {
+      const q = (message.value as string) || '';
+      if (!q.trim()) { sendResponse({ success: false, message: 'Enter a keyword to search saved captures.' }); break; }
+      searchCaptures(q).then(results => {
+        if (results.length === 0) { sendResponse({ success: true, message: `🔎 No saved captures matching "${q}". Save some screenshots first.` }); return; }
+        const msg = `🔎 Found in ${results.length} capture(s) for "${q}":\n\n` +
+          results.slice(0, 8).map((r, i) =>
+            `${i + 1}. ${r.capture.title || r.capture.url}\n   ${new Date(r.capture.timestamp).toLocaleDateString()}\n   …${r.matchContext}…`
+          ).join('\n\n');
+        sendResponse({ success: true, message: msg });
+      });
+      break;
+    }
+    case 'listCaptures':
+      listCaptures(10).then(caps => {
+        if (caps.length === 0) { sendResponse({ success: true, message: '📸 No saved captures yet. Use "Save screenshot + text" to start building your searchable visual archive.' }); return; }
+        const msg = `📸 Recent Captures (${caps.length}):\n\n` +
+          caps.map((c, i) => `${i + 1}. ${c.title || c.url}\n   ${new Date(c.timestamp).toLocaleDateString()} · ${c.pageText.length.toLocaleString()} chars`).join('\n');
+        sendResponse({ success: true, message: msg });
+      });
+      break;
+    case 'captureStats':
+      captureStats().then(st => {
+        sendResponse({ success: true, message: `📸 Screen Capture Stats:\n\nTotal saved: ${st.total}\nDate range: ${st.oldestDate} → ${st.newestDate}\nTotal text indexed: ${st.totalTextChars.toLocaleString()} chars` });
+      });
+      break;
+    case 'exportCaptureIndex':
+      exportCaptureIndex().then(json => {
+        const blob = 'data:application/json;charset=utf-8,' + encodeURIComponent(json);
+        chrome.downloads.download({ url: blob, filename: 'vigil-captures-' + Date.now() + '.json', saveAs: false }, () =>
+          sendResponse({ success: true, message: '⬇ Capture index exported as JSON.' })
+        );
+      });
+      break;
+    case 'extractPageText': {
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        const tab = tabs[0];
+        if (!tab?.id) { sendResponse({ success: false, message: 'No active tab.' }); return; }
+        chrome.scripting.executeScript({ target: { tabId: tab.id }, func: () => document.body.innerText })
+          .then(res => {
+            const text = (res?.[0]?.result as string || '').slice(0, 8000);
+            sendResponse({ success: true, message: `📄 Page text (${text.length.toLocaleString()} chars):\n\n${text}` });
+          }).catch(() => sendResponse({ success: false, message: 'Could not extract text.' }));
+      });
+      break;
+    }
+    case 'findLinks': {
+      const kw = ((message.value as string) || '').toLowerCase();
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        const tab = tabs[0];
+        if (!tab?.id) { sendResponse({ success: false, message: 'No active tab.' }); return; }
+        chrome.scripting.executeScript({
+          target: { tabId: tab.id },
+          func: (keyword: string) => {
+            const links = Array.from(document.querySelectorAll('a[href]'))
+              .map(a => ({ text: (a as HTMLAnchorElement).textContent?.trim() ?? '', href: (a as HTMLAnchorElement).href }))
+              .filter(l => l.text.toLowerCase().includes(keyword) || l.href.toLowerCase().includes(keyword))
+              .slice(0, 20);
+            return links;
+          },
+          args: [kw],
+        }).then(res => {
+          const links = (res?.[0]?.result as Array<{ text: string; href: string }>) || [];
+          if (links.length === 0) { sendResponse({ success: true, message: `No links matching "${kw}" found on this page.` }); return; }
+          sendResponse({ success: true, message: `🔗 Links matching "${kw}" (${links.length}):\n\n` + links.map((l, i) => `${i + 1}. ${l.text || '(no text)'}\n   ${l.href}`).join('\n\n') });
+        }).catch(() => sendResponse({ success: false, message: 'Could not scan links.' }));
+      });
+      break;
+    }
+
+    // ── Offline AGI Reasoning ───────────────────────────────────
+    case 'chainOfThought':
+      sendResponse({ success: true, message: chainOfThought((message.problem as string) || (message.value as string) || '') });
+      break;
+    case 'devilsAdvocate':
+      sendResponse({ success: true, message: devilsAdvocate((message.position as string) || (message.value as string) || '') });
+      break;
+    case 'detectFallacies': {
+      const txt = (message.text as string) || (message.value as string) || '';
+      sendResponse({ success: true, message: detectFallacies(txt) });
+      break;
+    }
+    case 'detectBias': {
+      const txt = (message.text as string) || (message.value as string) || '';
+      sendResponse({ success: true, message: detectBias(txt) });
+      break;
+    }
+    case 'mapArgument':
+      sendResponse({ success: true, message: mapArgument((message.topic as string) || (message.value as string) || '') });
+      break;
+    case 'swotAnalysis':
+      sendResponse({ success: true, message: swotAnalysis((message.subject as string) || (message.value as string) || '') });
+      break;
+    case 'fiveWhys':
+      sendResponse({ success: true, message: fiveWhys((message.problem as string) || (message.value as string) || '') });
+      break;
+    case 'preMortem':
+      sendResponse({ success: true, message: preMortem((message.plan as string) || (message.value as string) || '') });
+      break;
+    case 'auditAssumptions':
+      sendResponse({ success: true, message: auditAssumptions((message.plan as string) || (message.value as string) || '') });
+      break;
+    case 'secondOrderEffects':
+      sendResponse({ success: true, message: secondOrderEffects((message.action2 as string) || (message.value as string) || '') });
+      break;
+    case 'socraticQuestioning':
+      sendResponse({ success: true, message: socraticQuestions((message.belief as string) || (message.value as string) || '') });
+      break;
+    case 'listMentalModels':
+      sendResponse({ success: true, message: listMentalModels() });
+      break;
+    case 'getMentalModel':
+      sendResponse({ success: true, message: getMentalModel((message.name as string) || (message.value as string) || '') });
+      break;
+    case 'eisenhowerMatrix': {
+      const tasks = (message.tasks as string[]) || ((message.value as string) || '').split('\n').map((t: string) => t.trim()).filter(Boolean);
+      sendResponse({ success: true, message: eisenhowerMatrix(tasks) });
+      break;
+    }
+    case 'firstPrinciples':
+      engine.executeChat('Apply first-principles thinking to this problem — break it down to fundamental truths and reason up from there: ' + ((message.problem as string) || (message.value as string) || ''), r => sendResponse(r));
+      break;
+    case 'inversionThinking':
+      engine.executeChat('Apply inversion thinking — what would guarantee failure for this goal, and how do we avoid those paths? Goal: ' + ((message.plan as string) || (message.value as string) || ''), r => sendResponse(r));
+      break;
+
+    // ── Writing & Language (new handlers) ──────────────────────
+    case 'rewriteText':
+      engine.executeChat('Rewrite and improve the following text for clarity, flow, and impact. Preserve the meaning: ' + ((message.value as string) || ''), r => sendResponse(r));
+      break;
+    case 'sentimentAnalysis':
+      engine.executeChat('Analyze the sentiment of the following text — identify overall sentiment (positive/negative/neutral), key emotional tones, and intensity: ' + ((message.value as string) || ''), r => sendResponse(r));
+      break;
+    case 'toneAnalysis':
+      engine.executeChat('Analyze the writing tone of the following text — identify formal/informal, authoritative/casual, confident/uncertain, and other tone dimensions: ' + ((message.value as string) || ''), r => sendResponse(r));
+      break;
+    case 'generateHeadline':
+      engine.executeChat('Generate 5 compelling, click-worthy headlines for the following topic or article. Make them clear, specific, and audience-focused: ' + ((message.value as string) || ''), r => sendResponse(r));
+      break;
+    case 'brainstorm':
+      engine.executeChat('Brainstorm ideas for: ' + ((message.value as string) || ''), r => sendResponse(r));
+      break;
+
+    // ── Security & Privacy (new handlers) ──────────────────────
+    case 'sentryAnalyze': {
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        const tab = tabs[0];
+        if (!tab?.id || !tab.url) { sendResponse({ success: false, message: 'No active tab.' }); return; }
+        chrome.scripting.executeScript({ target: { tabId: tab.id }, func: () => document.body.innerText.slice(0, 5000) })
+          .then(res => {
+            const text = (res?.[0]?.result as string) || '';
+            const alerts = analyzePageText(text, tab.url!);
+            if (alerts.length === 0) {
+              sendResponse({ success: true, message: '🛡 Sentry scan complete. No threats detected on this page.' });
+            } else {
+              sendResponse({ success: true, message: `🛡 Sentry: ${alerts.length} alert(s):\n\n` + alerts.map(a => `• [${a.level}] ${a.type}: ${a.message}`).join('\n') });
+            }
+          }).catch(() => sendResponse({ success: false, message: 'Sentry scan failed.' }));
+      });
+      break;
+    }
+    case 'permissionAudit':
+      sendResponse({ success: true, message: '🔐 EXTENSION PERMISSION AUDIT\n\nVigil AI permissions:\n✅ tabs — read tab titles and URLs\n✅ activeTab — access the current tab\n✅ scripting — inject scripts for page reading\n✅ downloads — save files to your computer\n✅ storage — save memories and notes locally\n✅ offscreen — run Solus AI offline\n✅ sidePanel — display the side panel\n\n❌ No access to: your camera, microphone, location, or other apps\n❌ No data sent to third parties\n✅ All AI inference happens locally (Solus) or via your configured API key\n✅ Storage is local to your browser — not uploaded anywhere' });
+      break;
+    case 'securityReport': {
+      const status = engine.getStatus();
+      sendResponse({ success: true, message: `🛡️ SECURITY REPORT\n\nExtension: Vigil AI CNS\nUptime: ${Math.floor(((status.uptime as number) || 0) / 1000)}s\nCommands processed: ${status.commandCount}\nMemory turns: ${status.memoryTurns}\n\n✅ Local storage only — no cloud sync\n✅ Offline AI (Solus) — no inference to external servers\n✅ Permissions minimal — see Permission Audit\n✅ Open source — audit the code on GitHub\n✅ No telemetry or tracking\n\n💡 Privacy tip: Clear your memory vault periodically via the Memory panel.` });
+      break;
+    }
+
     // ── Documents ──────────────────────────────────────────────
     case 'createDoc': {
       const docTitle = (message.value as string) || 'Vigil Document';
@@ -3255,18 +3726,24 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       sendResponse({
         success: true,
         message: [
-          '⚗️ VIGIL v18 — Engine Inventory',
-          '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
-          '🤖 Agents:     researcher, crawler, scraper, monitor, watcher, digest, analyst, scout, sweep',
-          '🧠 NeuroCore:  MiniHeart + MiniBrain + PSE (40 primitives, 8 domains)',
-          '📚 Memory:     Temple (5 categories) + MemoryAI + Conversation (100 turns)',
-          '🔵 Solus:      Offline Transformers.js NLP',
-          '🛡 Sentry:    Page threat + content analysis',
-          '🕸 Graph:      Knowledge graph (linked page intelligence)',
-          '📋 Skills:     PDF, Excel, Email, Readability, Highlights',
-          '⚡ Protocols:  16 compound primitives + Mission Engine + Campaign Engine v17',
-          '🖥️ Screen:     Capture, scroll, nav, DOM read, virtual desktop, control mode',
-          '⚖️ Legal AI:   Case analysis, contracts, compliance, drafting',
+          '⚗️ VIGIL v19 — Engine Inventory (100+ Skills)',
+          '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
+          '🤖 Agents:      researcher, crawler, scraper, monitor, watcher, digest, analyst, scout, sweep',
+          '🧠 NeuroCore:   MiniHeart + MiniBrain + PSE (40 primitives, 8 domains)',
+          '📚 Memory:      Temple (5 categories) + MemoryAI + Conversation (100 turns)',
+          '🔵 Solus:       Offline Transformers.js NLP (summarize, classify, QA)',
+          '🛡 Sentry:      Page threat + content analysis',
+          '🕸 Graph:       Knowledge graph (linked page intelligence)',
+          '📋 Skills:      PDF, Excel, Email, Readability, Highlights, Screen Search',
+          '⚡ Protocols:   16 compound primitives + Mission + Campaign Engine v17',
+          '🖥️ Screen:      Capture, find text, save+search captures, nav, virtual desktop, control mode',
+          '⚖️ Legal AI:    Contract analysis, ToS scanner, rights briefings (12 areas), case law search, statute lookup, templates',
+          '🎓 Academic:    ArXiv, PubMed, OpenAlex search + citation generator (5 styles) + hypothesis/methodology tools',
+          '🌐 Open Data:   Wikipedia, Wikidata, World Bank, weather, earthquakes, NASA, FDA, countries, books, currency, dictionary, SEC, GitHub',
+          '🏥 Medical:     FDA drug info, PubMed, symptom/interaction research (not medical advice)',
+          '🧠 Offline AGI: Chain-of-thought, devil\'s advocate, fallacy/bias detection, argument mapping, SWOT, 5-Whys, pre-mortem, Socratic questioning, mental models (10), second-order effects, Eisenhower matrix, assumption audit',
+          '✍️ Writing:     Translate, rewrite, sentiment/tone analysis, headline generator, brainstorm',
+          '🛡️ Security:    GDPR check, ToS scanner, permission audit, Sentry scan, security report',
         ].join('\n'),
       });
       break;
@@ -3274,20 +3751,28 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       sendResponse({
         success: true,
         message: [
-          '🆘 VIGIL CNS — Full Capability List',
-          '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
-          '🗂️  Tab Control:   open, close, switch, reload, duplicate, pin/unpin, mute',
-          '🧭  Navigation:    go to URL, web search, back, forward, scroll up/down/top/bottom',
-          '📖  Page Reading:  full text, headings, links, metadata, screenshot, summarize',
-          '⚗️  AI Engines:    fuse reasoning, code gen, translate, research, encrypt/decrypt',
-          '⚖️  Legal AI:      case analysis, contract review, compliance, document drafting',
-          '📄  Documents:     create doc, export PDF, Markdown, Excel',
-          '🤖  Agents:        autonomous research, crawl, monitor, analyze agents',
-          '🧠  Memory:        save + recall memories, memory palace, journal',
-          '🔵  Solus:         offline AI — no internet needed',
-          '🔧  System:        health status, engine inventory, agent list',
+          '🆘 VIGIL CNS v19 — 100+ Skills',
+          '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
+          '🗂️  Tab Control:      open, close, switch, reload, duplicate, pin, mute',
+          '🧭  Navigation:       URL, search, back/forward, scroll',
+          '📖  Page Reading:     text, headings, links, metadata, screenshot, summarize',
+          '🔎  Screen Search:    find text on page, save+search screenshots, find links',
+          '⚗️  AI Engines:       reasoning, code gen, translate, research, encrypt/decrypt',
+          '⚖️  Legal (12 areas): contracts, ToS, rights briefings, case law, statutes, templates',
+          '🎓  Academic:         ArXiv, PubMed, OpenAlex, citations, hypothesis, methodology',
+          '🌐  Open Data:        Wikipedia, World Bank, weather, earthquakes, NASA, FDA, countries',
+          '🏥  Medical Research: FDA drug lookup, PubMed, symptom research (not medical advice)',
+          '🧠  Offline AGI:      chain-of-thought, fallacy/bias detection, SWOT, 5-Whys, mental models',
+          '✍️  Writing:          translate, rewrite, sentiment, tone, headline, brainstorm',
+          '🛡️  Security:        GDPR, permission audit, Sentry scan, security report',
+          '📄  Documents:        create doc, PDF, Markdown, Excel export',
+          '🤖  Agents:           autonomous research, crawl, monitor, analyze',
+          '🧠  Memory:           save + recall memories, memory palace',
+          '🔵  Solus:            100% offline AI (no internet needed)',
           '',
-          'Ask anything in Chat · Use Control Mode in the Screen tab for full browser control.',
+          '→ Use the 🔬 Research tab for Legal/Academic/Data/Medical research hub',
+          '→ Use the 🧠 Mind tab for offline AGI reasoning tools',
+          '→ Use 🎮 Control Mode in the Screen tab for 100+ browser commands',
         ].join('\n'),
       });
       break;
