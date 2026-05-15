@@ -17,7 +17,7 @@ This system overview defines five production-ready AGI portfolio systems built b
 
 **Production spec:**
 - **Primary surfaces:** browser extension, web app, desktop operator panel
-- **Target latency:** p95 < 250ms for recommendation scoring at interaction time
+- **Target latency:** p95 < 250ms end-to-end (includes network round-trip + processing) for recommendation scoring at interaction time
 - **Inference mode:** hybrid (offline first, online escalation)
 - **Data sources:** clickstream, catalog metadata, campaign data, checkout events
 - **Reliability goal:** 99.9% workflow availability
@@ -59,7 +59,7 @@ This system overview defines five production-ready AGI portfolio systems built b
 - **Inference mode:** local-first detection, signed online attestations
 - **Data sources:** page content, access logs, policy artifacts, vulnerability feeds
 - **Reliability goal:** 99.99% alert pipeline uptime
-- **Governance:** SAECI (Safety, Alignment, Ethics, Containment, and Integrity) framework with full traceability per enforcement action
+- **Governance:** SAECI (Safety, Alignment, Ethics, Containment, Integrity) framework with full traceability per enforcement action
 
 ## 4) Meridian Knowledge AGI
 
@@ -77,7 +77,7 @@ This system overview defines five production-ready AGI portfolio systems built b
 - **Target latency:** p95 < 3s for multi-source synthesis jobs
 - **Inference mode:** sovereign local memory with asynchronous cloud federation
 - **Data sources:** web content, internal docs, saved highlights, historical notes
-- **Reliability goal:** 99.9% retrieval correctness SLO
+- **Reliability goal:** 99.9% retrieval correctness SLO (correctness = top-3 evidence relevance + factual consistency checks with citation coverage)
 - **Governance:** source provenance required for every synthesized conclusion
 
 ## 5) Orion Builder AGI
