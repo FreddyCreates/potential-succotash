@@ -3,6 +3,7 @@
 This system overview defines five production-ready AGI portfolio systems built by mixing frontend intelligence models, routing protocols, and sovereign runtime patterns already present in this repository.
 
 **Latency convention:** all latency targets below are **p95**, measured under a production baseline profile (same-region deployment, median broadband/mobile mix, warm cache).
+**Governance convention:** SAECI = Safety, Alignment, Ethics, Containment, Integrity.
 
 ## 1) Helios Commerce AGI
 
@@ -59,7 +60,7 @@ This system overview defines five production-ready AGI portfolio systems built b
 - **Inference mode:** local-first detection, signed online attestations
 - **Data sources:** page content, access logs, policy artifacts, vulnerability feeds
 - **Reliability goal:** 99.99% alert pipeline uptime
-- **Governance:** SAECI (Safety, Alignment, Ethics, Containment, Integrity) framework with full traceability per enforcement action
+- **Governance:** SAECI framework with full traceability per enforcement action
 
 ## 4) Meridian Knowledge AGI
 
@@ -95,6 +96,7 @@ This system overview defines five production-ready AGI portfolio systems built b
 - **Primary surfaces:** IDE/extension flows + CI visibility dashboard
 - **Target latency:** p95 < 500ms planning retrieval, p95 < 5s synthesis tasks
 - **Synthesis scope:** architecture proposals, changelog generation, and documentation sync outputs
+- **Synthesis note:** this explicit scope is unique to Orion because it is the delivery orchestration system responsible for release artifacts
 - **Inference mode:** repo-local reasoning with policy-gated external calls
 - **Data sources:** source code, tests, CI logs, issues, release metadata
 - **Reliability goal:** 99.9% pipeline assistant availability
@@ -104,7 +106,8 @@ This system overview defines five production-ready AGI portfolio systems built b
 
 ## Additional AI Models to Expand the Frontend Mix
 
-To scale beyond the current frontend intelligence set, add these model families as production candidates:
+To scale beyond the current frontend intelligence set, add these model families as production candidates.  
+**Naming:** FIM = Frontend Intelligence Model.
 
 1. **Causal UX Model (FIM-X01)**  
    Learns cause-effect relationships between interface changes and user outcomes.
