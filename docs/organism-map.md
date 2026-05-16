@@ -1,53 +1,54 @@
 # 🕷️ organism-crawler-bot — Organism Map
 
-**Generated:** 2026-05-14T07:37:50.195Z
+**Generated:** 2026-05-16T20:42:37.669Z
 **Bot:** organism-crawler-bot 🕷️
 
 ## Repository Overview
 
 | Metric | Value |
 |---|---|
-| Total Files | 1161 |
-| Total Size | 12.52 MB |
-| Top-Level Sections | 16 |
-| Analyzed Files (xref) | 268 |
-| Total Imports | 276 |
-| Unique Symbols | 362 |
+| Total Files | 1181 |
+| Total Size | 12.62 MB |
+| Top-Level Sections | 17 |
+| Analyzed Files (xref) | 269 |
+| Total Imports | 277 |
+| Unique Symbols | 363 |
 
 ## Directory Topology
 
 | Section | Files | Size | Top Language |
 |---|---|---|---|
-| **extensions/** | 475 | 2.81 MB | Other |
-| **docs/** | 163 | 4.08 MB | Other |
-| **sdk/** | 148 | 898.6 KB | JavaScript |
+| **extensions/** | 493 | 2.84 MB | Other |
+| **docs/** | 163 | 4.09 MB | Other |
+| **sdk/** | 149 | 905.2 KB | JavaScript |
 | **protocols/** | 99 | 1.15 MB | JavaScript |
 | **scripts/** | 65 | 367.5 KB | JavaScript |
 | **organism/** | 62 | 557.5 KB | JavaScript |
-| **governance/** | 33 | 352.8 KB | Other |
+| **governance/** | 33 | 403.4 KB | Other |
 | **research/** | 24 | 1.40 MB | HTML |
 | **.github/** | 22 | 73.7 KB | YAML |
 | **atlas/** | 19 | 14.7 KB | JSON |
 | **examples/** | 8 | 159.3 KB | JavaScript |
 | **desktop/** | 4 | 15.5 KB | JavaScript |
 | **organism-cli/** | 4 | 48.5 KB | JavaScript |
-| **test/** | 3 | 9.1 KB | JavaScript |
+| **test/** | 3 | 9.2 KB | JavaScript |
 | **electron/** | 2 | 4.9 KB | JavaScript |
 | **workflows/** | 2 | 2.7 KB | JSON |
+| **architecture/** | 1 | 6.5 KB | Markdown |
 
 ## Language Breakdown
 
 | Language | Files | Size |
 |---|---|---|
-| **JavaScript** | 443 | 3.96 MB |
-| **Other** | 325 | 4.11 MB |
+| **JavaScript** | 450 | 4.00 MB |
+| **Other** | 334 | 4.11 MB |
 | **HTML** | 157 | 2.46 MB |
-| **JSON** | 117 | 717.9 KB |
-| **Markdown** | 37 | 224.2 KB |
+| **JSON** | 120 | 772.9 KB |
+| **Markdown** | 38 | 232.9 KB |
 | **YAML** | 24 | 78.2 KB |
 | **TypeScript** | 23 | 382.1 KB |
 | **Python** | 9 | 26.3 KB |
-| **CSV** | 8 | 398.8 KB |
+| **CSV** | 8 | 399.9 KB |
 | **Motoko** | 8 | 165.2 KB |
 | **Shell** | 5 | 32.9 KB |
 | **C++** | 3 | 20.7 KB |
@@ -64,9 +65,9 @@
 
 ### `sdk/`
 
-- **Files analyzed:** 125
-- **Imports:** 168
-- **Exports:** 306 (40 classes, 218 functions)
+- **Files analyzed:** 126
+- **Imports:** 169
+- **Exports:** 307 (41 classes, 218 functions)
 
 ### `organism/`
 
@@ -100,23 +101,23 @@
 
 ### `extensions/`
 
-- **Files:** 475
-- **Subdirectories:** 38
-- **Size:** 2.81 MB
+- **Files:** 493
+- **Subdirectories:** 41
+- **Size:** 2.84 MB
 - **Primary Language:** Other
 
 ### `docs/`
 
 - **Files:** 163
 - **Subdirectories:** 3
-- **Size:** 4.08 MB
+- **Size:** 4.09 MB
 - **Primary Language:** Other
 
 ### `sdk/`
 
-- **Files:** 148
+- **Files:** 149
 - **Subdirectories:** 18
-- **Size:** 898.6 KB
+- **Size:** 905.2 KB
 - **Primary Language:** JavaScript
 
 ### `protocols/`
@@ -144,7 +145,7 @@
 
 - **Files:** 33
 - **Subdirectories:** 10
-- **Size:** 352.8 KB
+- **Size:** 403.4 KB
 - **Primary Language:** Other
 
 ### `research/`
@@ -193,7 +194,7 @@
 
 - **Files:** 3
 - **Subdirectories:** 3
-- **Size:** 9.1 KB
+- **Size:** 9.2 KB
 - **Primary Language:** JavaScript
 
 ### `electron/`
@@ -209,6 +210,13 @@
 - **Subdirectories:** 0
 - **Size:** 2.7 KB
 - **Primary Language:** JSON
+
+### `architecture/`
+
+- **Files:** 1
+- **Subdirectories:** 0
+- **Size:** 6.5 KB
+- **Primary Language:** Markdown
 
 ---
 

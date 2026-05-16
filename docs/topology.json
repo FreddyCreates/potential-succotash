@@ -1,18 +1,18 @@
 {
-  "generated": "2026-05-14T07:37:50.195Z",
+  "generated": "2026-05-16T20:42:37.669Z",
   "bot": "organism-crawler-bot",
   "summary": {
-    "totalFiles": 1161,
-    "totalBytes": 13128357,
-    "totalKB": 12821,
-    "sections": 16,
+    "totalFiles": 1181,
+    "totalBytes": 13237078,
+    "totalKB": 12927,
+    "sections": 17,
     "langCounts": {
       "YAML": 24,
-      "Other": 325,
+      "Other": 334,
       "CSV": 8,
-      "Markdown": 37,
-      "JSON": 117,
-      "JavaScript": 443,
+      "Markdown": 38,
+      "JSON": 120,
+      "JavaScript": 450,
       "Shell": 5,
       "HTML": 157,
       "TypeScript": 23,
@@ -24,11 +24,11 @@
     },
     "langBytes": {
       "YAML": 80111,
-      "Other": 4305154,
-      "CSV": 408419,
-      "Markdown": 229536,
-      "JSON": 735151,
-      "JavaScript": 4148839,
+      "Other": 4305227,
+      "CSV": 409489,
+      "Markdown": 238491,
+      "JSON": 791436,
+      "JavaScript": 4191177,
       "Shell": 33732,
       "HTML": 2575767,
       "TypeScript": 391285,
@@ -48,6 +48,13 @@
       "topLanguage": "YAML"
     },
     {
+      "name": "architecture",
+      "files": 1,
+      "bytes": 6649,
+      "dirs": 0,
+      "topLanguage": "Markdown"
+    },
+    {
       "name": "atlas",
       "files": 19,
       "bytes": 15039,
@@ -64,7 +71,7 @@
     {
       "name": "docs",
       "files": 163,
-      "bytes": 4282717,
+      "bytes": 4284929,
       "dirs": 3,
       "topLanguage": "Other"
     },
@@ -84,15 +91,15 @@
     },
     {
       "name": "extensions",
-      "files": 475,
-      "bytes": 2941560,
-      "dirs": 38,
+      "files": 493,
+      "bytes": 2981658,
+      "dirs": 41,
       "topLanguage": "Other"
     },
     {
       "name": "governance",
       "files": 33,
-      "bytes": 361218,
+      "bytes": 413105,
       "dirs": 10,
       "topLanguage": "Other"
     },
@@ -133,15 +140,15 @@
     },
     {
       "name": "sdk",
-      "files": 148,
-      "bytes": 920179,
+      "files": 149,
+      "bytes": 926967,
       "dirs": 18,
       "topLanguage": "JavaScript"
     },
     {
       "name": "test",
       "files": 3,
-      "bytes": 9369,
+      "bytes": 9386,
       "dirs": 3,
       "topLanguage": "JavaScript"
     },
@@ -154,10 +161,10 @@
     }
   ],
   "crossRef": {
-    "totalFiles": 268,
-    "totalImports": 276,
-    "totalExports": 395,
-    "uniqueSymbols": 362
+    "totalFiles": 269,
+    "totalImports": 277,
+    "totalExports": 396,
+    "uniqueSymbols": 363
   },
   "topSymbols": [
     {
