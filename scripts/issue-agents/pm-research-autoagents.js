@@ -62,6 +62,10 @@ function daysAgo(isoDate) {
   return (Date.now() - new Date(isoDate).getTime()) / DAY_MS;
 }
 
+function releaseTimestamp(release) {
+  return new Date(release.published_at || release.created_at).getTime();
+}
+
 function bucketKeywords(items) {
   const buckets = new Map();
   const stop = new Set(['the', 'and', 'for', 'with', 'from', 'that', 'this', 'into', 'when', 'your', 'have', 'will', 'are']);
@@ -259,9 +263,9 @@ async function main() {
   const docsSignals = collectDocsSignals();
   const internalSignals = collectInternalSignals();
 
-  const releasesSorted = [...releases].sort((a, b) => new Date(b.published_at || b.created_at) - new Date(a.published_at || a.created_at));
+  const releasesSorted = [...releases].sort((a, b) => releaseTimestamp(b) - releaseTimestamp(a));
   const latestRelease = releasesSorted[0] || null;
-  const latestReleaseDate = latestRelease ? new Date(latestRelease.published_at || latestRelease.created_at).getTime() : null;
+  const latestReleaseDate = latestRelease ? releaseTimestamp(latestRelease) : null;
   const unreleasedCommits = latestReleaseDate
     ? commits.filter((c) => new Date(c.commit.author.date).getTime() > latestReleaseDate).length
     : commits.length;
