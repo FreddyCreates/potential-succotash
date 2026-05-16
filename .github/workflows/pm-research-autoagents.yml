@@ -1,25 +1,12 @@
 # ============================================================================
-# 🧭 pm-research-autoagents — Internal PM + Research Mini-Brains
+# pm-research-autoagents — Internal PM + Research Mini-Brains
 #
-# Runs 10 useful autoagents that publish actionable intelligence to GitHub
-# Issues (auto-updating dedicated issue threads instead of spamming new ones).
-#
-# 5 PM mini-brains:
-#   - Backlog Triage
-#   - Delivery Risk
-#   - CI Watch
-#   - Documentation Gap
-#   - Release Readiness
-#
-# 5 Research mini-brains:
-#   - Issue Theme Radar
-#   - Delivery Velocity
-#   - Workflow Reliability
-#   - Contributor Focus
-#   - Release Intelligence
+# Runs 10 useful autoagents that publish actionable intelligence to:
+#   - GitHub Issues (persistent/updatable threads)
+#   - Workflow artifacts (JSON + Markdown reports)
 # ============================================================================
 
-name: 🧭 pm-research-autoagents
+name: pm-research-autoagents
 
 on:
   schedule:
@@ -34,7 +21,7 @@ permissions:
 
 jobs:
   run-mini-brains:
-    name: 🧭 Run PM + Research Mini-Brains
+    name: Run PM + Research Mini-Brains
     runs-on: ubuntu-latest
 
     steps:
@@ -51,3 +38,13 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: node scripts/issue-agents/pm-research-autoagents.js
+
+      - name: Upload autoagent intelligence artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: pm-research-autoagents-report
+          path: |
+            dist/autoagents/pm-research-report.json
+            dist/autoagents/pm-research-report.md
+          if-no-files-found: error
+          retention-days: 14
