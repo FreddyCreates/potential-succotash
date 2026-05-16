@@ -299,6 +299,7 @@ async function main() {
     .slice(0, 5);
 
   const issueKeywords = bucketKeywords(issueOnly);
+  const staleIssueTarget = Math.min(5, staleIssues.length);
 
   const agents = [
     {
@@ -314,7 +315,9 @@ async function main() {
         `Issues missing labels: **${unlabeledIssues.length}**`,
       ],
       actions: [
-        `Triage the top ${Math.min(5, Math.max(staleIssues.length, 1))} stale issues first`,
+        staleIssueTarget > 0
+          ? `Triage the top ${staleIssueTarget} stale issues first`
+          : 'No stale issues right now; maintain freshness with daily triage',
         'Apply at least one scope label to each unlabeled issue',
         'Convert outdated requests into roadmap or close with rationale',
       ],
