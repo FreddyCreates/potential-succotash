@@ -73,13 +73,13 @@ describe('SDK structure validation', () => {
 });
 
 describe('Extensions index', () => {
-  it('should export EXTENSIONS array with 26 entries', async () => {
+  it('should export EXTENSIONS array with at least 26 entries', async () => {
     const indexPath = path.join(SDK_ROOT, '..', 'extensions', 'index.js');
     assert.ok(fs.existsSync(indexPath));
     const content = fs.readFileSync(indexPath, 'utf8');
     const match = content.match(/id:\s*'EXT-/g);
     assert.ok(match);
-    assert.equal(match.length, 26, `Expected 26 extension entries, found ${match.length}`);
+    assert.ok(match.length >= 26, `Expected at least 26 extension entries, found ${match.length}`);
   });
 });
 

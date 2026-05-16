@@ -17,6 +17,7 @@
 | **TerminalDispatch** | Fleet management for local, remote, and edge execution terminals |
 | **IntelligenceWire** | Point-to-point intelligence channels with metrics and encryption config |
 | **WorkforceRouter** | Skill-based agent assignment, rebalancing, and escalation |
+| **AISDKAdapters** | AI SDK provider adapters with normalized request routing |
 
 ---
 
@@ -35,6 +36,7 @@ import {
   TerminalDispatch,
   IntelligenceWire,
   WorkforceRouter,
+  AISDKAdapters,
 } from '@medina/intelligence-routing-sdk';
 ```
 
@@ -221,6 +223,37 @@ Returns all agents, their task counts, skills, and utilization stats.
 #### `escalate(taskId, reason)`
 
 Moves a task from its current agent to a higher-capability agent.
+
+---
+
+### AISDKAdapters
+
+```js
+const adapters = new AISDKAdapters();
+```
+
+#### `registerAdapter(providerId, config)`
+
+Registers or overrides an AI SDK provider adapter.
+
+#### `adapt(providerId, payload)`
+
+Normalizes provider-specific request payloads into a stable route envelope.
+
+```js
+const req = adapters.adapt('github-copilot', {
+  prompt: 'Review CI failure and propose a patch',
+  metadata: { task: 'ci-pilot-embodied' },
+});
+```
+
+#### `routeByCapabilities(requiredCapabilities)`
+
+Returns the best provider by capability coverage.
+
+#### `listAdapters()`
+
+Lists all registered adapters and capabilities.
 
 ---
 
