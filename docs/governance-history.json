@@ -264,5 +264,110 @@
     "risk": 0.25,
     "events": 43,
     "forbids": 0
+  },
+  {
+    "ts": "2026-05-14T03:38:34.534Z",
+    "decision": "ALLOW",
+    "risk": 0.25,
+    "events": 44,
+    "forbids": 0
+  },
+  {
+    "ts": "2026-05-14T08:40:44.835Z",
+    "decision": "ALLOW",
+    "risk": 0.25,
+    "events": 45,
+    "forbids": 0
+  },
+  {
+    "ts": "2026-05-14T14:20:34.959Z",
+    "decision": "ALLOW",
+    "risk": 0.25,
+    "events": 46,
+    "forbids": 0
+  },
+  {
+    "ts": "2026-05-14T19:49:11.526Z",
+    "decision": "ALLOW",
+    "risk": 0.25,
+    "events": 47,
+    "forbids": 0
+  },
+  {
+    "ts": "2026-05-15T03:41:58.394Z",
+    "decision": "ALLOW",
+    "risk": 0.25,
+    "events": 48,
+    "forbids": 0
+  },
+  {
+    "ts": "2026-05-15T08:52:18.062Z",
+    "decision": "ALLOW",
+    "risk": 0.25,
+    "events": 49,
+    "forbids": 0
+  },
+  {
+    "ts": "2026-05-15T14:12:06.553Z",
+    "decision": "ALLOW",
+    "risk": 0.25,
+    "events": 50,
+    "forbids": 0
+  },
+  {
+    "ts": "2026-05-15T19:42:02.890Z",
+    "decision": "ALLOW",
+    "risk": 0.25,
+    "events": 51,
+    "forbids": 0
+  },
+  {
+    "ts": "2026-05-16T03:26:19.921Z",
+    "decision": "ALLOW",
+    "risk": 0.25,
+    "events": 52,
+    "forbids": 0
+  },
+  {
+    "ts": "2026-05-16T08:08:02.090Z",
+    "decision": "ALLOW",
+    "risk": 0.25,
+    "events": 53,
+    "forbids": 0
+  },
+  {
+    "ts": "2026-05-16T13:27:36.006Z",
+    "decision": "ALLOW",
+    "risk": 0.25,
+    "events": 54,
+    "forbids": 0
+  },
+  {
+    "ts": "2026-05-16T19:08:25.441Z",
+    "decision": "ALLOW",
+    "risk": 0.25,
+    "events": 55,
+    "forbids": 0
+  },
+  {
+    "ts": "2026-05-17T03:41:00.105Z",
+    "decision": "ALLOW",
+    "risk": 0.25,
+    "events": 56,
+    "forbids": 0
+  },
+  {
+    "ts": "2026-05-17T08:24:19.405Z",
+    "decision": "ALLOW",
+    "risk": 0.25,
+    "events": 57,
+    "forbids": 0
+  },
+  {
+    "ts": "2026-05-17T13:25:51.007Z",
+    "decision": "ALLOW",
+    "risk": 0.25,
+    "events": 58,
+    "forbids": 0
   }
 ]

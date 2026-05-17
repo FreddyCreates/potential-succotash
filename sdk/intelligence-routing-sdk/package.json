@@ -11,7 +11,8 @@
     "./command-parser": "./src/command-parser.js",
     "./terminal-dispatch": "./src/terminal-dispatch.js",
     "./intelligence-wire": "./src/intelligence-wire.js",
-    "./workforce-router": "./src/workforce-router.js"
+    "./workforce-router": "./src/workforce-router.js",
+    "./ai-sdk-adapters": "./src/ai-sdk-adapters.js"
   },
   "keywords": [
     "ai",

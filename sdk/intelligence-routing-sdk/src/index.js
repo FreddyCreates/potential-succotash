@@ -3,3 +3,4 @@ export { CommandParser } from './command-parser.js';
 export { TerminalDispatch } from './terminal-dispatch.js';
 export { IntelligenceWire } from './intelligence-wire.js';
 export { WorkforceRouter } from './workforce-router.js';
+export { AISDKAdapters } from './ai-sdk-adapters.js';

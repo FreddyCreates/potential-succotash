@@ -35,7 +35,16 @@ const COMMANDS = [
   { name: "copy url",         syntax: "copy url",               desc: "Copy page URL" },
   { name: "tabs",             syntax: "tabs",                   desc: "List all open tabs" },
   { name: "close tab",        syntax: "close tab",              desc: "Close current tab" },
-  { name: "history",          syntax: "history",                desc: "Show command history" }
+  { name: "history",          syntax: "history",                desc: "Show command history" },
+  { name: "debug dom",        syntax: "debug dom",              desc: "Run developer DOM diagnostics" },
+  { name: "debug forms",      syntax: "debug forms",            desc: "Inspect forms, labels, and submission risks" },
+  { name: "extract code blocks", syntax: "extract code blocks", desc: "Extract code/pre snippets from the page" },
+  { name: "screen map",       syntax: "screen map",             desc: "Map viewport, interactive elements, and focus state" },
+  { name: "terminal help",    syntax: "terminal help",          desc: "List virtual terminal commands" },
+  { name: "terminal ls",      syntax: "terminal ls",            desc: "List virtual page filesystem paths" },
+  { name: "terminal cat",     syntax: "terminal cat <path>",    desc: "Read virtual page filesystem content" },
+  { name: "terminal ps",      syntax: "terminal ps",            desc: "Show active page process metrics" },
+  { name: "terminal grep",    syntax: "terminal grep <text>",   desc: "Search text in page body from terminal mode" }
 ];
 
 // ── Install / first-run defaults ────────────────────────────────────────────
