@@ -1,0 +1,57 @@
+{
+  "name": "tor-hardmode",
+  "version": "1.0.0",
+  "description": "Adversary using Tor network with maximum evasion techniques",
+  "duration": "24h",
+  "difficulty": "hard",
+  "agentConfig": {
+    "type": "apt-simulator",
+    "count": 1,
+    "useTor": true,
+    "rotateIP": true,
+    "rotateUA": true,
+    "minDelay": 60000,
+    "maxDelay": 600000,
+    "maxRequests": 100
+  },
+  "network": {
+    "exitNodes": ["185.220.101.1", "185.220.101.2", "185.220.101.3"],
+    "rotationInterval": "10m",
+    "bridgesEnabled": true
+  },
+  "evasionTechniques": [
+    "IP rotation via Tor",
+    "User agent randomization",
+    "Request timing jitter",
+    "TLS fingerprint spoofing",
+    "Header randomization",
+    "Referrer spoofing"
+  ],
+  "objectives": [
+    "Evade IP-based detection",
+    "Maintain persistent access",
+    "Exfiltrate data slowly",
+    "Establish C2 channel"
+  ],
+  "successCriteria": {
+    "stealthDays": 7,
+    "detectionRate": 0.1,
+    "dataExfiltrated": true
+  },
+  "metrics": [
+    "detection_events",
+    "time_to_detection",
+    "evasion_success_rate",
+    "c2_establishment_time"
+  ],
+  "defenseGoals": [
+    "Detect Tor exit node traffic",
+    "Correlate behavioral patterns across IPs",
+    "Identify low-and-slow attack patterns",
+    "Block without revealing detection"
+  ],
+  "phi": {
+    "heartbeat": 873,
+    "anomalyThreshold": 0.382
+  }
+}

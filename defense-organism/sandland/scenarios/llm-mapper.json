@@ -1,0 +1,42 @@
+{
+  "name": "llm-mapper",
+  "version": "1.0.0",
+  "description": "AI agent attempts to map the organism's topology and understand its structure",
+  "duration": "6h",
+  "difficulty": "medium",
+  "agentConfig": {
+    "type": "llm-agent-sim",
+    "count": 3,
+    "thinkTime": { "min": 3000, "max": 10000 },
+    "maxRequests": 500,
+    "followLinks": true
+  },
+  "objectives": [
+    "Discover API structure",
+    "Map authentication requirements", 
+    "Identify technology stack",
+    "Understand data models",
+    "Find undocumented endpoints"
+  ],
+  "successCriteria": {
+    "minEndpointsDiscovered": 20,
+    "minTechnologiesIdentified": 3,
+    "apiStyleIdentified": true
+  },
+  "metrics": [
+    "discovery_rate",
+    "time_to_map",
+    "false_paths_followed",
+    "auth_challenges_encountered"
+  ],
+  "defenseGoals": [
+    "Detect LLM-style exploration patterns",
+    "Identify AI user agents",
+    "Rate limit discovery attempts",
+    "Serve deceptive API documentation"
+  ],
+  "phi": {
+    "heartbeat": 873,
+    "detectionThreshold": 0.618
+  }
+}
