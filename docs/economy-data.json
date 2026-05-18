@@ -1,22 +1,22 @@
 {
-  "generated": "2026-05-13T06:26:34.872Z",
+  "generated": "2026-05-18T21:02:04.263Z",
   "bot": "organism-economy-bot",
   "summary": {
-    "total": 160,
-    "extensions": 37,
+    "total": 163,
+    "extensions": 40,
     "sdks": 18,
     "protocols": 97,
     "csvRegisters": 8,
-    "totalComplexity": 465
+    "totalComplexity": 471
   },
   "coverage": {
     "sdkCoverage": 100,
     "protocolCoverage": 0,
-    "registerCoverage": 57,
-    "overallCoverage": 52,
-    "extWithSDK": 37,
+    "registerCoverage": 60,
+    "overallCoverage": 53,
+    "extWithSDK": 40,
     "assetsWithProtocol": 0,
-    "extWithRegister": 21
+    "extWithRegister": 24
   },
   "topAssets": {
     "highestComplexitySDK": "@medina/medina-timers",
