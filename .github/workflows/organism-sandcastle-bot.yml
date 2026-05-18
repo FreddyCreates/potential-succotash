@@ -64,8 +64,29 @@ jobs:
           if git diff --cached --quiet; then
             echo "Sandcastle report unchanged"
           else
-            git commit -m "🏰 organism-sandcastle-bot: update BTL gate report [skip ci]"
-            git push
+            # Handle concurrent push race condition with retry logic
+            MAX_RETRIES=3
+            for i in $(seq 1 $MAX_RETRIES); do
+              git fetch origin main
+              if git rebase origin/main; then
+                # Re-add files after rebase (staging area is cleared)
+                git add docs/sandcastle-report.md docs/sandcastle-history.json
+                if git diff --cached --quiet; then
+                  echo "✅ Changes already integrated after rebase"
+                  exit 0
+                fi
+                git commit -m "🏰 organism-sandcastle-bot: update BTL gate report [skip ci]"
+                if git push; then
+                  echo "✅ Sandcastle report committed successfully"
+                  exit 0
+                fi
+              else
+                git rebase --abort 2>/dev/null || true
+              fi
+              echo "⚠️ Attempt $i failed, retrying..."
+              sleep $((i * 2))
+            done
+            echo "⚠️ Push failed after $MAX_RETRIES attempts - another workflow may have updated first"
           fi
 
       - name: Block on failure
