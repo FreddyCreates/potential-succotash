@@ -352,3 +352,31 @@ export { VisualIntelligenceProtocol, VISUAL_TASKS, MODEL_ARCHITECTURES, IMAGE_FO
 
 // CYC-001: Sovereign Cycle Allocator Protocol — self-funding through φ-mathematics
 export { SovereignCycleAllocatorProtocol, CYCLE_CONSTANTS, ALLOCATION_PURPOSES, GENERATION_SOURCES, AllocationRecord, GenerationEvent, SovereignCycleAllocator, fibonacciAt, fibonacciRatio, projectGeneration, projectDecay } from './sovereign-cycle-allocator-protocol.js';
+
+// ─── Phase Verification Protocols ──────────────────────────────────────────────
+// Protocols for PHI-resonant identity verification and phase-based authentication.
+
+// P226: Phase Verification Protocol — PHI-resonant phase signatures for identity authentication
+export { P226PhaseVerificationProtocol, P226, computePhase, verifyPhase, HB, THRESHOLD } from './p226-phase-verification-protocol.js';
+
+// ─── Dark Cognition Layer ──────────────────────────────────────────────────────
+// The organism's subconscious: silent, unlogged, unobserved.
+// Dark cognition processes run here without emitting telemetry.
+// This is where shadow models, adversary classifiers, and defense systems operate.
+//
+// Dark Layer Properties:
+// - No logs, no traces, no events, no analytics
+// - Isolated scope: only internal entrypoints
+// - Ephemeral by default: state in memory or short-lived KV
+// - Non-governed: governance can invoke but not inspect
+//
+// Conscious Layer Properties:
+// - Fully observable: logs, traces, events, metrics
+// - Governed: all behavior subject to law and pipelines
+// - Durable memory: long-term state, reports, lineage
+//
+// Membrane (interface between layers):
+// - Conscious → Dark: sanitized fingerprints, abstracted profiles, cases
+// - Dark → Conscious: scores, tags, actions (distilled outputs only)
+// - No raw shadow memory crosses to conscious
+// - No dark logs to observability

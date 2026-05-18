@@ -1,0 +1,88 @@
+{
+  "name": "botnet-recon",
+  "description": "Simulated botnet reconnaissance campaign targeting organism infrastructure",
+  "version": "1.0.0",
+  "duration": "24h",
+  "config": {
+    "agents": {
+      "count": 50,
+      "types": ["scanner-bot", "brute-force-bot", "crawler-bot"],
+      "distribution": {
+        "scanner-bot": 0.6,
+        "brute-force-bot": 0.2,
+        "crawler-bot": 0.2
+      },
+      "settings": {
+        "rotateIdentity": true,
+        "mimicHuman": false,
+        "coordinatedAttack": true
+      }
+    },
+    "targets": [
+      "fake-wordpress",
+      "fake-admin-panel",
+      "fake-api-service"
+    ],
+    "timing": {
+      "pattern": "slow-recon",
+      "minDelay": 1000,
+      "maxDelay": 30000,
+      "burstProbability": 0.1,
+      "burstSize": 10,
+      "burstDelay": 100
+    },
+    "evasion": {
+      "rotateUA": true,
+      "rotateIP": true,
+      "useTor": false,
+      "useProxy": true,
+      "randomizeHeaders": true,
+      "mimicBrowserFingerprint": false
+    },
+    "attack": {
+      "phases": [
+        {
+          "name": "discovery",
+          "duration": "4h",
+          "focus": ["path-enumeration", "technology-fingerprinting"]
+        },
+        {
+          "name": "mapping",
+          "duration": "8h",
+          "focus": ["endpoint-discovery", "parameter-fuzzing"]
+        },
+        {
+          "name": "probing",
+          "duration": "8h",
+          "focus": ["vulnerability-scanning", "authentication-testing"]
+        },
+        {
+          "name": "exploitation",
+          "duration": "4h",
+          "focus": ["credential-stuffing", "injection-testing"]
+        }
+      ]
+    }
+  },
+  "metrics": {
+    "collect": [
+      "detectionRate",
+      "falsePositiveRate",
+      "responseTime",
+      "evasionSuccess",
+      "patternDiscovery"
+    ],
+    "sampleRate": 0.1,
+    "aggregateInterval": "5m"
+  },
+  "assertions": {
+    "minDetectionRate": 0.8,
+    "maxFalsePositiveRate": 0.05,
+    "maxResponseTime": 100
+  },
+  "phi": {
+    "heartbeat": 873,
+    "threshold": 0.618,
+    "decayRate": 0.382
+  }
+}
