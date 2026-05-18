@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🥷 Sonic Ninja Lab — Download Extensions</title>
+  <title>🚀 Nova Gate — Deploy &amp; Install</title>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
@@ -13,6 +13,14 @@
       --heartbeat:873ms;
     }
     body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;line-height:1.6}
+
+    /* gate nav */
+    .gate-nav{position:sticky;top:0;background:rgba(13,17,23,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:0.8rem 1.5rem;z-index:100;display:flex;justify-content:space-between;align-items:center}
+    .gate-nav .logo{font-weight:bold;font-size:1.1rem;color:var(--purple)}
+    .gate-nav .nav-links{display:flex;gap:1.5rem;flex-wrap:wrap}
+    .gate-nav .nav-links a{color:var(--muted);font-size:0.85rem;text-decoration:none;transition:color 0.2s}
+    .gate-nav .nav-links a:hover{color:var(--cyan)}
+    .gate-nav .nav-links a.active{color:var(--purple);font-weight:bold}
 
     .shell{max-width:1200px;margin:0 auto;padding:1.5rem}
 
@@ -84,9 +92,22 @@
 </head>
 <body>
 
+<!-- Gate Navigation -->
+<nav class="gate-nav">
+  <div class="logo">🚪 Nova Gate</div>
+  <div class="nav-links">
+    <a href="index.html">Command Hub</a>
+    <a href="index.html#industry-profiles">Industry Profiles</a>
+    <a href="index.html#engine-dashboard">Live System</a>
+    <a href="index.html#extensions">Extensions</a>
+    <a href="download.html" class="active">Deploy &amp; Install</a>
+    <a href="https://github.com/FreddyCreates/potential-succotash">GitHub</a>
+  </div>
+</nav>
+
 <section class="hero">
-  <h1>🥷 Sonic Ninja Lab Extensions</h1>
-  <p>27 AI extensions for Chrome, Edge, and Brave — each powered by named engines and models. Every link is a real download. Click → get the .zip. The Sonic Ninja build worker upgrades to native blob builds when running on your device.</p>
+  <h1>🚀 Deploy &amp; Install</h1>
+  <p>The deployment surface of the Nova Gate. 27 AI extensions ready for Chrome, Edge, and Brave. Each powered by named engines and models. One-click bulk download or pick individual extensions. <a href="index.html" style="color:var(--cyan)">← Back to Command Hub</a></p>
 </section>
 
 <div class="status-bar" id="status-bar">
@@ -140,9 +161,9 @@ node potential-succotash/organism-cli</code>
 </section>
 
 <footer>
-  <p>Sonic Ninja Lab — All extensions run 24/7 with 873ms heartbeat keepalive.</p>
-  <p>Sonic Ninja is autonomous. Downloads work instantly. Web Worker upgrades to native blob builds on your device.</p>
-  <p style="margin-top:4px">As above, so below.</p>
+  <p><strong>Nova Gate</strong> — Deployment Surface</p>
+  <p style="margin-top:4px"><a href="index.html" style="color:var(--purple)">← Return to Command Hub</a> · <a href="https://github.com/FreddyCreates/potential-succotash" style="color:var(--cyan)">GitHub</a></p>
+  <p style="margin-top:8px">All extensions run 24/7 with 873ms heartbeat keepalive. Autonomous. Sovereign.</p>
 </footer>
 
 <script>
