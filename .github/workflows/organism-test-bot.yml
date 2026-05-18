@@ -176,11 +176,13 @@ jobs:
             for i in $(seq 1 $MAX_RETRIES); do
               git fetch origin main
               if git rebase origin/main; then
+                # Re-add files after rebase (staging area is cleared)
+                git add docs/test-dashboard.md
                 if git diff --cached --quiet; then
                   echo "✅ Changes already integrated after rebase"
                   exit 0
                 fi
-                git commit -m "🧪 organism-test-bot: update health dashboard [skip ci]" 2>/dev/null || true
+                git commit -m "🧪 organism-test-bot: update health dashboard [skip ci]"
                 if git push; then
                   echo "✅ Dashboard committed successfully"
                   exit 0

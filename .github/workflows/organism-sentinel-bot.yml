@@ -77,11 +77,13 @@ jobs:
             for i in $(seq 1 $MAX_RETRIES); do
               git fetch origin main
               if git rebase origin/main; then
+                # Re-add files after rebase (staging area is cleared)
+                git add docs/security-report.md docs/security-audit.json
                 if git diff --cached --quiet; then
                   echo "✅ Changes already integrated after rebase"
                   exit 0
                 fi
-                git commit -m "🛡️ organism-sentinel-bot: update security report [skip ci]" 2>/dev/null || true
+                git commit -m "🛡️ organism-sentinel-bot: update security report [skip ci]"
                 if git push; then
                   echo "✅ Security report committed successfully"
                   exit 0
