@@ -171,9 +171,25 @@ jobs:
           if git diff --cached --quiet; then
             echo "Dashboard unchanged"
           else
-            # Handle concurrent push race condition
-            git fetch origin main
-            git rebase origin/main || git rebase --abort
-            git commit -m "🧪 organism-test-bot: update health dashboard [skip ci]" || true
-            git push || echo "⚠️ Push failed - another workflow may have updated first"
+            # Handle concurrent push race condition with retry logic
+            MAX_RETRIES=3
+            for i in $(seq 1 $MAX_RETRIES); do
+              git fetch origin main
+              if git rebase origin/main; then
+                if git diff --cached --quiet; then
+                  echo "✅ Changes already integrated after rebase"
+                  exit 0
+                fi
+                git commit -m "🧪 organism-test-bot: update health dashboard [skip ci]" 2>/dev/null || true
+                if git push; then
+                  echo "✅ Dashboard committed successfully"
+                  exit 0
+                fi
+              else
+                git rebase --abort 2>/dev/null || true
+              fi
+              echo "⚠️ Attempt $i failed, retrying..."
+              sleep $((i * 2))
+            done
+            echo "⚠️ Push failed after $MAX_RETRIES attempts - another workflow may have updated first"
           fi
