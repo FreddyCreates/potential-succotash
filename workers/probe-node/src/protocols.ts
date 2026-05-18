@@ -428,6 +428,8 @@ export class MLOpsProtocol {
 }
 
 // CYC-001: Sovereign Cycle Allocator
+// Note: This protocol is stateless and uses pure mathematical calculations
+// without requiring environment bindings, unlike other protocols
 export class CycleAllocatorProtocol {
   private readonly PHI = 1.618033988749895;
   private readonly BASE_RATE = 1000000;

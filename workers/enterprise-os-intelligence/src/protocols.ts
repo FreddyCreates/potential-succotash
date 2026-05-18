@@ -116,13 +116,47 @@ export class DataFabricProtocol {
     };
   }
 
-  async aggregate(query: string): Promise<ProtocolResult> {
+  async aggregate(aggregationType: 'count' | 'sum' | 'avg' | 'min' | 'max', column: string, tableName: string): Promise<ProtocolResult> {
+    // Validate aggregation type and use parameterized table/column names
+    const validAggregations = ['count', 'sum', 'avg', 'min', 'max'];
+    const validTables = ['enterprise_data', 'audit_log'];
+    const validColumns = ['id', 'source', 'timestamp', 'value'];
+    
+    if (!validAggregations.includes(aggregationType)) {
+      return {
+        success: false,
+        error: `Invalid aggregation type. Valid: ${validAggregations.join(', ')}`,
+        protocol: 'DAT-001',
+        timestamp: Date.now()
+      };
+    }
+    
+    if (!validTables.includes(tableName)) {
+      return {
+        success: false,
+        error: 'Invalid table name',
+        protocol: 'DAT-001',
+        timestamp: Date.now()
+      };
+    }
+    
+    if (!validColumns.includes(column)) {
+      return {
+        success: false,
+        error: 'Invalid column name',
+        protocol: 'DAT-001',
+        timestamp: Date.now()
+      };
+    }
+    
     try {
-      const results = await this.env.DB.prepare(query).all();
+      // Safe aggregation using validated identifiers
+      const query = `SELECT ${aggregationType}(${column}) as result FROM ${tableName}`;
+      const results = await this.env.DB.prepare(query).first();
 
       return {
         success: true,
-        data: { results: results.results },
+        data: { result: results },
         protocol: 'DAT-001',
         timestamp: Date.now()
       };
