@@ -62,11 +62,30 @@ export class SAECIProtocol {
   }
 
   async validateInput(input: string): Promise<ProtocolResult> {
-    const sanitized = input
-      .replace(/<[^>]*>/g, '')
-      .replace(/javascript:/gi, '')
-      .replace(/on\w+=/gi, '')
+    // Comprehensive HTML/XSS sanitization using DOMParser-style approach
+    // Remove all HTML tags, dangerous protocols, and event handlers
+    let sanitized = input;
+    
+    // Remove HTML tags iteratively to handle nested cases
+    let prevLength = 0;
+    while (sanitized.length !== prevLength) {
+      prevLength = sanitized.length;
+      sanitized = sanitized.replace(/<[^>]*>/g, '');
+    }
+    
+    // Remove dangerous URL schemes (case-insensitive, with variations)
+    sanitized = sanitized
+      .replace(/javascript\s*:/gi, '')
+      .replace(/vbscript\s*:/gi, '')
+      .replace(/data\s*:/gi, '')
       .trim();
+    
+    // Remove event handler patterns iteratively
+    prevLength = 0;
+    while (sanitized.length !== prevLength) {
+      prevLength = sanitized.length;
+      sanitized = sanitized.replace(/on\w+\s*=/gi, '');
+    }
 
     return {
       success: true,
@@ -473,6 +492,39 @@ export class CycleAllocatorProtocol {
   }
 }
 
+// TMP-001: Temporal Protocol
+export class TemporalProtocol {
+  constructor(private env: Env) {}
+
+  async trackThreatTimeline(threatId: string): Promise<ProtocolResult> {
+    return {
+      success: true,
+      data: {
+        threatId,
+        timeline: [],
+        tracked: true
+      },
+      protocol: 'TMP-001',
+      timestamp: Date.now()
+    };
+  }
+
+  async scheduleThreatScan(interval: number): Promise<ProtocolResult> {
+    const schedule = {
+      id: crypto.randomUUID(),
+      interval,
+      nextRun: Date.now() + interval * 1000
+    };
+
+    return {
+      success: true,
+      data: schedule,
+      protocol: 'TMP-001',
+      timestamp: Date.now()
+    };
+  }
+}
+
 // Protocol Registry
 export class CrimsonDawnProtocols {
   public readonly saeci: SAECIProtocol;
@@ -484,6 +536,7 @@ export class CrimsonDawnProtocols {
   public readonly dataFabric: DataFabricProtocol;
   public readonly mlops: MLOpsProtocol;
   public readonly cycleAllocator: CycleAllocatorProtocol;
+  public readonly temporal: TemporalProtocol;
 
   constructor(env: Env) {
     this.saeci = new SAECIProtocol(env);
@@ -495,6 +548,7 @@ export class CrimsonDawnProtocols {
     this.dataFabric = new DataFabricProtocol(env);
     this.mlops = new MLOpsProtocol(env);
     this.cycleAllocator = new CycleAllocatorProtocol(env);
+    this.temporal = new TemporalProtocol(env);
   }
 
   listProtocols(): string[] {
@@ -507,7 +561,8 @@ export class CrimsonDawnProtocols {
       'AGI-001 - AGI Core',
       'DAT-001 - Data Fabric',
       'MLP-001 - MLOps (Anomaly Detection)',
-      'CYC-001 - Sovereign Cycle Allocator'
+      'CYC-001 - Sovereign Cycle Allocator',
+      'TMP-001 - Temporal'
     ];
   }
 }

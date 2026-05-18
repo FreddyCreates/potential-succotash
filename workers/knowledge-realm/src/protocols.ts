@@ -447,10 +447,29 @@ export class SAECIProtocol {
   constructor(private env: Env) {}
 
   async validateInput(input: string): Promise<ProtocolResult> {
-    const sanitized = input
-      .replace(/<script[^>]*>.*?<\/script>/gi, '')
-      .replace(/javascript:/gi, '')
+    // Comprehensive HTML/XSS sanitization
+    let sanitized = input;
+    
+    // Remove all HTML tags iteratively to handle nested/malformed cases
+    let prevLength = 0;
+    while (sanitized.length !== prevLength) {
+      prevLength = sanitized.length;
+      sanitized = sanitized.replace(/<[^>]*>/g, '');
+    }
+    
+    // Remove dangerous URL schemes (case-insensitive, with space variations)
+    sanitized = sanitized
+      .replace(/javascript\s*:/gi, '')
+      .replace(/vbscript\s*:/gi, '')
+      .replace(/data\s*:/gi, '')
       .trim();
+    
+    // Remove event handler patterns iteratively
+    prevLength = 0;
+    while (sanitized.length !== prevLength) {
+      prevLength = sanitized.length;
+      sanitized = sanitized.replace(/on\w+\s*=/gi, '');
+    }
 
     return {
       success: true,

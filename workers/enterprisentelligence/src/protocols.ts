@@ -257,13 +257,21 @@ export class DataFabricProtocol {
   }
 
   async queryData(filters: Record<string, unknown>): Promise<ProtocolResult> {
-    // Build query based on filters
-    let query = 'SELECT * FROM intelligence_data WHERE 1=1';
-    if (filters.source) query += ` AND source = '${filters.source}'`;
-    if (filters.limit) query += ` LIMIT ${filters.limit}`;
-
     try {
-      const results = await this.env.DB.prepare(query).all();
+      // Use parameterized query to prevent SQL injection
+      const limit = typeof filters.limit === 'number' && filters.limit > 0 && filters.limit <= 1000 
+        ? filters.limit : 100;
+      
+      let results;
+      if (filters.source && typeof filters.source === 'string') {
+        results = await this.env.DB.prepare(
+          'SELECT * FROM intelligence_data WHERE source = ? ORDER BY timestamp DESC LIMIT ?'
+        ).bind(filters.source, limit).all();
+      } else {
+        results = await this.env.DB.prepare(
+          'SELECT * FROM intelligence_data ORDER BY timestamp DESC LIMIT ?'
+        ).bind(limit).all();
+      }
       return {
         success: true,
         data: { results: results.results },

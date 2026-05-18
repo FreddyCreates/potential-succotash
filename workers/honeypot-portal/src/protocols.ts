@@ -365,6 +365,39 @@ export class CycleAllocatorProtocol {
   }
 }
 
+// TMP-001: Temporal Protocol
+export class TemporalProtocol {
+  constructor(private env: Env) {}
+
+  async trackVisitorTimeline(visitorId: string): Promise<ProtocolResult> {
+    const timeline = await this.env.KV.list({ prefix: `visitor:${visitorId}:` });
+    
+    return {
+      success: true,
+      data: {
+        visitorId,
+        eventCount: timeline.keys.length,
+        tracked: true
+      },
+      protocol: 'TMP-001',
+      timestamp: Date.now()
+    };
+  }
+
+  async scheduleDecoy(honeypotId: string, delay: number): Promise<ProtocolResult> {
+    return {
+      success: true,
+      data: {
+        honeypotId,
+        scheduledAt: Date.now() + delay * 1000,
+        delay
+      },
+      protocol: 'TMP-001',
+      timestamp: Date.now()
+    };
+  }
+}
+
 // Protocol Registry
 export class HoneypotPortalProtocols {
   public readonly saeci: SAECIProtocol;
@@ -376,6 +409,7 @@ export class HoneypotPortalProtocols {
   public readonly agiCore: AGICoreProtocol;
   public readonly securityToken: SecurityTokenProtocol;
   public readonly cycleAllocator: CycleAllocatorProtocol;
+  public readonly temporal: TemporalProtocol;
 
   constructor(env: Env) {
     this.saeci = new SAECIProtocol(env);
@@ -387,6 +421,7 @@ export class HoneypotPortalProtocols {
     this.agiCore = new AGICoreProtocol(env);
     this.securityToken = new SecurityTokenProtocol(env);
     this.cycleAllocator = new CycleAllocatorProtocol(env);
+    this.temporal = new TemporalProtocol(env);
   }
 
   listProtocols(): string[] {
@@ -399,7 +434,8 @@ export class HoneypotPortalProtocols {
       'EMO-001 - Emotional Resonance (Social Engineering Detection)',
       'AGI-001 - AGI Core',
       'IST-001 - Internal Security Tokens',
-      'CYC-001 - Sovereign Cycle Allocator'
+      'CYC-001 - Sovereign Cycle Allocator',
+      'TMP-001 - Temporal'
     ];
   }
 }

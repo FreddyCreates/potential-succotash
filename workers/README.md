@@ -224,9 +224,9 @@ export default {
 | `nova-sovereign` | IST, VOW, CMD, XRW, CYB, UND, TMP, EMO, COL, CYC | Command & Control |
 | `enterprise-os-intelligence` | KST, DAT, MLP, AISDK, SIM, NAR, SAE, IST, AGI, CYC | Enterprise BI |
 | `enterprisentelligence` | AGI, KST, EMO, TMP, DAT, EMB, SAE, IST, LNG, CYC | Decision Intelligence |
-| `crimson-dawn-4f6d` | SAE, IST, CRY, UND, NET, AGI, DAT, MLP, CYC | Threat Detection |
-| `honeypot-admin` | SAE, IST, DAT, CMD, AGI, NET, MLP, VIS, CYC | Honeypot Admin |
-| `honeypot-portal` | SAE, NET, DAT, LNG, CRY, EMO, AGI, IST, CYC | Honeypot Capture |
+| `crimson-dawn-4f6d` | SAE, IST, CRY, UND, NET, AGI, DAT, MLP, CYC, TMP | Threat Detection |
+| `honeypot-admin` | SAE, IST, DAT, CMD, AGI, NET, MLP, VIS, CYC, TMP | Honeypot Admin |
+| `honeypot-portal` | SAE, NET, DAT, LNG, CRY, EMO, AGI, IST, CYC, TMP | Honeypot Capture |
 | `probe-node` | NET, DAT, SAE, AGI, IST, CMD, TMP, MLP, CYC | Reconnaissance |
 
 ### Protocol Reference

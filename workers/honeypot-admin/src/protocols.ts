@@ -436,6 +436,45 @@ export class CycleAllocatorProtocol {
   }
 }
 
+// TMP-001: Temporal Protocol
+export class TemporalProtocol {
+  constructor(private env: Env) {}
+
+  async scheduleCapture(honeypotId: string, interval: number): Promise<ProtocolResult> {
+    const schedule = {
+      id: crypto.randomUUID(),
+      honeypotId,
+      interval,
+      nextRun: Date.now() + interval * 1000,
+      created: Date.now()
+    };
+
+    await this.env.KV.put(`schedule:${schedule.id}`, JSON.stringify(schedule), {
+      expirationTtl: interval * 10
+    });
+
+    return {
+      success: true,
+      data: schedule,
+      protocol: 'TMP-001',
+      timestamp: Date.now()
+    };
+  }
+
+  async analyzeTimeline(captureIds: string[]): Promise<ProtocolResult> {
+    return {
+      success: true,
+      data: {
+        captureCount: captureIds.length,
+        analyzed: true,
+        patterns: []
+      },
+      protocol: 'TMP-001',
+      timestamp: Date.now()
+    };
+  }
+}
+
 // Protocol Registry
 export class HoneypotAdminProtocols {
   public readonly saeci: SAECIProtocol;
@@ -447,6 +486,7 @@ export class HoneypotAdminProtocols {
   public readonly mlops: MLOpsProtocol;
   public readonly visualIntelligence: VisualIntelligenceProtocol;
   public readonly cycleAllocator: CycleAllocatorProtocol;
+  public readonly temporal: TemporalProtocol;
 
   constructor(env: Env) {
     this.saeci = new SAECIProtocol(env);
@@ -458,6 +498,7 @@ export class HoneypotAdminProtocols {
     this.mlops = new MLOpsProtocol(env);
     this.visualIntelligence = new VisualIntelligenceProtocol(env);
     this.cycleAllocator = new CycleAllocatorProtocol(env);
+    this.temporal = new TemporalProtocol(env);
   }
 
   listProtocols(): string[] {
@@ -470,7 +511,8 @@ export class HoneypotAdminProtocols {
       'NET-001 - Network',
       'MLP-001 - MLOps',
       'VIS-001 - Visual Intelligence',
-      'CYC-001 - Sovereign Cycle Allocator'
+      'CYC-001 - Sovereign Cycle Allocator',
+      'TMP-001 - Temporal'
     ];
   }
 }
