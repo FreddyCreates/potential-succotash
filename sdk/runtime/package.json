@@ -1,4 +1,37 @@
 {
+  "name": "@medina/organism-runtime",
+  "version": "1.0.0",
+  "description": "The runtime layer — CivitasRuntime coordinator, bootstrapCivitas activation, and hash routing",
+  "license": "MIT",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./civitas-runtime": "./civitas-runtime.js",
+    "./bootstrap": "./bootstrap.js"
+  },
+  "keywords": [
+    "organism",
+    "runtime",
+    "civitas",
+    "bootstrap",
+    "coordinator",
+    "routing"
+  ],
+  "files": [
+    "*.js"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FreddyCreates/potential-succotash.git",
+    "directory": "sdk/runtime"
+  },
+  "author": "Medina",
+  "publishConfig": {
+    "access": "public"
   "name": "@organism/runtime",
   "version": "0.1.0",
   "description": "Organism runtime environment for bootstrapping and executing AI workloads",

@@ -1,4 +1,41 @@
 {
+  "name": "@medina/organism-engines",
+  "version": "1.0.0",
+  "description": "The 4 foundational physics engines of Civitas — CHRONO, NEXORIS, QUANTUM_FLUX, COREOGRAPH",
+  "license": "MIT",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./chrono-engine": "./chrono-engine.js",
+    "./nexoris-engine": "./nexoris-engine.js",
+    "./quantum-flux-engine": "./quantum-flux-engine.js",
+    "./coreograph-engine": "./coreograph-engine.js"
+  },
+  "keywords": [
+    "organism",
+    "engines",
+    "chrono",
+    "nexoris",
+    "quantum",
+    "coreograph",
+    "phi",
+    "civitas"
+  ],
+  "files": [
+    "*.js"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FreddyCreates/potential-succotash.git",
+    "directory": "sdk/engines"
+  },
+  "author": "Medina",
+  "publishConfig": {
+    "access": "public"
   "name": "@organism/engines",
   "version": "0.1.0",
   "description": "Organism computational engines for AI processing pipelines",

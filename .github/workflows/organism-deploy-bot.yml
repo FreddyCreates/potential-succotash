@@ -144,6 +144,10 @@ jobs:
           if git diff --cached --quiet; then
             echo "Deployment manifest unchanged"
           else
+            git fetch origin main
+            git merge origin/main --no-edit || true
+            git commit -m "🌐 organism-deploy-bot: update deployment manifest [skip ci]"
+            git push || echo "Push failed, likely a race condition - changes will be picked up by next run"
             # Handle concurrent push race condition with retry logic
             MAX_RETRIES=3
             for i in $(seq 1 $MAX_RETRIES); do
