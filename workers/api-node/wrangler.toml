@@ -1,0 +1,103 @@
+# Nova API Node — Intelligent Worker
+# A Worker with AI, KV, D1, Vectorize, and Queue bindings
+# Making this Worker truly "alive" with multiple capabilities
+
+name = "nova-api-node"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# BINDINGS — These give the Worker "brains and hearts"
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# AI Binding — Worker can reason intelligently using LLMs
+[ai]
+binding = "AI"
+
+# KV Namespace — Worker remembers things between requests (short-term memory)
+# Create with: wrangler kv:namespace create "MEMORY"
+[[kv_namespaces]]
+binding = "MEMORY"
+id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+preview_id = "REPLACE_WITH_YOUR_PREVIEW_KV_NAMESPACE_ID"
+
+# D1 Database — Worker has structured knowledge (long-term memory)
+# Create with: wrangler d1 create nova-knowledge
+[[d1_databases]]
+binding = "DB"
+database_name = "nova-knowledge"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+
+# Vectorize Index — Worker can do semantic search / RAG
+# Create with: wrangler vectorize create nova-vectors --dimensions=768 --metric=cosine
+[[vectorize]]
+binding = "VECTORIZE"
+index_name = "nova-vectors"
+
+# Queue — Worker can delegate tasks asynchronously
+# Create with: wrangler queues create nova-tasks
+[[queues.producers]]
+binding = "TASK_QUEUE"
+queue = "nova-tasks"
+
+# Queue Consumer — Worker processes background tasks
+[[queues.consumers]]
+queue = "nova-tasks"
+max_batch_size = 10
+max_batch_timeout = 30
+
+# R2 Bucket — Worker can store/retrieve files (optional)
+# Create with: wrangler r2 bucket create nova-storage
+[[r2_buckets]]
+binding = "STORAGE"
+bucket_name = "nova-storage"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# ENVIRONMENT VARIABLES
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[vars]
+PHI = "1.618033988749895"
+HEARTBEAT_MS = "873"
+ORGANISM = "nova-gate"
+ENVIRONMENT = "production"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# DURABLE OBJECTS — Stateful, coordinated logic
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# Coordinator Durable Object for orchestration
+[[durable_objects.bindings]]
+name = "COORDINATOR"
+class_name = "CoordinatorObject"
+
+[[migrations]]
+tag = "v1"
+new_classes = ["CoordinatorObject"]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# TRIGGERS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# Cron trigger for scheduled intelligence tasks
+[triggers]
+crons = ["*/15 * * * *"]  # Every 15 minutes
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# DEVELOPMENT
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[dev]
+port = 8787
+local_protocol = "http"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# BUILD
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[build]
+command = "npm run build"
+
+[build.upload]
+format = "modules"

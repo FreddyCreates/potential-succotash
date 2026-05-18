@@ -1,0 +1,17 @@
+{
+  "name": "nova-api-node",
+  "version": "1.0.0",
+  "description": "Intelligent Worker with AI, KV, D1, Vectorize, Queue, and R2 bindings",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail",
+    "build": "wrangler deploy --dry-run"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240117.0",
+    "typescript": "^5.3.3",
+    "wrangler": "^3.24.0"
+  }
+}
