@@ -1,0 +1,41 @@
+{
+  "name": "@medina/organism-agents",
+  "version": "1.0.0",
+  "description": "The 12 agent organs of Civitas — ANIMUS (Mind), CORPUS (Body), SENSUS (Senses), MEMORIA (Memory)",
+  "license": "MIT",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./animus-agent": "./animus-agent.js",
+    "./corpus-agent": "./corpus-agent.js",
+    "./sensus-agent": "./sensus-agent.js",
+    "./memoria-agent": "./memoria-agent.js"
+  },
+  "keywords": [
+    "organism",
+    "agents",
+    "autonomous",
+    "AI",
+    "animus",
+    "corpus",
+    "sensus",
+    "memoria",
+    "civitas"
+  ],
+  "files": [
+    "*.js"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FreddyCreates/potential-succotash.git",
+    "directory": "sdk/agents"
+  },
+  "author": "Medina",
+  "publishConfig": {
+    "access": "public"
+  }
+}

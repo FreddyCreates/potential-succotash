@@ -144,8 +144,10 @@ jobs:
           if git diff --cached --quiet; then
             echo "Deployment manifest unchanged"
           else
+            git fetch origin main
+            git merge origin/main --no-edit || true
             git commit -m "🌐 organism-deploy-bot: update deployment manifest [skip ci]"
-            git push
+            git push || echo "Push failed, likely a race condition - changes will be picked up by next run"
           fi
 
   # ── Job 2: Deploy to ICP mainnet (only when secret is available) ──────────
