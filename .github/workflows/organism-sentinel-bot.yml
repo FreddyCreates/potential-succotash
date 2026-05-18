@@ -72,6 +72,9 @@ jobs:
           if git diff --cached --quiet; then
             echo "Security report unchanged"
           else
-            git commit -m "🛡️ organism-sentinel-bot: update security report [skip ci]"
-            git push
+            # Handle concurrent push race condition
+            git fetch origin main
+            git rebase origin/main || git rebase --abort
+            git commit -m "🛡️ organism-sentinel-bot: update security report [skip ci]" || true
+            git push || echo "⚠️ Push failed - another workflow may have updated first"
           fi

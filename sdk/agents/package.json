@@ -1,0 +1,27 @@
+{
+  "name": "@organism/agents",
+  "version": "0.1.0",
+  "description": "Organism AI agent framework with specialized agent implementations",
+  "main": "index.js",
+  "type": "commonjs",
+  "exports": {
+    ".": "./index.js",
+    "./animus": "./animus-agent.js",
+    "./corpus": "./corpus-agent.js",
+    "./memoria": "./memoria-agent.js",
+    "./sensus": "./sensus-agent.js"
+  },
+  "keywords": [
+    "organism",
+    "ai",
+    "agents",
+    "intelligence"
+  ],
+  "author": "Organism Contributors",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FreddyCreates/potential-succotash",
+    "directory": "sdk/agents"
+  }
+}
