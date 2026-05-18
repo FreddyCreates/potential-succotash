@@ -5,16 +5,30 @@
  * Real mini-brain fleet:
  *   - 5 Internal PM agents (repo-internal + GitHub signals)
  *   - 5 Research agents (repo analytics + GitHub analytics)
+ *   - Deep Investigation Layer (CI log collection + root cause analysis)
  *
  * Delivery modes:
  *   1) Upsert actionable GitHub Issues (stable threads)
  *   2) Write local intelligence report artifacts (JSON + Markdown)
+ *   3) Generate full workflow reliability research reports
+ *
+ * Native Tooling (NO external MCP dependencies):
+ *   - lib/ci-log-collector.js — GitHub Actions log collection
+ *   - lib/failure-pattern-analyzer.js — Root cause classification
+ *   - lib/deep-investigation-generator.js — Research report generation
+ *   - lib/pm-task-executor.js — PM task automation
  */
 
 'use strict';
 
 const fs = require('fs');
 const path = require('path');
+
+// Native tooling imports
+const { createCILogCollector } = require('./lib/ci-log-collector');
+const { analyzeWorkflowFailures, generateRootCauseSummary } = require('./lib/failure-pattern-analyzer');
+const { generateWorkflowReliabilityReport, writeResearchReport } = require('./lib/deep-investigation-generator');
+const { createPMTaskExecutor } = require('./lib/pm-task-executor');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -486,6 +500,98 @@ async function main() {
 
   const reportPaths = writeLocalReport(agents);
   console.log(`Wrote report artifacts: ${path.relative(ROOT, reportPaths.jsonPath)}, ${path.relative(ROOT, reportPaths.mdPath)}`);
+
+  // ============================================================================
+  // DEEP INVESTIGATION LAYER — Native CI Log Collection & Root Cause Analysis
+  // ============================================================================
+  console.log('\n=== Running Deep Investigation Layer ===');
+
+  // Initialize native tooling
+  const ciCollector = createCILogCollector(owner, repo, token);
+  const pmExecutor = createPMTaskExecutor({ owner, repo, token, gh });
+
+  // Collect workflow failures for least reliable workflows
+  const deepInvestigationResults = [];
+  const workflowsToInvestigate = leastReliable.filter((wf) => wf.failureRate > 0.5).slice(0, 5);
+
+  console.log(`Investigating ${workflowsToInvestigate.length} workflows with >50% failure rate...`);
+
+  for (const workflow of workflowsToInvestigate) {
+    try {
+      console.log(`  Collecting logs for: ${workflow.name}`);
+      const failures = await ciCollector.collectWorkflowFailures(workflow.name, 3);
+      const summary = generateRootCauseSummary(failures);
+      deepInvestigationResults.push(summary);
+      console.log(`    → ${summary.classification} failure, root cause: ${summary.rootCause?.category || 'unknown'}`);
+    } catch (err) {
+      console.log(`    → Error collecting logs: ${err.message}`);
+      deepInvestigationResults.push({
+        workflowName: workflow.name,
+        totalFailures: workflow.failure,
+        classification: 'unknown',
+        rootCause: null,
+        error: err.message,
+      });
+    }
+  }
+
+  // Generate comprehensive research report if we have findings
+  if (deepInvestigationResults.length > 0 && deepInvestigationResults.some((r) => r.rootCause)) {
+    console.log('\nGenerating Workflow Reliability Research Report...');
+    const researchReport = generateWorkflowReliabilityReport({
+      workflowSummaries: deepInvestigationResults,
+      repository: `${owner}/${repo}`,
+      workflowStats: {
+        total: workflowCounts.size,
+        leastReliable,
+        recentFailures: recentFailures.length,
+      },
+    });
+    const reportPath = writeResearchReport(researchReport, ROOT);
+    console.log(`  → Wrote research report: ${path.relative(ROOT, reportPath)}`);
+  }
+
+  // ============================================================================
+  // PM TASK EXECUTION — Automated PM Actions
+  // ============================================================================
+  console.log('\n=== Executing PM Tasks ===');
+
+  // Ensure all scope and criticality labels exist
+  await pmExecutor.ensureAllLabels();
+  console.log('  ✓ Ensured all scope and criticality labels');
+
+  // Apply scope labels to unlabeled issues
+  const labelingResults = await pmExecutor.applyUnlabeledIssueScopes(issueOnly);
+  console.log(`  ✓ Processed ${labelingResults.total} unlabeled issues (${labelingResults.results.filter((r) => r.status === 'labeled').length} labeled)`);
+
+  // Generate PM triage reports
+  const stalePREscalation = pmExecutor.generateStalePREscalation(pulls);
+  const draftSplitRecs = pmExecutor.generateDraftSplitRecommendations(pulls);
+  const staleIssueTriage = pmExecutor.generateStaleIssueTriage(issueOnly);
+  const healthAlert = pmExecutor.generateHealthAlert(internalSignals.health);
+
+  // Write PM triage summary to dist
+  const pmTriageSummary = {
+    generatedAt: new Date().toISOString(),
+    stalePRs: stalePREscalation,
+    draftPRs: draftSplitRecs,
+    staleIssues: staleIssueTriage,
+    healthAlert,
+    labelingResults,
+  };
+
+  const pmTriagePath = path.join(ROOT, 'dist', 'autoagents', 'pm-triage-summary.json');
+  fs.writeFileSync(pmTriagePath, JSON.stringify(pmTriageSummary, null, 2));
+  console.log(`  ✓ Wrote PM triage summary: ${path.relative(ROOT, pmTriagePath)}`);
+
+  // Log PM task status
+  console.log('\n=== PM Task Status ===');
+  console.log(`  • Stale PRs requiring escalation: ${stalePREscalation.total} (${stalePREscalation.slaBreach} SLA breaches)`);
+  console.log(`  • Long-lived drafts needing split: ${draftSplitRecs.longLived}`);
+  console.log(`  • Stale issues for triage: ${staleIssueTriage.stale}`);
+  console.log(`  • Health alert status: ${healthAlert.alert}`);
+
+  // ============================================================================
 
   await Promise.all([
     ensureLabel('autoagent', '5319e7', 'Auto-generated by internal mini-brain agents'),
