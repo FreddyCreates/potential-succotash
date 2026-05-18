@@ -194,3 +194,80 @@ Workers can operate at different intelligence levels based on their bindings:
 All Workers share the organism's coherence constants:
 - `PHI = 1.618033988749895` — Golden ratio
 - `HEARTBEAT_MS = 873` — Coherent heartbeat interval
+
+## Protocol Bindings
+
+Each Worker has a `protocols.ts` file providing access to 10 core protocols. Import and use via:
+
+```typescript
+import { createProtocols } from './protocols';
+
+export default {
+  async fetch(request: Request, env: Env): Promise<Response> {
+    const protocols = createProtocols(env);
+    
+    // Use protocols
+    const result = await protocols.agiCore.reason('context', 'goal');
+    return Response.json(result);
+  }
+};
+```
+
+### Protocol Summary by Worker
+
+| Worker | Primary Protocols | Focus Area |
+|--------|-------------------|------------|
+| `api-node` | LNG, AISDK, DAT, EMB, SAE, IST, NET, AGI, MLP, CYC | API & Integration |
+| `coordinator` | CMD, COL, TMP, MUT, DRM, AGI, SAE, NET, IST, CYC | Orchestration |
+| `gate-node` | IST, SAE, CRY, NET, DAT, LNG, MLP, EMB, AGI, CYC | Security Gateway |
+| `knowledge-realm` | KST, DAT, LNG, EMB, AGI, VIS, AUD, NET, SAE, CYC | Knowledge Management |
+| `nova-sovereign` | IST, VOW, CMD, XRW, CYB, UND, TMP, EMO, COL, CYC | Command & Control |
+| `enterprise-os-intelligence` | KST, DAT, MLP, AISDK, SIM, NAR, SAE, IST, AGI, CYC | Enterprise BI |
+| `enterprisentelligence` | AGI, KST, EMO, TMP, DAT, EMB, SAE, IST, LNG, CYC | Decision Intelligence |
+| `crimson-dawn-4f6d` | SAE, IST, CRY, UND, NET, AGI, DAT, MLP, CYC | Threat Detection |
+| `honeypot-admin` | SAE, IST, DAT, CMD, AGI, NET, MLP, VIS, CYC | Honeypot Admin |
+| `honeypot-portal` | SAE, NET, DAT, LNG, CRY, EMO, AGI, IST, CYC | Honeypot Capture |
+| `probe-node` | NET, DAT, SAE, AGI, IST, CMD, TMP, MLP, CYC | Reconnaissance |
+
+### Protocol Reference
+
+| Code | Name | Description |
+|------|------|-------------|
+| `AGI-001` | AGI Core | Meta-learning, reasoning, coordination |
+| `AISDK-001` | AI SDK | 14+ AI provider routing |
+| `AUD-001` | Audio Intelligence | ASR, TTS, audio processing |
+| `CMD-001` | Alpha Commander | Command and control |
+| `COL-001` | Collective Consciousness | Multi-entity sync |
+| `CRY-001` | Cryptographic Intelligence | Encryption, signatures, ZK proofs |
+| `CYB-001` | Cyborg Integration | 7-layer neural bridge |
+| `CYC-001` | Sovereign Cycle Allocator | φ-based cycle generation |
+| `DAT-001` | Data Fabric | Lineage, quality, storage |
+| `DRM-001` | Dream | Subconscious processing |
+| `EMB-001` | Embedding | Vector embeddings |
+| `EMO-001` | Emotional Resonance | VAD model, empathy engine |
+| `IST-001` | Internal Security Tokens | 5-tier access control |
+| `KST-001` | Knowledge Synthesis | Ontology, synthesis |
+| `LNG-001` | Language Bridge | 50+ languages, NLP |
+| `MLP-001` | MLOps | Pipelines, drift detection |
+| `MUT-001` | Mutation Engine | Evolution strategies |
+| `NAR-001` | Narrative Intelligence | Story structures |
+| `NET-001` | Neural Network/Network | Model inference, routing |
+| `SAE-001` | SAECI | Safety, ethics, containment |
+| `SIM-001` | Simulation Engine | Economic, social simulation |
+| `TMP-001` | Temporal | Time scales, prediction |
+| `UND-001` | Undead Intelligence | Threat persistence |
+| `VIS-001` | Visual Intelligence | Detection, generation |
+| `VOW-001` | VOWS | Internal commitments |
+| `XRW-001` | XR World | VR/AR embodiments |
+
+### CYC-001 Cycle Generation Formula
+
+All Workers include the Sovereign Cycle Allocator with φ-mathematics:
+
+```
+Generation = coherence² × φ × base_rate
+Work Bonus = work_units × φ⁻¹
+Decay Rate = φ⁻² per neglect period
+```
+
+Where φ = 1.618033988749895 (golden ratio)
