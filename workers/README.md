@@ -1,12 +1,61 @@
 # Cloudflare Workers Infrastructure
 
-This directory contains intelligent Workers with AI, memory, and coordination capabilities.
+This directory contains **11 intelligent Workers** with AI, memory, and coordination capabilities.
+
+## 🚀 Quick Start
+
+```bash
+# 1. Create all Cloudflare resources
+./scripts/setup-cloudflare-resources.sh
+
+# 2. Update wrangler.toml files with the IDs from step 1
+
+# 3. Deploy all Workers
+./scripts/deploy-all-workers.sh
+```
 
 ## Workers Overview
 
+| # | Worker | Route | Role | Bindings |
+|---|--------|-------|------|----------|
+| 1 | `api-node` | api.*, tools.* | API Gateway | AI, KV, D1, Vectorize, Queue, R2, DO |
+| 2 | `coordinator` | - | Orchestration | AI, KV, D1, DO |
+| 3 | `gate-node` | gate.* | Gateway | AI, KV, D1, Vectorize, Queue, R2 |
+| 4 | `knowledge-realm` | realm.*, institute.* | Knowledge | AI, KV, D1, Vectorize, Queue, R2 |
+| 5 | `nova-sovereign` | nova.* | Command | AI, KV, D1, Vectorize, Queue, R2, DO |
+| 6 | `enterprise-os-intelligence` | enterprise.* | Enterprise | AI, KV, D1, Vectorize, Queue, R2 |
+| 7 | `enterprisentelligence` | innovation.* | Innovation | AI, KV, D1, Vectorize, Queue, R2 |
+| 8 | `crimson-dawn-4f6d` | research.* | Research | AI, KV, D1, Vectorize, Queue, R2 |
+| 9 | `honeypot-admin` | admin.* 🍯 | Honeypot | AI, KV, D1, Vectorize, Queue, R2 |
+| 10 | `honeypot-portal` | portal.* 🍯 | Honeypot | AI, KV, D1, Vectorize, Queue, R2 |
+| 11 | `probe-node` | probe1.* 🍯 | Honeypot | AI, KV, D1, Vectorize, Queue, R2 |
+
+✅ `patient-shape-7a30` already has AI binding
+
+## Shared Resources
+
+All Workers share these Cloudflare resources:
+
+| Resource | Name | Purpose |
+|----------|------|---------|
+| D1 Database | `medinatech-db` | Structured data for all Workers |
+| Vectorize Index | `medinatech-index` | Semantic search (768 dimensions, cosine) |
+| R2 Bucket | `medinatech-assets` | File storage |
+| Queue | `honeypot-events` | Honeypot event pipeline |
+| Queue | `ai-analysis` | AI analysis pipeline |
+| KV | `HONEYPOT_LOGS` | Attack logging |
+| KV | `SESSION_STORE` | Session state |
+| KV | `IP_BLOCKLIST` | Threat intelligence |
+| KV | `THREAT_INTEL` | Threat patterns |
+| KV | `KNOWLEDGE_CACHE` | Knowledge caching |
+| KV | `CONFIG_STORE` | Configuration |
+| KV | `SCAN_PATTERNS` | Scanner fingerprints |
+
+## Detailed Worker Descriptions
+
 ### 🧠 Nova API Node (`workers/api-node`)
 
-A fully-bound intelligent Worker with:
+The primary API gateway with full intelligence stack.
 
 | Binding | Type | Purpose |
 |---------|------|---------|
@@ -18,20 +67,9 @@ A fully-bound intelligent Worker with:
 | `STORAGE` | R2 Bucket | File storage |
 | `COORDINATOR` | Durable Object | Stateful coordination |
 
-**Endpoints:**
-- `GET /health` — Health check with binding status
-- `POST /chat` — AI-powered chat with memory context
-- `GET/POST/DELETE /memory` — KV memory operations
-- `GET/POST /knowledge` — D1 fact storage
-- `POST /search` — Semantic vector search
-- `POST /index` — Index content for search
-- `POST /task` — Delegate background tasks
-- `GET/PUT/DELETE /files/*` — R2 file storage
-- `POST /init` — Initialize database schema
-
 ### 🎯 Nova Coordinator (`workers/coordinator`)
 
-Workflow orchestration with Durable Objects:
+Workflow orchestration with Durable Objects.
 
 | Durable Object | Purpose |
 |----------------|---------|
@@ -39,16 +77,36 @@ Workflow orchestration with Durable Objects:
 | `AgentCoordinator` | Agent registration and task assignment |
 | `SessionManager` | WebSocket-enabled session state |
 
-**Endpoints:**
-- `GET /health` — Health check
-- `POST /workflow/create` — Create new workflow
-- `POST /workflow/start` — Start workflow execution
-- `GET /workflow/status` — Get workflow status
-- `POST /agent/register` — Register an agent
-- `POST /agent/assign` — Assign task to agent
-- `GET /agent/agents` — List all agents
-- `GET/POST/DELETE /session/session` — Session management
-- `WS /session/session` — WebSocket for real-time updates
+### 🚪 Gate Node (`workers/gate-node`)
+
+The gateway to the organism with AI reasoning and route control.
+
+### 📚 Knowledge Realm (`workers/knowledge-realm`)
+
+Knowledge repository with AI-powered search and synthesis.
+
+### 👑 Nova Sovereign (`workers/nova-sovereign`)
+
+Sovereign command center with full AI capabilities and command sessions.
+
+### 🏢 Enterprise OS Intelligence (`workers/enterprise-os-intelligence`)
+
+Enterprise-grade AI operations and analytics.
+
+### 💡 Enterprisentelligence (`workers/enterprisentelligence`)
+
+Innovation and research AI operations.
+
+### 🔬 Crimson Dawn (`workers/crimson-dawn-4f6d`)
+
+Research and analysis AI operations.
+
+### 🍯 Honeypots (`workers/honeypot-*`, `workers/probe-node`)
+
+Intelligent honeypots with AI-powered threat analysis:
+- `honeypot-admin` — Admin panel honeypot
+- `honeypot-portal` — Portal honeypot
+- `probe-node` — Probe/scanner detection
 
 ## Pages Functions (`functions/`)
 
@@ -61,42 +119,26 @@ Serverless API endpoints that run alongside the static site:
 
 ### Prerequisites
 
-1. Create bindings in Cloudflare Dashboard:
+1. **Run the setup script:**
    ```bash
-   # KV Namespace
-   wrangler kv:namespace create "MEMORY"
-   
-   # D1 Database
-   wrangler d1 create nova-knowledge
-   
-   # Vectorize Index
-   wrangler vectorize create nova-vectors --dimensions=768 --metric=cosine
-   
-   # Queue
-   wrangler queues create nova-tasks
-   
-   # R2 Bucket
-   wrangler r2 bucket create nova-storage
+   ./scripts/setup-cloudflare-resources.sh
    ```
 
-2. Update `wrangler.toml` with your binding IDs
+2. **Copy the IDs** from the output and update each `wrangler.toml`
 
-3. Set GitHub Secrets:
+3. **Set GitHub Secrets:**
    - `CLOUDFLARE_API_TOKEN`
    - `CLOUDFLARE_ACCOUNT_ID`
 
 ### Manual Deploy
 
 ```bash
-# Deploy API Node
+# Deploy a single Worker
 cd workers/api-node
-npm install
 wrangler deploy
 
-# Deploy Coordinator
-cd workers/coordinator
-npm install
-wrangler deploy
+# Deploy all Workers
+./scripts/deploy-all-workers.sh
 ```
 
 ### CI/CD Deploy
@@ -106,35 +148,32 @@ Push to `main` branch with changes in `workers/` or `functions/` directories.
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                      Nova Gate (Pages)                       │
-├─────────────────────────────────────────────────────────────┤
-│  functions/                                                  │
-│  ├── _middleware.ts    (coherence headers)                  │
-│  └── api/[[path]].ts   (intelligent API)                    │
-└─────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                     Workers (Intelligence)                   │
-├──────────────────────────┬──────────────────────────────────┤
-│     nova-api-node        │       nova-coordinator           │
-│     ─────────────        │       ────────────────           │
-│  • AI reasoning          │  • WorkflowOrchestrator DO       │
-│  • KV memory             │  • AgentCoordinator DO           │
-│  • D1 knowledge          │  • SessionManager DO             │
-│  • Vectorize search      │  • WebSocket support             │
-│  • Queue tasks           │                                  │
-│  • R2 storage            │                                  │
-│  • Coordinator DO        │                                  │
-└──────────────────────────┴──────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                     Cloudflare Services                      │
-├─────────────────────────────────────────────────────────────┤
-│  Workers AI │ KV │ D1 │ Vectorize │ Queues │ R2 │ DO        │
-└─────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│                         Cloudflare Edge                          │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐           │
+│  │ gate-    │ │ api-     │ │knowledge-│ │ nova-    │           │
+│  │ node     │→│ node     │→│ realm    │→│ sovereign│           │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘           │
+│       │            │            │            │                  │
+│       ├────────────┴────────────┴────────────┤                  │
+│       │                                       │                  │
+│       ▼                                       ▼                  │
+│  ┌──────────┐                          ┌──────────┐             │
+│  │honeypot- │ ┌──────────┐ ┌──────────┐│ enter-   │             │
+│  │admin 🍯  │ │honeypot- │ │probe-    ││ prise-os │             │
+│  └──────────┘ │portal 🍯 │ │node 🍯   │└──────────┘             │
+│               └──────────┘ └──────────┘                         │
+│                     │                                           │
+│                     ▼                                           │
+│  ┌─────────────────────────────────────────────────────────┐    │
+│  │              Shared Cloudflare Services                  │    │
+│  ├─────────────────────────────────────────────────────────┤    │
+│  │  Workers AI │ KV │ D1 │ Vectorize │ Queues │ R2 │ DO    │    │
+│  └─────────────────────────────────────────────────────────┘    │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ## Intelligence Levels

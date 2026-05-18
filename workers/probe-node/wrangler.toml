@@ -1,0 +1,64 @@
+# Probe Node — 🍯 Intelligence Probe Worker
+# Route: probe1.*
+# Probe honeypot with AI-powered analysis
+
+name = "probe-node"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# BINDINGS — Probe Intelligence Stack
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# AI Binding — Probe analysis and pattern detection
+[ai]
+binding = "AI"
+
+# KV Namespace — Probe logs and intelligence
+[[kv_namespaces]]
+binding = "PROBE_LOGS"
+id = "REPLACE_WITH_KV_ID"
+
+[[kv_namespaces]]
+binding = "IP_BLOCKLIST"
+id = "REPLACE_WITH_KV_ID"
+
+[[kv_namespaces]]
+binding = "SCAN_PATTERNS"
+id = "REPLACE_WITH_KV_ID"
+
+# D1 Database — Probe data and scanner fingerprints
+[[d1_databases]]
+binding = "DB"
+database_name = "medinatech-db"
+database_id = "REPLACE_WITH_D1_ID"
+
+# Vectorize — Scanner pattern matching
+[[vectorize]]
+binding = "VECTORIZE"
+index_name = "medinatech-index"
+
+# Queue — Forward probe data for analysis
+[[queues.producers]]
+binding = "PROBE_QUEUE"
+queue = "honeypot-events"
+
+# R2 — Store probe payloads
+[[r2_buckets]]
+binding = "PROBES"
+bucket_name = "medinatech-assets"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# ENVIRONMENT
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[vars]
+PHI = "1.618033988749895"
+HEARTBEAT_MS = "873"
+ORGANISM = "probe-node"
+ROLE = "honeypot"
+HONEYPOT_TYPE = "probe"
+
+[dev]
+port = 8797

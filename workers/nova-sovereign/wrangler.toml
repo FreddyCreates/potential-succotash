@@ -1,0 +1,75 @@
+# Nova Sovereign — Intelligent Command Worker
+# Route: nova.*
+# The sovereign command center with full AI capabilities
+
+name = "nova-sovereign"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# BINDINGS — Full Sovereign Stack
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# AI Binding — Sovereign reasoning and decision making
+[ai]
+binding = "AI"
+
+# KV Namespace — Command state and context
+[[kv_namespaces]]
+binding = "SOVEREIGN_STATE"
+id = "REPLACE_WITH_KV_ID"
+
+[[kv_namespaces]]
+binding = "SESSION_STORE"
+id = "REPLACE_WITH_KV_ID"
+
+# D1 Database — Command history and policies
+[[d1_databases]]
+binding = "DB"
+database_name = "medinatech-db"
+database_id = "REPLACE_WITH_D1_ID"
+
+# Vectorize — Intent understanding and context
+[[vectorize]]
+binding = "VECTORIZE"
+index_name = "medinatech-index"
+
+# Queue — Delegate tasks to other Workers
+[[queues.producers]]
+binding = "COMMAND_QUEUE"
+queue = "ai-analysis"
+
+[[queues.producers]]
+binding = "EVENT_QUEUE"
+queue = "honeypot-events"
+
+# R2 — Artifact and result storage
+[[r2_buckets]]
+binding = "ARTIFACTS"
+bucket_name = "medinatech-assets"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# DURABLE OBJECTS — Stateful command sessions
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[[durable_objects.bindings]]
+name = "COMMAND_SESSION"
+class_name = "CommandSession"
+
+[[migrations]]
+tag = "v1"
+new_classes = ["CommandSession"]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# ENVIRONMENT
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[vars]
+PHI = "1.618033988749895"
+HEARTBEAT_MS = "873"
+ORGANISM = "nova-sovereign"
+ROLE = "sovereign"
+
+[dev]
+port = 8791

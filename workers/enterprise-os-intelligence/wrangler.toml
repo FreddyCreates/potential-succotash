@@ -1,0 +1,59 @@
+# Enterprise OS Intelligence — Enterprise AI Worker
+# Route: enterprise.*
+# Enterprise-grade AI operations
+
+name = "enterprise-os-intelligence"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# BINDINGS — Enterprise Stack
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# AI Binding — Enterprise reasoning and analysis
+[ai]
+binding = "AI"
+
+# KV Namespace — Enterprise session and config
+[[kv_namespaces]]
+binding = "ENTERPRISE_STATE"
+id = "REPLACE_WITH_KV_ID"
+
+[[kv_namespaces]]
+binding = "CONFIG_STORE"
+id = "REPLACE_WITH_KV_ID"
+
+# D1 Database — Enterprise data and analytics
+[[d1_databases]]
+binding = "DB"
+database_name = "medinatech-db"
+database_id = "REPLACE_WITH_D1_ID"
+
+# Vectorize — Enterprise search and retrieval
+[[vectorize]]
+binding = "VECTORIZE"
+index_name = "medinatech-index"
+
+# Queue — Enterprise workflows
+[[queues.producers]]
+binding = "WORKFLOW_QUEUE"
+queue = "ai-analysis"
+
+# R2 — Enterprise documents and reports
+[[r2_buckets]]
+binding = "ENTERPRISE_DOCS"
+bucket_name = "medinatech-assets"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# ENVIRONMENT
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[vars]
+PHI = "1.618033988749895"
+HEARTBEAT_MS = "873"
+ORGANISM = "enterprise-os-intelligence"
+ROLE = "enterprise"
+
+[dev]
+port = 8792

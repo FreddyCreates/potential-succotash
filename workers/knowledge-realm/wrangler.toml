@@ -1,0 +1,59 @@
+# Knowledge Realm — Intelligent Knowledge Worker
+# Route: realm.* + institute.*
+# The knowledge repository with AI-powered search and reasoning
+
+name = "knowledge-realm"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# BINDINGS — Knowledge Stack
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# AI Binding — Knowledge reasoning and synthesis
+[ai]
+binding = "AI"
+
+# KV Namespace — Hot knowledge cache
+[[kv_namespaces]]
+binding = "KNOWLEDGE_CACHE"
+id = "REPLACE_WITH_KV_ID"
+
+[[kv_namespaces]]
+binding = "SESSION_STORE"
+id = "REPLACE_WITH_KV_ID"
+
+# D1 Database — Structured knowledge graph
+[[d1_databases]]
+binding = "DB"
+database_name = "medinatech-db"
+database_id = "REPLACE_WITH_D1_ID"
+
+# Vectorize — Semantic search across all knowledge
+[[vectorize]]
+binding = "VECTORIZE"
+index_name = "medinatech-index"
+
+# Queue — Index updates and knowledge sync
+[[queues.producers]]
+binding = "INDEX_QUEUE"
+queue = "ai-analysis"
+
+# R2 — Document and media storage
+[[r2_buckets]]
+binding = "DOCUMENTS"
+bucket_name = "medinatech-assets"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# ENVIRONMENT
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[vars]
+PHI = "1.618033988749895"
+HEARTBEAT_MS = "873"
+ORGANISM = "knowledge-realm"
+ROLE = "knowledge"
+
+[dev]
+port = 8790
