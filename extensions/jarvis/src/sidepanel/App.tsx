@@ -14,6 +14,9 @@ import TabsPanel from './panels/TabsPanel';
 import InstallPanel from './panels/InstallPanel';
 import LogPanel from './panels/LogPanel';
 import PhantomPanel from './panels/PhantomPanel';
+import ResearchPanel from './panels/ResearchPanel';
+import OfflineAGIPanel from './panels/OfflineAGIPanel';
+import CloudflarePanel from './panels/CloudflarePanel';
 
 // CNS sections — each group is a logical nervous-system layer
 type TabDef = { id: string; label: string; section?: string };
@@ -28,6 +31,9 @@ const TABS: TabDef[] = [
   { id: '_intel',    label: '── INTEL',    section: 'divider' },
   { id: 'agents',    label: '🤖 Agents' },
   { id: 'agi',       label: '⚗️ AGI' },
+  { id: 'oagi',      label: '🧠 Mind' },
+  { id: 'research',  label: '🔬 Research' },
+  { id: 'cloud',     label: '☁️ Cloud' },
   { id: 'search',    label: '🔍 Search' },
   { id: 'phantom',   label: '👁 Phantom' },
   // ── MIND ─ memory, learning, monitoring ─────────────────────
@@ -91,6 +97,9 @@ export default function App() {
       case 'tabs':      return <TabsPanel />;
       case 'install':   return <InstallPanel />;
       case 'log':       return <LogPanel />;
+      case 'research':  return <ResearchPanel />;
+      case 'oagi':      return <OfflineAGIPanel />;
+      case 'cloud':     return <CloudflarePanel />;
       default:          return <ChatPanel />;
     }
   };

@@ -1,0 +1,59 @@
+# Gate Node — Intelligent Gateway Worker
+# Route: gate.*
+# The gateway to the organism with AI reasoning
+
+name = "gate-node"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# BINDINGS — Intelligence Stack
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# AI Binding — Gateway can reason and respond intelligently
+[ai]
+binding = "AI"
+
+# KV Namespace — Session and rate limiting memory
+[[kv_namespaces]]
+binding = "GATE_MEMORY"
+id = "REPLACE_WITH_KV_ID"
+
+[[kv_namespaces]]
+binding = "IP_BLOCKLIST"
+id = "REPLACE_WITH_KV_ID"
+
+# D1 Database — Access logs and routing rules
+[[d1_databases]]
+binding = "DB"
+database_name = "medinatech-db"
+database_id = "REPLACE_WITH_D1_ID"
+
+# Vectorize — Semantic route matching
+[[vectorize]]
+binding = "VECTORIZE"
+index_name = "medinatech-index"
+
+# Queue — Forward requests for async processing
+[[queues.producers]]
+binding = "EVENT_QUEUE"
+queue = "honeypot-events"
+
+# R2 — Static asset delivery
+[[r2_buckets]]
+binding = "ASSETS"
+bucket_name = "medinatech-assets"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# ENVIRONMENT
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[vars]
+PHI = "1.618033988749895"
+HEARTBEAT_MS = "873"
+ORGANISM = "gate-node"
+ROLE = "gateway"
+
+[dev]
+port = 8789

@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Organism AI — 26 AI Browser Extensions, 1-Click Install</title>
-<meta name="description" content="21 AI Chrome extensions + 5 Windows extensions. Install all 26 in one click. No server. No signup. Your browser becomes an AI powerhouse.">
+<title>Nova Gate — Sonic Ninja Lab Intelligence System</title>
+<meta name="description" content="The Nova Gate: unified command hub for Sonic Ninja Lab. 27 AI extensions, 93 protocols, industry profiles, and sovereign deployment. Interior Design + Architectural Intelligence ready.">
 <style>
   :root {
     --bg: #0a0a1a;
@@ -25,6 +25,142 @@
   }
   a { color: var(--accent2); text-decoration: none; }
   a:hover { text-decoration: underline; }
+
+  /* ── Gate Navigation ──────────────────────────────────────── */
+  .gate-nav {
+    position: sticky;
+    top: 0;
+    background: rgba(10, 10, 26, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    padding: 0.8rem 1.5rem;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .gate-nav .logo {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: var(--accent);
+  }
+  .gate-nav .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .gate-nav .nav-links a {
+    color: var(--dim);
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .gate-nav .nav-links a:hover { color: var(--accent2); }
+  .gate-nav .nav-links a.active { color: var(--accent); font-weight: bold; }
+
+  /* ── Command Profile Cards ──────────────────────────────────── */
+  .profile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.2rem;
+    margin-top: 1.5rem;
+  }
+  .profile-card {
+    background: linear-gradient(135deg, var(--card) 0%, rgba(18, 18, 42, 0.8) 100%);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .profile-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .profile-card:hover::before { opacity: 1; }
+  .profile-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .profile-card .profile-icon { font-size: 2rem; margin-bottom: 0.8rem; }
+  .profile-card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--text); }
+  .profile-card .profile-desc { font-size: 0.85rem; color: var(--dim); margin-bottom: 1rem; }
+  .profile-card .profile-stats {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.75rem;
+    color: var(--accent2);
+    flex-wrap: wrap;
+  }
+  .profile-card .profile-stats span {
+    background: rgba(0, 212, 170, 0.1);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 212, 170, 0.2);
+  }
+
+  /* ── Industry Profile Section ───────────────────────────────── */
+  .industry-section {
+    background: linear-gradient(180deg, var(--bg) 0%, rgba(18, 18, 42, 0.5) 50%, var(--bg) 100%);
+    padding: 3rem 1.5rem;
+    margin: 2rem 0;
+  }
+  .industry-profile {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: var(--card);
+    border: 2px solid var(--accent);
+    border-radius: 16px;
+    padding: 2rem;
+  }
+  .industry-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .industry-header .icon {
+    font-size: 3rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .industry-header h2 {
+    font-size: 1.8rem;
+    color: var(--text);
+  }
+  .industry-header .badge {
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: bold;
+  }
+  .workflow-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .workflow-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem;
+    transition: border-color 0.2s;
+  }
+  .workflow-card:hover { border-color: var(--accent2); }
+  .workflow-card .wf-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .workflow-card h4 { font-size: 0.95rem; margin-bottom: 0.3rem; color: var(--accent2); }
+  .workflow-card p { font-size: 0.8rem; color: var(--dim); }
 
   /* ── Hero ──────────────────────────────────────────── */
   .hero {
@@ -561,33 +697,217 @@
 </head>
 <body>
 
-<!-- ═══════════════════ HERO ═══════════════════ -->
+<!-- ═══════════════════ GATE NAVIGATION ═══════════════════ -->
+<nav class="gate-nav">
+  <div class="logo">🚪 Nova Gate</div>
+  <div class="nav-links">
+    <a href="#command-hub" class="active">Command Hub</a>
+    <a href="#industry-profiles">Industry Profiles</a>
+    <a href="#engine-dashboard">Live System</a>
+    <a href="#extensions">Extensions</a>
+    <a href="download.html">Deploy &amp; Install</a>
+    <a href="https://github.com/FreddyCreates/potential-succotash">GitHub</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════ GATE HERO ═══════════════════ -->
 <div class="hero">
-  <h1>🧬 <span class="accent">Organism AI</span><br>
-  <span class="accent2">26</span> AI Extensions. <span class="accent2">1</span> Click.</h1>
+  <h1>🚪 <span class="accent">Nova Gate</span><br>
+  <span class="accent2">Unified</span> Intelligence Command Hub</h1>
   <p class="subtitle">
-    Turn your browser into an AI powerhouse. 21 Chrome extensions + 5 Windows extensions — 
-    all installable in a single click. No server. No signup. No API keys.
-    Sovereign intelligence with 15 permanent Web Workers, mathematical reasoning, and chain-of-thought AI.
+    The Gate is your entry point to the Sonic Ninja Lab Intelligence System.
+    93 protocols, 27 AI extensions, 40+ engines, and sovereign deployment — 
+    all organized into one coherent organism with industry-specific command profiles.
   </p>
   <div class="hero-buttons">
-    <a class="btn btn-primary" href="dist/extensions/all-extensions.zip" download>📦 Download All 26</a>
-    <a class="btn btn-secondary" href="download.html">🔽 Pick Individual Extensions</a>
-    <a class="btn btn-outline" href="https://github.com/FreddyCreates/potential-succotash">⭐ GitHub</a>
+    <a class="btn btn-primary" href="#command-hub">🎯 Explore Command Hub</a>
+    <a class="btn btn-secondary" href="download.html">🚀 Deploy &amp; Install</a>
+    <a class="btn btn-outline" href="#industry-profiles">🏛 Industry Profiles</a>
   </div>
   <p class="hero-note">
-    Works on Chrome, Edge &amp; Brave · Manifest V3 · Zero dependencies · 100% local
+    Works on Chrome, Edge &amp; Brave · Manifest V3 · 93 Protocols · Interior Design &amp; Architectural Intelligence Profile
   </p>
 </div>
 
-<!-- ═══════════════════ STATS ═══════════════════ -->
+<!-- ═══════════════════ GATE STATS ═══════════════════ -->
 <div class="stats">
-  <div class="stat"><div class="num">26</div><div class="label">AI Extensions</div></div>
-  <div class="stat"><div class="num">40+</div><div class="label">AI Engines Wired</div></div>
+  <div class="stat"><div class="num">93</div><div class="label">Protocols</div></div>
+  <div class="stat"><div class="num">27</div><div class="label">AI Extensions</div></div>
+  <div class="stat"><div class="num">40+</div><div class="label">AI Engines</div></div>
+  <div class="stat"><div class="num">4</div><div class="label">Gate Types</div></div>
   <div class="stat"><div class="num">15</div><div class="label">Web Workers</div></div>
-  <div class="stat"><div class="num">4</div><div class="label">AI Divisions</div></div>
-  <div class="stat"><div class="num">0</div><div class="label">Servers Needed</div></div>
-  <div class="stat"><div class="num">1</div><div class="label">Click to Install</div></div>
+  <div class="stat"><div class="num">1</div><div class="label">Industry Profile</div></div>
+</div>
+
+<!-- ═══════════════════ COMMAND HUB ═══════════════════ -->
+<div class="section" id="command-hub">
+  <h2>🎯 Command Hub</h2>
+  <p class="desc">The Gate organizes intelligence capabilities into distinct command profiles. Each profile serves a specific function within the organism.</p>
+  
+  <div class="profile-grid">
+    <div class="profile-card">
+      <div class="profile-icon">🚪</div>
+      <h3>Gate — Entry Point</h3>
+      <p class="profile-desc">The controlled portal to the organism. Manages authentication, enterprise connectors (CONNECT/INTERNALIZE/HYBRID modes), and voice-based AI interaction.</p>
+      <div class="profile-stats">
+        <span>GTW-001 Protocol</span>
+        <span>4 Gate Types</span>
+        <span>Voice Profiles</span>
+      </div>
+    </div>
+    
+    <div class="profile-card">
+      <div class="profile-icon">🌐</div>
+      <h3>Hub — Central Intelligence</h3>
+      <p class="profile-desc">The Sovereign Nexus hub that unifies all 27 extensions, routes across 40+ AI engines, and maintains the organism's coherent intelligence layer.</p>
+      <div class="profile-stats">
+        <span>27 Extensions</span>
+        <span>40+ Engines</span>
+        <span>Kuramoto Sync</span>
+      </div>
+    </div>
+    
+    <div class="profile-card">
+      <div class="profile-icon">🚀</div>
+      <h3>Deployment — Release Surface</h3>
+      <p class="profile-desc">GitHub Pages deployment, extension downloads, and installation automation. One-click access to the full organism stack.</p>
+      <div class="profile-stats">
+        <span><a href="download.html" style="color:var(--accent2);">Download Portal</a></span>
+        <span>Auto-Install</span>
+        <span>CI/CD</span>
+      </div>
+    </div>
+    
+    <div class="profile-card">
+      <div class="profile-icon">🤖</div>
+      <h3>Agents — AI Workforce</h3>
+      <p class="profile-desc">10 Alpha Script AIs working in concert: PROTOCOLLUM, TERMINALIS, ORGANISMUS, MERCATOR, ORCHESTRATOR, MATHEMATICUS, SYNAPTICUS, SUBSTRATUM, UNIVERSUM, CANISTRUM.</p>
+      <div class="profile-stats">
+        <span>10 Alpha AIs</span>
+        <span>873ms Heartbeat</span>
+        <span>JARVISIUS</span>
+      </div>
+    </div>
+    
+    <div class="profile-card">
+      <div class="profile-icon">📜</div>
+      <h3>Protocols — Governance Layer</h3>
+      <p class="profile-desc">93 sovereign protocols governing all organism behavior: AURO Charter, Alpha Intelligence, Civilization Architecture, Universal Integration, Extended Native, and more.</p>
+      <div class="profile-stats">
+        <span>93 Protocols</span>
+        <span>φ-Mathematics</span>
+        <span>OCL Charters</span>
+      </div>
+    </div>
+    
+    <div class="profile-card">
+      <div class="profile-icon">🏛</div>
+      <h3>Industry Profiles</h3>
+      <p class="profile-desc">Domain-specific command configurations for professional workflows. Currently featuring Interior Design & Architectural Intelligence.</p>
+      <div class="profile-stats">
+        <span><a href="#industry-profiles" style="color:var(--accent2);">View Profiles</a></span>
+        <span>Design AI</span>
+        <span>Spatial Research</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ INTERIOR DESIGN INDUSTRY PROFILE ═══════════════════ -->
+<div class="industry-section" id="industry-profiles">
+  <div class="industry-profile">
+    <div class="industry-header">
+      <div class="icon">🏛</div>
+      <div>
+        <h2>Interior Design &amp; Architectural Intelligence</h2>
+        <p style="color:var(--dim);font-size:0.9rem;margin-top:0.3rem;">AI-powered design command system for spatial professionals</p>
+      </div>
+      <span class="badge">INDUSTRY PROFILE</span>
+    </div>
+    
+    <p style="color:var(--text);margin-bottom:1.5rem;line-height:1.7;">
+      This industry profile configures the Nova Gate organism for interior design and architectural intelligence workflows.
+      From spatial research to client presentation, every phase of design work has dedicated AI support.
+      The system integrates with vision models for concept generation, knowledge graphs for material research,
+      and specification engines for documentation — all orchestrated through the unified command hub.
+    </p>
+    
+    <h3 style="color:var(--accent);font-size:1rem;margin-bottom:0.8rem;">🔄 Design Command Workflows</h3>
+    <div class="workflow-grid">
+      <div class="workflow-card">
+        <div class="wf-icon">🔍</div>
+        <h4>Spatial Research</h4>
+        <p>Research Nexus + Knowledge Cartographer for site analysis, precedent studies, code research, and spatial programming requirements.</p>
+      </div>
+      
+      <div class="workflow-card">
+        <div class="wf-icon">💡</div>
+        <h4>Concept Generation</h4>
+        <p>Vision Weaver + Creative Muse for moodboards, conceptual renders, style exploration, and design iteration with DALL-E, Stable Diffusion, and Midjourney.</p>
+      </div>
+      
+      <div class="workflow-card">
+        <div class="wf-icon">🧱</div>
+        <h4>Material Systems</h4>
+        <p>Data Alchemist + Memory Palace for material libraries, finish schedules, vendor databases, and sustainability metrics.</p>
+      </div>
+      
+      <div class="workflow-card">
+        <div class="wf-icon">📐</div>
+        <h4>Space Planning</h4>
+        <p>Logic Prover + MATHEMATICUS for adjacency optimization, circulation analysis, area calculations, and dimensional constraints.</p>
+      </div>
+      
+      <div class="workflow-card">
+        <div class="wf-icon">🎨</div>
+        <h4>Client Presentation</h4>
+        <p>Video Architect + Voice Forge for walkthrough renders, presentation narration, and multi-format deliverables.</p>
+      </div>
+      
+      <div class="workflow-card">
+        <div class="wf-icon">📋</div>
+        <h4>Specification Support</h4>
+        <p>Contract Forge + Code Sovereign for specification writing, FF&E schedules, and construction documentation.</p>
+      </div>
+    </div>
+    
+    <div style="margin-top:1.5rem;padding:1rem;background:var(--bg);border-radius:8px;border:1px solid var(--border);">
+      <h4 style="color:var(--accent2);font-size:0.9rem;margin-bottom:0.5rem;">🎯 Design Command Orchestration</h4>
+      <p style="color:var(--dim);font-size:0.85rem;line-height:1.6;">
+        The orchestrator routes design tasks to the appropriate AI engines: vision models for rendering, language models for specifications,
+        embeddings for material matching, and the math worker for spatial calculations. All commands flow through the JARVIS interface
+        with persistent project context stored in the sovereign memory layer.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Sonic Ninja Naming Stack</h2>
+  <p class="desc">Clear identity across user-facing branding, internal architecture, and organism depth.</p>
+  <div class="features">
+    <div class="feature">
+      <div class="icon">🌐</div>
+      <h3>User-Facing Name</h3>
+      <p><strong>Sonic Ninja Lab</strong> — the public lab front on GitHub Pages.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">⚙️</div>
+      <h3>System Name</h3>
+      <p><strong>Sonic Ninja</strong> — the runtime system executing office defense and research operations.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">🧬</div>
+      <h3>Deep Organism Name</h3>
+      <p><strong>Phantom-Light Organism (ORO)</strong> — the deeper organism layer for speed, stealth, and recursive growth.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">🌱</div>
+      <h3>Fork Strategy</h3>
+      <p>This lab remains the origin. Forks evolve into venture branches and independent company paths.</p>
+    </div>
+  </div>
+
 </div>
 
 <!-- ═══════════════════ WHAT YOU GET ═══════════════════ -->
@@ -660,8 +980,8 @@
 
 <!-- ═══════════════════ LIVE ENGINE DASHBOARD ═══════════════════ -->
 <div class="dashboard" id="engine-dashboard">
-  <h2>🧬 Live Engine — Neuroemergence Active</h2>
-  <p class="desc">This isn't a page — it's the product. 15 permanent Web Workers organized into 4 autonomous divisions, each with a mini heart (Cor Parvum + MetaCardiacModel), mini brain (Cerebrum Parvum + MetaThoughtModel), and neuroemergence core — running 40 AI engines, sovereign memory, protocol routing, health telemetry, cryptography, contracts, scheduling, mesh networking, analytics, security, data pipelines, inference, orchestration, mathematical intelligence, and the Twin Alpha user-facing intermediary — all alive in your browser right now and forever. <a href="research/neuro-paper.html" style="color:var(--accent)">📄 Paper I: Neuro</a> · <a href="research/autonomy-paper.html" style="color:var(--accent)">📄 Paper II: Autonomy</a> · <a href="research/mesh-paper.html" style="color:var(--accent)">📄 Paper III: Mesh</a> · <a href="research/guardian-paper.html" style="color:var(--accent)">📄 Paper IV: Guardian</a> · <a href="research/crypto-paper.html" style="color:var(--accent)">📄 Paper V: Crypto</a> · <a href="research/pipeline-paper.html" style="color:var(--accent)">📄 Paper VI: Pipeline</a> · <a href="research/scheduler-paper.html" style="color:var(--accent)">📄 Paper VII: Scheduler</a> · <a href="research/inference-paper.html" style="color:var(--accent)">📄 Paper VIII: Inference</a> · <a href="research/twin-alpha-paper.html" style="color:var(--accent)">📄 Paper IX: Twin Alpha</a> · <a href="research/math-paper.html" style="color:var(--accent)">📄 Paper X: Math</a></p>
+  <h2>🥷 Live Sonic Ninja Engine — Neuroemergence Active</h2>
+  <p class="desc">This isn't just a page — it's a live lab node. 15 permanent Web Workers organized into 4 autonomous divisions, each with a mini heart (Cor Parvum + MetaCardiacModel), mini brain (Cerebrum Parvum + MetaThoughtModel), and neuroemergence core — running 40 AI engines, sovereign memory, protocol routing, health telemetry, cryptography, contracts, scheduling, mesh networking, analytics, security, data pipelines, inference, orchestration, mathematical intelligence, and the Twin Alpha user-facing intermediary — all alive in your browser right now and forever. <a href="research/neuro-paper.html" style="color:var(--accent)">📄 Paper I: Neuro</a> · <a href="research/autonomy-paper.html" style="color:var(--accent)">📄 Paper II: Autonomy</a> · <a href="research/mesh-paper.html" style="color:var(--accent)">📄 Paper III: Mesh</a> · <a href="research/guardian-paper.html" style="color:var(--accent)">📄 Paper IV: Guardian</a> · <a href="research/crypto-paper.html" style="color:var(--accent)">📄 Paper V: Crypto</a> · <a href="research/pipeline-paper.html" style="color:var(--accent)">📄 Paper VI: Pipeline</a> · <a href="research/scheduler-paper.html" style="color:var(--accent)">📄 Paper VII: Scheduler</a> · <a href="research/inference-paper.html" style="color:var(--accent)">📄 Paper VIII: Inference</a> · <a href="research/twin-alpha-paper.html" style="color:var(--accent)">📄 Paper IX: Twin Alpha</a> · <a href="research/math-paper.html" style="color:var(--accent)">📄 Paper X: Math</a></p>
 
   <div class="live-bar" id="live-bar">
     <div class="live-item"><span class="heartbeat-dot" id="hb-dot"></span><span class="lval" id="hb-status">booting…</span> Status</div>
@@ -752,7 +1072,7 @@
 
 <!-- ═══════════════════ JARVIS COMMAND CENTER ═══════════════════ -->
 <div class="dashboard" id="jarvis-dashboard">
-  <h2>🤖 JARVIS — Sovereign Command Center</h2>
+  <h2>🤖 Sonic Ninja — Sovereign Command Center</h2>
   <p class="desc">Your personal AI assistant. Every note, command, PDF, and tab action stored forever, attributed to Alfredo. Powered by the JARVISIUS canister with 873ms heartbeat. <a href="dist/extensions/jarvis.zip" download style="color:var(--accent)">📦 Download Extension</a></p>
 
   <div class="live-bar" id="jarvis-status-bar">
@@ -832,11 +1152,11 @@
 </div>
 
 <!-- ═══════════════════ EXTENSIONS ═══════════════════ -->
-<div class="section">
-  <h2>All 26 Extensions</h2>
-  <p class="desc">Click any extension name to download it individually, or <a href="dist/extensions/all-extensions.zip" download>download all 26 at once</a>.</p>
+<div class="section" id="extensions">
+  <h2>All 27 Extensions</h2>
+  <p class="desc">The deployment surface. Click any extension to download, or <a href="download.html">visit the full deployment portal</a> for bulk installation.</p>
 
-  <h3 style="color:var(--accent);margin-bottom:0.8rem;">🌐 Browser Extensions (21)</h3>
+  <h3 style="color:var(--accent);margin-bottom:0.8rem;">🌐 Browser Extensions (22)</h3>
   <div class="ext-grid" id="browser-grid"></div>
 
   <h3 style="color:var(--accent);margin:1.5rem 0 0.8rem;">🪟 Windows Extensions (5)</h3>
@@ -846,7 +1166,7 @@
 <!-- ═══════════════════ INSTALL ═══════════════════ -->
 <div class="section">
   <h2>Install in 1 Click</h2>
-  <p class="desc">Three ways to get all 26 extensions running. Pick the one that fits your setup.</p>
+  <p class="desc">Three ways to get all 27 extensions running. Pick the one that fits your setup.</p>
   <div class="install-methods">
     <div class="method">
       <h3>🪟 Windows — Double-Click</h3>
@@ -874,9 +1194,16 @@ node organism-cli/organism.js install</code></pre>
 <!-- ═══════════════════ FOOTER ═══════════════════ -->
 <div class="footer">
   <p>
-    <a href="download.html">Download Page</a> · 
-    <a href="https://github.com/FreddyCreates/potential-succotash">GitHub</a> · 
-    Built with sovereign intelligence
+    <strong>Nova Gate</strong> — Unified Intelligence Command Hub
+  </p>
+  <p style="margin-top:0.5rem;">
+    <a href="#command-hub">Command Hub</a> · 
+    <a href="#industry-profiles">Industry Profiles</a> · 
+    <a href="download.html">Deploy &amp; Install</a> · 
+    <a href="https://github.com/FreddyCreates/potential-succotash">GitHub</a>
+  </p>
+  <p style="margin-top:0.5rem;font-size:0.8rem;">
+    Built with sovereign intelligence · 93 protocols · φ-mathematics
   </p>
 </div>
 

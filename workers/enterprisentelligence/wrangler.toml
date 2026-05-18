@@ -1,0 +1,59 @@
+# Enterprisentelligence — Innovation AI Worker
+# Route: innovation.*
+# Innovation and research AI operations
+
+name = "enterprisentelligence"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# BINDINGS — Innovation Stack
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# AI Binding — Innovation reasoning and ideation
+[ai]
+binding = "AI"
+
+# KV Namespace — Innovation state and experiments
+[[kv_namespaces]]
+binding = "INNOVATION_STATE"
+id = "REPLACE_WITH_KV_ID"
+
+[[kv_namespaces]]
+binding = "EXPERIMENT_CACHE"
+id = "REPLACE_WITH_KV_ID"
+
+# D1 Database — Innovation data and results
+[[d1_databases]]
+binding = "DB"
+database_name = "medinatech-db"
+database_id = "REPLACE_WITH_D1_ID"
+
+# Vectorize — Research and patent search
+[[vectorize]]
+binding = "VECTORIZE"
+index_name = "medinatech-index"
+
+# Queue — Innovation pipelines
+[[queues.producers]]
+binding = "RESEARCH_QUEUE"
+queue = "ai-analysis"
+
+# R2 — Research papers and datasets
+[[r2_buckets]]
+binding = "RESEARCH_DOCS"
+bucket_name = "medinatech-assets"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# ENVIRONMENT
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[vars]
+PHI = "1.618033988749895"
+HEARTBEAT_MS = "873"
+ORGANISM = "enterprisentelligence"
+ROLE = "innovation"
+
+[dev]
+port = 8793

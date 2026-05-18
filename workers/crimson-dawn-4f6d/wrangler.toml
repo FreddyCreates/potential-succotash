@@ -1,0 +1,59 @@
+# Crimson Dawn — Research AI Worker
+# Route: research.*
+# Research and analysis AI operations
+
+name = "crimson-dawn-4f6d"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# BINDINGS — Research Stack
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# AI Binding — Research reasoning and synthesis
+[ai]
+binding = "AI"
+
+# KV Namespace — Research cache and sessions
+[[kv_namespaces]]
+binding = "RESEARCH_CACHE"
+id = "REPLACE_WITH_KV_ID"
+
+[[kv_namespaces]]
+binding = "SESSION_STORE"
+id = "REPLACE_WITH_KV_ID"
+
+# D1 Database — Research data and citations
+[[d1_databases]]
+binding = "DB"
+database_name = "medinatech-db"
+database_id = "REPLACE_WITH_D1_ID"
+
+# Vectorize — Research paper and knowledge search
+[[vectorize]]
+binding = "VECTORIZE"
+index_name = "medinatech-index"
+
+# Queue — Research pipelines
+[[queues.producers]]
+binding = "ANALYSIS_QUEUE"
+queue = "ai-analysis"
+
+# R2 — Research papers and datasets
+[[r2_buckets]]
+binding = "PAPERS"
+bucket_name = "medinatech-assets"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# ENVIRONMENT
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[vars]
+PHI = "1.618033988749895"
+HEARTBEAT_MS = "873"
+ORGANISM = "crimson-dawn-4f6d"
+ROLE = "research"
+
+[dev]
+port = 8794

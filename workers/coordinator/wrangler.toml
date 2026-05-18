@@ -1,0 +1,58 @@
+# Nova Coordinator — Workflow Orchestration Worker
+# Durable Objects for stateful, coordinated multi-step processes
+
+name = "nova-coordinator"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# BINDINGS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# AI for intelligent workflow decisions
+[ai]
+binding = "AI"
+
+# KV for workflow state persistence
+[[kv_namespaces]]
+binding = "WORKFLOW_STATE"
+id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+
+# D1 for workflow history and analytics
+[[d1_databases]]
+binding = "DB"
+database_name = "nova-workflows"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# DURABLE OBJECTS — The heart of stateful coordination
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[[durable_objects.bindings]]
+name = "WORKFLOW"
+class_name = "WorkflowOrchestrator"
+
+[[durable_objects.bindings]]
+name = "AGENT"
+class_name = "AgentCoordinator"
+
+[[durable_objects.bindings]]
+name = "SESSION"
+class_name = "SessionManager"
+
+[[migrations]]
+tag = "v1"
+new_classes = ["WorkflowOrchestrator", "AgentCoordinator", "SessionManager"]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# ENVIRONMENT
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[vars]
+PHI = "1.618033988749895"
+HEARTBEAT_MS = "873"
+ORGANISM = "nova-coordinator"
+
+[dev]
+port = 8788

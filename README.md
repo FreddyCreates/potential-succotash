@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="extensions/jarvis/icons/icon128.png" width="80" alt="Vigil AI" />
+  <img src="extensions/jarvis/icons/icon128.png" width="80" alt="Sonic Ninja" />
 </p>
 
-<h1 align="center">Vigil AI</h1>
+<h1 align="center">Sonic Ninja</h1>
 
 <p align="center">
   <strong>Sovereign offline intelligence for your browser</strong>
@@ -18,11 +18,11 @@
 
 ---
 
-## What Is Vigil AI
+## What Is Sonic Ninja
 
-Vigil AI is a full-stack sovereign intelligence platform that runs entirely inside your browser — no cloud, no server, no subscription. It installs as a Chrome or Edge side panel extension and becomes a permanent cognitive co-pilot: reading pages, running offline AI inference, monitoring threats, building a spatial memory palace, constructing a knowledge graph of everything you read, deploying autonomous research agents, and reasoning through any problem you bring to it.
+Sonic Ninja is a full-stack sovereign intelligence platform that runs entirely inside your browser — no cloud, no server, no subscription. It installs as a Chrome or Edge side panel extension and becomes a permanent cognitive co-pilot: reading pages, running offline AI inference, monitoring threats, building a spatial memory palace, constructing a knowledge graph of everything you read, deploying autonomous research agents, and reasoning through any problem you bring to it.
 
-The architecture goes far beyond a chat wrapper. Vigil AI combines:
+The architecture goes far beyond a chat wrapper. Sonic Ninja combines:
 - **Solus** — a fully offline AI engine using Transformers.js (summarization, zero-shot classification, Q&A) with zero network calls during inference
 - **Memory Palace** — phi-encoded spatial memory of every page you save, retrievable by resonance
 - **Sentry Watch** — real-time security monitor scanning for phishing, PII, prompt injection, and malware URLs
@@ -34,11 +34,11 @@ The architecture goes far beyond a chat wrapper. Vigil AI combines:
 <a id="download"></a>
 ## Download
 
-### Vigil AI Extension (Chrome / Edge)
+### Sonic Ninja Extension (Chrome / Edge)
 
 | Package | Link |
 |---|---|
-| **Vigil AI Extension ZIP** | [⬇ Download jarvis.zip](https://github.com/FreddyCreates/potential-succotash/raw/copilot/create-jarvis-integration/dist/extensions/jarvis.zip) |
+| **Sonic Ninja Extension ZIP** | [⬇ Download jarvis.zip](https://github.com/FreddyCreates/potential-succotash/raw/copilot/create-jarvis-integration/dist/extensions/jarvis.zip) |
 | **All Extensions ZIP** | [⬇ Download all-extensions.zip](https://github.com/FreddyCreates/potential-succotash/raw/copilot/create-jarvis-integration/dist/extensions/all-extensions.zip) |
 | **Windows Installer (.bat)** | [⬇ install-jarvis-edge.bat](https://github.com/FreddyCreates/potential-succotash/raw/main/install-jarvis-edge.bat) |
 | **SDK Manifest** | [⬇ SDK_Model_Manifest.json](https://github.com/FreddyCreates/potential-succotash/raw/main/SDK_Model_Manifest.json) |
@@ -50,12 +50,12 @@ The architecture goes far beyond a chat wrapper. Vigil AI combines:
 2. Open Chrome/Edge → `chrome://extensions` (or `edge://extensions`)
 3. Enable **Developer mode** (top right toggle)
 4. Click **Load unpacked** → select the unzipped folder
-5. Click the puzzle piece 🧩 in the toolbar → pin **Vigil AI**
+5. Click the puzzle piece 🧩 in the toolbar → pin **Sonic Ninja**
 6. Press `Ctrl+Shift+Y` or click the icon to open the side panel
 
 ### Windows One-Click Installer
 
-Download `install-jarvis-edge.bat`, right-click → **Run**. It downloads Vigil AI, extracts it, and opens Edge with the extension loaded automatically.
+Download `install-jarvis-edge.bat`, right-click → **Run**. It downloads Sonic Ninja, extracts it, and opens Edge with the extension loaded automatically.
 
 ---
 
@@ -128,7 +128,7 @@ Solus is the 7th Domain AI. He runs **entirely in the browser with zero network 
 | ❓ **Ask** | Answer questions from page content — extractive Q&A, no hallucination |
 
 ### How to Use Solus
-1. Open Vigil AI side panel → click **🔵 Solus** tab
+1. Open Sonic Ninja side panel → click **🔵 Solus** tab
 2. Click **⚡ Activate Solus** — models download once (~80 MB total), cached forever
 3. Navigate to any article → click **📄 Use Page** to pull the content
 4. Select a mode (Summarize / Classify / Ask) and click **⚡ Run Solus**
@@ -182,20 +182,20 @@ Background fetch engine for agents: parallel fetch, HTML stripping, link extract
 
 ### Step-by-Step
 
-1. **Download** the [Vigil AI ZIP](https://github.com/FreddyCreates/potential-succotash/raw/copilot/create-jarvis-integration/dist/extensions/jarvis.zip)
+1. **Download** the [Sonic Ninja ZIP](https://github.com/FreddyCreates/potential-succotash/raw/copilot/create-jarvis-integration/dist/extensions/jarvis.zip)
 2. **Unzip** the downloaded file to a folder (e.g., `VigilAI/`)
 3. **Open** Chrome → `chrome://extensions` OR Edge → `edge://extensions`
 4. **Enable Developer Mode** using the toggle in the top-right corner
 5. **Click** "Load unpacked" → navigate to and select the unzipped `VigilAI/` folder
-6. **Pin** the extension: click the 🧩 puzzle piece icon → click the 📌 pin next to Vigil AI
-7. **Open** the side panel: press `Ctrl+Shift+Y` or click the Vigil AI icon
+6. **Pin** the extension: click the 🧩 puzzle piece icon → click the 📌 pin next to Sonic Ninja
+7. **Open** the side panel: press `Ctrl+Shift+Y` or click the Sonic Ninja icon
 8. **Start** — type anything or say "brief me" for a situational report
 
 ### Windows One-Click (Edge)
 ```
 Right-click install-jarvis-edge.bat → Run as Administrator
 ```
-Automatically downloads, extracts, and loads Vigil AI into Edge.
+Automatically downloads, extracts, and loads Sonic Ninja into Edge.
 
 ---
 
@@ -256,7 +256,7 @@ extensions/jarvis/src/
 
 | Tier | Description |
 |---|---|
-| **Vigil AI (base)** | Full extension — all 22 panels, Solus offline AI, Memory Palace, Sentry, Graph — free, local-only |
+| **Sonic Ninja (base)** | Full extension — all 22 panels, Solus offline AI, Memory Palace, Sentry, Graph — free, local-only |
 | **Vigil Pro** | API key integration, cloud agent coordination, shared knowledge graphs |
 | **Vigil Enterprise** | Org-wide sovereign deployment, custom model stack, on-premise Solus |
 

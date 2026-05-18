@@ -1,0 +1,64 @@
+# Honeypot Portal — 🍯 Intelligence Honeypot Worker
+# Route: portal.*
+# Honeypot with AI-powered threat analysis
+
+name = "honeypot-portal"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# BINDINGS — Honeypot Intelligence Stack
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# AI Binding — Threat analysis and response generation
+[ai]
+binding = "AI"
+
+# KV Namespace — Attack logs and threat intelligence
+[[kv_namespaces]]
+binding = "HONEYPOT_LOGS"
+id = "REPLACE_WITH_KV_ID"
+
+[[kv_namespaces]]
+binding = "IP_BLOCKLIST"
+id = "REPLACE_WITH_KV_ID"
+
+[[kv_namespaces]]
+binding = "THREAT_INTEL"
+id = "REPLACE_WITH_KV_ID"
+
+# D1 Database — Attack patterns and analysis
+[[d1_databases]]
+binding = "DB"
+database_name = "medinatech-db"
+database_id = "REPLACE_WITH_D1_ID"
+
+# Vectorize — Attack pattern matching
+[[vectorize]]
+binding = "VECTORIZE"
+index_name = "medinatech-index"
+
+# Queue — Forward attacks for deeper analysis
+[[queues.producers]]
+binding = "ATTACK_QUEUE"
+queue = "honeypot-events"
+
+# R2 — Store captured payloads
+[[r2_buckets]]
+binding = "CAPTURES"
+bucket_name = "medinatech-assets"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# ENVIRONMENT
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[vars]
+PHI = "1.618033988749895"
+HEARTBEAT_MS = "873"
+ORGANISM = "honeypot-portal"
+ROLE = "honeypot"
+HONEYPOT_TYPE = "portal"
+
+[dev]
+port = 8796

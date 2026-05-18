@@ -1,14 +1,14 @@
 # ============================================================================
-# Deploy to GitHub Pages — Autonomous Production Hosting
+# Deploy Sonic Ninja Lab to GitHub Pages — Autonomous Production Hosting
 #
-# Deploys the download page, download worker, and all extension source files
+# Deploys the Sonic Ninja Lab pages, download worker, and all extension source files
 # to GitHub Pages. The download page becomes a live, permanent, self-hosted
 # download portal at: https://freddycreates.github.io/potential-succotash/
 #
 # Runs on every push to main. Fully autonomous — 24/7 from second one.
 # ============================================================================
 
-name: Deploy Pages
+name: Deploy Sonic Ninja Lab Pages
 
 on:
   push:
@@ -26,7 +26,7 @@ concurrency:
 
 jobs:
   deploy:
-    name: Deploy to GitHub Pages
+    name: Deploy Sonic Ninja Lab to GitHub Pages
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -44,6 +44,6 @@ jobs:
         with:
           path: '.'
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy Sonic Ninja Lab to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
