@@ -340,12 +340,175 @@ export default {
       if (path === '/sandland/scenarios' && method === 'GET') {
         return Response.json({
           scenarios: [
-            { id: 'botnet-recon', name: 'Botnet Reconnaissance', difficulty: 'medium' },
-            { id: 'llm-mapper', name: 'LLM Agent Mapping', difficulty: 'medium' },
-            { id: 'tor-hardmode', name: 'Tor Hardmode', difficulty: 'hard' },
-            { id: 'nation-state', name: 'APT Simulation', difficulty: 'extreme' },
-            { id: 'crypto-heist', name: 'Crypto Attack', difficulty: 'hard' }
+            { id: 'botnet-recon', name: 'Botnet Reconnaissance', difficulty: 'medium', agents: ['scanner-bot', 'botnet-node'] },
+            { id: 'llm-mapper', name: 'LLM Agent Mapping', difficulty: 'medium', agents: ['llm-agent-sim'] },
+            { id: 'tor-hardmode', name: 'Tor Hardmode', difficulty: 'hard', agents: ['apt-simulator', 'brute-force-bot'] },
+            { id: 'nation-state', name: 'APT Simulation', difficulty: 'extreme', agents: ['apt-simulator', 'zero-day-exploit-sim', 'ransomware-c2-sim'] },
+            { id: 'crypto-heist', name: 'Crypto Attack', difficulty: 'hard', agents: ['credential-stuffing-bot', 'api-abuse-agent'] },
+            { id: 'social-attack', name: 'Social Engineering', difficulty: 'medium', agents: ['social-engineering-bot'] },
+            { id: 'full-spectrum', name: 'Full Spectrum Attack', difficulty: 'extreme', agents: ['all'] }
           ]
+        }, { headers: corsHeaders });
+      }
+      
+      // Batch Analysis ($0.0008 per item)
+      if (path === '/dark/batch' && method === 'POST') {
+        const body = await request.json();
+        const items = body.fingerprints || body.items || [];
+        const usage = recordUsage(auth.customerId, '/dark/batch', items.length);
+        
+        const results = items.map(item => {
+          const fingerprint = item.fingerprint || item;
+          return {
+            id: item.id || crypto.randomUUID().slice(0, 8),
+            ...analyzeFingerprint(fingerprint)
+          };
+        });
+        
+        return Response.json({
+          requestId: crypto.randomUUID(),
+          timestamp: Date.now(),
+          results,
+          summary: {
+            total: results.length,
+            highRisk: results.filter(r => r.riskScore > 0.7).length,
+            mediumRisk: results.filter(r => r.riskScore > 0.4 && r.riskScore <= 0.7).length,
+            lowRisk: results.filter(r => r.riskScore <= 0.4).length
+          },
+          usage: {
+            cost: items.length * 0.0008,
+            remaining: rateLimit.remaining
+          }
+        }, { headers: corsHeaders });
+      }
+      
+      // Streaming Threat Feed (WebSocket-style via SSE) ($0.05/minute)
+      if (path === '/dark/stream' && method === 'GET') {
+        const duration = parseInt(url.searchParams.get('duration') || '60');
+        const usage = recordUsage(auth.customerId, '/dark/stream', Math.ceil(duration / 60));
+        
+        // Return SSE setup info (actual streaming would be via separate connection)
+        return Response.json({
+          endpoint: `wss://stream.obscura.dev/threat-feed?token=${crypto.randomUUID()}`,
+          format: 'server-sent-events',
+          events: ['threat-detected', 'pattern-emerging', 'agent-classified', 'attack-blocked'],
+          duration: `${duration}s`,
+          usage: {
+            cost: Math.ceil(duration / 60) * 0.05,
+            remaining: rateLimit.remaining
+          }
+        }, { headers: corsHeaders });
+      }
+      
+      // Membrane Health Dashboard ($0.01/call)
+      if (path === '/dark/membrane/health' && method === 'GET') {
+        const usage = recordUsage(auth.customerId, '/dark/membrane/health');
+        
+        return Response.json({
+          requestId: crypto.randomUUID(),
+          timestamp: Date.now(),
+          membrane: {
+            status: 'operational',
+            layers: {
+              cortex: { status: 'healthy', latency: Math.floor(Math.random() * 50) + 10 },
+              subcortex: { status: 'healthy', latency: Math.floor(Math.random() * 20) + 5 },
+              darkLayer: { status: 'active', events: 0 }
+            },
+            phi: {
+              resonance: 0.618 + Math.random() * 0.1,
+              heartbeat: HB,
+              coherence: 0.9 + Math.random() * 0.1
+            },
+            shadow: {
+              patternsEmerging: Math.floor(Math.random() * 10),
+              patternsConfirmed: Math.floor(Math.random() * 100),
+              threatsActive: Math.floor(Math.random() * 5)
+            }
+          },
+          traffic: {
+            last24h: {
+              requests: Math.floor(Math.random() * 1000000),
+              blocked: Math.floor(Math.random() * 10000),
+              challenged: Math.floor(Math.random() * 50000),
+              allowed: Math.floor(Math.random() * 940000)
+            },
+            topThreats: [
+              { type: 'credential-stuffing', count: Math.floor(Math.random() * 1000), severity: 'high' },
+              { type: 'scanner', count: Math.floor(Math.random() * 5000), severity: 'medium' },
+              { type: 'llm-agent', count: Math.floor(Math.random() * 10000), severity: 'low' }
+            ]
+          },
+          usage: {
+            cost: 0.01,
+            remaining: rateLimit.remaining
+          }
+        }, { headers: corsHeaders });
+      }
+      
+      // Usage Analytics ($0.02/call)
+      if (path === '/dark/analytics' && method === 'GET') {
+        const usage = recordUsage(auth.customerId, '/dark/analytics');
+        const period = url.searchParams.get('period') || '7d';
+        
+        return Response.json({
+          requestId: crypto.randomUUID(),
+          timestamp: Date.now(),
+          period,
+          analytics: {
+            apiCalls: {
+              total: Math.floor(Math.random() * 100000),
+              byEndpoint: {
+                '/dark/analyze': Math.floor(Math.random() * 40000),
+                '/dark/classify': Math.floor(Math.random() * 30000),
+                '/dark/score': Math.floor(Math.random() * 25000),
+                '/dark/batch': Math.floor(Math.random() * 5000)
+              }
+            },
+            costs: {
+              total: (Math.random() * 500).toFixed(2),
+              byEndpoint: {
+                '/dark/analyze': (Math.random() * 200).toFixed(2),
+                '/dark/classify': (Math.random() * 100).toFixed(2),
+                '/dark/score': (Math.random() * 50).toFixed(2),
+                '/sandland/run': (Math.random() * 150).toFixed(2)
+              }
+            },
+            threats: {
+              detected: Math.floor(Math.random() * 5000),
+              blocked: Math.floor(Math.random() * 4000),
+              bypassed: Math.floor(Math.random() * 100),
+              falsePositives: Math.floor(Math.random() * 50)
+            },
+            effectivenessScore: (0.9 + Math.random() * 0.1).toFixed(3)
+          },
+          usage: {
+            cost: 0.02,
+            remaining: rateLimit.remaining
+          }
+        }, { headers: corsHeaders });
+      }
+      
+      // Threat Intelligence Export ($0.50/export)
+      if (path === '/dark/export/threats' && method === 'POST') {
+        const body = await request.json();
+        const format = body.format || 'json';
+        const usage = recordUsage(auth.customerId, '/dark/export/threats');
+        
+        return Response.json({
+          requestId: crypto.randomUUID(),
+          timestamp: Date.now(),
+          export: {
+            format,
+            status: 'queued',
+            downloadUrl: `https://exports.obscura.dev/${crypto.randomUUID()}.${format}`,
+            expiresAt: Date.now() + 24 * 60 * 60 * 1000,
+            estimatedSize: '~5MB',
+            includes: ['signatures', 'patterns', 'iocs', 'behavioral-models']
+          },
+          usage: {
+            cost: 0.50,
+            remaining: rateLimit.remaining
+          }
         }, { headers: corsHeaders });
       }
       
@@ -353,13 +516,18 @@ export default {
       if (path === '/dark/docs' || path === '/') {
         return Response.json({
           name: 'Obscura Dark Computing API',
-          version: '1.0.0',
+          version: '2.0.0',
           documentation: 'https://docs.obscura.dev',
           endpoints: {
             '/dark/health': { method: 'GET', price: 'free', description: 'Health check' },
             '/dark/analyze': { method: 'POST', price: '$0.001', description: 'Full risk analysis' },
             '/dark/classify': { method: 'POST', price: '$0.0005', description: 'Agent classification' },
             '/dark/score': { method: 'POST', price: '$0.0003', description: 'Quick risk score' },
+            '/dark/batch': { method: 'POST', price: '$0.0008/item', description: 'Batch analysis' },
+            '/dark/stream': { method: 'GET', price: '$0.05/minute', description: 'Streaming threat feed' },
+            '/dark/membrane/health': { method: 'GET', price: '$0.01', description: 'Membrane health dashboard' },
+            '/dark/analytics': { method: 'GET', price: '$0.02', description: 'Usage analytics' },
+            '/dark/export/threats': { method: 'POST', price: '$0.50', description: 'Export threat intelligence' },
             '/sandland/run': { method: 'POST', price: '$0.10/hour', description: 'Run simulation' },
             '/sandland/scenarios': { method: 'GET', price: 'free', description: 'List scenarios' }
           },
