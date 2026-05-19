@@ -162,6 +162,72 @@ Intelligent honeypots with AI-powered threat analysis:
 - ⚡ Reduces billed compute by serving learned responses
 - 🎯 φ-mathematics for pattern confidence decay
 
+### 📦 Shared Module (`workers/shared`)
+
+**Reusable Evolution Components** — Use across all Workers.
+
+```typescript
+import { edgeRouter, permanence, PHI, HEARTBEAT_MS } from '@organism/workers-shared';
+```
+
+#### Edge Router
+
+Transform Workers into thin routers + guardians:
+
+```typescript
+const handler = edgeRouter.create({
+  workerName: 'api-node',
+  cacheBinding: env.CACHE_COGNITION,  // Service binding to cache layer
+  enableLearning: true,               // Feed patterns to permanence
+  guardianMode: true,                 // Block malicious traffic
+  bypassPaths: ['/health'],           // Paths that skip cache
+});
+
+export default {
+  fetch: handler(async (request, env, ctx) => {
+    // Original logic - only runs on cache miss
+    return new Response('computed');
+  })
+};
+```
+
+#### Permanence Layer
+
+Interface to distributed memory:
+
+```typescript
+const perm = permanence.create({
+  patternCache: env.PATTERN_CACHE,
+  responseCache: env.RESPONSE_CACHE,
+  biomeMemory: env.BIOME_MEMORY,
+});
+
+// Learn from traffic
+await perm.learnPattern(fingerprint, 'benign', 'France', response);
+
+// Get biome statistics
+const stats = await perm.getBiomeStats(['France', 'UK', 'US', 'Ukraine', 'Netherlands']);
+```
+
+#### Guardian Middleware
+
+Standalone security protection:
+
+```typescript
+const guardian = edgeRouter.guardian({
+  workerName: 'api-node',
+  blockProbes: true,
+  blockErrors: true,
+});
+
+export default {
+  fetch: guardian(async (request, env, ctx) => {
+    // Handler only runs if guardian approves
+    return new Response('allowed');
+  })
+};
+```
+
 ## Pages Functions (`functions/`)
 
 Serverless API endpoints that run alongside the static site:
