@@ -1,6 +1,33 @@
 # Cloudflare Workers Infrastructure
 
-This directory contains **11 intelligent Workers** with AI, memory, and coordination capabilities.
+This directory contains **12 intelligent Workers** with AI, memory, and coordination capabilities.
+
+## 🧬 Evolution: Metabolic Cache Layer
+
+The organism has evolved beyond early metabolic mode. The **cache-cognition** Worker implements the next evolution:
+
+```
+BEFORE (Early Metabolic):
+- High dynamic responses
+- No intelligent cache layer
+- Every reaction = billed compute
+
+AFTER (Cache Cognition):
+- Cognition lives in cache layer
+- Workers become thin routers + guardians
+- Permanence stored in:
+  - Distributed memory (KV)
+  - Learned patterns (Durable Objects)
+  - Local agents at the edge
+```
+
+### Digital Biome Regions
+The organism monitors and learns from traffic patterns across:
+- 🇫🇷 France
+- 🇬🇧 UK
+- 🇺🇸 US
+- 🇺🇦 Ukraine
+- 🇳🇱 Netherlands
 
 ## 🚀 Quick Start
 
@@ -29,6 +56,7 @@ This directory contains **11 intelligent Workers** with AI, memory, and coordina
 | 9 | `honeypot-admin` | admin.* 🍯 | Honeypot | AI, KV, D1, Vectorize, Queue, R2 |
 | 10 | `honeypot-portal` | portal.* 🍯 | Honeypot | AI, KV, D1, Vectorize, Queue, R2 |
 | 11 | `probe-node` | probe1.* 🍯 | Honeypot | AI, KV, D1, Vectorize, Queue, R2 |
+| 12 | `cache-cognition` | cache.* | **Intelligent Cache** | AI, KV×3, DO×3, Vectorize, Queue, Services |
 
 ✅ `patient-shape-7a30` already has AI binding
 
@@ -108,6 +136,32 @@ Intelligent honeypots with AI-powered threat analysis:
 - `honeypot-portal` — Portal honeypot
 - `probe-node` — Probe/scanner detection
 
+### 🧠 Cache Cognition (`workers/cache-cognition`)
+
+**The Intelligent Cache Layer** — The organism's next evolution.
+
+| Binding | Type | Purpose |
+|---------|------|---------|
+| `PATTERN_CACHE` | KV | Learned patterns from digital biome |
+| `RESPONSE_CACHE` | KV | Pre-computed responses |
+| `BIOME_MEMORY` | KV | Regional pattern memory |
+| `PATTERN_ENGINE` | Durable Object | Pattern recognition engine |
+| `EDGE_AGENT` | Durable Object | Local cognition at the edge |
+| `RESPONSE_GENERATOR` | Durable Object | Response caching and generation |
+| `AI` | Workers AI | Intelligent cache decisions |
+| `PATTERN_VECTORS` | Vectorize | Semantic pattern matching |
+| `PATTERN_QUEUE` | Queue | Pattern learning pipeline |
+| `API_NODE` | Service | Route to API Node |
+| `GATE_NODE` | Service | Route to Gate Node |
+
+**Key Features:**
+- 🧬 Pattern recognition from digital biome traffic
+- 🚀 Intelligent cache decisions (cache hit, compute, delegate, block)
+- 🌍 Regional edge agents for local cognition
+- 📊 Biome statistics by region and pattern type
+- ⚡ Reduces billed compute by serving learned responses
+- 🎯 φ-mathematics for pattern confidence decay
+
 ## Pages Functions (`functions/`)
 
 Serverless API endpoints that run alongside the static site:
@@ -152,6 +206,17 @@ Push to `main` branch with changes in `workers/` or `functions/` directories.
 │                         Cloudflare Edge                          │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                  │
+│  ┌────────────────────────────────────────────────────────────┐ │
+│  │           🧠 CACHE COGNITION LAYER (cache-cognition)        │ │
+│  │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐          │ │
+│  │  │Pattern  │ │Response │ │Biome    │ │Edge     │          │ │
+│  │  │Cache    │ │Cache    │ │Memory   │ │Agents   │          │ │
+│  │  └─────────┘ └─────────┘ └─────────┘ └─────────┘          │ │
+│  └────────────────────────────────────────────────────────────┘ │
+│       │                                       │                  │
+│       │  cache hit? ────────────────────────→ │                  │
+│       │                                       │                  │
+│       ▼                                       ▼                  │
 │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐           │
 │  │ gate-    │ │ api-     │ │knowledge-│ │ nova-    │           │
 │  │ node     │→│ node     │→│ realm    │→│ sovereign│           │
@@ -174,6 +239,16 @@ Push to `main` branch with changes in `workers/` or `functions/` directories.
 │  └─────────────────────────────────────────────────────────┘    │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
+```
+
+### Evolution Stages
+
+```
+Stage 1: Stateless         → Basic request/response
+Stage 2: Early Metabolic   → High dynamic, no cache (current biome)
+Stage 3: Cache Cognition   → Cognition in cache layer ← WE ARE HERE
+Stage 4: Edge Permanence   → Local agents at every edge
+Stage 5: Full Organism     → Self-sustaining intelligence
 ```
 
 ## Intelligence Levels
