@@ -85,6 +85,23 @@ new_classes = ["CoordinatorObject"]
 crons = ["*/15 * * * *"]  # Every 15 minutes
 
 # ═══════════════════════════════════════════════════════════════════════════════
+# THIN ROUTER EVOLUTION (Optional)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# Uncomment these bindings to enable thin router evolution:
+# The Worker will check cache-cognition first before computing
+
+# Service binding to cache-cognition Worker
+# [[services]]
+# binding = "CACHE_COGNITION"
+# service = "cache-cognition"
+
+# Local pattern cache for learning (optional)
+# [[kv_namespaces]]
+# binding = "PATTERN_CACHE"
+# id = "REPLACE_WITH_PATTERN_CACHE_KV_ID"
+
+# ═══════════════════════════════════════════════════════════════════════════════
 # DEVELOPMENT
 # ═══════════════════════════════════════════════════════════════════════════════
 
