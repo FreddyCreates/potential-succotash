@@ -352,3 +352,124 @@ export { VisualIntelligenceProtocol, VISUAL_TASKS, MODEL_ARCHITECTURES, IMAGE_FO
 
 // CYC-001: Sovereign Cycle Allocator Protocol — self-funding through φ-mathematics
 export { SovereignCycleAllocatorProtocol, CYCLE_CONSTANTS, ALLOCATION_PURPOSES, GENERATION_SOURCES, AllocationRecord, GenerationEvent, SovereignCycleAllocator, fibonacciAt, fibonacciRatio, projectGeneration, projectDecay } from './sovereign-cycle-allocator-protocol.js';
+
+// ─── Phase Verification Protocols ──────────────────────────────────────────────
+// Protocols for PHI-resonant identity verification and phase-based authentication.
+
+// P226: Phase Verification Protocol — PHI-resonant phase signatures for identity authentication
+export { P226PhaseVerificationProtocol, P226, computePhase, verifyPhase, HB, THRESHOLD } from './p226-phase-verification-protocol.js';
+
+// ─── Dark Cognition Layer ──────────────────────────────────────────────────────
+// The organism's subconscious: silent, unlogged, unobserved.
+// Dark cognition processes run here without emitting telemetry.
+// This is where shadow models, adversary classifiers, and defense systems operate.
+//
+// Dark Layer Properties:
+// - No logs, no traces, no events, no analytics
+// - Isolated scope: only internal entrypoints
+// - Ephemeral by default: state in memory or short-lived KV
+// - Non-governed: governance can invoke but not inspect
+//
+// Conscious Layer Properties:
+// - Fully observable: logs, traces, events, metrics
+// - Governed: all behavior subject to law and pipelines
+// - Durable memory: long-term state, reports, lineage
+//
+// Membrane (interface between layers):
+// - Conscious → Dark: sanitized fingerprints, abstracted profiles, cases
+// - Dark → Conscious: scores, tags, actions (distilled outputs only)
+// - No raw shadow memory crosses to conscious
+// - No dark logs to observability
+
+// ─── Dark Protocols (DRK-001 – DRK-030) ─────────────────────────────────────
+// The organism's silent defense layer. All operations are unlogged and phi-resonant.
+
+// DRK-001: Dark Pulse Protocol — heartbeat for dark layer operations
+export { DarkPulseProtocol } from './dark-pulse-protocol.js';
+
+// DRK-002: Dark Entropy Protocol — entropy generation for dark operations
+export { DarkEntropyProtocol } from './dark-entropy-protocol.js';
+
+// DRK-003: Dark Cipher Protocol — encryption for dark layer communications
+export { DarkCipherProtocol } from './dark-cipher-protocol.js';
+
+// DRK-004: Dark Signal Protocol — inter-component signaling
+export { DarkSignalProtocol } from './dark-signal-protocol.js';
+
+// DRK-005: Dark State Protocol — state management for dark layer
+export { DarkStateProtocol } from './dark-state-protocol.js';
+
+// DRK-006: Dark Network Protocol — network operations for dark layer
+export { DarkNetworkProtocol } from './dark-network-protocol.js';
+
+// DRK-007: Dark Trace Protocol — minimal trace handling
+export { DarkTraceProtocol } from './dark-trace-protocol.js';
+
+// DRK-008: Dark Sync Protocol — synchronization for dark layer
+export { DarkSyncProtocol } from './dark-sync-protocol.js';
+
+// DRK-009: Dark Cache Protocol — caching for dark layer
+export { DarkCacheProtocol } from './dark-cache-protocol.js';
+
+// DRK-010: Dark Queue Protocol — queue management for dark layer
+export { DarkQueueProtocol } from './dark-queue-protocol.js';
+
+// DRK-011: Dark Classifier Protocol — threat classification
+export { DarkClassifierProtocol } from './dark-classifier-protocol.js';
+
+// DRK-012: Dark Pattern Protocol — pattern recognition
+export { DarkPatternProtocol } from './dark-pattern-protocol.js';
+
+// DRK-013: Dark Anomaly Protocol — anomaly detection
+export { DarkAnomalyProtocol } from './dark-anomaly-protocol.js';
+
+// DRK-014: Dark Inference Protocol — inference engine for dark layer
+export { DarkInferenceProtocol } from './dark-inference-protocol.js';
+
+// DRK-015: Dark Learning Protocol — machine learning for dark layer
+export { DarkLearningProtocol } from './dark-learning-protocol.js';
+
+// DRK-016: Dark Prediction Protocol — predictive modeling
+export { DarkPredictionProtocol } from './dark-prediction-protocol.js';
+
+// DRK-017: Dark Response Protocol — automated response generation
+export { DarkResponseProtocol } from './dark-response-protocol.js';
+
+// DRK-018: Dark Reputation Protocol — reputation scoring
+export { DarkReputationProtocol } from './dark-reputation-protocol.js';
+
+// DRK-019: Dark Session Protocol — session management
+export { DarkSessionProtocol } from './dark-session-protocol.js';
+
+// DRK-020: Dark Fingerprint Protocol — entity fingerprinting
+export { DarkFingerprintProtocol } from './dark-fingerprint-protocol.js';
+
+// DRK-021: Dark Honeypot Protocol — deceptive endpoints
+export { DarkHoneypotProtocol } from './dark-honeypot-protocol.js';
+
+// DRK-022: Dark Tarpit Protocol — slowdown traps
+export { DarkTarpitProtocol } from './dark-tarpit-protocol.js';
+
+// DRK-023: Dark Deception Protocol — active deception techniques
+export { DarkDeceptionProtocol } from './dark-deception-protocol.js';
+
+// DRK-024: Dark Isolation Protocol — threat containment
+export { DarkIsolationProtocol } from './dark-isolation-protocol.js';
+
+// DRK-025: Dark Exfiltration Detection Protocol — data exfiltration detection
+export { DarkExfiltrationDetectionProtocol } from './dark-exfiltration-protocol.js';
+
+// DRK-026: Dark Injection Detection Protocol — injection attack detection
+export { DarkInjectionDetectionProtocol } from './dark-injection-detection-protocol.js';
+
+// DRK-027: Dark Bot Detection Protocol — bot detection
+export { DarkBotDetectionProtocol } from './dark-bot-detection-protocol.js';
+
+// DRK-028: Dark Rate Limiter Protocol — rate limiting
+export { DarkRateLimiterProtocol } from './dark-rate-limiter-protocol.js';
+
+// DRK-029: Dark Alerting Protocol — internal alerting
+export { DarkAlertingProtocol } from './dark-alerting-protocol.js';
+
+// DRK-030: Dark Orchestrator Protocol — central orchestration
+export { DarkOrchestratorProtocol } from './dark-orchestrator-protocol.js';

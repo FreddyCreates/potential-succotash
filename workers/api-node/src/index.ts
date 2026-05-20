@@ -9,7 +9,15 @@
  * - Queue: Can delegate tasks asynchronously
  * - R2: Can store/retrieve files
  * - Durable Objects: Stateful coordination
+ * 
+ * EVOLUTION: Now operates as a thin router when cache-cognition is available
+ * - Checks cache layer first for known patterns
+ * - Only computes on cache miss
+ * - Feeds learnings back to permanence layer
  */
+
+// Edge Router — Thin routing evolution
+import { edgeRouter, permanence as permanenceLib } from '../../../shared/src';
 
 export interface Env {
   // AI Binding — Reasoning capability
@@ -39,6 +47,12 @@ export interface Env {
   
   // Durable Object — Stateful coordination
   COORDINATOR: DurableObjectNamespace;
+  
+  // Cache Cognition Service (optional) — For thin routing evolution
+  CACHE_COGNITION?: Fetcher;
+  
+  // Permanence KV (optional) — Local pattern learning
+  PATTERN_CACHE?: KVNamespace;
   
   // Environment variables
   PHI: string;
@@ -523,11 +537,30 @@ export class CoordinatorObject implements DurableObject {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// EXPORTS
+// EXPORTS — With Thin Router Evolution
 // ═══════════════════════════════════════════════════════════════════════════════
 
+// Create the edge router wrapper
+const thinRouter = edgeRouter.create<Env>({
+  workerName: 'nova-api-node',
+  enableLearning: true,
+  guardianMode: true,  // Block probes and malicious patterns
+  bypassPaths: ['/health', '/'],  // Health checks always compute
+});
+
+// Wrap the original handler with thin routing capabilities
+const evolvedHandler = thinRouter(handleRequest);
+
 export default {
-  fetch: handleRequest,
+  // Use evolved handler when cache-cognition is available, otherwise use original
+  fetch: async (request: Request, env: Env, ctx: ExecutionContext): Promise<Response> => {
+    // If we have cache binding and pattern cache, use thin router evolution
+    if (env.CACHE_COGNITION || env.PATTERN_CACHE) {
+      return evolvedHandler(request, env, ctx);
+    }
+    // Otherwise, use original handler (backward compatible)
+    return handleRequest(request, env, ctx);
+  },
   scheduled: handleScheduled,
   queue: processTaskBatch,
 };

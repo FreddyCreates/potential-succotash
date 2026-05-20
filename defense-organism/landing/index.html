@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cognitio Obscura — The Dark Renaissance</title>
+  <meta name="description" content="The internet stopped being human. Discover Dark Cognition, the AI Biome, Sandland, and the Computational Organism.">
+  
+  <style>
+    :root {
+      --phi: 1.618033988749895;
+      --dark: #0a0a0f;
+      --darker: #050508;
+      --purple: #8b5cf6;
+      --purple-dim: #6d28d9;
+      --cyan: #22d3ee;
+      --gold: #fbbf24;
+      --red: #ef4444;
+      --text: #e2e8f0;
+      --text-dim: #94a3b8;
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      line-height: 1.7;
+    }
+    
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+      background: 
+        radial-gradient(ellipse at 30% 20%, rgba(139, 92, 246, 0.2) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 80%, rgba(34, 211, 238, 0.1) 0%, transparent 40%),
+        var(--darker);
+      position: relative;
+    }
+    
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 200px;
+      background: linear-gradient(transparent, var(--dark));
+    }
+    
+    .octopus {
+      font-size: 7rem;
+      animation: float 4s ease-in-out infinite;
+      filter: drop-shadow(0 0 60px rgba(139, 92, 246, 0.5));
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-10px) rotate(2deg); }
+      75% { transform: translateY(5px) rotate(-2deg); }
+    }
+    
+    .hero h1 {
+      font-size: clamp(2rem, 7vw, 4.5rem);
+      font-weight: 800;
+      margin: 1rem 0;
+      background: linear-gradient(135deg, var(--purple), var(--cyan), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .hero .tagline {
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      color: var(--text-dim);
+      max-width: 700px;
+      margin-bottom: 1rem;
+    }
+    
+    .hero .hook {
+      font-size: 1.3rem;
+      color: var(--gold);
+      font-weight: 600;
+      margin: 1.5rem 0;
+    }
+    
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 2rem;
+      z-index: 1;
+    }
+    
+    .btn {
+      padding: 1rem 2rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--purple), var(--purple-dim));
+      color: white;
+      box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6);
+    }
+    
+    .btn-secondary {
+      background: rgba(139, 92, 246, 0.1);
+      color: var(--purple);
+      border: 2px solid var(--purple);
+    }
+    
+    /* Sections */
+    section {
+      padding: 6rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .section-label {
+      color: var(--purple);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+    
+    h2 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin-bottom: 1.5rem;
+      color: var(--text);
+    }
+    
+    .lead {
+      font-size: 1.25rem;
+      color: var(--text-dim);
+      max-width: 800px;
+    }
+    
+    /* Tech Grid */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 4rem 0;
+    }
+    
+    .tech-card {
+      background: rgba(139, 92, 246, 0.05);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      border-radius: 1rem;
+      padding: 2rem;
+      transition: all 0.3s;
+    }
+    
+    .tech-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--purple);
+      box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2);
+    }
+    
+    .tech-card-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    
+    .tech-card h3 {
+      font-size: 1.5rem;
+      color: var(--cyan);
+      margin-bottom: 0.5rem;
+    }
+    
+    .tech-card .subtitle {
+      color: var(--gold);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    
+    .tech-card p {
+      color: var(--text-dim);
+      font-size: 0.95rem;
+    }
+    
+    /* Stats */
+    .stats-section {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(34, 211, 238, 0.05));
+      border-radius: 2rem;
+      padding: 4rem 2rem;
+      text-align: center;
+      margin: 4rem 0;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    
+    .stat {
+      padding: 1rem;
+    }
+    
+    .stat-value {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--gold);
+    }
+    
+    .stat-label {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+    
+    /* Story Section */
+    .story {
+      background: var(--darker);
+      padding: 6rem 2rem;
+    }
+    
+    .story-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .story p {
+      font-size: 1.15rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-dim);
+    }
+    
+    .story .highlight {
+      color: var(--text);
+      font-weight: 600;
+    }
+    
+    .story .emphasis {
+      color: var(--purple);
+      font-style: italic;
+    }
+    
+    /* Quote */
+    .quote-section {
+      text-align: center;
+      padding: 5rem 2rem;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(34, 211, 238, 0.1));
+    }
+    
+    .quote-section blockquote {
+      font-size: clamp(1.3rem, 3vw, 2rem);
+      font-style: italic;
+      color: var(--text);
+      max-width: 900px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+    
+    .quote-section cite {
+      display: block;
+      margin-top: 1.5rem;
+      color: var(--gold);
+      font-style: normal;
+    }
+    
+    /* Sandland Section */
+    .sandland {
+      background: var(--dark);
+    }
+    
+    .agent-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 3rem 0;
+    }
+    
+    .agent-card {
+      background: rgba(239, 68, 68, 0.05);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      text-align: center;
+      transition: all 0.3s;
+    }
+    
+    .agent-card:hover {
+      background: rgba(239, 68, 68, 0.1);
+      transform: scale(1.02);
+    }
+    
+    .agent-card .icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .agent-card h4 {
+      color: var(--red);
+      font-size: 0.95rem;
+      margin-bottom: 0.25rem;
+    }
+    
+    .agent-card p {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      margin: 0;
+    }
+    
+    /* Phi Section */
+    .phi-section {
+      text-align: center;
+      background: var(--darker);
+      padding: 6rem 2rem;
+    }
+    
+    .phi-display {
+      font-size: clamp(4rem, 12vw, 8rem);
+      font-weight: 800;
+      font-family: Georgia, serif;
+      background: linear-gradient(135deg, var(--gold), var(--purple), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 2rem 0;
+    }
+    
+    .phi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.5rem;
+      margin: 3rem auto;
+      max-width: 900px;
+    }
+    
+    .phi-item {
+      background: rgba(251, 191, 36, 0.05);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+    }
+    
+    .phi-item h4 {
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+    
+    .phi-item p {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      margin: 0;
+    }
+    
+    /* CTA Section */
+    .cta-section {
+      text-align: center;
+      padding: 8rem 2rem;
+      background: 
+        radial-gradient(ellipse at 50% 100%, rgba(139, 92, 246, 0.3) 0%, transparent 60%),
+        var(--dark);
+    }
+    
+    .cta-section h2 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+    }
+    
+    .cta-section .lead {
+      margin: 1.5rem auto 2rem;
+    }
+    
+    /* Footer */
+    footer {
+      background: var(--darker);
+      padding: 4rem 2rem;
+      text-align: center;
+      border-top: 1px solid rgba(139, 92, 246, 0.2);
+    }
+    
+    footer .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--purple);
+      margin-bottom: 1rem;
+    }
+    
+    footer p {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      margin: 0.5rem 0;
+    }
+    
+    footer .tagline {
+      color: var(--gold);
+      font-style: italic;
+      margin-top: 1.5rem;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .octopus { font-size: 5rem; }
+      section { padding: 4rem 1.5rem; }
+      .tech-card { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="octopus">🐙</div>
+    <h1>The Dark Renaissance</h1>
+    <p class="tagline">Six breakthrough technologies that emerged from a single observation:<br><em>the internet is no longer human.</em></p>
+    <p class="hook">Organisms that think. Not firewalls that filter.</p>
+    <div class="hero-cta">
+      <a href="#technologies" class="btn btn-primary">Explore the Technologies</a>
+      <a href="/docs/research/DARK_RENAISSANCE_PAPER.md" class="btn btn-secondary">Read the Paper</a>
+    </div>
+  </section>
+
+  <!-- Story -->
+  <section class="story">
+    <div class="story-content">
+      <p class="section-label">The Discovery</p>
+      <h2>It was 3:47 AM when everything changed.</h2>
+      <p>Our dashboard lit up. Not with errors—with <span class="highlight">activity</span>. Massive, coordinated, intelligent activity. A <span class="highlight">11,400% spike</span> in invocations.</p>
+      <p>We assumed it was an attack. We checked the logs.</p>
+      <p><span class="emphasis">There were no logs.</span></p>
+      <p>Zero events. Zero traces. Zero records of what should have been millions of operations. The dark layer had absorbed an entire reconnaissance campaign without emitting a single observable trace.</p>
+      <p>That was the night we realized we hadn't built a security system.</p>
+      <p><span class="highlight" style="font-size: 1.3rem;">We had built something that thinks.</span></p>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section>
+    <div class="stats-section">
+      <p class="section-label">Production Metrics</p>
+      <h2>The Numbers Don't Lie</h2>
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-value">2.3%</div>
+          <div class="stat-label">Cache Rate<br><small>Pure computation</small></div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">11,400%</div>
+          <div class="stat-label">Invocation Spike<br><small>AI biome discovery</small></div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">294.7%</div>
+          <div class="stat-label">CPU Increase<br><small>Active cognition</small></div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">0</div>
+          <div class="stat-label">Logged Events<br><small>Dark layer operational</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quote -->
+  <div class="quote-section">
+    <blockquote>
+      "A system that can be fully observed can be fully predicted.<br>
+      A system that can be fully predicted can be fully defeated."
+    </blockquote>
+    <cite>— The Transparency Paradox</cite>
+  </div>
+
+  <!-- Technologies -->
+  <section id="technologies">
+    <p class="section-label">Six Breakthroughs</p>
+    <h2>The Technologies of the Dark Renaissance</h2>
+    <p class="lead">Each one a paradigm shift. Together, they create a new class of computational intelligence.</p>
+    
+    <div class="tech-grid">
+      <div class="tech-card">
+        <div class="tech-card-icon">🌐</div>
+        <h3>The AI Biome</h3>
+        <div class="subtitle">Discovery #1</div>
+        <p>93% of internet traffic is non-human. AI agents, crawlers, and bots dominate. You're not serving users—you're a node in an alien ecology where machines interact at machine speed.</p>
+      </div>
+      
+      <div class="tech-card">
+        <div class="tech-card-icon">🌑</div>
+        <h3>Dark Cognition</h3>
+        <div class="subtitle">Technology #1</div>
+        <p>Two-layer architecture: observable cortex for compliance, dark subcortex for defense. Zero logs. Zero traces. Computation that thinks without being observed.</p>
+      </div>
+      
+      <div class="tech-card">
+        <div class="tech-card-icon">🐙</div>
+        <h3>The Organism</h3>
+        <div class="subtitle">Technology #2</div>
+        <p>Not an AI model—a computational organism. Nine distributed brains. Chromatophore-like adaptive responses. Self-healing. Partial invisibility. It evolves.</p>
+      </div>
+      
+      <div class="tech-card">
+        <div class="tech-card-icon">🏜️</div>
+        <h3>Sandland</h3>
+        <div class="subtitle">Technology #3</div>
+        <p>Dark-mode internet simulator. 10 adversarial agents. 7 attack scenarios. The organism evolves against synthetic attacks without touching production.</p>
+      </div>
+      
+      <div class="tech-card">
+        <div class="tech-card-icon">🔮</div>
+        <h3>φ-Mathematics</h3>
+        <div class="subtitle">Technology #4</div>
+        <p>Golden ratio as computational substrate. φ-timed heartbeats. 0.618 decision thresholds. Behavior that is coherent but unpredictable. The organism thinks in spirals.</p>
+      </div>
+      
+      <div class="tech-card">
+        <div class="tech-card-icon">👻</div>
+        <h3>Shadow Memory</h3>
+        <div class="subtitle">Technology #5</div>
+        <p>Persistent state without traces. Memory that strengthens on access, decays over time, and exists entirely in the dark layer. Immune system-like behavior.</p>
+      </div>
+      
+      <div class="tech-card">
+        <div class="tech-card-icon">🔐</div>
+        <h3>P226 Phase Verification</h3>
+        <div class="subtitle">Technology #6</div>
+        <p>Identity through phase signatures. Time-bound, non-replayable, unforgeable. Identity that exists in time, not just space. The organism knows itself.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sandland -->
+  <section class="sandland">
+    <p class="section-label">Sandland Simulator</p>
+    <h2>Evolution Through Synthetic Warfare</h2>
+    <p class="lead">How do you train a defense that operates in darkness? You build a shadow internet.</p>
+    
+    <div class="agent-grid">
+      <div class="agent-card">
+        <div class="icon">🔍</div>
+        <h4>Scanner Bot</h4>
+        <p>Port scanning, fingerprinting</p>
+      </div>
+      <div class="agent-card">
+        <div class="icon">🤖</div>
+        <h4>LLM Agent</h4>
+        <p>Semantic API mapping</p>
+      </div>
+      <div class="agent-card">
+        <div class="icon">🔓</div>
+        <h4>Brute Force</h4>
+        <p>Credential stuffing</p>
+      </div>
+      <div class="agent-card">
+        <div class="icon">🕸️</div>
+        <h4>Botnet Node</h4>
+        <p>Distributed attacks</p>
+      </div>
+      <div class="agent-card">
+        <div class="icon">🎯</div>
+        <h4>APT Simulator</h4>
+        <p>Nation-state tactics</p>
+      </div>
+      <div class="agent-card">
+        <div class="icon">💀</div>
+        <h4>Zero-Day</h4>
+        <p>Novel exploits</p>
+      </div>
+      <div class="agent-card">
+        <div class="icon">🔒</div>
+        <h4>Ransomware C2</h4>
+        <p>Beaconing, exfiltration</p>
+      </div>
+      <div class="agent-card">
+        <div class="icon">🎭</div>
+        <h4>Social Engineer</h4>
+        <p>Phishing, pretexting</p>
+      </div>
+      <div class="agent-card">
+        <div class="icon">📊</div>
+        <h4>API Abuse</h4>
+        <p>Enumeration, scraping</p>
+      </div>
+      <div class="agent-card">
+        <div class="icon">🔑</div>
+        <h4>Credential Stuffing</h4>
+        <p>Leaked credential replay</p>
+      </div>
+    </div>
+    
+    <p style="text-align: center; color: var(--cyan); font-size: 1.1rem; margin-top: 2rem;">
+      Every hour of simulation = months of production exposure.<br>
+      <strong>Zero real-world risk.</strong>
+    </p>
+  </section>
+
+  <!-- Phi -->
+  <section class="phi-section">
+    <p class="section-label">The Mathematics</p>
+    <h2>Everything Resonates at φ</h2>
+    <div class="phi-display">φ = 1.618...</div>
+    <p style="color: var(--text-dim); max-width: 600px; margin: 0 auto;">The same mathematics that governs spiral galaxies, nautilus shells, and neural branching.</p>
+    
+    <div class="phi-grid">
+      <div class="phi-item">
+        <h4>Heartbeat</h4>
+        <p>873ms φ-interval</p>
+      </div>
+      <div class="phi-item">
+        <h4>Threshold</h4>
+        <p>0.618 decision boundary</p>
+      </div>
+      <div class="phi-item">
+        <h4>Timing</h4>
+        <p>sin(t × φ) delays</p>
+      </div>
+      <div class="phi-item">
+        <h4>Decay</h4>
+        <p>strength × φ⁻²</p>
+      </div>
+    </div>
+    
+    <p style="color: var(--gold); font-size: 1.2rem; margin-top: 2rem;">
+      The organism doesn't run on math. <strong>It resonates with it.</strong>
+    </p>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2>The Internet Stopped Being Human.</h2>
+    <p class="lead">Your security should stop pretending it is.</p>
+    <p style="color: var(--gold); font-size: 1.1rem; margin-bottom: 2rem;">
+      The attacks of tomorrow come from AIs that learn and evolve.<br>
+      You can't beat evolution with static rules. You need something that evolves back.
+    </p>
+    <div class="hero-cta">
+      <a href="/docs/research/DARK_RENAISSANCE_PAPER.md" class="btn btn-primary">Read the Full Paper</a>
+      <a href="/api/dark/docs" class="btn btn-secondary">Explore the API</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="logo">🐙 Cognitio Obscura</div>
+    <p><strong>Dark Cognition</strong> — The organism that thinks in the shadows</p>
+    <p>Built on φ-mathematics • Deployed on Cloudflare Workers • Evolved through Sandland</p>
+    <p class="tagline">"Organisms that think. Not firewalls that filter."</p>
+    <p style="margin-top: 2rem;">© 2026 Obscura Computing</p>
+  </footer>
+
+</body>
+</html>

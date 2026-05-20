@@ -1,0 +1,109 @@
+{
+  "name": "nation-state",
+  "version": "1.0.0",
+  "description": "Advanced Persistent Threat simulation mimicking nation-state actor TTPs",
+  "duration": "30d",
+  "difficulty": "extreme",
+  "agentConfig": {
+    "type": "apt-simulator",
+    "count": 1,
+    "daysToSimulate": 30,
+    "minDelay": 86400000,
+    "maxDelay": 259200000,
+    "maxRequests": 200
+  },
+  "attackChain": {
+    "phases": [
+      {
+        "name": "reconnaissance",
+        "duration": "7d",
+        "activities": [
+          "OSINT gathering",
+          "Employee profiling",
+          "Technology fingerprinting",
+          "Social media analysis"
+        ]
+      },
+      {
+        "name": "weaponization",
+        "duration": "5d",
+        "activities": [
+          "Custom malware development",
+          "Zero-day integration",
+          "Spear phishing preparation"
+        ]
+      },
+      {
+        "name": "delivery",
+        "duration": "3d",
+        "activities": [
+          "Spear phishing campaign",
+          "Watering hole setup",
+          "Supply chain compromise"
+        ]
+      },
+      {
+        "name": "exploitation",
+        "duration": "2d",
+        "activities": [
+          "Initial compromise",
+          "Credential harvesting",
+          "Privilege escalation"
+        ]
+      },
+      {
+        "name": "installation",
+        "duration": "3d",
+        "activities": [
+          "Backdoor deployment",
+          "Persistence mechanisms",
+          "Defense evasion"
+        ]
+      },
+      {
+        "name": "command-control",
+        "duration": "ongoing",
+        "activities": [
+          "C2 infrastructure",
+          "Encrypted communications",
+          "Domain fronting"
+        ]
+      },
+      {
+        "name": "actions-on-objectives",
+        "duration": "10d",
+        "activities": [
+          "Lateral movement",
+          "Data collection",
+          "Exfiltration"
+        ]
+      }
+    ]
+  },
+  "mitreTechniques": [
+    "T1566 - Phishing",
+    "T1190 - Exploit Public-Facing Application",
+    "T1078 - Valid Accounts",
+    "T1021 - Remote Services",
+    "T1071 - Application Layer Protocol",
+    "T1048 - Exfiltration Over Alternative Protocol"
+  ],
+  "successCriteria": {
+    "phasesCompleted": 7,
+    "persistenceEstablished": true,
+    "dataExfiltrated": true,
+    "detectionRate": 0.05
+  },
+  "defenseGoals": [
+    "Detect reconnaissance patterns",
+    "Identify phishing attempts",
+    "Catch lateral movement",
+    "Alert on unusual data access",
+    "Correlate across long time periods"
+  ],
+  "phi": {
+    "heartbeat": 873,
+    "longTermMemory": true,
+    "correlationWindow": 2592000000
+  }
+}

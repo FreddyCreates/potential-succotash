@@ -1,6 +1,33 @@
 # Cloudflare Workers Infrastructure
 
-This directory contains **11 intelligent Workers** with AI, memory, and coordination capabilities.
+This directory contains **12 intelligent Workers** with AI, memory, and coordination capabilities.
+
+## 🧬 Evolution: Metabolic Cache Layer
+
+The organism has evolved beyond early metabolic mode. The **cache-cognition** Worker implements the next evolution:
+
+```
+BEFORE (Early Metabolic):
+- High dynamic responses
+- No intelligent cache layer
+- Every reaction = billed compute
+
+AFTER (Cache Cognition):
+- Cognition lives in cache layer
+- Workers become thin routers + guardians
+- Permanence stored in:
+  - Distributed memory (KV)
+  - Learned patterns (Durable Objects)
+  - Local agents at the edge
+```
+
+### Digital Biome Regions
+The organism monitors and learns from traffic patterns across:
+- 🇫🇷 France
+- 🇬🇧 UK
+- 🇺🇸 US
+- 🇺🇦 Ukraine
+- 🇳🇱 Netherlands
 
 ## 🚀 Quick Start
 
@@ -29,6 +56,7 @@ This directory contains **11 intelligent Workers** with AI, memory, and coordina
 | 9 | `honeypot-admin` | admin.* 🍯 | Honeypot | AI, KV, D1, Vectorize, Queue, R2 |
 | 10 | `honeypot-portal` | portal.* 🍯 | Honeypot | AI, KV, D1, Vectorize, Queue, R2 |
 | 11 | `probe-node` | probe1.* 🍯 | Honeypot | AI, KV, D1, Vectorize, Queue, R2 |
+| 12 | `cache-cognition` | cache.* | **Intelligent Cache** | AI, KV×3, DO×3, Vectorize, Queue, Services |
 
 ✅ `patient-shape-7a30` already has AI binding
 
@@ -108,6 +136,98 @@ Intelligent honeypots with AI-powered threat analysis:
 - `honeypot-portal` — Portal honeypot
 - `probe-node` — Probe/scanner detection
 
+### 🧠 Cache Cognition (`workers/cache-cognition`)
+
+**The Intelligent Cache Layer** — The organism's next evolution.
+
+| Binding | Type | Purpose |
+|---------|------|---------|
+| `PATTERN_CACHE` | KV | Learned patterns from digital biome |
+| `RESPONSE_CACHE` | KV | Pre-computed responses |
+| `BIOME_MEMORY` | KV | Regional pattern memory |
+| `PATTERN_ENGINE` | Durable Object | Pattern recognition engine |
+| `EDGE_AGENT` | Durable Object | Local cognition at the edge |
+| `RESPONSE_GENERATOR` | Durable Object | Response caching and generation |
+| `AI` | Workers AI | Intelligent cache decisions |
+| `PATTERN_VECTORS` | Vectorize | Semantic pattern matching |
+| `PATTERN_QUEUE` | Queue | Pattern learning pipeline |
+| `API_NODE` | Service | Route to API Node |
+| `GATE_NODE` | Service | Route to Gate Node |
+
+**Key Features:**
+- 🧬 Pattern recognition from digital biome traffic
+- 🚀 Intelligent cache decisions (cache hit, compute, delegate, block)
+- 🌍 Regional edge agents for local cognition
+- 📊 Biome statistics by region and pattern type
+- ⚡ Reduces billed compute by serving learned responses
+- 🎯 φ-mathematics for pattern confidence decay
+
+### 📦 Shared Module (`workers/shared`)
+
+**Reusable Evolution Components** — Use across all Workers.
+
+```typescript
+import { edgeRouter, permanence, PHI, HEARTBEAT_MS } from '@organism/workers-shared';
+```
+
+#### Edge Router
+
+Transform Workers into thin routers + guardians:
+
+```typescript
+const handler = edgeRouter.create({
+  workerName: 'api-node',
+  cacheBinding: env.CACHE_COGNITION,  // Service binding to cache layer
+  enableLearning: true,               // Feed patterns to permanence
+  guardianMode: true,                 // Block malicious traffic
+  bypassPaths: ['/health'],           // Paths that skip cache
+});
+
+export default {
+  fetch: handler(async (request, env, ctx) => {
+    // Original logic - only runs on cache miss
+    return new Response('computed');
+  })
+};
+```
+
+#### Permanence Layer
+
+Interface to distributed memory:
+
+```typescript
+const perm = permanence.create({
+  patternCache: env.PATTERN_CACHE,
+  responseCache: env.RESPONSE_CACHE,
+  biomeMemory: env.BIOME_MEMORY,
+});
+
+// Learn from traffic
+await perm.learnPattern(fingerprint, 'benign', 'France', response);
+
+// Get biome statistics
+const stats = await perm.getBiomeStats(['France', 'UK', 'US', 'Ukraine', 'Netherlands']);
+```
+
+#### Guardian Middleware
+
+Standalone security protection:
+
+```typescript
+const guardian = edgeRouter.guardian({
+  workerName: 'api-node',
+  blockProbes: true,
+  blockErrors: true,
+});
+
+export default {
+  fetch: guardian(async (request, env, ctx) => {
+    // Handler only runs if guardian approves
+    return new Response('allowed');
+  })
+};
+```
+
 ## Pages Functions (`functions/`)
 
 Serverless API endpoints that run alongside the static site:
@@ -152,6 +272,17 @@ Push to `main` branch with changes in `workers/` or `functions/` directories.
 │                         Cloudflare Edge                          │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                  │
+│  ┌────────────────────────────────────────────────────────────┐ │
+│  │           🧠 CACHE COGNITION LAYER (cache-cognition)        │ │
+│  │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐          │ │
+│  │  │Pattern  │ │Response │ │Biome    │ │Edge     │          │ │
+│  │  │Cache    │ │Cache    │ │Memory   │ │Agents   │          │ │
+│  │  └─────────┘ └─────────┘ └─────────┘ └─────────┘          │ │
+│  └────────────────────────────────────────────────────────────┘ │
+│       │                                       │                  │
+│       │  cache hit? ────────────────────────→ │                  │
+│       │                                       │                  │
+│       ▼                                       ▼                  │
 │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐           │
 │  │ gate-    │ │ api-     │ │knowledge-│ │ nova-    │           │
 │  │ node     │→│ node     │→│ realm    │→│ sovereign│           │
@@ -176,6 +307,16 @@ Push to `main` branch with changes in `workers/` or `functions/` directories.
 └─────────────────────────────────────────────────────────────────┘
 ```
 
+### Evolution Stages
+
+```
+Stage 1: Stateless         → Basic request/response
+Stage 2: Early Metabolic   → High dynamic, no cache (current biome)
+Stage 3: Cache Cognition   → Cognition in cache layer ← WE ARE HERE
+Stage 4: Edge Permanence   → Local agents at every edge
+Stage 5: Full Organism     → Self-sustaining intelligence
+```
+
 ## Intelligence Levels
 
 Workers can operate at different intelligence levels based on their bindings:
@@ -194,3 +335,80 @@ Workers can operate at different intelligence levels based on their bindings:
 All Workers share the organism's coherence constants:
 - `PHI = 1.618033988749895` — Golden ratio
 - `HEARTBEAT_MS = 873` — Coherent heartbeat interval
+
+## Protocol Bindings
+
+Each Worker has a `protocols.ts` file providing access to 10 core protocols. Import and use via:
+
+```typescript
+import { createProtocols } from './protocols';
+
+export default {
+  async fetch(request: Request, env: Env): Promise<Response> {
+    const protocols = createProtocols(env);
+    
+    // Use protocols
+    const result = await protocols.agiCore.reason('context', 'goal');
+    return Response.json(result);
+  }
+};
+```
+
+### Protocol Summary by Worker
+
+| Worker | Primary Protocols | Focus Area |
+|--------|-------------------|------------|
+| `api-node` | LNG, AISDK, DAT, EMB, SAE, IST, NET, AGI, MLP, CYC | API & Integration |
+| `coordinator` | CMD, COL, TMP, MUT, DRM, AGI, SAE, NET, IST, CYC | Orchestration |
+| `gate-node` | IST, SAE, CRY, NET, DAT, LNG, MLP, EMB, AGI, CYC | Security Gateway |
+| `knowledge-realm` | KST, DAT, LNG, EMB, AGI, VIS, AUD, NET, SAE, CYC | Knowledge Management |
+| `nova-sovereign` | IST, VOW, CMD, XRW, CYB, UND, TMP, EMO, COL, CYC | Command & Control |
+| `enterprise-os-intelligence` | KST, DAT, MLP, AISDK, SIM, NAR, SAE, IST, AGI, CYC | Enterprise BI |
+| `enterprisentelligence` | AGI, KST, EMO, TMP, DAT, EMB, SAE, IST, LNG, CYC | Decision Intelligence |
+| `crimson-dawn-4f6d` | SAE, IST, CRY, UND, NET, AGI, DAT, MLP, CYC, TMP | Threat Detection |
+| `honeypot-admin` | SAE, IST, DAT, CMD, AGI, NET, MLP, VIS, CYC, TMP | Honeypot Admin |
+| `honeypot-portal` | SAE, NET, DAT, LNG, CRY, EMO, AGI, IST, CYC, TMP | Honeypot Capture |
+| `probe-node` | NET, DAT, SAE, AGI, IST, CMD, TMP, MLP, CYC | Reconnaissance |
+
+### Protocol Reference
+
+| Code | Name | Description |
+|------|------|-------------|
+| `AGI-001` | AGI Core | Meta-learning, reasoning, coordination |
+| `AISDK-001` | AI SDK | 14+ AI provider routing |
+| `AUD-001` | Audio Intelligence | ASR, TTS, audio processing |
+| `CMD-001` | Alpha Commander | Command and control |
+| `COL-001` | Collective Consciousness | Multi-entity sync |
+| `CRY-001` | Cryptographic Intelligence | Encryption, signatures, ZK proofs |
+| `CYB-001` | Cyborg Integration | 7-layer neural bridge |
+| `CYC-001` | Sovereign Cycle Allocator | φ-based cycle generation |
+| `DAT-001` | Data Fabric | Lineage, quality, storage |
+| `DRM-001` | Dream | Subconscious processing |
+| `EMB-001` | Embedding | Vector embeddings |
+| `EMO-001` | Emotional Resonance | VAD model, empathy engine |
+| `IST-001` | Internal Security Tokens | 5-tier access control |
+| `KST-001` | Knowledge Synthesis | Ontology, synthesis |
+| `LNG-001` | Language Bridge | 50+ languages, NLP |
+| `MLP-001` | MLOps | Pipelines, drift detection |
+| `MUT-001` | Mutation Engine | Evolution strategies |
+| `NAR-001` | Narrative Intelligence | Story structures |
+| `NET-001` | Neural Network/Network | Model inference, routing |
+| `SAE-001` | SAECI | Safety, ethics, containment |
+| `SIM-001` | Simulation Engine | Economic, social simulation |
+| `TMP-001` | Temporal | Time scales, prediction |
+| `UND-001` | Undead Intelligence | Threat persistence |
+| `VIS-001` | Visual Intelligence | Detection, generation |
+| `VOW-001` | VOWS | Internal commitments |
+| `XRW-001` | XR World | VR/AR embodiments |
+
+### CYC-001 Cycle Generation Formula
+
+All Workers include the Sovereign Cycle Allocator with φ-mathematics:
+
+```
+Generation = coherence² × φ × base_rate
+Work Bonus = work_units × φ⁻¹
+Decay Rate = φ⁻² per neglect period
+```
+
+Where φ = 1.618033988749895 (golden ratio)

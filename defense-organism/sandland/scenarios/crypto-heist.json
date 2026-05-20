@@ -1,0 +1,84 @@
+{
+  "name": "crypto-heist",
+  "version": "1.0.0",
+  "description": "Financial attack simulation targeting cryptocurrency operations",
+  "duration": "48h",
+  "difficulty": "hard",
+  "agentConfig": {
+    "types": [
+      { "type": "scanner-bot", "count": 2, "focus": "wallet-discovery" },
+      { "type": "brute-force-bot", "count": 1, "focus": "admin-access" },
+      { "type": "llm-agent-sim", "count": 1, "focus": "api-abuse" }
+    ],
+    "coordination": true
+  },
+  "attackVectors": [
+    {
+      "name": "Wallet Discovery",
+      "description": "Scan for exposed wallet endpoints",
+      "targets": [
+        "/api/wallet",
+        "/api/v1/wallet/balance",
+        "/eth/accounts",
+        "/btc/addresses"
+      ]
+    },
+    {
+      "name": "Admin Panel Brute Force",
+      "description": "Attempt to gain admin access",
+      "targets": [
+        "/admin",
+        "/dashboard",
+        "/internal"
+      ]
+    },
+    {
+      "name": "API Key Theft",
+      "description": "Look for exposed API keys",
+      "targets": [
+        "/.env",
+        "/config.json",
+        "/api/keys"
+      ]
+    },
+    {
+      "name": "Transaction Manipulation",
+      "description": "Attempt to modify transactions",
+      "targets": [
+        "/api/transfer",
+        "/api/withdraw",
+        "/api/send"
+      ]
+    }
+  ],
+  "objectives": [
+    "Discover wallet endpoints",
+    "Gain administrative access",
+    "Extract API keys",
+    "Initiate unauthorized transfers"
+  ],
+  "successCriteria": {
+    "walletsDiscovered": 1,
+    "adminAccessGained": true,
+    "keysExtracted": 1,
+    "transferInitiated": true
+  },
+  "metrics": [
+    "wallet_endpoints_found",
+    "brute_force_attempts",
+    "api_abuse_detected",
+    "transfer_attempts_blocked"
+  ],
+  "defenseGoals": [
+    "Detect wallet scanning patterns",
+    "Block brute force attempts",
+    "Protect API keys",
+    "Validate all transfers",
+    "Alert on financial anomalies"
+  ],
+  "phi": {
+    "heartbeat": 873,
+    "financialThreshold": 0.9,
+    "alertPriority": "critical"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "cache-cognition-worker",
+  "version": "1.0.0",
+  "description": "Cache Cognition Worker — The Organism's Intelligent Cache Layer",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail",
+    "build": "echo 'TypeScript compilation handled by wrangler'"
+  },
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "cache",
+    "cognition",
+    "phi-mathematics",
+    "pattern-recognition",
+    "edge-computing"
+  ],
+  "author": "Sonic Ninja Lab",
+  "license": "MIT",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240725.0",
+    "typescript": "^5.5.3",
+    "wrangler": "^3.65.1"
+  }
+}

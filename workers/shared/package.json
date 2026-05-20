@@ -1,0 +1,25 @@
+{
+  "name": "@organism/workers-shared",
+  "version": "1.0.0",
+  "description": "Shared Workers Module — Organism Evolution Components",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "edge-router",
+    "organism",
+    "evolution",
+    "phi-mathematics"
+  ],
+  "author": "Organism",
+  "license": "MIT",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240725.0",
+    "typescript": "^5.5.3"
+  }
+}

@@ -1,0 +1,124 @@
+# Cache Cognition Worker — The Organism's Intelligent Cache Layer
+# 
+# This Worker implements the evolutionary step: moving cognition into the cache layer
+# Workers become thin routers + guardians while "permanence" lives in:
+# - Distributed memory (KV)
+# - Learned patterns (Durable Objects)
+# - Local agents at the edge
+
+name = "cache-cognition"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHI MATHEMATICS CONSTANTS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[vars]
+PHI = "1.618033988749895"
+HEARTBEAT_MS = "873"
+THRESHOLD = "0.618"
+ORGANISM = "cache-cognition"
+EVOLUTION_STAGE = "metabolic-cache"
+BIOME_REGIONS = "France,UK,US,Ukraine,Netherlands"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# DISTRIBUTED MEMORY — Where cognition lives
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# Pattern Cache — Learned patterns from digital biome
+[[kv_namespaces]]
+binding = "PATTERN_CACHE"
+id = "REPLACE_WITH_PATTERN_CACHE_KV_ID"
+preview_id = "REPLACE_WITH_PREVIEW_KV_ID"
+
+# Response Cache — Pre-computed responses (reduces billed compute)
+[[kv_namespaces]]
+binding = "RESPONSE_CACHE"
+id = "REPLACE_WITH_RESPONSE_CACHE_KV_ID"
+preview_id = "REPLACE_WITH_PREVIEW_KV_ID"
+
+# Biome Memory — Digital biome learned patterns by region
+[[kv_namespaces]]
+binding = "BIOME_MEMORY"
+id = "REPLACE_WITH_BIOME_MEMORY_KV_ID"
+preview_id = "REPLACE_WITH_PREVIEW_KV_ID"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# LEARNED PATTERNS — Durable Objects for cognitive permanence
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# Pattern Recognition Engine — Learns from biome traffic
+[[durable_objects.bindings]]
+name = "PATTERN_ENGINE"
+class_name = "PatternRecognitionEngine"
+
+# Regional Edge Agent — Local cognition at the edge
+[[durable_objects.bindings]]
+name = "EDGE_AGENT"
+class_name = "EdgeAgent"
+
+# Response Generator — Caches computed responses
+[[durable_objects.bindings]]
+name = "RESPONSE_GENERATOR"
+class_name = "ResponseGenerator"
+
+[[migrations]]
+tag = "v1"
+new_classes = ["PatternRecognitionEngine", "EdgeAgent", "ResponseGenerator"]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# QUEUE — For pattern learning and async cognition
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[[queues.producers]]
+binding = "PATTERN_QUEUE"
+queue = "pattern-learning"
+
+[[queues.consumers]]
+queue = "pattern-learning"
+max_batch_size = 50
+max_batch_timeout = 30
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# AI — For intelligent cache decisions
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[ai]
+binding = "AI"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SERVICE BINDINGS — Connect to other Workers
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[[services]]
+binding = "API_NODE"
+service = "nova-api-node"
+
+[[services]]
+binding = "GATE_NODE"
+service = "gate-node"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# VECTORIZE — For semantic pattern matching
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[[vectorize]]
+binding = "PATTERN_VECTORS"
+index_name = "pattern-vectors"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# TRIGGERS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[triggers]
+crons = ["*/5 * * * *"]  # Every 5 minutes — Pattern consolidation heartbeat
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# DEVELOPMENT
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[dev]
+port = 8790
+local_protocol = "http"

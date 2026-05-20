@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workers — Nova Gate | Intelligent Cloudflare Workers</title>
+  <meta name="description" content="11 intelligent Cloudflare Workers powering the sovereign organism. Real-time monitoring, AI bindings, Durable Objects, and edge computing.">
+  <meta name="keywords" content="Cloudflare Workers, edge computing, Durable Objects, AI, serverless, distributed intelligence">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Nova Gate Workers — Edge Intelligence">
+  <meta property="og:description" content="11 intelligent Workers with AI, KV, D1, Vectorize, and Durable Objects.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://itsnotailabs.com/pages/workers.html">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  
+  <style>
+    /* Worker-specific styles */
+    .worker-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .worker-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+    }
+    
+    .worker-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    
+    .worker-name {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .worker-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+    
+    .worker-title {
+      font-size: var(--font-lg);
+      font-weight: 600;
+    }
+    
+    .worker-status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: var(--font-sm);
+    }
+    
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    .status-dot.warning { background: var(--warning); }
+    .status-dot.error { background: var(--error); }
+    
+    .worker-desc {
+      color: var(--text-dim);
+      font-size: var(--font-sm);
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+    
+    .worker-bindings {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .binding-tag {
+      background: rgba(108, 99, 255, 0.1);
+      color: var(--accent-light);
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-sm);
+      font-size: var(--font-xs);
+      font-family: monospace;
+    }
+    
+    .binding-tag.kv { background: rgba(255, 179, 71, 0.15); color: var(--warning); }
+    .binding-tag.d1 { background: rgba(0, 212, 170, 0.15); color: var(--accent2); }
+    .binding-tag.r2 { background: rgba(108, 99, 255, 0.15); color: var(--accent); }
+    .binding-tag.ai { background: rgba(255, 107, 107, 0.15); color: var(--error); }
+    .binding-tag.do { background: rgba(0, 212, 170, 0.15); color: var(--success); }
+    .binding-tag.queue { background: rgba(147, 51, 234, 0.15); color: #a78bfa; }
+    .binding-tag.vectorize { background: rgba(6, 182, 212, 0.15); color: #22d3ee; }
+    
+    .worker-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    
+    .worker-stat {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: var(--font-xl);
+      font-weight: 700;
+      color: var(--accent2);
+    }
+    
+    .stat-label {
+      font-size: var(--font-xs);
+      color: var(--text-dim);
+    }
+    
+    /* Dashboard Stats */
+    .dashboard-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    
+    .dash-stat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      text-align: center;
+    }
+    
+    .dash-stat-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .dash-stat-value {
+      font-size: var(--font-3xl);
+      font-weight: 700;
+      color: var(--accent2);
+    }
+    
+    .dash-stat-label {
+      font-size: var(--font-sm);
+      color: var(--text-dim);
+    }
+    
+    /* Architecture Diagram */
+    .architecture {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      margin: 2rem 0;
+    }
+    
+    .architecture h3 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .arch-layer {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .arch-layer-title {
+      font-size: var(--font-sm);
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.75rem;
+    }
+    
+    .arch-nodes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    
+    .arch-node {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius-sm);
+      font-size: var(--font-sm);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo">
+        <span class="logo-icon">🧬</span>
+        Nova Gate
+      </a>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+      <div class="nav-links">
+        <a href="../index.html" class="nav-link">Home</a>
+        <a href="products.html" class="nav-link">Products</a>
+        <a href="protocols.html" class="nav-link">Protocols</a>
+        <a href="workers.html" class="nav-link active">Workers</a>
+        <a href="docs.html" class="nav-link">Documentation</a>
+        <a href="../download.html" class="nav-cta">Download</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <span class="hero-badge">
+      <span class="heartbeat-dot"></span>
+      11 Workers • Edge Intelligence • Global Distribution
+    </span>
+    <h1 class="hero-title">
+      <span class="accent">Cloudflare</span><br>
+      <span class="accent2">Workers</span>
+    </h1>
+    <p class="hero-subtitle">
+      Intelligent edge computing infrastructure powering the sovereign organism. 
+      AI bindings, Durable Objects, Vectorize, and φ-mathematics at the edge.
+    </p>
+  </section>
+
+  <!-- Dashboard Stats -->
+  <section class="section">
+    <div class="container">
+      <div class="dashboard-stats">
+        <div class="dash-stat">
+          <div class="dash-stat-icon">⚡</div>
+          <div class="dash-stat-value" data-counter="11">11</div>
+          <div class="dash-stat-label">Active Workers</div>
+        </div>
+        <div class="dash-stat">
+          <div class="dash-stat-icon">🌍</div>
+          <div class="dash-stat-value" data-counter="300">300+</div>
+          <div class="dash-stat-label">Edge Locations</div>
+        </div>
+        <div class="dash-stat">
+          <div class="dash-stat-icon">🔷</div>
+          <div class="dash-stat-value" data-counter="6">6</div>
+          <div class="dash-stat-label">Durable Objects</div>
+        </div>
+        <div class="dash-stat">
+          <div class="dash-stat-icon">🧠</div>
+          <div class="dash-stat-value">AI</div>
+          <div class="dash-stat-label">Workers AI Enabled</div>
+        </div>
+        <div class="dash-stat">
+          <div class="dash-stat-icon">📊</div>
+          <div class="dash-stat-value" data-counter="3">3</div>
+          <div class="dash-stat-label">KV Namespaces</div>
+        </div>
+        <div class="dash-stat">
+          <div class="dash-stat-icon">💾</div>
+          <div class="dash-stat-value">D1</div>
+          <div class="dash-stat-label">SQL Database</div>
+        </div>
+      </div>
+
+      <!-- Architecture Overview -->
+      <div class="architecture">
+        <h3>Organism Architecture</h3>
+        
+        <div class="arch-layer">
+          <div class="arch-layer-title">🌐 Edge Layer (Workers)</div>
+          <div class="arch-nodes">
+            <div class="arch-node">⚡ api-node</div>
+            <div class="arch-node">🎯 coordinator</div>
+            <div class="arch-node">🚪 gate-node</div>
+            <div class="arch-node">📚 knowledge-realm</div>
+            <div class="arch-node">👑 nova-sovereign</div>
+          </div>
+        </div>
+        
+        <div class="arch-layer">
+          <div class="arch-layer-title">🧠 Intelligence Layer</div>
+          <div class="arch-nodes">
+            <div class="arch-node">🏢 enterprise-os</div>
+            <div class="arch-node">🧪 cache-cognition</div>
+            <div class="arch-node">🔍 probe-node</div>
+          </div>
+        </div>
+        
+        <div class="arch-layer">
+          <div class="arch-layer-title">🛡️ Security Layer</div>
+          <div class="arch-nodes">
+            <div class="arch-node">🍯 honeypot-admin</div>
+            <div class="arch-node">🌀 honeypot-portal</div>
+            <div class="arch-node">🌅 crimson-dawn</div>
+          </div>
+        </div>
+        
+        <div class="arch-layer">
+          <div class="arch-layer-title">💾 Storage Layer</div>
+          <div class="arch-nodes">
+            <div class="arch-node">📦 medinatech-db (D1)</div>
+            <div class="arch-node">🔍 medinatech-index (Vectorize)</div>
+            <div class="arch-node">📁 medinatech-assets (R2)</div>
+            <div class="arch-node">📬 honeypot-events (Queue)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Worker Cards -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Worker Fleet</span>
+        <h2 class="section-title">Intelligent Workers</h2>
+        <p class="section-desc">Each worker is purpose-built with specific bindings for its role in the organism.</p>
+      </div>
+
+      <div class="grid-fib">
+        <!-- API Node -->
+        <div class="worker-card" data-searchable>
+          <div class="worker-header">
+            <div class="worker-name">
+              <div class="worker-icon">⚡</div>
+              <span class="worker-title">api-node</span>
+            </div>
+            <div class="worker-status">
+              <span class="status-dot"></span>
+              Active
+            </div>
+          </div>
+          <p class="worker-desc">
+            Primary API gateway with full AI capabilities. Handles all external requests, 
+            routes to appropriate services, and manages authentication.
+          </p>
+          <div class="worker-bindings">
+            <span class="binding-tag ai">AI</span>
+            <span class="binding-tag kv">KV</span>
+            <span class="binding-tag d1">D1</span>
+            <span class="binding-tag vectorize">Vectorize</span>
+            <span class="binding-tag queue">Queue</span>
+            <span class="binding-tag r2">R2</span>
+            <span class="binding-tag do">DO</span>
+          </div>
+          <div class="worker-stats">
+            <div class="worker-stat">
+              <div class="stat-value">7</div>
+              <div class="stat-label">Bindings</div>
+            </div>
+            <div class="worker-stat">
+              <div class="stat-value">100%</div>
+              <div class="stat-label">Uptime</div>
+            </div>
+            <div class="worker-stat">
+              <div class="stat-value">&lt;50ms</div>
+              <div class="stat-label">Latency</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coordinator -->
+        <div class="worker-card" data-searchable>
+          <div class="worker-header">
+            <div class="worker-name">
+              <div class="worker-icon">🎯</div>
+              <span class="worker-title">coordinator</span>
+            </div>
+            <div class="worker-status">
+              <span class="status-dot"></span>
+              Active
+            </div>
+          </div>
+          <p class="worker-desc">
+            Orchestrates workflows across the organism. Manages Durable Objects for 
+            sessions, agents, and workflow state. The brain of coordination.
+          </p>
+          <div class="worker-bindings">
+            <span class="binding-tag do">WorkflowOrchestrator</span>
+            <span class="binding-tag do">AgentCoordinator</span>
+            <span class="binding-tag do">SessionManager</span>
+          </div>
+          <div class="worker-stats">
+            <div class="worker-stat">
+              <div class="stat-value">3</div>
+              <div class="stat-label">Durable Objects</div>
+            </div>
+            <div class="worker-stat">
+              <div class="stat-value">100%</div>
+              <div class="stat-label">Uptime</div>
+            </div>
+            <div class="worker-stat">
+              <div class="stat-value">φ</div>
+              <div class="stat-label">Coherence</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cache Cognition -->
+        <div class="worker-card" data-searchable>
+          <div class="worker-header">
+            <div class="worker-name">
+              <div class="worker-icon">🧪</div>
+              <span class="worker-title">cache-cognition</span>
+            </div>
+            <div class="worker-status">
+              <span class="status-dot"></span>
+              Active
+            </div>
+          </div>
+          <p class="worker-desc">
+            Implements organism evolution from early metabolic to cache cognition stage. 
+            Pattern recognition, response generation, and biome memory.
+          </p>
+          <div class="worker-bindings">
+            <span class="binding-tag kv">PATTERN_CACHE</span>
+            <span class="binding-tag kv">RESPONSE_CACHE</span>
+            <span class="binding-tag kv">BIOME_MEMORY</span>
+            <span class="binding-tag do">PatternEngine</span>
+            <span class="binding-tag do">EdgeAgent</span>
+            <span class="binding-tag vectorize">Vectorize</span>
+          </div>
+          <div class="worker-stats">
+            <div class="worker-stat">
+              <div class="stat-value">6</div>
+              <div class="stat-label">Bindings</div>
+            </div>
+            <div class="worker-stat">
+              <div class="stat-value">3</div>
+              <div class="stat-label">KV Stores</div>
+            </div>
+            <div class="worker-stat">
+              <div class="stat-value">2</div>
+              <div class="stat-label">DO Classes</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gate Node -->
+        <div class="worker-card" data-searchable>
+          <div class="worker-header">
+            <div class="worker-name">
+              <div class="worker-icon">🚪</div>
+              <span class="worker-title">gate-node</span>
+            </div>
+            <div class="worker-status">
+              <span class="status-dot"></span>
+              Active
+            </div>
+          </div>
+          <p class="worker-desc">
+            Entry point and authentication gateway. Validates requests, 
+            applies P226 phase verification, and routes to internal services.
+          </p>
+          <div class="worker-bindings">
+            <span class="binding-tag kv">KV</span>
+            <span class="binding-tag d1">D1</span>
+          </div>
+          <div class="worker-stats">
+            <div class="worker-stat">
+              <div class="stat-value">P226</div>
+              <div class="stat-label">Auth Protocol</div>
+            </div>
+            <div class="worker-stat">
+              <div class="stat-value">100%</div>
+              <div class="stat-label">Uptime</div>
+            </div>
+            <div class="worker-stat">
+              <div class="stat-value">&lt;10ms</div>
+              <div class="stat-label">Auth Time</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Knowledge Realm -->
+        <div class="worker-card" data-searchable>
+          <div class="worker-header">
+            <div class="worker-name">
+              <div class="worker-icon">📚</div>
+              <span class="worker-title">knowledge-realm</span>
+            </div>
+            <div class="worker-status">
+              <span class="status-dot"></span>
+              Active
+            </div>
+          </div>
+          <p class="worker-desc">
+            Semantic knowledge storage and retrieval. Vectorized embeddings, 
+            concept mapping, and intelligent search across the organism's memory.
+          </p>
+          <div class="worker-bindings">
+            <span class="binding-tag vectorize">Vectorize</span>
+            <span class="binding-tag d1">D1</span>
+            <span class="binding-tag ai">AI</span>
+          </div>
+          <div class="worker-stats">
+            <div class="worker-stat">
+              <div class="stat-value">1536</div>
+              <div class="stat-label">Vector Dims</div>
+            </div>
+            <div class="worker-stat">
+              <div class="stat-value">φ-depth</div>
+              <div class="stat-label">Search</div>
+            </div>
+            <div class="worker-stat">
+              <div class="stat-value">∞</div>
+              <div class="stat-label">Concepts</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nova Sovereign -->
+        <div class="worker-card" data-searchable>
+          <div class="worker-header">
+            <div class="worker-name">
+              <div class="worker-icon">👑</div>
+              <span class="worker-title">nova-sovereign</span>
+            </div>
+            <div class="worker-status">
+              <span class="status-dot"></span>
+              Active
+            </div>
+          </div>
+          <p class="worker-desc">
+            Sovereign control plane. Manages governance, resource allocation, 
+            and high-level organism decisions. The crown of the system.
+          </p>
+          <div class="worker-bindings">
+            <span class="binding-tag d1">D1</span>
+            <span class="binding-tag kv">KV</span>
+            <span class="binding-tag do">DO</span>
+          </div>
+          <div class="worker-stats">
+            <div class="worker-stat">
+              <div class="stat-value">AURO</div>
+              <div class="stat-label">Charter</div>
+            </div>
+            <div class="worker-stat">
+              <div class="stat-value">φ²</div>
+              <div class="stat-label">Authority</div>
+            </div>
+            <div class="worker-stat">
+              <div class="stat-value">100%</div>
+              <div class="stat-label">Coherence</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Honeypot Admin -->
+        <div class="worker-card" data-searchable>
+          <div class="worker-header">
+            <div class="worker-name">
+              <div class="worker-icon">🍯</div>
+              <span class="worker-title">honeypot-admin</span>
+            </div>
+            <div class="worker-status">
+              <span class="status-dot"></span>
+              Active
+            </div>
+          </div>
+          <p class="worker-desc">
+            Security monitoring and threat intelligence. Captures attack patterns, 
+            analyzes threats, and feeds the dark computing layer.
+          </p>
+          <div class="worker-bindings">
+            <span class="binding-tag queue">honeypot-events</span>
+            <span class="binding-tag queue">ai-analysis</span>
+            <span class="binding-tag d1">D1</span>
+          </div>
+          <div class="worker-stats">
+            <div class="worker-stat">
+              <div class="stat-value">24/7</div>
+              <div class="stat-label">Monitoring</div>
+            </div>
+            <div class="worker-stat">
+              <div class="stat-value">Real-time</div>
+              <div class="stat-label">Analysis</div>
+            </div>
+            <div class="worker-stat">
+              <div class="stat-value">2</div>
+              <div class="stat-label">Queues</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Probe Node -->
+        <div class="worker-card" data-searchable>
+          <div class="worker-header">
+            <div class="worker-name">
+              <div class="worker-icon">🔍</div>
+              <span class="worker-title">probe-node</span>
+            </div>
+            <div class="worker-status">
+              <span class="status-dot"></span>
+              Active
+            </div>
+          </div>
+          <p class="worker-desc">
+            Health checking and telemetry collection. Monitors all workers, 
+            collects metrics, and triggers alerts on anomalies.
+          </p>
+          <div class="worker-bindings">
+            <span class="binding-tag kv">KV</span>
+            <span class="binding-tag d1">D1</span>
+          </div>
+          <div class="worker-stats">
+            <div class="worker-stat">
+              <div class="stat-value">873ms</div>
+              <div class="stat-label">Heartbeat</div>
+            </div>
+            <div class="worker-stat">
+              <div class="stat-value">0.618</div>
+              <div class="stat-label">Threshold</div>
+            </div>
+            <div class="worker-stat">
+              <div class="stat-value">11</div>
+              <div class="stat-label">Targets</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-brand-logo">
+            <span>🧬</span> Nova Gate
+          </div>
+          <p class="footer-brand-desc">
+            Sovereign AI intelligence organism. Built with φ-mathematics for production deployments.
+          </p>
+        </div>
+        <div class="footer-column">
+          <h4>Products</h4>
+          <ul class="footer-links">
+            <li><a href="products.html#extensions">AI Extensions</a></li>
+            <li><a href="products.html#sdks">SDKs</a></li>
+            <li><a href="products.html#industries">Industry Profiles</a></li>
+            <li><a href="../download.html">Downloads</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Resources</h4>
+          <ul class="footer-links">
+            <li><a href="docs.html">Documentation</a></li>
+            <li><a href="protocols.html">Protocols</a></li>
+            <li><a href="workers.html">Workers</a></li>
+            <li><a href="../CONTRIBUTING.md">Contributing</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Company</h4>
+          <ul class="footer-links">
+            <li><a href="#">About</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 Sonic Ninja Lab. All rights reserved. φ = 1.618</p>
+        <div class="footer-social">
+          <a href="https://github.com/FreddyCreates/potential-succotash" aria-label="GitHub">📦</a>
+          <a href="#" aria-label="Twitter">🐦</a>
+          <a href="#" aria-label="Discord">💬</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/js/organism.js"></script>
+</body>
+</html>
