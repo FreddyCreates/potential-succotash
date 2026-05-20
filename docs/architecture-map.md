@@ -1,6 +1,6 @@
 # 🏛 Casa de Inteligencia — Architecture Map
 
-**Generated:** 2026-05-12T06:52:40.441Z
+**Generated:** 2026-05-20T09:08:35.210Z
 **Bot:** organism-docs-bot 📚
 
 ## System Overview
@@ -10,7 +10,7 @@
 ║              CASA DE INTELIGENCIA — ORGANISM ARCHITECTURE        ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║                                                                  ║
-║  FRONTENDS (37 extensions + desktop + web + cli)                ║
+║  FRONTENDS (40 extensions + desktop + web + cli)                ║
 ║  ┌──────────────┐ ┌──────────┐ ┌─────────┐ ┌─────────────────┐ ║
 ║  │ Browser Exts │ │ Desktop  │ │   Web   │ │       CLI       │ ║
 ║  │  (Chrome/Edge│ │(Electron)│ │   App   │ │  (Node.js)      │ ║
@@ -18,7 +18,7 @@
 ║         └──────────────┴────────────┴────────────────┘          ║
 ║                              │                                   ║
 ╠══════════════════════════════╪═══════════════════════════════════╣
-║  PROTOCOLS (97 intelligence protocols)                                 ║
+║  PROTOCOLS (133 intelligence protocols)                                ║
 ║  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────────┐  ║
 ║  │ Routing  │ │ Memory   │ │ Security │ │   Resonance/PHI  │  ║
 ║  │ SRP·EMIP │ │ MLP·AKAP │ │ EIT·SCVP │ │      PRSP        │  ║
@@ -48,20 +48,22 @@
 
 ## Layer Breakdown
 
-### 🌐 Frontends (40 surfaces)
+### 🌐 Frontends (43 surfaces)
 
 | Frontend | Type | Count |
 |---|---|---|
-| Browser Extensions | Chrome/Edge MV3 | 37 |
+| Browser Extensions | Chrome/Edge MV3 | 40 |
 | Desktop App | Electron | 1 |
 | Web App | HTML/JS | 1 |
 | CLI | Node.js | 1 |
 
-### 🔬 Protocols (97)
+### 🔬 Protocols (133)
 
 - `activated-agent-brain-mapping-protocol`
+- `adaptive-defense-protocol`
 - `adaptive-knowledge-absorption-protocol`
 - `agi-core-protocol`
+- `ai-biome-interaction-protocol`
 - `ai-quantum-protocol`
 - `ai-sdk-protocol`
 - `alpha-commander-charter-protocol`
@@ -94,6 +96,37 @@
 - `cross-substrate-resonance-protocol`
 - `cryptographic-intelligence-protocol`
 - `cyborg-integration-protocol`
+- `dark-alerting-protocol`
+- `dark-anomaly-protocol`
+- `dark-bot-detection-protocol`
+- `dark-cache-protocol`
+- `dark-cipher-protocol`
+- `dark-classifier-protocol`
+- `dark-cognition-observer-protocol`
+- `dark-deception-protocol`
+- `dark-entropy-protocol`
+- `dark-exfiltration-protocol`
+- `dark-fingerprint-protocol`
+- `dark-honeypot-protocol`
+- `dark-inference-protocol`
+- `dark-injection-detection-protocol`
+- `dark-isolation-protocol`
+- `dark-learning-protocol`
+- `dark-network-protocol`
+- `dark-orchestrator-protocol`
+- `dark-pattern-protocol`
+- `dark-prediction-protocol`
+- `dark-pulse-protocol`
+- `dark-queue-protocol`
+- `dark-rate-limiter-protocol`
+- `dark-reputation-protocol`
+- `dark-response-protocol`
+- `dark-session-protocol`
+- `dark-signal-protocol`
+- `dark-state-protocol`
+- `dark-sync-protocol`
+- `dark-tarpit-protocol`
+- `dark-trace-protocol`
 - `data-fabric-protocol`
 - `distributed-cognitive-mesh-protocol`
 - `dream-protocol`
@@ -133,6 +166,7 @@
 - `organism-lifecycle-protocol`
 - `organism-marketplace-protocol`
 - `oro-engine-integration-protocol`
+- `p226-phase-verification-protocol`
 - `package-bridge-protocol`
 - `pattern-synthesis-protocol`
 - `phi-resonance-sync-protocol`
@@ -141,6 +175,7 @@
 - `reward-signal-protocol`
 - `saeci-protocol`
 - `self-programming-architecture-protocol`
+- `shadow-memory-protocol`
 - `simulation-engine-protocol`
 - `sovereign-contract-verification-protocol`
 - `sovereign-cycle-allocator-protocol`
@@ -149,6 +184,7 @@
 - `symbolic-mathematics-protocol`
 - `synapse-binding-engine-protocol`
 - `temporal-protocol`
+- `threat-intelligence-protocol`
 - `token-economy-protocol`
 - `undead-intelligence-protocol`
 - `visual-intelligence-protocol`
