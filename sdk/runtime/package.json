@@ -32,27 +32,5 @@
   "author": "Medina",
   "publishConfig": {
     "access": "public"
-  "name": "@organism/runtime",
-  "version": "0.1.0",
-  "description": "Organism runtime environment for bootstrapping and executing AI workloads",
-  "main": "index.js",
-  "type": "commonjs",
-  "exports": {
-    ".": "./index.js",
-    "./bootstrap": "./bootstrap.js",
-    "./civitas": "./civitas-runtime.js"
-  },
-  "keywords": [
-    "organism",
-    "ai",
-    "runtime",
-    "bootstrap"
-  ],
-  "author": "Organism Contributors",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/FreddyCreates/potential-succotash",
-    "directory": "sdk/runtime"
   }
 }
