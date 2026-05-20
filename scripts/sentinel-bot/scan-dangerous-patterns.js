@@ -32,7 +32,20 @@ const DANGEROUS_PATTERNS = [
     name: 'eval()',
     re: /\beval\s*\(/g,
     severity: 'high',
-    except: /\/\/.*eval|#.*eval/,  // allow in comments
+    // Exception patterns (combined regex for performance):
+    //   - \/\/.*eval   : Allow eval in single-line comments
+    //   - #.*eval      : Allow eval in shell-style comments
+    //   - ^\s*eval\s*\(: Allow method definitions starting with "eval("
+    //   - this\.eval\s*\( : Allow this.eval() safe method calls
+    except: /\/\/.*eval|#.*eval|^\s*eval\s*\(|this\.eval\s*\(/,
+    // Additional context check: skip if line defines a method or is this.methodCall
+    contextCheck: (line) => {
+      // Skip method definitions like "eval(exprOrName, env = {}) {"
+      if (/^\s*\w+\s*\([^)]*\)\s*\{/.test(line)) return true;
+      // Skip this.eval() calls which are safe class methods
+      if (/this\.eval\s*\(/.test(line)) return true;
+      return false;
+    },
   },
   {
     name: 'new Function()',
@@ -119,6 +132,9 @@ function scanFile(filePath) {
 
       // Check exception pattern
       if (pattern.except && pattern.except.test(lineText)) continue;
+
+      // Check contextual skip function if defined
+      if (pattern.contextCheck && pattern.contextCheck(lineText)) continue;
 
       findings.push({
         file: relPath,

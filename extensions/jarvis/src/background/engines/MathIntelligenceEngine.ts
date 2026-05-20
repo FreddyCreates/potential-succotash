@@ -151,6 +151,7 @@ export class MathIntelligenceEngine extends OrganismEngine {
       threshold: PHI_INV,
     };
   }
+}
 
 export const MATHX = new MathIntelligenceEngine();
 MATHX.activate();

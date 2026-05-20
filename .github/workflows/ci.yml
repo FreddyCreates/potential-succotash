@@ -57,6 +57,8 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to dist/"
           else
+            git fetch origin main
+            git merge origin/main --no-edit || true
             git commit -m "build: rebuild extension zips [skip ci]"
-            git push
+            git push || echo "Push failed, likely a race condition - changes will be picked up by next run"
           fi

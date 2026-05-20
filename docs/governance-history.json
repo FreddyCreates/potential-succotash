@@ -383,5 +383,61 @@
     "risk": 0.25,
     "events": 60,
     "forbids": 0
+  },
+  {
+    "ts": "2026-05-18T10:09:57.308Z",
+    "decision": "ALLOW",
+    "risk": 0.25,
+    "events": 61,
+    "forbids": 0
+  },
+  {
+    "ts": "2026-05-18T15:37:55.574Z",
+    "decision": "ALLOW",
+    "risk": 0.25,
+    "events": 62,
+    "forbids": 0
+  },
+  {
+    "ts": "2026-05-18T19:50:29.110Z",
+    "decision": "ALLOW",
+    "risk": 0.25,
+    "events": 63,
+    "forbids": 0
+  },
+  {
+    "ts": "2026-05-19T03:49:38.311Z",
+    "decision": "ALLOW",
+    "risk": 0.25,
+    "events": 64,
+    "forbids": 0
+  },
+  {
+    "ts": "2026-05-19T09:50:45.551Z",
+    "decision": "ALLOW",
+    "risk": 0.25,
+    "events": 65,
+    "forbids": 0
+  },
+  {
+    "ts": "2026-05-19T15:33:09.411Z",
+    "decision": "ALLOW",
+    "risk": 0.25,
+    "events": 66,
+    "forbids": 0
+  },
+  {
+    "ts": "2026-05-19T19:54:26.262Z",
+    "decision": "ALLOW",
+    "risk": 0.25,
+    "events": 67,
+    "forbids": 0
+  },
+  {
+    "ts": "2026-05-20T03:49:47.434Z",
+    "decision": "ALLOW",
+    "risk": 0.25,
+    "events": 68,
+    "forbids": 0
   }
 ]

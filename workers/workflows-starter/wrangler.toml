@@ -1,0 +1,207 @@
+# WORKFLOWS-STARTER — The Orchestration Engine
+# Division Code Name: CONDUCTOR
+# Processes all queued tasks from all divisions
+
+name = "workflows-starter"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# AI BINDING — Worker can reason intelligently using LLMs
+# ═══════════════════════════════════════════════════════════════════════════════
+[ai]
+binding = "AI"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# KV NAMESPACES — Short-term memory and caching
+# ═══════════════════════════════════════════════════════════════════════════════
+[[kv_namespaces]]
+binding = "MEMORY"
+id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+preview_id = "REPLACE_WITH_YOUR_PREVIEW_KV_NAMESPACE_ID"
+
+[[kv_namespaces]]
+binding = "QUEUE_STATE"
+id = "REPLACE_WITH_QUEUE_STATE_KV_ID"
+preview_id = "REPLACE_WITH_QUEUE_STATE_PREVIEW_KV_ID"
+
+[[kv_namespaces]]
+binding = "METRICS"
+id = "REPLACE_WITH_METRICS_KV_ID"
+preview_id = "REPLACE_WITH_METRICS_PREVIEW_KV_ID"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# D1 DATABASE — Long-term structured knowledge
+# ═══════════════════════════════════════════════════════════════════════════════
+[[d1_databases]]
+binding = "DB"
+database_name = "nova-knowledge"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+
+[[d1_databases]]
+binding = "TASKS_DB"
+database_name = "workflow-tasks"
+database_id = "REPLACE_WITH_TASKS_D1_DATABASE_ID"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# VECTORIZE — Semantic search / RAG
+# ═══════════════════════════════════════════════════════════════════════════════
+[[vectorize]]
+binding = "VECTORIZE"
+index_name = "nova-vectors"
+
+[[vectorize]]
+binding = "TASK_VECTORS"
+index_name = "task-vectors"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# QUEUE PRODUCERS — Send tasks to queues
+# ═══════════════════════════════════════════════════════════════════════════════
+[[queues.producers]]
+binding = "NOVA_TASKS"
+queue = "nova-tasks"
+
+[[queues.producers]]
+binding = "HONEYPOT_EVENTS"
+queue = "honeypot-events"
+
+[[queues.producers]]
+binding = "AI_ANALYSIS"
+queue = "ai-analysis"
+
+[[queues.producers]]
+binding = "KNOWLEDGE_SYNC"
+queue = "knowledge-sync"
+
+[[queues.producers]]
+binding = "WORKFLOW_TASKS"
+queue = "workflow-tasks"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# QUEUE CONSUMERS — Process tasks from all division queues
+# ═══════════════════════════════════════════════════════════════════════════════
+[[queues.consumers]]
+queue = "nova-tasks"
+max_batch_size = 10
+max_batch_timeout = 30
+max_retries = 3
+dead_letter_queue = "nova-tasks-dlq"
+
+[[queues.consumers]]
+queue = "honeypot-events"
+max_batch_size = 25
+max_batch_timeout = 15
+max_retries = 3
+dead_letter_queue = "honeypot-events-dlq"
+
+[[queues.consumers]]
+queue = "ai-analysis"
+max_batch_size = 5
+max_batch_timeout = 60
+max_retries = 2
+dead_letter_queue = "ai-analysis-dlq"
+
+[[queues.consumers]]
+queue = "knowledge-sync"
+max_batch_size = 20
+max_batch_timeout = 30
+max_retries = 3
+dead_letter_queue = "knowledge-sync-dlq"
+
+[[queues.consumers]]
+queue = "workflow-tasks"
+max_batch_size = 10
+max_batch_timeout = 45
+max_retries = 3
+dead_letter_queue = "workflow-tasks-dlq"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# R2 BUCKETS — File storage
+# ═══════════════════════════════════════════════════════════════════════════════
+[[r2_buckets]]
+binding = "STORAGE"
+bucket_name = "nova-storage"
+
+[[r2_buckets]]
+binding = "TASK_ARTIFACTS"
+bucket_name = "task-artifacts"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# DURABLE OBJECTS — Stateful coordination
+# ═══════════════════════════════════════════════════════════════════════════════
+[[durable_objects.bindings]]
+name = "TASK_QUEUE"
+class_name = "TaskQueue"
+
+[[durable_objects.bindings]]
+name = "JOB_SCHEDULER"
+class_name = "JobScheduler"
+
+[[durable_objects.bindings]]
+name = "DIVISION_REGISTRY"
+class_name = "DivisionRegistry"
+
+[[migrations]]
+tag = "v1"
+new_classes = ["TaskQueue", "JobScheduler", "DivisionRegistry"]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# CRON TRIGGERS — Scheduled intelligence tasks
+# ═══════════════════════════════════════════════════════════════════════════════
+[triggers]
+crons = [
+  "*/5 * * * *",   # Every 5 minutes - health checks, queue monitoring
+  "*/15 * * * *",  # Every 15 minutes - metrics aggregation
+  "0 * * * *",     # Every hour - division sync, cleanup
+  "0 0 * * *"      # Daily at midnight - full system audit
+]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# ENVIRONMENT VARIABLES
+# ═══════════════════════════════════════════════════════════════════════════════
+[vars]
+PHI = "1.618033988749895"
+HEARTBEAT_MS = "873"
+ORGANISM = "workflows-starter"
+ENVIRONMENT = "production"
+DIVISION_CODE = "CONDUCTOR"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SERVICE BINDINGS — Inter-division communication
+# ═══════════════════════════════════════════════════════════════════════════════
+[[services]]
+binding = "NOVA_SOVEREIGN"
+service = "nova-sovereign"
+
+[[services]]
+binding = "HONEYPOT_PORTAL"
+service = "honeypot-portal"
+
+[[services]]
+binding = "KNOWLEDGE_REALM"
+service = "knowledge-realm"
+
+[[services]]
+binding = "API_NODE"
+service = "nova-api-node"
+
+[[services]]
+binding = "COORDINATOR"
+service = "nova-coordinator"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# DEVELOPMENT
+# ═══════════════════════════════════════════════════════════════════════════════
+[dev]
+port = 8790
+local_protocol = "http"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# BUILD
+# ═══════════════════════════════════════════════════════════════════════════════
+[build]
+command = "npm run build"
+
+[build.upload]
+format = "modules"

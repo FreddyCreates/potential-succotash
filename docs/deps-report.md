@@ -1,14 +1,14 @@
 # 🔄 organism-deps-bot — Dependency Health Report
 
-**Generated:** 2026-05-14T09:34:03.047Z
+**Generated:** 2026-05-18T23:24:12.611Z
 **Status:** ✅ HEALTHY
-**Packages:** 20 | **Total Deps:** 25
+**Packages:** 26 | **Total Deps:** 43
 
 ## Staleness Summary
 
 | Tier | Count | Meaning |
 |---|---|---|
-| ✅ Fresh | 25 | Exact pinned or tight patch range |
+| ✅ Fresh | 43 | Exact pinned or tight patch range |
 | ⚠️ Monitor | 0 | Minor version drift allowed |
 | 🔶 Stale | 0 | Major range or pre-release |
 | ❌ Critical | 0 | Wildcard/git-ref/unpinned |
@@ -37,6 +37,12 @@
 | **@medina/sovereign-memory-sdk** | 0 | 0 | 0.000 |
 | **@medina/windows-desktop-sdk** | 0 | 0 | 0.000 |
 | **@medina/windows-runtime-sdk** | 0 | 0 | 0.000 |
+| **nova-api-node** | 3 | 0 | 0.195 |
+| **nova-coordinator** | 3 | 0 | 0.195 |
+| **gate-node** | 3 | 0 | 0.195 |
+| **knowledge-realm** | 3 | 0 | 0.195 |
+| **nova-sovereign** | 3 | 0 | 0.195 |
+| **workflows-starter** | 3 | 0 | 0.195 |
 
 ## Critical Dependencies
 
@@ -69,6 +75,12 @@
 | **@medina/sovereign-memory-sdk** | — Not installed |
 | **@medina/windows-desktop-sdk** | — Not installed |
 | **@medina/windows-runtime-sdk** | — Not installed |
+| **nova-api-node** | — Not installed |
+| **nova-coordinator** | — Not installed |
+| **gate-node** | — Not installed |
+| **knowledge-realm** | — Not installed |
+| **nova-sovereign** | — Not installed |
+| **workflows-starter** | — Not installed |
 
 ---
 

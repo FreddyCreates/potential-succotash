@@ -1,0 +1,28 @@
+{
+  "name": "workflows-starter",
+  "version": "1.0.0",
+  "description": "WORKFLOWS-STARTER — The Orchestration Engine (CONDUCTOR) - Processes all queued tasks from all divisions",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail",
+    "build": "wrangler deploy --dry-run",
+    "test": "echo 'No tests specified' && exit 0",
+    "lint": "tsc --noEmit"
+  },
+  "keywords": [
+    "cloudflare-workers",
+    "orchestration",
+    "queue-consumer",
+    "workflow",
+    "conductor"
+  ],
+  "author": "Enterprise-OS",
+  "license": "MIT",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240117.0",
+    "typescript": "^5.3.3",
+    "wrangler": "^3.24.0"
+  }
+}

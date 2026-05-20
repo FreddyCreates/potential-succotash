@@ -1,17 +1,17 @@
 # 💰 organism-economy-bot — Economy Dashboard
 
-**Generated:** 2026-05-13T06:26:34.872Z
+**Generated:** 2026-05-20T06:48:31.835Z
 **Bot:** organism-economy-bot 💰
 
 ## Asset Inventory
 
 | Asset Type | Count | Complexity Weight | Total Score |
 |---|---|---|---|
-| 🧬 Extensions | 37 | 2–4 pts | 76 |
+| 🧬 Extensions | 40 | 2–4 pts | 82 |
 | 📦 SDKs | 18 | 5 pts | 90 |
 | 🔬 Protocols | 97 | 3 pts | 291 |
 | 📊 CSV Registers | 8 | 1 pt | 8 |
-| **Total** | **160** | — | **465** |
+| **Total** | **163** | — | **471** |
 
 ## Coverage Analysis
 
@@ -19,13 +19,14 @@
 |---|---|---|
 | SDK Wiring | 100% | `██████████ 100%` |
 | Protocol Wiring | 0% | `░░░░░░░░░░ 0%` |
-| Register Presence | 57% | `██████░░░░ 57%` |
-| **Overall** | **52%** | `█████░░░░░ 52%` |
+| Register Presence | 60% | `██████░░░░ 60%` |
+| **Overall** | **53%** | `█████░░░░░ 53%` |
 
 ## Extensions
 
 | Extension | Version | Type | Complexity |
 |---|---|---|---|
+| **CI Pilot Embodied** | `1.0.0` | Simple MV3 | 2 |
 | **Cipher Shield** | `1.0.0` | Simple MV3 | 2 |
 | **Code Sovereign** | `1.0.0` | Simple MV3 | 2 |
 | **Contract Forge** | `1.0.0` | Simple MV3 | 2 |
@@ -39,6 +40,7 @@
 | **Edge Tab Analyzer** | `1.0.0` | Simple MV3 | 2 |
 | **Vigil AI** | `19.0.0` | Vite/React | 4 |
 | **Knowledge Cartographer** | `1.0.0` | Simple MV3 | 2 |
+| **Law Firm Economy Counsel** | `1.0.0` | Simple MV3 | 2 |
 | **Logic Prover** | `1.0.0` | Simple MV3 | 2 |
 | **Marketplace Hub** | `1.0.0` | Simple MV3 | 2 |
 | **Memory Palace** | `1.0.0` | Simple MV3 | 2 |
@@ -52,6 +54,7 @@
 | **Sentinel Watch** | `1.0.0` | Simple MV3 | 2 |
 | **Social Cortex** | `1.0.0` | Simple MV3 | 2 |
 | **Sovereign Alpha** | `1.0.0` | Simple MV3 | 2 |
+| **Sovereign Command Pilot** | `1.0.0` | Simple MV3 | 2 |
 | **Sovereign Mind** | `1.0.0` | Simple MV3 | 2 |
 | **Sovereign Nexus** | `1.0.0` | Simple MV3 | 2 |
 | **Spread Scanner** | `1.0.0` | Simple MV3 | 2 |
@@ -73,10 +76,10 @@
 | **@medina/organism-marketplace** | `1.0.0` | 8 | 5 |
 | **@medina/medina-queries** | `1.0.0` | 7 | 5 |
 | **@medina/ai-model-engines** | `1.0.0` | 6 | 5 |
+| **@medina/intelligence-routing-sdk** | `1.0.0` | 6 | 5 |
 | **@medina/medina-calls** | `1.0.0` | 6 | 5 |
 | **@medina/document-absorption-engine** | `1.0.0` | 5 | 5 |
 | **@medina/enterprise-integration-sdk** | `1.0.0` | 5 | 5 |
-| **@medina/intelligence-routing-sdk** | `1.0.0` | 5 | 5 |
 | **@medina/organism-runtime-sdk** | `1.0.0` | 5 | 5 |
 | **@medina/sovereign-memory-sdk** | `1.0.0` | 5 | 5 |
 | **@medina/windows-desktop-sdk** | `1.0.0` | 5 | 5 |
@@ -198,7 +201,7 @@
 | **Frontend Frontier 100** | 100 | 10 |
 | **Architectural Laws** | 60 | 8 |
 | **AI Model Families** | 40 | 16 |
-| **AI Extensions** | 22 | 13 |
+| **AI Extensions** | 25 | 13 |
 | **Multimodal Families** | 10 | 9 |
 | **Phantom Blockchain Model** | 8 | 7 |
 
