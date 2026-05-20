@@ -1,6 +1,6 @@
 # 💰 organism-economy-bot — Economy Dashboard
 
-**Generated:** 2026-05-18T21:02:04.263Z
+**Generated:** 2026-05-20T06:48:31.835Z
 **Bot:** organism-economy-bot 💰
 
 ## Asset Inventory
@@ -72,14 +72,12 @@
 | SDK | Version | Exports | Complexity |
 |---|---|---|---|
 | **@medina/medina-timers** | `1.0.0` | 11 | 5 |
-| **@organism/engines** | `0.1.0` | 10 | 5 |
 | **@medina/organism-bootstrap** | `1.0.0` | 10 | 5 |
 | **@medina/organism-marketplace** | `1.0.0` | 8 | 5 |
 | **@medina/medina-queries** | `1.0.0` | 7 | 5 |
 | **@medina/ai-model-engines** | `1.0.0` | 6 | 5 |
 | **@medina/intelligence-routing-sdk** | `1.0.0` | 6 | 5 |
 | **@medina/medina-calls** | `1.0.0` | 6 | 5 |
-| **@organism/agents** | `0.1.0` | 5 | 5 |
 | **@medina/document-absorption-engine** | `1.0.0` | 5 | 5 |
 | **@medina/enterprise-integration-sdk** | `1.0.0` | 5 | 5 |
 | **@medina/organism-runtime-sdk** | `1.0.0` | 5 | 5 |
@@ -87,8 +85,10 @@
 | **@medina/windows-desktop-sdk** | `1.0.0` | 5 | 5 |
 | **@medina/windows-runtime-sdk** | `1.0.0` | 5 | 5 |
 | **@medina/frontend-intelligence-models** | `1.0.0` | 4 | 5 |
-| **@organism/runtime** | `0.1.0` | 3 | 5 |
 | **@medina/register-ai** | `1.0.0` | 2 | 5 |
+| **agents** | `—` | 0 | 5 |
+| **engines** | `—` | 0 | 5 |
+| **runtime** | `—` | 0 | 5 |
 
 ## Protocols
 
