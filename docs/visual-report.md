@@ -1,6 +1,6 @@
 # 📸 organism-visual-bot — Visual Regression Report
 
-**Generated:** 2026-05-20T06:16:59.813Z
+**Generated:** 2026-05-21T06:18:12.844Z
 **Status:** ✅ ALL SURFACES PASS
 **Total Surfaces:** 130
 
@@ -74,7 +74,7 @@
 | `extensions/jarvis/devtools.html` | ✅ pass | Screenshot captured |
 | `extensions/jarvis/popup.html` | ✅ pass | Screenshot captured |
 | `extensions/jarvis/sidepanel.html` | ✅ pass | Screenshot captured |
-| `extensions/knowledge-cartographer/devtools-panel.html` | ✅ pass | Screenshot captured |
+| `extensions/knowledge-cartographer/devtools-panel.html` | ✅ pass | Hash match |
 | `extensions/knowledge-cartographer/devtools.html` | ✅ pass | Screenshot captured |
 | `extensions/knowledge-cartographer/popup.html` | ✅ pass | Screenshot captured |
 | `extensions/knowledge-cartographer/sidepanel.html` | ✅ pass | Screenshot captured |
