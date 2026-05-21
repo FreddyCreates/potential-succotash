@@ -1,14 +1,14 @@
 # 🔄 organism-deps-bot — Dependency Health Report
 
-**Generated:** 2026-05-18T23:24:12.611Z
+**Generated:** 2026-05-21T10:39:16.045Z
 **Status:** ✅ HEALTHY
-**Packages:** 26 | **Total Deps:** 43
+**Packages:** 31 | **Total Deps:** 48
 
 ## Staleness Summary
 
 | Tier | Count | Meaning |
 |---|---|---|
-| ✅ Fresh | 43 | Exact pinned or tight patch range |
+| ✅ Fresh | 48 | Exact pinned or tight patch range |
 | ⚠️ Monitor | 0 | Minor version drift allowed |
 | 🔶 Stale | 0 | Major range or pre-release |
 | ❌ Critical | 0 | Wildcard/git-ref/unpinned |
@@ -22,8 +22,10 @@
 | **@medina/organism-runtime-typescript** | 3 | 0 | 0.195 |
 | **organism-cli** | 0 | 0 | 0.000 |
 | **@medina/sovereign-organism** | 2 | 0 | 0.195 |
+| **@medina/organism-agents** | 0 | 0 | 0.000 |
 | **@medina/ai-model-engines** | 0 | 0 | 0.000 |
 | **@medina/document-absorption-engine** | 0 | 0 | 0.000 |
+| **@medina/organism-engines** | 0 | 0 | 0.000 |
 | **@medina/enterprise-integration-sdk** | 0 | 0 | 0.000 |
 | **@medina/frontend-intelligence-models** | 0 | 0 | 0.000 |
 | **@medina/intelligence-routing-sdk** | 0 | 0 | 0.000 |
@@ -34,14 +36,17 @@
 | **@medina/organism-marketplace** | 0 | 0 | 0.000 |
 | **@medina/organism-runtime-sdk** | 0 | 0 | 0.000 |
 | **@medina/register-ai** | 0 | 0 | 0.000 |
+| **@medina/organism-runtime** | 0 | 0 | 0.000 |
 | **@medina/sovereign-memory-sdk** | 0 | 0 | 0.000 |
 | **@medina/windows-desktop-sdk** | 0 | 0 | 0.000 |
 | **@medina/windows-runtime-sdk** | 0 | 0 | 0.000 |
 | **nova-api-node** | 3 | 0 | 0.195 |
+| **cache-cognition-worker** | 3 | 0 | 0.195 |
 | **nova-coordinator** | 3 | 0 | 0.195 |
 | **gate-node** | 3 | 0 | 0.195 |
 | **knowledge-realm** | 3 | 0 | 0.195 |
 | **nova-sovereign** | 3 | 0 | 0.195 |
+| **@organism/workers-shared** | 2 | 0 | 0.195 |
 | **workflows-starter** | 3 | 0 | 0.195 |
 
 ## Critical Dependencies
@@ -60,8 +65,10 @@
 | **@medina/organism-runtime-typescript** | — Not installed |
 | **organism-cli** | — Not installed |
 | **@medina/sovereign-organism** | — Not installed |
+| **@medina/organism-agents** | — Not installed |
 | **@medina/ai-model-engines** | — Not installed |
 | **@medina/document-absorption-engine** | — Not installed |
+| **@medina/organism-engines** | — Not installed |
 | **@medina/enterprise-integration-sdk** | — Not installed |
 | **@medina/frontend-intelligence-models** | — Not installed |
 | **@medina/intelligence-routing-sdk** | — Not installed |
@@ -72,14 +79,17 @@
 | **@medina/organism-marketplace** | — Not installed |
 | **@medina/organism-runtime-sdk** | — Not installed |
 | **@medina/register-ai** | — Not installed |
+| **@medina/organism-runtime** | — Not installed |
 | **@medina/sovereign-memory-sdk** | — Not installed |
 | **@medina/windows-desktop-sdk** | — Not installed |
 | **@medina/windows-runtime-sdk** | — Not installed |
 | **nova-api-node** | — Not installed |
+| **cache-cognition-worker** | — Not installed |
 | **nova-coordinator** | — Not installed |
 | **gate-node** | — Not installed |
 | **knowledge-realm** | — Not installed |
 | **nova-sovereign** | — Not installed |
+| **@organism/workers-shared** | — Not installed |
 | **workflows-starter** | — Not installed |
 
 ---

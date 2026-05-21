@@ -1,18 +1,23 @@
 {
-  "generated": "2026-05-18T23:24:12.611Z",
+  "generated": "2026-05-21T10:39:16.045Z",
   "bot": "organism-deps-bot",
-  "totalPackages": 26,
-  "totalDeps": 43,
+  "totalPackages": 31,
+  "totalDeps": 48,
   "stalenessSummary": {
     "critical": 0,
     "stale": 0,
     "monitor": 0,
-    "fresh": 43
+    "fresh": 48
   },
   "auditTotal": 0,
   "topRiskPackages": [
     {
       "name": "@medina/sovereign-organism",
+      "score": "0.195",
+      "criticalDeps": 0
+    },
+    {
+      "name": "@organism/workers-shared",
       "score": "0.195",
       "criticalDeps": 0
     },
@@ -27,12 +32,7 @@
       "criticalDeps": 0
     },
     {
-      "name": "nova-coordinator",
-      "score": "0.195",
-      "criticalDeps": 0
-    },
-    {
-      "name": "gate-node",
+      "name": "cache-cognition-worker",
       "score": "0.195",
       "criticalDeps": 0
     }
