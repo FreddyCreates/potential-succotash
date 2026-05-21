@@ -1,49 +1,49 @@
 {
-  "generated": "2026-05-16T20:42:37.669Z",
+  "generated": "2026-05-21T08:27:33.074Z",
   "bot": "organism-crawler-bot",
   "summary": {
-    "totalFiles": 1181,
-    "totalBytes": 13237078,
-    "totalKB": 12927,
-    "sections": 17,
+    "totalFiles": 1398,
+    "totalBytes": 15465458,
+    "totalKB": 15103,
+    "sections": 23,
     "langCounts": {
-      "YAML": 24,
+      "YAML": 26,
       "Other": 334,
       "CSV": 8,
-      "Markdown": 38,
-      "JSON": 120,
-      "JavaScript": 450,
-      "Shell": 5,
-      "HTML": 157,
-      "TypeScript": 23,
-      "CSS": 1,
+      "Markdown": 55,
+      "JSON": 145,
+      "CSS": 2,
+      "JavaScript": 550,
+      "Shell": 7,
+      "HTML": 162,
+      "TypeScript": 45,
       "Motoko": 8,
+      "Python": 39,
       "C++": 3,
-      "Python": 9,
-      "TOML": 1
+      "TOML": 14
     },
     "langBytes": {
-      "YAML": 80111,
-      "Other": 4305227,
+      "YAML": 89864,
+      "Other": 4292601,
       "CSV": 409489,
-      "Markdown": 238491,
-      "JSON": 791436,
-      "JavaScript": 4191177,
-      "Shell": 33732,
-      "HTML": 2575767,
-      "TypeScript": 391285,
-      "CSS": 2590,
+      "Markdown": 447475,
+      "JSON": 943628,
+      "CSS": 24253,
+      "JavaScript": 5276044,
+      "Shell": 41765,
+      "HTML": 2696781,
+      "TypeScript": 764075,
       "Motoko": 169185,
+      "Python": 242846,
       "C++": 21215,
-      "Python": 26961,
-      "TOML": 412
+      "TOML": 46237
     }
   },
   "sections": [
     {
       "name": ".github",
-      "files": 22,
-      "bytes": 75464,
+      "files": 24,
+      "bytes": 85217,
       "dirs": 1,
       "topLanguage": "YAML"
     },
@@ -55,11 +55,25 @@
       "topLanguage": "Markdown"
     },
     {
+      "name": "assets",
+      "files": 2,
+      "bytes": 37603,
+      "dirs": 2,
+      "topLanguage": "CSS"
+    },
+    {
       "name": "atlas",
       "files": 19,
       "bytes": 15039,
       "dirs": 1,
       "topLanguage": "JSON"
+    },
+    {
+      "name": "defense-organism",
+      "files": 55,
+      "bytes": 624950,
+      "dirs": 6,
+      "topLanguage": "JavaScript"
     },
     {
       "name": "desktop",
@@ -70,8 +84,8 @@
     },
     {
       "name": "docs",
-      "files": 163,
-      "bytes": 4284929,
+      "files": 166,
+      "bytes": 4293606,
       "dirs": 3,
       "topLanguage": "Other"
     },
@@ -92,16 +106,30 @@
     {
       "name": "extensions",
       "files": 493,
-      "bytes": 2981658,
+      "bytes": 3015678,
       "dirs": 41,
       "topLanguage": "Other"
     },
     {
+      "name": "functions",
+      "files": 2,
+      "bytes": 8700,
+      "dirs": 1,
+      "topLanguage": "TypeScript"
+    },
+    {
       "name": "governance",
       "files": 33,
-      "bytes": 413105,
+      "bytes": 489133,
       "dirs": 10,
       "topLanguage": "Other"
+    },
+    {
+      "name": "memory_temple",
+      "files": 31,
+      "bytes": 223805,
+      "dirs": 4,
+      "topLanguage": "Python"
     },
     {
       "name": "organism",
@@ -118,39 +146,53 @@
       "topLanguage": "JavaScript"
     },
     {
+      "name": "pages",
+      "files": 4,
+      "bytes": 87749,
+      "dirs": 0,
+      "topLanguage": "HTML"
+    },
+    {
       "name": "protocols",
-      "files": 99,
-      "bytes": 1204953,
+      "files": 135,
+      "bytes": 1507953,
       "dirs": 0,
       "topLanguage": "JavaScript"
     },
     {
       "name": "research",
-      "files": 24,
-      "bytes": 1468054,
+      "files": 25,
+      "bytes": 1478955,
       "dirs": 0,
       "topLanguage": "HTML"
     },
     {
       "name": "scripts",
-      "files": 65,
-      "bytes": 376292,
+      "files": 72,
+      "bytes": 444664,
       "dirs": 15,
       "topLanguage": "JavaScript"
     },
     {
       "name": "sdk",
-      "files": 149,
-      "bytes": 926967,
+      "files": 152,
+      "bytes": 929554,
       "dirs": 18,
       "topLanguage": "JavaScript"
     },
     {
       "name": "test",
-      "files": 3,
-      "bytes": 9386,
-      "dirs": 3,
+      "files": 23,
+      "bytes": 272118,
+      "dirs": 17,
       "topLanguage": "JavaScript"
+    },
+    {
+      "name": "workers",
+      "files": 51,
+      "bytes": 455232,
+      "dirs": 14,
+      "topLanguage": "TypeScript"
     },
     {
       "name": "workflows",
@@ -161,10 +203,10 @@
     }
   ],
   "crossRef": {
-    "totalFiles": 269,
-    "totalImports": 277,
-    "totalExports": 396,
-    "uniqueSymbols": 363
+    "totalFiles": 305,
+    "totalImports": 308,
+    "totalExports": 583,
+    "uniqueSymbols": 549
   },
   "topSymbols": [
     {
@@ -236,6 +278,22 @@
       "locations": [
         {
           "file": "protocols/activated-agent-brain-mapping-protocol.js",
+          "kind": "const",
+          "section": "protocols"
+        },
+        {
+          "file": "protocols/multi-agent-reasoning-ecosystem-protocol.js",
+          "kind": "const",
+          "section": "protocols"
+        }
+      ]
+    },
+    {
+      "name": "TASK_STATES",
+      "definedIn": 2,
+      "locations": [
+        {
+          "file": "protocols/dark-queue-protocol.js",
           "kind": "const",
           "section": "protocols"
         },
@@ -467,17 +525,6 @@
     },
     {
       "name": "AGENT_CLASSES",
-      "definedIn": 1,
-      "locations": [
-        {
-          "file": "protocols/activated-agent-brain-mapping-protocol.js",
-          "kind": "const",
-          "section": "protocols"
-        }
-      ]
-    },
-    {
-      "name": "ROUTING_RULES",
       "definedIn": 1,
       "locations": [
         {
