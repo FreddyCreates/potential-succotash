@@ -339,6 +339,11 @@
       "ts": "2026-05-21T09:46:34.153Z",
       "overallRisk": 0.25,
       "overallDecision": "ALLOW"
+    },
+    {
+      "ts": "2026-05-21T15:33:46.670Z",
+      "overallRisk": 0.25,
+      "overallDecision": "ALLOW"
     }
   ],
   "byDomain": {
@@ -747,6 +752,12 @@
       },
       {
         "ts": "2026-05-21T09:46:34.153Z",
+        "riskScore": 0.05,
+        "status": "pass",
+        "decision": "ALLOW"
+      },
+      {
+        "ts": "2026-05-21T15:33:46.670Z",
         "riskScore": 0.05,
         "status": "pass",
         "decision": "ALLOW"
@@ -1160,6 +1171,12 @@
         "riskScore": 0.05,
         "status": "pass",
         "decision": "ALLOW"
+      },
+      {
+        "ts": "2026-05-21T15:33:46.670Z",
+        "riskScore": 0.05,
+        "status": "pass",
+        "decision": "ALLOW"
       }
     ],
     "learning": [
@@ -1567,6 +1584,12 @@
       },
       {
         "ts": "2026-05-21T09:46:34.153Z",
+        "riskScore": 0.05,
+        "status": "pass",
+        "decision": "ALLOW"
+      },
+      {
+        "ts": "2026-05-21T15:33:46.670Z",
         "riskScore": 0.05,
         "status": "pass",
         "decision": "ALLOW"
@@ -1980,6 +2003,12 @@
         "riskScore": 0.05,
         "status": "pass",
         "decision": "ALLOW"
+      },
+      {
+        "ts": "2026-05-21T15:33:46.670Z",
+        "riskScore": 0.05,
+        "status": "pass",
+        "decision": "ALLOW"
       }
     ],
     "topology": [
@@ -2387,6 +2416,12 @@
       },
       {
         "ts": "2026-05-21T09:46:34.153Z",
+        "riskScore": 0.25,
+        "status": "warned",
+        "decision": "ALLOW"
+      },
+      {
+        "ts": "2026-05-21T15:33:46.670Z",
         "riskScore": 0.25,
         "status": "warned",
         "decision": "ALLOW"
@@ -2800,6 +2835,12 @@
         "riskScore": 0.05,
         "status": "pass",
         "decision": "ALLOW"
+      },
+      {
+        "ts": "2026-05-21T15:33:46.670Z",
+        "riskScore": 0.05,
+        "status": "pass",
+        "decision": "ALLOW"
       }
     ],
     "general": [
@@ -3207,6 +3248,12 @@
       },
       {
         "ts": "2026-05-21T09:46:34.153Z",
+        "riskScore": 0.05,
+        "status": "pass",
+        "decision": "ALLOW"
+      },
+      {
+        "ts": "2026-05-21T15:33:46.670Z",
         "riskScore": 0.05,
         "status": "pass",
         "decision": "ALLOW"
