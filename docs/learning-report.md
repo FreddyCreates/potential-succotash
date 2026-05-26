@@ -1,8 +1,8 @@
 # 🎓 organism-learning-bot — Learning Report
 
-**Generated:** 2026-05-19T07:51:58.039Z
-**Training Epoch:** 4
-**Last Trained:** 2026-05-19T07:51:57.996Z
+**Generated:** 2026-05-26T07:54:53.521Z
+**Training Epoch:** 5
+**Last Trained:** 2026-05-26T07:54:53.483Z
 **Emergence Level:** 🌟 EMERGED (100.0%)
 
 ## Training Summary
@@ -33,16 +33,16 @@
 
 | Rank | Protocol | Weight | Visual |
 |---|---|---|---|
-| 1 | `adaptive-knowledge-absorption-protocol` | 0.583 | `██████░░░░` |
-| 2 | `auro-absorption-charter-protocol` | 0.583 | `██████░░░░` |
-| 3 | `auro-guardian-intelligence-protocol` | 0.583 | `██████░░░░` |
-| 4 | `edge-mesh-intelligence-protocol` | 0.583 | `██████░░░░` |
-| 5 | `encrypted-intelligence-transport` | 0.583 | `██████░░░░` |
-| 6 | `memory-lineage-enhancement-protocol` | 0.583 | `██████░░░░` |
-| 7 | `memory-lineage-protocol` | 0.583 | `██████░░░░` |
-| 8 | `multi-model-fusion-protocol` | 0.583 | `██████░░░░` |
-| 9 | `organism-lifecycle-protocol` | 0.583 | `██████░░░░` |
-| 10 | `organism-marketplace-protocol` | 0.583 | `██████░░░░` |
+| 1 | `adaptive-knowledge-absorption-protocol` | 0.603 | `██████░░░░` |
+| 2 | `auro-absorption-charter-protocol` | 0.603 | `██████░░░░` |
+| 3 | `auro-guardian-intelligence-protocol` | 0.603 | `██████░░░░` |
+| 4 | `edge-mesh-intelligence-protocol` | 0.603 | `██████░░░░` |
+| 5 | `encrypted-intelligence-transport` | 0.603 | `██████░░░░` |
+| 6 | `memory-lineage-enhancement-protocol` | 0.603 | `██████░░░░` |
+| 7 | `memory-lineage-protocol` | 0.603 | `██████░░░░` |
+| 8 | `multi-model-fusion-protocol` | 0.603 | `██████░░░░` |
+| 9 | `organism-lifecycle-protocol` | 0.603 | `██████░░░░` |
+| 10 | `organism-marketplace-protocol` | 0.603 | `██████░░░░` |
 
 ## Strongest Hebbian Synapses
 
@@ -50,16 +50,16 @@
 
 | Module A | Module B | Weight |
 |---|---|---|
-| `fleet` | `security-posture` | 0.3305 |
-| `fleet` | `organism-build-bot` | 0.3305 |
-| `fleet` | `organism-neural-bot` | 0.3305 |
-| `fleet` | `organism-sdk-bot` | 0.3305 |
-| `fleet` | `organism-protocol-bot` | 0.3305 |
-| `fleet` | `organism-test-bot` | 0.3305 |
-| `fleet` | `organism-docs-bot` | 0.3305 |
-| `fleet` | `organism-release-bot` | 0.3305 |
-| `fleet` | `organism-deploy-bot` | 0.3305 |
-| `fleet` | `organism-sentinel-bot` | 0.3305 |
+| `fleet` | `security-posture` | 0.3982 |
+| `fleet` | `organism-build-bot` | 0.3982 |
+| `fleet` | `organism-neural-bot` | 0.3982 |
+| `fleet` | `organism-sdk-bot` | 0.3982 |
+| `fleet` | `organism-protocol-bot` | 0.3982 |
+| `fleet` | `organism-test-bot` | 0.3982 |
+| `fleet` | `organism-docs-bot` | 0.3982 |
+| `fleet` | `organism-release-bot` | 0.3982 |
+| `fleet` | `organism-deploy-bot` | 0.3982 |
+| `fleet` | `organism-sentinel-bot` | 0.3982 |
 
 
 ## Learning Constants
