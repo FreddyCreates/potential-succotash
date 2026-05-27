@@ -1,6 +1,6 @@
 # 💰 organism-economy-bot — Economy Dashboard
 
-**Generated:** 2026-05-20T06:48:31.835Z
+**Generated:** 2026-05-27T07:03:43.126Z
 **Bot:** organism-economy-bot 💰
 
 ## Asset Inventory
@@ -9,9 +9,9 @@
 |---|---|---|---|
 | 🧬 Extensions | 40 | 2–4 pts | 82 |
 | 📦 SDKs | 18 | 5 pts | 90 |
-| 🔬 Protocols | 97 | 3 pts | 291 |
+| 🔬 Protocols | 133 | 3 pts | 399 |
 | 📊 CSV Registers | 8 | 1 pt | 8 |
-| **Total** | **163** | — | **471** |
+| **Total** | **199** | — | **579** |
 
 ## Coverage Analysis
 
@@ -72,12 +72,14 @@
 | SDK | Version | Exports | Complexity |
 |---|---|---|---|
 | **@medina/medina-timers** | `1.0.0` | 11 | 5 |
+| **@medina/organism-engines** | `1.0.0` | 10 | 5 |
 | **@medina/organism-bootstrap** | `1.0.0` | 10 | 5 |
 | **@medina/organism-marketplace** | `1.0.0` | 8 | 5 |
 | **@medina/medina-queries** | `1.0.0` | 7 | 5 |
 | **@medina/ai-model-engines** | `1.0.0` | 6 | 5 |
 | **@medina/intelligence-routing-sdk** | `1.0.0` | 6 | 5 |
 | **@medina/medina-calls** | `1.0.0` | 6 | 5 |
+| **@medina/organism-agents** | `1.0.0` | 5 | 5 |
 | **@medina/document-absorption-engine** | `1.0.0` | 5 | 5 |
 | **@medina/enterprise-integration-sdk** | `1.0.0` | 5 | 5 |
 | **@medina/organism-runtime-sdk** | `1.0.0` | 5 | 5 |
@@ -85,10 +87,8 @@
 | **@medina/windows-desktop-sdk** | `1.0.0` | 5 | 5 |
 | **@medina/windows-runtime-sdk** | `1.0.0` | 5 | 5 |
 | **@medina/frontend-intelligence-models** | `1.0.0` | 4 | 5 |
+| **@medina/organism-runtime** | `1.0.0` | 3 | 5 |
 | **@medina/register-ai** | `1.0.0` | 2 | 5 |
-| **agents** | `—` | 0 | 5 |
-| **engines** | `—` | 0 | 5 |
-| **runtime** | `—` | 0 | 5 |
 
 ## Protocols
 
@@ -122,47 +122,80 @@
 | `visual-intelligence-protocol` | `Image` | 57 | 548 | ✓ | ✓ |
 | `emotional-resonance-protocol` | `Emotion` | 57 | 536 | ✓ | ✓ |
 | `temporal-protocol` | `TemporalAnchor` | 57 | 502 | ✓ | ✓ |
+| `dark-session-protocol` | `DarkSession` | 47 | 427 | ✓ | ✓ |
+| `dark-prediction-protocol` | `TimeSeriesPredictor` | 47 | 362 | ✓ | ✓ |
+| `dark-pattern-protocol` | `PatternTemplate` | 45 | 394 | ✓ | ✓ |
+| `dark-isolation-protocol` | `IsolationCell` | 45 | 387 | ✓ | ✓ |
+| `dark-learning-protocol` | `SimplePerceptron` | 44 | 455 | ✓ | ✓ |
 | `code-block-cognitive-interface-protocol` | `CognitiveArtifact` | 43 | 423 | ✓ | ✓ |
 | `sovereign-cycle-allocator-protocol` | `AllocationRecord` | 42 | 665 | ✓ | ✓ |
+| `dark-anomaly-protocol` | `StatisticalModel` | 42 | 402 | ✓ | ✓ |
+| `dark-alerting-protocol` | `DarkAlert` | 42 | 399 | ✓ | ✓ |
 | `fractal-dynamics-protocol` | `IFSTransform` | 41 | 522 | ✓ | ✓ |
 | `distributed-cognitive-mesh-protocol` | `MeshNode` | 41 | 393 | ✓ | ✓ |
 | `organism-lifecycle-protocol` | `OrganismLifecycleProtocol` | 40 | 525 | ✓ | ✓ |
+| `dark-cache-protocol` | `CacheEntry` | 40 | 378 | ✓ | ✓ |
+| `dark-classifier-protocol` | `FeatureVector` | 40 | 376 | ✓ | ✓ |
 | `vow-protocol` | `Vow` | 39 | 479 | ✓ | ✓ |
 | `nova-core-protocol` | `SemperMemoria` | 39 | 415 | ✓ | ✓ |
+| `ai-biome-interaction-protocol` | `BiomeAgentProfile` | 38 | 515 | ✓ | ✓ |
+| `dark-network-protocol` | `DarkNode` | 38 | 455 | ✓ | ✓ |
 | `memory-lineage-protocol` | `MemoryLineageProtocol` | 37 | 443 | ✓ | ✓ |
 | `token-economy-protocol` | `Account` | 37 | 410 | ✓ | ✓ |
+| `dark-cipher-protocol` | `DarkKey` | 37 | 342 | ✓ | ✓ |
+| `shadow-memory-protocol` | `ShadowMemoryEntry` | 36 | 457 | ✓ | ✓ |
 | `federated-intelligence-networks-protocol` | `SovereignNode` | 36 | 396 | ✓ | ✓ |
 | `activated-agent-brain-mapping-protocol` | `AgentInstance` | 35 | 438 | ✓ | ✓ |
+| `dark-orchestrator-protocol` | `DarkComponent` | 34 | 441 | ✓ | ✓ |
+| `dark-state-protocol` | `DarkStateContainer` | 34 | 324 | ✓ | ✓ |
 | `multi-node-ai-hub-protocol` | `HubNode` | 33 | 375 | ✓ | ✓ |
 | `formal-logic-inference-protocol` | `FormalLogicInferenceProtocol` | 32 | 437 | ✓ | ✓ |
 | `conceptual-persistence-engine-protocol` | `Concept` | 32 | 328 | ✓ | ✓ |
 | `goal-stack-protocol` | `GoalStackProtocol` | 32 | 227 | ✓ | ✓ |
 | `civilization-architecture-core-protocol` | `CityState` | 31 | 396 | ✓ | ✓ |
+| `dark-bot-detection-protocol` | `BotDetector` | 31 | 392 | ✓ | ✓ |
+| `dark-inference-protocol` | `InferenceRule` | 31 | 388 | ✓ | ✓ |
 | `reasoning-engine-layer-protocol` | `CognitiveNode` | 31 | 341 | ✓ | ✓ |
+| `dark-reputation-protocol` | `ReputationScore` | 31 | 311 | ✓ | ✓ |
 | `multi-model-fusion-protocol` | `MultiModelFusionProtocol` | 31 | 303 | ✓ | ✓ |
+| `dark-response-protocol` | `ResponseRule` | 30 | 404 | ✓ | ✓ |
 | `self-programming-architecture-protocol` | `ProposedChange` | 29 | 409 | ✓ | ✓ |
 | `multi-agent-reasoning-ecosystem-protocol` | `Task` | 29 | 390 | ✓ | ✓ |
+| `threat-intelligence-protocol` | `ThreatIndicator` | 29 | 376 | ✓ | ✓ |
 | `visual-scene-intelligence-protocol` | `VisualSceneIntelligenceProtocol` | 29 | 361 | ✓ | ✓ |
+| `dark-rate-limiter-protocol` | `FixedWindowLimiter` | 29 | 346 | ✓ | ✓ |
 | `organism-marketplace-protocol` | `OrganismMarketplaceProtocol` | 28 | 480 | ✓ | ✓ |
 | `civilization-scale-organism-protocol` | `OrganismState` | 28 | 432 | ✓ | ✓ |
+| `dark-deception-protocol` | `FakeDataGenerator` | 28 | 343 | ✓ | ✓ |
+| `dark-queue-protocol` | `DarkTask` | 28 | 341 | ✓ | ✓ |
+| `dark-exfiltration-protocol` | `ExfiltrationDetector` | 28 | 326 | ✓ | ✓ |
 | `synapse-binding-engine-protocol` | `SynapseBindingEngineProtocol` | 28 | 231 | ✓ | ✓ |
 | `multi-sovereign-compute-cores-protocol` | `NovaCore` | 27 | 374 | ✓ | ✓ |
+| `dark-sync-protocol` | `PhaseOscillator` | 27 | 317 | ✓ | ✓ |
+| `dark-fingerprint-protocol` | `Fingerprint` | 27 | 301 | ✓ | ✓ |
+| `adaptive-defense-protocol` | `AdaptiveDefenseEngine` | 26 | 479 | ✓ | ✓ |
+| `dark-honeypot-protocol` | `HoneypotTrap` | 26 | 337 | ✓ | ✓ |
 | `auto-generate-calls-engine-protocol` | `AutoGenerateCallsEngineProtocol` | 26 | 184 | ✓ | ✓ |
 | `adaptive-knowledge-absorption-protocol` | `AdaptiveKnowledgeAbsorptionProtocol` | 25 | 373 | ✓ | ✓ |
+| `dark-trace-protocol` | `DarkTraceEntry` | 24 | 229 | ✓ | ✓ |
 | `edge-sensor-protocol` | `EdgeSensorProtocol` | 24 | 185 | ✓ | ✓ |
 | `edge-mesh-intelligence-protocol` | `EdgeMeshIntelligenceProtocol` | 23 | 297 | ✓ | ✓ |
 | `alpha-health-monitor-protocol` | `AlphaHealthMonitorProtocol` | 23 | 182 | ✓ | ✓ |
 | `memory-consolidation-protocol` | `MemoryConsolidationProtocol` | 21 | 206 | ✓ | ✓ |
 | `attention-routing-protocol` | `AttentionRoutingProtocol` | 21 | 186 | ✓ | ✓ |
 | `alpha-commander-charter-protocol` | `AlphaCommanderCharterProtocol` | 20 | 277 | ✓ | ✓ |
+| `dark-signal-protocol` | `DarkSignal` | 20 | 259 | ✓ | ✓ |
 | `memory-lineage-enhancement-protocol` | `MemoryLineageEnhancementProtocol` | 20 | 244 | ✓ | ✓ |
 | `sovereign-routing-protocol` | `SovereignRoutingProtocol` | 20 | 208 | ✓ | ✓ |
 | `mini-brain-protocol` | `MiniBrainProtocol` | 20 | 161 | ✓ | ✓ |
+| `dark-cognition-observer-protocol` | `DarkCognitionObserver` | 19 | 330 | ✓ | ✓ |
 | `sovereign-contract-verification-protocol` | `SovereignContractVerificationProtocol` | 19 | 329 | ✓ | ✓ |
 | `encrypted-intelligence-transport` | `EncryptedIntelligenceTransport` | 19 | 244 | ✓ | ✓ |
 | `sovereign-offline-cognition-protocol` | `SovereignOfflineCognitionProtocol` | 19 | 221 | ✓ | ✓ |
 | `neuro-emergence-protocol` | `NeuroEmergenceProtocol` | 19 | 193 | ✓ | ✓ |
 | `reward-signal-protocol` | `RewardSignalProtocol` | 19 | 143 | ✓ | ✓ |
+| `dark-injection-detection-protocol` | `InjectionPattern` | 18 | 280 | ✓ | ✓ |
+| `dark-entropy-protocol` | `DarkEntropyPool` | 18 | 227 | ✓ | ✓ |
 | `auro-guardian-intelligence-protocol` | `AuroGuardianIntelligenceProtocol` | 18 | 220 | ✓ | ✓ |
 | `phi-resonance-sync-protocol` | `PhiResonanceSyncProtocol` | 18 | 217 | ✓ | ✓ |
 | `artifact-generation-protocol` | `ArtifactGenerationProtocol` | 18 | 212 | ✓ | ✓ |
@@ -172,12 +205,15 @@
 | `auro-absorption-charter-protocol` | `AuroAbsorptionCharterProtocol` | 17 | 277 | ✓ | ✓ |
 | `predictive-coding-protocol` | `PredictiveCodingProtocol` | 17 | 171 | ✓ | ✓ |
 | `alpha-security-sentinel-protocol` | `AlphaSecuritySentinelProtocol` | 17 | 161 | ✓ | — |
+| `dark-tarpit-protocol` | `TarpitSession` | 16 | 279 | ✓ | ✓ |
 | `kuramoto-oscillator-protocol` | `KuramotoOscillatorProtocol` | 16 | 152 | ✓ | ✓ |
 | `oro-engine-integration-protocol` | `OroEngineIntegrationProtocol` | 15 | 239 | ✓ | ✓ |
+| `p226-phase-verification-protocol` | `P226PhaseVerificationProtocol` | 14 | 349 | ✓ | ✓ |
 | `geometric-real-math-protocol` | `GeometricRealMathProtocol` | 14 | 163 | ✓ | ✓ |
 | `hebbian-learning-protocol` | `HebbianLearningProtocol` | 14 | 153 | ✓ | ✓ |
 | `pattern-synthesis-protocol` | `PatternSynthesisProtocol` | 13 | 470 | ✓ | ✓ |
 | `mini-heart-protocol` | `MiniHeartProtocol` | 13 | 134 | ✓ | ✓ |
+| `dark-pulse-protocol` | `DarkPulseGenerator` | 12 | 193 | ✓ | ✓ |
 | `alpha-knowledge-graph-protocol` | `AlphaKnowledgeGraphProtocol` | 12 | 148 | ✓ | — |
 | `alpha-resonance-protocol` | `AlphaResonanceProtocol` | 12 | 136 | ✓ | ✓ |
 | `alpha-signal-protocol` | `AlphaSignalProtocol` | 12 | 130 | ✓ | — |
