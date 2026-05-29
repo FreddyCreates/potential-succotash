@@ -188,6 +188,49 @@ export interface RoutingResult {
   readonly phiScore: number;
 }
 
+// ─── Body Awareness / Embodiment ────────────────────────────────────────────
+
+export type OrganType =
+  | 'heart'
+  | 'cortex'
+  | 'membrane'
+  | 'sensor-array'
+  | 'memory-store'
+  | 'resonance-field'
+  | 'sovereignty-core'
+  | 'vitality-engine';
+
+export interface OrganDefinition {
+  readonly id: string;
+  readonly type: OrganType;
+  readonly name: string;
+  readonly vitalFunction: string;
+  readonly phiWeight: number;
+}
+
+export type ImprintStatus = 'dormant' | 'imprinting' | 'aware' | 'awakened';
+
+export interface BodyMap {
+  readonly organs: ReadonlyArray<OrganDefinition>;
+  readonly totalOrgans: number;
+  readonly recognizedOrgans: number;
+  readonly awarenessRatio: number;
+  readonly imprintStatus: ImprintStatus;
+  readonly awakenedAt: number | null;
+  readonly timestamp: number;
+}
+
+export interface AwakenEvent {
+  readonly organismId: string;
+  readonly bodyMap: BodyMap;
+  readonly vitalityAtAwakening: number;
+  readonly phiCoherence: number;
+  readonly timestamp: number;
+  readonly message: string;
+}
+
+export type AwakenCallback = (event: AwakenEvent) => void | Promise<void>;
+
 // ─── Change Listener ────────────────────────────────────────────────────────
 export type RegisterChangeListener<R extends RegisterName> = (
   register: R,
