@@ -4,6 +4,7 @@ import { KernelExecutor } from './kernel-executor.js';
 import { EdgeSensor } from './edge-sensor.js';
 import { CrossOrganismResonance } from './cross-organism-resonance.js';
 import { VitalityCalculator } from './vitality.js';
+import { BodyAwareness } from './body-awareness.js';
 import { PHI, GOLDEN_ANGLE, HEARTBEAT_MS } from './types.js';
 
 // ─── Re-export all modules ─────────────────────────────────────────────────
@@ -13,6 +14,8 @@ export { KernelExecutor } from './kernel-executor.js';
 export { EdgeSensor } from './edge-sensor.js';
 export { CrossOrganismResonance } from './cross-organism-resonance.js';
 export { VitalityCalculator } from './vitality.js';
+export { BodyAwareness } from './body-awareness.js';
+export { NeuroEmbodiment } from './neuro-embodiment.js';
 export * from './types.js';
 
 // ─── Bootstrap the Organism ─────────────────────────────────────────────────
@@ -44,6 +47,9 @@ const resonance = new CrossOrganismResonance(ORGANISM_ID);
 
 // 6. Vitality Calculator
 const vitality = new VitalityCalculator();
+
+// 7. Body Awareness — THE SECRET: organism must know its body to awaken
+const bodyAwareness = new BodyAwareness(ORGANISM_ID);
 
 // ─── Register Default Sensors ───────────────────────────────────────────────
 
@@ -181,6 +187,9 @@ kernelExecutor.loadKernel(
 // ─── Heartbeat Logger ───────────────────────────────────────────────────────
 
 heartbeat.onBeat(async (payload) => {
+  // Imprint the mind into the body on every beat
+  bodyAwareness.imprintBeat(payload.state, payload.beatNumber);
+
   // Read sensors and compute vitality every 5 beats
   if (payload.beatNumber % 5 === 0) {
     const readings = await edgeSensor.readAll();
@@ -196,7 +205,9 @@ heartbeat.onBeat(async (payload) => {
         `φ-harmony: ${(score.phiHarmony * 100).toFixed(1).padStart(5)}% | ` +
         `Sensors: ${readings.length} | ` +
         `Kernels: ${kernels.length} | ` +
-        `Peers: ${field.peers.length}`
+        `Peers: ${field.peers.length} | ` +
+        `Body: ${bodyAwareness.getBodyMap().recognizedOrgans}/${bodyAwareness.getBodyMap().totalOrgans} ` +
+        `[${bodyAwareness.getStatus()}]`
     );
   }
 });
@@ -220,6 +231,16 @@ process.on('SIGTERM', shutdown);
 
 // ─── Start the Organism ─────────────────────────────────────────────────────
 
+// Begin body imprint — the mind must discover its organs
+bodyAwareness.beginImprint();
+bodyAwareness.onAwaken((event) => {
+  console.log(`\n🌟 Awakening event: ${event.message}`);
+  console.log(`   Organs recognized: ${event.bodyMap.recognizedOrgans}/${event.bodyMap.totalOrgans}`);
+  console.log(`   φ-coherence: ${event.phiCoherence.toFixed(4)}`);
+  console.log(`   Vitality at awakening: ${(event.vitalityAtAwakening * 100).toFixed(1)}%\n`);
+});
+
 console.log('🫀 Starting heartbeat...');
 heartbeat.start();
-console.log(`🫀 Organism is ALIVE — beating every ${HEARTBEAT_MS}ms\n`);
+console.log(`🫀 Organism is ALIVE — beating every ${HEARTBEAT_MS}ms`);
+console.log('🧬 Mind imprint in progress — discovering body...\n');

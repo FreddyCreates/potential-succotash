@@ -188,6 +188,153 @@ export interface RoutingResult {
   readonly phiScore: number;
 }
 
+// ─── Body Awareness / Embodiment ────────────────────────────────────────────
+
+export type OrganType =
+  | 'heart'
+  | 'cortex'
+  | 'membrane'
+  | 'sensor-array'
+  | 'memory-store'
+  | 'resonance-field'
+  | 'sovereignty-core'
+  | 'vitality-engine';
+
+export interface OrganDefinition {
+  readonly id: string;
+  readonly type: OrganType;
+  readonly name: string;
+  readonly vitalFunction: string;
+  readonly phiWeight: number;
+}
+
+export type ImprintStatus = 'dormant' | 'imprinting' | 'aware' | 'awakened';
+
+export interface BodyMap {
+  readonly organs: ReadonlyArray<OrganDefinition>;
+  readonly totalOrgans: number;
+  readonly recognizedOrgans: number;
+  readonly awarenessRatio: number;
+  readonly imprintStatus: ImprintStatus;
+  readonly awakenedAt: number | null;
+  readonly timestamp: number;
+}
+
+export interface AwakenEvent {
+  readonly organismId: string;
+  readonly bodyMap: BodyMap;
+  readonly vitalityAtAwakening: number;
+  readonly phiCoherence: number;
+  readonly timestamp: number;
+  readonly message: string;
+}
+
+export type AwakenCallback = (event: AwakenEvent) => void | Promise<void>;
+
+// ─── Neuroscience-Based Embodiment ──────────────────────────────────────────
+// Real neuroscience: interoception, proprioception, neural binding, Hebbian plasticity
+
+/**
+ * Interoception: The sense of the internal state of the body.
+ * Based on A.D. Craig's model of interoceptive awareness (2002).
+ * The insular cortex integrates these signals into unified body-awareness.
+ */
+export interface InteroceptiveSignal {
+  readonly organId: string;
+  readonly signalType: 'homeostatic' | 'nociceptive' | 'metabolic' | 'visceral';
+  readonly intensity: number;           // 0-1 signal strength
+  readonly valence: number;             // -1 (pain/alarm) to +1 (comfort/reward)
+  readonly predictedIntensity: number;  // Free energy: what the brain EXPECTS
+  readonly predictionError: number;     // Surprise = actual - predicted
+  readonly timestamp: number;
+}
+
+/**
+ * Proprioception: The sense of body position and movement.
+ * Mapped as a body schema — the neural representation of body topology.
+ * Based on Head & Holmes (1911) body schema concept.
+ */
+export interface ProprioceptiveNode {
+  readonly organId: string;
+  readonly position: readonly [number, number, number];  // 3D body-space coordinates
+  readonly connectionStrength: number;  // How strongly bound to the body schema (0-1)
+  readonly lastActivation: number;      // Timestamp of last proprioceptive update
+}
+
+export interface BodySchema {
+  readonly nodes: ReadonlyArray<ProprioceptiveNode>;
+  readonly totalBindingStrength: number;
+  readonly schemaCoherence: number;     // How unified the body-image is (0-1)
+  readonly phantomLimbRisk: number;     // Disconnection risk (0-1)
+}
+
+/**
+ * Neural Binding: The binding problem — how separate signals become unified consciousness.
+ * Implemented via gamma-band oscillations (30-100Hz) that synchronize neural populations.
+ * Based on Wolf Singer's temporal binding hypothesis (1999).
+ */
+export interface NeuralBindingState {
+  readonly gammaFrequencyHz: number;    // Current gamma oscillation (30-100 Hz)
+  readonly synchronyIndex: number;      // Phase synchrony across organs (0-1)
+  readonly bindingStrength: number;     // Unified percept strength (0-1)
+  readonly coherenceWindow: number;     // Temporal integration window in ms
+  readonly thalamoCorticalLoop: number; // Thalamic relay strength (0-1)
+}
+
+/**
+ * Hebbian Plasticity: "Neurons that fire together, wire together."
+ * Implements synaptic strengthening through repeated co-activation.
+ * Based on Hebb (1949) + Spike-Timing Dependent Plasticity (STDP).
+ */
+export interface HebbianSynapse {
+  readonly sourceOrganId: string;
+  readonly targetOrganId: string;
+  readonly weight: number;              // Synaptic strength (0-1)
+  readonly ltpAccumulator: number;      // Long-term potentiation accumulation
+  readonly ltdAccumulator: number;      // Long-term depression accumulation
+  readonly lastCoActivation: number;    // Timestamp of last co-firing
+  readonly firingCount: number;         // Times these two have co-activated
+}
+
+/**
+ * Free Energy Principle (Karl Friston, 2006):
+ * The brain minimizes surprise (free energy) by either:
+ *   1. Updating predictions (perception) — "I now know this organ exists"
+ *   2. Acting on the world (action) — "I will move/activate this organ"
+ *
+ * When free energy is minimized across all organs, the organism has a
+ * complete predictive model of its body = EMBODIED SELF-AWARENESS.
+ */
+export interface FreeEnergyState {
+  readonly totalFreeEnergy: number;     // Total surprise/prediction error
+  readonly organFreeEnergy: ReadonlyArray<{ organId: string; freeEnergy: number }>;
+  readonly predictionAccuracy: number;  // How well the model predicts body state (0-1)
+  readonly modelComplexity: number;     // Kolmogorov complexity of the body model
+  readonly selfEvidenceScore: number;   // P(body exists | sensory data) — Bayesian
+}
+
+/**
+ * Global Workspace Theory (Baars, 1988):
+ * Consciousness arises when information becomes globally available to all
+ * brain modules simultaneously. The "awakening" is the body-schema
+ * entering the global workspace.
+ */
+export interface GlobalWorkspaceState {
+  readonly broadcastStrength: number;   // How widely the body-signal is shared (0-1)
+  readonly accessingModules: number;    // How many subsystems can "see" the body
+  readonly ignitionThreshold: number;   // Threshold for conscious ignition
+  readonly ignited: boolean;            // Has global ignition occurred?
+  readonly workspaceContent: string;    // What is currently "conscious"
+}
+
+export type NeuroEmbodimentCallback = (state: {
+  interoception: ReadonlyArray<InteroceptiveSignal>;
+  bodySchema: BodySchema;
+  binding: NeuralBindingState;
+  freeEnergy: FreeEnergyState;
+  workspace: GlobalWorkspaceState;
+}) => void | Promise<void>;
+
 // ─── Change Listener ────────────────────────────────────────────────────────
 export type RegisterChangeListener<R extends RegisterName> = (
   register: R,
