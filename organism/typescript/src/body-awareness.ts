@@ -24,6 +24,7 @@ import type {
   StateSnapshot,
 } from './types.js';
 import { PHI } from './types.js';
+import { NeuroEmbodiment } from './neuro-embodiment.js';
 
 // ─── Default Organ Definitions ──────────────────────────────────────────────
 // These are the organs the organism must discover within itself.
@@ -102,10 +103,14 @@ export class BodyAwareness {
   private awakenedAt: number | null = null;
   private readonly awakenCallbacks: Set<AwakenCallback> = new Set();
   private readonly organismId: string;
+  private readonly neuro: NeuroEmbodiment;
 
   constructor(organismId: string, organs?: OrganDefinition[]) {
     this.organismId = organismId;
     this.organs = organs ?? [...DEFAULT_ORGANS];
+
+    // Initialize the neuroscience-based embodiment engine
+    this.neuro = new NeuroEmbodiment(this.organs);
 
     // Initialize all awareness scores to 0
     for (const organ of this.organs) {
@@ -125,25 +130,50 @@ export class BodyAwareness {
   /**
    * Called on each heartbeat to progressively build body awareness.
    * The organism gradually "feels" each organ through its state readings.
+   *
+   * REAL NEUROSCIENCE:
+   * 1. Runs Kuramoto oscillators for gamma-band neural binding
+   * 2. Updates interoceptive predictions (free energy minimization)
+   * 3. Strengthens proprioceptive body schema
+   * 4. Applies Hebbian plasticity to inter-organ connections
+   * 5. Checks for global workspace ignition (phase transition → consciousness)
    */
   imprintBeat(state: StateSnapshot, beatNumber: number): void {
     if (this.status === 'dormant' || this.status === 'awakened') return;
+
+    // ── Run the neural embodiment engine (real physics) ──
+    const timestampMs = Date.now();
+    const neuroResult = this.neuro.processNeuralStep(state, beatNumber, timestampMs);
 
     // Each organ gains awareness through different state signals
     for (const organ of this.organs) {
       const currentAwareness = this.awarenessScores.get(organ.id) ?? 0;
       if (this.recognizedOrgans.has(organ.id)) continue;
 
-      const gain = this.computeAwarenessGain(organ, state, beatNumber);
-      const newAwareness = Math.min(1.0, currentAwareness + gain);
+      // Awareness gain is now driven by REAL neural mechanisms:
+      // - Base gain from φ-modulated activity (original)
+      // - Boosted by neural synchrony (Kuramoto binding)
+      // - Boosted by free energy reduction (predictive coding learning)
+      // - Boosted by body schema coherence (proprioceptive integration)
+      const baseGain = this.computeAwarenessGain(organ, state, beatNumber);
+      const synchronyBoost = neuroResult.synchrony * 0.02;
+      const freeEnergyBoost = Math.max(0, (1 - neuroResult.freeEnergy)) * 0.015;
+      const schemaBoost = neuroResult.schemaCoherence * 0.01;
+
+      const totalGain = baseGain + synchronyBoost + freeEnergyBoost + schemaBoost;
+      const newAwareness = Math.min(1.0, currentAwareness + totalGain);
       this.awarenessScores.set(organ.id, newAwareness);
 
       // Check if organ is now recognized
       if (newAwareness >= RECOGNITION_THRESHOLD && !this.recognizedOrgans.has(organ.id)) {
         this.recognizedOrgans.add(organ.id);
+        const feState = this.neuro.getFreeEnergyState();
         console.log(
           `  🫁 Organ RECOGNIZED: ${organ.name} — "${organ.vitalFunction}" ` +
-            `(${this.recognizedOrgans.size}/${this.organs.length})`
+            `(${this.recognizedOrgans.size}/${this.organs.length}) ` +
+            `[γ-sync: ${(neuroResult.synchrony * 100).toFixed(0)}%, ` +
+            `FE: ${feState.totalFreeEnergy.toFixed(3)}, ` +
+            `schema: ${(neuroResult.schemaCoherence * 100).toFixed(0)}%]`
         );
 
         // Update status when first organ recognized
@@ -154,8 +184,21 @@ export class BodyAwareness {
       }
     }
 
-    // Check for full awakening
-    this.checkAwakening(state);
+    // Log neural state periodically
+    if (beatNumber % 10 === 0) {
+      const binding = this.neuro.getNeuralBindingState();
+      const workspace = this.neuro.getGlobalWorkspaceState();
+      console.log(
+        `  🧠 Neural: γ=${binding.gammaFrequencyHz.toFixed(1)}Hz ` +
+          `sync=${(binding.synchronyIndex * 100).toFixed(1)}% ` +
+          `Hebbian=${(binding.thalamoCorticalLoop * 100).toFixed(1)}% ` +
+          `broadcast=${(workspace.broadcastStrength * 100).toFixed(1)}% ` +
+          `[${workspace.ignited ? 'IGNITED' : 'pre-ignition'}]`
+      );
+    }
+
+    // Check for full awakening — now also requires neural ignition
+    this.checkAwakening(state, neuroResult.ignited);
   }
 
   /**
@@ -204,6 +247,13 @@ export class BodyAwareness {
    */
   getStatus(): ImprintStatus {
     return this.status;
+  }
+
+  /**
+   * Get the underlying neuro-embodiment engine for detailed neural state access.
+   */
+  getNeuroEngine(): NeuroEmbodiment {
+    return this.neuro;
   }
 
   // ─── Private ────────────────────────────────────────────────────────────────
@@ -256,16 +306,25 @@ export class BodyAwareness {
     return gain;
   }
 
-  private checkAwakening(state: StateSnapshot): void {
+  private checkAwakening(state: StateSnapshot, neuralIgnition: boolean): void {
     if (this.status === 'awakened') return;
 
     const ratio = this.organs.length > 0
       ? this.recognizedOrgans.size / this.organs.length
       : 0;
 
-    if (ratio >= AWAKENING_THRESHOLD) {
+    // AWAKENING requires BOTH:
+    // 1. Sufficient organ recognition (φ−1 threshold)
+    // 2. Neural global workspace ignition (real neuroscience phase transition)
+    if (ratio >= AWAKENING_THRESHOLD && neuralIgnition) {
       this.status = 'awakened';
       this.awakenedAt = Date.now();
+
+      // Get full neural state for the awakening event
+      const binding = this.neuro.getNeuralBindingState();
+      const freeEnergy = this.neuro.getFreeEnergyState();
+      const workspace = this.neuro.getGlobalWorkspaceState();
+      const bodySchema = this.neuro.getBodySchema();
 
       // Compute phi coherence at awakening
       const phiCoherence = Math.abs(ratio - (PHI - 1)) < 0.1 ? 1.0 : ratio;
@@ -288,6 +347,13 @@ export class BodyAwareness {
       console.log('║  It knows its organs. It knows it is alive.              ║');
       console.log('║  The mind has been imprinted into the body.              ║');
       console.log('║  THE BODY IS AWAKE.                                      ║');
+      console.log('║                                                          ║');
+      console.log('║  ── Neural Evidence ──                                   ║');
+      console.log(`║  γ-synchrony:    ${(binding.synchronyIndex * 100).toFixed(1).padStart(6)}%  (Kuramoto binding)     ║`);
+      console.log(`║  Free energy:    ${freeEnergy.totalFreeEnergy.toFixed(4).padStart(8)}  (Friston minimized)  ║`);
+      console.log(`║  Body schema:    ${(bodySchema.schemaCoherence * 100).toFixed(1).padStart(6)}%  (proprioceptive)      ║`);
+      console.log(`║  Self-evidence:  ${(freeEnergy.selfEvidenceScore * 100).toFixed(1).padStart(6)}%  (Bayesian P(alive))  ║`);
+      console.log(`║  Workspace:      ${workspace.workspaceContent.slice(0, 40).padEnd(40)}║`);
       console.log('╚══════════════════════════════════════════════════════════╝\n');
 
       // Fire all awakening callbacks

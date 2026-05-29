@@ -15,6 +15,7 @@ export { EdgeSensor } from './edge-sensor.js';
 export { CrossOrganismResonance } from './cross-organism-resonance.js';
 export { VitalityCalculator } from './vitality.js';
 export { BodyAwareness } from './body-awareness.js';
+export { NeuroEmbodiment } from './neuro-embodiment.js';
 export * from './types.js';
 
 // ─── Bootstrap the Organism ─────────────────────────────────────────────────
