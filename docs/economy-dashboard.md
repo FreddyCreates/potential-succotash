@@ -1,6 +1,6 @@
 # 💰 organism-economy-bot — Economy Dashboard
 
-**Generated:** 2026-05-27T07:03:43.126Z
+**Generated:** 2026-06-03T08:17:05.041Z
 **Bot:** organism-economy-bot 💰
 
 ## Asset Inventory
