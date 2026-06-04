@@ -1,32 +1,32 @@
 # 🕷️ organism-crawler-bot — Organism Map
 
-**Generated:** 2026-05-28T08:38:43.546Z
+**Generated:** 2026-06-04T08:43:25.353Z
 **Bot:** organism-crawler-bot 🕷️
 
 ## Repository Overview
 
 | Metric | Value |
 |---|---|
-| Total Files | 1398 |
-| Total Size | 14.87 MB |
+| Total Files | 1400 |
+| Total Size | 15.02 MB |
 | Top-Level Sections | 23 |
-| Analyzed Files (xref) | 305 |
-| Total Imports | 308 |
-| Unique Symbols | 549 |
+| Analyzed Files (xref) | 307 |
+| Total Imports | 313 |
+| Unique Symbols | 551 |
 
 ## Directory Topology
 
 | Section | Files | Size | Top Language |
 |---|---|---|---|
 | **extensions/** | 493 | 2.88 MB | Other |
-| **docs/** | 166 | 4.10 MB | Other |
+| **docs/** | 166 | 4.11 MB | Other |
 | **sdk/** | 152 | 907.8 KB | JavaScript |
 | **protocols/** | 135 | 1.44 MB | JavaScript |
 | **scripts/** | 72 | 434.2 KB | JavaScript |
-| **organism/** | 62 | 557.5 KB | JavaScript |
+| **organism/** | 64 | 607.2 KB | JavaScript |
 | **defense-organism/** | 55 | 610.3 KB | JavaScript |
 | **workers/** | 51 | 444.6 KB | TypeScript |
-| **governance/** | 33 | 600.0 KB | Other |
+| **governance/** | 33 | 689.9 KB | Other |
 | **memory_temple/** | 31 | 218.6 KB | Python |
 | **research/** | 25 | 1.41 MB | HTML |
 | **.github/** | 24 | 83.2 KB | YAML |
@@ -47,11 +47,11 @@
 | Language | Files | Size |
 |---|---|---|
 | **JavaScript** | 550 | 5.03 MB |
-| **Other** | 334 | 4.09 MB |
+| **Other** | 334 | 4.10 MB |
 | **HTML** | 162 | 2.57 MB |
-| **JSON** | 145 | 1.02 MB |
+| **JSON** | 145 | 1.11 MB |
 | **Markdown** | 55 | 441.0 KB |
-| **TypeScript** | 45 | 746.2 KB |
+| **TypeScript** | 47 | 795.9 KB |
 | **Python** | 39 | 237.2 KB |
 | **YAML** | 26 | 87.8 KB |
 | **TOML** | 14 | 45.2 KB |
@@ -77,9 +77,9 @@
 
 ### `organism/`
 
-- **Files analyzed:** 44
-- **Imports:** 13
-- **Exports:** 9 (6 classes, 0 functions)
+- **Files analyzed:** 46
+- **Imports:** 18
+- **Exports:** 11 (8 classes, 0 functions)
 
 ## Top Exported Symbols
 
@@ -116,7 +116,7 @@
 
 - **Files:** 166
 - **Subdirectories:** 3
-- **Size:** 4.10 MB
+- **Size:** 4.11 MB
 - **Primary Language:** Other
 
 ### `sdk/`
@@ -142,9 +142,9 @@
 
 ### `organism/`
 
-- **Files:** 62
+- **Files:** 64
 - **Subdirectories:** 6
-- **Size:** 557.5 KB
+- **Size:** 607.2 KB
 - **Primary Language:** JavaScript
 
 ### `defense-organism/`
@@ -165,7 +165,7 @@
 
 - **Files:** 33
 - **Subdirectories:** 10
-- **Size:** 600.0 KB
+- **Size:** 689.9 KB
 - **Primary Language:** Other
 
 ### `memory_temple/`

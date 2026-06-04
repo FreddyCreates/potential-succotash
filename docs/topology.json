@@ -1,10 +1,10 @@
 {
-  "generated": "2026-05-28T08:38:43.546Z",
+  "generated": "2026-06-04T08:43:25.353Z",
   "bot": "organism-crawler-bot",
   "summary": {
-    "totalFiles": 1398,
-    "totalBytes": 15596366,
-    "totalKB": 15231,
+    "totalFiles": 1400,
+    "totalBytes": 15747752,
+    "totalKB": 15379,
     "sections": 23,
     "langCounts": {
       "YAML": 26,
@@ -16,7 +16,7 @@
       "JavaScript": 550,
       "Shell": 7,
       "HTML": 162,
-      "TypeScript": 45,
+      "TypeScript": 47,
       "Motoko": 8,
       "Python": 39,
       "C++": 3,
@@ -24,15 +24,15 @@
     },
     "langBytes": {
       "YAML": 89864,
-      "Other": 4289683,
+      "Other": 4297177,
       "CSV": 409489,
-      "Markdown": 451635,
-      "JSON": 1073294,
+      "Markdown": 451634,
+      "JSON": 1166303,
       "CSS": 24253,
       "JavaScript": 5276044,
       "Shell": 41765,
       "HTML": 2696781,
-      "TypeScript": 764075,
+      "TypeScript": 814959,
       "Motoko": 169185,
       "Python": 242846,
       "C++": 21215,
@@ -85,7 +85,7 @@
     {
       "name": "docs",
       "files": 166,
-      "bytes": 4299295,
+      "bytes": 4307649,
       "dirs": 3,
       "topLanguage": "Other"
     },
@@ -120,7 +120,7 @@
     {
       "name": "governance",
       "files": 33,
-      "bytes": 614352,
+      "bytes": 706500,
       "dirs": 10,
       "topLanguage": "Other"
     },
@@ -133,8 +133,8 @@
     },
     {
       "name": "organism",
-      "files": 62,
-      "bytes": 570845,
+      "files": 64,
+      "bytes": 621729,
       "dirs": 6,
       "topLanguage": "JavaScript"
     },
@@ -203,10 +203,10 @@
     }
   ],
   "crossRef": {
-    "totalFiles": 305,
-    "totalImports": 308,
-    "totalExports": 583,
-    "uniqueSymbols": 549
+    "totalFiles": 307,
+    "totalImports": 313,
+    "totalExports": 585,
+    "uniqueSymbols": 551
   },
   "topSymbols": [
     {
