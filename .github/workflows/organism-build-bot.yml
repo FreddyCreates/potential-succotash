@@ -12,7 +12,7 @@ name: 🧬 organism-build-bot
 
 on:
   schedule:
-    - cron: '0 6 * * 0'   # Weekly Sunday 06:00 UTC
+    - cron: '0 6 * * 2'   # Weekly Tuesday 06:00 UTC
   push:
     branches: [main]
     paths:
