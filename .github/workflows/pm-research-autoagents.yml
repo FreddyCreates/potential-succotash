@@ -46,5 +46,5 @@ jobs:
           path: |
             dist/autoagents/pm-research-report.json
             dist/autoagents/pm-research-report.md
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 14

@@ -17,6 +17,8 @@
 name: 📚 organism-docs-bot
 
 on:
+  schedule:
+    - cron: '0 5 * * 3'   # Weekly Wednesday 05:00 UTC
   push:
     branches: [main]
     paths:
