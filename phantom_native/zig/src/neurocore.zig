@@ -13,7 +13,12 @@ const builtin = @import("builtin");
 // ============================================================================
 
 /// SIMD lane width: 8 floats (256-bit AVX) or 4 floats (128-bit NEON/SSE)
-const SIMD_WIDTH: comptime_int = if (builtin.cpu.arch == .x86_64) 8 else 4;
+/// Note: Defaults to 4 on x86_64 for SSE2 baseline compatibility.
+/// Override with `-Dcpu=x86_64_v3` or higher to enable AVX (8 lanes).
+const SIMD_WIDTH: comptime_int = switch (builtin.cpu.arch) {
+    .x86_64 => if (@hasField(@TypeOf(builtin.cpu.features), "avx")) 8 else 4,
+    else => 4,
+};
 const SimdVec = @Vector(SIMD_WIDTH, f32);
 
 /// Alignment for quantized int8 weights (32-byte for AVX, 16-byte for NEON)
@@ -206,14 +211,21 @@ export fn ct_swap(a: [*]u8, b: [*]u8, len: usize, swap: u1) void {
 
 /// Execute a function and pad execution to a fixed duration.
 /// Ensures identical timing regardless of input-dependent branching.
-/// Uses monotonic clock for precision; pads with dummy volatile reads.
+/// Uses nanosleep for durations > 1ms to avoid CPU waste; busy-waits for precision tail.
 export fn timing_regularize(target_ns: u64) void {
     const start = std.time.nanoTimestamp();
-    // Spin until target duration elapsed (volatile to prevent optimization)
+    const target_signed: i128 = @intCast(target_ns);
+
+    // Sleep for bulk of duration (reduce CPU usage)
+    if (target_ns > 1_000_000) { // > 1ms
+        const sleep_ns = target_ns - 500_000; // leave 0.5ms for precision tail
+        std.time.sleep(sleep_ns);
+    }
+
+    // Busy-wait for precision tail (prevents timing jitter)
     while (true) {
-        const elapsed = @as(u64, @intCast(std.time.nanoTimestamp() - start));
-        if (elapsed >= target_ns) break;
-        // Dummy volatile operation to prevent loop elimination
+        const elapsed = std.time.nanoTimestamp() - start;
+        if (elapsed >= target_signed) break;
         std.mem.doNotOptimizeAway(@as(u8, 0));
     }
 }

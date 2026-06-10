@@ -78,8 +78,12 @@ class BuildManifest:
                         rel = str(f.relative_to(self.repo_root))
                         self._hash_file(f, rel)
 
-        # Compute aggregate root
-        self.manifest_root = qsha_aggregate(list(self.source_hashes.values()))
+        # Compute aggregate root (includes paths for structural integrity)
+        path_hashes = [
+            qsha_hash(f"{path}:{h}".encode()) 
+            for path, h in sorted(self.source_hashes.items())
+        ]
+        self.manifest_root = qsha_aggregate(path_hashes)
         return self.manifest_root
 
     def _hash_file(self, path: Path, rel_path: str) -> None:

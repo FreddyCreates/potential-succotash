@@ -189,9 +189,19 @@ class NativeBridge:
         return list(buf)
 
     def ct_compare(self, a: bytes, b: bytes) -> bool:
-        """Constant-time byte comparison via native kernel."""
+        """Constant-time byte comparison via native kernel.
+
+        WARNING: When native library is unavailable, falls back to Python's
+        built-in comparison which is NOT constant-time. This provides no
+        side-channel resistance in fallback mode.
+        """
         if not self.available:
-            # Python fallback (NOT constant-time)
+            import warnings
+            warnings.warn(
+                "ct_compare fallback is NOT constant-time. "
+                "Build native library for side-channel resistance.",
+                stacklevel=2,
+            )
             return a == b
 
         assert len(a) == len(b)

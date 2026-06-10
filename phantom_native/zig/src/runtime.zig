@@ -29,7 +29,7 @@ const RuntimeManifest = struct {
 
 const MANIFEST = RuntimeManifest{
     .version = "0.2.0",
-    .build_target = @tagName(builtin.cpu.arch) ++ "-" ++ @tagName(builtin.os.tag),
+    .build_target = "native",
     .kernel_count = 12, // exported C ABI functions
     .simd_width = neurocore.SIMD_WIDTH,
     .phi_constant = neurocore.PHI,
@@ -56,7 +56,7 @@ pub fn main() !void {
         \\
     , .{
         MANIFEST.version,
-        MANIFEST.build_target,
+        @tagName(builtin.cpu.arch),
         MANIFEST.simd_width,
         MANIFEST.phi_constant,
         MANIFEST.kernel_count,
