@@ -36,10 +36,14 @@ class ShadowWireEnvelope:
     def verify_membership(self, core_id: str, envelope: Dict[str, Any]) -> bool:
         """
         Verify a core_id could belong to an envelope (requires salt knowledge).
-        This is a placeholder — real implementation uses ZK proofs.
+
+        WARNING: Placeholder implementation — always returns True for masked envelopes.
+        Production deployments MUST replace with zero-knowledge membership proofs.
         """
-        # In production, this would be a zero-knowledge membership proof
-        return envelope.get("masked", False)
+        # TODO: Replace with ZK-SNARK or Merkle membership proof
+        if not envelope.get("masked", False):
+            return False
+        return True  # Placeholder — real impl uses ZK proofs
 
     @property
     def mask_count(self) -> int:

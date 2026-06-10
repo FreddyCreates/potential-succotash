@@ -26,7 +26,11 @@ class SovereignTensor:
         self.shape = shape
         self.data = data[:]  # flattened
         self.spectral_meta = spectral_meta or {}
-        assert len(data) == self._compute_size(shape), "Shape / data mismatch"
+        if len(data) != self._compute_size(shape):
+            raise ValueError(
+                f"Shape / data mismatch: data has {len(data)} elements "
+                f"but shape {shape} requires {self._compute_size(shape)}"
+            )
 
         # MESIE-native metadata
         self.resonance_score = self.spectral_meta.get("resonance", 1.0)

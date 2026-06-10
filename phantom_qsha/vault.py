@@ -20,13 +20,16 @@ class SovereignVault:
     def seal_intent(self, intent: Dict[str, Any]) -> bytes:
         """
         Seal an intent dict into opaque bytes.
-        In production this would use authenticated encryption.
+
+        WARNING: Current implementation uses XOR obfuscation as a placeholder.
+        Production deployments MUST replace with authenticated encryption (AEAD)
+        such as AES-256-GCM or XChaCha20-Poly1305.
         """
         payload = json.dumps(intent, sort_keys=True).encode()
-        # Simple XOR-based obfuscation (placeholder for real AEAD)
-        key_byte = 0x5A  # phantom key placeholder
+        # Placeholder obfuscation — NOT cryptographically secure
+        # TODO: Replace with proper AEAD (e.g., cryptography.fernet or nacl.secret)
+        key_byte = 0x5A
         sealed = bytes(b ^ key_byte for b in payload)
-        # Store by content hash
         content_hash = hashlib.sha256(sealed).hexdigest()
         self._sealed_store[content_hash] = sealed
         return sealed

@@ -18,12 +18,14 @@ from .sovereign_tensor import SovereignTensor
 import sys
 import os
 
-# Add parent to path for phantom_qsha imports
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Ensure sibling packages are importable
+_parent = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _parent not in sys.path:
+    sys.path.insert(0, _parent)
 
-from phantom_qsha.shadow_wire import ShadowWireEnvelope
-from phantom_qsha.receipts import ExecutionReceipt
-from phantom_qsha.vault import SovereignVault
+from phantom_qsha.shadow_wire import ShadowWireEnvelope  # noqa: E402
+from phantom_qsha.receipts import ExecutionReceipt  # noqa: E402
+from phantom_qsha.vault import SovereignVault  # noqa: E402
 
 
 class SovereignSwarmRuntime:
