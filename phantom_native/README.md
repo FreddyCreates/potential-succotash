@@ -3,99 +3,165 @@
 Zero-dependency native driver layer built on framework primitives:
 **MESIE spectral objects, helix encoding, resonance, NeuroCores, TAURUS.**
 
-## Architecture
+## Build Architecture
 
 ```
-phantom_native/           # Python reference implementation
-├── sovereign_tensor.py   # SovereignTensor + MESIE spectral integration
-├── neurocore.py          # SovereignNeuroCore (resonance attention + TAURUS)
-├── swarm_runtime.py      # SovereignSwarmRuntime + Shadow Wire binding
-└── zig/                  # Native performance layer
-    ├── build.zig         # Zig build system
+       [ BUILD ARCHITECTURE: PHANTOM NATIVE STACK ]
+       
+                  ┌──────────────────────┐
+                  │      build.zig       │
+                  └──────────┬───────────┘
+                             ▼
+                  ┌──────────────────────┐
+                  │    neurocore.zig     │ ◄── @import("std") only
+                  └──────────┬───────────┘     (Zero-libc safe)
+                             │
+            ┌────────────────┴────────────────┐
+            ▼ (Direct Binary)                 ▼ (C ABI Export)
+   ┌──────────────────┐              ┌──────────────────┐
+   │ Standalone Edge  │              │ phantom_native/  │
+   │ Micro-Runtime    │              │ bridge.py (ctypes)│
+   └──────────────────┘              └──────────────────┘
+```
+
+## Directory Structure
+
+```
+phantom_native/
+├── __init__.py              # Package exports
+├── sovereign_tensor.py      # SovereignTensor + MESIE spectral integration
+├── neurocore.py             # SovereignNeuroCore (resonance attention + TAURUS)
+├── swarm_runtime.py         # SovereignSwarmRuntime + Shadow Wire binding
+├── bridge.py                # Python ↔ Zig ctypes bridge (zero NumPy)
+├── manifest.py              # Build attestation & QSHA verification
+└── zig/                     # Native performance layer
+    ├── build.zig            # Multi-target build system
     └── src/
-        ├── neurocore.zig # SIMD-ready kernels (C ABI)
-        └── runtime.zig   # Attestable binary entry point
+        ├── neurocore.zig    # SIMD kernels + constant-time primitives
+        └── runtime.zig      # Attestable binary entry point
 
-phantom_qsha/             # Quantum-Secure Hashing & Attestation
-├── qsha.py              # QSHA commitment hashes
-├── shadow_wire.py       # Topology masking
-├── receipts.py          # Execution receipts (public proof)
-└── vault.py             # Sealed intent storage
+phantom_qsha/                # Quantum-Secure Hashing & Attestation
+├── qsha.py                  # QSHA commitment hashes
+├── shadow_wire.py           # Topology masking
+├── receipts.py              # Execution receipts (public proof)
+└── vault.py                 # Sealed intent storage
 ```
 
-## Components
+## SIMD Kernel Exports (C ABI)
 
-### 1. SovereignTensor (`phantom_native/sovereign_tensor.py`)
-- Pure native tensor engine — zero external dependencies
-- Direct MESIE SpectralComponent ingestion
-- Resonance-weighted matrix multiplication
-- Int8 quantization for edge deployment
-- Deterministic binary serialization for QSHA
+| Kernel | Purpose | SIMD |
+|--------|---------|------|
+| `resonance_dot` | φ-weighted dot product | @Vector(8/4, f32) |
+| `resonance_dot_i8` | Quantized dot product | i8 accumulate → f32 |
+| `matmul_resonance` | Resonance matrix multiply | Vectorized inner loop |
+| `native_softmax` | In-place softmax | Numerically stable |
+| `quantize_int8` | Float → int8 quantization | Aligned output |
+| `dequantize_int8` | Int8 → float restore | Scale recovery |
+| `ct_compare` | Constant-time byte compare | Side-channel safe |
+| `ct_select_f32` | Branchless conditional select | No timing leak |
+| `ct_swap` | Constant-time buffer swap | Mask-based |
+| `helix_encode` | φ-scaled position encoding | Sin/cos pairs |
+| `resonance_decay` | Spectral damping | Exponential |
+| `timing_regularize` | Execution padding | Clock-based |
 
-### 2. SovereignNeuroCore (`phantom_native/neurocore.py`)
-- Helix-encoded weights (sinusoidal from MESIE geometry)
-- Custom resonance-weighted attention kernel
-- TAURUS working memory (bounded temporal context)
-- Multi-head ready (configurable d_model, n_heads)
+## Cross-Compilation
 
-### 3. SovereignSwarmRuntime (`phantom_native/swarm_runtime.py`)
-- Manages swarm of NeuroCores
-- Sealed-intent execution via Sovereign Vault
-- Shadow Wire topology masking (public proof, hidden internals)
-- QSHA-based commitment aggregation
-- Execution Receipts for verifiable compute
-
-### 4. Zig Native Kernels (`phantom_native/zig/`)
-- `resonance_dot` — φ-weighted dot product
-- `matmul_resonance` — resonance matrix multiply
-- `quantize_int8` — edge quantization
-- `native_softmax` — in-place softmax
-- C ABI compatible (CFFI binding, no NumPy)
-
-## Build
-
-### Python (reference/verification)
-```bash
-python -c "from phantom_native import SovereignSwarmRuntime; print('OK')"
-```
-
-### Zig (native performance)
+### Default (host native)
 ```bash
 cd phantom_native/zig
 zig build -Doptimize=ReleaseFast
-./zig-out/bin/phantom_swarm
 ```
 
-## Usage
+### ARM Cortex-M7 (embedded edge nodes)
+```bash
+zig build arm
+# Or directly:
+zig build-exe src/runtime.zig src/neurocore.zig \
+  -target arm-freestanding-eabi -mcpu=cortex_m7 --name phantom_node
+```
+
+### x86_64 Linux Static (micro-clusters)
+```bash
+zig build x86-musl
+# Or directly:
+zig build-lib src/neurocore.zig \
+  -target x86_64-linux-musl -O ReleaseFast --name neurocore
+```
+
+### AArch64 Linux Static (Raspberry Pi / ARM servers)
+```bash
+zig build aarch64-musl
+```
+
+## Memory Integration (Python ↔ Zig)
+
+The ctypes bridge passes raw memory pointers directly to Zig kernels:
 
 ```python
-from phantom_native import SovereignSwarmRuntime
+from phantom_native import NativeBridge, SovereignTensor
 
-runtime = SovereignSwarmRuntime()
+bridge = NativeBridge()  # Auto-loads native library (fallback to Python)
 
-# Spawn neuronets with spectral config
-core_id = runtime.spawn_neuronet({"d_model": 128, "n_heads": 8})
+# Direct SIMD operations on SovereignTensor data
+a = SovereignTensor([1.0, 2.0, 3.0, 4.0], (4,))
+b = SovereignTensor([0.5, 0.5, 0.5, 0.5], (4,))
+dot = bridge.resonance_dot(a, b, resonance=1.618)
 
-# Execute sealed intent
-intent = {"spectrum": {"amplitude": [0.5, 0.8, 0.3], "element_weight": 1.618}}
-receipt = runtime.seal_and_execute(intent)
+# Int8 quantization with aligned buffers
+quantized, scale = bridge.quantize(a)
 
-print(receipt.to_dict())
-# → {receipt_id, commitment, shadow_wire, public_meta, timestamp}
+# Constant-time comparison (side-channel safe)
+bridge.ct_compare(b"secret_a", b"secret_b")
 ```
 
-## Native Full Libraries Strategy
+**Key Design:**
+- `ctypes.POINTER(ctypes.c_float)` → direct buffer access (no copy)
+- Int8 buffers aligned to 16/32 bytes for VPADD/AVX instructions
+- Fallback to pure Python if native library not compiled
 
-| Component | Implementation | Notes |
-|-----------|---------------|-------|
-| SovereignTensor | Zig vectorized loops (SIMD) | Auto-vectorization with ReleaseFast |
-| NeuroCore | Custom resonance kernels | C ABI for Python CFFI binding |
-| Runtime | Deterministic binary | Attestable via QSHA manifest |
-| Deployment | `zig build -Doptimize=ReleaseFast` | Single static binary |
+## Build Attestation & Verification
+
+```bash
+# 1. Generate source manifest (QSHA fingerprint)
+python -m phantom_native.manifest generate
+
+# 2. Build native binary
+cd phantom_native/zig && zig build -Doptimize=ReleaseFast && cd ../..
+
+# 3. Verify binary against manifest + create audit receipt
+python -m phantom_native.manifest verify
+
+# 4. View audit trail
+python -m phantom_native.manifest audit
+```
+
+Verification pipeline:
+```
+[ Source Code ] ──► [ QSHA Manifest ] ──► Check against known hash
+                           │
+                           ▼
+[ zig build ] ──► [ Binary Output ] ──► Final Audit Trace Hash
+                           │
+                           ▼
+              [ ReceiptChain (append-only) ]
+```
+
+## Timing Regularization (Shadow Wire)
+
+All crypto-adjacent operations use constant-time primitives to prevent
+side-channel analysis from uncovering internal state:
+
+- `ct_compare`: Constant-time byte comparison (no early exit)
+- `ct_select_f32`: Branchless conditional (bit-mask based)
+- `ct_swap`: Content swap without conditional branches
+- `timing_regularize`: Pads execution to fixed duration
+- `heartbeat_align`: Aligns to 873ms organism heartbeat
 
 ## φ-Mathematics
 
 Constants used throughout:
 - `PHI = 1.618033...` — golden ratio (resonance weighting)
-- `HEARTBEAT_MS = 873` — organism temporal rhythm
-- `THRESHOLD = 0.618` — inverse golden ratio (decision boundary)
+- `PHI_INV = 0.618033...` — inverse golden ratio (threshold)
+- `HEARTBEAT_NS = 873,000,000` — organism temporal rhythm (nanoseconds)
+- SIMD width: 8 lanes (AVX/x86_64) or 4 lanes (NEON/ARM)
+
