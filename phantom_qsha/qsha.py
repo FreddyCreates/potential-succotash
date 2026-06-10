@@ -5,7 +5,11 @@ import struct
 
 
 def qsha_hash(data: bytes) -> str:
-    """Compute QSHA commitment hash (SHA-256 + resonance prefix)."""
+    """Compute QSHA commitment hash (SHA-256 with 'qsha:' namespace prefix).
+
+    The 'qsha:' prefix namespaces commitments within the Phantom attestation
+    system, distinguishing them from raw SHA-256 digests.
+    """
     digest = hashlib.sha256(data).hexdigest()
     return f"qsha:{digest}"
 

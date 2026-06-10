@@ -39,12 +39,12 @@ class SovereignNeuroCore:
     ) -> List[float]:
         """Custom resonance-weighted attention kernel.
 
-        Applies exponential decay to dot-product scores, modeling
-        resonance damping in the spectral field.
+        Computes per-position scores as the element-wise dot product
+        with exponential resonance decay, modeling damping in the spectral field.
         """
         scores = []
         for i in range(len(q)):
-            dot = sum(q[i] * k[j] for j in range(len(k)))
+            dot = q[i] * k[i]  # element-wise score per position
             resonance = math.exp(-abs(dot) * 0.5)  # resonance decay
             scores.append(dot * resonance)
 
