@@ -1,0 +1,109 @@
+# docker-compose.yml — Sovereign Native Stack
+#
+# Provides containerized build and runtime environment for:
+# - phantom_native: Zig-compiled SIMD tensor kernels
+# - phantom_qsha: Python QSHA cryptographic attestation
+# - memory_temple: CIVOS-PRIME memory SDK
+# - sovereign-runtime: Full sovereign swarm runtime
+#
+# Usage:
+#   docker compose build                    # Build all images
+#   docker compose up sovereign-runtime     # Run the swarm runtime
+#   docker compose run phantom-native-test  # Run Zig tests
+#   docker compose run qsha-test            # Run QSHA Python tests
+
+services:
+  # ── Phantom Native (Zig build + runtime) ────────────────────────────────
+  phantom-native:
+    build:
+      context: ./phantom_native
+      dockerfile: ../docker/Dockerfile.zig
+    image: sovereign/phantom-native:latest
+    volumes:
+      - ./phantom_native:/workspace
+      - zig-cache:/workspace/zig-cache
+    environment:
+      - ZIG_OPTIMIZE=ReleaseFast
+    command: ["zig", "build", "-Doptimize=ReleaseFast"]
+
+  # ── Phantom Native Tests ────────────────────────────────────────────────
+  phantom-native-test:
+    build:
+      context: ./phantom_native
+      dockerfile: ../docker/Dockerfile.zig
+    volumes:
+      - ./phantom_native:/workspace
+      - zig-cache:/workspace/zig-cache
+    command: ["zig", "build", "test"]
+
+  # ── Sovereign Swarm Runtime ─────────────────────────────────────────────
+  sovereign-runtime:
+    build:
+      context: ./phantom_native
+      dockerfile: ../docker/Dockerfile.zig
+    image: sovereign/swarm-runtime:latest
+    volumes:
+      - ./phantom_native:/workspace
+      - zig-cache:/workspace/zig-cache
+    command: ["./zig-out/bin/phantom_swarm"]
+    depends_on:
+      phantom-native:
+        condition: service_completed_successfully
+
+  # ── Phantom QSHA (Python cryptographic attestation) ─────────────────────
+  phantom-qsha:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.python
+    image: sovereign/phantom-qsha:latest
+    volumes:
+      - ./phantom_qsha:/app/phantom_qsha
+      - ./memory_temple:/app/memory_temple
+    environment:
+      - PYTHONPATH=/app
+    command: ["python", "-c", "from phantom_qsha import ShadowWireEnvelope, ExecutionReceipt, SovereignVault; print('QSHA loaded')"]
+
+  # ── QSHA Tests ──────────────────────────────────────────────────────────
+  qsha-test:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.python
+    volumes:
+      - ./phantom_qsha:/app/phantom_qsha
+      - ./memory_temple:/app/memory_temple
+    environment:
+      - PYTHONPATH=/app
+    command: ["python", "-m", "pytest", "phantom_qsha/", "-v"]
+
+  # ── Memory Temple SDK ───────────────────────────────────────────────────
+  memory-temple:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.python
+    image: sovereign/memory-temple:latest
+    volumes:
+      - ./memory_temple:/app/memory_temple
+    environment:
+      - PYTHONPATH=/app
+    command: ["python", "-c", "from memory_temple.sdk.contracts import Memoria, Registrum, Artifacta, Nova; print('Memory Temple loaded')"]
+
+  # ── Workers Dev (Node.js Cloudflare Workers) ────────────────────────────
+  workers-dev:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.node
+    image: sovereign/workers-dev:latest
+    volumes:
+      - ./workers:/app/workers
+      - ./functions:/app/functions
+      - node-modules:/app/node_modules
+    ports:
+      - "8787:8787"
+    working_dir: /app
+    command: ["npx", "wrangler", "dev", "--local"]
+
+volumes:
+  zig-cache:
+    driver: local
+  node-modules:
+    driver: local

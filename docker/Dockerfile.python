@@ -1,0 +1,19 @@
+# Dockerfile.python — Python environment for QSHA + Memory Temple
+FROM python:3.12-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Install Python dependencies
+RUN pip install --no-cache-dir pytest
+
+# Copy source
+COPY phantom_qsha/ /app/phantom_qsha/
+COPY memory_temple/ /app/memory_temple/
+
+ENV PYTHONPATH=/app
+
+CMD ["python", "-c", "print('Sovereign Python stack ready')"]
