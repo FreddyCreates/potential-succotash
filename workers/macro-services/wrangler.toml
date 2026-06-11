@@ -1,0 +1,40 @@
+name = "macro-services"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+
+[vars]
+PHI = "1.618033988749895"
+HEARTBEAT_MS = "873"
+ORGANISM = "macro-services"
+SERVICE_SCALE = "macro"
+
+# KV Namespace — Saga state & orchestration data
+[[kv_namespaces]]
+binding = "SAGA_STATE"
+id = "macro-services-saga-state"
+
+# D1 Database — Workflow history
+[[d1_databases]]
+binding = "DB"
+database_name = "medinatech-db"
+database_id = "medinatech-db-id"
+
+# Queue — Orchestration events
+[[queues.producers]]
+queue = "macro-service-events"
+binding = "EVENTS_QUEUE"
+
+# Service Bindings — Connect to micro services
+[[services]]
+binding = "MICRO_SERVICES"
+service = "micro-services"
+
+# Durable Objects — Stateful saga coordination
+[durable_objects]
+bindings = [
+  { name = "SAGA_COORDINATOR", class_name = "SagaDurableObject" }
+]
+
+[[migrations]]
+tag = "v1"
+new_classes = ["SagaDurableObject"]
