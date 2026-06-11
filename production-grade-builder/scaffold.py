@@ -273,9 +273,9 @@ def main():
                 if score_data["score"] >= 0.8:
                     checks_passed += 1
                 else:
-                    errors.append(f"Score {score_data[\'score\']} < 0.8 minimum")
+                    errors.append(f"Score {score_data['score']} < 0.8 minimum")
             else:
-                errors.append("score.json missing numeric \'score\' field")
+                errors.append("score.json missing numeric 'score' field")
         except json.JSONDecodeError as e:
             errors.append(f"score.json invalid JSON: {e}")
     else:
