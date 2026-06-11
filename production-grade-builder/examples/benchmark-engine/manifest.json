@@ -1,0 +1,12 @@
+{
+  "kind": "benchmark-engine",
+  "name": "example-benchmark-engine",
+  "version": "1.0.0",
+  "author": "builder",
+  "created": "2026-06-11T08:33:04.115663+00:00",
+  "builder": "production-grade-builder",
+  "builder_version": "1.0.0",
+  "description": "Performance benchmark or measurement engine",
+  "quality_gate": "tools/quality_gate.py",
+  "policy": "PACKET_POLICY.md"
+}
