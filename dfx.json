@@ -5,6 +5,10 @@
     "vigil_frontend": {
       "type": "assets",
       "source": ["icp-dist"]
+    },
+    "qx7_manifold": {
+      "type": "motoko",
+      "main": "organism/motoko/src/QX7ManifoldSubstrate.mo"
     }
   },
   "networks": {
