@@ -1,0 +1,21 @@
+name = "http-services"
+main = "src/index.ts"
+compatibility_date = "2024-05-12"
+
+[vars]
+PHI = "1.618033988749895"
+HEARTBEAT_MS = "873"
+ORGANISM = "http-services"
+
+[[kv_namespaces]]
+binding = "SERVICE_KV"
+id = "http-services-kv"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "medinatech-db"
+database_id = "medinatech-db-id"
+
+[[queues.producers]]
+queue = "http-service-events"
+binding = "EVENTS_QUEUE"

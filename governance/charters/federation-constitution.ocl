@@ -1,0 +1,130 @@
+# ============================================================================
+# OCL — Organism Charter Language
+# Governance Charter: Federation Constitution (FED-001)
+#
+# id:     atlas://civilization/governance/federation-constitution
+# class:  FederationCharter
+#
+# The Federation Constitution governs peer admission, voting power,
+# treasury stewardship, dispute resolution, and fork protocol across
+# sovereign nodes bound by phi-quorum constitutional rules.
+# ============================================================================
+
+id: "atlas://civilization/governance/federation-constitution"
+class: FederationCharter
+version: "1.0.0"
+created: "2026-05-09T00:00:00.000Z"
+author: "civilization-architect"
+
+description: |
+  The Federation Constitution transforms independent nodes into a lawful
+  cooperative without erasing local sovereignty. It defines how peers are
+  admitted, how treasury resources are governed, how disputes are resolved,
+  and how constitutional forks occur when consensus can no longer hold.
+
+  Phi-quorum rules weight both stake and civic reliability, preventing any
+  single treasury bloc or infrastructure cluster from dominating the whole.
+  Shared legitimacy depends on auditable procedure, not mere connectivity.
+
+# ── Core Identity ─────────────────────────────────────────────────────────────
+governance_type: "federated_constitution"
+coverage: "multi_node_federation"
+phi_constant: 1.618033988749895
+heartbeat_ms: 873
+
+# ── Member Types ──────────────────────────────────────────────────────────────
+types:
+  - id: "FED-PEER"
+    name: "Peer Admission"
+    description: "Verified nodes seeking treaty-bound membership"
+    phi_weight: 1.618
+
+  - id: "FED-VOTE"
+    name: "Constitutional Voting"
+    description: "Phi-quorum voting over shared governance matters"
+    phi_weight: 1.618
+
+  - id: "FED-TREASURY"
+    name: "Treasury Stewardship"
+    description: "Custody, issuance, and budget allocation of shared reserves"
+    phi_weight: 2.618
+
+  - id: "FED-DISPUTE"
+    name: "Dispute Resolution"
+    description: "Arbitration process for inter-node conflicts and treaty breaches"
+    phi_weight: 1.0
+
+  - id: "FED-FORK"
+    name: "Fork Protocol"
+    description: "Lawful separation when constitutional consensus irreversibly fails"
+    phi_weight: 2.618
+
+# ── Quorum Model ─────────────────────────────────────────────────────────────
+quorum:
+  admission_threshold: 0.618
+  constitutional_threshold: 0.786
+  treasury_threshold: 0.786
+  emergency_threshold: 0.886
+  fork_threshold: 0.618
+
+# ── Governance Protocols ─────────────────────────────────────────────────────
+protocols:
+  - id: "FED-ADMIT"
+    name: "Peer Admission"
+    description: "Evaluate identity, capability, and treaty acceptance of new peers"
+    authority: "membership_council"
+    validation: "attested_node_profile"
+
+  - id: "FED-VOTE"
+    name: "Phi-Quorum Ballot"
+    description: "Combine stake, uptime, and civic service into weighted voting"
+    authority: "federation"
+    validation: "signed_ballot"
+
+  - id: "FED-BUDGET"
+    name: "Treasury Allocation"
+    description: "Route reserves to infrastructure, research, and incident recovery"
+    authority: "treasury_board"
+    validation: "multi_sig_disbursement"
+
+  - id: "FED-ARBITRATE"
+    name: "Dispute Arbitration"
+    description: "Resolve treaty violations through evidence, reply, and binding ruling"
+    authority: "constitutional_court"
+    validation: "case_record"
+
+  - id: "FED-FORK"
+    name: "Lawful Fork"
+    description: "Split ledgers, treasury shares, and protocol authority under declared rules"
+    authority: "fork_congress"
+    validation: "state_snapshot"
+
+# ── Invariants ────────────────────────────────────────────────────────────────
+invariants:
+  - "No peer may join without accepting the constitutional treaty set"
+  - "Treasury disbursements require a higher quorum than ordinary motions"
+  - "Disputes must preserve adversarial fairness and a written ruling"
+  - "Forks must snapshot shared state before constitutions diverge"
+  - "Phi-quorum weighting never permits one node to unilaterally decide federation law"
+
+# ── Metrics & Monitoring ──────────────────────────────────────────────────────
+metrics:
+  - name: "peer_admission_cycle_time"
+    description: "Time from peer petition to constitutional decision"
+    threshold_ms: 604800000
+    alert_on_breach: true
+
+  - name: "quorum_participation_rate"
+    description: "Weighted share of eligible members participating in ballots"
+    threshold_min: 0.786
+    alert_on_breach: true
+
+  - name: "treasury_audit_variance"
+    description: "Difference between declared and observed treasury balances"
+    threshold_max: 0.001
+    alert_on_breach: true
+
+  - name: "dispute_resolution_backlog"
+    description: "Open constitutional disputes past their decision window"
+    threshold_max: 12
+    alert_on_breach: true
