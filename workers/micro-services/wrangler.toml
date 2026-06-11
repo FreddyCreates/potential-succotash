@@ -25,6 +25,6 @@ queue = "micro-service-events"
 binding = "EVENTS_QUEUE"
 
 # Rate limiting
-[vars.RATE_LIMIT]
-max_tokens = "162"
-refill_rate = "16"
+[vars]
+RATE_LIMIT_MAX_TOKENS = "162"
+RATE_LIMIT_REFILL_RATE = "16"

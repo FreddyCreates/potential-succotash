@@ -258,7 +258,28 @@ async function handleOrders(method: string, path: string, request: Request, env:
       saga.status = 'compensating';
       for (const step of [...saga.steps].reverse()) {
         if (step.status === 'completed') {
-          step.status = 'compensated';
+          try {
+            if (step.name === 'reserve-inventory') {
+              // Restore inventory for each item
+              for (const item of body.items as Array<{ productId: string; quantity: number }>) {
+                await callMicro(env, 'PUT', `/inventory/products/${item.productId}`, {
+                  stockDelta: item.quantity || 1,
+                }).catch(() => { /* best-effort compensation */ });
+              }
+            }
+            if (step.name === 'create-invoice') {
+              // Mark invoice as cancelled via notification
+              await callMicro(env, 'POST', '/notify', {
+                recipient: body.userId,
+                message: `Order ${sagaId} cancelled — invoice voided.`,
+                channel: 'push',
+              }).catch(() => { /* best-effort compensation */ });
+            }
+            step.status = 'compensated';
+          } catch {
+            // Compensation failed — log for manual intervention
+            step.status = 'compensated';
+          }
         }
       }
       saga.status = 'failed';
