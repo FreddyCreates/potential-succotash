@@ -1,0 +1,10 @@
+{
+  "packet": "example-node-service",
+  "kind": "node-service",
+  "builder": "production-grade-builder",
+  "builder_version": "1.0.0",
+  "timestamp": "2026-06-11T08:33:04.079779+00:00",
+  "status": "scaffolded",
+  "gate_status": "PASS",
+  "files_generated": 9
+}

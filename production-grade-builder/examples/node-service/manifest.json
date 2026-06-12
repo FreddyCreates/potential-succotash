@@ -1,0 +1,12 @@
+{
+  "kind": "node-service",
+  "name": "example-node-service",
+  "version": "1.0.0",
+  "author": "builder",
+  "created": "2026-06-11T08:33:04.079157+00:00",
+  "builder": "production-grade-builder",
+  "builder_version": "1.0.0",
+  "description": "Node.js backend service (API, worker, or daemon)",
+  "quality_gate": "tools/quality_gate.py",
+  "policy": "PACKET_POLICY.md"
+}

@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0.0",
+  "builder": "production-grade-builder",
+  "profiles": [
+    {
+      "kind": "static-app",
+      "description": "Static web application (HTML/CSS/JS, no server runtime)",
+      "required_files": ["index.html", "style.css", "app.js"],
+      "category": "frontend"
+    },
+    {
+      "kind": "python-service",
+      "description": "Python backend service (API, worker, or daemon)",
+      "required_files": ["src/main.py", "requirements.txt", "Dockerfile"],
+      "category": "backend"
+    },
+    {
+      "kind": "node-service",
+      "description": "Node.js backend service (API, worker, or daemon)",
+      "required_files": ["src/index.js", "package.json", "Dockerfile"],
+      "category": "backend"
+    },
+    {
+      "kind": "benchmark-engine",
+      "description": "Performance benchmark or measurement engine",
+      "required_files": ["src/bench.py", "config/bench_config.json"],
+      "category": "tooling"
+    },
+    {
+      "kind": "local-api",
+      "description": "Local-first API (no cloud dependency required)",
+      "required_files": ["src/api.py", "openapi.yaml"],
+      "category": "backend"
+    },
+    {
+      "kind": "ci-workflow",
+      "description": "CI/CD pipeline workflow configuration",
+      "required_files": [".github/workflows/ci.yml", "scripts/gate.sh"],
+      "category": "infrastructure"
+    },
+    {
+      "kind": "dataset",
+      "description": "Structured dataset with schema and validation",
+      "required_files": ["data/schema.json", "data/sample.jsonl", "scripts/validate.py"],
+      "category": "data"
+    },
+    {
+      "kind": "manifest",
+      "description": "Machine-readable manifest or registry entry",
+      "required_files": ["registry.json", "schema.json"],
+      "category": "metadata"
+    },
+    {
+      "kind": "proof-pack",
+      "description": "Verification proof pack (evidence + attestation)",
+      "required_files": ["proofs/attestation.json", "verify.py"],
+      "category": "verification"
+    },
+    {
+      "kind": "research-packet",
+      "description": "Research deliverable (paper, findings, artifacts)",
+      "required_files": ["paper.md", "references.bib"],
+      "category": "research"
+    },
+    {
+      "kind": "dashboard",
+      "description": "Monitoring or analytics dashboard",
+      "required_files": ["src/dashboard.py", "config/panels.json"],
+      "category": "frontend"
+    },
+    {
+      "kind": "docs",
+      "description": "Documentation deliverable (guides, references, specs)",
+      "required_files": ["mkdocs.yml", "scripts/build-docs.sh"],
+      "category": "documentation"
+    },
+    {
+      "kind": "deploy-scaffold",
+      "description": "Deployment scaffold (infra-as-code, configs)",
+      "required_files": ["terraform/main.tf", "docker-compose.yml", "env.example"],
+      "category": "infrastructure"
+    },
+    {
+      "kind": "repo-surface",
+      "description": "Repository-level surface (root configs, governance)",
+      "required_files": [".editorconfig", "CODEOWNERS", "SECURITY.md"],
+      "category": "governance"
+    }
+  ],
+  "categories": ["frontend", "backend", "tooling", "infrastructure", "data", "metadata", "verification", "research", "documentation", "governance"],
+  "baseline_required_files": [
+    "README.md",
+    "PACKET_POLICY.md",
+    "manifest.json",
+    "RELEASE_MANIFEST.md",
+    "tools/quality_gate.py",
+    "reports/score.json",
+    "reports/build_report.json"
+  ]
+}
