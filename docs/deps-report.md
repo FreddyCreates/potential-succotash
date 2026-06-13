@@ -1,8 +1,8 @@
 # 🔄 organism-deps-bot — Dependency Health Report
 
-**Generated:** 2026-06-08T11:47:50.580Z
+**Generated:** 2026-06-12T00:50:02.346Z
 **Status:** ✅ HEALTHY
-**Packages:** 31 | **Total Deps:** 48
+**Packages:** 32 | **Total Deps:** 48
 
 ## Staleness Summary
 
@@ -22,6 +22,7 @@
 | **@medina/organism-runtime-typescript** | 3 | 0 | 0.195 |
 | **organism-cli** | 0 | 0 | 0.000 |
 | **@medina/sovereign-organism** | 2 | 0 | 0.195 |
+| **production-grade-builder/examples/node-service** | 0 | 0 | 0.000 |
 | **@medina/organism-agents** | 0 | 0 | 0.000 |
 | **@medina/ai-model-engines** | 0 | 0 | 0.000 |
 | **@medina/document-absorption-engine** | 0 | 0 | 0.000 |
@@ -65,6 +66,7 @@
 | **@medina/organism-runtime-typescript** | — Not installed |
 | **organism-cli** | — Not installed |
 | **@medina/sovereign-organism** | — Not installed |
+| **production-grade-builder/examples/node-service** | — Not installed |
 | **@medina/organism-agents** | — Not installed |
 | **@medina/ai-model-engines** | — Not installed |
 | **@medina/document-absorption-engine** | — Not installed |

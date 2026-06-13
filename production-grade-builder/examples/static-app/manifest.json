@@ -1,0 +1,12 @@
+{
+  "kind": "static-app",
+  "name": "example-static-app",
+  "version": "1.0.0",
+  "author": "builder",
+  "created": "2026-06-11T08:32:58.297969+00:00",
+  "builder": "production-grade-builder",
+  "builder_version": "1.0.0",
+  "description": "Static web application (HTML/CSS/JS, no server runtime)",
+  "quality_gate": "tools/quality_gate.py",
+  "policy": "PACKET_POLICY.md"
+}

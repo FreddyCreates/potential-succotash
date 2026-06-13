@@ -1,40 +1,40 @@
 {
-  "generated": "2026-06-04T08:43:25.353Z",
+  "generated": "2026-06-11T09:08:02.325Z",
   "bot": "organism-crawler-bot",
   "summary": {
-    "totalFiles": 1400,
-    "totalBytes": 15747752,
-    "totalKB": 15379,
-    "sections": 23,
+    "totalFiles": 1417,
+    "totalBytes": 15915656,
+    "totalKB": 15543,
+    "sections": 25,
     "langCounts": {
       "YAML": 26,
-      "Other": 334,
+      "Other": 337,
       "CSV": 8,
-      "Markdown": 55,
+      "Markdown": 57,
       "JSON": 145,
       "CSS": 2,
       "JavaScript": 550,
       "Shell": 7,
       "HTML": 162,
       "TypeScript": 47,
-      "Motoko": 8,
-      "Python": 39,
+      "Motoko": 9,
+      "Python": 50,
       "C++": 3,
       "TOML": 14
     },
     "langBytes": {
       "YAML": 89864,
-      "Other": 4297177,
+      "Other": 4315353,
       "CSV": 409489,
-      "Markdown": 451634,
-      "JSON": 1166303,
+      "Markdown": 467656,
+      "JSON": 1255226,
       "CSS": 24253,
       "JavaScript": 5276044,
       "Shell": 41765,
       "HTML": 2696781,
       "TypeScript": 814959,
-      "Motoko": 169185,
-      "Python": 242846,
+      "Motoko": 178645,
+      "Python": 278169,
       "C++": 21215,
       "TOML": 46237
     }
@@ -70,8 +70,8 @@
     },
     {
       "name": "defense-organism",
-      "files": 55,
-      "bytes": 624950,
+      "files": 56,
+      "bytes": 634606,
       "dirs": 6,
       "topLanguage": "JavaScript"
     },
@@ -85,7 +85,7 @@
     {
       "name": "docs",
       "files": 166,
-      "bytes": 4307649,
+      "bytes": 4306261,
       "dirs": 3,
       "topLanguage": "Other"
     },
@@ -120,7 +120,7 @@
     {
       "name": "governance",
       "files": 33,
-      "bytes": 706500,
+      "bytes": 795282,
       "dirs": 10,
       "topLanguage": "Other"
     },
@@ -133,8 +133,8 @@
     },
     {
       "name": "organism",
-      "files": 64,
-      "bytes": 621729,
+      "files": 65,
+      "bytes": 631189,
       "dirs": 6,
       "topLanguage": "JavaScript"
     },
@@ -151,6 +151,20 @@
       "bytes": 87749,
       "dirs": 0,
       "topLanguage": "HTML"
+    },
+    {
+      "name": "phantom_native",
+      "files": 10,
+      "bytes": 56611,
+      "dirs": 1,
+      "topLanguage": "Python"
+    },
+    {
+      "name": "phantom_qsha",
+      "files": 5,
+      "bytes": 4670,
+      "dirs": 0,
+      "topLanguage": "Python"
     },
     {
       "name": "protocols",

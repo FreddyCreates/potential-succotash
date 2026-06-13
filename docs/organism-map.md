@@ -1,15 +1,15 @@
 # 🕷️ organism-crawler-bot — Organism Map
 
-**Generated:** 2026-06-04T08:43:25.353Z
+**Generated:** 2026-06-11T09:08:02.325Z
 **Bot:** organism-crawler-bot 🕷️
 
 ## Repository Overview
 
 | Metric | Value |
 |---|---|
-| Total Files | 1400 |
-| Total Size | 15.02 MB |
-| Top-Level Sections | 23 |
+| Total Files | 1417 |
+| Total Size | 15.18 MB |
+| Top-Level Sections | 25 |
 | Analyzed Files (xref) | 307 |
 | Total Imports | 313 |
 | Unique Symbols | 551 |
@@ -23,16 +23,18 @@
 | **sdk/** | 152 | 907.8 KB | JavaScript |
 | **protocols/** | 135 | 1.44 MB | JavaScript |
 | **scripts/** | 72 | 434.2 KB | JavaScript |
-| **organism/** | 64 | 607.2 KB | JavaScript |
-| **defense-organism/** | 55 | 610.3 KB | JavaScript |
+| **organism/** | 65 | 616.4 KB | JavaScript |
+| **defense-organism/** | 56 | 619.7 KB | JavaScript |
 | **workers/** | 51 | 444.6 KB | TypeScript |
-| **governance/** | 33 | 689.9 KB | Other |
+| **governance/** | 33 | 776.6 KB | Other |
 | **memory_temple/** | 31 | 218.6 KB | Python |
 | **research/** | 25 | 1.41 MB | HTML |
 | **.github/** | 24 | 83.2 KB | YAML |
 | **test/** | 23 | 265.7 KB | JavaScript |
 | **atlas/** | 19 | 14.7 KB | JSON |
+| **phantom_native/** | 10 | 55.3 KB | Python |
 | **examples/** | 8 | 159.3 KB | JavaScript |
+| **phantom_qsha/** | 5 | 4.6 KB | Python |
 | **desktop/** | 4 | 15.5 KB | JavaScript |
 | **organism-cli/** | 4 | 48.5 KB | JavaScript |
 | **pages/** | 4 | 85.7 KB | HTML |
@@ -47,16 +49,16 @@
 | Language | Files | Size |
 |---|---|---|
 | **JavaScript** | 550 | 5.03 MB |
-| **Other** | 334 | 4.10 MB |
+| **Other** | 337 | 4.12 MB |
 | **HTML** | 162 | 2.57 MB |
-| **JSON** | 145 | 1.11 MB |
-| **Markdown** | 55 | 441.0 KB |
+| **JSON** | 145 | 1.20 MB |
+| **Markdown** | 57 | 456.7 KB |
+| **Python** | 50 | 271.6 KB |
 | **TypeScript** | 47 | 795.9 KB |
-| **Python** | 39 | 237.2 KB |
 | **YAML** | 26 | 87.8 KB |
 | **TOML** | 14 | 45.2 KB |
+| **Motoko** | 9 | 174.5 KB |
 | **CSV** | 8 | 399.9 KB |
-| **Motoko** | 8 | 165.2 KB |
 | **Shell** | 7 | 40.8 KB |
 | **C++** | 3 | 20.7 KB |
 | **CSS** | 2 | 23.7 KB |
@@ -142,16 +144,16 @@
 
 ### `organism/`
 
-- **Files:** 64
+- **Files:** 65
 - **Subdirectories:** 6
-- **Size:** 607.2 KB
+- **Size:** 616.4 KB
 - **Primary Language:** JavaScript
 
 ### `defense-organism/`
 
-- **Files:** 55
+- **Files:** 56
 - **Subdirectories:** 6
-- **Size:** 610.3 KB
+- **Size:** 619.7 KB
 - **Primary Language:** JavaScript
 
 ### `workers/`
@@ -165,7 +167,7 @@
 
 - **Files:** 33
 - **Subdirectories:** 10
-- **Size:** 689.9 KB
+- **Size:** 776.6 KB
 - **Primary Language:** Other
 
 ### `memory_temple/`
@@ -203,12 +205,26 @@
 - **Size:** 14.7 KB
 - **Primary Language:** JSON
 
+### `phantom_native/`
+
+- **Files:** 10
+- **Subdirectories:** 1
+- **Size:** 55.3 KB
+- **Primary Language:** Python
+
 ### `examples/`
 
 - **Files:** 8
 - **Subdirectories:** 1
 - **Size:** 159.3 KB
 - **Primary Language:** JavaScript
+
+### `phantom_qsha/`
+
+- **Files:** 5
+- **Subdirectories:** 0
+- **Size:** 4.6 KB
+- **Primary Language:** Python
 
 ### `desktop/`
 

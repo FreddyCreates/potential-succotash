@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-08T11:47:50.580Z",
+  "generated": "2026-06-12T00:50:02.346Z",
   "bot": "organism-deps-bot",
-  "totalPackages": 31,
+  "totalPackages": 32,
   "totalDeps": 48,
   "stalenessSummary": {
     "critical": 0,

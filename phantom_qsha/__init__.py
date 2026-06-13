@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 """
 Phantom QSHA — Quantum-Sovereign Hash Attestation
 
@@ -12,3 +13,7 @@ from .receipts import ExecutionReceipt
 from .vault import SovereignVault
 
 __all__ = ["ShadowWireEnvelope", "ExecutionReceipt", "SovereignVault"]
+=======
+# phantom_qsha — Quantum-Secure Hashing & Attestation primitives
+"""QSHA foundation: shadow wires, execution receipts, sovereign vault."""
+>>>>>>> origin/main
