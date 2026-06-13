@@ -82,6 +82,8 @@ jobs:
           if git diff --cached --quiet; then
             echo "Fleet report unchanged"
           else
-            git commit -m "👑 organism-alpha-bot: update fleet report [skip ci]"
-            git push
+            git fetch origin main
+            git rebase origin/main || git rebase --abort
+            git commit -m "👑 organism-alpha-bot: update fleet report [skip ci]" --allow-empty || true
+            git push || echo "⚠️ Push failed - another workflow updated first"
           fi

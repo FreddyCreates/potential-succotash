@@ -1,16 +1,29 @@
 # 📉 Workflow Reliability Research Report
 
-> **Generated:** 2026-05-18T08:26:52Z  
+> **Generated:** 2026-06-13T00:35:00Z  
 > **Research Bot:** pm-research-autoagents  
-> **Signal:** 5 workflows profiled for failure rates
+> **Signal:** 5 workflows profiled for failure rates  
+> **Previous Report:** 2026-05-18T08:26:52Z
 
 ## Executive Summary
 
-This research report provides a comprehensive deep-dive into the workflow reliability issues identified in the organism CI/CD pipeline. All 5 identified workflows have 100% failure rates, but the root causes are **deterministic regressions** (not flaky failures), making them addressable through targeted code fixes.
+This research report provides a comprehensive deep-dive into the workflow reliability issues identified in the organism CI/CD pipeline. All 5 workflows flagged in the latest research signal have 100% failure rates. Root causes are **deterministic regressions** (not flaky failures), making them addressable through targeted configuration and code fixes.
+
+### Latest Signal (2026-06-12)
+
+The pm-research-autoagents workflow reliability researcher identified these 5 workflows:
+
+| Workflow | Failure Rate | Runs Sampled |
+|----------|-------------|--------------|
+| 👑 organism-alpha-bot | 100% | 1/1 |
+| Deploy Sonic Ninja Lab Pages | 100% | 2/2 |
+| .github/workflows/organism-deploy-bot.yml | 100% | 18/18 |
+| .github/workflows/copilot-setup-steps.yml | 100% | 2/2 |
+| Deploy to ICP | 100% | 1/1 |
 
 ### How This Report Was Generated
 
-This report is now generated **autonomously by pm-research-autoagents** using native tooling:
+This report is generated **autonomously by pm-research-autoagents** using native tooling:
 
 | Component | Tool |
 |-----------|------|
@@ -28,157 +41,172 @@ This report is now generated **autonomously by pm-research-autoagents** using na
 
 | Workflow | Failure Rate | Root Cause Category | Classification |
 |----------|-------------|---------------------|----------------|
-| organism-deploy-bot | 100% (21/21) | Missing commit permissions | **Deterministic** |
-| organism-sentinel-bot | 100% (3/3) | Security scanner false positive | **Deterministic** |
-| organism-sandcastle-bot | 100% (4/4) | SDK validation failure | **Deterministic** |
-| organism-test-bot | 100% (2/2) | Git push race condition | **Deterministic** |
-| organism-neural-bot | 100% (2/2) | SDK validation failure | **Deterministic** |
+| organism-alpha-bot | 100% (1/1) | Git push race condition | **Deterministic** |
+| Deploy Sonic Ninja Lab Pages | 100% (2/2) | GitHub Pages not configured | **Deterministic** |
+| organism-deploy-bot | 100% (18/18) | Git push race condition | **Deterministic** |
+| copilot-setup-steps | 100% (2/2) | Invalid workflow syntax | **Deterministic** |
+| Deploy to ICP | 100% (1/1) | Missing/empty deployment secret | **Deterministic** |
 
 ---
 
 ## 🔬 Root Cause Analysis
 
-### 1. 🛡️ organism-sentinel-bot — Security Scanner False Positive
+### 1. 👑 organism-alpha-bot — Git Push Race Condition
 
-**Failure Location:** `scan-dangerous-patterns.js` step  
-**Error Message:** `❌ High-severity dangerous patterns detected`
-
-**Root Cause:**  
-The security scanner at `scripts/sentinel-bot/scan-dangerous-patterns.js` detects the pattern `eval()` in:
-- `protocols/symbolic-mathematics-protocol.js:584` — `this.eval(input.expr, input.env || {})`
-- `protocols/symbolic-mathematics-protocol.js:629` — `eval(exprOrName, env = {}) {`
-
-**Analysis:**  
-This is a **false positive**. The `eval` function in `symbolic-mathematics-protocol.js` is a **custom method** on the `SymbolicMathematicsProtocol` class that calls an internal `evaluate()` function for symbolic expression evaluation — NOT JavaScript's built-in `eval()`. The method:
-```javascript
-eval(exprOrName, env = {}) {
-  this.computations++;
-  const expr = typeof exprOrName === 'string'
-    ? this.expressionRegistry.get(exprOrName)
-    : exprOrName;
-  if (!expr) throw new Error(`Expression not found: ${exprOrName}`);
-  return evaluate(expr, env);  // Safe internal function
-}
-```
-
-**Classification:** Deterministic regression — will fail on every run until scanner is updated.
-
-**Recommended Fix:**
-Update `scripts/sentinel-bot/scan-dangerous-patterns.js` to:
-1. Add context-aware detection that distinguishes method definitions (e.g., `eval(`) from function calls (`eval(`).
-2. Or add a whitelist for known safe patterns like `this.eval(` and method definitions in class contexts.
-
----
-
-### 2. 🏰 organism-sandcastle-bot — SDK Validation Failure
-
-**Failure Location:** `build-gate.js` step  
-**Error Message:** `✗ SDK package.json: Check returned false`
-
-**Root Cause:**  
-Three SDK directories are missing `package.json` files:
-- `sdk/agents/` — missing package.json
-- `sdk/engines/` — missing package.json  
-- `sdk/runtime/` — missing package.json
-
-**Analysis:**  
-The build gate at `scripts/sandcastle-bot/build-gate.js` checks that every SDK directory contains a valid `package.json` with `name` and `version` fields. These directories exist but lack the required metadata files.
-
-**Classification:** Deterministic regression — will fail until package.json files are added.
-
-**Recommended Fix:**
-Create `package.json` files for the missing SDK directories with proper metadata:
-```json
-{
-  "name": "@organism/agents",
-  "version": "0.1.0",
-  "description": "Organism agent framework",
-  "main": "index.js",
-  "license": "MIT"
-}
-```
-
----
-
-### 3. 🧠 organism-neural-bot — SDK Agent Validation Failure
-
-**Failure Location:** `validate-agents.js` step  
-**Error Message:** `✗ agents: missing package.json`
-
-**Root Cause:**  
-Same root cause as sandcastle-bot — the SDK directories `sdk/agents/`, `sdk/engines/`, and `sdk/runtime/` are missing `package.json` files.
-
-**Classification:** Deterministic regression — will fail until package.json files are added.
-
-**Recommended Fix:** Same as sandcastle-bot.
-
----
-
-### 4. 🧪 organism-test-bot — Git Push Race Condition
-
-**Failure Location:** `health-dashboard` job, commit step  
-**Error Message:** 
+**Failure Location:** `Commit fleet report` step  
+**Error Message:**
 ```
 ! [rejected] main -> main (fetch first)
 error: failed to push some refs to 'https://github.com/FreddyCreates/potential-succotash'
 ```
 
 **Root Cause:**  
-The workflow attempts to push the test dashboard to the `main` branch, but another workflow (running concurrently) has already pushed changes. This is a **git push race condition** caused by multiple bot workflows trying to update the repository simultaneously.
+The alpha-bot workflow generates a fleet census and health report, then attempts to push them to `main`. When multiple bot workflows trigger concurrently (e.g., on a push to main that touches `.github/workflows/**`), the remote moves forward before alpha-bot can push.
 
 **Analysis:**  
-When multiple workflows run at once (triggered by the same push), they each:
-1. Checkout the same commit
-2. Generate their reports
-3. Try to push to main
+The workflow at `.github/workflows/organism-alpha-bot.yml` line 77-88 does a simple `git push` without any pull-rebase or retry logic. All fleet census and health checks pass successfully — only the final commit step fails.
 
-The first one succeeds, but subsequent pushes fail because the remote has moved forward.
-
-**Classification:** Deterministic regression — will fail when multiple workflows run concurrently (which is always on main pushes).
+**Classification:** Deterministic regression — will fail whenever concurrent bot workflows push first.
 
 **Recommended Fix:**
-1. **Option A (Recommended):** Use `pull-rebase` before push:
+Add pull-rebase with retry before push:
+```yaml
+- name: Commit fleet report
+  run: |
+    git config user.name "organism-alpha-bot"
+    git config user.email "organism-alpha-bot@users.noreply.github.com"
+    git add docs/fleet-report.md docs/fleet-census.json
+    if git diff --cached --quiet; then
+      echo "Fleet report unchanged"
+    else
+      git pull --rebase origin main || true
+      git commit -m "👑 organism-alpha-bot: update fleet report [skip ci]"
+      git push || echo "⚠️ Push failed - another workflow updated first"
+    fi
+```
+
+---
+
+### 2. 🌐 Deploy Sonic Ninja Lab Pages — GitHub Pages Not Configured
+
+**Failure Location:** `Setup Pages` step (`actions/configure-pages@v5`)  
+**Error Message:**
+```
+Get Pages site failed. Please verify that the repository has Pages enabled
+and configured to build using GitHub Actions
+```
+
+**Root Cause:**  
+The repository does not have GitHub Pages enabled in the repository settings. The `actions/configure-pages@v5` action calls the GitHub Pages API which returns a 404 "Not Found" because no Pages site exists.
+
+**Analysis:**  
+This is a **configuration gap**, not a code bug. The workflow is syntactically correct but requires the repository owner to:
+1. Go to Settings → Pages
+2. Set Source to "GitHub Actions"
+3. Save
+
+Without this setting, every run will fail at the `configure-pages` step.
+
+**Classification:** Deterministic regression — will fail on every run until Pages is enabled.
+
+**Recommended Fix:**
+1. Enable GitHub Pages in repo settings with "GitHub Actions" as the build source.
+2. Alternatively, add the `enablement: true` parameter to skip the check:
    ```yaml
-   - name: Commit dashboard
-     run: |
-       git config user.name "organism-test-bot"
-       git config user.email "organism-test-bot@users.noreply.github.com"
-       git add docs/test-dashboard.md
-       if git diff --cached --quiet; then
-         echo "Dashboard unchanged"
-       else
-         git pull --rebase origin main || true
-         git commit -m "🧪 organism-test-bot: update health dashboard [skip ci]"
-         git push || echo "Push failed - another workflow updated first"
-       fi
+   - name: Setup Pages
+     uses: actions/configure-pages@v5
+     with:
+       enablement: true
    ```
 
-2. **Option B:** Use concurrency groups to serialize bot workflows:
+---
+
+### 3. 🌐 organism-deploy-bot — Git Push Race Condition
+
+**Failure Location:** `Commit deployment manifest` step  
+**Error Message:**
+```
+! [rejected] main -> main (fetch first)
+error: failed to push some refs to 'https://github.com/FreddyCreates/potential-succotash'
+```
+
+**Root Cause:**  
+The deploy-bot has 127 total runs with 18+ failures (100% in the recent sample). The workflow attempts to commit `docs/deployment-manifest.json` and `docs/deployment-report.md`, but concurrent workflows push first.
+
+**Analysis:**  
+The workflow already has retry logic (lines 152-174) with `MAX_RETRIES=3`, but there's a bug: the first `git push` on line 150 runs *before* the retry loop. When that first push succeeds, the loop is skipped. When it fails, the retry logic kicks in but the rebase may fail if there are conflicts in the generated files.
+
+The high failure rate (18/18 in recent sample) suggests that:
+- Multiple workflows trigger simultaneously on every push to main
+- The retry logic may not be effective when many bots race
+
+**Classification:** Deterministic regression — race condition with concurrent workflows.
+
+**Recommended Fix:**
+1. Use concurrency groups to serialize bot commits:
    ```yaml
    concurrency:
      group: organism-bot-commits
      cancel-in-progress: false
    ```
-
-3. **Option C:** Only update dashboards on successful workflow completion, or move to a dedicated branch.
+2. Or simplify the push logic to always pull-rebase before the first push attempt.
 
 ---
 
-### 5. 🌐 organism-deploy-bot — Validation Jobs Have No Failures
+### 4. 📋 copilot-setup-steps.yml — Invalid Workflow Syntax
 
-**Failure Location:** The workflow runs but the jobs complete with `total_jobs: 0` which indicates no actual job execution.
+**Failure Location:** Workflow parsing / job setup  
+**Error:** The workflow uses features that are not available or configured.
 
 **Root Cause:**  
-Looking at the workflow runs, the deploy-bot has 67 runs with 21 failures. The failures appear to be related to:
-1. The same git push race condition as other bots
-2. Attempts to commit `deployment-manifest.json` when another workflow has already updated main
+Two issues in `.github/workflows/copilot-setup-steps.yml`:
+
+1. **`firewall` key (lines 20-30):** The `firewall` configuration with `allowed-domains` is a Copilot Coding Agent feature that requires the workflow to run in the Copilot agent context. When triggered by `push` or `workflow_dispatch` outside of Copilot, this key is not recognized and causes failures.
+
+2. **`actions/checkout@v5` (line 34):** This action version does not exist yet. The latest stable version is `actions/checkout@v4`.
 
 **Analysis:**  
-The workflow at `organism-deploy-bot.yml` line 139-149 attempts to commit and push the deployment manifest. When concurrent workflows run, this push fails.
+The copilot-setup-steps workflow is designed to validate the Copilot coding agent environment setup. It should only run in the Copilot agent context where the `firewall` key is supported. Running it on regular push events exposes it to the invalid syntax issue.
 
-**Classification:** Deterministic regression — race condition with concurrent workflows.
+**Classification:** Deterministic regression — invalid action reference and unsupported syntax.
 
-**Recommended Fix:** Same as organism-test-bot — implement pull-rebase before push, or use concurrency groups.
+**Recommended Fix:**
+1. Change `actions/checkout@v5` to `actions/checkout@v4`.
+2. Remove the `push` trigger if this workflow should only run for Copilot agent validation, or guard the firewall key appropriately.
+
+---
+
+### 5. 🌐 Deploy to ICP — Missing Deployment Secret
+
+**Failure Location:** `Set up ICP identity` step  
+**Error Message:**
+```
+Error: Failed to validate pem file
+Caused by: Failed to validate PEM content
+Caused by: An error occurred while reading the file: missing data
+```
+
+**Root Cause:**  
+The `DFX_IDENTITY_PEM` secret is either not set or contains an empty value. The workflow writes `${{ secrets.DFX_IDENTITY_PEM }}` to a PEM file, but since the secret is empty, the resulting file contains no valid PEM data. The `dfx identity import` command then fails to parse it.
+
+**Analysis:**  
+The `deploy-icp.yml` workflow should have a guard condition that skips the job when the secret is unavailable. Note that in `organism-deploy-bot.yml`, there IS such a guard:
+```yaml
+if: needs.validate-deployment.outputs.dfx_valid == 'true' && secrets.DFX_IDENTITY_PEM != ''
+```
+
+But in `deploy-icp.yml`, this guard appears to be missing or not functioning correctly since the job still runs.
+
+**Classification:** Deterministic regression — will fail until the `DFX_IDENTITY_PEM` secret is properly configured.
+
+**Recommended Fix:**
+1. Add a proper secret availability check to skip deployment when secret is not set:
+   ```yaml
+   jobs:
+     deploy:
+       if: ${{ secrets.DFX_IDENTITY_PEM != '' }}
+   ```
+2. Or configure the `DFX_IDENTITY_PEM` secret in repository settings with valid ICP identity PEM content.
 
 ---
 
@@ -186,28 +214,32 @@ The workflow at `organism-deploy-bot.yml` line 139-149 attempts to commit and pu
 
 | Workflow | Flaky? | Deterministic? | Evidence |
 |----------|--------|----------------|----------|
-| organism-sentinel-bot | ❌ No | ✅ Yes | Same error message on every run (eval() detection) |
-| organism-sandcastle-bot | ❌ No | ✅ Yes | Same missing files on every run |
-| organism-neural-bot | ❌ No | ✅ Yes | Same missing files on every run |
-| organism-test-bot | ❌ No | ✅ Yes | Push rejection happens when concurrent workflows exist |
-| organism-deploy-bot | ❌ No | ✅ Yes | Push rejection happens when concurrent workflows exist |
+| organism-alpha-bot | ❌ No | ✅ Yes | Git push rejected — concurrent workflows push first |
+| Deploy Sonic Ninja Lab Pages | ❌ No | ✅ Yes | Pages API returns 404 — Pages not enabled in settings |
+| organism-deploy-bot | ❌ No | ✅ Yes | Git push rejected — same race condition on every run |
+| copilot-setup-steps | ❌ No | ✅ Yes | Invalid action ref (v5) and unsupported firewall key |
+| Deploy to ICP | ❌ No | ✅ Yes | Empty PEM file — secret not configured |
 
-**Key Finding:** None of these failures are flaky. All are deterministic regressions that will occur on every run until the underlying issues are fixed.
+**Key Finding:** None of these failures are flaky. All are deterministic regressions that will occur on every run until the underlying issues are fixed. The failures fall into 3 categories:
+
+1. **Git push race conditions** (alpha-bot, deploy-bot) — 2/5 workflows
+2. **Missing configuration** (Pages, ICP secret) — 2/5 workflows
+3. **Invalid workflow syntax** (copilot-setup-steps) — 1/5 workflows
 
 ---
 
-## 📈 Recommended Reliability SLOs
+## 📈 Reliability SLOs & Alert Thresholds
 
 Based on the analysis, the following SLOs are recommended:
 
 ### Availability SLOs
 
-| Metric | Target | Measurement |
-|--------|--------|-------------|
-| Build Success Rate | ≥ 95% | Rolling 7-day window |
-| Test Success Rate | ≥ 98% | Rolling 7-day window |
-| Deploy Success Rate | ≥ 90% | Rolling 7-day window |
-| Security Scan Success Rate | ≥ 99% | Rolling 7-day window |
+| Metric | Target | Measurement | Current State |
+|--------|--------|-------------|---------------|
+| Build Success Rate | ≥ 95% | Rolling 7-day window | ❌ Below target |
+| Test Success Rate | ≥ 98% | Rolling 7-day window | ❌ Below target |
+| Deploy Success Rate | ≥ 90% | Rolling 7-day window | ❌ 0% (all failing) |
+| Security Scan Success Rate | ≥ 99% | Rolling 7-day window | ⚠️ Not measured |
 
 ### Latency SLOs
 
@@ -225,6 +257,8 @@ Based on the analysis, the following SLOs are recommended:
 | Success rate < 80% (24h) | 🟠 Warning | Notify team channel |
 | Success rate < 50% (1h) | 🔴 Critical | Immediate investigation |
 | Any security scan failure | 🔴 Critical | Manual review required |
+| Missing secret detected | 🟠 Warning | Notify repo admin |
+| New workflow with 100% failure | 🔴 Critical | Auto-disable after 5 consecutive failures |
 
 ---
 
@@ -232,19 +266,23 @@ Based on the analysis, the following SLOs are recommended:
 
 | Priority | Workflow | Fix | Effort |
 |----------|----------|-----|--------|
-| P0 | sentinel-bot | Update scanner to ignore method definitions | Low |
-| P0 | sandcastle-bot | Add missing package.json files | Low |
-| P0 | neural-bot | (Same fix as sandcastle) | Low |
-| P1 | test-bot | Implement pull-rebase or concurrency groups | Medium |
-| P1 | deploy-bot | Implement pull-rebase or concurrency groups | Medium |
+| P0 | copilot-setup-steps | Fix checkout@v5 → v4, remove push trigger | Low |
+| P0 | Deploy Sonic Ninja Lab Pages | Enable GitHub Pages in repo settings | Low |
+| P1 | Deploy to ICP | Add secret guard `if: secrets.DFX_IDENTITY_PEM != ''` | Low |
+| P1 | organism-alpha-bot | Add pull-rebase before push | Low |
+| P1 | organism-deploy-bot | Add concurrency group or fix retry logic | Medium |
 
 ---
 
 ## 📋 Action Items
 
-- [ ] **Fix: Update sentinel-bot scanner** — Add context-aware detection for method definitions vs function calls
-- [ ] **Fix: Add missing SDK package.json** — Create package.json for `sdk/agents/`, `sdk/engines/`, `sdk/runtime/`
-- [ ] **Fix: Implement git push strategy** — Add pull-rebase or concurrency groups to all bot workflows
+- [x] **Research: Deep-dive top least-reliable workflows** — Root causes identified for all 5
+- [x] **Research: Separate flaky from deterministic** — All 5 are deterministic (0 flaky)
+- [x] **Research: Define reliability SLOs and alert thresholds** — Defined above
+- [ ] **Fix: Enable GitHub Pages** — Enable Pages with "GitHub Actions" source in repo settings
+- [ ] **Fix: copilot-setup-steps.yml** — Change `actions/checkout@v5` to `v4`, remove `push` trigger
+- [ ] **Fix: Deploy to ICP** — Add secret availability guard to skip when `DFX_IDENTITY_PEM` is empty
+- [ ] **Fix: Bot push race conditions** — Add pull-rebase + retry or concurrency groups to alpha-bot, deploy-bot
 - [ ] **Implement: Reliability dashboard** — Track SLOs and alert on threshold breaches
 - [ ] **Document: Bot workflow dependencies** — Create runbook for concurrent workflow management
 
@@ -253,15 +291,16 @@ Based on the analysis, the following SLOs are recommended:
 ## 🔗 References
 
 - Workflow Runs: [GitHub Actions](https://github.com/FreddyCreates/potential-succotash/actions)
-- Failing Scripts:
-  - `scripts/sentinel-bot/scan-dangerous-patterns.js`
-  - `scripts/sandcastle-bot/build-gate.js`
-  - `scripts/neural-bot/validate-agents.js`
-- Related Files:
-  - `protocols/symbolic-mathematics-protocol.js`
-  - `sdk/agents/`, `sdk/engines/`, `sdk/runtime/`
+- Failing Workflows:
+  - `.github/workflows/organism-alpha-bot.yml` — Git push race condition (line 86)
+  - `.github/workflows/deploy-pages.yml` — Pages not configured
+  - `.github/workflows/organism-deploy-bot.yml` — Git push race condition (lines 139-174)
+  - `.github/workflows/copilot-setup-steps.yml` — Invalid `checkout@v5` + `firewall` key
+  - `.github/workflows/deploy-icp.yml` — Empty `DFX_IDENTITY_PEM` secret
+- Related Issue: [#46 - Workflow Reliability Researcher](https://github.com/FreddyCreates/potential-succotash/issues/46)
 
 ---
 
-*Report generated by pm-research-autoagents using native tooling:*  
+*Report updated 2026-06-13 by Copilot coding agent based on pm-research-autoagents signal.*  
+*Original report generated by pm-research-autoagents using native tooling:*  
 *`lib/ci-log-collector.js` • `lib/failure-pattern-analyzer.js` • `lib/deep-investigation-generator.js`*
