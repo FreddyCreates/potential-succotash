@@ -1,0 +1,130 @@
+# ============================================================================
+# OCL — Organism Charter Language
+# Governance Charter: Temporal Governance (TMP-001)
+#
+# id:     atlas://civilization/governance/temporal-governance
+# class:  TemporalCharter
+#
+# Temporal Governance defines epoch transitions, sunset clauses, migration
+# windows, temporal consensus, and phi-weighted scheduling for policies,
+# models, protocols, and federated operational states.
+# ============================================================================
+
+id: "atlas://civilization/governance/temporal-governance"
+class: TemporalCharter
+version: "1.0.0"
+created: "2026-05-09T00:00:00.000Z"
+author: "civilization-architect"
+
+description: |
+  Temporal Governance ensures the organism can evolve without losing
+  continuity, legitimacy, or auditability. Every constitutional change,
+  protocol migration, and model retirement must occur within declared
+  epochs that specify activation, coexistence, and sunset boundaries.
+
+  Time is treated as a governance substrate. Phi-weighted scheduling gives
+  scarce migration attention to the changes with the greatest compounded
+  future impact while preserving temporal consensus across the federation.
+
+# ── Core Identity ─────────────────────────────────────────────────────────────
+governance_type: "temporal_coordination"
+coverage: "civilization_wide"
+phi_constant: 1.618033988749895
+heartbeat_ms: 873
+
+# ── Epoch Types ───────────────────────────────────────────────────────────────
+types:
+  - id: "TMP-EPOCH"
+    name: "Epoch Transition"
+    description: "Canonical boundary where new governance state becomes active"
+    phi_weight: 1.618
+
+  - id: "TMP-SUNSET"
+    name: "Sunset Clause"
+    description: "Automatic expiration of obsolete powers, protocols, or permissions"
+    phi_weight: 2.618
+
+  - id: "TMP-MIGRATE"
+    name: "Migration Window"
+    description: "Defined coexistence interval for old and new versions"
+    phi_weight: 1.0
+
+  - id: "TMP-CONSENSUS"
+    name: "Temporal Consensus"
+    description: "Agreement that clocks, ordering, and epoch markers are canonical"
+    phi_weight: 1.618
+
+  - id: "TMP-SCHEDULE"
+    name: "Phi Scheduling"
+    description: "Golden-ratio weighting for staggered rollout and review cadence"
+    phi_weight: 0.618
+
+# ── Time Windows ──────────────────────────────────────────────────────────────
+timing:
+  epoch_length_hours: 144
+  migration_window_hours: 89
+  emergency_window_hours: 34
+  sunset_notice_hours: 233
+  consensus_skew_ms: 873
+
+# ── Governance Protocols ─────────────────────────────────────────────────────
+protocols:
+  - id: "TMP-DECLARE"
+    name: "Epoch Declaration"
+    description: "Publish the next epoch with activation height, scope, and rationale"
+    authority: "federation_council"
+    validation: "quorum_signature"
+
+  - id: "TMP-DUALRUN"
+    name: "Migration Coexistence"
+    description: "Operate legacy and successor systems during the migration window"
+    authority: "system_stewards"
+    validation: "compatibility_attestation"
+
+  - id: "TMP-SUNSET"
+    name: "Sunset Execution"
+    description: "Disable expiring authorities automatically at the declared boundary"
+    authority: "automatic"
+    validation: "epoch_clock"
+
+  - id: "TMP-REWIND"
+    name: "Temporal Reconciliation"
+    description: "Resolve out-of-order state through replay and canonical ledger ordering"
+    authority: "temporal_arbiter"
+    validation: "hash_chain_review"
+
+  - id: "TMP-SLOT"
+    name: "Phi-Weighted Scheduling"
+    description: "Assign rollout order using impact × readiness × φ weighting"
+    authority: "scheduler"
+    validation: "priority_proof"
+
+# ── Invariants ────────────────────────────────────────────────────────────────
+invariants:
+  - "No epoch transition is valid without a published activation boundary"
+  - "Sunset clauses automatically revoke obsolete permissions at expiry"
+  - "Migration windows preserve bidirectional compatibility until closure"
+  - "Temporal consensus skew never exceeds one canonical heartbeat"
+  - "All scheduling decisions remain reproducible from declared phi weights"
+
+# ── Metrics & Monitoring ──────────────────────────────────────────────────────
+metrics:
+  - name: "epoch_adoption_rate"
+    description: "Share of nodes operating on the active epoch"
+    threshold_min: 0.95
+    alert_on_breach: true
+
+  - name: "migration_window_completion"
+    description: "Migrations finished before window expiration"
+    threshold_min: 0.9
+    alert_on_breach: true
+
+  - name: "clock_skew_p99"
+    description: "Observed inter-node consensus skew"
+    threshold_ms: 873
+    alert_on_breach: true
+
+  - name: "sunset_clause_overrun"
+    description: "Expired authorities still active after sunset"
+    threshold_max: 0.0
+    alert_on_breach: true

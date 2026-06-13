@@ -1,0 +1,130 @@
+# ============================================================================
+# OCL — Organism Charter Language
+# Governance Charter: Security Mandate (SEC-001)
+#
+# id:     atlas://civilization/governance/security-mandate
+# class:  SecurityCharter
+#
+# The Security Mandate formalizes vulnerability management, incident
+# response, key rotation, access control, audit requirements, and
+# phi-escalation paths for all trusted components of the organism.
+# ============================================================================
+
+id: "atlas://civilization/governance/security-mandate"
+class: SecurityCharter
+version: "1.0.0"
+created: "2026-05-09T00:00:00.000Z"
+author: "civilization-architect"
+
+description: |
+  The Security Mandate treats defense as a constitutional duty. Every
+  component must identify vulnerabilities, constrain privilege, rotate
+  secrets, rehearse incident response, and emit sufficient evidence for
+  independent audit. Security is continuous, not episodic.
+
+  Phi-escalation governs operational response: low-grade anomalies remain
+  local, but compounding risk crosses golden-ratio thresholds that trigger
+  wider coordination, mandatory review, and emergency containment powers.
+
+# ── Core Identity ─────────────────────────────────────────────────────────────
+governance_type: "security_assurance"
+coverage: "civilization_wide"
+phi_constant: 1.618033988749895
+heartbeat_ms: 873
+
+# ── Security Domains ──────────────────────────────────────────────────────────
+types:
+  - id: "SEC-VULN"
+    name: "Vulnerability Management"
+    description: "Discover, triage, remediate, and verify software weaknesses"
+    phi_weight: 1.618
+
+  - id: "SEC-IR"
+    name: "Incident Response"
+    description: "Detect, contain, eradicate, recover, and learn from incidents"
+    phi_weight: 2.618
+
+  - id: "SEC-KEY"
+    name: "Key Rotation"
+    description: "Rotate signing, encryption, and service credentials on schedule"
+    phi_weight: 1.0
+
+  - id: "SEC-ACCESS"
+    name: "Access Control"
+    description: "Enforce zero-trust identity, least privilege, and session bounds"
+    phi_weight: 1.618
+
+  - id: "SEC-AUDIT"
+    name: "Auditability"
+    description: "Maintain immutable evidence for all privileged security actions"
+    phi_weight: 1.0
+
+# ── Escalation Thresholds ────────────────────────────────────────────────────
+escalation:
+  local_review_phi: 1.0
+  coordinated_response_phi: 1.618
+  federation_alert_phi: 2.618
+  emergency_lockdown_phi: 4.236
+  mandatory_postmortem_phi: 6.854
+
+# ── Governance Protocols ─────────────────────────────────────────────────────
+protocols:
+  - id: "SEC-SCAN"
+    name: "Continuous Scanning"
+    description: "Run authenticated vulnerability scans and dependency reviews"
+    authority: "security_team"
+    validation: "signed_scan_report"
+
+  - id: "SEC-RESPOND"
+    name: "Incident Handling"
+    description: "Execute coordinated containment and recovery playbooks"
+    authority: "incident_commander"
+    validation: "timeline_record"
+
+  - id: "SEC-ROTATE"
+    name: "Key Rotation"
+    description: "Rotate secrets on cadence and immediately after compromise"
+    authority: "trust_officer"
+    validation: "key_attestation"
+
+  - id: "SEC-AUTHZ"
+    name: "Privilege Review"
+    description: "Re-certify access rights using least-privilege and role evidence"
+    authority: "identity_governor"
+    validation: "access_review_log"
+
+  - id: "SEC-AUDIT"
+    name: "Security Audit"
+    description: "Produce immutable logs and control evidence for internal and external review"
+    authority: "auditor"
+    validation: "hash_chained_journal"
+
+# ── Invariants ────────────────────────────────────────────────────────────────
+invariants:
+  - "Critical vulnerabilities always receive a remediation owner and deadline"
+  - "Incidents above coordinated-response phi require a named commander"
+  - "No privileged credential may exceed its declared rotation window"
+  - "Access control defaults to deny when identity or policy evidence is incomplete"
+  - "All security actions affecting trust boundaries are immutably auditable"
+
+# ── Metrics & Monitoring ──────────────────────────────────────────────────────
+metrics:
+  - name: "critical_vulnerability_age"
+    description: "Maximum age of unresolved critical vulnerabilities"
+    threshold_ms: 604800000
+    alert_on_breach: true
+
+  - name: "incident_time_to_contain"
+    description: "Elapsed time from detection to containment"
+    threshold_ms: 3600000
+    alert_on_breach: true
+
+  - name: "key_rotation_compliance"
+    description: "Share of keys rotated within the mandated window"
+    threshold_min: 0.995
+    alert_on_breach: true
+
+  - name: "privilege_review_coverage"
+    description: "Percentage of privileged roles reviewed on schedule"
+    threshold_min: 0.99
+    alert_on_breach: true

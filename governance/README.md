@@ -248,6 +248,70 @@ Traditional systems store data. These organisms **are alive**:
 | Manual updates | Autonomous evolution |
 | Isolated | Cross-organism resonance |
 
+## Governance Protocols Index
+
+Major governance protocols that define how the system operates across time, users, policies, and ethics:
+
+| Protocol | File | Domain |
+|----------|------|--------|
+| **Temporal Governance** | `protocols/temporal-governance-protocol.js` | Time, epochs, migrations |
+| **User Rights** | `protocols/user-rights-protocol.js` | Data sovereignty, consent, portability |
+| **Policy Enforcement** | `protocols/policy-enforcement-protocol.js` | Rule engine, compliance, conflicts |
+| **Ethics Governance** | `protocols/ethics-governance-protocol.js` | Bias, fairness, harm prevention |
+| **Federation Governance** | `protocols/federation-governance-protocol.js` | Voting, quorum, treasury |
+| **Charter Enforcement** | `protocols/charter-enforcement-protocol.js` | Compliance, amendments, violations |
+| **Economic Governance** | `protocols/economic-governance-protocol.js` | Token supply, inflation, grants |
+| **Security Governance** | `protocols/security-governance-protocol.js` | Incidents, disclosure, key rotation |
+
+## Charters
+
+Infrastructure and governance charters (OCL format):
+
+| Charter | File | Scope |
+|---------|------|-------|
+| **Aqueducts** | `charters/infrastructure-aqueducts.ocl` | Economic channels |
+| **City Walls** | `charters/infrastructure-city-walls.ocl` | Security perimeter |
+| **Gates** | `charters/infrastructure-gates.ocl` | Access control |
+| **Spinal Road** | `charters/infrastructure-spinal-road.ocl` | Core routing |
+| **Data Sovereignty** | `charters/data-sovereignty.ocl` | User data rights |
+| **Ethics Framework** | `charters/ethics-framework.ocl` | AI ethics |
+| **Temporal Governance** | `charters/temporal-governance.ocl` | Time-based rules |
+| **Federation Constitution** | `charters/federation-constitution.ocl` | Multi-node governance |
+| **Security Mandate** | `charters/security-mandate.ocl` | Security requirements |
+
+## Research Papers
+
+| Paper | File | Topic |
+|-------|------|-------|
+| Phi-Weighted Governance | `research/governance-theory-paper.html` | Distributed decision making |
+| Temporal Consensus | `research/temporal-systems-paper.html` | Epoch management |
+| Ethical AI Governance | `research/ethics-ai-governance-paper.html` | Charter-based ethics |
+| Federation Economics | `research/federation-economics-paper.html` | Token economics |
+| Policy Enforcement | `research/policy-enforcement-paper.html` | Automated compliance |
+
+## HTTP Services
+
+Working REST API services deployed as Cloudflare Workers:
+
+| Service | Path | Operations |
+|---------|------|------------|
+| **Auth** | `/auth` | login, register, refresh, logout, sessions |
+| **Search** | `/search` | query, index, suggest, facets |
+| **Messaging** | `/messaging` | send, inbox, threads, attachments |
+| **Storage** | `/storage` | upload, download, list, metadata |
+| **Scheduler** | `/scheduler` | create, list, cancel, reschedule |
+| **Audit** | `/audit` | record, query, export, compliance |
+| **Config** | `/config` | get, set, namespaces, versions |
+| **Permissions** | `/permissions` | roles, policies, check, grant, revoke |
+| **Workflows** | `/workflows` | define, start, step, complete, abort |
+| **Cache** | `/cache` | get, set, invalidate, warm, stats |
+| **Metrics** | `/metrics` | record, query, aggregate, alerts |
+| **Webhooks** | `/webhooks` | register, list, deliver, retry |
+| **Templates** | `/templates` | create, render, list, versions |
+| **Secrets** | `/secrets` | store, retrieve, rotate, audit |
+| **Federation** | `/federation` | peers, sync, health, propose, vote |
+| **Governance** | `/governance` | proposals, votes, quorum, enact |
+
 ---
 
 *As above, so below.*

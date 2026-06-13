@@ -16,6 +16,8 @@
 name: 🏰 organism-sandcastle-bot
 
 on:
+  schedule:
+    - cron: '0 1 * * *'   # Nightly 01:00 UTC
   push:
     branches: [main]
   pull_request:

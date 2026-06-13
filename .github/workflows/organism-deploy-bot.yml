@@ -14,6 +14,8 @@
 name: 🌐 organism-deploy-bot
 
 on:
+  schedule:
+    - cron: '0 7 * * 6'   # Weekly Saturday 07:00 UTC
   push:
     branches: [main]
     paths:

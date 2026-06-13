@@ -473,3 +473,20 @@ export { DarkAlertingProtocol } from './dark-alerting-protocol.js';
 
 // DRK-030: Dark Orchestrator Protocol — central orchestration
 export { DarkOrchestratorProtocol } from './dark-orchestrator-protocol.js';
+
+// ─── Business REST API Services Protocol (PROTO-301) ──────────────────────────
+// Micro & Macro service architecture: circuit breaking, saga orchestration,
+// rate limiting, service mesh, request validation, health monitoring.
+export {
+  BusinessRESTApiServicesProtocol,
+  SERVICE_REGISTRY,
+  RESTEnvelope,
+  CircuitBreaker,
+  SagaCoordinator,
+  SagaError,
+  ServiceMesh,
+  TokenBucketRateLimiter,
+  RequestValidator,
+} from './business-rest-api-services-protocol.js';
+
+

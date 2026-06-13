@@ -1,0 +1,130 @@
+# ============================================================================
+# OCL — Organism Charter Language
+# Governance Charter: Ethics Framework (ETH-001)
+#
+# id:     atlas://civilization/governance/ethics-framework
+# class:  EthicsCharter
+#
+# The Ethics Framework establishes bias prevention, fairness thresholds,
+# interpretability duties, human oversight, and harm mitigation for all
+# autonomous reasoning systems operating inside the organism.
+# ============================================================================
+
+id: "atlas://civilization/governance/ethics-framework"
+class: EthicsCharter
+version: "1.0.0"
+created: "2026-05-09T00:00:00.000Z"
+author: "civilization-architect"
+
+description: |
+  The Ethics Framework binds autonomous intelligence to measurable norms
+  of fairness, explainability, contestability, and supervised escalation.
+  It treats ethical safety as a living control loop rather than a static
+  checklist, requiring continuous observation of outputs and impacts.
+
+  Phi-threshold triggers determine when a system must pause automation,
+  invoke human review, or enter a harm-mitigation mode. Bias prevention
+  applies during training, deployment, federation exchange, and appeals.
+
+# ── Core Identity ─────────────────────────────────────────────────────────────
+governance_type: "ethical_alignment"
+coverage: "civilization_wide"
+phi_constant: 1.618033988749895
+heartbeat_ms: 873
+
+# ── Ethical Domains ───────────────────────────────────────────────────────────
+types:
+  - id: "ETH-BIAS"
+    name: "Bias Prevention"
+    description: "Detect and suppress skew against protected or vulnerable groups"
+    phi_weight: 1.618
+
+  - id: "ETH-FAIR"
+    name: "Fairness Assurance"
+    description: "Maintain parity, proportionality, and outcome consistency"
+    phi_weight: 1.618
+
+  - id: "ETH-TRANSPARENCY"
+    name: "Transparency"
+    description: "Provide rationale, provenance, and policy traces for decisions"
+    phi_weight: 1.0
+
+  - id: "ETH-OVERSIGHT"
+    name: "Human Oversight"
+    description: "Guarantee human intervention for high-impact or ambiguous cases"
+    phi_weight: 2.618
+
+  - id: "ETH-HARM"
+    name: "Harm Mitigation"
+    description: "Contain, remediate, and learn from adverse outcomes"
+    phi_weight: 2.618
+
+# ── Threshold Triggers ────────────────────────────────────────────────────────
+thresholds:
+  fairness_floor: 0.944
+  explanation_coverage_min: 0.987
+  oversight_trigger_phi: 1.618
+  harm_escalation_phi: 2.618
+  pause_automation_phi: 4.236
+
+# ── Governance Protocols ─────────────────────────────────────────────────────
+protocols:
+  - id: "ETH-SCAN"
+    name: "Bias Scan"
+    description: "Run pre-deployment and rolling bias audits on live decision streams"
+    authority: "ethics_council"
+    validation: "distributional_analysis"
+
+  - id: "ETH-EXPLAIN"
+    name: "Decision Explanation"
+    description: "Attach interpretable rationale and governing policy references"
+    authority: "executing_system"
+    validation: "trace_completeness"
+
+  - id: "ETH-HITL"
+    name: "Human In The Loop"
+    description: "Transfer control when φ-threshold risk exceeds delegated scope"
+    authority: "human_supervisor"
+    validation: "signed_override"
+
+  - id: "ETH-REMEDY"
+    name: "Harm Remedy"
+    description: "Issue rollback, redress, and model quarantine after harmful outcomes"
+    authority: "incident_board"
+    validation: "postmortem_review"
+
+  - id: "ETH-APPEAL"
+    name: "Contestability Review"
+    description: "Allow affected parties to challenge decisions and inspect evidence"
+    authority: "appeals_panel"
+    validation: "case_reconstruction"
+
+# ── Invariants ────────────────────────────────────────────────────────────────
+invariants:
+  - "No high-impact automated decision may execute without an explanation trace"
+  - "Fairness floors apply equally to training, inference, and federation exchange"
+  - "Human review is mandatory once φ-risk exceeds delegated autonomy"
+  - "Detected harm triggers remediation before optimization resumes"
+  - "Appeals must preserve the full evidentiary path of contested decisions"
+
+# ── Metrics & Monitoring ──────────────────────────────────────────────────────
+metrics:
+  - name: "bias_audit_pass_rate"
+    description: "Percentage of models passing scheduled bias scans"
+    threshold_min: 0.98
+    alert_on_breach: true
+
+  - name: "fairness_gap"
+    description: "Maximum disparity across monitored groups"
+    threshold_max: 0.056
+    alert_on_breach: true
+
+  - name: "explanation_trace_coverage"
+    description: "Share of decisions carrying complete rationale traces"
+    threshold_min: 0.987
+    alert_on_breach: true
+
+  - name: "human_override_latency"
+    description: "Time from φ-trigger to human supervisory action"
+    threshold_ms: 300000
+    alert_on_breach: true

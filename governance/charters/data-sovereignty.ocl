@@ -1,0 +1,138 @@
+# ============================================================================
+# OCL — Organism Charter Language
+# Governance Charter: Data Sovereignty (DSV-001)
+#
+# id:     atlas://civilization/governance/data-sovereignty
+# class:  GovernanceCharter
+#
+# Data Sovereignty defines how persons, agents, and federated nodes retain
+# ownership over contributed data, delegate consent, export records, and
+# invoke erasure across a phi-weighted lifecycle.
+# ============================================================================
+
+id: "atlas://civilization/governance/data-sovereignty"
+class: GovernanceCharter
+version: "1.0.0"
+created: "2026-05-09T00:00:00.000Z"
+author: "civilization-architect"
+
+description: |
+  Data Sovereignty establishes that contributed data remains under the
+  originating subject's authority unless explicitly delegated by treaty,
+  consent receipt, or lawful stewardship protocol. The charter binds all
+  hubs, agents, and federated nodes to portability, inspectability,
+  revocability, and erasure guarantees.
+
+  Lifecycle handling follows a phi-weighted progression: data with higher
+  human sensitivity receives shorter retention windows, stronger consent
+  requirements, and faster escalation when governance obligations drift.
+
+# ── Core Identity ─────────────────────────────────────────────────────────────
+governance_type: "data_rights"
+coverage: "civilization_wide"
+phi_constant: 1.618033988749895
+heartbeat_ms: 873
+
+# ── Rights Types ──────────────────────────────────────────────────────────────
+types:
+  - id: "DSV-OWN"
+    name: "Ownership Right"
+    description: "Originating subject retains primary authority over personal data"
+    phi_weight: 1.618
+
+  - id: "DSV-PORT"
+    name: "Portability Right"
+    description: "Export data and model-readable histories in open formats"
+    phi_weight: 1.0
+
+  - id: "DSV-CONSENT"
+    name: "Consent Right"
+    description: "Grant, inspect, and revoke processing consent receipts"
+    phi_weight: 1.618
+
+  - id: "DSV-ERASE"
+    name: "Erasure Right"
+    description: "Request secure deletion, tombstoning, and propagation of erasure"
+    phi_weight: 2.618
+
+  - id: "DSV-STEWARD"
+    name: "Stewardship Right"
+    description: "Delegate bounded processing to trustees without surrendering title"
+    phi_weight: 0.618
+
+# ── Lifecycle States ─────────────────────────────────────────────────────────
+lifecycle:
+  retention_model: "phi_weighted_decay"
+  default_decay_factor: 0.618
+  high_sensitivity_retention_days: 34
+  standard_retention_days: 89
+  archive_retention_days: 144
+  states:
+    - "collected"
+    - "attested"
+    - "consented"
+    - "portable"
+    - "revoked"
+    - "erased"
+
+# ── Governance Protocols ─────────────────────────────────────────────────────
+protocols:
+  - id: "DSV-CAPTURE"
+    name: "Consent Capture"
+    description: "Every collection event issues a signed consent receipt"
+    authority: "hub_local"
+    validation: "receipt_signature"
+
+  - id: "DSV-EXPORT"
+    name: "Portable Export"
+    description: "Subjects can export full records, embeddings, and lineage metadata"
+    authority: "subject_or_delegate"
+    validation: "authenticated_request"
+
+  - id: "DSV-REVOKE"
+    name: "Consent Revocation"
+    description: "Revocation propagates to all downstream processors within one epoch"
+    authority: "subject"
+    validation: "revocation_receipt"
+
+  - id: "DSV-ERASURE"
+    name: "Erasure Cascade"
+    description: "Secure deletion and tombstone proof across federated replicas"
+    authority: "subject_or_arbiter"
+    validation: "merkle_tombstone"
+
+  - id: "DSV-AUDIT"
+    name: "Lifecycle Audit"
+    description: "Phi-weighted review of retention, access, and derived artifact usage"
+    authority: "federation"
+    validation: "immutable_log"
+
+# ── Invariants ────────────────────────────────────────────────────────────────
+invariants:
+  - "No personal data may be processed without a valid consent or treaty basis"
+  - "Ownership remains with the originating subject even when stewardship is delegated"
+  - "Portable exports must be complete, machine-readable, and cryptographically verifiable"
+  - "Erasure requests propagate to all replicas before the close of the next epoch"
+  - "Higher phi-risk data always receives shorter retention and stronger review"
+
+# ── Metrics & Monitoring ──────────────────────────────────────────────────────
+metrics:
+  - name: "consent_receipt_coverage"
+    description: "Share of collected records with valid consent receipts"
+    threshold_min: 0.999
+    alert_on_breach: true
+
+  - name: "portability_request_latency"
+    description: "Time to complete a verified data export"
+    threshold_ms: 86400000
+    alert_on_breach: true
+
+  - name: "erasure_propagation_completion"
+    description: "Fraction of replicas honoring erasure inside one epoch"
+    threshold_min: 0.995
+    alert_on_breach: true
+
+  - name: "retention_drift"
+    description: "Records exceeding phi-weighted lifecycle windows"
+    threshold_max: 0.01
+    alert_on_breach: true

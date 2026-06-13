@@ -1,0 +1,30 @@
+name = "micro-services"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+
+[vars]
+PHI = "1.618033988749895"
+HEARTBEAT_MS = "873"
+ORGANISM = "micro-services"
+SERVICE_SCALE = "micro"
+
+# KV Namespace — Service state
+[[kv_namespaces]]
+binding = "SERVICE_STATE"
+id = "micro-services-state"
+
+# D1 Database — Business data
+[[d1_databases]]
+binding = "DB"
+database_name = "medinatech-db"
+database_id = "medinatech-db-id"
+
+# Queue — Async events
+[[queues.producers]]
+queue = "micro-service-events"
+binding = "EVENTS_QUEUE"
+
+# Rate limiting
+[vars]
+RATE_LIMIT_MAX_TOKENS = "162"
+RATE_LIMIT_REFILL_RATE = "16"

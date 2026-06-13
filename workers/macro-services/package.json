@@ -1,0 +1,16 @@
+{
+  "name": "macro-services",
+  "version": "1.0.0",
+  "description": "Macro service orchestrators — compose micro services into business workflows via saga pattern",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240117.0",
+    "typescript": "^5.3.3",
+    "wrangler": "^3.25.0"
+  }
+}
