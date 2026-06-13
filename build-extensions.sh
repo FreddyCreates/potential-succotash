@@ -95,29 +95,27 @@ for ext_dir in "$EXT_SRC"/*/; do
       continue
     fi
 
+    # Include any popup, options, side panel, or devtools pages if present
+    for f in popup.html popup.js options.html options.js styles.css sidepanel.html devtools.html devtools.js devtools-panel.html; do
+      [ -f "$ext_dir/$f" ] && FILES_TO_ZIP="$FILES_TO_ZIP $f"
+    done
+
+    # Include Universal CPL WASM binary if present (Jarvis AI)
+    [ -f "$ext_dir/jarvisius-engine.wasm" ] && FILES_TO_ZIP="$FILES_TO_ZIP jarvisius-engine.wasm"
+
+    # Include workspace files if present
+    for f in "$ext_dir"/*.code-workspace; do
+      [ -f "$f" ] && FILES_TO_ZIP="$FILES_TO_ZIP $(basename "$f")"
+    done
+
+    if [ -z "$FILES_TO_ZIP" ]; then
+      echo "  ⚠ $name — no files to package (skipped)"
+      errors=$((errors + 1))
+      continue
+    fi
+
     (cd "$ext_dir" && zip -r -q "$DIST/${name}.zip" $FILES_TO_ZIP)
   fi
-
-  # Include any popup, options, side panel, or devtools pages if present
-  for f in popup.html popup.js options.html options.js styles.css sidepanel.html devtools.html devtools.js devtools-panel.html; do
-    [ -f "$ext_dir/$f" ] && FILES_TO_ZIP="$FILES_TO_ZIP $f"
-  done
-
-  # Include Universal CPL WASM binary if present (Jarvis AI)
-  [ -f "$ext_dir/jarvisius-engine.wasm" ] && FILES_TO_ZIP="$FILES_TO_ZIP jarvisius-engine.wasm"
-
-  # Include workspace files if present
-  for f in "$ext_dir"/*.code-workspace; do
-    [ -f "$f" ] && FILES_TO_ZIP="$FILES_TO_ZIP $(basename "$f")"
-  done
-
-  if [ -z "$FILES_TO_ZIP" ]; then
-    echo "  ⚠ $name — no files to package (skipped)"
-    errors=$((errors + 1))
-    continue
-  fi
-
-  (cd "$ext_dir" && zip -r -q "$DIST/${name}.zip" $FILES_TO_ZIP)
 
   # Verify the zip was created and has content
   if [ ! -s "$DIST/${name}.zip" ]; then

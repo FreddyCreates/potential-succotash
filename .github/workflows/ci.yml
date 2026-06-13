@@ -46,6 +46,9 @@ jobs:
       - name: Generate icons (if missing)
         run: node scripts/generate-icons.js
 
+      - name: Auto-spinner pre-flight check
+        run: node scripts/deploy-bot/auto-spinner.js --check
+
       - name: Build extension zips
         run: bash build-extensions.sh
 
@@ -57,8 +60,17 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to dist/"
           else
-            git fetch origin main
-            git merge origin/main --no-edit || true
             git commit -m "build: rebuild extension zips [skip ci]"
-            git push || echo "Push failed, likely a race condition - changes will be picked up by next run"
+            MAX_RETRIES=3
+            for i in $(seq 1 $MAX_RETRIES); do
+              if git push; then
+                echo "✅ Extensions committed successfully"
+                exit 0
+              fi
+              echo "⏳ Push attempt $i failed, rebasing..."
+              git fetch origin main
+              git rebase origin/main || { git rebase --abort; break; }
+              sleep $((i * 2))
+            done
+            echo "⚠️ Push failed after retries - another workflow updated first"
           fi

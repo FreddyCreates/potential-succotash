@@ -124,6 +124,21 @@ class HebbianLearningProtocol {
     }
   }
 
+  strengthenSynapse(preId, postId, amount = 0.1) {
+    const key = `${preId}->${postId}`;
+    const synapse = this.synapses.get(key);
+    if (!synapse) return null;
+
+    const oldWeight = synapse.weight;
+    const phiAmount = amount * PHI;
+    synapse.weight = Math.max(0, Math.min(1, synapse.weight + phiAmount));
+    synapse.lastUpdate = Date.now();
+    synapse.updateCount++;
+    this.ltpEvents++;
+
+    return { key, oldWeight, newWeight: synapse.weight, delta: synapse.weight - oldWeight };
+  }
+
   getNetworkState() {
     const neurons = [];
     for (const [id, n] of this.neurons) {

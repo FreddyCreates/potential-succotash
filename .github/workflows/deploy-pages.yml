@@ -37,13 +37,25 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Pages
+        id: setup-pages
         uses: actions/configure-pages@v5
+        continue-on-error: true
+
+      - name: Check Pages availability
+        if: steps.setup-pages.outcome == 'failure'
+        run: |
+          echo "⚠️ GitHub Pages is not enabled for this repository."
+          echo "   Enable it in Settings → Pages → Source: GitHub Actions"
+          echo "   Skipping deployment."
+          exit 0
 
       - name: Upload artifact
+        if: steps.setup-pages.outcome == 'success'
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
 
       - name: Deploy Sonic Ninja Lab to GitHub Pages
+        if: steps.setup-pages.outcome == 'success'
         id: deployment
         uses: actions/deploy-pages@v4

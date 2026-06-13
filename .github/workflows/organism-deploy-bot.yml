@@ -48,6 +48,9 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Auto-spinner status check
+        run: node scripts/deploy-bot/auto-spinner.js
+
       - name: Validate dfx.json
         id: dfx
         run: |
@@ -146,31 +149,22 @@ jobs:
           if git diff --cached --quiet; then
             echo "Deployment manifest unchanged"
           else
-            git fetch origin main
-            git merge origin/main --no-edit || true
             git commit -m "🌐 organism-deploy-bot: update deployment manifest [skip ci]"
-            git push || echo "Push failed, likely a race condition - changes will be picked up by next run"
-            # Handle concurrent push race condition with retry logic
+            # Retry push with rebase on conflict
             MAX_RETRIES=3
             for i in $(seq 1 $MAX_RETRIES); do
+              if git push; then
+                echo "✅ Deployment manifest committed successfully"
+                exit 0
+              fi
+              echo "⏳ Push attempt $i/$MAX_RETRIES failed, rebasing..."
               git fetch origin main
               if git rebase origin/main; then
-                # Re-add files after rebase (staging area is cleared)
-                git add docs/deployment-manifest.json docs/deployment-report.md
-                if git diff --cached --quiet; then
-                  echo "✅ Changes already integrated after rebase"
-                  exit 0
-                fi
-                git commit -m "🌐 organism-deploy-bot: update deployment manifest [skip ci]"
-                if git push; then
-                  echo "✅ Deployment manifest committed successfully"
-                  exit 0
-                fi
+                sleep $((i * 2))
               else
                 git rebase --abort 2>/dev/null || true
+                break
               fi
-              echo "⚠️ Attempt $i failed, retrying..."
-              sleep $((i * 2))
             done
             echo "⚠️ Push failed after $MAX_RETRIES attempts - another workflow may have updated first"
           fi
