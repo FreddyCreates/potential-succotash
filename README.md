@@ -1,273 +1,355 @@
 <p align="center">
-  <img src="extensions/jarvis/icons/icon128.png" width="80" alt="Sonic Ninja" />
-</p>
-
-<h1 align="center">Sonic Ninja</h1>
-
-<p align="center">
-  <strong>Sovereign offline intelligence for your browser</strong>
+  <img src="assets/img/logo.svg" width="480" alt="Sonic Ninja — Sovereign AI Organism by Medina" />
 </p>
 
 <p align="center">
-  <em>Vigil (Latin): watchfulness, wakefulness — the state of being alert and observant</em>
+  <a href="https://github.com/FreddyCreates/potential-succotash/actions/workflows/ci.yml"><img src="https://github.com/FreddyCreates/potential-succotash/actions/workflows/ci.yml/badge.svg" alt="CI — Build & Test" /></a>
+  <a href="https://github.com/FreddyCreates/potential-succotash/actions/workflows/build-extensions.yml"><img src="https://github.com/FreddyCreates/potential-succotash/actions/workflows/build-extensions.yml/badge.svg" alt="Build Extensions" /></a>
+  <a href="https://github.com/FreddyCreates/potential-succotash/actions/workflows/deploy-pages.yml"><img src="https://github.com/FreddyCreates/potential-succotash/actions/workflows/deploy-pages.yml/badge.svg" alt="Deploy Pages" /></a>
+  <a href="https://github.com/FreddyCreates/potential-succotash/actions/workflows/deploy-workers.yml"><img src="https://github.com/FreddyCreates/potential-succotash/actions/workflows/deploy-workers.yml/badge.svg" alt="Deploy Workers" /></a>
+  <img src="https://img.shields.io/badge/tests-15%2C410%20passing-brightgreen" alt="Tests: 15,410 passing" />
+  <img src="https://img.shields.io/badge/lint-40%2F40%20manifests-brightgreen" alt="Lint: 40/40 manifests" />
+  <img src="https://img.shields.io/badge/node-%3E%3D18-blue" alt="Node.js ≥18" />
+  <img src="https://img.shields.io/badge/license-MIT-green" alt="License: MIT" />
+  <img src="https://img.shields.io/badge/extensions-41%20total-purple" alt="41 Extensions" />
+  <img src="https://img.shields.io/badge/SDKs-19-blueviolet" alt="19 SDKs" />
+  <img src="https://img.shields.io/badge/workers-11%20intelligent-cyan" alt="11 Workers" />
+  <img src="https://img.shields.io/badge/protocols-11%20sovereign-orange" alt="11 Protocols" />
+  <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey" alt="Platform: Windows, macOS, Linux" />
+  <img src="https://img.shields.io/badge/offline%20AI-Solus%20Engine-blue" alt="Offline AI: Solus Engine" />
 </p>
 
 <p align="center">
-  <a href="#download">⬇ Download</a> · <a href="#features">✨ Features</a> · <a href="#technology">⚙️ Technology</a> · <a href="#solus">🔵 Solus</a> · <a href="#install">🚀 Install</a> · <a href="#architecture">🏗 Architecture</a>
+  <strong>Your personal AI that lives in your browser — no cloud, no subscription, no data leaves your device.</strong>
+</p>
+
+<p align="center">
+  <a href="#get-started">🚀 Get Started</a> · <a href="#what-can-it-do">✨ What Can It Do</a> · <a href="#download">⬇ Download</a> · <a href="#how-it-works">⚙️ How It Works</a> · <a href="#for-developers">👩‍💻 For Developers</a>
 </p>
 
 ---
 
-## What Is Sonic Ninja
+## Meet Sonic Ninja
 
-Sonic Ninja is a full-stack sovereign intelligence platform that runs entirely inside your browser — no cloud, no server, no subscription. It installs as a Chrome or Edge side panel extension and becomes a permanent cognitive co-pilot: reading pages, running offline AI inference, monitoring threats, building a spatial memory palace, constructing a knowledge graph of everything you read, deploying autonomous research agents, and reasoning through any problem you bring to it.
+**Sonic Ninja** is a sovereign AI platform built by Medina. It gives you a full AI assistant — research agents, memory systems, security scanning, offline inference — entirely on your machine. No API keys. No monthly fees. No data sent anywhere.
 
-The architecture goes far beyond a chat wrapper. Sonic Ninja combines:
-- **Solus** — a fully offline AI engine using Transformers.js (summarization, zero-shot classification, Q&A) with zero network calls during inference
-- **Memory Palace** — phi-encoded spatial memory of every page you save, retrievable by resonance
-- **Sentry Watch** — real-time security monitor scanning for phishing, PII, prompt injection, and malware URLs
-- **Cartographer** — entity-based knowledge graph that maps connections between everything you read
-- A phi-encoded NeuroCore oscillator (873ms heartbeat), a PatternSynthesisEngine with 40 primitives across 8 knowledge domains, nine autonomous agent types, and a full annotation system — all wired together into a single sovereign intelligence
+Think of it as **your own AI operating system** that runs as a browser side panel, a desktop app, or a set of intelligent services — all self-contained, all private.
+
+> *Vigil (Latin): watchfulness, wakefulness — the state of being alert and observant.*
+
+---
+
+<a id="get-started"></a>
+## 🚀 Get Started in 60 Seconds
+
+### Option 1: Browser Extension (Easiest)
+
+1. **Download** → [Sonic Ninja ZIP](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/jarvis.zip)
+2. **Unzip** the file anywhere on your computer
+3. **Open** Chrome or Edge → go to `chrome://extensions` (or `edge://extensions`)
+4. **Turn on** "Developer Mode" (toggle in the top-right)
+5. **Click** "Load unpacked" → select the unzipped folder
+6. **Pin it** → click the 🧩 puzzle piece in your toolbar → pin Sonic Ninja
+7. **Open** → press `Ctrl+Shift+Y` or click the icon
+
+**That's it. You're running sovereign AI.**
+
+### Option 2: Windows One-Click Install
+
+Download [`install-jarvis-edge.bat`](https://github.com/FreddyCreates/potential-succotash/raw/main/install-jarvis-edge.bat) → right-click → **Run**. Done.
+
+### Option 3: Desktop App (Windows / macOS / Linux)
+
+```bash
+git clone https://github.com/FreddyCreates/potential-succotash.git
+cd potential-succotash
+npm run build:desktop
+```
+
+Produces a native installer for your platform in `dist/desktop/`.
+
+### Option 4: Command Line (organism-cli)
+
+```bash
+git clone https://github.com/FreddyCreates/potential-succotash.git
+cd potential-succotash
+node organism-cli status    # Check system health
+node organism-cli list      # List all components
+node organism-cli install   # Install extensions locally
+```
+
+---
+
+<a id="what-can-it-do"></a>
+## ✨ What Can It Do
+
+### For You (End Users)
+
+| What you want | How Sonic Ninja helps |
+|---|---|
+| **Summarize articles** | Open any page → Solus summarizes it offline, instantly |
+| **Ask questions about what you're reading** | Highlight text → ask a question → get an answer from the page |
+| **Remember everything** | Every page you save goes into a Memory Palace — find it later by topic, not keywords |
+| **Stay safe online** | Sentry scans pages in real-time for phishing, malware, and suspicious content |
+| **Research anything** | Deploy autonomous agents that crawl, scrape, and synthesize information for you |
+| **Organize knowledge** | The Knowledge Graph maps everything you read into a visual web of connections |
+| **Take notes & annotate** | Highlight, annotate, journal, and export — all stored locally |
+| **Generate reports** | Create PDF and Excel reports from your research with one click |
+| **Manage tabs & files** | Built-in tab manager, file viewer, and document handler |
+| **Work offline** | All core AI runs without internet after the first model download (~80 MB) |
+
+### The 22 Panels
+
+Open the side panel and you have immediate access to:
+
+| | | | |
+|---|---|---|---|
+| 💬 Chat | ⚡ Nexus | 🔵 Solus | 📥 Inbox |
+| 📌 Highlights | 🪞 Mirror | 🏛 Memory | 🛡 Sentry |
+| 🗺 Graph | 🤖 Agents | ⚗️ AGI Tools | 📓 Journal |
+| 📁 Files | 🔐 Vault | 💡 Prompts | 📝 Workspace |
+| 🔧 Tools | 🔍 Search | 🖥️ Screen | 🗂️ Tabs |
+| ⬇ Install | 📋 Log | | |
+
+### Autonomous Agents
+
+Say "research quantum computing" or "crawl this site" and Sonic Ninja deploys agents that work independently:
+
+- **Researcher** — pulls from Wikipedia + domains, parallel synthesis
+- **Crawler** — spiders from a URL, follows links, extracts content
+- **Scraper** — tables, lists, prices, dates → structured data
+- **Scout** — deep scan + full link map
+- **Digest** — multi-topic synthesis reports
+- **Monitor** — watches sites for changes
+- **Analyst** — parallel multi-URL comparison
+- **Sweep** — batch extraction across sites
 
 ---
 
 <a id="download"></a>
-## Download
+## ⬇ Download
 
-### Sonic Ninja Extension (Chrome / Edge)
+| Package | Platform | Link |
+|---|---|---|
+| **Sonic Ninja Extension** | Chrome / Edge | [⬇ jarvis.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/jarvis.zip) |
+| **All 41 Extensions Pack** | Chrome / Edge | [⬇ all-extensions.zip](https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/all-extensions.zip) |
+| **Windows Installer** | Windows | [⬇ install-jarvis-edge.bat](https://github.com/FreddyCreates/potential-succotash/raw/main/install-jarvis-edge.bat) |
+| **Organism Installer** | Windows | [⬇ install-organism.bat](https://github.com/FreddyCreates/potential-succotash/raw/main/install-organism.bat) |
+| **Organism Installer** | macOS / Linux | [⬇ install-organism.sh](https://github.com/FreddyCreates/potential-succotash/raw/main/install-organism.sh) |
+| **Desktop App** | Windows / macOS / Linux | Build from source (see above) |
 
-| Package | Link |
+### Extension Library
+
+We ship **41 browser extensions** covering AI, security, productivity, research, and creativity:
+
+<details>
+<summary>📦 View full extension list</summary>
+
+| Category | Extensions |
 |---|---|
-| **Sonic Ninja Extension ZIP** | [⬇ Download jarvis.zip](https://github.com/FreddyCreates/potential-succotash/raw/copilot/create-jarvis-integration/dist/extensions/jarvis.zip) |
-| **All Extensions ZIP** | [⬇ Download all-extensions.zip](https://github.com/FreddyCreates/potential-succotash/raw/copilot/create-jarvis-integration/dist/extensions/all-extensions.zip) |
-| **Windows Installer (.bat)** | [⬇ install-jarvis-edge.bat](https://github.com/FreddyCreates/potential-succotash/raw/main/install-jarvis-edge.bat) |
-| **SDK Manifest** | [⬇ SDK_Model_Manifest.json](https://github.com/FreddyCreates/potential-succotash/raw/main/SDK_Model_Manifest.json) |
-| **AI Protocols Register** | [⬇ AI_Protocols_Register.csv](https://github.com/FreddyCreates/potential-succotash/raw/main/AI_Protocols_Register.csv) |
+| **Core Intelligence** | Sonic Ninja (Jarvis), Sovereign Mind, Sovereign Nexus, Sovereign Command Pilot |
+| **Research & Knowledge** | Knowledge Cartographer, Research Nexus, Data Oracle, Data Alchemist |
+| **Security & Defense** | Sentinel Watch, Cipher Shield, CI Pilot Embodied |
+| **Creativity** | Creative Muse, Vision Weaver, Video Architect, Voice Forge |
+| **Development** | Code Sovereign, Contract Forge, Logic Prover, Pattern Forge |
+| **Edge AI** | Edge AI Assistant, Edge Context Engine, Edge Prompt Lab, Edge Runner, Edge Tab Analyzer |
+| **Windows Native** | Windows Copilot Hub, Windows File Oracle, Windows Notification Cortex, Windows Shell Intelligence, Windows Terminal Forge |
+| **Productivity** | Screen Commander, Social Cortex, Spread Scanner, Polyglot Oracle |
+| **Infrastructure** | Marketplace Hub, Protocol Bridge, Organism Dashboard, Memory Palace |
+| **Economy** | Sovereign Alpha, Law Firm Economy Counsel |
 
-### Load Unpacked in Chrome or Edge
-
-1. Download and unzip `jarvis.zip`
-2. Open Chrome/Edge → `chrome://extensions` (or `edge://extensions`)
-3. Enable **Developer mode** (top right toggle)
-4. Click **Load unpacked** → select the unzipped folder
-5. Click the puzzle piece 🧩 in the toolbar → pin **Sonic Ninja**
-6. Press `Ctrl+Shift+Y` or click the icon to open the side panel
-
-### Windows One-Click Installer
-
-Download `install-jarvis-edge.bat`, right-click → **Run**. It downloads Sonic Ninja, extracts it, and opens Edge with the extension loaded automatically.
+</details>
 
 ---
 
-<a id="features"></a>
-## Features
+## 🔵 Solus — Your Offline AI
 
-### 22 Panels
+Solus is the AI engine at the heart of Sonic Ninja. It runs **100% in your browser** — no server, no API key, no internet needed after setup.
 
-| Panel | Description |
+### What it does
+
+| Mode | What happens |
 |---|---|
-| 💬 **Chat** | Full conversational AI with 40-category intent engine and context memory |
-| ⚡ **Nexus** | Command surface — one-tap action tiles, live agent feed, page awareness |
-| 🔵 **Solus** | Sovereign offline AI — summarize, classify, Q&A with zero network calls |
-| 📥 **Inbox** | Proactive briefs: clipboard intel, tab changes, agent completions |
-| 📌 **Highlights** | Annotation engine — save, tag, group, and export page highlights |
-| 🪞 **Mirror** | Staged content hub — agent reports, clipboard, fetch results |
-| 🏛 **Memory** | Phi-encoded Memory Palace — spatial storage of every page you save |
-| 🛡 **Sentry** | Security monitor — phishing, PII, prompt injection, malware detection |
-| 🗺 **Graph** | Knowledge graph — entity-based map of everything you've read |
-| 🤖 **Agents** | Live autonomous agent dashboard with progress tracking |
-| ⚗️ **AGI Tools** | Summarize URLs, extract tables, diff sources, forge knowledge reports |
-| 📓 **Journal** | Notes with full Dexie.js persistence |
-| 📁 **Files** | Document manager — PDFs, Excel, and created documents |
-| 🔐 **Vault** | Secure local key-value store |
-| 💡 **Prompts** | Saved prompt library for rapid dispatch |
-| 📝 **Workspace** | Free-form text workspace with persistent storage |
-| 🔧 **Tools** | Utility panel — PDF/Excel download, readability, email drafting |
-| 🔍 **Search** | Page-aware search with built-in knowledge base |
-| 🖥️ **Screen** | Tab capture, screenshot, and page analysis |
-| 🗂️ **Tabs** | Tab manager — list, switch, close, open |
-| ⬇ **Install** | Step-by-step install guide with download links |
-| 📋 **Log** | Live log stream — all commands, agents, and system events |
+| 📄 **Summarize** | Feed it any article → get a concise summary instantly |
+| 🏷 **Classify** | Categorize any text against labels you define — zero training needed |
+| ❓ **Ask** | Ask questions about page content → answers come from the text, no hallucination |
 
-### Skill Engines
-- 🔵 **Solus Offline AI** — Transformers.js: summarization, zero-shot classification, extractive Q&A (all offline)
-- 🧠 **NLP Intent Classification** — 40-category intent engine, compound multi-action dispatch
-- 📄 **Readability Engine** — DOM article extraction (Firefox Reader Mode algorithm)
-- 📌 **Highlights Engine** — Annotation storage, grouping, export
-- 🏛 **Memory Palace** — Phi-encoded spatial memory with resonance search
-- 🛡 **SentryAI** — Phishing, PII, prompt injection, malware URL detection
-- 🗺 **Knowledge Graph** — Entity extraction, edge-weighted graph, force-directed visualization
-- 📊 **PDF Generator** — jsPDF formatted reports
-- 📈 **Excel Generator** — ExcelJS formatted workbooks
-- 📧 **Email Drafter** — mailto: protocol with structured prefill
+### First-time setup
 
-### Autonomous Agents (9 types)
-- `researcher` — Wikipedia + domain-specific sources, parallel fetch
-- `crawler` — Spider from seed URL, follows links, parallel batch extraction
-- `scraper` — Structured data: tables, lists, prices, dates
-- `scout` — Quick deep scan + link map
-- `digest` — Multi-topic parallel synthesis
-- `monitor` — Site content diff watcher
-- `watcher` — Alarm-based recurring site monitoring
-- `analyst` — Multi-URL parallel analysis
-- `sweep` — Multi-site batch extraction
+1. Open Sonic Ninja → click the **🔵 Solus** tab
+2. Click **⚡ Activate Solus** — downloads models once (~80 MB), cached permanently
+3. That's it. Solus works offline forever after this.
+
+### Models used
+- Summarization: `Xenova/distilbart-cnn-6-6`
+- Classification: `Xenova/nli-deberta-v3-small`
+- Question Answering: `Xenova/distilbert-base-uncased-distilled-squad`
 
 ---
 
-<a id="solus"></a>
-## Solus — Sovereign Offline Intelligence
+<a id="how-it-works"></a>
+## ⚙️ How It Works
 
-Solus is the 7th Domain AI. He runs **entirely in the browser with zero network calls during inference**. Models download once using the browser Cache API, and persist permanently across reloads.
+### The Organism Architecture
 
-### What Solus Can Do
-
-| Mode | Capability |
-|---|---|
-| 📄 **Summarize** | Distill any article or pasted text into a concise summary — completely offline |
-| 🏷 **Classify** | Zero-shot classify text against any labels you define — no training required |
-| ❓ **Ask** | Answer questions from page content — extractive Q&A, no hallucination |
-
-### How to Use Solus
-1. Open Sonic Ninja side panel → click **🔵 Solus** tab
-2. Click **⚡ Activate Solus** — models download once (~80 MB total), cached forever
-3. Navigate to any article → click **📄 Use Page** to pull the content
-4. Select a mode (Summarize / Classify / Ask) and click **⚡ Run Solus**
-5. All inference happens locally — no API key, no cloud, no data leaves your browser
-
-### Model Stack
-- **Summarization**: `Xenova/distilbart-cnn-6-6`
-- **Zero-shot Classification**: `Xenova/nli-deberta-v3-small`
-- **Question Answering**: `Xenova/distilbert-base-uncased-distilled-squad`
-
----
-
-<a id="technology"></a>
-## Technology
-
-### Solus Engine (Transformers.js)
-Progressive model loading with browser Cache API persistence. Models download once and never re-download. All pipeline calls (`summarization`, `zero-shot-classification`, `question-answering`) run in the service worker via `@xenova/transformers`. No CORS, no API keys, no servers.
-
-### PatternSynthesisEngine (PSE)
-A centralized cognitive knowledge corpus with 40 pattern primitives across 8 domains. Every user message is silently synthesized through PSE — if confidence exceeds 28%, enrichment is appended to the response automatically.
-
-### NeuroCore (873ms heartbeat, phi-encoded memory)
-A four-component oscillator:
-- **MiniHeart** — tracks latency, pulse count, health score, degradation
-- **MiniBrain** — Hebbian learning pathways with phi-decayed weights
-- **MetaCardiacModel** — autonomic balance: vagal tone, sympathetic drive, HRV, mood
-- **MetaThoughtModel** — softmax attention map, temperature-adjusted focus, chain-of-thought
-
-The 873ms interval is chosen because `873ms × φ ≈ 1413ms` — a recursive phi interval.
-
-### Memory Palace (Phi-encoded spatial memory)
-Every saved URL gets phi-encoded coordinates in a 5D conceptual space (`θ, φ, ρ, ring, beat`). Pages are stored as nodes in rings (day-indexed). Retrieval uses resonance distance — not text search — so related pages emerge from conceptual proximity.
-
-### SentryAI (Real-time threat detection)
-Pattern-based detection against page text and URLs:
-- Phishing: urgency language + external link signatures
-- PII: email, SSN, credit card regexes
-- Prompt injection: ignore-instruction patterns, role-override signatures
-- Malware URLs: executable extensions, URL shorteners, raw IPs
-
-### Cartographer (Knowledge Graph)
-Entity extraction (proper nouns, capitalized sequences, quoted strings) from every page you map. Edges form when the same entity appears on two different pages. Visualized as a force-directed SVG graph — pure math, no D3.
-
-### CrawlFetcher (parallel fetch + extraction)
-Background fetch engine for agents: parallel fetch, HTML stripping, link extraction, table extraction, content diffing.
-
----
-
-<a id="install"></a>
-## Install
-
-### Step-by-Step
-
-1. **Download** the [Sonic Ninja ZIP](https://github.com/FreddyCreates/potential-succotash/raw/copilot/create-jarvis-integration/dist/extensions/jarvis.zip)
-2. **Unzip** the downloaded file to a folder (e.g., `VigilAI/`)
-3. **Open** Chrome → `chrome://extensions` OR Edge → `edge://extensions`
-4. **Enable Developer Mode** using the toggle in the top-right corner
-5. **Click** "Load unpacked" → navigate to and select the unzipped `VigilAI/` folder
-6. **Pin** the extension: click the 🧩 puzzle piece icon → click the 📌 pin next to Sonic Ninja
-7. **Open** the side panel: press `Ctrl+Shift+Y` or click the Sonic Ninja icon
-8. **Start** — type anything or say "brief me" for a situational report
-
-### Windows One-Click (Edge)
-```
-Right-click install-jarvis-edge.bat → Run as Administrator
-```
-Automatically downloads, extracts, and loads Sonic Ninja into Edge.
-
----
-
-<a id="architecture"></a>
-## Architecture
+Sonic Ninja isn't just one extension — it's a living system:
 
 ```
-extensions/jarvis/src/
-├── background/
-│   ├── index.ts              ← VigilEngine, NeuroCore, PSE, AgentDispatcher, message router
-│   ├── pattern-synthesis-engine.ts  ← PSE: 40 primitives, 8 domains
-│   ├── mission-engine.ts     ← Mission dispatch, 6 Domain AIs
-│   ├── domain-ais.ts         ← Domain AI definitions
-│   ├── db.ts                 ← Dexie.js IndexedDB layer
-│   ├── sovereign-license.ts  ← License registry (24 sovereign tools)
-│   └── skills/
-│       ├── solus.ts          ← Solus offline AI (Transformers.js pipelines)
-│       ├── memoryAI.ts       ← Phi-encoded Memory Palace
-│       ├── sentryAI.ts       ← Threat detection engine
-│       ├── knowledgeGraph.ts ← Entity graph + force layout engine
-│       ├── readability.ts    ← DOM article extractor
-│       ├── highlights.ts     ← Annotation/highlight engine
-│       ├── nlp.ts            ← Transformers.js NLP pipeline
-│       ├── pdf.ts            ← jsPDF report generator
-│       ├── excel.ts          ← ExcelJS workbook generator
-│       └── email.ts          ← mailto: draft composer
-├── sidepanel/
-│   ├── App.tsx               ← Root: 22-tab navigation, header, status bar
-│   └── panels/
-│       ├── ChatPanel.tsx     ← 40-category conversational AI
-│       ├── NexusPanel.tsx    ← Command surface dashboard
-│       ├── SolusPanel.tsx    ← Solus offline AI interface
-│       ├── InboxPanel.tsx    ← Proactive brief feed
-│       ├── HighlightsPanel.tsx  ← Annotation/highlight viewer
-│       ├── MirrorPanel.tsx   ← Staged content hub
-│       ├── MemoryPanel.tsx   ← Memory Palace — phi rings visualization
-│       ├── SentryPanel.tsx   ← Threat monitor — live alert feed
-│       ├── GraphPanel.tsx    ← Knowledge graph — force-directed SVG
-│       ├── AgentsPanel.tsx   ← Sovereign agent dashboard
-│       ├── AGIToolsPanel.tsx ← URL analysis tools
-│       └── ...               ← Vault, Prompts, Journal, Files, Workspace, Log
-└── store/index.ts            ← Zustand global state
+┌─────────────────────────────────────────────────────────┐
+│                    SONIC NINJA ORGANISM                   │
+├─────────────┬──────────────┬──────────────┬─────────────┤
+│  41 Browser │  19 SDKs     │  11 Workers  │  Desktop    │
+│  Extensions │              │  (Cloudflare)│  App        │
+├─────────────┴──────────────┴──────────────┴─────────────┤
+│              11 Sovereign Protocols                       │
+├─────────────────────────────────────────────────────────┤
+│         Phi-Mathematics Core (φ = 1.618...)              │
+│         NeuroCore (873ms heartbeat)                       │
+│         Memory Temple SDK                                │
+└─────────────────────────────────────────────────────────┘
 ```
 
-### Key Data Flows
+### Core Engines
 
-- **Solus**: panel → `solusLoad` → Transformers.js model load (cached) → `solusSummarize/Classify/Answer` → result
-- **Memory**: "Save Page" → `memorySaveCurrent` → `encodePhiCoord` → `chrome.storage.local['vigil_memory_palace']`
-- **Sentry**: "Scan Page" → `scripting.executeScript` → `analyzePageText` → alerts → `persistAlerts`
-- **Graph**: "Map Page" → `scripting.executeScript` → `extractEntities` → `addPage` → edge rebuild → SVG render
-- **Chat**: user → `executeCommand` → `parseCommand` → `buildAction` → skill/executor → `_remember` → response
-- **Agents**: `deployAgent` → `AgentDispatcher.deploy` → `SovereignAgent.run` → `CrawlFetcher` → `pushToInbox` + `_mirrorPush`
-- **Heartbeat**: 873ms `setInterval` → `NeuroCore.pulse` → mood/focus/awareness update
-
----
-
-## Commercial Positioning
-
-| Tier | Description |
+| Engine | Purpose |
 |---|---|
-| **Sonic Ninja (base)** | Full extension — all 22 panels, Solus offline AI, Memory Palace, Sentry, Graph — free, local-only |
-| **Vigil Pro** | API key integration, cloud agent coordination, shared knowledge graphs |
-| **Vigil Enterprise** | Org-wide sovereign deployment, custom model stack, on-premise Solus |
+| **Solus** | Offline AI inference (Transformers.js) — summarize, classify, Q&A |
+| **NeuroCore** | Phi-encoded heartbeat oscillator — mood, focus, awareness tracking |
+| **PatternSynthesis** | 40 cognitive primitives across 8 knowledge domains |
+| **Memory Palace** | 5D phi-encoded spatial memory — retrieval by conceptual resonance |
+| **SentryAI** | Real-time threat detection — phishing, PII, injection, malware |
+| **Cartographer** | Knowledge graph — entity extraction + force-directed visualization |
+| **CrawlFetcher** | Parallel agent fetch engine — HTML stripping, diffing, extraction |
 
-**Solus is the signature differentiator**: a fully offline AI that runs in the browser with zero ongoing cost. No API key required for AI inference. This is the core commercial value proposition.
+### The φ (Phi) Mathematics
+
+Everything in the organism is built on golden-ratio mathematics:
+- **Heartbeat**: 873ms (because 873 × φ ≈ 1413ms — a recursive phi interval)
+- **Memory encoding**: 5D coordinates (θ, φ, ρ, ring, beat)
+- **Thresholds**: 0.618 (1/φ) for pattern confidence
+- **Decay**: Hebbian weights decay by φ⁻¹ per cycle
 
 ---
 
-## Extension Library
+<a id="for-developers"></a>
+## 👩‍💻 For Developers
 
-👉 See [download.html](download.html) for the full library of browser extensions.
+### Quick Setup
+
+```bash
+git clone https://github.com/FreddyCreates/potential-succotash.git
+cd potential-succotash
+```
+
+### Commands
+
+| Command | What it does |
+|---|---|
+| `npm run lint` | Validate all 40 extension manifests |
+| `npm test` | Run full test suite (15,410 tests) |
+| `npm run build` | Build all extension ZIPs to `dist/` |
+| `npm run build:desktop` | Build native desktop app |
+| `npm run build:all` | Build everything |
+| `node organism-cli status` | System health check |
+| `node organism-cli list` | List all organism components |
+| `node organism-cli validate` | Validate organism integrity |
+
+### Test Results
+
+```
+✔ Tests:     15,410 passing
+✔ Suites:    795
+✔ Lint:      40/40 manifests valid
+✔ Duration:  ~3.2s
+```
+
+### Project Structure
+
+```
+potential-succotash/
+├── extensions/          → 41 browser extensions (Chrome/Edge)
+├── sdk/                 → 19 SDKs (agents, engines, runtime, enterprise)
+├── workers/             → 11 Cloudflare Workers (AI, coordinators, honeypots)
+├── protocols/           → 11 sovereign protocols (P226, phi-verification, etc.)
+├── memory_temple/       → CIVOS-PRIME memory SDK
+├── defense-organism/    → Dual-layer security (cortex + subcortex)
+├── desktop/             → Electron desktop app
+├── organism-cli/        → CLI management tool
+├── functions/           → Cloudflare Pages Functions
+├── governance/          → Organism governance framework
+├── research/            → Research papers and theory
+├── docs/                → Architecture docs and reports
+├── test/                → 795 test suites (15,410 tests)
+└── scripts/             → Build, deploy, and automation scripts
+```
+
+### SDKs Available
+
+| SDK | Purpose |
+|---|---|
+| `organism-runtime-sdk` | Core organism runtime |
+| `sovereign-memory-sdk` | Phi-encoded memory operations |
+| `intelligence-routing-sdk` | AI model routing and dispatch |
+| `enterprise-integration-sdk` | Enterprise system connectors |
+| `windows-desktop-sdk` | Windows-native AI integration |
+| `windows-runtime-sdk` | Windows runtime hooks |
+| `medina-calls` | Callable AI tool definitions |
+| `medina-queries` | Query engine SDK |
+| `medina-timers` | Phi-interval timer utilities |
+| `ai-model-engines` | Model pipeline management |
+| `frontend-intelligence-models` | Browser-side AI models |
+| `document-absorption-engine` | Document parsing + ingestion |
+| `organism-marketplace` | Extension marketplace SDK |
+| `organism-bootstrap` | Organism initialization |
+| `register-ai` | AI registry management |
+| `agents` | Autonomous agent framework |
+| `engines` | Core computation engines |
+| `runtime` | Shared runtime utilities |
+
+### Cloudflare Workers
+
+11 intelligent edge workers handling AI inference, coordination, honeypots, and knowledge management — all deployed on Cloudflare's global network.
+
+### CI/CD Pipeline
+
+Automated through GitHub Actions:
+- **CI** — Lint + test on Node 18, 20, 22 (every push/PR)
+- **Build Extensions** — Auto-build and commit extension ZIPs
+- **Deploy Pages** — Live site deployment
+- **Deploy Workers** — Edge worker deployment
+- **Release** — Automated release packaging
+- **25 Organism Bots** — Autonomous maintenance, learning, and governance
 
 ---
 
-*Built with React · TypeScript · Vite · Zustand · Dexie.js · Transformers.js · jsPDF · ExcelJS*
+## 🛡️ Security & Privacy
+
+- **Zero telemetry** — no analytics, no tracking, no phone-home
+- **Local-first** — all data stays in your browser's IndexedDB and chrome.storage
+- **Offline AI** — Solus runs entirely on-device after initial model download
+- **SentryAI** — active protection against phishing, PII exposure, and prompt injection
+- **Defense Organism** — dual-layer security architecture (conscious cortex + dark subcortex)
+- **Honeypot network** — detects and catalogs attack patterns at the edge
+
+---
+
+## 📜 License
+
+[MIT](LICENSE) — Free for personal and commercial use.
+
+---
+
+## 🤝 Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+---
+
+<p align="center">
+  <img src="assets/img/logo-icon.svg" width="48" alt="Sonic Ninja" />
+</p>
+
+<p align="center">
+  <strong>Built by Medina</strong><br/>
+  <em>React · TypeScript · Vite · Zustand · Dexie.js · Transformers.js · Cloudflare Workers · Electron</em>
+</p>

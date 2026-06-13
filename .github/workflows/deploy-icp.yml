@@ -33,6 +33,7 @@ jobs:
   deploy:
     name: Deploy Vigil AI frontend to ICP mainnet
     runs-on: ubuntu-latest
+    if: ${{ secrets.DFX_IDENTITY_PEM != '' }}
 
     steps:
       - name: Checkout

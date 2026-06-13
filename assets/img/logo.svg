@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200" fill="none">
+  <defs>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="50%" style="stop-color:#8b5cf6"/>
+      <stop offset="100%" style="stop-color:#06b6d4"/>
+    </linearGradient>
+    <linearGradient id="ring" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#8b5cf6"/>
+      <stop offset="100%" style="stop-color:#06b6d4"/>
+    </linearGradient>
+  </defs>
+  <!-- Outer orbital ring -->
+  <ellipse cx="100" cy="100" rx="70" ry="70" stroke="url(#ring)" stroke-width="2.5" fill="none" opacity="0.6"/>
+  <ellipse cx="100" cy="100" rx="70" ry="35" stroke="url(#ring)" stroke-width="2" fill="none" opacity="0.4" transform="rotate(60 100 100)"/>
+  <ellipse cx="100" cy="100" rx="70" ry="35" stroke="url(#ring)" stroke-width="2" fill="none" opacity="0.4" transform="rotate(-60 100 100)"/>
+  <!-- Core -->
+  <circle cx="100" cy="100" r="28" fill="url(#glow)" opacity="0.9"/>
+  <circle cx="100" cy="100" r="18" fill="#0f172a"/>
+  <circle cx="100" cy="100" r="8" fill="url(#glow)"/>
+  <!-- Phi symbol inside core -->
+  <text x="100" y="106" text-anchor="middle" font-family="serif" font-size="14" fill="#e2e8f0" font-style="italic">φ</text>
+  <!-- Orbital nodes -->
+  <circle cx="170" cy="100" r="5" fill="#06b6d4"/>
+  <circle cx="65" cy="40" r="4" fill="#8b5cf6"/>
+  <circle cx="65" cy="160" r="4" fill="#6366f1"/>
+  <circle cx="135" cy="45" r="3.5" fill="#06b6d4" opacity="0.7"/>
+  <circle cx="135" cy="155" r="3.5" fill="#8b5cf6" opacity="0.7"/>
+  <!-- Text -->
+  <text x="210" y="85" font-family="system-ui, -apple-system, sans-serif" font-size="48" font-weight="700" fill="#e2e8f0">Sonic Ninja</text>
+  <text x="210" y="120" font-family="system-ui, -apple-system, sans-serif" font-size="16" fill="#94a3b8" letter-spacing="3">SOVEREIGN AI ORGANISM</text>
+  <text x="210" y="150" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#64748b">by Medina</text>
+</svg>
