@@ -1,15 +1,15 @@
 # 🌐 organism-deploy-bot — Deployment Report
 
-**Generated:** 2026-05-02T22:31:26.420Z
-**Commit:** `a8a72ae`
-**Ref:** `refs/heads/copilot/separate-frontends-and-backends`
+**Generated:** 2026-06-13T20:23:55.850Z
+**Commit:** `66e5c0c`
+**Ref:** `refs/heads/copilot/fix-extensions-adapters`
 
 ## ICP Configuration
 
 | Field | Value |
 |---|---|
 | DFX Version | `0.22.0` |
-| Defined Canisters | vigil_frontend |
+| Defined Canisters | vigil_frontend, qx7_manifold |
 | Networks | local, ic |
 | Live Canisters | None deployed yet |
 
@@ -17,20 +17,20 @@
 
 | Substrate | Status | Files |
 |---|---|---|
-| **typescript** | ✅ Present | 14 |
+| **typescript** | ✅ Present | 16 |
 | **python** | ✅ Present | 12 |
 | **cpp** | ✅ Present | 8 |
 | **java** | ✅ Present | 15 |
-| **motoko** | ✅ Present | 7 |
+| **motoko** | ✅ Present | 9 |
 | **web** | ✅ Present | 22 |
 
 ## System Stats
 
 | Layer | Count |
 |---|---|
-| Protocols | 16 |
-| SDKs | 11 |
-| Extensions | 37 |
+| Protocols | 142 |
+| SDKs | 18 |
+| Extensions | 40 |
 | Substrates Active | 6/6 |
 
 ## Live Deployment
