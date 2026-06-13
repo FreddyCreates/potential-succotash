@@ -1,6 +1,6 @@
 # 🏰 organism-sandcastle-bot — BTL Pipeline Report
 
-**Generated:** 2026-05-29T02:44:07.567Z
+**Generated:** 2026-06-13T19:39:40.460Z
 **Land Decision:** ✅ **PASS**
 **Reason:** All 2 gates passed
 **Risk Score:** 0%
@@ -16,7 +16,7 @@
 
 | Check | Status | Detail |
 |---|---|---|
-| Protocol syntax | ✅ pass | 134 files OK |
+| Protocol syntax | ✅ pass | 143 files OK |
 | SDK package.json | ✅ pass | 18 SDKs valid |
 | Extension manifests | ✅ pass | 41 extensions valid |
 | Script require() refs | ✅ pass | No dangling requires |
@@ -29,7 +29,7 @@
 | No circular deps | ✅ pass | No circular dependencies |
 | PHI constant alive | ✅ pass | φ=1.618033988749895 found in protocols |
 | Heartbeat (873ms) alive | ✅ pass | 873ms heartbeat found |
-| protocols/index.js coverage | ✅ pass | 5 protocols not in index |
+| protocols/index.js coverage | ✅ pass | 13 protocols not in index |
 
 ---
 
