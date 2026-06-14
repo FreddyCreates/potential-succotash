@@ -1,12 +1,13 @@
 {
-  "generated": "2026-05-02T22:31:26.420Z",
+  "generated": "2026-06-13T20:23:55.850Z",
   "bot": "organism-deploy-bot",
-  "commit": "a8a72ae7a7d3b9f2a826086632d76e139a933001",
-  "ref": "refs/heads/copilot/separate-frontends-and-backends",
+  "commit": "66e5c0c0e19a486eb49062ed0716871e88231c21",
+  "ref": "refs/heads/copilot/fix-extensions-adapters",
   "icp": {
     "dfxVersion": "0.22.0",
     "canisters": [
-      "vigil_frontend"
+      "vigil_frontend",
+      "qx7_manifold"
     ],
     "networks": [
       "local",
@@ -18,7 +19,7 @@
     "substrates": {
       "typescript": {
         "exists": true,
-        "fileCount": 14
+        "fileCount": 16
       },
       "python": {
         "exists": true,
@@ -34,7 +35,7 @@
       },
       "motoko": {
         "exists": true,
-        "fileCount": 7
+        "fileCount": 9
       },
       "web": {
         "exists": true,
@@ -44,8 +45,8 @@
     "totalSubstrates": 6
   },
   "system": {
-    "protocols": 16,
-    "sdks": 11,
-    "extensions": 37
+    "protocols": 142,
+    "sdks": 18,
+    "extensions": 40
   }
 }

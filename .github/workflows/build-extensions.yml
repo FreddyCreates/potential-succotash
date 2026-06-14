@@ -71,7 +71,10 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "🧬 Auto-build: Vigil AI v18 extension zip"
-            git push
+            git push || {
+              git fetch origin main
+              git rebase origin/main && git push || echo "⚠️ Push failed - will retry on next run"
+            }
           fi
 
   build-simple-extensions:
@@ -126,5 +129,8 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "🧬 Auto-build: package simple extensions"
-            git push
+            git push || {
+              git fetch origin main
+              git rebase origin/main && git push || echo "⚠️ Push failed - will retry on next run"
+            }
           fi

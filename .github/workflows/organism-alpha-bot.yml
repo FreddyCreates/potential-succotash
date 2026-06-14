@@ -82,8 +82,18 @@ jobs:
           if git diff --cached --quiet; then
             echo "Fleet report unchanged"
           else
-            git fetch origin main
-            git rebase origin/main || git rebase --abort
-            git commit -m "👑 organism-alpha-bot: update fleet report [skip ci]" --allow-empty || true
-            git push || echo "⚠️ Push failed - another workflow updated first"
+            git commit -m "👑 organism-alpha-bot: update fleet report [skip ci]"
+            # Retry push with rebase on conflict
+            MAX_RETRIES=3
+            for i in $(seq 1 $MAX_RETRIES); do
+              if git push; then
+                echo "✅ Fleet report committed successfully"
+                exit 0
+              fi
+              echo "⏳ Push attempt $i failed, rebasing..."
+              git fetch origin main
+              git rebase origin/main || { git rebase --abort; break; }
+              sleep $((i * 2))
+            done
+            echo "⚠️ Push failed after $MAX_RETRIES attempts - another workflow updated first"
           fi
