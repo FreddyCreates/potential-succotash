@@ -1,10 +1,10 @@
 # 👑 organism-alpha-bot — Fleet Command Report
 
 **Status:** ✅ ALL SYSTEMS OPERATIONAL
-**Generated:** 2026-06-08T11:04:15.407Z
+**Generated:** 2026-06-14T00:38:48.526Z
 **Fleet Size:** 17 bots
 **Healthy:** 17 | **Degraded:** 0
-**Total Scripts:** 51
+**Total Scripts:** 52
 
 ## Fleet Status
 
@@ -22,7 +22,7 @@
 | **organism-deps-bot** | 🔄 | Dependency Health | ✅ | 4 | ✅ |
 | **organism-crawler-bot** | 🕷️ | Organism Mapper | ✅ | 3 | ✅ |
 | **organism-docs-bot** | 📚 | Auto-Documentation | ✅ | 3 | ✅ |
-| **organism-deploy-bot** | 🌐 | Deployment | ✅ | 1 | ✅ |
+| **organism-deploy-bot** | 🌐 | Deployment | ✅ | 2 | ✅ |
 | **organism-learning-bot** | 🎓 | Continuous Learning | ✅ | 4 | ✅ |
 | **organism-economy-bot** | 💰 | Marketplace Analytics | ✅ | 3 | ✅ |
 | **organism-alpha-bot** | 👑 | Fleet Command | ✅ | 3 | ✅ |
@@ -32,16 +32,16 @@
 
 ### Division I — Build & Package (3/3 healthy)
 
-- ✅ **🧬 organism-build-bot** — Extension Packaging · trigger: `push` · 0 scripts
-- ✅ **📦 organism-sdk-bot** — SDK Packaging · trigger: `push` · 2 scripts
+- ✅ **🧬 organism-build-bot** — Extension Packaging · trigger: `scheduled + push` · 0 scripts
+- ✅ **📦 organism-sdk-bot** — SDK Packaging · trigger: `scheduled + push` · 2 scripts
 - ✅ **🚀 organism-release-bot** — Production Releases · trigger: `push` · 0 scripts
 
 ### Division II — Validate & Test (5/5 healthy)
 
-- ✅ **🧠 organism-neural-bot** — Deep AI Architecture · trigger: `push` · 4 scripts
-- ✅ **🔬 organism-protocol-bot** — Protocol Integrity · trigger: `push` · 3 scripts
-- ✅ **🧪 organism-test-bot** — Cross-Matrix Testing · trigger: `push` · 0 scripts
-- ✅ **🏰 organism-sandcastle-bot** — Sandboxed BTL Pipeline · trigger: `push` · 4 scripts
+- ✅ **🧠 organism-neural-bot** — Deep AI Architecture · trigger: `scheduled + push` · 4 scripts
+- ✅ **🔬 organism-protocol-bot** — Protocol Integrity · trigger: `scheduled + push` · 3 scripts
+- ✅ **🧪 organism-test-bot** — Cross-Matrix Testing · trigger: `scheduled + push` · 0 scripts
+- ✅ **🏰 organism-sandcastle-bot** — Sandboxed BTL Pipeline · trigger: `scheduled + push` · 4 scripts
 - ✅ **📸 organism-visual-bot** — Visual Regression · trigger: `scheduled + push` · 4 scripts
 
 ### Division III — Secure & Monitor (3/3 healthy)
@@ -52,11 +52,11 @@
 
 ### Division IV — Document & Report (1/1 healthy)
 
-- ✅ **📚 organism-docs-bot** — Auto-Documentation · trigger: `push` · 3 scripts
+- ✅ **📚 organism-docs-bot** — Auto-Documentation · trigger: `scheduled + push` · 3 scripts
 
 ### Division V — Deploy & Operate (1/1 healthy)
 
-- ✅ **🌐 organism-deploy-bot** — Deployment · trigger: `push` · 1 scripts
+- ✅ **🌐 organism-deploy-bot** — Deployment · trigger: `scheduled + push` · 2 scripts
 
 ### Division VI — Learn & Evolve (2/2 healthy)
 

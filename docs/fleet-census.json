@@ -1,5 +1,5 @@
 {
-  "generated": "2026-06-08T11:04:15.407Z",
+  "generated": "2026-06-14T00:38:48.526Z",
   "bot": "organism-alpha-bot",
   "totalBots": 17,
   "healthy": 17,
@@ -17,8 +17,8 @@
       "hasScriptDir": false,
       "scripts": [],
       "scriptCount": 0,
-      "trigger": "push",
-      "workflowSize": 7117,
+      "trigger": "scheduled + push",
+      "workflowSize": 7182,
       "status": "healthy"
     },
     {
@@ -35,8 +35,8 @@
         "validate-sdks.js"
       ],
       "scriptCount": 2,
-      "trigger": "push",
-      "workflowSize": 3339,
+      "trigger": "scheduled + push",
+      "workflowSize": 3403,
       "status": "healthy"
     },
     {
@@ -70,8 +70,8 @@
         "validate-substrates.js"
       ],
       "scriptCount": 4,
-      "trigger": "push",
-      "workflowSize": 3033,
+      "trigger": "scheduled + push",
+      "workflowSize": 3097,
       "status": "healthy"
     },
     {
@@ -89,8 +89,8 @@
         "lint-protocols.js"
       ],
       "scriptCount": 3,
-      "trigger": "push",
-      "workflowSize": 1871,
+      "trigger": "scheduled + push",
+      "workflowSize": 1935,
       "status": "healthy"
     },
     {
@@ -104,8 +104,8 @@
       "hasScriptDir": null,
       "scripts": [],
       "scriptCount": 0,
-      "trigger": "push",
-      "workflowSize": 7158,
+      "trigger": "scheduled + push",
+      "workflowSize": 7216,
       "status": "healthy"
     },
     {
@@ -124,8 +124,8 @@
         "protocol-gate.js"
       ],
       "scriptCount": 4,
-      "trigger": "push",
-      "workflowSize": 3619,
+      "trigger": "scheduled + push",
+      "workflowSize": 3677,
       "status": "healthy"
     },
     {
@@ -223,8 +223,8 @@
         "generate-sdk-reference.js"
       ],
       "scriptCount": 3,
-      "trigger": "push",
-      "workflowSize": 2130,
+      "trigger": "scheduled + push",
+      "workflowSize": 2197,
       "status": "healthy"
     },
     {
@@ -237,11 +237,12 @@
       "hasWorkflow": true,
       "hasScriptDir": true,
       "scripts": [
+        "auto-spinner.js",
         "generate-deployment-manifest.js"
       ],
-      "scriptCount": 1,
-      "trigger": "push",
-      "workflowSize": 8586,
+      "scriptCount": 2,
+      "trigger": "scheduled + push",
+      "workflowSize": 8160,
       "status": "healthy"
     },
     {
@@ -299,7 +300,7 @@
       ],
       "scriptCount": 3,
       "trigger": "scheduled + push",
-      "workflowSize": 2901,
+      "workflowSize": 3444,
       "status": "healthy"
     },
     {
@@ -419,5 +420,5 @@
     "totalPass": 102,
     "totalFail": 0
   },
-  "healthGenerated": "2026-06-08T11:04:15.451Z"
+  "healthGenerated": "2026-06-14T00:38:48.570Z"
 }
