@@ -1,9 +1,10 @@
 {
-  "generated": "2026-05-02T22:31:15.721Z",
+  "generated": "2026-06-14T08:37:03.815Z",
   "bot": "organism-protocol-bot",
-  "totalProtocols": 16,
+  "totalProtocols": 142,
   "hasCycles": false,
   "domainBreakdown": {
+    "general": 126,
     "memory": 4,
     "security": 3,
     "routing": 2,
@@ -15,6 +16,26 @@
   },
   "protocols": [
     {
+      "slug": "activated-agent-brain-mapping-protocol",
+      "className": "AgentInstance",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 35,
+      "deps": []
+    },
+    {
+      "slug": "adaptive-defense-protocol",
+      "className": "AdaptiveDefenseEngine",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 26,
+      "deps": []
+    },
+    {
       "slug": "adaptive-knowledge-absorption-protocol",
       "className": "AdaptiveKnowledgeAbsorptionProtocol",
       "domain": "memory",
@@ -22,6 +43,216 @@
       "hasPHI": true,
       "hasHeartbeat": true,
       "methods": 25,
+      "deps": []
+    },
+    {
+      "slug": "agi-core-protocol",
+      "className": "Concept",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 86,
+      "deps": []
+    },
+    {
+      "slug": "ai-biome-interaction-protocol",
+      "className": "BiomeAgentProfile",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 38,
+      "deps": []
+    },
+    {
+      "slug": "ai-quantum-protocol",
+      "className": "Complex",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 78,
+      "deps": []
+    },
+    {
+      "slug": "ai-sdk-protocol",
+      "className": "ModelConfig",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 60,
+      "deps": []
+    },
+    {
+      "slug": "alpha-commander-charter-protocol",
+      "className": "AlphaCommanderCharterProtocol",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 20,
+      "deps": []
+    },
+    {
+      "slug": "alpha-emergence-protocol",
+      "className": "AlphaEmergenceProtocol",
+      "domain": "general",
+      "status": "warn",
+      "hasPHI": true,
+      "hasHeartbeat": false,
+      "methods": 8,
+      "deps": []
+    },
+    {
+      "slug": "alpha-evolution-engine-protocol",
+      "className": "AlphaEvolutionEngineProtocol",
+      "domain": "general",
+      "status": "warn",
+      "hasPHI": true,
+      "hasHeartbeat": false,
+      "methods": 18,
+      "deps": []
+    },
+    {
+      "slug": "alpha-fleet-orchestration-protocol",
+      "className": "AlphaFleetOrchestrationProtocol",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 10,
+      "deps": []
+    },
+    {
+      "slug": "alpha-governance-enforcement-protocol",
+      "className": "AlphaGovernanceEnforcementProtocol",
+      "domain": "general",
+      "status": "warn",
+      "hasPHI": true,
+      "hasHeartbeat": false,
+      "methods": 8,
+      "deps": []
+    },
+    {
+      "slug": "alpha-health-monitor-protocol",
+      "className": "AlphaHealthMonitorProtocol",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 23,
+      "deps": []
+    },
+    {
+      "slug": "alpha-issue-intelligence-protocol",
+      "className": "AlphaIssueIntelligenceProtocol",
+      "domain": "general",
+      "status": "warn",
+      "hasPHI": true,
+      "hasHeartbeat": false,
+      "methods": 11,
+      "deps": []
+    },
+    {
+      "slug": "alpha-knowledge-graph-protocol",
+      "className": "AlphaKnowledgeGraphProtocol",
+      "domain": "general",
+      "status": "warn",
+      "hasPHI": true,
+      "hasHeartbeat": false,
+      "methods": 12,
+      "deps": []
+    },
+    {
+      "slug": "alpha-resonance-protocol",
+      "className": "AlphaResonanceProtocol",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 12,
+      "deps": []
+    },
+    {
+      "slug": "alpha-reward-protocol",
+      "className": "AlphaRewardProtocol",
+      "domain": "general",
+      "status": "warn",
+      "hasPHI": true,
+      "hasHeartbeat": false,
+      "methods": 6,
+      "deps": []
+    },
+    {
+      "slug": "alpha-security-sentinel-protocol",
+      "className": "AlphaSecuritySentinelProtocol",
+      "domain": "general",
+      "status": "warn",
+      "hasPHI": true,
+      "hasHeartbeat": false,
+      "methods": 17,
+      "deps": []
+    },
+    {
+      "slug": "alpha-signal-protocol",
+      "className": "AlphaSignalProtocol",
+      "domain": "general",
+      "status": "warn",
+      "hasPHI": true,
+      "hasHeartbeat": false,
+      "methods": 12,
+      "deps": []
+    },
+    {
+      "slug": "alpha-substrate-bridge-protocol",
+      "className": "AlphaSubstrateBridgeProtocol",
+      "domain": "general",
+      "status": "warn",
+      "hasPHI": true,
+      "hasHeartbeat": false,
+      "methods": 8,
+      "deps": []
+    },
+    {
+      "slug": "alpha-workflow-engine-protocol",
+      "className": "AlphaWorkflowEngineProtocol",
+      "domain": "general",
+      "status": "warn",
+      "hasPHI": true,
+      "hasHeartbeat": false,
+      "methods": 7,
+      "deps": []
+    },
+    {
+      "slug": "artifact-generation-protocol",
+      "className": "ArtifactGenerationProtocol",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 18,
+      "deps": []
+    },
+    {
+      "slug": "attention-routing-protocol",
+      "className": "AttentionRoutingProtocol",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 21,
+      "deps": []
+    },
+    {
+      "slug": "audio-intelligence-protocol",
+      "className": "AudioSignal",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 82,
       "deps": []
     },
     {
@@ -45,6 +276,486 @@
       "deps": []
     },
     {
+      "slug": "auto-generate-calls-engine-protocol",
+      "className": "AutoGenerateCallsEngineProtocol",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 26,
+      "deps": []
+    },
+    {
+      "slug": "business-rest-api-services-protocol",
+      "className": "RESTEnvelope",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 35,
+      "deps": []
+    },
+    {
+      "slug": "category-theory-protocol",
+      "className": "CategoryObject",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 60,
+      "deps": []
+    },
+    {
+      "slug": "causal-inference-protocol",
+      "className": "CausalVariable",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 70,
+      "deps": []
+    },
+    {
+      "slug": "charter-enforcement-protocol",
+      "className": "CharterEnforcementRuntime",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 18,
+      "deps": []
+    },
+    {
+      "slug": "civilization-architecture-core-protocol",
+      "className": "CityState",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 31,
+      "deps": []
+    },
+    {
+      "slug": "civilization-scale-organism-protocol",
+      "className": "OrganismState",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 28,
+      "deps": []
+    },
+    {
+      "slug": "code-block-cognitive-interface-protocol",
+      "className": "CognitiveArtifact",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 43,
+      "deps": []
+    },
+    {
+      "slug": "collective-consciousness-protocol",
+      "className": "CollectiveMember",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 60,
+      "deps": []
+    },
+    {
+      "slug": "conceptual-persistence-engine-protocol",
+      "className": "Concept",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 32,
+      "deps": []
+    },
+    {
+      "slug": "cross-substrate-resonance-protocol",
+      "className": "CrossSubstrateResonanceProtocol",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 18,
+      "deps": []
+    },
+    {
+      "slug": "cryptographic-intelligence-protocol",
+      "className": "FieldElement",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 93,
+      "deps": []
+    },
+    {
+      "slug": "cyborg-integration-protocol",
+      "className": "CyborgProfile",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 80,
+      "deps": []
+    },
+    {
+      "slug": "dark-alerting-protocol",
+      "className": "DarkAlert",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 42,
+      "deps": []
+    },
+    {
+      "slug": "dark-anomaly-protocol",
+      "className": "StatisticalModel",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 42,
+      "deps": []
+    },
+    {
+      "slug": "dark-bot-detection-protocol",
+      "className": "BotDetector",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 31,
+      "deps": []
+    },
+    {
+      "slug": "dark-cache-protocol",
+      "className": "CacheEntry",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 40,
+      "deps": []
+    },
+    {
+      "slug": "dark-cipher-protocol",
+      "className": "DarkKey",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 37,
+      "deps": []
+    },
+    {
+      "slug": "dark-classifier-protocol",
+      "className": "FeatureVector",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 40,
+      "deps": []
+    },
+    {
+      "slug": "dark-cognition-observer-protocol",
+      "className": "DarkCognitionObserver",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 19,
+      "deps": []
+    },
+    {
+      "slug": "dark-deception-protocol",
+      "className": "FakeDataGenerator",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 28,
+      "deps": []
+    },
+    {
+      "slug": "dark-entropy-protocol",
+      "className": "DarkEntropyPool",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 18,
+      "deps": []
+    },
+    {
+      "slug": "dark-exfiltration-protocol",
+      "className": "ExfiltrationDetector",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 28,
+      "deps": []
+    },
+    {
+      "slug": "dark-fingerprint-protocol",
+      "className": "Fingerprint",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 27,
+      "deps": []
+    },
+    {
+      "slug": "dark-honeypot-protocol",
+      "className": "HoneypotTrap",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 26,
+      "deps": []
+    },
+    {
+      "slug": "dark-inference-protocol",
+      "className": "InferenceRule",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 31,
+      "deps": []
+    },
+    {
+      "slug": "dark-injection-detection-protocol",
+      "className": "InjectionPattern",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 18,
+      "deps": []
+    },
+    {
+      "slug": "dark-isolation-protocol",
+      "className": "IsolationCell",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 45,
+      "deps": []
+    },
+    {
+      "slug": "dark-learning-protocol",
+      "className": "SimplePerceptron",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 44,
+      "deps": []
+    },
+    {
+      "slug": "dark-network-protocol",
+      "className": "DarkNode",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 38,
+      "deps": []
+    },
+    {
+      "slug": "dark-orchestrator-protocol",
+      "className": "DarkComponent",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 34,
+      "deps": []
+    },
+    {
+      "slug": "dark-pattern-protocol",
+      "className": "PatternTemplate",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 45,
+      "deps": []
+    },
+    {
+      "slug": "dark-prediction-protocol",
+      "className": "TimeSeriesPredictor",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 47,
+      "deps": []
+    },
+    {
+      "slug": "dark-pulse-protocol",
+      "className": "DarkPulseGenerator",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 12,
+      "deps": []
+    },
+    {
+      "slug": "dark-queue-protocol",
+      "className": "DarkTask",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 28,
+      "deps": []
+    },
+    {
+      "slug": "dark-rate-limiter-protocol",
+      "className": "FixedWindowLimiter",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 29,
+      "deps": []
+    },
+    {
+      "slug": "dark-reputation-protocol",
+      "className": "ReputationScore",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 31,
+      "deps": []
+    },
+    {
+      "slug": "dark-response-protocol",
+      "className": "ResponseRule",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 30,
+      "deps": []
+    },
+    {
+      "slug": "dark-session-protocol",
+      "className": "DarkSession",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 47,
+      "deps": []
+    },
+    {
+      "slug": "dark-signal-protocol",
+      "className": "DarkSignal",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 20,
+      "deps": []
+    },
+    {
+      "slug": "dark-state-protocol",
+      "className": "DarkStateContainer",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 34,
+      "deps": []
+    },
+    {
+      "slug": "dark-sync-protocol",
+      "className": "PhaseOscillator",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 27,
+      "deps": []
+    },
+    {
+      "slug": "dark-tarpit-protocol",
+      "className": "TarpitSession",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 16,
+      "deps": []
+    },
+    {
+      "slug": "dark-trace-protocol",
+      "className": "DarkTraceEntry",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 24,
+      "deps": []
+    },
+    {
+      "slug": "data-fabric-protocol",
+      "className": "DataAsset",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 81,
+      "deps": []
+    },
+    {
+      "slug": "distributed-cognitive-mesh-protocol",
+      "className": "MeshNode",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 41,
+      "deps": []
+    },
+    {
+      "slug": "dream-protocol",
+      "className": "Dream",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 59,
+      "deps": []
+    },
+    {
+      "slug": "economic-governance-protocol",
+      "className": "EconomicGovernanceRuntime",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 19,
+      "deps": []
+    },
+    {
       "slug": "edge-mesh-intelligence-protocol",
       "className": "EdgeMeshIntelligenceProtocol",
       "domain": "routing",
@@ -55,6 +766,36 @@
       "deps": []
     },
     {
+      "slug": "edge-sensor-protocol",
+      "className": "EdgeSensorProtocol",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 24,
+      "deps": []
+    },
+    {
+      "slug": "embodiment-engine-protocol",
+      "className": "Sensor",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 74,
+      "deps": []
+    },
+    {
+      "slug": "emotional-resonance-protocol",
+      "className": "Emotion",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 57,
+      "deps": []
+    },
+    {
       "slug": "encrypted-intelligence-transport",
       "className": "EncryptedIntelligenceTransport",
       "domain": "security",
@@ -62,6 +803,156 @@
       "hasPHI": true,
       "hasHeartbeat": true,
       "methods": 19,
+      "deps": []
+    },
+    {
+      "slug": "ethics-governance-protocol",
+      "className": "EthicsGovernanceRuntime",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 19,
+      "deps": []
+    },
+    {
+      "slug": "federated-intelligence-networks-protocol",
+      "className": "SovereignNode",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 36,
+      "deps": []
+    },
+    {
+      "slug": "federation-governance-protocol",
+      "className": "FederationGovernanceRuntime",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 19,
+      "deps": []
+    },
+    {
+      "slug": "formal-logic-inference-protocol",
+      "className": "FormalLogicInferenceProtocol",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 32,
+      "deps": []
+    },
+    {
+      "slug": "fractal-dynamics-protocol",
+      "className": "IFSTransform",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 41,
+      "deps": []
+    },
+    {
+      "slug": "geometric-real-math-protocol",
+      "className": "GeometricRealMathProtocol",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 14,
+      "deps": []
+    },
+    {
+      "slug": "goal-stack-protocol",
+      "className": "GoalStackProtocol",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 32,
+      "deps": []
+    },
+    {
+      "slug": "hebbian-learning-protocol",
+      "className": "HebbianLearningProtocol",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 16,
+      "deps": []
+    },
+    {
+      "slug": "homeostatic-drive-protocol",
+      "className": "HomeostaticDriveProtocol",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 18,
+      "deps": []
+    },
+    {
+      "slug": "internal-security-tokens-protocol",
+      "className": "NativeIdentity",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 77,
+      "deps": []
+    },
+    {
+      "slug": "kernel-execution-protocol",
+      "className": "KernelExecutionProtocol",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 9,
+      "deps": []
+    },
+    {
+      "slug": "knowledge-synthesis-protocol",
+      "className": "KnowledgeConcept",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 69,
+      "deps": []
+    },
+    {
+      "slug": "kuramoto-oscillator-protocol",
+      "className": "KuramotoOscillatorProtocol",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 16,
+      "deps": []
+    },
+    {
+      "slug": "language-bridge-protocol",
+      "className": "LanguageSpec",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 95,
+      "deps": []
+    },
+    {
+      "slug": "memory-consolidation-protocol",
+      "className": "MemoryConsolidationProtocol",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 21,
       "deps": []
     },
     {
@@ -85,6 +976,46 @@
       "deps": []
     },
     {
+      "slug": "mini-brain-protocol",
+      "className": "MiniBrainProtocol",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 20,
+      "deps": []
+    },
+    {
+      "slug": "mini-heart-protocol",
+      "className": "MiniHeartProtocol",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 13,
+      "deps": []
+    },
+    {
+      "slug": "mlops-protocol",
+      "className": "ModelVersion",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 90,
+      "deps": []
+    },
+    {
+      "slug": "multi-agent-reasoning-ecosystem-protocol",
+      "className": "Task",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 29,
+      "deps": []
+    },
+    {
       "slug": "multi-model-fusion-protocol",
       "className": "MultiModelFusionProtocol",
       "domain": "fusion",
@@ -92,6 +1023,86 @@
       "hasPHI": true,
       "hasHeartbeat": true,
       "methods": 31,
+      "deps": []
+    },
+    {
+      "slug": "multi-node-ai-hub-protocol",
+      "className": "HubNode",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 33,
+      "deps": []
+    },
+    {
+      "slug": "multi-sovereign-compute-cores-protocol",
+      "className": "NovaCore",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 27,
+      "deps": []
+    },
+    {
+      "slug": "mutation-engine-protocol",
+      "className": "Gene",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 64,
+      "deps": []
+    },
+    {
+      "slug": "narrative-intelligence-protocol",
+      "className": "Character",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 70,
+      "deps": []
+    },
+    {
+      "slug": "neural-network-architecture-protocol",
+      "className": "Tensor",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 89,
+      "deps": []
+    },
+    {
+      "slug": "neuro-emergence-protocol",
+      "className": "NeuroEmergenceProtocol",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 19,
+      "deps": []
+    },
+    {
+      "slug": "neurochemistry-ode-protocol",
+      "className": "NeurochemistryODEProtocol",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 10,
+      "deps": []
+    },
+    {
+      "slug": "nova-core-protocol",
+      "className": "SemperMemoria",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 39,
       "deps": []
     },
     {
@@ -125,6 +1136,36 @@
       "deps": []
     },
     {
+      "slug": "p226-phase-verification-protocol",
+      "className": "P226PhaseVerificationProtocol",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 14,
+      "deps": []
+    },
+    {
+      "slug": "package-bridge-protocol",
+      "className": "PackageSpec",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 71,
+      "deps": []
+    },
+    {
+      "slug": "pattern-synthesis-protocol",
+      "className": "PatternSynthesisProtocol",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 13,
+      "deps": []
+    },
+    {
       "slug": "phi-resonance-sync-protocol",
       "className": "PhiResonanceSyncProtocol",
       "domain": "resonance",
@@ -135,6 +1176,96 @@
       "deps": []
     },
     {
+      "slug": "policy-enforcement-protocol",
+      "className": "PolicyEnforcementRuntime",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 18,
+      "deps": []
+    },
+    {
+      "slug": "predictive-coding-protocol",
+      "className": "PredictiveCodingProtocol",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 17,
+      "deps": []
+    },
+    {
+      "slug": "reasoning-engine-layer-protocol",
+      "className": "CognitiveNode",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 31,
+      "deps": []
+    },
+    {
+      "slug": "reward-signal-protocol",
+      "className": "RewardSignalProtocol",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 19,
+      "deps": []
+    },
+    {
+      "slug": "saeci-protocol",
+      "className": "Value",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 80,
+      "deps": []
+    },
+    {
+      "slug": "security-governance-protocol",
+      "className": "SecurityGovernanceRuntime",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 19,
+      "deps": []
+    },
+    {
+      "slug": "self-programming-architecture-protocol",
+      "className": "ProposedChange",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 29,
+      "deps": []
+    },
+    {
+      "slug": "shadow-memory-protocol",
+      "className": "ShadowMemoryEntry",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 36,
+      "deps": []
+    },
+    {
+      "slug": "simulation-engine-protocol",
+      "className": "Vector3D",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 105,
+      "deps": []
+    },
+    {
       "slug": "sovereign-contract-verification-protocol",
       "className": "SovereignContractVerificationProtocol",
       "domain": "security",
@@ -142,6 +1273,16 @@
       "hasPHI": true,
       "hasHeartbeat": true,
       "methods": 19,
+      "deps": []
+    },
+    {
+      "slug": "sovereign-cycle-allocator-protocol",
+      "className": "AllocationRecord",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 42,
       "deps": []
     },
     {
@@ -165,6 +1306,96 @@
       "deps": []
     },
     {
+      "slug": "symbolic-mathematics-protocol",
+      "className": "constant",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 58,
+      "deps": []
+    },
+    {
+      "slug": "synapse-binding-engine-protocol",
+      "className": "SynapseBindingEngineProtocol",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 28,
+      "deps": []
+    },
+    {
+      "slug": "temporal-governance-protocol",
+      "className": "TemporalGovernanceRuntime",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 22,
+      "deps": []
+    },
+    {
+      "slug": "temporal-protocol",
+      "className": "TemporalAnchor",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 57,
+      "deps": []
+    },
+    {
+      "slug": "threat-intelligence-protocol",
+      "className": "ThreatIndicator",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 29,
+      "deps": []
+    },
+    {
+      "slug": "token-economy-protocol",
+      "className": "Account",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 37,
+      "deps": []
+    },
+    {
+      "slug": "undead-intelligence-protocol",
+      "className": "Ghost",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 61,
+      "deps": []
+    },
+    {
+      "slug": "user-rights-protocol",
+      "className": "UserRightsRuntime",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 20,
+      "deps": []
+    },
+    {
+      "slug": "visual-intelligence-protocol",
+      "className": "Image",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 57,
+      "deps": []
+    },
+    {
       "slug": "visual-scene-intelligence-protocol",
       "className": "VisualSceneIntelligenceProtocol",
       "domain": "vision",
@@ -172,6 +1403,36 @@
       "hasPHI": true,
       "hasHeartbeat": true,
       "methods": 29,
+      "deps": []
+    },
+    {
+      "slug": "vitality-homeostasis-protocol",
+      "className": "VitalityHomeostasisProtocol",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 12,
+      "deps": []
+    },
+    {
+      "slug": "vow-protocol",
+      "className": "Vow",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 39,
+      "deps": []
+    },
+    {
+      "slug": "xr-world-protocol",
+      "className": "XRWorld",
+      "domain": "general",
+      "status": "pass",
+      "hasPHI": true,
+      "hasHeartbeat": true,
+      "methods": 57,
       "deps": []
     }
   ]
