@@ -1,6 +1,6 @@
 # 🏰 organism-sandcastle-bot — BTL Pipeline Report
 
-**Generated:** 2026-06-13T19:39:40.460Z
+**Generated:** 2026-06-14T00:38:48.976Z
 **Land Decision:** ✅ **PASS**
 **Reason:** All 2 gates passed
 **Risk Score:** 0%
