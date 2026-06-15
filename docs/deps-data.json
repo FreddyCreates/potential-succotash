@@ -1,13 +1,13 @@
 {
-  "generated": "2026-06-12T00:50:02.346Z",
+  "generated": "2026-06-15T12:55:37.859Z",
   "bot": "organism-deps-bot",
-  "totalPackages": 32,
-  "totalDeps": 48,
+  "totalPackages": 35,
+  "totalDeps": 57,
   "stalenessSummary": {
     "critical": 0,
     "stale": 0,
     "monitor": 0,
-    "fresh": 48
+    "fresh": 57
   },
   "auditTotal": 0,
   "topRiskPackages": [

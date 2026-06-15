@@ -1,14 +1,14 @@
 # 🔄 organism-deps-bot — Dependency Health Report
 
-**Generated:** 2026-06-12T00:50:02.346Z
+**Generated:** 2026-06-15T12:55:37.859Z
 **Status:** ✅ HEALTHY
-**Packages:** 32 | **Total Deps:** 48
+**Packages:** 35 | **Total Deps:** 57
 
 ## Staleness Summary
 
 | Tier | Count | Meaning |
 |---|---|---|
-| ✅ Fresh | 48 | Exact pinned or tight patch range |
+| ✅ Fresh | 57 | Exact pinned or tight patch range |
 | ⚠️ Monitor | 0 | Minor version drift allowed |
 | 🔶 Stale | 0 | Major range or pre-release |
 | ❌ Critical | 0 | Wildcard/git-ref/unpinned |
@@ -45,7 +45,10 @@
 | **cache-cognition-worker** | 3 | 0 | 0.195 |
 | **nova-coordinator** | 3 | 0 | 0.195 |
 | **gate-node** | 3 | 0 | 0.195 |
+| **http-services** | 3 | 0 | 0.195 |
 | **knowledge-realm** | 3 | 0 | 0.195 |
+| **macro-services** | 3 | 0 | 0.195 |
+| **micro-services** | 3 | 0 | 0.195 |
 | **nova-sovereign** | 3 | 0 | 0.195 |
 | **@organism/workers-shared** | 2 | 0 | 0.195 |
 | **workflows-starter** | 3 | 0 | 0.195 |
@@ -89,7 +92,10 @@
 | **cache-cognition-worker** | — Not installed |
 | **nova-coordinator** | — Not installed |
 | **gate-node** | — Not installed |
+| **http-services** | — Not installed |
 | **knowledge-realm** | — Not installed |
+| **macro-services** | — Not installed |
+| **micro-services** | — Not installed |
 | **nova-sovereign** | — Not installed |
 | **@organism/workers-shared** | — Not installed |
 | **workflows-starter** | — Not installed |
