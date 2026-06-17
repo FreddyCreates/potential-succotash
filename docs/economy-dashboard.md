@@ -1,6 +1,6 @@
 # 💰 organism-economy-bot — Economy Dashboard
 
-**Generated:** 2026-06-10T07:08:51.519Z
+**Generated:** 2026-06-17T08:28:21.859Z
 **Bot:** organism-economy-bot 💰
 
 ## Asset Inventory
@@ -9,9 +9,9 @@
 |---|---|---|---|
 | 🧬 Extensions | 40 | 2–4 pts | 82 |
 | 📦 SDKs | 18 | 5 pts | 90 |
-| 🔬 Protocols | 133 | 3 pts | 399 |
+| 🔬 Protocols | 142 | 3 pts | 426 |
 | 📊 CSV Registers | 8 | 1 pt | 8 |
-| **Total** | **199** | — | **579** |
+| **Total** | **208** | — | **606** |
 
 ## Coverage Analysis
 
@@ -145,6 +145,7 @@
 | `dark-cipher-protocol` | `DarkKey` | 37 | 342 | ✓ | ✓ |
 | `shadow-memory-protocol` | `ShadowMemoryEntry` | 36 | 457 | ✓ | ✓ |
 | `federated-intelligence-networks-protocol` | `SovereignNode` | 36 | 396 | ✓ | ✓ |
+| `business-rest-api-services-protocol` | `RESTEnvelope` | 35 | 570 | ✓ | ✓ |
 | `activated-agent-brain-mapping-protocol` | `AgentInstance` | 35 | 438 | ✓ | ✓ |
 | `dark-orchestrator-protocol` | `DarkComponent` | 34 | 441 | ✓ | ✓ |
 | `dark-state-protocol` | `DarkStateContainer` | 34 | 324 | ✓ | ✓ |
@@ -181,24 +182,32 @@
 | `edge-sensor-protocol` | `EdgeSensorProtocol` | 24 | 185 | ✓ | ✓ |
 | `edge-mesh-intelligence-protocol` | `EdgeMeshIntelligenceProtocol` | 23 | 297 | ✓ | ✓ |
 | `alpha-health-monitor-protocol` | `AlphaHealthMonitorProtocol` | 23 | 182 | ✓ | ✓ |
+| `temporal-governance-protocol` | `TemporalGovernanceRuntime` | 22 | 225 | ✓ | ✓ |
 | `memory-consolidation-protocol` | `MemoryConsolidationProtocol` | 21 | 206 | ✓ | ✓ |
 | `attention-routing-protocol` | `AttentionRoutingProtocol` | 21 | 186 | ✓ | ✓ |
 | `alpha-commander-charter-protocol` | `AlphaCommanderCharterProtocol` | 20 | 277 | ✓ | ✓ |
 | `dark-signal-protocol` | `DarkSignal` | 20 | 259 | ✓ | ✓ |
 | `memory-lineage-enhancement-protocol` | `MemoryLineageEnhancementProtocol` | 20 | 244 | ✓ | ✓ |
+| `user-rights-protocol` | `UserRightsRuntime` | 20 | 217 | ✓ | ✓ |
 | `sovereign-routing-protocol` | `SovereignRoutingProtocol` | 20 | 208 | ✓ | ✓ |
 | `mini-brain-protocol` | `MiniBrainProtocol` | 20 | 161 | ✓ | ✓ |
 | `dark-cognition-observer-protocol` | `DarkCognitionObserver` | 19 | 330 | ✓ | ✓ |
 | `sovereign-contract-verification-protocol` | `SovereignContractVerificationProtocol` | 19 | 329 | ✓ | ✓ |
 | `encrypted-intelligence-transport` | `EncryptedIntelligenceTransport` | 19 | 244 | ✓ | ✓ |
 | `sovereign-offline-cognition-protocol` | `SovereignOfflineCognitionProtocol` | 19 | 221 | ✓ | ✓ |
+| `ethics-governance-protocol` | `EthicsGovernanceRuntime` | 19 | 195 | ✓ | ✓ |
 | `neuro-emergence-protocol` | `NeuroEmergenceProtocol` | 19 | 193 | ✓ | ✓ |
+| `federation-governance-protocol` | `FederationGovernanceRuntime` | 19 | 174 | ✓ | ✓ |
+| `economic-governance-protocol` | `EconomicGovernanceRuntime` | 19 | 173 | ✓ | ✓ |
+| `security-governance-protocol` | `SecurityGovernanceRuntime` | 19 | 164 | ✓ | ✓ |
 | `reward-signal-protocol` | `RewardSignalProtocol` | 19 | 143 | ✓ | ✓ |
 | `dark-injection-detection-protocol` | `InjectionPattern` | 18 | 280 | ✓ | ✓ |
 | `dark-entropy-protocol` | `DarkEntropyPool` | 18 | 227 | ✓ | ✓ |
 | `auro-guardian-intelligence-protocol` | `AuroGuardianIntelligenceProtocol` | 18 | 220 | ✓ | ✓ |
 | `phi-resonance-sync-protocol` | `PhiResonanceSyncProtocol` | 18 | 217 | ✓ | ✓ |
 | `artifact-generation-protocol` | `ArtifactGenerationProtocol` | 18 | 212 | ✓ | ✓ |
+| `charter-enforcement-protocol` | `CharterEnforcementRuntime` | 18 | 183 | ✓ | ✓ |
+| `policy-enforcement-protocol` | `PolicyEnforcementRuntime` | 18 | 173 | ✓ | ✓ |
 | `homeostatic-drive-protocol` | `HomeostaticDriveProtocol` | 18 | 170 | ✓ | ✓ |
 | `cross-substrate-resonance-protocol` | `CrossSubstrateResonanceProtocol` | 18 | 166 | ✓ | ✓ |
 | `alpha-evolution-engine-protocol` | `AlphaEvolutionEngineProtocol` | 18 | 144 | ✓ | — |
@@ -206,11 +215,11 @@
 | `predictive-coding-protocol` | `PredictiveCodingProtocol` | 17 | 171 | ✓ | ✓ |
 | `alpha-security-sentinel-protocol` | `AlphaSecuritySentinelProtocol` | 17 | 161 | ✓ | — |
 | `dark-tarpit-protocol` | `TarpitSession` | 16 | 279 | ✓ | ✓ |
+| `hebbian-learning-protocol` | `HebbianLearningProtocol` | 16 | 168 | ✓ | ✓ |
 | `kuramoto-oscillator-protocol` | `KuramotoOscillatorProtocol` | 16 | 152 | ✓ | ✓ |
 | `oro-engine-integration-protocol` | `OroEngineIntegrationProtocol` | 15 | 239 | ✓ | ✓ |
 | `p226-phase-verification-protocol` | `P226PhaseVerificationProtocol` | 14 | 349 | ✓ | ✓ |
 | `geometric-real-math-protocol` | `GeometricRealMathProtocol` | 14 | 163 | ✓ | ✓ |
-| `hebbian-learning-protocol` | `HebbianLearningProtocol` | 14 | 153 | ✓ | ✓ |
 | `pattern-synthesis-protocol` | `PatternSynthesisProtocol` | 13 | 470 | ✓ | ✓ |
 | `mini-heart-protocol` | `MiniHeartProtocol` | 13 | 134 | ✓ | ✓ |
 | `dark-pulse-protocol` | `DarkPulseGenerator` | 12 | 193 | ✓ | ✓ |

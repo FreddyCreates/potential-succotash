@@ -1,13 +1,13 @@
 {
-  "generated": "2026-06-10T07:08:51.519Z",
+  "generated": "2026-06-17T08:28:21.859Z",
   "bot": "organism-economy-bot",
   "summary": {
-    "total": 199,
+    "total": 208,
     "extensions": 40,
     "sdks": 18,
-    "protocols": 133,
+    "protocols": 142,
     "csvRegisters": 8,
-    "totalComplexity": 579
+    "totalComplexity": 606
   },
   "coverage": {
     "sdkCoverage": 100,
