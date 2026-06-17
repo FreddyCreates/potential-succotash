@@ -1,6 +1,6 @@
 # 🏛 Casa de Inteligencia — Architecture Map
 
-**Generated:** 2026-06-11T08:28:57.073Z
+**Generated:** 2026-06-17T09:56:47.755Z
 **Bot:** organism-docs-bot 📚
 
 ## System Overview
@@ -18,7 +18,7 @@
 ║         └──────────────┴────────────┴────────────────┘          ║
 ║                              │                                   ║
 ╠══════════════════════════════╪═══════════════════════════════════╣
-║  PROTOCOLS (133 intelligence protocols)                                ║
+║  PROTOCOLS (142 intelligence protocols)                                ║
 ║  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────────┐  ║
 ║  │ Routing  │ │ Memory   │ │ Security │ │   Resonance/PHI  │  ║
 ║  │ SRP·EMIP │ │ MLP·AKAP │ │ EIT·SCVP │ │      PRSP        │  ║
@@ -57,7 +57,7 @@
 | Web App | HTML/JS | 1 |
 | CLI | Node.js | 1 |
 
-### 🔬 Protocols (133)
+### 🔬 Protocols (142)
 
 - `activated-agent-brain-mapping-protocol`
 - `adaptive-defense-protocol`
@@ -86,8 +86,10 @@
 - `auro-absorption-charter-protocol`
 - `auro-guardian-intelligence-protocol`
 - `auto-generate-calls-engine-protocol`
+- `business-rest-api-services-protocol`
 - `category-theory-protocol`
 - `causal-inference-protocol`
+- `charter-enforcement-protocol`
 - `civilization-architecture-core-protocol`
 - `civilization-scale-organism-protocol`
 - `code-block-cognitive-interface-protocol`
@@ -130,12 +132,15 @@
 - `data-fabric-protocol`
 - `distributed-cognitive-mesh-protocol`
 - `dream-protocol`
+- `economic-governance-protocol`
 - `edge-mesh-intelligence-protocol`
 - `edge-sensor-protocol`
 - `embodiment-engine-protocol`
 - `emotional-resonance-protocol`
 - `encrypted-intelligence-transport`
+- `ethics-governance-protocol`
 - `federated-intelligence-networks-protocol`
+- `federation-governance-protocol`
 - `formal-logic-inference-protocol`
 - `fractal-dynamics-protocol`
 - `geometric-real-math-protocol`
@@ -170,10 +175,12 @@
 - `package-bridge-protocol`
 - `pattern-synthesis-protocol`
 - `phi-resonance-sync-protocol`
+- `policy-enforcement-protocol`
 - `predictive-coding-protocol`
 - `reasoning-engine-layer-protocol`
 - `reward-signal-protocol`
 - `saeci-protocol`
+- `security-governance-protocol`
 - `self-programming-architecture-protocol`
 - `shadow-memory-protocol`
 - `simulation-engine-protocol`
@@ -183,10 +190,12 @@
 - `sovereign-routing-protocol`
 - `symbolic-mathematics-protocol`
 - `synapse-binding-engine-protocol`
+- `temporal-governance-protocol`
 - `temporal-protocol`
 - `threat-intelligence-protocol`
 - `token-economy-protocol`
 - `undead-intelligence-protocol`
+- `user-rights-protocol`
 - `visual-intelligence-protocol`
 - `visual-scene-intelligence-protocol`
 - `vitality-homeostasis-protocol`
