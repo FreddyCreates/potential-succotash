@@ -1,49 +1,49 @@
 {
-  "generated": "2026-06-11T09:08:02.325Z",
+  "generated": "2026-06-18T09:09:54.215Z",
   "bot": "organism-crawler-bot",
   "summary": {
-    "totalFiles": 1417,
-    "totalBytes": 15915656,
-    "totalKB": 15543,
-    "sections": 25,
+    "totalFiles": 1511,
+    "totalBytes": 16495069,
+    "totalKB": 16108,
+    "sections": 27,
     "langCounts": {
-      "YAML": 26,
-      "Other": 337,
+      "YAML": 28,
+      "Other": 356,
       "CSV": 8,
-      "Markdown": 57,
-      "JSON": 145,
-      "CSS": 2,
-      "JavaScript": 550,
+      "Markdown": 74,
+      "JSON": 166,
+      "CSS": 3,
+      "JavaScript": 563,
       "Shell": 7,
-      "HTML": 162,
-      "TypeScript": 47,
+      "HTML": 168,
+      "TypeScript": 50,
       "Motoko": 9,
-      "Python": 50,
+      "Python": 59,
       "C++": 3,
-      "TOML": 14
+      "TOML": 17
     },
     "langBytes": {
-      "YAML": 89864,
-      "Other": 4315353,
+      "YAML": 97562,
+      "Other": 4376170,
       "CSV": 409489,
-      "Markdown": 467656,
-      "JSON": 1255226,
-      "CSS": 24253,
-      "JavaScript": 5276044,
-      "Shell": 41765,
-      "HTML": 2696781,
-      "TypeScript": 814959,
+      "Markdown": 566814,
+      "JSON": 1383152,
+      "CSS": 24285,
+      "JavaScript": 5380001,
+      "Shell": 41729,
+      "HTML": 2733962,
+      "TypeScript": 921730,
       "Motoko": 178645,
-      "Python": 278169,
+      "Python": 312180,
       "C++": 21215,
-      "TOML": 46237
+      "TOML": 48135
     }
   },
   "sections": [
     {
       "name": ".github",
-      "files": 24,
-      "bytes": 85217,
+      "files": 25,
+      "bytes": 88764,
       "dirs": 1,
       "topLanguage": "YAML"
     },
@@ -56,10 +56,10 @@
     },
     {
       "name": "assets",
-      "files": 2,
-      "bytes": 37603,
-      "dirs": 2,
-      "topLanguage": "CSS"
+      "files": 4,
+      "bytes": 41358,
+      "dirs": 3,
+      "topLanguage": "Other"
     },
     {
       "name": "atlas",
@@ -83,9 +83,16 @@
       "topLanguage": "JavaScript"
     },
     {
+      "name": "docker",
+      "files": 3,
+      "bytes": 1427,
+      "dirs": 0,
+      "topLanguage": "Other"
+    },
+    {
       "name": "docs",
-      "files": 166,
-      "bytes": 4306261,
+      "files": 168,
+      "bytes": 4414923,
       "dirs": 3,
       "topLanguage": "Other"
     },
@@ -119,8 +126,8 @@
     },
     {
       "name": "governance",
-      "files": 33,
-      "bytes": 795282,
+      "files": 38,
+      "bytes": 915544,
       "dirs": 10,
       "topLanguage": "Other"
     },
@@ -154,10 +161,10 @@
     },
     {
       "name": "phantom_native",
-      "files": 10,
-      "bytes": 56611,
-      "dirs": 1,
-      "topLanguage": "Python"
+      "files": 15,
+      "bytes": 83337,
+      "dirs": 2,
+      "topLanguage": "Other"
     },
     {
       "name": "phantom_qsha",
@@ -167,23 +174,30 @@
       "topLanguage": "Python"
     },
     {
+      "name": "production-grade-builder",
+      "files": 47,
+      "bytes": 54561,
+      "dirs": 3,
+      "topLanguage": "Markdown"
+    },
+    {
       "name": "protocols",
-      "files": 135,
-      "bytes": 1507953,
+      "files": 144,
+      "bytes": 1582633,
       "dirs": 0,
       "topLanguage": "JavaScript"
     },
     {
       "name": "research",
-      "files": 25,
-      "bytes": 1478955,
+      "files": 30,
+      "bytes": 1519045,
       "dirs": 0,
       "topLanguage": "HTML"
     },
     {
       "name": "scripts",
-      "files": 72,
-      "bytes": 444664,
+      "files": 73,
+      "bytes": 454614,
       "dirs": 15,
       "topLanguage": "JavaScript"
     },
@@ -196,17 +210,17 @@
     },
     {
       "name": "test",
-      "files": 23,
-      "bytes": 272118,
-      "dirs": 17,
+      "files": 24,
+      "bytes": 291413,
+      "dirs": 18,
       "topLanguage": "JavaScript"
     },
     {
       "name": "workers",
-      "files": 51,
-      "bytes": 455232,
-      "dirs": 14,
-      "topLanguage": "TypeScript"
+      "files": 63,
+      "bytes": 566011,
+      "dirs": 17,
+      "topLanguage": "JSON"
     },
     {
       "name": "workflows",
@@ -217,10 +231,10 @@
     }
   ],
   "crossRef": {
-    "totalFiles": 307,
+    "totalFiles": 316,
     "totalImports": 313,
-    "totalExports": 585,
-    "uniqueSymbols": 551
+    "totalExports": 602,
+    "uniqueSymbols": 568
   },
   "topSymbols": [
     {

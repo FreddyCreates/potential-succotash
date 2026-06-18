@@ -1,44 +1,46 @@
 # 🕷️ organism-crawler-bot — Organism Map
 
-**Generated:** 2026-06-11T09:08:02.325Z
+**Generated:** 2026-06-18T09:09:54.215Z
 **Bot:** organism-crawler-bot 🕷️
 
 ## Repository Overview
 
 | Metric | Value |
 |---|---|
-| Total Files | 1417 |
-| Total Size | 15.18 MB |
-| Top-Level Sections | 25 |
-| Analyzed Files (xref) | 307 |
+| Total Files | 1511 |
+| Total Size | 15.73 MB |
+| Top-Level Sections | 27 |
+| Analyzed Files (xref) | 316 |
 | Total Imports | 313 |
-| Unique Symbols | 551 |
+| Unique Symbols | 568 |
 
 ## Directory Topology
 
 | Section | Files | Size | Top Language |
 |---|---|---|---|
 | **extensions/** | 493 | 2.88 MB | Other |
-| **docs/** | 166 | 4.11 MB | Other |
+| **docs/** | 168 | 4.21 MB | Other |
 | **sdk/** | 152 | 907.8 KB | JavaScript |
-| **protocols/** | 135 | 1.44 MB | JavaScript |
-| **scripts/** | 72 | 434.2 KB | JavaScript |
+| **protocols/** | 144 | 1.51 MB | JavaScript |
+| **scripts/** | 73 | 444.0 KB | JavaScript |
 | **organism/** | 65 | 616.4 KB | JavaScript |
+| **workers/** | 63 | 552.7 KB | JSON |
 | **defense-organism/** | 56 | 619.7 KB | JavaScript |
-| **workers/** | 51 | 444.6 KB | TypeScript |
-| **governance/** | 33 | 776.6 KB | Other |
+| **production-grade-builder/** | 47 | 53.3 KB | Markdown |
+| **governance/** | 38 | 894.1 KB | Other |
 | **memory_temple/** | 31 | 218.6 KB | Python |
-| **research/** | 25 | 1.41 MB | HTML |
-| **.github/** | 24 | 83.2 KB | YAML |
-| **test/** | 23 | 265.7 KB | JavaScript |
+| **research/** | 30 | 1.45 MB | HTML |
+| **.github/** | 25 | 86.7 KB | YAML |
+| **test/** | 24 | 284.6 KB | JavaScript |
 | **atlas/** | 19 | 14.7 KB | JSON |
-| **phantom_native/** | 10 | 55.3 KB | Python |
+| **phantom_native/** | 15 | 81.4 KB | Other |
 | **examples/** | 8 | 159.3 KB | JavaScript |
 | **phantom_qsha/** | 5 | 4.6 KB | Python |
+| **assets/** | 4 | 40.4 KB | Other |
 | **desktop/** | 4 | 15.5 KB | JavaScript |
 | **organism-cli/** | 4 | 48.5 KB | JavaScript |
 | **pages/** | 4 | 85.7 KB | HTML |
-| **assets/** | 2 | 36.7 KB | CSS |
+| **docker/** | 3 | 1.4 KB | Other |
 | **electron/** | 2 | 4.9 KB | JavaScript |
 | **functions/** | 2 | 8.5 KB | TypeScript |
 | **workflows/** | 2 | 2.7 KB | JSON |
@@ -48,28 +50,28 @@
 
 | Language | Files | Size |
 |---|---|---|
-| **JavaScript** | 550 | 5.03 MB |
-| **Other** | 337 | 4.12 MB |
-| **HTML** | 162 | 2.57 MB |
-| **JSON** | 145 | 1.20 MB |
-| **Markdown** | 57 | 456.7 KB |
-| **Python** | 50 | 271.6 KB |
-| **TypeScript** | 47 | 795.9 KB |
-| **YAML** | 26 | 87.8 KB |
-| **TOML** | 14 | 45.2 KB |
+| **JavaScript** | 563 | 5.13 MB |
+| **Other** | 356 | 4.17 MB |
+| **HTML** | 168 | 2.61 MB |
+| **JSON** | 166 | 1.32 MB |
+| **Markdown** | 74 | 553.5 KB |
+| **Python** | 59 | 304.9 KB |
+| **TypeScript** | 50 | 900.1 KB |
+| **YAML** | 28 | 95.3 KB |
+| **TOML** | 17 | 47.0 KB |
 | **Motoko** | 9 | 174.5 KB |
 | **CSV** | 8 | 399.9 KB |
 | **Shell** | 7 | 40.8 KB |
+| **CSS** | 3 | 23.7 KB |
 | **C++** | 3 | 20.7 KB |
-| **CSS** | 2 | 23.7 KB |
 
 ## Cross-Reference Summary
 
 ### `protocols/`
 
-- **Files analyzed:** 135
+- **Files analyzed:** 144
 - **Imports:** 126
-- **Exports:** 267 (97 classes, 4 functions)
+- **Exports:** 284 (105 classes, 4 functions)
 
 ### `sdk/`
 
@@ -116,9 +118,9 @@
 
 ### `docs/`
 
-- **Files:** 166
+- **Files:** 168
 - **Subdirectories:** 3
-- **Size:** 4.11 MB
+- **Size:** 4.21 MB
 - **Primary Language:** Other
 
 ### `sdk/`
@@ -130,16 +132,16 @@
 
 ### `protocols/`
 
-- **Files:** 135
+- **Files:** 144
 - **Subdirectories:** 0
-- **Size:** 1.44 MB
+- **Size:** 1.51 MB
 - **Primary Language:** JavaScript
 
 ### `scripts/`
 
-- **Files:** 72
+- **Files:** 73
 - **Subdirectories:** 15
-- **Size:** 434.2 KB
+- **Size:** 444.0 KB
 - **Primary Language:** JavaScript
 
 ### `organism/`
@@ -149,6 +151,13 @@
 - **Size:** 616.4 KB
 - **Primary Language:** JavaScript
 
+### `workers/`
+
+- **Files:** 63
+- **Subdirectories:** 17
+- **Size:** 552.7 KB
+- **Primary Language:** JSON
+
 ### `defense-organism/`
 
 - **Files:** 56
@@ -156,18 +165,18 @@
 - **Size:** 619.7 KB
 - **Primary Language:** JavaScript
 
-### `workers/`
+### `production-grade-builder/`
 
-- **Files:** 51
-- **Subdirectories:** 14
-- **Size:** 444.6 KB
-- **Primary Language:** TypeScript
+- **Files:** 47
+- **Subdirectories:** 3
+- **Size:** 53.3 KB
+- **Primary Language:** Markdown
 
 ### `governance/`
 
-- **Files:** 33
+- **Files:** 38
 - **Subdirectories:** 10
-- **Size:** 776.6 KB
+- **Size:** 894.1 KB
 - **Primary Language:** Other
 
 ### `memory_temple/`
@@ -179,23 +188,23 @@
 
 ### `research/`
 
-- **Files:** 25
+- **Files:** 30
 - **Subdirectories:** 0
-- **Size:** 1.41 MB
+- **Size:** 1.45 MB
 - **Primary Language:** HTML
 
 ### `.github/`
 
-- **Files:** 24
+- **Files:** 25
 - **Subdirectories:** 1
-- **Size:** 83.2 KB
+- **Size:** 86.7 KB
 - **Primary Language:** YAML
 
 ### `test/`
 
-- **Files:** 23
-- **Subdirectories:** 17
-- **Size:** 265.7 KB
+- **Files:** 24
+- **Subdirectories:** 18
+- **Size:** 284.6 KB
 - **Primary Language:** JavaScript
 
 ### `atlas/`
@@ -207,10 +216,10 @@
 
 ### `phantom_native/`
 
-- **Files:** 10
-- **Subdirectories:** 1
-- **Size:** 55.3 KB
-- **Primary Language:** Python
+- **Files:** 15
+- **Subdirectories:** 2
+- **Size:** 81.4 KB
+- **Primary Language:** Other
 
 ### `examples/`
 
@@ -225,6 +234,13 @@
 - **Subdirectories:** 0
 - **Size:** 4.6 KB
 - **Primary Language:** Python
+
+### `assets/`
+
+- **Files:** 4
+- **Subdirectories:** 3
+- **Size:** 40.4 KB
+- **Primary Language:** Other
 
 ### `desktop/`
 
@@ -247,12 +263,12 @@
 - **Size:** 85.7 KB
 - **Primary Language:** HTML
 
-### `assets/`
+### `docker/`
 
-- **Files:** 2
-- **Subdirectories:** 2
-- **Size:** 36.7 KB
-- **Primary Language:** CSS
+- **Files:** 3
+- **Subdirectories:** 0
+- **Size:** 1.4 KB
+- **Primary Language:** Other
 
 ### `electron/`
 
