@@ -1,8 +1,8 @@
 {
-  "generated": "2026-05-02T22:31:10.971Z",
+  "generated": "2026-06-19T10:15:04.427Z",
   "bot": "organism-sdk-bot",
-  "totalSDKs": 11,
-  "publishableSDKs": 11,
+  "totalSDKs": 18,
+  "publishableSDKs": 18,
   "sdks": [
     {
       "slug": "ai-model-engines",
@@ -104,7 +104,136 @@
       ],
       "dependencies": [],
       "peerDependencies": [],
-      "srcFileCount": 6,
+      "srcFileCount": 7,
+      "publishable": true
+    },
+    {
+      "slug": "medina-calls",
+      "name": "@medina/medina-calls",
+      "version": "1.0.0",
+      "description": "Write operations SDK: Civitas mutations, Organism mutations, Governance mutations",
+      "main": "src/index.js",
+      "license": "MIT",
+      "keywords": [
+        "calls",
+        "mutations",
+        "civitas",
+        "organism",
+        "governance",
+        "icp",
+        "blockchain"
+      ],
+      "dependencies": [],
+      "peerDependencies": [],
+      "srcFileCount": 4,
+      "publishable": true
+    },
+    {
+      "slug": "medina-queries",
+      "name": "@medina/medina-queries",
+      "version": "1.0.0",
+      "description": "Read operations SDK: Civitas queries, Organism queries, Governance queries with caching",
+      "main": "src/index.js",
+      "license": "MIT",
+      "keywords": [
+        "queries",
+        "reads",
+        "civitas",
+        "organism",
+        "governance",
+        "caching"
+      ],
+      "dependencies": [],
+      "peerDependencies": [],
+      "srcFileCount": 4,
+      "publishable": true
+    },
+    {
+      "slug": "medina-timers",
+      "name": "@medina/medina-timers",
+      "version": "1.0.0",
+      "description": "Mathematical timer implementations: Ancient calendars, sacred geometry, cosmic cycles, agent timer suites",
+      "main": "src/index.js",
+      "license": "MIT",
+      "keywords": [
+        "phi",
+        "timers",
+        "fibonacci",
+        "golden-ratio",
+        "mayan-calendar",
+        "sacred-geometry",
+        "organism",
+        "civitas"
+      ],
+      "dependencies": [],
+      "peerDependencies": [],
+      "srcFileCount": 4,
+      "publishable": true
+    },
+    {
+      "slug": "agents",
+      "name": "@medina/organism-agents",
+      "version": "1.0.0",
+      "description": "The 12 agent organs of Civitas — ANIMUS (Mind), CORPUS (Body), SENSUS (Senses), MEMORIA (Memory)",
+      "main": "index.js",
+      "license": "MIT",
+      "keywords": [
+        "organism",
+        "agents",
+        "autonomous",
+        "AI",
+        "animus",
+        "corpus",
+        "sensus",
+        "memoria",
+        "civitas"
+      ],
+      "dependencies": [],
+      "peerDependencies": [],
+      "srcFileCount": 0,
+      "publishable": true
+    },
+    {
+      "slug": "organism-bootstrap",
+      "name": "@medina/organism-bootstrap",
+      "version": "1.0.0",
+      "description": "ICP/Organism bootstrap SDK: Node.js bootstrap function, Motoko code generator with φ-based timers",
+      "main": "src/index.js",
+      "license": "MIT",
+      "keywords": [
+        "icp",
+        "internet-computer",
+        "motoko",
+        "bootstrap",
+        "organism",
+        "canister",
+        "phi-timers"
+      ],
+      "dependencies": [],
+      "peerDependencies": [],
+      "srcFileCount": 1,
+      "publishable": true
+    },
+    {
+      "slug": "engines",
+      "name": "@medina/organism-engines",
+      "version": "1.0.0",
+      "description": "The 4 foundational physics engines of Civitas — CHRONO, NEXORIS, QUANTUM_FLUX, COREOGRAPH",
+      "main": "index.js",
+      "license": "MIT",
+      "keywords": [
+        "organism",
+        "engines",
+        "chrono",
+        "nexoris",
+        "quantum",
+        "coreograph",
+        "phi",
+        "civitas"
+      ],
+      "dependencies": [],
+      "peerDependencies": [],
+      "srcFileCount": 0,
       "publishable": true
     },
     {
@@ -132,6 +261,26 @@
       "dependencies": [],
       "peerDependencies": [],
       "srcFileCount": 8,
+      "publishable": true
+    },
+    {
+      "slug": "runtime",
+      "name": "@medina/organism-runtime",
+      "version": "1.0.0",
+      "description": "The runtime layer — CivitasRuntime coordinator, bootstrapCivitas activation, and hash routing",
+      "main": "index.js",
+      "license": "MIT",
+      "keywords": [
+        "organism",
+        "runtime",
+        "civitas",
+        "bootstrap",
+        "coordinator",
+        "routing"
+      ],
+      "dependencies": [],
+      "peerDependencies": [],
+      "srcFileCount": 0,
       "publishable": true
     },
     {
