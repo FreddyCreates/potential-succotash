@@ -1,6 +1,6 @@
 # 🕷️ organism-crawler-bot — Organism Map
 
-**Generated:** 2026-06-18T09:09:54.215Z
+**Generated:** 2026-06-25T08:17:49.955Z
 **Bot:** organism-crawler-bot 🕷️
 
 ## Repository Overview
@@ -8,7 +8,7 @@
 | Metric | Value |
 |---|---|
 | Total Files | 1511 |
-| Total Size | 15.73 MB |
+| Total Size | 15.82 MB |
 | Top-Level Sections | 27 |
 | Analyzed Files (xref) | 316 |
 | Total Imports | 313 |
@@ -27,7 +27,7 @@
 | **workers/** | 63 | 552.7 KB | JSON |
 | **defense-organism/** | 56 | 619.7 KB | JavaScript |
 | **production-grade-builder/** | 47 | 53.3 KB | Markdown |
-| **governance/** | 38 | 894.1 KB | Other |
+| **governance/** | 38 | 977.7 KB | Other |
 | **memory_temple/** | 31 | 218.6 KB | Python |
 | **research/** | 30 | 1.45 MB | HTML |
 | **.github/** | 25 | 86.7 KB | YAML |
@@ -53,8 +53,8 @@
 | **JavaScript** | 563 | 5.13 MB |
 | **Other** | 356 | 4.17 MB |
 | **HTML** | 168 | 2.61 MB |
-| **JSON** | 166 | 1.32 MB |
-| **Markdown** | 74 | 553.5 KB |
+| **JSON** | 166 | 1.40 MB |
+| **Markdown** | 74 | 560.6 KB |
 | **Python** | 59 | 304.9 KB |
 | **TypeScript** | 50 | 900.1 KB |
 | **YAML** | 28 | 95.3 KB |
@@ -176,7 +176,7 @@
 
 - **Files:** 38
 - **Subdirectories:** 10
-- **Size:** 894.1 KB
+- **Size:** 977.7 KB
 - **Primary Language:** Other
 
 ### `memory_temple/`
