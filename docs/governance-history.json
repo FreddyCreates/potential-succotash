@@ -1,12 +1,5 @@
 [
   {
-    "ts": "2026-06-03T11:04:14.771Z",
-    "decision": "ALLOW",
-    "risk": 0.25,
-    "events": 124,
-    "forbids": 0
-  },
-  {
     "ts": "2026-06-03T16:53:48.960Z",
     "decision": "ALLOW",
     "risk": 0.25,
@@ -697,6 +690,13 @@
     "decision": "ALLOW",
     "risk": 0.25,
     "events": 223,
+    "forbids": 0
+  },
+  {
+    "ts": "2026-06-28T13:51:09.816Z",
+    "decision": "ALLOW",
+    "risk": 0.25,
+    "events": 224,
     "forbids": 0
   }
 ]
