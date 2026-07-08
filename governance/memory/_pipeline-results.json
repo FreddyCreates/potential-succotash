@@ -1,5 +1,5 @@
 {
-  "ranAt": "2026-07-07T19:58:11.316Z",
+  "ranAt": "2026-07-08T02:52:17.471Z",
   "domains": [
     "bot",
     "security",
@@ -19,7 +19,7 @@
       "riskScore": 0.05,
       "status": "pass",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-07-07T19:58:11.316Z"
+      "ranAt": "2026-07-08T02:52:17.471Z"
     },
     "security": {
       "domain": "security",
@@ -30,7 +30,7 @@
       "riskScore": 0.05,
       "status": "pass",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-07-07T19:58:11.316Z"
+      "ranAt": "2026-07-08T02:52:17.471Z"
     },
     "learning": {
       "domain": "learning",
@@ -41,7 +41,7 @@
       "riskScore": 0.05,
       "status": "pass",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-07-07T19:58:11.316Z"
+      "ranAt": "2026-07-08T02:52:17.471Z"
     },
     "economy": {
       "domain": "economy",
@@ -52,7 +52,7 @@
       "riskScore": 0.05,
       "status": "pass",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-07-07T19:58:11.316Z"
+      "ranAt": "2026-07-08T02:52:17.471Z"
     },
     "topology": {
       "domain": "topology",
@@ -63,18 +63,18 @@
       "riskScore": 0.25,
       "status": "warned",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-07-07T19:58:11.316Z"
+      "ranAt": "2026-07-08T02:52:17.471Z"
     },
     "meta": {
       "domain": "meta",
       "pipelineId": "pipeline://governance/meta_cycle",
-      "eventCount": 255,
+      "eventCount": 256,
       "forbidCount": 0,
       "warnCount": 0,
       "riskScore": 0.05,
       "status": "pass",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-07-07T19:58:11.316Z"
+      "ranAt": "2026-07-08T02:52:17.471Z"
     },
     "general": {
       "domain": "general",
@@ -85,7 +85,7 @@
       "riskScore": 0.05,
       "status": "pass",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-07-07T19:58:11.316Z"
+      "ranAt": "2026-07-08T02:52:17.471Z"
     }
   },
   "overallRisk": 0.25,
