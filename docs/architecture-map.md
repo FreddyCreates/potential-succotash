@@ -1,6 +1,6 @@
 # 🏛 Casa de Inteligencia — Architecture Map
 
-**Generated:** 2026-07-08T07:34:34.739Z
+**Generated:** 2026-07-12T01:22:35.969Z
 **Bot:** organism-docs-bot 📚
 
 ## System Overview
