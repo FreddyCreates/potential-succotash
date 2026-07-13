@@ -19,22 +19,32 @@
   "build": {
     "appId": "com.vigil.ai.desktop",
     "productName": "Vigil AI",
-    "copyright": "Copyright © 2024 Medina",
+    "copyright": "Copyright 2026 Medina / FreddyCreates",
     "directories": {
       "output": "../dist/desktop"
     },
     "extraResources": [
       {
-        "from": "../extensions/jarvis",
+        "from": "../extensions/jarvis/dist",
         "to": "jarvis",
-        "filter": [
-          "**/*",
-          "!*.code-workspace"
-        ]
+        "filter": ["**/*"]
+      },
+      {
+        "from": "../extensions/jarvis/background.js",
+        "to": "jarvis/background.js"
+      },
+      {
+        "from": "../extensions/jarvis/sidepanel.html",
+        "to": "jarvis/sidepanel.html"
+      },
+      {
+        "from": "../extensions/jarvis/icons",
+        "to": "jarvis/icons",
+        "filter": ["**/*"]
       }
     ],
     "win": {
-      "icon": "../extensions/jarvis/icons/icon128.png",
+      "icon": "build/icon.png",
       "target": [
         {
           "target": "nsis",
