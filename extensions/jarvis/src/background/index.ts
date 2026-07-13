@@ -1319,7 +1319,24 @@ class VigilEngine {
 
     // 19. Commands list
     } else if (/what commands|show commands|list commands|commands (available|you know|can you)/i.test(text)) {
-      response = 'VIGIL v14 commands:\n\n"list tabs" / "switch tab 2" / "close tab 3" / "new tab"\n"go to [url]"\n"take note: [text]" / "list notes" / "delete note"\n"screenshot"\n"read page" / "summarize"\n"generate pdf report" → PDF download\n"generate excel" → .xlsx download\n"draft email to [address]"\n"search for [topic]"\n"research [topic]" / "theory [idea]" / "framework [system]"\n"brainstorm [topic]" / "risk [thing]" / "what if [scenario]"\n\n🤖 SOVEREIGN AGENTS (9 types):\n"research [topic]" → researcher agent (Wikipedia + news)\n"crawl [url]" → spider agent (follows links, parallel fetch)\n"scrape [url]" → structured data extractor (tables, prices)\n"scout [url]" → quick deep scan + link map\n"digest: topic1, topic2…" → parallel multi-topic synthesis\n"deploy agent: monitor [url]" → tab-based site watcher\n"deploy agent: sweep [url1], [url2]" → multi-site sweep\n"list agents" / "recall agent" / "recall all agents"\n\n⚗️ AGI TOOLS (open AGI Tools tab):\n"summarize [url]" → fetch + extract any page\n"forge report" → compile all agent findings\nUse the ⚗️ AGI Tools tab for table extraction + source diff';
+      response = 'VIGIL multi-swarm IDE commands:\n\n"list tabs" / "switch tab 2" / "close tab 3" / "new tab"\n"go to [url]"\n"take note: [text]" / "list notes" / "delete note"\n"screenshot"\n"read page" / "summarize"\n"generate pdf report" → PDF download\n"generate excel" → .xlsx download\n"draft email to [address]"\n"search for [topic]"\n"research [topic]" / "theory [idea]" / "framework [system]"\n"brainstorm [topic]" / "risk [thing]" / "what if [scenario]"\n\n🐝 MULTI-SWARM:\n"deploy a swarm on [topic]" → researcher + scout + digest in parallel\n"launch swarm for [goal]" / "multi-swarm [topic]"\n"list swarms" / "recall swarm" / "recall all swarms"\n\n🤖 SOVEREIGN AGENTS (9 types):\n"research [topic]" → researcher agent (Wikipedia + news)\n"crawl [url]" → spider agent (follows links, parallel fetch)\n"scrape [url]" → structured data extractor (tables, prices)\n"scout [url]" → quick deep scan + link map\n"digest: topic1, topic2…" → parallel multi-topic synthesis\n"deploy agent: monitor [url]" → tab-based site watcher\n"deploy agent: sweep [url1], [url2]" → multi-site sweep\n"list agents" / "recall agent" / "recall all agents"\n\n⚗️ AGI TOOLS (open AGI Tools tab):\n"summarize [url]" → fetch + extract any page\n"forge report" → compile all agent findings\nUse the ⚗️ AGI Tools tab for table extraction + source diff';
+
+    // 19b0. Multi-swarm — coordinated agent team
+    } else if (/\b(multi[-\s]?swarm|deploy (a |the )?swarm|launch (a |the )?swarm|swarm (on|for|about)|dispatch multi[-\s]?agent)\b/i.test(text)) {
+      const goal = raw
+        .replace(/multi[-\s]?swarm|deploy (a |the )?swarm|launch (a |the )?swarm|swarm (on|for|about)|dispatch multi[-\s]?agent|please|hey|vigil/gi, '')
+        .replace(/^[\s:,-]+/, '')
+        .trim() || raw;
+      chrome.runtime.sendMessage({ action: 'deploySwarm', goal }, (resp) => {
+        callback({
+          success: !!resp?.success,
+          message: resp?.message || ('🐝 Multi-swarm launching for "' + goal + '". Researcher + scout + digest running in parallel.'),
+          agent: 'VIGIL • MULTI-SWARM',
+          mood,
+          awareness,
+        });
+      });
+      return;
 
     // 19b. Sovereign Agent — deploy researcher
     } else if (/deploy agent.*research|agent.*research|research agent|send agent.*research/i.test(text)) {
@@ -2140,10 +2157,25 @@ class SovereignAgent {
   }
 }
 
-/* -- Agent Dispatcher (V7: 10 concurrent, 9 types) -- */
+/* -- Agent Dispatcher (V7: 10 concurrent, 9 types) + Multi-Swarm -- */
 
 const MAX_AGENTS = 10;
+const MAX_SWARMS = 4;
 const AGENT_NAMES = ['ALPHA-1', 'ALPHA-2', 'ALPHA-3', 'BETA-1', 'BETA-2', 'GAMMA-1', 'SIGMA-1', 'DELTA-1', 'OMEGA-1', 'ZETA-1'];
+const SWARM_NAMES = ['SWARM-PHOENIX', 'SWARM-HYDRA', 'SWARM-ORION', 'SWARM-NEXUS'];
+
+interface SwarmData {
+  id: string;
+  name: string;
+  goal: string;
+  agentIds: string[];
+  agentNames: string[];
+  status: 'running' | 'complete' | 'recalled' | 'partial';
+  createdAt: number;
+  completedAt?: number;
+  report?: string;
+  completedCount: number;
+}
 
 declare const globalThis: {
   jarvisEngine?: VigilEngine;
@@ -2153,6 +2185,8 @@ declare const globalThis: {
 class AgentDispatcher {
   agents: Map<string, SovereignAgent> = new Map();
   history: SovereignAgentData[] = [];
+  swarms: Map<string, SwarmData> = new Map();
+  swarmHistory: SwarmData[] = [];
 
   private _researchSteps(topic: string): AgentStep[] {
     const enc = encodeURIComponent(topic);
@@ -2325,6 +2359,145 @@ class AgentDispatcher {
         + '🏗️ Structure:\n' + structured.substring(0, 600) + '\n\n'
         + '🔗 Links found: ' + links.length + '\n' + links.slice(0, 5).join('\n');
     } catch (e) { return '❌ Scout failed: ' + (e as Error).message; }
+  }
+
+  /**
+   * Multi-swarm deploy: launch a coordinated team of agents against one goal.
+   * Default composition: researcher + scout + digest (parallel).
+   */
+  deploySwarm(
+    goal: string,
+    onProgress: (swarm: SwarmData, agent: SovereignAgentData) => void,
+    onComplete: (swarm: SwarmData) => void,
+    roles?: AgentType[],
+  ): SwarmData | { error: string } {
+    const cleanGoal = (goal || '').trim();
+    if (!cleanGoal) return { error: 'Swarm requires a goal or topic.' };
+
+    const runningSwarms = [...this.swarms.values()].filter(s => s.status === 'running').length;
+    if (runningSwarms >= MAX_SWARMS) {
+      return { error: 'Maximum ' + MAX_SWARMS + ' swarms active. Recall one first.' };
+    }
+
+    const runningAgents = [...this.agents.values()].filter(a => a.data.status === 'running').length;
+    const plannedRoles: AgentType[] = (roles && roles.length > 0)
+      ? roles.slice(0, 5)
+      : ['researcher', 'scout', 'digest'];
+    if (runningAgents + plannedRoles.length > MAX_AGENTS) {
+      return {
+        error: 'Not enough agent slots (' + runningAgents + ' running, need '
+          + plannedRoles.length + ', max ' + MAX_AGENTS + '). Recall agents first.',
+      };
+    }
+
+    const swarmId = 'swarm-' + Date.now();
+    const swarmName = SWARM_NAMES[this.swarms.size % SWARM_NAMES.length];
+    const swarm: SwarmData = {
+      id: swarmId,
+      name: swarmName,
+      goal: cleanGoal,
+      agentIds: [],
+      agentNames: [],
+      status: 'running',
+      createdAt: Date.now(),
+      completedCount: 0,
+    };
+    this.swarms.set(swarmId, swarm);
+
+    const topicParts = cleanGoal.split(/[,;|]/).map(s => s.trim()).filter(Boolean);
+    const digestTopics = topicParts.length > 1 ? topicParts.slice(0, 6) : [cleanGoal, cleanGoal + ' overview', cleanGoal + ' applications'];
+
+    for (const role of plannedRoles) {
+      const target: string | string[] =
+        role === 'digest' || role === 'analyst' ? digestTopics : cleanGoal;
+      const mission = '[' + swarmName + '/' + role + '] ' + cleanGoal;
+      const result = this.deploy(
+        role,
+        mission,
+        target,
+        (agentData) => {
+          onProgress(swarm, agentData);
+          chrome.runtime.sendMessage({ action: '_swarmProgress', swarm, agent: agentData }).catch(() => {});
+        },
+        (agentData) => {
+          const live = this.swarms.get(swarmId);
+          if (!live) return;
+          live.completedCount += 1;
+          const allDone = live.completedCount >= live.agentIds.length;
+          if (allDone) {
+            live.status = agentData.status === 'recalled' && live.completedCount === live.agentIds.length
+              ? 'recalled'
+              : 'complete';
+            live.completedAt = Date.now();
+            live.report = this._forgeSwarmReport(live);
+            this.swarmHistory.unshift({ ...live });
+            this.swarms.delete(swarmId);
+            onComplete(live);
+            chrome.runtime.sendMessage({ action: '_swarmComplete', swarm: live }).catch(() => {});
+          } else {
+            live.status = 'partial';
+            onProgress(live, agentData);
+          }
+        },
+      );
+      if ('error' in result) {
+        // If first agent fails, abort swarm; otherwise keep partial team
+        if (swarm.agentIds.length === 0) {
+          this.swarms.delete(swarmId);
+          return { error: result.error };
+        }
+        continue;
+      }
+      swarm.agentIds.push(result.id);
+      swarm.agentNames.push(result.name);
+    }
+
+    if (swarm.agentIds.length === 0) {
+      this.swarms.delete(swarmId);
+      return { error: 'Could not deploy any agents for this swarm.' };
+    }
+
+    return swarm;
+  }
+
+  private _forgeSwarmReport(swarm: SwarmData): string {
+    const related = [...this.history, ...[...this.agents.values()].map(a => a.data)]
+      .filter(a => swarm.agentIds.includes(a.id) || (a.mission || '').includes(swarm.name));
+    let report = '🐝 MULTI-SWARM REPORT — ' + swarm.name + '\n';
+    report += 'Goal: ' + swarm.goal + '\n';
+    report += 'Agents: ' + swarm.agentNames.join(', ') + ' · status: ' + swarm.status + '\n';
+    report += new Date(swarm.completedAt || Date.now()).toLocaleString() + '\n\n' + '═'.repeat(40) + '\n\n';
+    for (const a of related.slice(0, 8)) {
+      report += '▶ ' + a.name + ' [' + a.type + '] — ' + a.status + '\n';
+      if (a.report) report += a.report.substring(0, 900) + '\n\n';
+      else {
+        const extracts = a.steps.filter(s => s.extract).map(s => s.label + ':\n' + s.extract).join('\n\n');
+        if (extracts) report += extracts.substring(0, 900) + '\n\n';
+      }
+      report += '─'.repeat(40) + '\n\n';
+    }
+    return report.trim();
+  }
+
+  listSwarms(): SwarmData[] {
+    return [...this.swarms.values(), ...this.swarmHistory.slice(0, 10)];
+  }
+
+  recallSwarm(id: string): boolean {
+    const swarm = this.swarms.get(id);
+    if (!swarm) return false;
+    for (const agentId of swarm.agentIds) this.recall(agentId);
+    swarm.status = 'recalled';
+    swarm.completedAt = Date.now();
+    this.swarmHistory.unshift({ ...swarm });
+    this.swarms.delete(id);
+    return true;
+  }
+
+  recallAllSwarms(): number {
+    const ids = [...this.swarms.keys()];
+    for (const id of ids) this.recallSwarm(id);
+    return ids.length;
   }
 }
 
@@ -2676,6 +2849,67 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     case 'recallAllAgents': {
       globalThis.agentDispatcher!.recallAll();
       sendResponse({ success: true, message: 'All agents recalled.' });
+      break;
+    }
+
+    /* -- Multi-Swarm handlers ------------------------------------ */
+    case 'deploySwarm': {
+      const dispatcher = globalThis.agentDispatcher!;
+      const goal = ((message.goal as string) || (message.topic as string) || (message.mission as string) || '').trim();
+      const roles = message.roles as AgentType[] | undefined;
+      const notify = (swarm: SwarmData, agent: SovereignAgentData) => {
+        chrome.runtime.sendMessage({ action: '_swarmProgress', swarm, agent }).catch(() => {});
+      };
+      const complete = (swarm: SwarmData) => {
+        try {
+          chrome.notifications.create('jarvis-swarm-' + Date.now(), {
+            type: 'basic',
+            iconUrl: chrome.runtime.getURL('icons/icon128.png'),
+            title: 'VIGIL — ' + swarm.name + ' Complete',
+            message: 'Swarm goal "' + swarm.goal.substring(0, 60) + '" finished (' + swarm.completedCount + ' agents).',
+            priority: 1,
+          });
+        } catch { /* ignore */ }
+        chrome.runtime.sendMessage({ action: '_swarmComplete', swarm }).catch(() => {});
+        if (swarm.report) {
+          chrome.runtime.sendMessage({
+            action: '_mirrorPush',
+            content: { type: 'report', title: swarm.name + ' Swarm Report', data: swarm.report, meta: swarm.goal },
+          }).catch(() => {});
+          pushToInbox({
+            category: 'agent',
+            title: '🐝 ' + swarm.name + ' — swarm ' + swarm.status,
+            body: swarm.goal + '\n\n' + swarm.report.substring(0, 500) + (swarm.report.length > 500 ? '…' : ''),
+            meta: swarm.agentNames.join(', '),
+            timestamp: Date.now(),
+          });
+        }
+      };
+      const result = dispatcher.deploySwarm(goal, notify, complete, roles);
+      if ('error' in result) {
+        sendResponse({ success: false, message: result.error });
+      } else {
+        sendResponse({
+          success: true,
+          message: '🐝 Deploying ' + result.name + ' with ' + result.agentIds.length
+            + ' agents (' + result.agentNames.join(', ') + '). Goal: "' + goal + '". I\'ll forge a swarm report when they finish.',
+          swarm: result,
+        });
+      }
+      break;
+    }
+    case 'listSwarms': {
+      sendResponse({ success: true, swarms: globalThis.agentDispatcher!.listSwarms() });
+      break;
+    }
+    case 'recallSwarm': {
+      const ok = globalThis.agentDispatcher!.recallSwarm(message.swarmId as string);
+      sendResponse({ success: ok, message: ok ? 'Swarm recalled.' : 'Swarm not found.' });
+      break;
+    }
+    case 'recallAllSwarms': {
+      const n = globalThis.agentDispatcher!.recallAllSwarms();
+      sendResponse({ success: true, message: n > 0 ? 'Recalled ' + n + ' swarm(s).' : 'No active swarms.' });
       break;
     }
 
