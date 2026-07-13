@@ -1,5 +1,5 @@
 @echo off
-title Vigil AI - Windows Edge Installer
+title Vigil AI - Google Chrome Installer
 color 0B
 cls
 
@@ -7,38 +7,41 @@ echo.
 echo  ╔══════════════════════════════════════════════════════════════╗
 echo  ║                                                              ║
 echo  ║      ░░░░░░░  V.I.G.I.L  ░░░░░░░                             ║
-echo  ║      Vigil AI — Chrome/Edge Multi-Swarm Agent IDE            ║
+echo  ║      Vigil AI — Chrome Multi-Swarm Agent IDE                 ║
 echo  ║                                                              ║
-echo  ║      VERSION  18.0  ──  SOVEREIGN INTELLIGENCE               ║
-echo  ║      Agents · Multi-Swarm · PSE · NeuroCore · Side Panel     ║
+echo  ║      VERSION  18.0  ──  COMMERCIAL PACK                      ║
+echo  ║      Agents · Multi-Swarm · Side Panel · Offline core        ║
 echo  ║                                                              ║
 echo  ╚══════════════════════════════════════════════════════════════╝
 echo.
-echo  [ INSTALLING INTO MICROSOFT EDGE ]
+echo  [ INSTALLING INTO GOOGLE CHROME ]
 echo.
 echo  Prefers a local build if present, otherwise downloads from main.
 echo  No admin rights required.
 echo.
 pause
 
-:: ── Locate Edge ──────────────────────────────────────────────
-set "EDGE64=%ProgramFiles%\Microsoft\Edge\Application\msedge.exe"
-set "EDGE86=%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe"
-set "EDGE_PATH="
+:: ── Locate Chrome ────────────────────────────────────────────
+set "CHROME64=%ProgramFiles%\Google\Chrome\Application\chrome.exe"
+set "CHROME86=%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe"
+set "CHROME_LOCAL=%LOCALAPPDATA%\Google\Chrome\Application\chrome.exe"
+set "CHROME_PATH="
 
-if exist "%EDGE64%" set "EDGE_PATH=%EDGE64%"
-if exist "%EDGE86%" set "EDGE_PATH=%EDGE86%"
+if exist "%CHROME64%" set "CHROME_PATH=%CHROME64%"
+if exist "%CHROME86%" set "CHROME_PATH=%CHROME86%"
+if exist "%CHROME_LOCAL%" set "CHROME_PATH=%CHROME_LOCAL%"
 
-if "%EDGE_PATH%"=="" (
+if "%CHROME_PATH%"=="" (
   echo.
-  echo  [!] Microsoft Edge not found.
-  echo      Get it at: https://microsoft.com/edge
+  echo  [!] Google Chrome not found.
+  echo      Get it at: https://www.google.com/chrome/
+  echo      Or use install-jarvis.bat for Microsoft Edge.
   echo.
   pause
   exit /b 1
 )
 
-echo  [✓] Edge found: %EDGE_PATH%
+echo  [✓] Chrome found: %CHROME_PATH%
 
 set "INSTALL_DIR=%LOCALAPPDATA%\VigilAI"
 set "ZIP_FILE=%TEMP%\vigil-ai-extension.zip"
@@ -49,7 +52,7 @@ set "LOCAL_EXT=%SCRIPT_DIR%extension\vigil-ai-v18.0.0.zip"
 set "DL_V18=https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/vigil-ai-v18.0.0.zip"
 set "DL_JARVIS=https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/jarvis.zip"
 
-:: ── Source: local dist, commercial pack layout, then GitHub main ─
+:: ── Source: local dist first, commercial pack layout, then GitHub ─
 set "SOURCE_ZIP="
 if exist "%LOCAL_V18%" (
   set "SOURCE_ZIP=%LOCAL_V18%"
@@ -66,8 +69,7 @@ if exist "%LOCAL_V18%" (
     "try { Invoke-WebRequest -Uri '%DL_V18%' -OutFile '%ZIP_FILE%' -UseBasicParsing; exit 0 } catch { try { Invoke-WebRequest -Uri '%DL_JARVIS%' -OutFile '%ZIP_FILE%' -UseBasicParsing; exit 0 } catch { Write-Host '  [ERR] ' + $_.Exception.Message; exit 1 } }"
   if errorlevel 1 (
     echo.
-    echo  [!] Download failed. Check your connection, or clone the repo
-    echo      and run this script from the repo root so local dist\ is used.
+    echo  [!] Download failed. Check your connection, or place the zip under dist\extensions\.
     pause
     exit /b 1
   )
@@ -83,7 +85,7 @@ if exist "%INSTALL_DIR%" rd /s /q "%INSTALL_DIR%" 2>nul
 mkdir "%INSTALL_DIR%" 2>nul
 
 powershell -NoProfile -ExecutionPolicy Bypass -Command ^
-  "$src='%SOURCE_ZIP%'; $dest='%INSTALL_DIR%'; Expand-Archive -Path $src -DestinationPath $dest -Force; $m = Get-ChildItem -Path $dest -Recurse -Filter manifest.json | Select-Object -First 1; if (-not $m) { Write-Host '  [ERR] manifest.json not found after extract'; exit 1 }; $root = $m.Directory.FullName; if ($root -ne (Resolve-Path $dest).Path) { Get-ChildItem $root | Move-Item -Destination $dest -Force; $orphan = Get-ChildItem $dest -Directory | Where-Object { -not (Test-Path (Join-Path $_.FullName 'manifest.json')) }; foreach ($o in $orphan) { if (-not (Get-ChildItem $o.FullName -Recurse -Filter manifest.json -EA SilentlyContinue)) { Remove-Item $o.FullName -Recurse -Force -EA SilentlyContinue } } }; if (-not (Test-Path (Join-Path $dest 'manifest.json'))) { Write-Host '  [ERR] Could not normalize extension root'; exit 1 }; Write-Host '  [OK] Extension ready at' $dest"
+  "$src='%SOURCE_ZIP%'; $dest='%INSTALL_DIR%'; Expand-Archive -Path $src -DestinationPath $dest -Force; $m = Get-ChildItem -Path $dest -Recurse -Filter manifest.json | Select-Object -First 1; if (-not $m) { Write-Host '  [ERR] manifest.json not found after extract'; exit 1 }; $root = $m.Directory.FullName; if ($root -ne (Resolve-Path $dest).Path) { Get-ChildItem $root | Move-Item -Destination $dest -Force }; if (-not (Test-Path (Join-Path $dest 'manifest.json'))) { Write-Host '  [ERR] Could not normalize extension root'; exit 1 }; Write-Host '  [OK] Extension ready at' $dest"
 
 if errorlevel 1 (
   echo  [!] Extraction failed.
@@ -93,42 +95,24 @@ if errorlevel 1 (
 
 :: ── Launch ────────────────────────────────────────────────────
 echo.
-echo  [*] Launching Edge with Vigil AI loaded...
+echo  [*] Launching Chrome with Vigil AI loaded...
 
-start "" "%EDGE_PATH%" --load-extension="%INSTALL_DIR%" --no-first-run
+start "" "%CHROME_PATH%" --load-extension="%INSTALL_DIR%" --no-first-run --new-window "about:blank"
 
 timeout /t 3 /nobreak >nul
 
-:: ── Done ──────────────────────────────────────────────────────
 cls
 echo.
 echo  ╔══════════════════════════════════════════════════════════════╗
+echo  ║   VIGIL AI  ──  ONLINE IN CHROME                             ║
 echo  ║                                                              ║
-echo  ║   VIGIL AI  ──  ONLINE                                       ║
-echo  ║                                                              ║
-echo  ║   Multi-swarm agents · Side panel · Nexus · Offline core     ║
-echo  ║   Talk naturally · She does the rest                         ║
+echo  ║   Pin the extension from the puzzle icon, then open side     ║
+echo  ║   panel. Multi-swarm: "deploy a swarm on [topic]"            ║
 echo  ║                                                              ║
 echo  ╚══════════════════════════════════════════════════════════════╝
 echo.
-echo  HOW TO PIN THE SIDE PANEL:
-echo.
-echo    1. Look for the puzzle-piece icon in the Edge toolbar
-echo    2. Find "Vigil AI" — click the pin icon
-echo    3. Or: press  Ctrl+Shift+Y  to open the side panel
-echo.
-echo  MULTI-SWARM (examples):
-echo.
-echo    "Deploy a swarm on quantum computing"
-echo    "Dispatch multi-agent research on MSAP protocol"
-echo    "Launch researcher, scout, and analyst on this topic"
-echo.
-echo  SINGLE AGENTS:
-echo.
-echo    "Deploy a researcher on AI, open a writing tab, and scan this page"
-echo    "Dispatch mission: crawl this site and synthesize the findings"
-echo.
 echo  Extension installed at:  %INSTALL_DIR%
 echo  Repo: https://github.com/FreddyCreates/potential-succotash
+echo  Release: https://github.com/FreddyCreates/potential-succotash/releases/tag/v18.0.0-commercial
 echo.
 pause

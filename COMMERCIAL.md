@@ -44,6 +44,12 @@ install-jarvis.bat
 ```
 Uses local `dist\extensions\*.zip` when present; otherwise downloads from GitHub `main`.
 
+### Extension (Chrome)
+```bat
+install-jarvis-chrome.bat
+```
+Same packaging as Edge; launches Google Chrome with `--load-extension`.
+
 ### Desktop
 1. Run `Vigil AI Setup *.exe` (NSIS), or  
 2. Run portable `Vigil AI *.exe`

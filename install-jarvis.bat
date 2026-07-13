@@ -45,10 +45,11 @@ set "ZIP_FILE=%TEMP%\vigil-ai-extension.zip"
 set "SCRIPT_DIR=%~dp0"
 set "LOCAL_V18=%SCRIPT_DIR%dist\extensions\vigil-ai-v18.0.0.zip"
 set "LOCAL_JARVIS=%SCRIPT_DIR%dist\extensions\jarvis.zip"
+set "LOCAL_EXT=%SCRIPT_DIR%extension\vigil-ai-v18.0.0.zip"
 set "DL_V18=https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/vigil-ai-v18.0.0.zip"
 set "DL_JARVIS=https://github.com/FreddyCreates/potential-succotash/raw/main/dist/extensions/jarvis.zip"
 
-:: ── Source: local dist first, then GitHub main ───────────────
+:: ── Source: local dist, commercial pack layout, then GitHub main ─
 set "SOURCE_ZIP="
 if exist "%LOCAL_V18%" (
   set "SOURCE_ZIP=%LOCAL_V18%"
@@ -56,6 +57,9 @@ if exist "%LOCAL_V18%" (
 ) else if exist "%LOCAL_JARVIS%" (
   set "SOURCE_ZIP=%LOCAL_JARVIS%"
   echo  [*] Using local package: dist\extensions\jarvis.zip
+) else if exist "%LOCAL_EXT%" (
+  set "SOURCE_ZIP=%LOCAL_EXT%"
+  echo  [*] Using commercial pack: extension\vigil-ai-v18.0.0.zip
 ) else (
   echo  [*] Downloading Vigil AI from GitHub main...
   powershell -NoProfile -ExecutionPolicy Bypass -Command ^
