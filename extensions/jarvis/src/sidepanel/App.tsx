@@ -29,7 +29,7 @@ const TABS: TabDef[] = [
   { id: 'tabs',      label: '🗂️ Tabs' },
   // ── INTELLIGENCE ─ agents, search, AGI ──────────────────────
   { id: '_intel',    label: '── INTEL',    section: 'divider' },
-  { id: 'agents',    label: '🤖 Agents' },
+  { id: 'agents',    label: '🐝 Agents' },
   { id: 'agi',       label: '⚗️ AGI' },
   { id: 'oagi',      label: '🧠 Mind' },
   { id: 'research',  label: '🔬 Research' },

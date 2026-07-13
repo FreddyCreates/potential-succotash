@@ -4,6 +4,7 @@ import { useJarvisStore } from '../../store';
 const QUICK_ACTIONS = [
   { label: 'Brief me', text: '__brief__' },
   { label: 'Status', text: 'what is your status' },
+  { label: '🐝 Multi-swarm', text: '__swarm__', prefill: true },
   { label: '🤖 Research agent', text: '__agent_research__', prefill: true },
   { label: '🤖 Agents', text: '__listagents__' },
   { label: 'Timer', text: 'set a timer for ', prefill: true },
@@ -92,6 +93,16 @@ export default function ChatPanel() {
           : '🤖 ' + agent.name + ' — status: ' + agent.status + '. Check the Agents tab for details.';
         addMessage({ role: 'animus', text: announcement, ts: Date.now() });
         if (ttsEnabled) speak(agent.name + ' mission complete.');
+      } else if (msg.action === '_swarmComplete') {
+        const swarm = msg.swarm as { name: string; goal: string; status: string; completedCount: number; agentIds: string[]; agentNames?: string[] };
+        if (!swarm) return;
+        const announcement =
+          '🐝 ' + swarm.name + ' — swarm ' + swarm.status + '.\n\nGoal: "' + (swarm.goal || '').substring(0, 80)
+          + '"\n' + swarm.completedCount + '/' + (swarm.agentIds?.length || 0)
+          + ' agents finished' + (swarm.agentNames?.length ? ' (' + swarm.agentNames.join(', ') + ')' : '')
+          + '.\nFull report in the 🤖 Agents tab.';
+        addMessage({ role: 'animus', text: announcement, ts: Date.now() });
+        if (ttsEnabled) speak(swarm.name + ' swarm complete.');
       }
     };
     chrome.runtime.onMessage.addListener(listener);
@@ -133,6 +144,15 @@ export default function ChatPanel() {
     if (text === '__agent_research__') {
       addMessage({ role: 'animus', text: '🤖 What topic would you like me to research? Type it and I\'ll dispatch an agent right away.', ts: Date.now() });
       setInput('deploy agent: research ');
+      return;
+    }
+    if (text === '__swarm__') {
+      addMessage({
+        role: 'animus',
+        text: '🐝 Multi-swarm ready. Type a goal and I will launch researcher + scout + digest in parallel.\n\nOr open the 🤖 Agents tab → 🐝 Swarm.',
+        ts: Date.now(),
+      });
+      setInput('deploy a swarm on ');
       return;
     }
 
