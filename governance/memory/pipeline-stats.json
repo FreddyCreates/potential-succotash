@@ -1,11 +1,6 @@
 {
   "cycles": [
     {
-      "ts": "2026-06-18T04:13:05.671Z",
-      "overallRisk": 0.25,
-      "overallDecision": "ALLOW"
-    },
-    {
       "ts": "2026-06-18T10:24:05.706Z",
       "overallRisk": 0.25,
       "overallDecision": "ALLOW"
@@ -499,16 +494,15 @@
       "ts": "2026-07-13T03:15:13.176Z",
       "overallRisk": 0.25,
       "overallDecision": "ALLOW"
+    },
+    {
+      "ts": "2026-07-13T09:31:12.923Z",
+      "overallRisk": 0.25,
+      "overallDecision": "ALLOW"
     }
   ],
   "byDomain": {
     "bot": [
-      {
-        "ts": "2026-06-18T04:13:05.671Z",
-        "riskScore": 0.05,
-        "status": "pass",
-        "decision": "ALLOW"
-      },
       {
         "ts": "2026-06-18T10:24:05.706Z",
         "riskScore": 0.05,
@@ -1099,6 +1093,12 @@
       },
       {
         "ts": "2026-07-13T03:15:13.176Z",
+        "riskScore": 0.05,
+        "status": "pass",
+        "decision": "ALLOW"
+      },
+      {
+        "ts": "2026-07-13T09:31:12.923Z",
         "riskScore": 0.05,
         "status": "pass",
         "decision": "ALLOW"
@@ -1106,12 +1106,6 @@
     ],
     "security": [
       {
-        "ts": "2026-06-18T04:13:05.671Z",
-        "riskScore": 0.05,
-        "status": "pass",
-        "decision": "ALLOW"
-      },
-      {
         "ts": "2026-06-18T10:24:05.706Z",
         "riskScore": 0.05,
         "status": "pass",
@@ -1701,6 +1695,12 @@
       },
       {
         "ts": "2026-07-13T03:15:13.176Z",
+        "riskScore": 0.05,
+        "status": "pass",
+        "decision": "ALLOW"
+      },
+      {
+        "ts": "2026-07-13T09:31:12.923Z",
         "riskScore": 0.05,
         "status": "pass",
         "decision": "ALLOW"
@@ -1708,12 +1708,6 @@
     ],
     "learning": [
       {
-        "ts": "2026-06-18T04:13:05.671Z",
-        "riskScore": 0.05,
-        "status": "pass",
-        "decision": "ALLOW"
-      },
-      {
         "ts": "2026-06-18T10:24:05.706Z",
         "riskScore": 0.05,
         "status": "pass",
@@ -2303,6 +2297,12 @@
       },
       {
         "ts": "2026-07-13T03:15:13.176Z",
+        "riskScore": 0.05,
+        "status": "pass",
+        "decision": "ALLOW"
+      },
+      {
+        "ts": "2026-07-13T09:31:12.923Z",
         "riskScore": 0.05,
         "status": "pass",
         "decision": "ALLOW"
@@ -2310,12 +2310,6 @@
     ],
     "economy": [
       {
-        "ts": "2026-06-18T04:13:05.671Z",
-        "riskScore": 0.05,
-        "status": "pass",
-        "decision": "ALLOW"
-      },
-      {
         "ts": "2026-06-18T10:24:05.706Z",
         "riskScore": 0.05,
         "status": "pass",
@@ -2905,6 +2899,12 @@
       },
       {
         "ts": "2026-07-13T03:15:13.176Z",
+        "riskScore": 0.05,
+        "status": "pass",
+        "decision": "ALLOW"
+      },
+      {
+        "ts": "2026-07-13T09:31:12.923Z",
         "riskScore": 0.05,
         "status": "pass",
         "decision": "ALLOW"
@@ -2912,12 +2912,6 @@
     ],
     "topology": [
       {
-        "ts": "2026-06-18T04:13:05.671Z",
-        "riskScore": 0.25,
-        "status": "warned",
-        "decision": "ALLOW"
-      },
-      {
         "ts": "2026-06-18T10:24:05.706Z",
         "riskScore": 0.25,
         "status": "warned",
@@ -3507,6 +3501,12 @@
       },
       {
         "ts": "2026-07-13T03:15:13.176Z",
+        "riskScore": 0.25,
+        "status": "warned",
+        "decision": "ALLOW"
+      },
+      {
+        "ts": "2026-07-13T09:31:12.923Z",
         "riskScore": 0.25,
         "status": "warned",
         "decision": "ALLOW"
@@ -3514,12 +3514,6 @@
     ],
     "meta": [
       {
-        "ts": "2026-06-18T04:13:05.671Z",
-        "riskScore": 0.05,
-        "status": "pass",
-        "decision": "ALLOW"
-      },
-      {
         "ts": "2026-06-18T10:24:05.706Z",
         "riskScore": 0.05,
         "status": "pass",
@@ -4109,6 +4103,12 @@
       },
       {
         "ts": "2026-07-13T03:15:13.176Z",
+        "riskScore": 0.05,
+        "status": "pass",
+        "decision": "ALLOW"
+      },
+      {
+        "ts": "2026-07-13T09:31:12.923Z",
         "riskScore": 0.05,
         "status": "pass",
         "decision": "ALLOW"
@@ -4116,12 +4116,6 @@
     ],
     "general": [
       {
-        "ts": "2026-06-18T04:13:05.671Z",
-        "riskScore": 0.05,
-        "status": "pass",
-        "decision": "ALLOW"
-      },
-      {
         "ts": "2026-06-18T10:24:05.706Z",
         "riskScore": 0.05,
         "status": "pass",
@@ -4711,6 +4705,12 @@
       },
       {
         "ts": "2026-07-13T03:15:13.176Z",
+        "riskScore": 0.05,
+        "status": "pass",
+        "decision": "ALLOW"
+      },
+      {
+        "ts": "2026-07-13T09:31:12.923Z",
         "riskScore": 0.05,
         "status": "pass",
         "decision": "ALLOW"
