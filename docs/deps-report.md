@@ -1,14 +1,14 @@
 # 🔄 organism-deps-bot — Dependency Health Report
 
-**Generated:** 2026-07-09T10:23:39.696Z
+**Generated:** 2026-07-13T10:15:02.012Z
 **Status:** ✅ HEALTHY
-**Packages:** 35 | **Total Deps:** 57
+**Packages:** 36 | **Total Deps:** 63
 
 ## Staleness Summary
 
 | Tier | Count | Meaning |
 |---|---|---|
-| ✅ Fresh | 57 | Exact pinned or tight patch range |
+| ✅ Fresh | 63 | Exact pinned or tight patch range |
 | ⚠️ Monitor | 0 | Minor version drift allowed |
 | 🔶 Stale | 0 | Major range or pre-release |
 | ❌ Critical | 0 | Wildcard/git-ref/unpinned |
@@ -19,6 +19,7 @@
 |---|---|---|---|
 | **vigil-ai-desktop** | 2 | 0 | 0.098 |
 | **jarvis-ai** | 18 | 0 | 0.011 |
+| **github-mcp-server** | 6 | 0 | 0.195 |
 | **@medina/organism-runtime-typescript** | 3 | 0 | 0.195 |
 | **organism-cli** | 0 | 0 | 0.000 |
 | **@medina/sovereign-organism** | 2 | 0 | 0.195 |
@@ -66,6 +67,7 @@
 |---|---|
 | **vigil-ai-desktop** | — Not installed |
 | **jarvis-ai** | — Not installed |
+| **github-mcp-server** | — Not installed |
 | **@medina/organism-runtime-typescript** | — Not installed |
 | **organism-cli** | — Not installed |
 | **@medina/sovereign-organism** | — Not installed |

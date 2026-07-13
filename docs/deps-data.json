@@ -1,16 +1,21 @@
 {
-  "generated": "2026-07-09T10:23:39.696Z",
+  "generated": "2026-07-13T10:15:02.012Z",
   "bot": "organism-deps-bot",
-  "totalPackages": 35,
-  "totalDeps": 57,
+  "totalPackages": 36,
+  "totalDeps": 63,
   "stalenessSummary": {
     "critical": 0,
     "stale": 0,
     "monitor": 0,
-    "fresh": 57
+    "fresh": 63
   },
   "auditTotal": 0,
   "topRiskPackages": [
+    {
+      "name": "github-mcp-server",
+      "score": "0.195",
+      "criticalDeps": 0
+    },
     {
       "name": "@medina/sovereign-organism",
       "score": "0.195",
@@ -28,11 +33,6 @@
     },
     {
       "name": "nova-api-node",
-      "score": "0.195",
-      "criticalDeps": 0
-    },
-    {
-      "name": "cache-cognition-worker",
       "score": "0.195",
       "criticalDeps": 0
     }
