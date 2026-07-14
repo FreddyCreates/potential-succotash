@@ -1,7 +1,7 @@
 {
   "name": "@medina/sovereign-organism",
   "version": "1.0.0",
-  "description": "AI Intelligence Organism — 8 SDKs, 26 browser extensions, 11 protocols, 30 callable tools. The organism IS the intelligence.",
+  "description": "AI Intelligence Organism — 18 SDKs, 41 browser extensions, 11 protocols, 30 callable tools. The organism IS the intelligence.",
   "private": true,
   "scripts": {
     "build": "bash build-extensions.sh",
