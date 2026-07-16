@@ -161,14 +161,22 @@ export default function ChatPanel() {
     setInput('');
     setTyping(true);
 
-    chrome.runtime.sendMessage({ action: 'chat', text: text.trim() }, (resp) => {
-      setTyping(false);
-      if (chrome.runtime.lastError) {
-        deliverResponse('[Error: ' + chrome.runtime.lastError.message + ']', { skipTts: true });
+    // Prefer VIGIL-4B (local ~4B + embedded sub-agents); fall back to legacy chat
+    chrome.runtime.sendMessage({ action: 'vigil4bChat', text: text.trim() }, (resp) => {
+      if (chrome.runtime.lastError || !resp?.success) {
+        chrome.runtime.sendMessage({ action: 'chat', text: text.trim() }, (legacy) => {
+          setTyping(false);
+          if (chrome.runtime.lastError) {
+            deliverResponse('[Error: ' + chrome.runtime.lastError.message + ']', { skipTts: true });
+            return;
+          }
+          deliverResponse(legacy?.message || legacy?.data?.message || 'No response.');
+        });
         return;
       }
-      const reply: string = resp?.message || resp?.data?.message || 'No response.';
-      deliverResponse(reply);
+      setTyping(false);
+      const modeTag = resp.mode && resp.model ? `\n\n_${resp.mode} · ${resp.model}_` : '';
+      deliverResponse((resp.message || 'No response.') + modeTag);
     });
   };
 
