@@ -1,42 +1,42 @@
 {
-  "generated": "2026-07-09T08:19:36.890Z",
+  "generated": "2026-07-16T07:16:46.826Z",
   "bot": "organism-crawler-bot",
   "summary": {
-    "totalFiles": 1511,
-    "totalBytes": 16764496,
-    "totalKB": 16372,
-    "sections": 27,
+    "totalFiles": 1544,
+    "totalBytes": 16970366,
+    "totalKB": 16573,
+    "sections": 29,
     "langCounts": {
       "YAML": 28,
-      "Other": 356,
+      "Other": 363,
       "CSV": 8,
-      "Markdown": 74,
-      "JSON": 166,
+      "Markdown": 77,
+      "JSON": 168,
       "CSS": 3,
       "JavaScript": 563,
       "Shell": 7,
       "HTML": 168,
-      "TypeScript": 50,
+      "TypeScript": 59,
+      "TOML": 18,
+      "Python": 70,
       "Motoko": 9,
-      "Python": 59,
-      "C++": 3,
-      "TOML": 17
+      "C++": 3
     },
     "langBytes": {
       "YAML": 97562,
-      "Other": 4371098,
+      "Other": 4382749,
       "CSV": 409489,
-      "Markdown": 574016,
-      "JSON": 1650449,
+      "Markdown": 582847,
+      "JSON": 1741196,
       "CSS": 24285,
-      "JavaScript": 5380001,
+      "JavaScript": 5381436,
       "Shell": 41729,
       "HTML": 2733962,
-      "TypeScript": 921730,
+      "TypeScript": 970227,
+      "TOML": 48611,
+      "Python": 356413,
       "Motoko": 178645,
-      "Python": 312180,
-      "C++": 21215,
-      "TOML": 48135
+      "C++": 21215
     }
   },
   "sections": [
@@ -78,7 +78,7 @@
     {
       "name": "desktop",
       "files": 4,
-      "bytes": 15873,
+      "bytes": 17589,
       "dirs": 0,
       "topLanguage": "JavaScript"
     },
@@ -92,7 +92,7 @@
     {
       "name": "docs",
       "files": 168,
-      "bytes": 4421240,
+      "bytes": 4418686,
       "dirs": 3,
       "topLanguage": "Other"
     },
@@ -113,7 +113,7 @@
     {
       "name": "extensions",
       "files": 493,
-      "bytes": 3015678,
+      "bytes": 3025229,
       "dirs": 41,
       "topLanguage": "Other"
     },
@@ -125,9 +125,23 @@
       "topLanguage": "TypeScript"
     },
     {
+      "name": "github-mcp-server",
+      "files": 14,
+      "bytes": 43490,
+      "dirs": 1,
+      "topLanguage": "TypeScript"
+    },
+    {
+      "name": "github-mcp-server-python",
+      "files": 16,
+      "bytes": 43281,
+      "dirs": 1,
+      "topLanguage": "Python"
+    },
+    {
       "name": "governance",
       "files": 38,
-      "bytes": 1178654,
+      "bytes": 1267414,
       "dirs": 10,
       "topLanguage": "Other"
     },
@@ -141,7 +155,7 @@
     {
       "name": "organism",
       "files": 65,
-      "bytes": 631189,
+      "bytes": 636411,
       "dirs": 6,
       "topLanguage": "JavaScript"
     },

@@ -1,15 +1,15 @@
 # 🕷️ organism-crawler-bot — Organism Map
 
-**Generated:** 2026-07-09T08:19:36.890Z
+**Generated:** 2026-07-16T07:16:46.826Z
 **Bot:** organism-crawler-bot 🕷️
 
 ## Repository Overview
 
 | Metric | Value |
 |---|---|
-| Total Files | 1511 |
-| Total Size | 15.99 MB |
-| Top-Level Sections | 27 |
+| Total Files | 1544 |
+| Total Size | 16.18 MB |
+| Top-Level Sections | 29 |
 | Analyzed Files (xref) | 316 |
 | Total Imports | 313 |
 | Unique Symbols | 568 |
@@ -18,26 +18,28 @@
 
 | Section | Files | Size | Top Language |
 |---|---|---|---|
-| **extensions/** | 493 | 2.88 MB | Other |
-| **docs/** | 168 | 4.22 MB | Other |
+| **extensions/** | 493 | 2.89 MB | Other |
+| **docs/** | 168 | 4.21 MB | Other |
 | **sdk/** | 152 | 907.8 KB | JavaScript |
 | **protocols/** | 144 | 1.51 MB | JavaScript |
 | **scripts/** | 73 | 444.0 KB | JavaScript |
-| **organism/** | 65 | 616.4 KB | JavaScript |
+| **organism/** | 65 | 621.5 KB | JavaScript |
 | **workers/** | 63 | 552.7 KB | JSON |
 | **defense-organism/** | 56 | 619.7 KB | JavaScript |
 | **production-grade-builder/** | 47 | 53.3 KB | Markdown |
-| **governance/** | 38 | 1.12 MB | Other |
+| **governance/** | 38 | 1.21 MB | Other |
 | **memory_temple/** | 31 | 218.6 KB | Python |
 | **research/** | 30 | 1.45 MB | HTML |
 | **.github/** | 25 | 86.7 KB | YAML |
 | **test/** | 24 | 284.6 KB | JavaScript |
 | **atlas/** | 19 | 14.7 KB | JSON |
+| **github-mcp-server-python/** | 16 | 42.3 KB | Python |
 | **phantom_native/** | 15 | 81.4 KB | Other |
+| **github-mcp-server/** | 14 | 42.5 KB | TypeScript |
 | **examples/** | 8 | 159.3 KB | JavaScript |
 | **phantom_qsha/** | 5 | 4.6 KB | Python |
 | **assets/** | 4 | 40.4 KB | Other |
-| **desktop/** | 4 | 15.5 KB | JavaScript |
+| **desktop/** | 4 | 17.2 KB | JavaScript |
 | **organism-cli/** | 4 | 48.5 KB | JavaScript |
 | **pages/** | 4 | 85.7 KB | HTML |
 | **docker/** | 3 | 1.4 KB | Other |
@@ -51,14 +53,14 @@
 | Language | Files | Size |
 |---|---|---|
 | **JavaScript** | 563 | 5.13 MB |
-| **Other** | 356 | 4.17 MB |
+| **Other** | 363 | 4.18 MB |
+| **JSON** | 168 | 1.66 MB |
 | **HTML** | 168 | 2.61 MB |
-| **JSON** | 166 | 1.57 MB |
-| **Markdown** | 74 | 560.6 KB |
-| **Python** | 59 | 304.9 KB |
-| **TypeScript** | 50 | 900.1 KB |
+| **Markdown** | 77 | 569.2 KB |
+| **Python** | 70 | 348.1 KB |
+| **TypeScript** | 59 | 947.5 KB |
 | **YAML** | 28 | 95.3 KB |
-| **TOML** | 17 | 47.0 KB |
+| **TOML** | 18 | 47.5 KB |
 | **Motoko** | 9 | 174.5 KB |
 | **CSV** | 8 | 399.9 KB |
 | **Shell** | 7 | 40.8 KB |
@@ -113,14 +115,14 @@
 
 - **Files:** 493
 - **Subdirectories:** 41
-- **Size:** 2.88 MB
+- **Size:** 2.89 MB
 - **Primary Language:** Other
 
 ### `docs/`
 
 - **Files:** 168
 - **Subdirectories:** 3
-- **Size:** 4.22 MB
+- **Size:** 4.21 MB
 - **Primary Language:** Other
 
 ### `sdk/`
@@ -148,7 +150,7 @@
 
 - **Files:** 65
 - **Subdirectories:** 6
-- **Size:** 616.4 KB
+- **Size:** 621.5 KB
 - **Primary Language:** JavaScript
 
 ### `workers/`
@@ -176,7 +178,7 @@
 
 - **Files:** 38
 - **Subdirectories:** 10
-- **Size:** 1.12 MB
+- **Size:** 1.21 MB
 - **Primary Language:** Other
 
 ### `memory_temple/`
@@ -214,12 +216,26 @@
 - **Size:** 14.7 KB
 - **Primary Language:** JSON
 
+### `github-mcp-server-python/`
+
+- **Files:** 16
+- **Subdirectories:** 1
+- **Size:** 42.3 KB
+- **Primary Language:** Python
+
 ### `phantom_native/`
 
 - **Files:** 15
 - **Subdirectories:** 2
 - **Size:** 81.4 KB
 - **Primary Language:** Other
+
+### `github-mcp-server/`
+
+- **Files:** 14
+- **Subdirectories:** 1
+- **Size:** 42.5 KB
+- **Primary Language:** TypeScript
 
 ### `examples/`
 
@@ -246,7 +262,7 @@
 
 - **Files:** 4
 - **Subdirectories:** 0
-- **Size:** 15.5 KB
+- **Size:** 17.2 KB
 - **Primary Language:** JavaScript
 
 ### `organism-cli/`
