@@ -2,6 +2,341 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ═══════════════════════════════════════════════════════════════
+   VIGIL ENTERPRISE 4K UI SYSTEM — commercial multi-swarm shell
+   Density-aware tokens for 1080p sidepanels through 4K canvases
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  --vigil-bg: #05070d;
+  --vigil-bg-elevated: #0b1220;
+  --vigil-panel: rgba(15, 23, 42, 0.72);
+  --vigil-border: rgba(148, 163, 184, 0.12);
+  --vigil-cyan: #22d3ee;
+  --vigil-violet: #a78bfa;
+  --vigil-gold: #fbbf24;
+  --vigil-text: #e2e8f0;
+  --vigil-muted: #94a3b8;
+  --vigil-radius: 14px;
+  --vigil-font: "Segoe UI", "Inter", "SF Pro Display", system-ui, sans-serif;
+  --vigil-mono: "Cascadia Code", "JetBrains Mono", ui-monospace, monospace;
+  font-size: clamp(14px, 0.55vw + 12px, 18px); /* 4K-friendly base */
+}
+
+.vigil-4k-root {
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(34, 211, 238, 0.08), transparent 55%),
+    radial-gradient(900px 500px at 100% 0%, rgba(167, 139, 250, 0.08), transparent 50%),
+    var(--vigil-bg);
+  color: var(--vigil-text);
+  font-family: var(--vigil-font);
+  -webkit-font-smoothing: antialiased;
+}
+
+.vigil-4k-grid-bg {
+  background-image:
+    linear-gradient(rgba(34, 211, 238, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(to bottom, black, transparent 90%);
+}
+
+.vigil-4k-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--vigil-border);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.95), rgba(5, 7, 13, 0.85));
+  backdrop-filter: blur(16px);
+}
+
+.vigil-4k-logo-mark {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.65rem;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #041016;
+  background: linear-gradient(135deg, #22d3ee, #818cf8 55%, #c084fc);
+  box-shadow: 0 0 24px rgba(34, 211, 238, 0.35);
+}
+
+.vigil-4k-chip {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  color: #67e8f9;
+  background: rgba(34, 211, 238, 0.08);
+  font-weight: 700;
+}
+
+.vigil-4k-nav {
+  display: flex;
+  overflow-x: auto;
+  gap: 2px;
+  padding: 0.35rem 0.5rem;
+  border-bottom: 1px solid var(--vigil-border);
+  background: rgba(2, 6, 23, 0.75);
+  scrollbar-width: none;
+}
+.vigil-4k-nav::-webkit-scrollbar { display: none; }
+
+.vigil-4k-nav-divider {
+  flex-shrink: 0;
+  align-self: center;
+  padding: 0 0.55rem;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: rgba(148, 163, 184, 0.45);
+}
+
+.vigil-4k-nav-item {
+  flex-shrink: 0;
+  padding: 0.45rem 0.7rem;
+  font-size: 11px;
+  border-radius: 999px;
+  color: var(--vigil-muted);
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+.vigil-4k-nav-item:hover {
+  color: #e2e8f0;
+  background: rgba(148, 163, 184, 0.08);
+}
+.vigil-4k-nav-item.is-active {
+  color: #ecfeff;
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.18), rgba(129, 140, 248, 0.18));
+  border-color: rgba(34, 211, 238, 0.35);
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.12);
+}
+
+.vigil-4k-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.4rem 0.75rem 0.55rem;
+  border-top: 1px solid var(--vigil-border);
+  background: rgba(2, 6, 23, 0.92);
+}
+
+/* Hero + cards */
+.vigil-4k-hero {
+  position: relative;
+  overflow: hidden;
+  margin: 0.75rem;
+  padding: 1.25rem 1.1rem 1.1rem;
+  border-radius: calc(var(--vigil-radius) + 4px);
+  border: 1px solid rgba(34, 211, 238, 0.18);
+  background:
+    linear-gradient(145deg, rgba(15, 23, 42, 0.9), rgba(30, 27, 75, 0.55) 45%, rgba(8, 47, 73, 0.45));
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+.vigil-4k-hero-glow {
+  position: absolute;
+  inset: -40% -20% auto auto;
+  width: 60%;
+  height: 120%;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.22), transparent 65%);
+  pointer-events: none;
+}
+.vigil-4k-kicker {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  font-weight: 700;
+  color: rgba(103, 232, 249, 0.85);
+  margin-bottom: 0.45rem;
+}
+.vigil-4k-title {
+  font-size: clamp(1.15rem, 1.2vw + 0.9rem, 1.85rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #f8fafc;
+  margin: 0 0 0.5rem;
+}
+.vigil-4k-title-mark {
+  color: rgba(34, 211, 238, 0.45);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  font-size: 0.65em;
+}
+.vigil-4k-subtitle {
+  font-size: 12px;
+  line-height: 1.55;
+  color: #94a3b8;
+  max-width: 42rem;
+  margin: 0 0 0.85rem;
+}
+.vigil-4k-badge-row { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.vigil-4k-badge {
+  font-size: 10px;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  color: #cbd5e1;
+  background: rgba(15, 23, 42, 0.55);
+}
+.vigil-4k-badge-accent {
+  border-color: rgba(167, 139, 250, 0.45);
+  color: #ddd6fe;
+  background: rgba(91, 33, 182, 0.25);
+}
+
+.vigil-4k-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+  padding: 0 0.75rem 0.75rem;
+}
+.vigil-4k-kpi {
+  border-radius: 12px;
+  padding: 0.65rem 0.55rem;
+  border: 1px solid var(--vigil-border);
+  background: var(--vigil-panel);
+  backdrop-filter: blur(10px);
+}
+.vigil-4k-kpi-label {
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #64748b;
+  font-weight: 700;
+}
+.vigil-4k-kpi-value {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  font-variant-numeric: tabular-nums;
+  margin-top: 0.15rem;
+}
+.vigil-4k-kpi-meta {
+  font-size: 9px;
+  color: #64748b;
+  margin-top: 0.15rem;
+  font-family: var(--vigil-mono);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vigil-4k-card {
+  border-radius: var(--vigil-radius);
+  border: 1px solid var(--vigil-border);
+  background: var(--vigil-panel);
+  backdrop-filter: blur(14px);
+  padding: 0.9rem;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+}
+.vigil-4k-card-title {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #67e8f9;
+  margin-bottom: 0.35rem;
+}
+.vigil-4k-tile {
+  border-radius: 12px;
+  padding: 0.75rem;
+  border: 1px solid var(--vigil-border);
+  background: rgba(15, 23, 42, 0.55);
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.vigil-4k-tile:hover {
+  border-color: rgba(34, 211, 238, 0.35);
+  transform: translateY(-1px);
+}
+
+.vigil-4k-input {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(2, 6, 23, 0.75);
+  color: #e2e8f0;
+  padding: 0.65rem 0.75rem;
+  font-size: 12px;
+  outline: none;
+  resize: vertical;
+}
+.vigil-4k-input:focus {
+  border-color: rgba(34, 211, 238, 0.45);
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.12);
+}
+.vigil-4k-input::placeholder { color: #475569; }
+
+.vigil-4k-btn-primary {
+  border-radius: 999px;
+  padding: 0.45rem 0.95rem;
+  font-size: 12px;
+  font-weight: 600;
+  color: #041016;
+  background: linear-gradient(135deg, #22d3ee, #818cf8);
+  border: none;
+  box-shadow: 0 8px 24px rgba(34, 211, 238, 0.25);
+}
+.vigil-4k-btn-primary:disabled { opacity: 0.45; cursor: not-allowed; }
+.vigil-4k-btn-secondary {
+  border-radius: 999px;
+  padding: 0.45rem 0.95rem;
+  font-size: 12px;
+  font-weight: 600;
+  color: #e9d5ff;
+  background: rgba(91, 33, 182, 0.35);
+  border: 1px solid rgba(167, 139, 250, 0.4);
+}
+.vigil-4k-btn-secondary:disabled { opacity: 0.45; cursor: not-allowed; }
+.vigil-4k-btn-ghost {
+  border-radius: 999px;
+  padding: 0.45rem 0.75rem;
+  font-size: 12px;
+  color: #94a3b8;
+  background: transparent;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.vigil-4k-flash {
+  font-size: 11px;
+  line-height: 1.5;
+  color: #cbd5e1;
+  background: rgba(2, 6, 23, 0.7);
+  border: 1px solid rgba(34, 211, 238, 0.15);
+  border-radius: 10px;
+  padding: 0.65rem 0.75rem;
+  max-height: 12rem;
+  overflow: auto;
+}
+
+.vigil-4k-bubble-user {
+  max-width: 88%;
+  border-radius: 14px 14px 4px 14px;
+  padding: 0.6rem 0.75rem;
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.2), rgba(129, 140, 248, 0.2));
+  border: 1px solid rgba(34, 211, 238, 0.25);
+}
+.vigil-4k-bubble-ai {
+  max-width: 92%;
+  border-radius: 14px 14px 14px 4px;
+  padding: 0.6rem 0.75rem;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+.vigil-4k-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(34, 211, 238, 0.25) transparent;
+}
+
+@media (min-width: 900px) {
+  :root { font-size: clamp(15px, 0.4vw + 13px, 20px); }
+  .vigil-4k-kpi-grid { gap: 0.75rem; padding: 0 1rem 1rem; }
+  .vigil-4k-hero { margin: 1rem; padding: 1.5rem; }
+}
+
 /* ── v10 SOVEREIGN NEXUS animations ── */
 
 @keyframes pulse-glow {

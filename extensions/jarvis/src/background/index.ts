@@ -70,6 +70,7 @@ import {
   cfSetConfig, cfGetConfigSafe, cfTestConnection, cfRunMessages,
   cfSummarizeText, cfResearchBrief,
 } from './skills/cloudflareWorkersAI';
+import { Vigil4BRuntime } from './vigil-4b-runtime.js';
 
 /**
  * Route Solus calls through an offscreen document so onnxruntime-web
@@ -2180,6 +2181,7 @@ interface SwarmData {
 declare const globalThis: {
   jarvisEngine?: VigilEngine;
   agentDispatcher?: AgentDispatcher;
+  vigil4b?: Vigil4BRuntime;
 };
 
 class AgentDispatcher {
@@ -2509,6 +2511,74 @@ chrome.action.onClicked.addListener((tab) => { chrome.sidePanel.open({ windowId:
 
 globalThis.jarvisEngine = new VigilEngine();
 globalThis.agentDispatcher = new AgentDispatcher();
+
+/** Wire VIGIL-4B local brain to multi-swarm + Chrome tools */
+globalThis.vigil4b = new Vigil4BRuntime({
+  deploySwarm: async (goal) => {
+    const d = globalThis.agentDispatcher!;
+    return new Promise((resolve) => {
+      const result = d.deploySwarm(
+        goal,
+        () => {},
+        (swarm) => {
+          chrome.runtime.sendMessage({ action: '_swarmComplete', swarm }).catch(() => {});
+        },
+      );
+      if ('error' in result) resolve('❌ ' + result.error);
+      else resolve('🐝 ' + result.name + ' online · agents: ' + result.agentNames.join(', ') + ' · goal: ' + result.goal);
+    });
+  },
+  deployAgent: async (type, target) => {
+    const d = globalThis.agentDispatcher!;
+    const result = d.deploy(
+      (type as AgentType) || 'researcher',
+      type + ': ' + target,
+      target,
+      () => {},
+      (agent) => { chrome.runtime.sendMessage({ action: '_agentComplete', agent }).catch(() => {}); },
+    );
+    if ('error' in result) return '❌ ' + result.error;
+    return '🤖 ' + result.name + ' [' + result.type + '] · ' + result.steps.length + ' steps · ' + result.mission;
+  },
+  readPage: async () => {
+    return new Promise((resolve) => {
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        const tab = tabs[0];
+        if (!tab?.id) { resolve('(no active tab)'); return; }
+        chrome.scripting.executeScript({
+          target: { tabId: tab.id },
+          func: () => {
+            const main = document.querySelector('main,article,[role="main"]') || document.body;
+            return (main?.innerText || '').replace(/\s{3,}/g, '\n\n').substring(0, 4000);
+          },
+        }, (results) => {
+          if (chrome.runtime.lastError) resolve(chrome.runtime.lastError.message || 'read failed');
+          else resolve((results?.[0]?.result as string) || '(empty)');
+        });
+      });
+    });
+  },
+  listTabs: async () => {
+    return new Promise((resolve) => {
+      chrome.tabs.query({}, (tabs) => {
+        resolve(tabs.slice(0, 20).map((t, i) => (i + 1) + '. ' + (t.title || t.url || '')).join('\n') || '(no tabs)');
+      });
+    });
+  },
+  listAgents: async () => {
+    const list = globalThis.agentDispatcher!.list();
+    if (!list.length) return '(no agents)';
+    return list.map(a => a.status + ' · ' + a.name + ' · ' + a.mission).join('\n');
+  },
+  listSwarms: async () => {
+    const list = globalThis.agentDispatcher!.listSwarms();
+    if (!list.length) return '(no swarms)';
+    return list.map(s => s.status + ' · ' + s.name + ' · ' + s.goal).join('\n');
+  },
+  agiSummarize: async (url) => globalThis.agentDispatcher!.agiSummarize(url),
+  agiScout: async (url) => globalThis.agentDispatcher!.agiScout(url),
+  forgeReport: async () => globalThis.agentDispatcher!.agiForgeReport(),
+});
 
 /* ----------------------------------------------------------
  *  Message Listener
@@ -2849,6 +2919,37 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     case 'recallAllAgents': {
       globalThis.agentDispatcher!.recallAll();
       sendResponse({ success: true, message: 'All agents recalled.' });
+      break;
+    }
+
+    /* -- VIGIL-4B local brain ------------------------------------ */
+    case 'vigil4bStatus': {
+      globalThis.vigil4b!.probe().then(status => sendResponse({ success: true, status })).catch(e =>
+        sendResponse({ success: false, message: String(e) })
+      );
+      return true;
+    }
+    case 'vigil4bChat': {
+      const text = ((message.text as string) || (message.prompt as string) || '').trim();
+      if (!text) { sendResponse({ success: false, message: 'Empty prompt' }); break; }
+      globalThis.vigil4b!.chat(text).then(result => sendResponse(result)).catch(e =>
+        sendResponse({ success: false, message: '❌ ' + (e as Error).message, mode: 'offline', model: 'none' })
+      );
+      return true;
+    }
+    case 'vigil4bSetModel': {
+      globalThis.vigil4b!.setModel((message.model as string) || '');
+      sendResponse({ success: true, model: globalThis.vigil4b!.model });
+      break;
+    }
+    case 'vigil4bSetEndpoint': {
+      globalThis.vigil4b!.setEndpoint((message.endpoint as string) || '');
+      sendResponse({ success: true, endpoint: globalThis.vigil4b!.endpoint });
+      break;
+    }
+    case 'vigil4bClear': {
+      globalThis.vigil4b!.clearHistory();
+      sendResponse({ success: true, message: 'VIGIL-4B history cleared.' });
       break;
     }
 

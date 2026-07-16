@@ -17,37 +17,36 @@ import PhantomPanel from './panels/PhantomPanel';
 import ResearchPanel from './panels/ResearchPanel';
 import OfflineAGIPanel from './panels/OfflineAGIPanel';
 import CloudflarePanel from './panels/CloudflarePanel';
+import CommandCenterPanel from './panels/CommandCenterPanel';
+import Vigil4BPanel from './panels/Vigil4BPanel';
 
-// CNS sections — each group is a logical nervous-system layer
-type TabDef = { id: string; label: string; section?: string };
+type TabDef = { id: string; label: string; section?: string; icon?: string };
+
 const TABS: TabDef[] = [
-  // ── COMMAND ─ primary operator surface ──────────────────────
-  { id: '_cmd',      label: '── COMMAND',  section: 'divider' },
-  { id: 'chat',      label: '💬 Chat' },
-  { id: 'inbox',     label: '📥 Inbox' },
-  { id: 'screen',    label: '🖥️ Control' },
-  { id: 'tabs',      label: '🗂️ Tabs' },
-  // ── INTELLIGENCE ─ agents, search, AGI ──────────────────────
-  { id: '_intel',    label: '── INTEL',    section: 'divider' },
-  { id: 'agents',    label: '🐝 Agents' },
-  { id: 'agi',       label: '⚗️ AGI' },
-  { id: 'oagi',      label: '🧠 Mind' },
-  { id: 'research',  label: '🔬 Research' },
-  { id: 'cloud',     label: '☁️ Cloud' },
-  { id: 'search',    label: '🔍 Search' },
-  { id: 'phantom',   label: '👁 Phantom' },
-  // ── MIND ─ memory, learning, monitoring ─────────────────────
-  { id: '_mind',     label: '── MIND',     section: 'divider' },
-  { id: 'memory',    label: '🧠 Memory' },
-  { id: 'solus',     label: '🔵 Solus' },
-  { id: 'sentry',    label: '🛡 Sentry' },
-  // ── ARCHIVE ─ documents, workspace ──────────────────────────
-  { id: '_archive',  label: '── ARCHIVE',  section: 'divider' },
-  { id: 'workspace', label: '📁 Workspace' },
-  // ── SYSTEM ──────────────────────────────────────────────────
-  { id: '_sys',      label: '── SYS',      section: 'divider' },
-  { id: 'log',       label: '📋 Log' },
-  { id: 'install',   label: '⬇ Install' },
+  { id: '_cmd', label: 'COMMAND', section: 'divider' },
+  { id: 'command', label: 'Command', icon: '▣' },
+  { id: 'vigil4b', label: 'VIGIL-4B', icon: '◈' },
+  { id: 'chat', label: 'Chat', icon: '◉' },
+  { id: 'inbox', label: 'Inbox', icon: '◎' },
+  { id: 'screen', label: 'Control', icon: '▣' },
+  { id: 'tabs', label: 'Tabs', icon: '▤' },
+  { id: '_intel', label: 'INTEL', section: 'divider' },
+  { id: 'agents', label: 'Swarms', icon: '🐝' },
+  { id: 'agi', label: 'AGI', icon: '⚗️' },
+  { id: 'oagi', label: 'Mind', icon: '🧠' },
+  { id: 'research', label: 'Research', icon: '🔬' },
+  { id: 'cloud', label: 'Cloud', icon: '☁' },
+  { id: 'search', label: 'Search', icon: '⌕' },
+  { id: 'phantom', label: 'Phantom', icon: '👁' },
+  { id: '_mind', label: 'MIND', section: 'divider' },
+  { id: 'memory', label: 'Memory', icon: '⬡' },
+  { id: 'solus', label: 'Solus', icon: '◎' },
+  { id: 'sentry', label: 'Sentry', icon: '🛡' },
+  { id: '_archive', label: 'ARCHIVE', section: 'divider' },
+  { id: 'workspace', label: 'Workspace', icon: '📁' },
+  { id: '_sys', label: 'SYS', section: 'divider' },
+  { id: 'log', label: 'Log', icon: '☰' },
+  { id: 'install', label: 'Install', icon: '⬇' },
 ];
 
 export default function App() {
@@ -56,6 +55,18 @@ export default function App() {
     commandCount, mood, awareness, memTurns, setStatus,
     neuroChem, neuroMood, neuroEnergy, neuroState,
   } = useJarvisStore();
+
+  useEffect(() => {
+    // Default to enterprise command center on first open if still on default chat-only
+    if (!activePanel || activePanel === 'chat') {
+      // keep chat as fine; prefer command for commercial UX once
+      const seen = sessionStorage.getItem('vigil_4k_seen');
+      if (!seen) {
+        setActivePanel('command');
+        sessionStorage.setItem('vigil_4k_seen', '1');
+      }
+    }
+  }, [activePanel, setActivePanel]);
 
   useEffect(() => {
     const poll = () => {
@@ -83,24 +94,26 @@ export default function App() {
 
   const renderPanel = () => {
     switch (activePanel) {
-      case 'chat':      return <ChatPanel />;
-      case 'inbox':     return <InboxPanel />;
-      case 'solus':     return <SolusPanel />;
-      case 'agents':    return <AgentsPanel />;
-      case 'agi':       return <AGIPromptsPanel />;
-      case 'sentry':    return <SentryPanel />;
-      case 'memory':    return <MemoryVaultPanel />;
-      case 'workspace': return <WorkspacePanel />;
-      case 'search':    return <SearchPanel />;
-      case 'phantom':   return <PhantomPanel />;
-      case 'screen':    return <ScreenPanel />;
-      case 'tabs':      return <TabsPanel />;
-      case 'install':   return <InstallPanel />;
-      case 'log':       return <LogPanel />;
-      case 'research':  return <ResearchPanel />;
-      case 'oagi':      return <OfflineAGIPanel />;
-      case 'cloud':     return <CloudflarePanel />;
-      default:          return <ChatPanel />;
+      case 'command':  return <CommandCenterPanel />;
+      case 'vigil4b':  return <Vigil4BPanel />;
+      case 'chat':     return <ChatPanel />;
+      case 'inbox':    return <InboxPanel />;
+      case 'solus':    return <SolusPanel />;
+      case 'agents':   return <AgentsPanel />;
+      case 'agi':      return <AGIPromptsPanel />;
+      case 'sentry':   return <SentryPanel />;
+      case 'memory':   return <MemoryVaultPanel />;
+      case 'workspace':return <WorkspacePanel />;
+      case 'search':   return <SearchPanel />;
+      case 'phantom':  return <PhantomPanel />;
+      case 'screen':   return <ScreenPanel />;
+      case 'tabs':     return <TabsPanel />;
+      case 'install':  return <InstallPanel />;
+      case 'log':      return <LogPanel />;
+      case 'research': return <ResearchPanel />;
+      case 'oagi':     return <OfflineAGIPanel />;
+      case 'cloud':    return <CloudflarePanel />;
+      default:         return <CommandCenterPanel />;
     }
   };
 
@@ -114,126 +127,89 @@ export default function App() {
 
   const moodDot = neuroMood === 'energized' ? 'bg-amber-400'
     : neuroMood === 'reflective' ? 'bg-emerald-300'
-    : neuroMood === 'calm'       ? 'bg-amber-300'
+    : neuroMood === 'calm'       ? 'bg-sky-300'
     : neuroMood === 'alert'      ? 'bg-cyan-400'
     : neuroMood === 'stressed'   ? 'bg-red-400'
-    : neuroMood === 'connected'  ? 'bg-purple-400'
+    : neuroMood === 'connected'  ? 'bg-violet-400'
     : neuroMood === 'analytical' ? 'bg-blue-400'
-    : 'bg-amber-400';
+    : 'bg-cyan-400';
 
-  // Color a neurochemical level bar: deviation from baseline 1.0
   const neuroColor = (c: number) =>
-    c > 1.15 ? '#22c55e' : c < 0.85 ? '#ef4444' : '#d4a017';
+    c > 1.15 ? '#34d399' : c < 0.85 ? '#f87171' : '#67e8f9';
 
   const nc = neuroChem;
 
   return (
-    <div className="flex flex-col h-screen text-gray-100 text-sm overflow-hidden" style={{ background: '#0d0b08' }}>
-      {/* Header */}
-      <div
-        className="flex items-center justify-between px-3 py-2 border-b flex-shrink-0"
-        style={{ background: 'linear-gradient(135deg, #100d08 0%, #1a1408 100%)', borderColor: '#2d2010' }}
-      >
-        <div className="flex items-center gap-2">
-          <span className="animate-heartbeat text-amber-400 text-lg">⚡</span>
-          <div className="flex items-center gap-2">
-            <span className="font-bold text-white tracking-[0.25em] text-sm">V I G I L</span>
-            <span className="text-[10px] px-1.5 py-0.5 rounded border font-bold" style={{ borderColor: '#d4a017', color: '#d4a017' }}>CNS</span>
+    <div className="vigil-4k-root flex flex-col h-screen overflow-hidden text-slate-100">
+      {/* Enterprise top bar — 4K density */}
+      <header className="vigil-4k-topbar flex-shrink-0">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="vigil-4k-logo-mark" aria-hidden>V</div>
+          <div className="min-w-0">
+            <div className="flex items-center gap-2">
+              <span className="font-semibold tracking-[0.35em] text-[13px] text-white">VIGIL</span>
+              <span className="vigil-4k-chip">v18 · COMMERCIAL</span>
+            </div>
+            <div className="text-[10px] text-slate-400 tracking-wide truncate">
+              Multi-Swarm Agent IDE · Chrome / Edge · Offline + 4B
+            </div>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <span className={`inline-block w-2 h-2 rounded-full ${moodDot} animate-pulse`} title={'Neuro mood: ' + neuroMood} />
-          <span className="text-xs text-gray-500 capitalize">{neuroMood}</span>
-          <span className="text-[10px] text-gray-600" title={neuroState}>E:{neuroEnergy}%</span>
+        <div className="flex items-center gap-3 flex-shrink-0">
+          <span className={`inline-block w-2 h-2 rounded-full ${moodDot} animate-pulse`} title={neuroMood} />
+          <span className="text-[11px] text-slate-400 capitalize hidden sm:inline">{neuroMood}</span>
+          <span className="text-[10px] font-mono text-cyan-400/80">E:{neuroEnergy}%</span>
         </div>
-      </div>
+      </header>
 
-      {/* Nav tabs — scrollable with CNS section labels */}
-      <div className="flex overflow-x-auto scrollbar-hide flex-shrink-0" style={{ background: '#13100a', borderBottom: '1px solid #2d2010' }}>
+      {/* Nav — horizontal enterprise rail */}
+      <nav className="vigil-4k-nav flex-shrink-0">
         {TABS.map((t) => {
           if (t.section === 'divider') {
             return (
-              <span
-                key={t.id}
-                className="flex-shrink-0 px-2 py-1.5 text-[9px] font-bold tracking-widest select-none"
-                style={{ color: '#5a4a20', borderRight: '1px solid #2d2010', whiteSpace: 'nowrap' }}
-              >
+              <span key={t.id} className="vigil-4k-nav-divider">
                 {t.label}
               </span>
             );
           }
+          const active = activePanel === t.id;
           return (
             <button
               key={t.id}
               onClick={() => setActivePanel(t.id)}
-              className={`flex-shrink-0 px-2.5 py-1.5 text-xs transition-colors whitespace-nowrap ${
-                activePanel === t.id
-                  ? 'border-b-2'
-                  : 'text-gray-500 hover:text-gray-300'
-              }`}
-              style={activePanel === t.id ? { color: '#d4a017', borderBottomColor: '#d4a017', background: '#0d0b08' } : {}}
+              className={`vigil-4k-nav-item ${active ? 'is-active' : ''}`}
             >
+              {t.icon && <span className="opacity-80 mr-1">{t.icon}</span>}
               {t.label}
             </button>
           );
         })}
-      </div>
+      </nav>
 
-      {/* Main panel */}
-      <div className="flex-1 overflow-hidden">
-        {renderPanel()}
-      </div>
+      {/* Main */}
+      <main className="flex-1 overflow-hidden relative">
+        <div className="absolute inset-0 vigil-4k-grid-bg pointer-events-none opacity-40" />
+        <div className="relative h-full">{renderPanel()}</div>
+      </main>
 
-      {/* Download strip */}
-      <div className="flex gap-1 px-2 py-1 flex-shrink-0" style={{ background: '#13100a', borderTop: '1px solid #2d2010' }}>
-        <button
-          onClick={() => chrome.runtime.sendMessage({ action: 'downloadJarvisZip' })}
-          className="flex-1 text-xs py-0.5 px-1 rounded transition-colors"
-          style={{ background: 'rgba(212,160,23,0.12)', color: '#d4a017', border: '1px solid #2d2010' }}
-        >
-          ⬇ ZIP
-        </button>
-        <button
-          onClick={() => chrome.runtime.sendMessage({ action: 'downloadJarvisBat' })}
-          className="flex-1 text-xs py-0.5 px-1 rounded transition-colors"
-          style={{ background: 'rgba(212,160,23,0.12)', color: '#d4a017', border: '1px solid #2d2010' }}
-        >
-          🪟 Installer
-        </button>
-        <button
-          onClick={() => window.open('https://github.com/FreddyCreates/potential-succotash/raw/copilot/create-jarvis-integration/SDK_Model_Manifest.json', '_blank')}
-          className="flex-1 text-xs py-0.5 px-1 rounded transition-colors"
-          style={{ background: 'rgba(212,160,23,0.12)', color: '#d4a017', border: '1px solid #2d2010' }}
-        >
-          ⬇ SDK
-        </button>
-        <button
-          onClick={() => window.open('https://github.com/FreddyCreates/potential-succotash/raw/copilot/create-jarvis-integration/AI_Protocols_Register.csv', '_blank')}
-          className="flex-1 text-xs py-0.5 px-1 rounded transition-colors"
-          style={{ background: 'rgba(212,160,23,0.12)', color: '#d4a017', border: '1px solid #2d2010' }}
-        >
-          ⬇ Protocols
-        </button>
-      </div>
-
-      {/* Neurochemical status bar */}
-      <div className="flex items-center justify-between px-2 py-0.5 flex-shrink-0 font-mono text-[10px]" style={{ background: '#0c0a07', borderTop: '1px solid #1e1a0f' }}>
-        {(['DA','SE','NE','CO','ACh','OX'] as const).map(sp => (
-          <span key={sp} title={sp} style={{ color: neuroColor(nc[sp] ?? 1) }}>
-            {sp}:{Math.round((nc[sp] ?? 1) * 100)}
-          </span>
-        ))}
-        <span className="text-gray-700" title={neuroState ?? ''}>{neuroMood}</span>
-      </div>
-
-      {/* System status bar */}
-      <div className="flex items-center justify-between px-3 py-1 text-xs text-gray-600 flex-shrink-0" style={{ background: '#0a0806', borderTop: '1px solid #2d2010' }}>
-        <span>⏱ {uptimeStr}</span>
-        <span>💓 {heartbeatCount}</span>
-        <span>⚡ {commandCount}</span>
-        <span>🧠 {awareness}%</span>
-        <span>📖 {memTurns}t</span>
-      </div>
+      {/* Footer status — telemetry */}
+      <footer className="vigil-4k-footer flex-shrink-0">
+        <div className="flex items-center gap-3 font-mono text-[10px] overflow-x-auto">
+          {(['DA', 'SE', 'NE', 'CO', 'ACh', 'OX'] as const).map(sp => (
+            <span key={sp} style={{ color: neuroColor(nc[sp] ?? 1) }}>
+              {sp}:{Math.round((nc[sp] ?? 1) * 100)}
+            </span>
+          ))}
+        </div>
+        <div className="flex items-center gap-3 text-[10px] text-slate-500 font-mono">
+          <span>⏱ {uptimeStr}</span>
+          <span>💓 {heartbeatCount}</span>
+          <span>⚡ {commandCount}</span>
+          <span>🧠 {awareness}%</span>
+          <span>📖 {memTurns}t</span>
+          <span className="text-slate-600 capitalize">{mood}</span>
+        </div>
+      </footer>
     </div>
   );
 }
