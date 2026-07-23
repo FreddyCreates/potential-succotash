@@ -1,14 +1,14 @@
 # 🕷️ organism-crawler-bot — Organism Map
 
-**Generated:** 2026-07-16T07:16:46.826Z
+**Generated:** 2026-07-23T07:27:24.336Z
 **Bot:** organism-crawler-bot 🕷️
 
 ## Repository Overview
 
 | Metric | Value |
 |---|---|
-| Total Files | 1544 |
-| Total Size | 16.18 MB |
+| Total Files | 1546 |
+| Total Size | 16.30 MB |
 | Top-Level Sections | 29 |
 | Analyzed Files (xref) | 316 |
 | Total Imports | 313 |
@@ -18,8 +18,8 @@
 
 | Section | Files | Size | Top Language |
 |---|---|---|---|
-| **extensions/** | 493 | 2.89 MB | Other |
-| **docs/** | 168 | 4.21 MB | Other |
+| **extensions/** | 494 | 2.91 MB | Other |
+| **docs/** | 169 | 4.22 MB | Other |
 | **sdk/** | 152 | 907.8 KB | JavaScript |
 | **protocols/** | 144 | 1.51 MB | JavaScript |
 | **scripts/** | 73 | 444.0 KB | JavaScript |
@@ -27,7 +27,7 @@
 | **workers/** | 63 | 552.7 KB | JSON |
 | **defense-organism/** | 56 | 619.7 KB | JavaScript |
 | **production-grade-builder/** | 47 | 53.3 KB | Markdown |
-| **governance/** | 38 | 1.21 MB | Other |
+| **governance/** | 38 | 1.29 MB | Other |
 | **memory_temple/** | 31 | 218.6 KB | Python |
 | **research/** | 30 | 1.45 MB | HTML |
 | **.github/** | 25 | 86.7 KB | YAML |
@@ -53,18 +53,18 @@
 | Language | Files | Size |
 |---|---|---|
 | **JavaScript** | 563 | 5.13 MB |
-| **Other** | 363 | 4.18 MB |
-| **JSON** | 168 | 1.66 MB |
+| **Other** | 363 | 4.19 MB |
+| **JSON** | 168 | 1.75 MB |
 | **HTML** | 168 | 2.61 MB |
-| **Markdown** | 77 | 569.2 KB |
+| **Markdown** | 78 | 571.6 KB |
 | **Python** | 70 | 348.1 KB |
-| **TypeScript** | 59 | 947.5 KB |
+| **TypeScript** | 60 | 961.3 KB |
 | **YAML** | 28 | 95.3 KB |
 | **TOML** | 18 | 47.5 KB |
 | **Motoko** | 9 | 174.5 KB |
 | **CSV** | 8 | 399.9 KB |
 | **Shell** | 7 | 40.8 KB |
-| **CSS** | 3 | 23.7 KB |
+| **CSS** | 3 | 32.4 KB |
 | **C++** | 3 | 20.7 KB |
 
 ## Cross-Reference Summary
@@ -113,16 +113,16 @@
 
 ### `extensions/`
 
-- **Files:** 493
+- **Files:** 494
 - **Subdirectories:** 41
-- **Size:** 2.89 MB
+- **Size:** 2.91 MB
 - **Primary Language:** Other
 
 ### `docs/`
 
-- **Files:** 168
+- **Files:** 169
 - **Subdirectories:** 3
-- **Size:** 4.21 MB
+- **Size:** 4.22 MB
 - **Primary Language:** Other
 
 ### `sdk/`
@@ -178,7 +178,7 @@
 
 - **Files:** 38
 - **Subdirectories:** 10
-- **Size:** 1.21 MB
+- **Size:** 1.29 MB
 - **Primary Language:** Other
 
 ### `memory_temple/`
