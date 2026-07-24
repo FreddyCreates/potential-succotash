@@ -1,9 +1,9 @@
 # 🌐 Atlas Governance Cycle Report
 
-**Generated:** 2026-07-23T19:20:38.078Z
+**Generated:** 2026-07-24T02:49:08.445Z
 **Decision:** ✅ ALLOW
 **Risk Score:** 25.0%  _(block threshold: 38%  |  escalate: 62%)_
-**Events Processed:** 325
+**Events Processed:** 326
 **Laws Fired:** 1
 
 ## Domain Pipeline Results
