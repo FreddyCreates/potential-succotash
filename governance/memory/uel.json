@@ -1,17 +1,6 @@
 {
   "entries": [
     {
-      "ts": "2026-07-13T14:38:07.614Z",
-      "cycleRisk": 0.25,
-      "decision": "ALLOW",
-      "eventsProcessed": 284,
-      "lawsFired": 1,
-      "forbids": 0,
-      "warnings": 1,
-      "escalations": 0,
-      "phiHealth": 0.75
-    },
-    {
       "ts": "2026-07-13T19:25:18.484Z",
       "cycleRisk": 0.25,
       "decision": "ALLOW",
@@ -544,6 +533,17 @@
       "cycleRisk": 0.25,
       "decision": "ALLOW",
       "eventsProcessed": 333,
+      "lawsFired": 1,
+      "forbids": 0,
+      "warnings": 1,
+      "escalations": 0,
+      "phiHealth": 0.75
+    },
+    {
+      "ts": "2026-07-26T02:57:11.814Z",
+      "cycleRisk": 0.25,
+      "decision": "ALLOW",
+      "eventsProcessed": 334,
       "lawsFired": 1,
       "forbids": 0,
       "warnings": 1,
