@@ -7,12 +7,12 @@
   <a href="https://github.com/FreddyCreates/potential-succotash/actions/workflows/build-extensions.yml"><img src="https://github.com/FreddyCreates/potential-succotash/actions/workflows/build-extensions.yml/badge.svg" alt="Build Extensions" /></a>
   <a href="https://github.com/FreddyCreates/potential-succotash/actions/workflows/deploy-pages.yml"><img src="https://github.com/FreddyCreates/potential-succotash/actions/workflows/deploy-pages.yml/badge.svg" alt="Deploy Pages" /></a>
   <a href="https://github.com/FreddyCreates/potential-succotash/actions/workflows/deploy-workers.yml"><img src="https://github.com/FreddyCreates/potential-succotash/actions/workflows/deploy-workers.yml/badge.svg" alt="Deploy Workers" /></a>
-  <img src="https://img.shields.io/badge/tests-15%2C410%20passing-brightgreen" alt="Tests: 15,410 passing" />
+  <img src="https://img.shields.io/badge/tests-16%2C018%20passing-brightgreen" alt="Tests: 16,018 passing" />
   <img src="https://img.shields.io/badge/lint-40%2F40%20manifests-brightgreen" alt="Lint: 40/40 manifests" />
   <img src="https://img.shields.io/badge/node-%3E%3D18-blue" alt="Node.js ≥18" />
   <img src="https://img.shields.io/badge/license-MIT-green" alt="License: MIT" />
   <img src="https://img.shields.io/badge/extensions-41%20total-purple" alt="41 Extensions" />
-  <img src="https://img.shields.io/badge/SDKs-19-blueviolet" alt="19 SDKs" />
+  <img src="https://img.shields.io/badge/SDKs-18-blueviolet" alt="18 SDKs" />
   <img src="https://img.shields.io/badge/workers-11%20intelligent-cyan" alt="11 Workers" />
   <img src="https://img.shields.io/badge/protocols-11%20sovereign-orange" alt="11 Protocols" />
   <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey" alt="Platform: Windows, macOS, Linux" />
@@ -198,7 +198,7 @@ Sonic Ninja isn't just one extension — it's a living system:
 ┌─────────────────────────────────────────────────────────┐
 │                    SONIC NINJA ORGANISM                   │
 ├─────────────┬──────────────┬──────────────┬─────────────┤
-│  41 Browser │  19 SDKs     │  11 Workers  │  Desktop    │
+│  41 Browser │  18 SDKs     │  11 Workers  │  Desktop    │
 │  Extensions │              │  (Cloudflare)│  App        │
 ├─────────────┴──────────────┴──────────────┴─────────────┤
 │              11 Sovereign Protocols                       │
@@ -268,7 +268,7 @@ cd potential-succotash
 ```
 potential-succotash/
 ├── extensions/          → 41 browser extensions (Chrome/Edge)
-├── sdk/                 → 19 SDKs (agents, engines, runtime, enterprise)
+├── sdk/                 → 18 SDKs (agents, engines, runtime, enterprise)
 ├── workers/             → 11 Cloudflare Workers (AI, coordinators, honeypots)
 ├── protocols/           → 11 sovereign protocols (P226, phi-verification, etc.)
 ├── memory_temple/       → CIVOS-PRIME memory SDK
