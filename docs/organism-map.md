@@ -1,14 +1,14 @@
 # 🕷️ organism-crawler-bot — Organism Map
 
-**Generated:** 2026-08-06T07:33:32.236Z
+**Generated:** 2026-08-13T06:09:42.367Z
 **Bot:** organism-crawler-bot 🕷️
 
 ## Repository Overview
 
 | Metric | Value |
 |---|---|
-| Total Files | 1546 |
-| Total Size | 16.47 MB |
+| Total Files | 1547 |
+| Total Size | 16.55 MB |
 | Top-Level Sections | 29 |
 | Analyzed Files (xref) | 316 |
 | Total Imports | 313 |
@@ -19,7 +19,7 @@
 | Section | Files | Size | Top Language |
 |---|---|---|---|
 | **extensions/** | 494 | 2.91 MB | Other |
-| **docs/** | 169 | 4.22 MB | Other |
+| **docs/** | 169 | 4.21 MB | Other |
 | **sdk/** | 152 | 907.8 KB | JavaScript |
 | **protocols/** | 144 | 1.51 MB | JavaScript |
 | **scripts/** | 73 | 444.0 KB | JavaScript |
@@ -27,11 +27,11 @@
 | **workers/** | 63 | 552.7 KB | JSON |
 | **defense-organism/** | 56 | 619.7 KB | JavaScript |
 | **production-grade-builder/** | 47 | 53.3 KB | Markdown |
-| **governance/** | 38 | 1.46 MB | Other |
+| **governance/** | 38 | 1.54 MB | Other |
 | **memory_temple/** | 31 | 218.6 KB | Python |
 | **research/** | 30 | 1.45 MB | HTML |
 | **.github/** | 25 | 86.7 KB | YAML |
-| **test/** | 24 | 284.6 KB | JavaScript |
+| **test/** | 25 | 288.5 KB | JavaScript |
 | **atlas/** | 19 | 14.7 KB | JSON |
 | **github-mcp-server-python/** | 16 | 42.3 KB | Python |
 | **phantom_native/** | 15 | 81.4 KB | Other |
@@ -52,9 +52,9 @@
 
 | Language | Files | Size |
 |---|---|---|
-| **JavaScript** | 563 | 5.13 MB |
+| **JavaScript** | 564 | 5.14 MB |
 | **Other** | 363 | 4.18 MB |
-| **JSON** | 168 | 1.91 MB |
+| **JSON** | 168 | 2.00 MB |
 | **HTML** | 168 | 2.61 MB |
 | **Markdown** | 78 | 571.6 KB |
 | **Python** | 70 | 348.1 KB |
@@ -122,7 +122,7 @@
 
 - **Files:** 169
 - **Subdirectories:** 3
-- **Size:** 4.22 MB
+- **Size:** 4.21 MB
 - **Primary Language:** Other
 
 ### `sdk/`
@@ -178,7 +178,7 @@
 
 - **Files:** 38
 - **Subdirectories:** 10
-- **Size:** 1.46 MB
+- **Size:** 1.54 MB
 - **Primary Language:** Other
 
 ### `memory_temple/`
@@ -204,9 +204,9 @@
 
 ### `test/`
 
-- **Files:** 24
-- **Subdirectories:** 18
-- **Size:** 284.6 KB
+- **Files:** 25
+- **Subdirectories:** 19
+- **Size:** 288.5 KB
 - **Primary Language:** JavaScript
 
 ### `atlas/`
