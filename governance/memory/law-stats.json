@@ -1,11 +1,6 @@
 {
   "cycles": [
     {
-      "ts": "2026-08-04T00:41:50.266Z",
-      "totalFired": 1,
-      "riskScore": "0.244"
-    },
-    {
       "ts": "2026-08-04T06:58:16.315Z",
       "totalFired": 1,
       "riskScore": "0.244"
@@ -499,15 +494,15 @@
       "ts": "2026-08-30T11:28:36.921Z",
       "totalFired": 1,
       "riskScore": "0.244"
+    },
+    {
+      "ts": "2026-08-30T16:15:47.858Z",
+      "totalFired": 1,
+      "riskScore": "0.244"
     }
   ],
   "lawFireCounts": {
     "TOPOLOGY_INTEGRITY.TOPOLOGY_FILE_COUNT_DRIFT_ALERT": [
-      {
-        "ts": "2026-08-04T00:41:50.266Z",
-        "count": 2,
-        "riskScore": "0.244"
-      },
       {
         "ts": "2026-08-04T06:58:16.315Z",
         "count": 2,
@@ -1000,6 +995,11 @@
       },
       {
         "ts": "2026-08-30T11:28:36.921Z",
+        "count": 2,
+        "riskScore": "0.244"
+      },
+      {
+        "ts": "2026-08-30T16:15:47.858Z",
         "count": 2,
         "riskScore": "0.244"
       }
