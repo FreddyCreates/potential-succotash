@@ -1,6 +1,6 @@
 # 📦 organism-sdk-bot — SDK Reference
 
-**Generated:** 2026-08-28T17:56:21.752Z
+**Generated:** 2026-09-04T10:13:59.134Z
 **Total SDKs:** 18
 **Publishable:** 18
 
