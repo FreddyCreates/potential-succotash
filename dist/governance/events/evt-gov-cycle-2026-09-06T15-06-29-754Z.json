@@ -1,0 +1,26 @@
+{
+  "id": "evt-gov-cycle-2026-09-06T15-06-29-754Z",
+  "entity_id": "atlas://bot/organism-alpha-bot",
+  "op": "governance_cycle_completed",
+  "ts": "2026-09-06T15:06:29.755Z",
+  "context": {
+    "status": "pass",
+    "risk_score": 0.25,
+    "health_dashboard": {
+      "overall": "green"
+    },
+    "metrics": {
+      "eventCount": 497,
+      "lawsFired": 1,
+      "forbids": 0,
+      "warnings": 1
+    }
+  },
+  "tags": [
+    "bot",
+    "alpha",
+    "governance",
+    "division-vii"
+  ],
+  "schema_version": "1.0.0"
+}
