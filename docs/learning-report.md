@@ -1,8 +1,8 @@
 # 🎓 organism-learning-bot — Learning Report
 
-**Generated:** 2026-10-06T04:19:58.351Z
-**Training Epoch:** 24
-**Last Trained:** 2026-10-06T04:19:58.299Z
+**Generated:** 2026-10-13T04:24:13.971Z
+**Training Epoch:** 25
+**Last Trained:** 2026-10-13T04:24:13.908Z
 **Emergence Level:** 🌟 EMERGED (100.0%)
 
 ## Training Summary
@@ -33,16 +33,16 @@
 
 | Rank | Protocol | Weight | Visual |
 |---|---|---|---|
-| 1 | `alpha-emergence-protocol` | 0.952 | `██████████` |
-| 2 | `alpha-evolution-engine-protocol` | 0.952 | `██████████` |
-| 3 | `alpha-governance-enforcement-protocol` | 0.952 | `██████████` |
-| 4 | `alpha-issue-intelligence-protocol` | 0.952 | `██████████` |
-| 5 | `alpha-knowledge-graph-protocol` | 0.952 | `██████████` |
-| 6 | `alpha-reward-protocol` | 0.952 | `██████████` |
-| 7 | `alpha-security-sentinel-protocol` | 0.952 | `██████████` |
-| 8 | `alpha-signal-protocol` | 0.952 | `██████████` |
-| 9 | `alpha-substrate-bridge-protocol` | 0.952 | `██████████` |
-| 10 | `alpha-workflow-engine-protocol` | 0.952 | `██████████` |
+| 1 | `alpha-emergence-protocol` | 0.975 | `██████████` |
+| 2 | `alpha-evolution-engine-protocol` | 0.975 | `██████████` |
+| 3 | `alpha-governance-enforcement-protocol` | 0.975 | `██████████` |
+| 4 | `alpha-issue-intelligence-protocol` | 0.975 | `██████████` |
+| 5 | `alpha-knowledge-graph-protocol` | 0.975 | `██████████` |
+| 6 | `alpha-reward-protocol` | 0.975 | `██████████` |
+| 7 | `alpha-security-sentinel-protocol` | 0.975 | `██████████` |
+| 8 | `alpha-signal-protocol` | 0.975 | `██████████` |
+| 9 | `alpha-substrate-bridge-protocol` | 0.975 | `██████████` |
+| 10 | `alpha-workflow-engine-protocol` | 0.975 | `██████████` |
 
 ## Strongest Hebbian Synapses
 
@@ -50,16 +50,16 @@
 
 | Module A | Module B | Weight |
 |---|---|---|
-| `fleet` | `security-posture` | 1.0441 |
-| `fleet` | `organism-build-bot` | 1.0441 |
-| `fleet` | `organism-neural-bot` | 1.0441 |
-| `fleet` | `organism-sdk-bot` | 1.0441 |
-| `fleet` | `organism-protocol-bot` | 1.0441 |
-| `fleet` | `organism-test-bot` | 1.0441 |
-| `fleet` | `organism-docs-bot` | 1.0441 |
-| `fleet` | `organism-release-bot` | 1.0441 |
-| `fleet` | `organism-deploy-bot` | 1.0441 |
-| `fleet` | `organism-sentinel-bot` | 1.0441 |
+| `fleet` | `security-posture` | 1.0584 |
+| `fleet` | `organism-build-bot` | 1.0584 |
+| `fleet` | `organism-neural-bot` | 1.0584 |
+| `fleet` | `organism-sdk-bot` | 1.0584 |
+| `fleet` | `organism-protocol-bot` | 1.0584 |
+| `fleet` | `organism-test-bot` | 1.0584 |
+| `fleet` | `organism-docs-bot` | 1.0584 |
+| `fleet` | `organism-release-bot` | 1.0584 |
+| `fleet` | `organism-deploy-bot` | 1.0584 |
+| `fleet` | `organism-sentinel-bot` | 1.0584 |
 
 
 ## Learning Constants
