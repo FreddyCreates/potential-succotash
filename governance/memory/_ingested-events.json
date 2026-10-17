@@ -1,6 +1,6 @@
 {
-  "ingested": "2026-10-17T12:17:46.591Z",
-  "eventCount": 661,
+  "ingested": "2026-10-17T18:13:59.671Z",
+  "eventCount": 662,
   "errorCount": 0,
   "events": [
     {
@@ -19159,6 +19159,35 @@
       "_domain": "meta",
       "_division": "Command & Control",
       "_file": "evt-gov-cycle-2026-10-17T06-21-12-688Z.json"
+    },
+    {
+      "id": "evt-gov-cycle-2026-10-17T12-17-46-660Z",
+      "entity_id": "atlas://bot/organism-alpha-bot",
+      "op": "governance_cycle_completed",
+      "ts": "2026-10-17T12:17:46.661Z",
+      "context": {
+        "status": "pass",
+        "risk_score": 0.25,
+        "health_dashboard": {
+          "overall": "green"
+        },
+        "metrics": {
+          "eventCount": 661,
+          "lawsFired": 1,
+          "forbids": 0,
+          "warnings": 1
+        }
+      },
+      "tags": [
+        "bot",
+        "alpha",
+        "governance",
+        "division-vii"
+      ],
+      "schema_version": "1.0.0",
+      "_domain": "meta",
+      "_division": "Command & Control",
+      "_file": "evt-gov-cycle-2026-10-17T12-17-46-660Z.json"
     }
   ],
   "errors": [],
@@ -38190,6 +38219,35 @@
         "_domain": "meta",
         "_division": "Command & Control",
         "_file": "evt-gov-cycle-2026-10-17T06-21-12-688Z.json"
+      },
+      {
+        "id": "evt-gov-cycle-2026-10-17T12-17-46-660Z",
+        "entity_id": "atlas://bot/organism-alpha-bot",
+        "op": "governance_cycle_completed",
+        "ts": "2026-10-17T12:17:46.661Z",
+        "context": {
+          "status": "pass",
+          "risk_score": 0.25,
+          "health_dashboard": {
+            "overall": "green"
+          },
+          "metrics": {
+            "eventCount": 661,
+            "lawsFired": 1,
+            "forbids": 0,
+            "warnings": 1
+          }
+        },
+        "tags": [
+          "bot",
+          "alpha",
+          "governance",
+          "division-vii"
+        ],
+        "schema_version": "1.0.0",
+        "_domain": "meta",
+        "_division": "Command & Control",
+        "_file": "evt-gov-cycle-2026-10-17T12-17-46-660Z.json"
       }
     ],
     "atlas://bot/organism-sentinel-bot": [
@@ -57361,6 +57419,35 @@
         "_domain": "meta",
         "_division": "Command & Control",
         "_file": "evt-gov-cycle-2026-10-17T06-21-12-688Z.json"
+      },
+      {
+        "id": "evt-gov-cycle-2026-10-17T12-17-46-660Z",
+        "entity_id": "atlas://bot/organism-alpha-bot",
+        "op": "governance_cycle_completed",
+        "ts": "2026-10-17T12:17:46.661Z",
+        "context": {
+          "status": "pass",
+          "risk_score": 0.25,
+          "health_dashboard": {
+            "overall": "green"
+          },
+          "metrics": {
+            "eventCount": 661,
+            "lawsFired": 1,
+            "forbids": 0,
+            "warnings": 1
+          }
+        },
+        "tags": [
+          "bot",
+          "alpha",
+          "governance",
+          "division-vii"
+        ],
+        "schema_version": "1.0.0",
+        "_domain": "meta",
+        "_division": "Command & Control",
+        "_file": "evt-gov-cycle-2026-10-17T12-17-46-660Z.json"
       }
     ],
     "Secure & Monitor": [
@@ -76668,6 +76755,35 @@
         "_domain": "meta",
         "_division": "Command & Control",
         "_file": "evt-gov-cycle-2026-10-17T06-21-12-688Z.json"
+      },
+      {
+        "id": "evt-gov-cycle-2026-10-17T12-17-46-660Z",
+        "entity_id": "atlas://bot/organism-alpha-bot",
+        "op": "governance_cycle_completed",
+        "ts": "2026-10-17T12:17:46.661Z",
+        "context": {
+          "status": "pass",
+          "risk_score": 0.25,
+          "health_dashboard": {
+            "overall": "green"
+          },
+          "metrics": {
+            "eventCount": 661,
+            "lawsFired": 1,
+            "forbids": 0,
+            "warnings": 1
+          }
+        },
+        "tags": [
+          "bot",
+          "alpha",
+          "governance",
+          "division-vii"
+        ],
+        "schema_version": "1.0.0",
+        "_domain": "meta",
+        "_division": "Command & Control",
+        "_file": "evt-gov-cycle-2026-10-17T12-17-46-660Z.json"
       }
     ]
   }
