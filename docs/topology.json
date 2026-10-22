@@ -1,10 +1,10 @@
 {
-  "generated": "2026-10-15T05:04:43.082Z",
+  "generated": "2026-10-22T05:04:50.654Z",
   "bot": "organism-crawler-bot",
   "summary": {
     "totalFiles": 1547,
-    "totalBytes": 18126605,
-    "totalKB": 17702,
+    "totalBytes": 18224650,
+    "totalKB": 17798,
     "sections": 29,
     "langCounts": {
       "YAML": 28,
@@ -24,10 +24,10 @@
     },
     "langBytes": {
       "YAML": 97562,
-      "Other": 4377230,
+      "Other": 4386515,
       "CSV": 409489,
       "Markdown": 585309,
-      "JSON": 2873373,
+      "JSON": 2962133,
       "CSS": 33226,
       "JavaScript": 5385481,
       "Shell": 41729,
@@ -92,7 +92,7 @@
     {
       "name": "docs",
       "files": 169,
-      "bytes": 4416115,
+      "bytes": 4425400,
       "dirs": 3,
       "topLanguage": "Other"
     },
@@ -141,7 +141,7 @@
     {
       "name": "governance",
       "files": 38,
-      "bytes": 2399104,
+      "bytes": 2487864,
       "dirs": 10,
       "topLanguage": "Other"
     },
