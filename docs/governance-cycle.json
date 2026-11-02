@@ -1,9 +1,9 @@
 {
-  "id": "cycle-2026-11-02T12:14:11.585Z",
-  "generated": "2026-11-02T12:14:11.585Z",
+  "id": "cycle-2026-11-02T18:10:46.994Z",
+  "generated": "2026-11-02T18:10:46.994Z",
   "decision": "ALLOW",
   "riskScore": 0.25,
-  "eventCount": 725,
+  "eventCount": 726,
   "lawsFired": 1,
   "forbids": 0,
   "warnings": 1,
@@ -18,7 +18,7 @@
       "riskScore": 0.05,
       "status": "pass",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-11-02T12:14:11.573Z"
+      "ranAt": "2026-11-02T18:10:46.970Z"
     },
     "security": {
       "domain": "security",
@@ -29,7 +29,7 @@
       "riskScore": 0.05,
       "status": "pass",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-11-02T12:14:11.573Z"
+      "ranAt": "2026-11-02T18:10:46.970Z"
     },
     "learning": {
       "domain": "learning",
@@ -40,7 +40,7 @@
       "riskScore": 0.05,
       "status": "pass",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-11-02T12:14:11.573Z"
+      "ranAt": "2026-11-02T18:10:46.970Z"
     },
     "economy": {
       "domain": "economy",
@@ -51,7 +51,7 @@
       "riskScore": 0.05,
       "status": "pass",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-11-02T12:14:11.573Z"
+      "ranAt": "2026-11-02T18:10:46.970Z"
     },
     "topology": {
       "domain": "topology",
@@ -62,18 +62,18 @@
       "riskScore": 0.25,
       "status": "warned",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-11-02T12:14:11.573Z"
+      "ranAt": "2026-11-02T18:10:46.970Z"
     },
     "meta": {
       "domain": "meta",
       "pipelineId": "pipeline://governance/meta_cycle",
-      "eventCount": 719,
+      "eventCount": 720,
       "forbidCount": 0,
       "warnCount": 0,
       "riskScore": 0.05,
       "status": "pass",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-11-02T12:14:11.573Z"
+      "ranAt": "2026-11-02T18:10:46.970Z"
     },
     "general": {
       "domain": "general",
@@ -84,7 +84,7 @@
       "riskScore": 0.05,
       "status": "pass",
       "branchDecision": "ALLOW",
-      "ranAt": "2026-11-02T12:14:11.573Z"
+      "ranAt": "2026-11-02T18:10:46.970Z"
     }
   }
 }
