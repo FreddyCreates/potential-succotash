@@ -1,8 +1,8 @@
 # 🎓 organism-learning-bot — Learning Report
 
-**Generated:** 2026-10-27T04:17:32.520Z
-**Training Epoch:** 27
-**Last Trained:** 2026-10-27T04:17:32.452Z
+**Generated:** 2026-11-03T04:11:52.311Z
+**Training Epoch:** 28
+**Last Trained:** 2026-11-03T04:11:52.239Z
 **Emergence Level:** 🌟 EMERGED (100.0%)
 
 ## Training Summary
@@ -50,16 +50,16 @@
 
 | Module A | Module B | Weight |
 |---|---|---|
-| `fleet` | `security-posture` | 1.0838 |
-| `fleet` | `organism-build-bot` | 1.0838 |
-| `fleet` | `organism-neural-bot` | 1.0838 |
-| `fleet` | `organism-sdk-bot` | 1.0838 |
-| `fleet` | `organism-protocol-bot` | 1.0838 |
-| `fleet` | `organism-test-bot` | 1.0838 |
-| `fleet` | `organism-docs-bot` | 1.0838 |
-| `fleet` | `organism-release-bot` | 1.0838 |
-| `fleet` | `organism-deploy-bot` | 1.0838 |
-| `fleet` | `organism-sentinel-bot` | 1.0838 |
+| `fleet` | `security-posture` | 1.0951 |
+| `fleet` | `organism-build-bot` | 1.0951 |
+| `fleet` | `organism-neural-bot` | 1.0951 |
+| `fleet` | `organism-sdk-bot` | 1.0951 |
+| `fleet` | `organism-protocol-bot` | 1.0951 |
+| `fleet` | `organism-test-bot` | 1.0951 |
+| `fleet` | `organism-docs-bot` | 1.0951 |
+| `fleet` | `organism-release-bot` | 1.0951 |
+| `fleet` | `organism-deploy-bot` | 1.0951 |
+| `fleet` | `organism-sentinel-bot` | 1.0951 |
 
 
 ## Learning Constants
